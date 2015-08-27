@@ -1,0 +1,58 @@
+<div class='top-line'>
+  <div common-top-buttons parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" />
+</div>
+
+<div widget-sales-forecast class="content">
+
+  <div ng-show="widget.isLoading" class="loader" align="center">
+    Your data is being retrieved...
+    <img class="gif" ng-src="{{loaderImage}}"/>
+  </div>
+
+  <div ng-hide="widget.isLoading">
+    
+    <div class="edit" ng-show="widget.isEditMode">
+      <h4>Widget settings</h4>
+      
+      <div setting-organizations parent-widget="widget" class="part" />
+
+      <div align="right">
+        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      </div>
+    </div>
+
+    <div ng-hide="widget.isEditMode">
+
+      <div ng-show="isDataFound" >
+        
+        <div class="chart-container">
+          <div dhb-chart data="widget.chart"></div>
+        </div>
+        
+        <div class='widget-lines-container' style="max-height: 340px;">
+          <div class='row widget-line header'>
+            <div class='col-sm-12'>Projection on the next 6 months</div>
+          </div>
+          <div class='row widget-line total' ng-repeat="date in widget.content.dates.slice(6) track by $index" ng-init="collapsed=true" >
+            <div class="row widget-line" >
+              <div class='col-sm-6' ng-click="collapsed = !collapsed">{{date | date : 'MMMM yyyy'}}</div>
+              <div class='col-sm-6 text-right'><strong>{{widget.content.totals.slice(6)[$index] | mnoCurrency : widget.content.currency}}</strong></div>
+            </div>
+            <div collapse="collapsed">
+              <div class="row widget-line" ng-repeat="opp in widget.content.opportunities.slice(6)[$index]" >
+                <div class='col-sm-6'>{{opp.name}}</div>
+                <div class='col-sm-6 text-right'>{{getOpportunityAmount(opp) | mnoCurrency : getOpportunityCurrency(opp)}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    </div>
+    
+  </div>
+</div>

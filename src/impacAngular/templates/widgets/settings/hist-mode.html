@@ -1,0 +1,8 @@
+<div align="center" class="histModeChoser">
+  <a ng-click="toogleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">current</a> | 
+  <a ng-click="toogleHistMode('history')" ng-class="parentWidget.isHistoryMode ? 'active' : 'inactive'">history</a>
+</div>
+<div class="{{parentWidget.isHistoryMode ? 'arrow-container right' : 'arrow-container left'}}">
+  <div class="arrow" />
+  <div class="arrow-border" />
+</div>

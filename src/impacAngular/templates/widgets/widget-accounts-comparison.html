@@ -1,0 +1,76 @@
+<div class='top-line'>
+  <div common-top-buttons parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" />
+</div>
+
+<div widget-accounts-comparison class="content">
+  <div setting-accounts-list parent-widget="widget" />
+  
+  <div ng-hide="widget.isLoading">
+    <div ng-show="widget.isEditMode" class="edit">
+      <h4>Widget settings</h4>
+      
+      <div setting-organizations parent-widget="widget" class="part" />
+
+      <div align="right">
+        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      </div>
+    </div>
+
+    <div ng-hide="widget.isEditMode">
+
+      <div ng-show="isDataFound">
+        <div ng-hide='hasAccountsSelected()' class='row'>
+          <h5>Select which accounts you wish to compare.</h5>
+          <div class='col-md-6'>
+            <div class='input-group'>
+              <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts" class='form-control' ng-show="widget.hasEditAbility" ng-change='addAccount(movedAccount)'></select>
+            </div>
+          </div>
+        </div>
+        
+        <div ng-if='hasAccountsSelected()'>
+          <div class='row'>
+            <div class='col-md-12 chart-container'>
+              <div dhb-chart data="widget.chart" />
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class='col-md-12'>
+              <div class='widget-lines-container'>
+                <div class='widget-line' ng-repeat="account in widget.selectedAccounts">
+                  <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
+                    x
+                  </button>
+                  <i style="float: right; margin-right: 10px;">{{formatAmount(account)}}</i>
+                  <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(account)}}" />
+                  {{account.name}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class="border" />
+            <div class='add-account'>
+              <div class='input-group'>
+                <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class='form-control' ng-show="widget.hasDeleteAbility" ng-change='addAccount(movedAccount)' ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0">
+                  <option value="" disabled selected>+ ADD ACCOUNT</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    </div>
+  </div>
+
+  <div ng-show="widget.isLoading" class="loader" align="center">
+    Your data is being retrieved...
+    <img class="gif" ng-src="{{loaderImage}}"/>
+  </div>
+</div>
