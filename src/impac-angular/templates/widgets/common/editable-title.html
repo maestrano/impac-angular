@@ -1,0 +1,49 @@
+<div class="visible-lg title-wrapper" ng-if="parentWidget.width >= 3 && parentWidget.width < 6">
+  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" buttons="no" onaftersave="updateName()">
+  	{{parentWidget.name | truncate:25:"."}}
+  </div>
+
+  <div ng-hide="parentWidget.hasEditAbility" class="title">
+  	{{parentWidget.name | truncate:25:"."}}
+  </div>
+</div>
+
+<div class="visible-lg title-wrapper" ng-if="parentWidget.width >= 6">
+  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" buttons="no" onaftersave="updateName()">
+  	{{parentWidget.name | truncate:60:"."}}
+  </div>
+
+  <div ng-hide="parentWidget.hasEditAbility" class="title">
+  	{{parentWidget.name | truncate:60:"."}}
+  </div>
+</div>
+
+<div class="visible-md visible-sm title-wrapper" ng-if="parentWidget.width == 3 && parentWidget.width < 6">
+  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" buttons="no" onaftersave="updateName()">
+  	{{parentWidget.name | truncate:18:"."}}
+  </div>
+
+  <div ng-hide="parentWidget.hasEditAbility" class="title">
+  	{{parentWidget.name | truncate:18:"."}}
+  </div>
+</div>
+
+<div class="visible-md visible-sm title-wrapper" ng-if="parentWidget.width >= 6">
+  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" buttons="no" onaftersave="updateName()">
+  	{{parentWidget.name | truncate:45:"."}}
+  </div>
+
+  <div ng-hide="parentWidget.hasEditAbility" class="title">
+  	{{parentWidget.name | truncate:45:"."}}
+  </div>
+</div>
+
+<div class="visible-xs title-wrapper">
+  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" buttons="no" onaftersave="updateName()">
+  	{{parentWidget.name | truncate:30:"."}}
+  </div>
+
+  <div ng-hide="parentWidget.hasEditAbility" class="title">
+  	{{parentWidget.name | truncate:30:"."}}
+  </div>
+</div>
