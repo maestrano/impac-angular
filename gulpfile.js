@@ -1,20 +1,27 @@
 var gulp = require('gulp'),
+    // karma for gulp
     karma = require('karma').server,
+    // Concatenates and registers AngularJS templates in the $templateCache.
     templates = require('gulp-angular-templatecache'),
-    clean = require('gulp-clean'),
+    // A gulp plugin for removing files and folders with support for multiple files & globs.
+    del = require('del'),
+    // Concatenates files
     concat = require('gulp-concat'),
+    // Minifies files
     uglify = require('gulp-uglify'),
+    // Renames files
     rename = require('gulp-rename'),
+    // Add angularjs dependency injection annotations with ng-annotate
     ngAnnotate = require('gulp-ng-annotate'),
-    pkg = require('./package.json'),
-    sourceFiles = [
-      'src/impac-angular/impac-angular.prefix',
-      'src/impac-angular/impac-angular.js',
-      'src/impac-angular/directives/**/*.js.coffee',
-      'src/impac-angular/filters/**/*.js.coffee',
-      'src/impac-angular/services/**/*.js.coffee',
-      'src/impac-angular/impac-angular.suffix'
-    ];
+    // Gulp compiler for coffee
+    coffee = require('gulp-coffee'),
+    // Utility functions for gulp plugins
+    gutil = require('gulp-util'),
+    // Source map support for Gulp.js
+    sourcemaps = require('gulp-sourcemaps'),
+    // Append or Prepend a string with gulp
+    insert = require('gulp-insert'),
+    pkg = require('./package.json');
 
 /*
 ** Testing Tasks
@@ -58,7 +65,7 @@ var gulp = require('gulp'),
 // outputting it into a file named templates.tmp at the root destination.
 gulp.task('templates', function () {
   return gulp.src('src/impac-angular/templates/**/*.html')
-    .pipe(templates('templates.tmp', {
+    .pipe(templates('tmp/templates/templates.tmp', {
       // root: '/templates/',
       // module: pkg.name
       module: 'maestrano.analytics.templates'
@@ -68,22 +75,46 @@ gulp.task('templates', function () {
 
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
 gulp.task('concat', ['templates'], function () {
-  return gulp.src(['src/impac-angular/impac-angular.module.js', 'templates.tmp'])
+  return gulp.src(['src/impac-angular/impac-angular.module.js', './tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
     .pipe(gulp.dest('./src/impac-angular/')); // output destination
-});
-
-// cleans up tmp file created by 'templates' task.
-gulp.task('clean', ['concat'], function () {
-  gulp.src('./*.tmp', {read: false})
-    .pipe(clean());
 });
 
 /* **********************
 ** Build tasks        ***
 ** **********************/
-gulp.task('build', ['clean'], function() {
-  gulp.src(sourceFiles)
+    // Source files for final dist build
+var buildSourceFiles = [
+      'src/impac-angular/impac-angular.prefix',
+      'src/impac-angular/impac-angular.js',
+      'src/impac-angular/impac-angular.suffix',
+      'tmp/scripts/**/*.js'
+    ],
+    // CoffeeScript file directories to be compiled before build.
+    coffeeFiles = [
+      'src/impac-angular/directives/**/*.js.coffee',
+      'src/impac-angular/filters/**/*.js.coffee',
+      'src/impac-angular/services/**/*.js.coffee',
+    ];
+
+// compiles CoffeeScript files into JS, wraps each file in a self-invoking anonymous function,
+// and writes the sourcemaps.
+gulp.task('compile-coffee', function() {
+  gulp.src(coffeeFiles)
+    .pipe(sourcemaps.init())
+    .pipe(coffee({bare: true}).on('error', gutil.log))
+    .pipe(insert.wrap('(function () {\n', '})();')) // encapsulates components
+    .pipe(sourcemaps.write())
+    // Removes the double '.js' file extension which is created due to the current nameing
+    // convention '.js.coffee' through the components.
+    .pipe(rename(function (path) {
+      path.basename = path.basename.split('.')[0];
+    }))
+    .pipe(gulp.dest('./tmp/scripts'));
+});
+
+gulp.task('build', function() {
+  gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('./dist/'))
@@ -92,25 +123,23 @@ gulp.task('build', ['clean'], function() {
     .pipe(gulp.dest('./dist'));
 });
 
+// cleans up tmp file created by 'templates' task.
+gulp.task('clean', function () {
+  del(['./tmp']);
+});
+
 gulp.task('watch', function () {
   gulp.watch(['src/**/*.js', 'src/**/*.html'], ['build']);
 });
 
 /* **********************
 ** Commands           ***
+** TODO: Chain these events to reduce CLI commands required, especially the clean processes.
 ** **********************/
-gulp.task('default', ['templates', 'concat', 'clean', 'build']);
-// gulp.task('foobar', ['build']);
-// gulp.task('dist',
-//   [
-//     'test',
-//     'test-dist-concatenated',
-//     'test-dist-minified',
-//     'templates',
-//     'concat',
-//     'clean'
-//   ]);
-
+gulp.task('clean-tmp', ['clean']);
+gulp.task('coffee', ['compile-coffee']);
+gulp.task('foobar', ['templates', 'concat', 'clean']);
+gulp.task('build-dist', ['build']);
 
 
 
