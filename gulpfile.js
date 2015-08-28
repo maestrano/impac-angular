@@ -23,6 +23,10 @@ var gulp = require('gulp'),
     insert = require('gulp-insert'),
     // Strip-comments from code. Removes both line comments and/or block comments.
     strip = require('gulp-strip-comments'),
+    // Compile less to css with less sourcemaps.
+    less = require('gulp-less-sourcemap'),
+    // minify css
+    minifyCss = require('gulp-minify-css'),
     // promise library
     // Q = require('q'),
     // construct pipes of streams of events
@@ -100,12 +104,15 @@ var buildSourceFiles = [
       'src/impac-angular/directives/**/*.js.coffee',
       'src/impac-angular/filters/**/*.js.coffee',
       'src/impac-angular/services/**/*.js.coffee',
+    ],
+    lessFiles = [
+      'src/impac-angular/stylesheets/**/*.less'
     ];
 
 // compiles CoffeeScript files into JS, wraps each file in a self-invoking anonymous function,
 // and writes the sourcemaps.
-gulp.task('compile-coffee', ['clean'], function () {
-  gutil.log('running compile-coffee..');
+gulp.task('coffee', ['clean'], function () {
+  gutil.log('running coffee..');
   return gulp.src(coffeeFiles)
     .pipe(sourcemaps.init())
     .pipe(coffee({bare: true}).on('error', gutil.log))
@@ -119,7 +126,31 @@ gulp.task('compile-coffee', ['clean'], function () {
     .pipe(gulp.dest('./tmp/scripts'));
 });
 
-gulp.task('build', ['compile-coffee', 'templates:concat'], function () {
+// compiles less into css and adds a sourcemap file.
+gulp.task('less', function () {
+  var stream = gulp.src(lessFiles)
+    .pipe(less({
+        sourceMap: {
+            // Optional absolute or relative path to your LESS files
+            sourceMapRootpath: './src/impac-angular/stylesheets'
+        }
+    }))
+    .pipe(gulp.dest('./dist'))
+    .pipe(minifyCss({compatibility: 'ie8'}))
+    .pipe(rename(function (path) {
+      path.basename += '.min';
+    }))
+    .pipe(gulp.dest('./dist'));
+
+  // Deletes the sourcemap for the min version that the stream above is creating.
+  // todo: Probably a better way to not create it in the first place.
+  stream.on('end', function () {
+    del('./dist/*.css.min.map');
+  });
+});
+
+
+gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
@@ -146,6 +177,6 @@ gulp.task('watch', function () {
 /* **********************
 ** Commands           ***
 ** **********************/
-gulp.task('build:dist', ['build']);
-
+gulp.task('default', ['build']);
+gulp.task('build:less', ['less']);
 
