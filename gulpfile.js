@@ -23,8 +23,9 @@ var gulp = require('gulp'),
     insert = require('gulp-insert'),
     // Strip-comments from code. Removes both line comments and/or block comments.
     strip = require('gulp-strip-comments'),
-    // Compile less to css with less sourcemaps.
-    less = require('gulp-less-sourcemap'),
+    // Compile less to css.
+    less = require('gulp-less'),
+    path = require('path'),
     // minify css
     minifyCss = require('gulp-minify-css'),
     // promise library
@@ -128,25 +129,18 @@ gulp.task('coffee', ['clean'], function () {
 
 // compiles less into css and adds a sourcemap file.
 gulp.task('less', function () {
-  var stream = gulp.src(lessFiles)
+  return gulp.src(lessFiles)
+    .pipe(sourcemaps.init())
     .pipe(less({
-        sourceMap: {
-            // Optional absolute or relative path to your LESS files
-            sourceMapRootpath: './src/impac-angular/stylesheets'
-        }
+      paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./dist'))
     .pipe(minifyCss({compatibility: 'ie8'}))
     .pipe(rename(function (path) {
       path.basename += '.min';
     }))
     .pipe(gulp.dest('./dist'));
-
-  // Deletes the sourcemap for the min version that the stream above is creating.
-  // todo: Probably a better way to not create it in the first place.
-  stream.on('end', function () {
-    del('./dist/*.css.min.map');
-  });
 });
 
 
