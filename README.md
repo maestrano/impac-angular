@@ -7,5 +7,3 @@
 
 #### Version 2
 
-- CoffeeScript sourcemap files
-

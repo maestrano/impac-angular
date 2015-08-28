@@ -23,3 +23,5 @@ bower
 # Distribution files
 dist/
 
+# Temp files
+tmp/
