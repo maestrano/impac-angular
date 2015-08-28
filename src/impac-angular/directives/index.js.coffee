@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.index',['maestrano.assets'])
+module = angular.module('maestrano.analytics.index',[])
 
 module.controller('AnalyticsIndexCtrl',[
   '$scope','$http','$q','$filter','$modal','$log', '$timeout','AssetPath','Utilities','Miscellaneous','DhbOrganizationSvc','DhbAnalyticsSvc','UserSvc','TemplatePath','MsgBus',
@@ -96,7 +96,7 @@ module.controller('AnalyticsIndexCtrl',[
       $scope.showCreateDhb = true
       $scope.showDeleteDhb = aDashboardExists
       $scope.showCreateWidget = aDashboardExists
-      # messages      
+      # messages
       $scope.showChooseDhbMsg = !aDashboardExists
       $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists
       #widgets
@@ -143,7 +143,7 @@ module.controller('AnalyticsIndexCtrl',[
 
     #====================================
     # Dashboard management - widget selector
-    #==================================== 
+    #====================================
 
     $scope.selectedCategory = 'accounts'
     $scope.isCategorySelected = (aCatName) ->
@@ -217,9 +217,9 @@ module.controller('AnalyticsIndexCtrl',[
 
     #====================================
     # Dashboard management - Modals
-    #====================================  
+    #====================================
 
-    # Would it be possible to manage modals in a separate module ? 
+    # Would it be possible to manage modals in a separate module ?
     # -> Check maestrano-modal (modal-svc) for further update
     $scope.modal = {}
     $scope.modal.createDashboard = modalCreateDashboard = $scope.$new(true)
@@ -257,16 +257,16 @@ module.controller('AnalyticsIndexCtrl',[
       self = modalCreateDashboard
       self.isLoading = true
       dashboard = { name: self.model.name }
-      
+
       # Add organizations if multi company dashboard
       if self.mode == 'multi'
         organizations = _.select(self.organizations, (o) -> o.$selected )
       else
         organizations = [ { id: DhbOrganizationSvc.getId() } ]
-      
+
       if organizations.length > 0
         dashboard.organization_ids = _.pluck(organizations, 'id')
-      
+
       DhbAnalyticsSvc.dashboards.create(dashboard).then(
         (dashboard) ->
           self.errors = ''
@@ -275,20 +275,20 @@ module.controller('AnalyticsIndexCtrl',[
         , (errors) ->
           self.errors = Utilities.processRailsError(errors)
       ).finally(-> $scope.refreshDashboards())
-      
+
     modalCreateDashboard.proceedDisabled = ->
       self = modalCreateDashboard
       selectedCompanies = _.select(self.organizations, (o) -> o.$selected)
-      
+
       # Check that dashboard has a name
       additional_condition = !self.model.name || self.model.name == ''
-      
+
       # Check that some companies have been selected
       additional_condition ||= selectedCompanies.length == 0
-      
+
       # Check that user can access the analytics data for this company
       additional_condition ||= _.select(selectedCompanies, (o) -> self.canAccessAnalyticsData(o)).length == 0
-      
+
       return self.isLoading || additional_condition
 
     modalCreateDashboard.btnBlassFor = (mode) ->
@@ -297,23 +297,23 @@ module.controller('AnalyticsIndexCtrl',[
         "btn btn-sm btn-warning active"
       else
         "btn btn-sm btn-default"
-    
+
     modalCreateDashboard.selectMode = (mode) ->
       self = modalCreateDashboard
       _.each(self.organizations, (o) -> o.$selected = false)
       self.currentOrganization.$selected = (mode == 'single')
       self.mode = mode
-    
+
     modalCreateDashboard.isSelectOrganizationShown = ->
       modalCreateDashboard.mode == 'multi'
-    
+
     modalCreateDashboard.isCurrentOrganizationShown = ->
       modalCreateDashboard.mode == 'single'
-    
+
     modalCreateDashboard.canAccessAnalyticsForCurrentOrganization = ->
       self = modalCreateDashboard
       self.canAccessAnalyticsData(self.currentOrganization)
-    
+
     modalCreateDashboard.isMultiCompanyAvailable = ->
       modalCreateDashboard.organizations.length > 1 && modalCreateDashboard.multiOrganizationReporting
 
@@ -347,7 +347,7 @@ module.controller('AnalyticsIndexCtrl',[
     modalDeleteDashboard.proceed = ->
       self = modalDeleteDashboard
       self.isLoading = true
-        
+
       DhbAnalyticsSvc.dashboards.delete($scope.currentDhbId).then(
         () ->
           self.errors = ''
@@ -391,25 +391,25 @@ module.controller('AnalyticsIndexCtrl',[
       }
 
       $http.post('/js_api/v1/mailers',{template: 'widget_suggestion', opts: data})
-      
+
       # Thank you, user...
       $timeout ->
         self.close()
         self.widgetDetails = {}
         self.isLoading = false
       ,3000
-    
+
 
     #====================================
     # Drag & Drop management
-    #====================================      
+    #====================================
 
     $scope.sortableOptions = {
       # When the widget is dropped
       stop: saveDashboard = ->
         data = { widgets_order: _.pluck($scope.currentDhb.widgets,'id') }
         DhbAnalyticsSvc.dashboards.update($scope.currentDhbId,data,false)
-      
+
       # When the widget is starting to be dragged
       ,start: updatePlaceHolderSize = (e, widget) ->
         # width-1 to avoid return to line (succession of float left divs...)

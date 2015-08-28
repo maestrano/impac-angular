@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.account',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.account',[])
 
 module.controller('SettingAccountCtrl', ['$scope', '$filter', ($scope, $filter) ->
 
@@ -19,7 +19,7 @@ module.controller('SettingAccountCtrl', ['$scope', '$filter', ($scope, $filter) 
       setting.isInitialized = true
 
   setting.toMetadata = ->
-    return { account_uid: w.selectedAccount.uid } if w.selectedAccount? 
+    return { account_uid: w.selectedAccount.uid } if w.selectedAccount?
 
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)

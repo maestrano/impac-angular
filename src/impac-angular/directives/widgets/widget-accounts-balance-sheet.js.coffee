@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-accounts-balance-sheet',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-accounts-balance-sheet',[])
 
 module.controller('WidgetAccountsBalanceSheetCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
@@ -25,7 +25,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl',[
         $scope.categories = Object.keys(w.content.summary)
 
     $scope.toogleCollapsed = (categoryName) ->
-      if categoryName? 
+      if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
             name == categoryName
@@ -35,7 +35,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl',[
         w.updateSettings(false)
 
     $scope.isCollapsed = (categoryName) ->
-      if categoryName?  
+      if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           return false
         else
@@ -46,7 +46,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl',[
 
     unCollapsedSetting = {}
     unCollapsedSetting.initialized = false
-    
+
     unCollapsedSetting.initialize = ->
       unCollapsedSetting.initialized = true
 
@@ -62,7 +62,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

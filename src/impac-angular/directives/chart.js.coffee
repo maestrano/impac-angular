@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.chart',['maestrano.assets'])
+module = angular.module('maestrano.analytics.chart',[])
 
 #============================================
 # Component

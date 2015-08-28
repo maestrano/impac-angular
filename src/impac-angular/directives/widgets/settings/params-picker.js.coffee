@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.params-picker',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.params-picker',[])
 
 module.controller('SettingParamsPickerCtrl',
   ['$scope', 'DhbAnalyticsSvc',

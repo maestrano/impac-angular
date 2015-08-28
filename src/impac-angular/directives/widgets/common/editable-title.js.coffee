@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-common.editable-title',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-common.editable-title',[])
 
 module.controller('CommonEditableTitleCtrl',
   ['$scope', 'DhbAnalyticsSvc',

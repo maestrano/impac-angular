@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-invoices-summary',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-invoices-summary',[])
 
 module.controller('WidgetInvoicesSummaryCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc',
@@ -28,7 +28,7 @@ module.controller('WidgetInvoicesSummaryCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

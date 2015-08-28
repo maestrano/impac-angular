@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.chart-filters',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.chart-filters',[])
 
 module.controller('SettingChartFiltersCtrl', ['$scope', ($scope) ->
 

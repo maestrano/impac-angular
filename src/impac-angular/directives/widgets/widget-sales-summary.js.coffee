@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-summary',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-summary',[])
 
 module.controller('WidgetSalesSummaryCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc',
@@ -35,7 +35,7 @@ module.controller('WidgetSalesSummaryCtrl',[
           $scope.filterOptions[1],
           $scope.filterOptions[2]
         ] if w.metadata.criteria == "customer"
-        
+
         $scope.filter = _.find($scope.filterOptions, (o) ->
           o.value == w.content.filter
         ) || $scope.filterOptions[0]
@@ -62,7 +62,7 @@ module.controller('WidgetSalesSummaryCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

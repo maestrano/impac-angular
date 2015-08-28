@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.hist-mode',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.hist-mode',[])
 
 module.controller('SettingHistModeCtrl',
   ['$scope', 'DhbAnalyticsSvc',
@@ -20,7 +20,7 @@ module.controller('SettingHistModeCtrl',
     # initialization of time range parameters from widget.content.hist_parameters
     setting.initialize = ->
       if w.content? && w.content.hist_parameters? && mode = w.content.hist_parameters.mode
-        if mode == 'history' 
+        if mode == 'history'
           w.isHistoryMode = true
         else
           w.isHistoryMode = false

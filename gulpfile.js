@@ -107,7 +107,7 @@ var buildSourceFiles = [
       'src/impac-angular/services/**/*.js.coffee',
     ],
     lessFiles = [
-      'src/impac-angular/stylesheets/**/*.less'
+      'src/impac-angular/stylesheets/analytics.less'
     ];
 
 // compiles CoffeeScript files into JS, wraps each file in a self-invoking anonymous function,
@@ -117,7 +117,7 @@ gulp.task('coffee', ['clean'], function () {
   return gulp.src(coffeeFiles)
     .pipe(sourcemaps.init())
     .pipe(coffee({bare: true}).on('error', gutil.log))
-    .pipe(insert.wrap('(function () {\n', '})();')) // encapsulates components
+    .pipe(insert.wrap('(function () {\n\'use strict\';\n', '})();')) // encapsulates components
     .pipe(sourcemaps.write())
     // Removes the double '.js' file extension which is created due to the current nameing
     // convention '.js.coffee' through the components.
@@ -173,4 +173,6 @@ gulp.task('watch', function () {
 ** **********************/
 gulp.task('default', ['build']);
 gulp.task('build:less', ['less']);
+gulp.task('build:coffee', ['coffee']);
+gulp.task('build:templates', ['templates:concat']);
 

@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-common.top-buttons',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-common.top-buttons',[])
 
 module.controller('CommonTopButtonsCtrl',
   ['$scope', '$rootScope', 'DhbAnalyticsSvc', 'AssetPath', 'TemplatePath',

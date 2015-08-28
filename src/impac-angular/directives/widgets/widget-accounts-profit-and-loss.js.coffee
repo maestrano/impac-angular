@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-accounts-profit-and-loss',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-accounts-profit-and-loss',[])
 
 module.controller('WidgetAccountsProfitAndLossCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -34,11 +34,11 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
     w.format = ->
       if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
         all_values_are_positive = true
-        
+
         inputData = []
         angular.forEach($scope.selectedElements, (sElem) ->
           data = angular.copy(sElem)
-          
+
           labels = _.map w.content.dates, (date) ->
             if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
               $filter('date')(date, 'yyyy')
@@ -46,11 +46,11 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
               $filter('date')(date, 'MMM-yy')
             else if w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
               $filter('date')(date, 'dd-MMM')
-            else  
+            else
               $filter('date')(date, 'MMM')
-          
+
           inputData.push({title: data.name, labels: labels, values: data.totals})
-          
+
           angular.forEach(data.totals, (value) ->
             all_values_are_positive &&= value >= 0
           )
@@ -121,11 +121,11 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
           return true
         else
           return false
-      else 
+      else
         return false
 
     $scope.toogleCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
             name == element.name
@@ -135,7 +135,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
         w.updateSettings(false)
 
     $scope.isCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           return false
         else
@@ -146,7 +146,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
 
     unCollapsedSetting = {}
     unCollapsedSetting.initialized = false
-    
+
     unCollapsedSetting.initialize = ->
       unCollapsedSetting.initialized = true
 
@@ -157,7 +157,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
 
     selectedElementsSetting = {}
     selectedElementsSetting.initialized = false
-    
+
     selectedElementsSetting.initialize = ->
       selectedElementsSetting.initialized = true
 
@@ -173,7 +173,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

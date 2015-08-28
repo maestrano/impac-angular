@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.time-range',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.time-range',[])
 
 module.controller('SettingTimeRangeCtrl', ['$scope', ($scope) ->
 

@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.accounts-list',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.accounts-list',[])
 
 # There is no template associated to this setting, and though it won't appear in the 'settings' panel
 # However, as its metadata has to be initialized from, and saved to Impac!, we build ListAccounts as a setting

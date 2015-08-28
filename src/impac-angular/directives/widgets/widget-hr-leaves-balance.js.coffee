@@ -1,6 +1,6 @@
 # TODO: factor with superannuation accruals (exact same controller)
 
-module = angular.module('maestrano.analytics.widget-hr-leaves-balance',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-hr-leaves-balance',[])
 
 module.controller('WidgetHrLeavesBalanceCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities',
@@ -37,7 +37,7 @@ module.controller('WidgetHrLeavesBalanceCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

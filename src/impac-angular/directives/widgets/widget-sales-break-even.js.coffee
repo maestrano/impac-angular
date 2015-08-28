@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-break-even',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-break-even',[])
 
 module.controller('WidgetSalesBreakEvenCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -38,7 +38,7 @@ module.controller('WidgetSalesBreakEvenCtrl',[
 
     thresholdSetting = {}
     thresholdSetting.initialized = false
-    
+
     thresholdSetting.initialize = ->
       thresholdSetting.initialized = true
 
@@ -54,7 +54,7 @@ module.controller('WidgetSalesBreakEvenCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-leads-funnel',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-leads-funnel',[])
 
 module.controller('WidgetSalesLeadsFunnelCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc', '$filter',
@@ -70,11 +70,11 @@ module.controller('WidgetSalesLeadsFunnelCtrl',[
       nameLineArray.push($filter('titleize')(aLead.first_name)) if aLead.first_name
       nameLineArray.push($filter('titleize')(aLead.last_name)) if aLead.last_name
       nameLineArray.push("</strong>")
-      
-      tooltip.push(nameLineArray.join(' ')) 
+
+      tooltip.push(nameLineArray.join(' '))
       tooltip.push("Status: #{$filter('titleize')(aLead.lead_status)}")
       tooltip.push("Organization: #{$filter('titleize')(aLead.organization)}") if aLead.organization
-      
+
       if aLead.opportunities
         tooltip.push("<strong>Opportunities:</strong>")
         angular.forEach aLead.opportunities, (opp) ->
@@ -92,7 +92,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl',[
 
     selectedStatusSetting = {}
     selectedStatusSetting.initialized = false
-    
+
     selectedStatusSetting.initialize = ->
       $scope.selectedStatus = w.metadata.selected_status if angular.isDefined(w.content.leads_per_status[w.metadata.selected_status])
       selectedStatusSetting.initialized = true
@@ -109,7 +109,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

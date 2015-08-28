@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-hr-timesheets',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-hr-timesheets',[])
 
 module.controller('WidgetHrTimesheetsCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
@@ -8,7 +8,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
 
     w.initContext = ->
       if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.employees) && !_.isEmpty(w.content.dates)
-        
+
         $scope.employeesOptions = _.map(w.content.employees, (e) ->
           {
             value: e.id,
@@ -23,7 +23,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
         $scope.unCollapsed = w.metadata.unCollapsed || []
 
     $scope.toogleCollapsed = (categoryName) ->
-      if categoryName? 
+      if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
             name == categoryName
@@ -33,7 +33,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
         w.updateSettings(false)
 
     $scope.isCollapsed = (categoryName) ->
-      if categoryName?  
+      if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           return false
         else
@@ -66,7 +66,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
 
     unCollapsedSetting = {}
     unCollapsedSetting.initialized = false
-    
+
     unCollapsedSetting.initialize = ->
       unCollapsedSetting.initialized = true
 
@@ -82,7 +82,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

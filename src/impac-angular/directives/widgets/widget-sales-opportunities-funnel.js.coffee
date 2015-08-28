@@ -1,6 +1,6 @@
 # TODO factor with leads funnel !
 
-module = angular.module('maestrano.analytics.widget-sales-opportunities-funnel',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-opportunities-funnel',[])
 
 module.controller('WidgetSalesOpportunitiesFunnelCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc', '$filter',
@@ -75,7 +75,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl',[
 
     selectedStatusSetting = {}
     selectedStatusSetting.initialized = false
-    
+
     selectedStatusSetting.initialize = ->
       $scope.selectedStatus = w.metadata.selected_status if angular.isDefined(w.content.opps_per_sales_stage[w.metadata.selected_status])
       selectedStatusSetting.initialized = true
@@ -92,7 +92,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

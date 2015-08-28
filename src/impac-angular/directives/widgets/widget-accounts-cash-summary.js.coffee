@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-accounts-cash-summary',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-accounts-cash-summary',[])
 
 module.controller('WidgetAccountsCashSummaryCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -16,7 +16,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
           $scope.selectedElement = _.find(w.content.summary, (statement)->
             statement.name == w.metadata.selectedElement.name
           )
-          if !$scope.selectedElement 
+          if !$scope.selectedElement
             angular.forEach(w.content.summary, (statement) ->
               $scope.selectedElement ||= _.find(statement.accounts, (account)->
                 account.id == w.metadata.selectedElement.id
@@ -35,7 +35,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
             $filter('date')(date, 'MMM-yy')
           else if w.metadata.hist_parameters? && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
             $filter('date')(date, 'dd-MMM')
-          else  
+          else
             $filter('date')(date, 'MMM')
         inputData = {title: data.name, labels: labels, values: data.cash_flows}
         all_values_are_positive = true
@@ -102,11 +102,11 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
           return true
         else
           return false
-      else 
+      else
         return false
 
     $scope.toogleCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
             name == element.name
@@ -116,7 +116,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
         w.updateSettings(false)
 
     $scope.isCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           return false
         else
@@ -127,7 +127,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
 
     unCollapsedSetting = {}
     unCollapsedSetting.initialized = false
-    
+
     unCollapsedSetting.initialize = ->
       unCollapsedSetting.initialized = true
 
@@ -138,7 +138,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
 
     selectedElementSetting = {}
     selectedElementSetting.initialized = false
-    
+
     selectedElementSetting.initialize = ->
       selectedElementSetting.initialized = true
 
@@ -154,7 +154,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

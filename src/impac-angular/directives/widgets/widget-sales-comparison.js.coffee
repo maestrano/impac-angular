@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-comparison',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-comparison',[])
 
 module.controller('WidgetSalesComparisonCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -19,7 +19,7 @@ module.controller('WidgetSalesComparisonCtrl',[
         $scope.filter = _.find($scope.filterOptions, (o) ->
           w.metadata && w.metadata.filter == o.value
         ) || $scope.filterOptions[0]
-        
+
         $scope.criteriaOptions = [
           {label: 'products', value: 'default'},
           {label: 'locations', value: 'location'},
@@ -52,11 +52,11 @@ module.controller('WidgetSalesComparisonCtrl',[
     w.format = ->
       if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
         all_values_are_positive = true
-        
+
         inputData = []
         angular.forEach($scope.selectedElements, (sElem) ->
           data = angular.copy(sElem)
-          
+
           labels = _.map w.content.dates, (date) ->
             if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
               $filter('date')(date, 'yyyy')
@@ -64,11 +64,11 @@ module.controller('WidgetSalesComparisonCtrl',[
               $filter('date')(date, 'MMM-yy')
             else if w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
               $filter('date')(date, 'dd-MMM')
-            else  
+            else
               $filter('date')(date, 'MMM')
-          
+
           inputData.push({title: data.name, labels: labels, values: data.totals[$scope.filter.value]})
-          
+
           angular.forEach(data.totals, (value) ->
             all_values_are_positive &&= value >= 0
           )
@@ -134,11 +134,11 @@ module.controller('WidgetSalesComparisonCtrl',[
           return true
         else
           return false
-      else 
+      else
         return false
 
     $scope.toogleCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
             name == element.name
@@ -148,7 +148,7 @@ module.controller('WidgetSalesComparisonCtrl',[
         w.updateSettings(false)
 
     $scope.isCollapsed = (element) ->
-      if element? && element.name?  
+      if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           return false
         else
@@ -159,7 +159,7 @@ module.controller('WidgetSalesComparisonCtrl',[
 
     unCollapsedSetting = {}
     unCollapsedSetting.initialized = false
-    
+
     unCollapsedSetting.initialize = ->
       unCollapsedSetting.initialized = true
 
@@ -170,7 +170,7 @@ module.controller('WidgetSalesComparisonCtrl',[
 
     selectedElementsSetting = {}
     selectedElementsSetting.initialized = false
-    
+
     selectedElementsSetting.initialize = ->
       selectedElementsSetting.initialized = true
 
@@ -186,7 +186,7 @@ module.controller('WidgetSalesComparisonCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

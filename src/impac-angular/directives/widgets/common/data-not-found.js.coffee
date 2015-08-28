@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-common.data-not-found',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-common.data-not-found',[])
 
 module.directive('commonDataNotFound', ['TemplatePath', 'AssetPath', (TemplatePath, AssetPath) ->
   return {

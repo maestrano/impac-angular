@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.width',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.width',[])
 
 module.controller('SettingWidthCtrl', ['$scope', ($scope) ->
 

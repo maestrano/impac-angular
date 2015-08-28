@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.impac-widget-catalogue',['maestrano.assets'])
+module = angular.module('maestrano.analytics.impac-widget-catalogue',[])
 
 module.controller('ImpacWidgetCatalogueCtrl',[
   '$scope', 'WidgetTemplateSvc', '$http', 'AssetPath', ($scope, WidgetTemplateSvc, $http, AssetPath) ->

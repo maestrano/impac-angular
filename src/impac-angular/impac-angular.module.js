@@ -81,6 +81,13 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.widget-sales-segmented-turnover',
     'maestrano.analytics.widget-sales-summary',
     'maestrano.analytics.widget-sales-top-opportunities',
+    'maestrano.analytics.impac-widget-template-admin',
+    'maestrano.analytics.impac-widget-catalogue',
+    'maestrano.analytics.chart'
+  ]
+);
+angular.module('maestrano.analytics.widget-settings',
+  [
     'maestrano.analytics.widgets-settings.account',
     'maestrano.analytics.widgets-settings.accounts-list',
     'maestrano.analytics.widgets-settings.chart-filters',
@@ -91,13 +98,14 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.widgets-settings.params-picker',
     'maestrano.analytics.widgets-settings.time-range',
     'maestrano.analytics.widgets-settings.width',
+  ]
+);
+angular.module('maestrano.analytics.widgets-common',
+  [
     'maestrano.analytics.widgets-common.data-not-found',
     'maestrano.analytics.widgets-common.editable-title',
     'maestrano.analytics.widgets-common.top-buttons',
-    'maestrano.analytics.impac-widget-template-admin',
-    'maestrano.analytics.impac-widget-catalogue',
-    'ui.sortable',
-    'ui.bootstrap.tooltip',
-    'maestrano.analytics.chart'
   ]
 );
+angular.module('maestrano.analytics.templates', []);
+

@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-hr-leaves-schedule',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-hr-leaves-schedule',[])
 
 module.controller('WidgetHrLeavesScheduleCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
@@ -9,7 +9,7 @@ module.controller('WidgetHrLeavesScheduleCtrl',[
 
     w.initContext = ->
       if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
-    
+
         eventsArray = []
         angular.forEach(w.content.summary, (leave) ->
           eventsArray.push(
@@ -18,7 +18,7 @@ module.controller('WidgetHrLeavesScheduleCtrl',[
               start: leave.start_date,
               end: leave.end_date
             }
-          ) 
+          )
         )
         $scope.eventSources = angular.copy(eventsArray)
 
@@ -29,7 +29,7 @@ module.controller('WidgetHrLeavesScheduleCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?
@@ -80,5 +80,5 @@ module.directive('widgetComponentCalendar', ->
           angular.extend(calendarOptions, {events: scope.events})
           element.fullCalendar(calendarOptions)
       ,true
-  }  
+  }
 )

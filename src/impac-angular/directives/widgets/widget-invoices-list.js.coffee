@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-invoices-list',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-invoices-list',[])
 
 module.controller('WidgetInvoicesListCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'Utilities', '$filter',
@@ -14,7 +14,7 @@ module.controller('WidgetInvoicesListCtrl',[
     $scope.entityTypeCap = Utilities.capitalize(w.metadata.entity)
     if w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
       $scope.orderBy = ''
-    else  
+    else
       # returned by Impac!: "total_something"
       $scope.orderBy = _.last(w.metadata.order_by.split('_')).concat(" ")
 
@@ -45,7 +45,7 @@ module.controller('WidgetInvoicesListCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

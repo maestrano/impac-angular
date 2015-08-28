@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.impac-widget',['maestrano.assets'])
+module = angular.module('maestrano.analytics.impac-widget',[])
 
 module.controller('ImpacWidgetCtrl', [
   '$scope', '$timeout', 'DhbAnalyticsSvc', 'TemplatePath', 'AssetPath', 'Utilities',
@@ -44,7 +44,7 @@ module.controller('ImpacWidgetCtrl', [
           updatedWidget.content ||= {}
           updatedWidget.originalName = updatedWidget.name
           angular.extend(w,updatedWidget)
-          
+
           # triggers the initialization of the widget's specific params (defined in the widget specific controller)
           w.initContext()
           # triggers the initialization of all the widget's settings
@@ -78,7 +78,7 @@ module.controller('ImpacWidgetCtrl', [
       return true
 
     # Push a new metadata parameter associated to the widget to Impac! and reload the widget content
-    # should be considered as a private function: if it is called separately with only one setting, 
+    # should be considered as a private function: if it is called separately with only one setting,
     # the other settings will be reinitialized...
     pushMetadata = (newMetadata, needContentReload=true) ->
       return if _.isEmpty(newMetadata)

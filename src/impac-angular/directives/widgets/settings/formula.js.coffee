@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.formula',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.formula',[])
 
 module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) ->
 
@@ -24,7 +24,7 @@ module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) 
     if w.isFormulaCorrect
       return { formula: w.formula }
     else
-      return { formula: "" } 
+      return { formula: "" }
 
   getFormula = ->
     return w.formula
@@ -50,7 +50,7 @@ module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) 
     if (!str.match(authorized_regex))
       w.isFormulaCorrect = false
       w.evaluatedFormula = "invalid expression"
-    
+
     try
       w.evaluatedFormula = eval(str).toFixed(2)
     catch e

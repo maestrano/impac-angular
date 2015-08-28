@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-aged',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-aged',[])
 
 module.controller('WidgetSalesAgedCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -21,7 +21,7 @@ module.controller('WidgetSalesAgedCtrl',[
     w.format = ->
       if $scope.isDataFound
         all_values_are_positive = true
-        
+
         inputData = []
         values = w.content.aged_sales[$scope.filter.value]
 
@@ -32,11 +32,11 @@ module.controller('WidgetSalesAgedCtrl',[
             $filter('date')(date, 'MMM-yy')
           else if w.metadata && w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
             $filter('date')(date, 'dd-MMM')
-          else  
+          else
             $filter('date')(date, 'MMM')
-          
+
         inputData.push({title: $scope.filter.label, labels: $scope.formattedDates, values: values})
-        
+
         angular.forEach(values, (value) ->
           all_values_are_positive &&= value >= 0
         )
@@ -78,7 +78,7 @@ module.controller('WidgetSalesAgedCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?

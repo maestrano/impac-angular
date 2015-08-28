@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.organizations',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widgets-settings.organizations',[])
 
 module.controller('SettingOrganizationsCtrl', ['$scope', ($scope) ->
 

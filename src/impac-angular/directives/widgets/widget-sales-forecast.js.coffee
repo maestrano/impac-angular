@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-forecast',['maestrano.assets'])
+module = angular.module('maestrano.analytics.widget-sales-forecast',[])
 
 module.controller('WidgetSalesForecastCtrl',[
   '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
@@ -12,7 +12,7 @@ module.controller('WidgetSalesForecastCtrl',[
     w.format = ->
       if $scope.isDataFound
         all_values_are_positive = true
-        
+
         formattedDates = _.map w.content.dates, (aDate) ->
           $filter('date')(aDate, 'MMM-yy')
 
@@ -59,7 +59,7 @@ module.controller('WidgetSalesForecastCtrl',[
     # 1- compile impac-widget controller
     # 2- compile the specific widget template/controller
     # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback 
+    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
     #     assessing that everything is compiled an ready is received)
     getSettingsCount = ->
       if w.settings?
