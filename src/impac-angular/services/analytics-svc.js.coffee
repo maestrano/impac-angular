@@ -4,18 +4,16 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
   '$http','$q','$window','$timeout', 'UserSvc',
   ($http,$q,$window, $timeout, UserSvc) ->
     # Configuration
-    service = {}
+    service = {};
     service.routes = {
       # Dashboard routes
-      basePath: -> "/js_api/v1/analytics/dashboards"
+      basePath: -> "/mnoe/jpi/v1/impac/dashboards"
       showPath: (id) -> "#{service.routes.basePath()}/#{id}"
       createPath: -> service.routes.basePath()
       updatePath: (id) -> service.routes.showPath(id)
       deletePath: (id) -> service.routes.showPath(id)
-
-      baseWidgetPath: (id) -> "/js_api/v1/analytics/widgets/#{id}"
-      # todo::impac: replace old Miscellaneous svc # Impac! js_api
-      # showWidgetPath: Miscellaneous.impacUrls.get_widget,
+      baseWidgetPath: (id) -> "/mnoe/jpi/v1/impac/widgets/#{id}"
+      # Impac! js_api # todo::impac: make this more dynamic, put it in a config variable somewhere.
       showWidgetPath: "http://localhost:4000/api/v1/get_widget",
       createWidgetPath: (dashboardId) -> "#{service.routes.showPath(dashboardId)}/widgets"
       updateWidgetPath: (id) -> service.routes.baseWidgetPath(id)
@@ -60,6 +58,7 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
       angular.copy(opts,service.config)
       angular.extend(service.config,service.defaultConfig)
 
+    # loads the dashboards
     service.load = (force = false) ->
       self = service
       if !self.config.$q? || force

@@ -1,10 +1,10 @@
 # angular.module('maestrano.services.dashboard.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc','DhbPartnerSvc', ($http,$q,$window,MessageSvc,UserSvc,DhbPartnerSvc) ->
-angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc','DhbPartnerSvc', ($http,$q,$window,MessageSvc,UserSvc,DhbPartnerSvc) ->
+angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc', ($http,$q,$window,MessageSvc,UserSvc) ->
   # Configuration
   service = {}
   service.routes = {
-    createPath: -> "/organizations"
-    basePath: -> "/js_api/v1/dashboard/organization/#{service.config.id}/organization"
+    createPath: -> "/mnoe/jpi/v1/organizations"
+    basePath: -> "/mnoe/jpi/v1/organizations/#{service.config.id}"
     arrearsSituationsPath: -> "#{service.routes.basePath()}/charge"
     loadPath: -> "#{service.routes.basePath()}"
     updatePath: -> "#{service.routes.basePath()}"
@@ -36,30 +36,11 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
   service.getId = ->
     service.config.id
 
-  # Return the name of the currently loaded/loading organization
-  service.getName = ->
-    if service.data && service.data.organization && service.data.organization.name
-      return service.data.organization.name
-    else
-      return null
-
-  # Return the uid of the currently loaded/loading organization
-  service.getUid = ->
-    if service.data && service.data.organization && service.data.organization.uid
-      return service.data.organization.uid
-    else
-      return null
-
-  service.isDemoOrganization = ->
-    if service.data && service.data.organization && service.data.organization.demo_account
-      return service.data.organization.demo_account
-    else
-      return null
-
   # Configure the service
   service.configure = (opts) ->
     angular.copy(opts,service.config)
     angular.extend(service.config,service.defaultConfig)
+    return service
 
   # Load the organization details
   # Document structure
@@ -109,7 +90,6 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
 
   # Force the service to reload
   service.reload = ->
-    self = service
     self.stopAutoRefresh()
     self.load(true).then(self.startAutoRefresh)
 
@@ -125,35 +105,6 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
       self.configure(configOpts)
       self.load(true).then ->
         (self.startAutoRefresh)
-        # if the organization is a customer organization, we print an information message
-        if UserSvc.isCustomerOrganization(self.config.id)
-          self.config.$q.then ->
-            MessageSvc.putMessage({category:'information',title:'Warning',body:"<p>You are now accessing the dashboard of your client \"#{self.data.organization.name}\". Please note that any changes you make will affect your customers' account.</p>"})
-        else if service.isDemoOrganization()
-          self.config.$q.then ->
-            MessageSvc.putMessage({category:'information',title:'Warning',body:"<p>You are now accessing the DEMO dashboard.</p><p><strong>DO NOT ATTACH PERSONAL OR CLIENT SYSTEMS TO THIS ACCOUNT</strong></p><p>Attaching accounts will result in the demo data and real data to merge. Please note that any changes you make will affect this account.</p>"})
-        else
-          # Intercom tracking - Disabled for customer organizations
-          # Don't track when the signup process is not completed yet
-          if (Intercom?) && !UserSvc.document.user.need_details_update
-            window.Intercom('update', {
-              id: self.data.current_user.id,
-              email: self.data.current_user.email,
-              company: {
-                id: self.data.organization.id,
-                name: self.data.organization.name,
-                industry: self.data.organization.industry,
-                size: self.data.organization.size,
-                plan: self.data.organization.current_support_plan
-                remote_created_at: self.data.organization.created_at
-                credit_card_details: self.data.organization.credit_card?,
-                user_count: self.data.organization.intercom.user_count,
-                app_count: self.data.organization.intercom.app_count,
-                available_credit: self.data.organization.intercom.available_credit,
-                monthly_spend: self.data.organization.intercom.last_invoice_amount,
-                app_list: self.data.organization.intercom.app_list
-              }
-            })
 
   #======================================
   # Organization Management
@@ -167,11 +118,7 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
     data = opts
     q = $http.post(self.routes.createPath(),data)
     q.then (success) ->
-      # If the org creation has been requested by a reseller then we add
-      # that new org to the customer orgs of the reseller
-      if data.reseller_req then DhbPartnerSvc.addCustomerOrg(success.data)
-
-      UserSvc.addOrg(success.data)
+      CurrentUserSvc.addOrg(success.data.organization)
     return q
 
 
@@ -195,11 +142,6 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
     self = service
     data = { credit_card: opts }
     q = $http.put(self.routes.updateBillingPath(),data).then (success)->
-      # Bootstrap tasks
-      unless self.data.organization.bootstrap_tasks.credit_card_details
-        self.data.organization.bootstrap_tasks.credit_card_details = true
-        MessageSvc.putMessage({body:"Congratulations! You've successfully updated your billing details. Now you can continue experiencing the great service you've come to expect with Maestrano!",category:"taskCompleted"})
-
       angular.copy(success.data.credit_card,self.data.credit_card)
 
     return q
@@ -266,11 +208,6 @@ angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizat
 
     data = { invites: finalList}
     q = $http.put(self.routes.inviteMembersPath(), data).then (success)->
-      # Bootstrap tasks
-      unless (!self.data.organization? || self.data.organization.bootstrap_tasks.colleagues_invited)
-        self.data.organization.bootstrap_tasks.colleagues_invited = true
-        MessageSvc.putMessage({body:"Congratulations, you have invited your first colleagues to join your company. When you're ready to invite the rest of your team, just follow the same steps.",category:"taskCompleted"})
-
       angular.copy(success.data.members,self.data.members)
 
     return q

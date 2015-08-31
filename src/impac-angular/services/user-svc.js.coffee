@@ -16,7 +16,7 @@ angular.module('maestrano.analytics.user-svc', []).factory('UserSvc', ['$http', 
   service.loadDocument = (force = false)->
     self = service
     if self.document == undefined || force
-      self.query = $http.get("/js_api/v1/users/infos")
+      self.query = $http.get("/jpi/v1/users/infos")
       self.then = self.query.then
       self.query.success (data) ->
         self.document = data

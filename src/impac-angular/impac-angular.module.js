@@ -38,7 +38,11 @@ angular.module('impac',
 **************************************************************************/
 angular.module('maestrano.analytics' ,
   [
+    'maestrano.analytics.config',
     'maestrano.analytics.templates',
+    /*
+    ** DIRECTIVES
+    */
     'maestrano.analytics.impac-dashboard',
     'maestrano.analytics.impac-widget',
     'maestrano.analytics.chart',
@@ -120,4 +124,11 @@ angular.module('maestrano.analytics.widgets-common',
   ]
 );
 angular.module('maestrano.analytics.templates', []);
+angular.module('maestrano.analytics.config', []);
+angular.module('maestrano.analytics.config').config(['$httpProvider',
+    function ($httpProvider) {
+        $httpProvider.defaults.headers.common['Accept'] = 'application/json';
+        $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+    }
+]);
 

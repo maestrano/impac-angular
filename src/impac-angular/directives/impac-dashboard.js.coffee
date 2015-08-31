@@ -20,20 +20,24 @@ module.controller('ImpacDashboardCtrl',[
       $scope.starWizardModal.value = true
 
 
+    # todo (xaun): remove this
+    # triggers DhbOrganizationSvc queries.
+    DhbOrganizationSvc.configure(
+      id: 1
+    )
+
     $scope.$watch DhbOrganizationSvc.getId, (val) ->
       if val?
-        $q.all([DhbOrganizationSvc.load(),DhbAnalyticsSvc.load(),UserSvc.loadDocument()]).then ()->
+        DhbAnalyticsSvc.load().then ->
           $scope.initialize()
 
     $scope.initialize = () ->
       $scope.user = UserSvc.document.user
-
-      # xaun: binding widgets from parent controller
-      $scope.widgetsList = $scope.widgets
-      # $scope.widgetsList = Miscellaneous.analyticsWidgets
+      $scope.widgetsList = angular.fromJson(foobar)
 
       $scope.currentWidget = {}
       $scope.currentDhbId = DhbAnalyticsSvc.getId()
+
       $scope.refreshDashboards()
 
       $scope.isLoading = false
@@ -43,8 +47,9 @@ module.controller('ImpacDashboardCtrl',[
     $scope.refreshDashboards = () ->
       # todo::impac re-connect this controller with DhbAnalyticsSvc
       # xaun: binding dashboards from parent controller
-      $scope.dashboardsList = $scope.dashboards
-      # $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
+      # $scope.dashboardsList = $scope.dashboards
+
+      $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
 
 
       # Filter by uid
@@ -455,7 +460,6 @@ module.directive('impacDashboard', ['$templateCache', ($templateCache) ->
   return {
       restrict: 'EA',
       scope: {
-        widgets: '=',
         dashboards: '='
       },
       template: $templateCache.get('impac-dashboard.html'),
