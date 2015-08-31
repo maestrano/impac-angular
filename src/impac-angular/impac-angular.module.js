@@ -99,7 +99,8 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.organization-svc',
     'maestrano.analytics.partner-svc',
     'maestrano.analytics.partner-organization-svc',
-    'maestrano.analytics.widget-templates-svc'
+    'maestrano.analytics.widget-templates-svc',
+    'maestrano.analytics.chart-formatter-svc'
   ]
 );
 angular.module('maestrano.analytics.widget-settings',

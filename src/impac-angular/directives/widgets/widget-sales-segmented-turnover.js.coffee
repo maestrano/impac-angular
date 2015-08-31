@@ -5,7 +5,7 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl',[
   ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
-
+    console.log('widget-sales-segmented-turnover WIDGET: ', w);
     w.initContext = ->
       if $scope.isDataFound = !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)
 

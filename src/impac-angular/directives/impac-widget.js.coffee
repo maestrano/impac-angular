@@ -113,10 +113,9 @@ module.directive('impacWidget', ['$templateCache', ( $templateCache) ->
       # All templates are defined by the first two elements of the corresponding path
       # the "width" (number of bootstrap columns) is stored in the widget model
       splittedPath = angular.copy(scope.widget.category).split("/")
-      templateElems = ["widgets/"].concat(splittedPath.splice(0,2))
-      console.log('impac-widget directive:: templateElems: ', templateElems)
-      templateUrl = templateElems.join("-").replace(/_/g,"-").concat(".html")
-      console.log('impac-widget directive:: templateUrl: ', templateUrl)
+      templateElems = ["widgets/widget"].concat(splittedPath.splice(0,2))
+      scope.templateUrl = templateElems.join("-").replace(/_/g,"-").concat(".html")
+      console.log('impac-widget directive:: templateUrl: ', scope.templateUrl)
 
       scope.isTemplateLoaded = ->
         return !!$templateCache.get(scope.templateUrl)

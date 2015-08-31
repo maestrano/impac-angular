@@ -1,8 +1,8 @@
-# MANAGES
 # angular.module('maestrano.services.analytics-svc', []).factory('DhbAnalyticsSvc', [
-angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc', [
-  '$http','$q','$window','$timeout', 'UserSvc',
-  ($http,$q,$window, $timeout, UserSvc) ->
+angular
+  .module('maestrano.analytics.analytics-svc', [])
+  # REFACTOR INTO A SERVICE
+  .factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout, UserSvc) ->
     # Configuration
     service = {};
     service.routes = {
@@ -18,7 +18,6 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
       createWidgetPath: (dashboardId) -> "#{service.routes.showPath(dashboardId)}/widgets"
       updateWidgetPath: (id) -> service.routes.baseWidgetPath(id)
       deleteWidgetPath: (id) -> service.routes.baseWidgetPath(id)
-
     }
 
     service.defaultConfig = {
@@ -39,7 +38,7 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
     #======================================
     # Data Management
     #======================================
-    # Return the id of the currently displayed dashboard
+    # Return the id of the currently displayed dashboard, or the first dashboard.
     service.getId = ->
       if (!service.config.id && service.data.length > 0)
         service.config.id = service.data[0].id
@@ -55,8 +54,8 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
 
     # Configure the service
     service.configure = (opts) ->
-      angular.copy(opts,service.config)
-      angular.extend(service.config,service.defaultConfig)
+      angular.copy(opts, service.config)
+      angular.extend(service.config, service.defaultConfig)
 
     # loads the dashboards
     service.load = (force = false) ->
@@ -67,7 +66,7 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
       return self.config.$q
 
     #======================================
-    # Analytics Dashboard Management
+    # Analytics Dashboard Management ### REFACTOR INTO FACTORY ####
     #======================================
     service.dashboards = {}
 
@@ -109,9 +108,9 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
       )
 
     #======================================
-    # Widgets Management
+    # Widgets Management #### REFACTOR INTO FACTORY ####
     #======================================
-    service.widgets = {}
+    service.widgets = []
 
     # Create a new widget
     # Attributes
@@ -150,4 +149,4 @@ angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc
       $http.put(self.routes.updateWidgetPath(widget.id),data)
 
     return service
-])
+)
