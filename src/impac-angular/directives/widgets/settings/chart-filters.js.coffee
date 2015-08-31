@@ -36,13 +36,13 @@ module.controller('SettingChartFiltersCtrl', ['$scope', ($scope) ->
   w.settings.push(setting)
 ])
 
-module.directive('settingChartFilters', ['TemplatePath', (TemplatePath) ->
+module.directive('settingChartFilters', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/chart-filters.html'],
+    template: $templateCache.get('widgets/settings/chart-filters.html'),
     controller: 'SettingChartFiltersCtrl'
   }
 ])

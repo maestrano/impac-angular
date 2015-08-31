@@ -37,13 +37,13 @@ module.controller('SettingHistModeCtrl',
     w.settings.push(setting)
 ])
 
-module.directive('settingHistMode', ['TemplatePath', (TemplatePath) ->
+module.directive('settingHistMode', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/hist-mode.html'],
+    template: $templateCache.get('widgets/settings/hist-mode.html'),
     controller: 'SettingHistModeCtrl'
   }
 ])

@@ -30,7 +30,7 @@ module.controller('SettingParamsPickerCtrl',
     w.settings.push(setting)
 ])
 
-module.directive('settingParamsPicker', ['TemplatePath', (TemplatePath) ->
+module.directive('settingParamsPicker', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -40,7 +40,7 @@ module.directive('settingParamsPicker', ['TemplatePath', (TemplatePath) ->
     },
     link: (scope, elements, attrs) ->
       scope.formattedParam = scope.param.replace('_',' ')
-    templateUrl: TemplatePath['analytics/widgets/settings/params-picker.html'],
+    template: $templateCache.get('widgets/settings/params-picker.html'),
     controller: 'SettingParamsPickerCtrl'
   }
 ])

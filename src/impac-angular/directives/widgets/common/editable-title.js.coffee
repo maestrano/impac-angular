@@ -21,13 +21,13 @@ module.controller('CommonEditableTitleCtrl',
         )
 ])
 
-module.directive('commonEditableTitle', ['TemplatePath', (TemplatePath) ->
+module.directive('commonEditableTitle', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/common/editable-title.html'],
+    template: $templateCache.get('widgets/common/editable-title.html'),
     controller: 'CommonEditableTitleCtrl'
   }
 ])

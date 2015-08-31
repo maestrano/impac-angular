@@ -39,7 +39,7 @@ angular.module('impac',
 angular.module('maestrano.analytics' ,
   [
     'maestrano.analytics.templates',
-    'maestrano.analytics.index',
+    'maestrano.analytics.impac-dashboard',
     'maestrano.analytics.impac-widget',
     'maestrano.analytics.widget-accounts-accounting-values',
     'maestrano.analytics.widget-accounts-assets-summary',

@@ -1,9 +1,11 @@
 module = angular.module('maestrano.analytics.impac-widget-catalogue',[])
 
 module.controller('ImpacWidgetCatalogueCtrl',[
-  '$scope', 'WidgetTemplateSvc', '$http', 'AssetPath', ($scope, WidgetTemplateSvc, $http, AssetPath) ->
+  '$scope', 'WidgetTemplateSvc', '$http', ($scope, WidgetTemplateSvc, $http) ->
 
-    $scope.loaderImage = AssetPath['loader-white-bg.gif']
+    $scope.loaderImage = ''
+    # todo::assets
+    # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
     #===MENU===
     $scope.menu = menu = {}
@@ -55,13 +57,13 @@ module.controller('ImpacWidgetCatalogueCtrl',[
     $scope.init()
 ])
 
-module.directive('impacWidgetCatalogue', ['TemplatePath', (TemplatePath) ->
+module.directive('impacWidgetCatalogue', ['$templateCache', ($templateCache) ->
   return {
       restrict: 'A',
       scope: {
         isAdmin:'='
       },
-      templateUrl: TemplatePath['impac/widget_catalogue.html'],
+      template: $templateCache.get('widgets/widget_catalogue.html')],
       controller: 'ImpacWidgetCatalogueCtrl'
   }
 ])

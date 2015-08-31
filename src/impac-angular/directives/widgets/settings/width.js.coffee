@@ -38,7 +38,7 @@ module.controller('SettingWidthCtrl', ['$scope', ($scope) ->
   w.settings.push(setting)
 ])
 
-module.directive('settingWidth', ['TemplatePath', (TemplatePath) ->
+module.directive('settingWidth', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -46,7 +46,7 @@ module.directive('settingWidth', ['TemplatePath', (TemplatePath) ->
       min: '@',
       max: '@',
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/width.html'],
+    template: $templateCache.get('widgets/settings/width.html'),
     controller: 'SettingWidthCtrl'
   }
 ])

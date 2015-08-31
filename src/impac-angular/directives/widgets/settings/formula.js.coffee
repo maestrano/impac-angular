@@ -73,7 +73,7 @@ module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) 
   w.settings.push(setting)
 ])
 
-module.directive('settingFormula', ['TemplatePath', (TemplatePath) ->
+module.directive('settingFormula', [ () ->
   return {
     restrict: 'A',
     scope: {

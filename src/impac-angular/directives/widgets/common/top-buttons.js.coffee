@@ -1,8 +1,8 @@
 module = angular.module('maestrano.analytics.widgets-common.top-buttons',[])
 
 module.controller('CommonTopButtonsCtrl',
-  ['$scope', '$rootScope', 'DhbAnalyticsSvc', 'AssetPath', 'TemplatePath',
-  ($scope, $rootScope, DhbAnalyticsSvc, AssetPath, TemplatePath) ->
+  ['$scope', '$rootScope', 'DhbAnalyticsSvc',
+  ($scope, $rootScope, DhbAnalyticsSvc) ->
 
     w = $scope.parentWidget
 
@@ -10,8 +10,11 @@ module.controller('CommonTopButtonsCtrl',
     $scope.showEditActive = false
     $scope.showConfirmDelete = false
 
-    $scope.closeWidgetButtonImage = AssetPath['impac/close-widget.png']
-    $scope.closeWidgetButtonImageActive = AssetPath['impac/close-widget-pink.png']
+    $scope.closeWidgetButtonImage = ''
+    $scope.closeWidgetButtonImageActive = ''
+    # todo::assets implement new assets system
+    # $scope.closeWidgetButtonImage = AssetPath['impac/close-widget.png']
+    # $scope.closeWidgetButtonImageActive = AssetPath['impac/close-widget-pink.png']
 
     w.isEditMode = false
 
@@ -34,13 +37,13 @@ module.controller('CommonTopButtonsCtrl',
           w.isEditMode = true
 ])
 
-module.directive('commonTopButtons', ['TemplatePath', (TemplatePath) ->
+module.directive('commonTopButtons', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/common/top-buttons.html'],
+    template: $templateCache.get('widgets/common/top-buttons.html'),
     controller: 'CommonTopButtonsCtrl'
   }
 ])

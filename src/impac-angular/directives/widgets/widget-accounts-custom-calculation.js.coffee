@@ -1,12 +1,14 @@
 module = angular.module('maestrano.analytics.widget-accounts-custom-calculation',[])
 
 module.controller('WidgetAccountsCustomCalculationCtrl',[
-  '$scope', '$timeout', '$modal', 'DhbAnalyticsSvc', 'TemplatePath', 'AssetPath',
-  ($scope, $timeout, $modal, DhbAnalyticsSvc, TemplatePath, AssetPath) ->
+  '$scope', '$timeout', '$modal', 'DhbAnalyticsSvc', '$templateCache',
+  ($scope, $timeout, $modal, DhbAnalyticsSvc, $templateCache) ->
 
     w = $scope.widget
 
-    $scope.loaderImage = AssetPath['loader-white-bg.gif']
+    $scope.loaderImage = ''
+    # todo::assets
+    # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
     w.initContext = ->
       $scope.movedAccount = {}
@@ -64,7 +66,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl',[
     $scope.formulaModal.config = {
       instance: {
         backdrop: 'static'
-        templateUrl: TemplatePath['analytics/modals/formula-modal.html']
+        template: $templateCache.get('modals/formula-modal.html')
         size: 'lg'
         scope: $scope
         keyboard: false

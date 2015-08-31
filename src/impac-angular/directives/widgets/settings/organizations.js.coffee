@@ -36,13 +36,13 @@ module.controller('SettingOrganizationsCtrl', ['$scope', ($scope) ->
   w.settings.push(setting)
 ])
 
-module.directive('settingOrganizations', ['TemplatePath', (TemplatePath) ->
+module.directive('settingOrganizations', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/organizations.html'],
+    template: $templateCache.get('analytics/widgets/settings/organizations.html'),
     controller: 'SettingOrganizationsCtrl'
   }
 ])

@@ -1,14 +1,16 @@
 module = angular.module('maestrano.analytics.impac-widget',[])
 
 module.controller('ImpacWidgetCtrl', [
-  '$scope', '$timeout', 'DhbAnalyticsSvc', 'TemplatePath', 'AssetPath', 'Utilities',
-  ($scope, $timeout, DhbAnalyticsSvc, TemplatePath, AssetPath, Utilities) ->
+  '$scope', '$timeout', 'DhbAnalyticsSvc', 'Utilities',
+  ($scope, $timeout, DhbAnalyticsSvc, Utilities) ->
 
     # ---------------------------------------------------------
     # ### Widget template scope
     # ---------------------------------------------------------
 
-    $scope.loaderImage = AssetPath['loader-white-bg.gif']
+    $scope.loaderImage = '';
+    # todo: assets: implement new assets system
+    # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
     # ---------------------------------------------------------
     # ### Toolbox
@@ -98,7 +100,7 @@ module.controller('ImpacWidgetCtrl', [
 ])
 
 
-module.directive('impacWidget', ['TemplatePath', '$templateCache', (TemplatePath, $templateCache) ->
+module.directive('impacWidget', ['$templateCache', ( $templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -111,8 +113,10 @@ module.directive('impacWidget', ['TemplatePath', '$templateCache', (TemplatePath
       # All templates are defined by the first two elements of the corresponding path
       # the "width" (number of bootstrap columns) is stored in the widget model
       splittedPath = angular.copy(scope.widget.category).split("/")
-      templateElems = ["analytics/widgets/widget"].concat(splittedPath.splice(0,2))
-      scope.templateUrl = TemplatePath[templateElems.join("-").replace(/_/g,"-").concat(".html")]
+      templateElems = ["widgets/"].concat(splittedPath.splice(0,2))
+      console.log('impac-widget directive:: templateElems: ', templateElems)
+      templateUrl = templateElems.join("-").replace(/_/g,"-").concat(".html")
+      console.log('impac-widget directive:: templateUrl: ', templateUrl)
 
       scope.isTemplateLoaded = ->
         return !!$templateCache.get(scope.templateUrl)

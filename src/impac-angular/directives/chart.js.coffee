@@ -4,13 +4,13 @@ module = angular.module('maestrano.analytics.chart',[])
 # Component
 #============================================
 
-module.directive('dhbChart', ['TemplatePath','$compile', '$timeout', (TemplatePath,$compile, $timeout) ->
+module.directive('dhbChart', ['$templateCache','$compile', '$timeout', ($templateCache,$compile, $timeout) ->
   return {
       restrict: 'A',
       scope: {
         data: '='
       },
-      templateUrl: TemplatePath['analytics/chart.html'],
+      template: $templateCache.get('chart.html'),
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,

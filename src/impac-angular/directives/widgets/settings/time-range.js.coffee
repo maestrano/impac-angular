@@ -39,13 +39,13 @@ module.controller('SettingTimeRangeCtrl', ['$scope', ($scope) ->
   w.settings.push(setting)
 ])
 
-module.directive('settingTimeRange', ['TemplatePath', (TemplatePath) ->
+module.directive('settingTimeRange', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/time-range.html'],
+    template: $templateCache.get('widgets/settings/time-range.html'),
     controller: 'SettingTimeRangeCtrl'
   }
 ])

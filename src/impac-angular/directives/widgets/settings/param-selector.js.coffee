@@ -38,7 +38,7 @@ module.controller('SettingParamSelectorCtrl',
     w.settings.push(setting)
 ])
 
-module.directive('settingParamSelector', ['TemplatePath', (TemplatePath) ->
+module.directive('settingParamSelector', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -51,7 +51,7 @@ module.directive('settingParamSelector', ['TemplatePath', (TemplatePath) ->
     link: (scope, elements, attrs) ->
       scope.noReload = typeof attrs.noReload != 'undefined'
       scope.truncateNo = attrs.truncateNo || 20
-    templateUrl: TemplatePath['analytics/widgets/settings/param-selector.html'],
+    template: $templateCache.get('widgets/settings/param-selector.html')],
     controller: 'SettingParamSelectorCtrl'
   }
 ])

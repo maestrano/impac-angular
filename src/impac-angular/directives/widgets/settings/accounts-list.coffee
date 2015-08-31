@@ -65,7 +65,7 @@ module.controller('SettingAccountsListCtrl', ['$scope', ($scope) ->
   w.settings.push(setting)
 ])
 
-module.directive('settingAccountsList', ['TemplatePath', (TemplatePath) ->
+module.directive('settingAccountsList', [ () ->
   return {
     restrict: 'A',
     scope: {

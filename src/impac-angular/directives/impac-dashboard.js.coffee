@@ -1,15 +1,16 @@
-module = angular.module('maestrano.analytics.index',[])
+module = angular.module('maestrano.analytics.impac-dashboard',[])
 
-module.controller('AnalyticsIndexCtrl',[
-  '$scope','$http','$q','$filter','$modal','$log', '$timeout','AssetPath','Utilities','Miscellaneous','DhbOrganizationSvc','DhbAnalyticsSvc','UserSvc','TemplatePath','MsgBus',
-  ($scope, $http, $q, $filter, $modal, $log, $timeout, AssetPath, Utilities, Miscellaneous, DhbOrganizationSvc, DhbAnalyticsSvc, UserSvc, TemplatePath, MsgBus) ->
+module.controller('ImpacDashboardCtrl',[
+  '$scope','$http','$q','$filter','$modal','$log', '$timeout','Utilities','DhbOrganizationSvc','DhbAnalyticsSvc','UserSvc','$templateCache','MsgBus',
+  ($scope, $http, $q, $filter, $modal, $log, $timeout, Utilities, DhbOrganizationSvc, DhbAnalyticsSvc, UserSvc, $templateCache, MsgBus) ->
 
     #====================================
     # Initialization
     #====================================
     $scope.widgetsList = {}
-    $scope.assetPath = AssetPath
-    $scope.impacLogo = $scope.assetPath['impac/transparent-logo.png']
+    # todo: Implement new assets serving system
+    # $scope.assetPath = AssetPath
+    # $scope.impacLogo = $scope.assetPath['impac/transparent-logo.png']
     $scope.isLoading = true
 
     $scope.starWizardModal = { value:false }
@@ -26,7 +27,11 @@ module.controller('AnalyticsIndexCtrl',[
 
     $scope.initialize = () ->
       $scope.user = UserSvc.document.user
-      $scope.widgetsList = Miscellaneous.analyticsWidgets
+
+      # xaun: binding widgets from parent controller
+      $scope.widgetsList = $scope.widgets
+      # $scope.widgetsList = Miscellaneous.analyticsWidgets
+
       $scope.currentWidget = {}
       $scope.currentDhbId = DhbAnalyticsSvc.getId()
       $scope.refreshDashboards()
@@ -36,7 +41,9 @@ module.controller('AnalyticsIndexCtrl',[
     # When a call to the service is necessary before updating the display
     # (for example when the dashboards list is modified)
     $scope.refreshDashboards = () ->
-      $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
+      # xaun: binding dashboards from parent controller
+      $scope.dashboardsList = $scope.dashboards
+      # $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
 
 
       # Filter by uid
@@ -232,7 +239,7 @@ module.controller('AnalyticsIndexCtrl',[
       action: 'create',
       instance: {
         backdrop: 'static',
-        templateUrl: TemplatePath['analytics/modals/create.html'],
+        template: $templateCache.get('modals/create.html'),
         size: 'md',
         windowClass: 'inverse connec-analytics-modal',
         scope: modalCreateDashboard
@@ -245,7 +252,7 @@ module.controller('AnalyticsIndexCtrl',[
       self.organizations = angular.copy($scope.user.organizations)
       self.currentOrganization = _.findWhere(self.organizations,{id: DhbOrganizationSvc.getId()})
       self.selectMode('single')
-      self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
       self.multiOrganizationReporting = $scope.user.multi_organization_reporting
@@ -328,7 +335,7 @@ module.controller('AnalyticsIndexCtrl',[
       action: 'delete',
       instance: {
         backdrop: 'static',
-        templateUrl: TemplatePath['analytics/modals/delete.html'],
+        template: $template.get('modals/delete.html'),
         size: 'md',
         windowClass: 'inverse',
         scope: modalDeleteDashboard
@@ -337,7 +344,7 @@ module.controller('AnalyticsIndexCtrl',[
 
     modalDeleteDashboard.open = ->
       self = modalDeleteDashboard
-      self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 
@@ -363,7 +370,7 @@ module.controller('AnalyticsIndexCtrl',[
     modalWidgetSuggestion.config = {
       instance: {
         backdrop: 'static',
-        templateUrl: TemplatePath['analytics/modals/widget-suggestion.html'],
+        template: $templateCache.get('modals/widget-suggestion.html'),
         size: 'md',
         windowClass: 'inverse impac-widget-suggestion',
         scope: modalWidgetSuggestion
@@ -373,7 +380,7 @@ module.controller('AnalyticsIndexCtrl',[
     modalWidgetSuggestion.open = ->
       self = modalWidgetSuggestion
       self.userName = UserSvc.document.user.name
-      self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 
@@ -443,12 +450,14 @@ module.controller('AnalyticsIndexCtrl',[
 
 ])
 
-module.directive('analyticsIndex', ['TemplatePath', (TemplatePath) ->
+module.directive('impacDashboard', ['$templateCache', ($templateCache) ->
   return {
-      restrict: 'A',
+      restrict: 'EA',
       scope: {
+        widgets: '=',
+        dashboards: '='
       },
-      templateUrl: TemplatePath['analytics/index.html'],
-      controller: 'AnalyticsIndexCtrl'
+      template: $templateCache.get('impac-dashboard.html'),
+      controller: 'ImpacDashboardCtrl'
     }
 ])

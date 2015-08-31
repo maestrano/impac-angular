@@ -1,12 +1,14 @@
 module = angular.module('maestrano.analytics.impac-widget-template-admin',[])
 
 module.controller('ImpacWidgetTemplateAdminCtrl',[
-  '$scope', 'WidgetTemplateSvc', '$http', 'AssetPath', ($scope, WidgetTemplateSvc, $http, AssetPath) ->
+  '$scope', 'WidgetTemplateSvc', '$http', ($scope, WidgetTemplateSvc, $http) ->
 
     $scope.activatedCat = false
     $scope.cat = {}
 
-    $scope.loaderImage = AssetPath['loader-white-bg.gif']
+    $scope.loaderImage = ''
+    # todo::assets
+    # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
     $scope.activateCat = (cat) ->
       if (cat == $scope.activatedCat)
@@ -299,11 +301,11 @@ module.controller('ImpacWidgetTemplateAdminCtrl',[
     $scope.init()
 ])
 
-module.directive('impacWidgetTemplateAdmin', ['TemplatePath', (TemplatePath) ->
+module.directive('impacWidgetTemplateAdmin', ['$templateCache', ($templateCache) ->
   return {
       restrict: 'A',
       scope: {},
-      templateUrl: TemplatePath['impac/widget_template_admin.html'],
+      template: $templateCache.get('widgets/widget_template_admin.html')],
       controller: 'ImpacWidgetTemplateAdminCtrl'
   }
 ])

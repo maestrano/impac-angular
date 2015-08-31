@@ -28,13 +28,13 @@ module.controller('SettingAccountCtrl', ['$scope', '$filter', ($scope, $filter) 
   w.settings.push(setting)
 ])
 
-module.directive('settingAccount', ['TemplatePath', (TemplatePath) ->
+module.directive('settingAccount', ['$templateCache', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    templateUrl: TemplatePath['analytics/widgets/settings/account.html'],
+    template: $templateCache.get('widgets/settings/account.html'),
     controller: 'SettingAccountCtrl'
   }
 ])
