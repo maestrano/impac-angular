@@ -1,4 +1,5 @@
-angular.module('maestrano.services.dashboard.partner-organization-svc', []).factory('DhbPartnerOrganizationSvc', ['$http','$q','$window', ($http,$q,$window) ->
+# angular.module('maestrano.services.dashboard.partner-organization-svc', []).factory('DhbPartnerOrganizationSvc', ['$http','$q','$window', ($http,$q,$window) ->
+angular.module('maestrano.analytics.partner-organization-svc', []).factory('DhbPartnerOrganizationSvc', ['$http','$q','$window', ($http,$q,$window) ->
   # Configuration
   service = {}
   service.routes = {

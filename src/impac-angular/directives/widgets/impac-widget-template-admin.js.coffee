@@ -305,7 +305,7 @@ module.directive('impacWidgetTemplateAdmin', ['$templateCache', ($templateCache)
   return {
       restrict: 'A',
       scope: {},
-      template: $templateCache.get('widgets/widget_template_admin.html')],
+      template: $templateCache.get('widgets/widget_template_admin.html'),
       controller: 'ImpacWidgetTemplateAdminCtrl'
   }
 ])

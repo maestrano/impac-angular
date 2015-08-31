@@ -1,8 +1,8 @@
 module = angular.module('maestrano.analytics.widget-accounts-cash-summary',[])
 
 module.controller('WidgetAccountsCashSummaryCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+  '$scope', 'ChartFormatterSvc', '$filter',
+  ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

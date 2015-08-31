@@ -41,6 +41,7 @@ module.controller('ImpacDashboardCtrl',[
     # When a call to the service is necessary before updating the display
     # (for example when the dashboards list is modified)
     $scope.refreshDashboards = () ->
+      # todo::impac re-connect this controller with DhbAnalyticsSvc
       # xaun: binding dashboards from parent controller
       $scope.dashboardsList = $scope.dashboards
       # $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
@@ -335,7 +336,7 @@ module.controller('ImpacDashboardCtrl',[
       action: 'delete',
       instance: {
         backdrop: 'static',
-        template: $template.get('modals/delete.html'),
+        template: $templateCache.get('modals/delete.html'),
         size: 'md',
         windowClass: 'inverse',
         scope: modalDeleteDashboard

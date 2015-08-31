@@ -1,4 +1,5 @@
-angular.module('maestrano.services.message-svc', []).factory('MessageSvc', ['$q','$rootScope','$templateCache', ($q, $rootScope, $templateCache) ->
+# angular.module('maestrano.services.message-svc', []).factory('MessageSvc', ['$q','$rootScope','$templateCache', ($q, $rootScope, $templateCache) ->
+angular.module('maestrano.analytics.message-svc', []).factory('MessageSvc', ['$q','$rootScope','$templateCache', ($q, $rootScope, $templateCache) ->
 
   # -------------------------------------------------------------------------
   # Service

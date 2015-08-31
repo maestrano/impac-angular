@@ -1,4 +1,5 @@
-angular.module('maestrano.services.dashboard.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc','DhbPartnerSvc', ($http,$q,$window,MessageSvc,UserSvc,DhbPartnerSvc) ->
+# angular.module('maestrano.services.dashboard.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc','DhbPartnerSvc', ($http,$q,$window,MessageSvc,UserSvc,DhbPartnerSvc) ->
+angular.module('maestrano.analytics.organization-svc', []).factory('DhbOrganizationSvc', ['$http','$q','$window','MessageSvc','UserSvc','DhbPartnerSvc', ($http,$q,$window,MessageSvc,UserSvc,DhbPartnerSvc) ->
   # Configuration
   service = {}
   service.routes = {
@@ -198,7 +199,7 @@ angular.module('maestrano.services.dashboard.organization-svc', []).factory('Dhb
       unless self.data.organization.bootstrap_tasks.credit_card_details
         self.data.organization.bootstrap_tasks.credit_card_details = true
         MessageSvc.putMessage({body:"Congratulations! You've successfully updated your billing details. Now you can continue experiencing the great service you've come to expect with Maestrano!",category:"taskCompleted"})
-        
+
       angular.copy(success.data.credit_card,self.data.credit_card)
 
     return q

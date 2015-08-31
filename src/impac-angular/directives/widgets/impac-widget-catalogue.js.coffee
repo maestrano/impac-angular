@@ -63,7 +63,7 @@ module.directive('impacWidgetCatalogue', ['$templateCache', ($templateCache) ->
       scope: {
         isAdmin:'='
       },
-      template: $templateCache.get('widgets/widget_catalogue.html')],
+      template: $templateCache.get('widgets/widget_catalogue.html'),
       controller: 'ImpacWidgetCatalogueCtrl'
   }
 ])

@@ -2,7 +2,8 @@
 # ---
 # Please register below any object that should be shared so we
 # we can ensure that there is no name conflict
-angular.module('maestrano.message-bus', []).factory('MsgBus', [() ->
+# angular.module('maestrano.message-bus', []).factory('MsgBus', [() ->
+angular.module('maestrano.analytics.message-bus', []).factory('MsgBus', [() ->
   # Init
   msgBus = {}
 

@@ -1,6 +1,7 @@
-angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', ($http) ->
+# angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', ($http) ->
+angular.module('maestrano.analytics.user-svc', []).factory('UserSvc', ['$http', ($http) ->
   service = {}
-  
+
   # Configuration
   service.config = {
     signInPath: '/auth/users/sign_in',
@@ -9,7 +10,7 @@ angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', (
     confirmationPath: '/auth/users/confirmation',
     updatePasswordPath: '/auth/users/update_password',
   }
-  
+
   # Load User
   service.then = () ->
   service.loadDocument = (force = false)->
@@ -36,7 +37,7 @@ angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', (
     if self.document?
       return self.document.user.sso_session
     else
-      return null    
+      return null
 
   # Return the elements required by the top-right select-box on the dashboard (dashboard-menu.js.coffee)
   service.getSelectBoxData = ->
@@ -46,7 +47,7 @@ angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', (
       return { name: user.name, surname: user.surname, avatar_url: user.avatar_url, organizations: user.organizations }
     else
       return null
-  
+
   # Sign user in
   # Return a promise
   service.signIn = (email,password) ->
@@ -59,7 +60,7 @@ angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', (
     self = service
     if self.document && self.document.user && self.document.user.organizations
       self.document.user.organizations.push(org)
-  
+
   # Sign user up
   # expect the following hash:
   # {
@@ -110,7 +111,7 @@ angular.module('maestrano.services.user-svc', []).factory('UserSvc', ['$http', (
       if org then return org.is_customer_account
       else return false
     else return false
-  
+
   return service
 
 ])

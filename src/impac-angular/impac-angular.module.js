@@ -41,6 +41,7 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.templates',
     'maestrano.analytics.impac-dashboard',
     'maestrano.analytics.impac-widget',
+    'maestrano.analytics.chart',
     'maestrano.analytics.widget-accounts-accounting-values',
     'maestrano.analytics.widget-accounts-assets-summary',
     'maestrano.analytics.widget-accounts-balance',
@@ -83,7 +84,18 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.widget-sales-top-opportunities',
     'maestrano.analytics.impac-widget-template-admin',
     'maestrano.analytics.impac-widget-catalogue',
-    'maestrano.analytics.chart'
+    /*
+    ** SERVICES / FACTORIES (to-be refactored)
+    */
+    'maestrano.analytics.analytics-svc',
+    'maestrano.analytics.message-svc',
+    'maestrano.analytics.message-bus',
+    'maestrano.analytics.utilities',
+    'maestrano.analytics.user-svc',
+    'maestrano.analytics.organization-svc',
+    'maestrano.analytics.partner-svc',
+    'maestrano.analytics.partner-organization-svc',
+    'maestrano.analytics.widget-templates-svc'
   ]
 );
 angular.module('maestrano.analytics.widget-settings',

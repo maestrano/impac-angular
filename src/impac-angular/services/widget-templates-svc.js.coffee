@@ -1,4 +1,5 @@
-angular.module('maestrano.services.widget-templates-svc', []).factory('WidgetTemplateSvc', ['$http', '$filter', '$timeout', ($http, $filter, $timeout) ->
+# angular.module('maestrano.services.widget-templates-svc', []).factory('WidgetTemplateSvc', ['$http', '$filter', '$timeout', ($http, $filter, $timeout) ->
+angular.module('maestrano.analytics.widget-templates-svc', []).factory('WidgetTemplateSvc', ['$http', '$filter', '$timeout', ($http, $filter, $timeout) ->
 
   service = {}
 
@@ -39,7 +40,7 @@ angular.module('maestrano.services.widget-templates-svc', []).factory('WidgetTem
   service.categories = ->
     self = service
     $http.get(self.config.categoriesPath).then (success) ->
-      return $filter('orderBy')(success.data.categories,'id')  
+      return $filter('orderBy')(success.data.categories,'id')
 
   service.updateCategory = (aModel) ->
     self = service
@@ -52,7 +53,7 @@ angular.module('maestrano.services.widget-templates-svc', []).factory('WidgetTem
 
   service.update = (aUpdate) ->
     self = service
-    
+
     $http.put(self.config.updatePath(aUpdate.model.id), aUpdate.model).then(
       (success) ->
         self.updateImg(aUpdate, aUpdate.screenshot, true)

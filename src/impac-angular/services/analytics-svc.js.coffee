@@ -1,4 +1,6 @@
-angular.module('maestrano.services.analytics-svc', []).factory('DhbAnalyticsSvc', [
+# MANAGES
+# angular.module('maestrano.services.analytics-svc', []).factory('DhbAnalyticsSvc', [
+angular.module('maestrano.analytics.analytics-svc', []).factory('DhbAnalyticsSvc', [
   '$http','$q','$window','$timeout', 'UserSvc',
   ($http,$q,$window, $timeout, UserSvc) ->
     # Configuration
@@ -12,8 +14,9 @@ angular.module('maestrano.services.analytics-svc', []).factory('DhbAnalyticsSvc'
       deletePath: (id) -> service.routes.showPath(id)
 
       baseWidgetPath: (id) -> "/js_api/v1/analytics/widgets/#{id}"
-      # Impac! js_api
-      showWidgetPath: Miscellaneous.impacUrls.get_widget,
+      # todo::impac: replace old Miscellaneous svc # Impac! js_api
+      # showWidgetPath: Miscellaneous.impacUrls.get_widget,
+      showWidgetPath: "http://localhost:4000/api/v1/get_widget",
       createWidgetPath: (dashboardId) -> "#{service.routes.showPath(dashboardId)}/widgets"
       updateWidgetPath: (id) -> service.routes.baseWidgetPath(id)
       deleteWidgetPath: (id) -> service.routes.baseWidgetPath(id)
