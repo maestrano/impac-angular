@@ -87,7 +87,7 @@ gulp.task('templates', function () {
 gulp.task('templates:concat', ['templates'], function () {
   return gulp.src(['src/impac-angular/impac-angular.module.js', './tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
-    .pipe(gulp.dest('./src/impac-angular/')); // output destination
+    .pipe(gulp.dest('./tmp/')); // output destination
 });
 
 /* **********************
@@ -96,7 +96,7 @@ gulp.task('templates:concat', ['templates'], function () {
     // Source files for final dist build
 var buildSourceFiles = [
       'src/impac-angular/impac-angular.prefix',
-      'src/impac-angular/impac-angular.js',
+      'tmp/impac-angular.js',
       'src/impac-angular/impac-angular.suffix',
       'tmp/scripts/**/*.js'
     ],
@@ -155,7 +155,7 @@ gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
     .pipe(gulp.dest('./dist'));
 
   stream.on('end', function () {
-    del(['tmp', './src/impac-angular/impac-angular.js']);
+    del(['tmp']);
   });
 });
 
@@ -164,7 +164,7 @@ gulp.task('clean', function (asyncCallback) {
   del(['tmp', './src/impac-angular/impac-angular.js'], asyncCallback);
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['build'], function () {
   gulp.watch(['src/**/*.js', 'src/**/*.html'], ['build']);
 });
 
@@ -172,6 +172,7 @@ gulp.task('watch', function () {
 ** Commands           ***
 ** **********************/
 gulp.task('default', ['build']);
+gulp.task('start:watch', ['watch']);
 gulp.task('build:less', ['less']);
 gulp.task('build:coffee', ['coffee']);
 gulp.task('build:templates', ['templates:concat']);
