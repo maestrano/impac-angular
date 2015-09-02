@@ -27,20 +27,20 @@
     <div ng-hide="widget.isEditMode">
 
       <div ng-show="isDataFound" class="row" >
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
 
           <div class="widget-lines-container">
             <div class="row widget-line header">
               <div class="col-sm-8">Aged Payables & Receivables</div>
-              <div class="col-sm-4 text-right">{{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}</div>
+              <div class="col-sm-4 text-right">{{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}</div>
             </div>
 
             <!-- Payables -->
             <div class="row widget-line total">
-              <div class="row widget-line" ng-class="isSelected(widget.content.payables) ? "selected" : null" >
+              <div class="row widget-line" ng-class="isSelected(widget.content.payables) ? 'selected' : null" >
                 <div class="col-sm-1" ng-click="toogleCollapsed(widget.content.payables)">
-                  <i ng-show="widget.content.payables.suppliers" class="fa" ng-class="isCollapsed(widget.content.payables) ? "fa-plus-square-o" : "fa-minus-square-o"" />
+                  <i ng-show="widget.content.payables.suppliers" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
                 <div class="col-sm-7" ng-click="toogleSelectedElement(widget.content.payables)">
                   <strong>Aged Payables</strong>
@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div ng-hide="isCollapsed(widget.content.payables)">
-                <div class="row widget-line" ng-click="toogleSelectedElement(supplier)" ng-repeat="supplier in widget.content.payables.suppliers" ng-class="isSelected(supplier) ? "selected" : null" >
+                <div class="row widget-line" ng-click="toogleSelectedElement(supplier)" ng-repeat="supplier in widget.content.payables.suppliers" ng-class="isSelected(supplier) ? 'selected' : null" >
                   <div class="col-sm-1" />
                   <div class="col-sm-7">{{supplier.name}}</div>
                   <div class="col-sm-4 text-right">
@@ -62,9 +62,9 @@
 
             <!-- Receivables -->
             <div class="row widget-line total">
-              <div class="row widget-line" ng-class="isSelected(widget.content.receivables) ? "selected" : null" >
+              <div class="row widget-line" ng-class="isSelected(widget.content.receivables) ? 'selected' : null" >
                 <div class="col-sm-1" ng-click="toogleCollapsed(widget.content.receivables)">
-                  <i ng-show="widget.content.receivables.customers" class="fa" ng-class="isCollapsed(widget.content.receivables) ? "fa-plus-square-o" : "fa-minus-square-o"" />
+                  <i ng-show="widget.content.receivables.customers" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
                 <div class="col-sm-7" ng-click="toogleSelectedElement(widget.content.receivables)">
                   <strong>Aged Receivables</strong>
@@ -74,7 +74,7 @@
                 </div>
               </div>
               <div ng-hide="isCollapsed(widget.content.receivables)">
-                <div class="row widget-line" ng-click="toogleSelectedElement(customer)" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? "selected" : null" >
+                <div class="row widget-line" ng-click="toogleSelectedElement(customer)" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? 'selected' : null" >
                   <div class="col-sm-1" />
                   <div class="col-sm-7">{{customer.name}}</div>
                   <div class="col-sm-4 text-right">
@@ -98,7 +98,7 @@
           <div ng-show="selectedElements.length < 2" class="widget-lines-container">
             <div class="row widget-line">
               <div class="col-sm-2 text-center" ng-repeat="date in widget.content.dates" style="padding: 5px 0px;">
-                <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : "MMM-d"}}</div></div>
+                <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : 'MMM-d'}}</div></div>
                 <div class="row widget-line">
                   <div class="col-sm-12" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}</div>
                 </div>
@@ -109,7 +109,7 @@
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
 
             <div class="widget-line header">
-              Total from {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}
+              Total from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}
             </div>
 
             <div class="widget-line" ng-repeat="element in selectedElements">

@@ -27,7 +27,7 @@
     <div ng-hide="widget.isEditMode">
 
       <div ng-show="isDataFound" class="row" >
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
 
           <div class="row legend center">
@@ -41,18 +41,18 @@
               <div class="col-sm-12">Total sales from {{widget.content.dates[0]}} to {{getLastDate()}}</div>
             </div>
             <div class="row widget-line total" ng-repeat="statement in widget.content.sales_comparison" >
-              <div class="row widget-line" ng-class="isSelected(statement) ? "selected" : null" >
-                <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.sales" class="fa" ng-class="isCollapsed(statement) ? "fa-plus-square-o" : "fa-minus-square-o"" /></div>
+              <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
+                <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.sales" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
                 <div class="col-sm-7" ng-click="toogleSelectedElement(statement)"><strong>{{statement.name | titleize}}</strong></div>
-                <div ng-show="filter.value=="quantity_sold"" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement)}}</strong></div>
-                <div ng-hide="filter.value=="quantity_sold"" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong></div>
+                <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement)}}</strong></div>
+                <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong></div>
               </div>
               <div collapse="isCollapsed(statement)">
-                <div class="row widget-line" ng-click="toogleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="isSelected(sale) ? "selected" : null" >
+                <div class="row widget-line" ng-click="toogleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="isSelected(sale) ? 'selected' : null" >
                   <div class="col-sm-1" />
                   <div class="col-sm-7">{{sale.name}}</div>
-                  <div ng-show="filter.value=="quantity_sold"" class="col-sm-4 text-right">{{getTotalForPeriod(sale)}}</div>
-                  <div ng-hide="filter.value=="quantity_sold"" class="col-sm-4 text-right">{{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}</div>
+                  <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right">{{getTotalForPeriod(sale)}}</div>
+                  <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right">{{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}</div>
                 </div>
               </div>
             </div>
@@ -69,8 +69,8 @@
               <div class="col-sm-12">Total sales from {{widget.content.dates[0]}} to {{getLastDate()}}</div>
             </div>
             <div class="widget-line" ng-repeat="element in selectedElements">
-              <i ng-show="filter.value=="quantity_sold"" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element)}}</i>
-              <i ng-hide="filter.value=="quantity_sold"" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element) | mnoCurrency : element.currency}}</i>
+              <i ng-show="filter.value == 'quantity_sold'" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element)}}</i>
+              <i ng-hide="filter.value == 'quantity_sold'" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element) | mnoCurrency : element.currency}}</i>
               <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
               {{element.name | titleize}}
             </div>

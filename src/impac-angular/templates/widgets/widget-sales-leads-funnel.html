@@ -29,14 +29,14 @@
 
       <div ng-show="isDataFound" class="row" >
 
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
 
-          <div class="legend">Your leads sales funnel from {{widget.content.from | date : "d MMM yyyy"}} to {{widget.content.to | date : "d MMM yyyy"}}</div>
+          <div class="legend">Your leads sales funnel from {{widget.content.from | date : 'd MMM yyyy'}} to {{widget.content.to | date : 'd MMM yyyy'}}</div>
 
           <div class="funnel-container">
             <div class="tile" ng-repeat="elem in funnel" ng-click="toogleSelectStatus(elem.status)">
-              <div class="colored-area" ng-style="elem.coloredWidth" ng-class="isSelected(elem.status) ? "selected" : """>{{elem.number}}</div>
+              <div class="colored-area" ng-style="elem.coloredWidth" ng-class="isSelected(elem.status) ? 'selected' : ''">{{elem.number}}</div>
               <div class="status" ng-style="elem.statusWidth">{{elem.status | titleize}}</div>
             </div>
           </div>

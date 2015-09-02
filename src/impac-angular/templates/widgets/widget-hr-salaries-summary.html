@@ -20,7 +20,7 @@
     <div align="center" ng-hide="widget.isEditMode">
 
       <div ng-show="isDataFound" class="row">
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="3" max="6" class="settings width" />
 
           <h3 class="left">Average Salary Rate</h3>
@@ -41,7 +41,7 @@
           <div class="widget-lines-container">
             <div class="widget-line" ng-repeat="data in widget.content.summary.data">
               <i style="float: right; margin-right: 10px;"><b>{{data.value | mnoCurrency : widget.content.total.currency}} (av.)</b></i>
-              <i ng-hide="widget.content.summary.filter=="age_range"" class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
+              <i ng-hide="widget.content.summary.filter=='age_range'" class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
               {{data.label}}
             </div>
           </div>

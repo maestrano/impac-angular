@@ -28,7 +28,7 @@
 
       <div ng-show="isDataFound" class="row" >
 
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="3" max="6" class="settings width" />
           <div setting-param-selector parent-widget="widget" param="customer_uid" options="customersOptions" selected="selectedCustomer" class="row title" />
 
@@ -67,7 +67,7 @@
               <div class="col-md-9"><pre>{{formatAddress(getCustomer().full_address)}}</pre></div>
             </div>
             <div class="row">
-              <div class="col-md-12 center legend">From {{getFromDate() | date : "d MMM yyyy"}} to {{getToDate() | date : "d MMM yyyy"}}:</div>
+              <div class="col-md-12 center legend">From {{getFromDate() | date : 'd MMM yyyy'}} to {{getToDate() | date : 'd MMM yyyy'}}:</div>
             </div>
             <div class="row">
               <div class="col-md-5"><label>Total invoiced</label></div>

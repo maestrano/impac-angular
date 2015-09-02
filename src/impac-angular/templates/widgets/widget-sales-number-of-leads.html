@@ -29,7 +29,7 @@
         Leads for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/>
 
         <div class="stats">
-          <div class="stat row align-left" ng-repeat="carac in ["new", "converted", "lost"]">
+          <div class="stat row align-left" ng-repeat="carac in ['new', 'converted', 'lost']">
             <div class="col-md-6 title" style="padding: 0px;">{{carac | titleize}}</div>
             <div class="col-md-6" style="padding: 0px;">
               <span class="variation" ng-class="formatNumberOfLeads(carac).color">{{formatNumberOfLeads(carac).variation}}</span>

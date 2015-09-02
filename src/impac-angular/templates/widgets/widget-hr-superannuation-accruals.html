@@ -33,7 +33,7 @@
         <h3>Superannuation Balance</h3>
         <div class="price">{{getEmployee().total_super | mnoCurrency : getEmployee().currency}}</div>
         <div class="legend">
-          <span>(from {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}})</span>
+          <span>(from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}})</span>
         </div>
 
       </div>

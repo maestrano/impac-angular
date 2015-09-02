@@ -37,7 +37,7 @@
             <div class="row widget-line" ng-click="collapsed=!collapsed">
               <div class="col-sm-4"><strong>{{assignee.name | titleize}}</strong></div>
               <div class="col-sm-4 text-right"><strong>{{assignee.win_ratio}} %</strong></div>
-              <div class="col-sm-4 text-right"><strong>{{assignee.total_won | mnoCurrency : "AUD"}}</strong></div>
+              <div class="col-sm-4 text-right"><strong>{{assignee.total_won | mnoCurrency : 'AUD'}}</strong></div>
             </div>
             <div collapse="collapsed">
               <div class="row widget-line" ng-repeat="opp in assignee.opportunities" >

@@ -27,7 +27,7 @@
     <div ng-hide="widget.isEditMode">
 
       <div ng-show="isDataFound" class="row" >
-        <div ng-class="widget.isExpanded() ? "col-md-6" : "col-md-12"">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
           <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
 
           <div class="widget-lines-container">
@@ -38,14 +38,14 @@
               <div class="col-sm-3 text-right">Variance</div>
             </div>
             <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
-              <div class="row widget-line" ng-class="isSelected(statement) ? "selected" : null" >
-                <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i class="fa" ng-class="isCollapsed(statement) ? "fa-plus-square-o" : "fa-minus-square-o"" /></div>
+              <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
+                <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
                 <div class="col-sm-5" ng-click="toogleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
                 <div class="col-sm-3 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
                 <div class="col-sm-3 text-right" ng-click="toogleSelectedElement(statement)" ng-class="getVarianceClassColor(getLastVariance(statement))"><strong>{{getLastVariance(statement)}}</strong></div>
               </div>
               <div collapse="isCollapsed(statement)">
-                <div class="row widget-line" ng-click="toogleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="isSelected(account) ? "selected" : null" >
+                <div class="row widget-line" ng-click="toogleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="isSelected(account) ? 'selected' : null" >
                   <div class="col-sm-1" />
                   <div class="col-sm-5">{{account.name}}</div>
                   <div class="col-sm-3 text-right">{{getLastValue(account) | mnoCurrency : account.currency }}</div>

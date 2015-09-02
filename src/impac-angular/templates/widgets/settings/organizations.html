@@ -3,6 +3,6 @@
 <div class="widget-lines-container">
   <div class="widget-line" ng-repeat="org in dashboardOrganizations">
     {{org.label}}
-    <i ng-class="isOrganizationSelected(org.uid) ? "fa fa-toggle-on" : "fa fa-toggle-off"" ng-click="toogleSelectOrganization(org.uid)" tooltip="{{isOrganizationSelected(org.uid) ? "disable" : "enable"}}" />
+    <i ng-class="isOrganizationSelected(org.uid) ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toogleSelectOrganization(org.uid)" tooltip="{{isOrganizationSelected(org.uid) ? 'disable' : 'enable'}}" />
   </div>
 </div>

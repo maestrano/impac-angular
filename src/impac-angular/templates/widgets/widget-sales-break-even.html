@@ -28,7 +28,7 @@
 
       <div ng-show="isDataFound" class="align-center">
 
-        <div class="legend">From {{widget.content.period.from | date : "d MMM yyyy"}} to {{widget.content.period.to | date : "d MMM yyyy"}}</div>
+        <div class="legend">From {{widget.content.period.from | date : 'd MMM yyyy'}} to {{widget.content.period.to | date : 'd MMM yyyy'}}</div>
 
         <div class="block to-date">
           <div class="title">Sales to Date</div>
@@ -43,7 +43,7 @@
           <span ng-show="isTargetMet()">Your sales already exceed your target by:</span>
           <div class="price">{{getVariance() | mnoCurrency : widget.content.currency : false}}</div>
           <span ng-hide="isTargetMet()">
-            Projected date: <span style="float: right;">{{getProjectedDate() | date : "d-MM-yy"}}</span>
+            Projected date: <span style="float: right;">{{getProjectedDate() | date : 'd-MM-yy'}}</span>
             <br />
             Opportunities to close: <span style="float: right;">{{getOpportunitiesToClose()}}</span>
           </span>

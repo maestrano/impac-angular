@@ -41,48 +41,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, DhbAnalyticsSvc, Utiliti
     DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
       (success) ->
         console.log('widget loadContent SUCCESS: ', success);
-        updatedWidget = {
-          "content": {
-            "organizations": [
-              "org-fbhm"
-            ],
-            "hist_parameters": null,
-            "ranges": [
-              {
-                "label": "15.6-89.48",
-                "value": 5565.48,
-                "percentage": 8.55
-              },
-              {
-                "label": "89.48-163.36",
-                "value": 0,
-                "percentage": 0
-              },
-              {
-                "label": "163.36-237.24",
-                "value": 0,
-                "percentage": 0
-              },
-              {
-                "label": "237.24-311.12",
-                "value": 14053,
-                "percentage": 21.58
-              },
-              {
-                "label": "311.12-385.0",
-                "value": 45491,
-                "percentage": 69.87
-              }
-            ],
-            "currency": "USD",
-            "dates": [
-              "2015-01-31",
-              "2015-09-01"
-            ],
-            "filter": "gross"
-          },
-          "originalName": undefined
-        }
+        updatedWidget = success.data
         updatedWidget.content ||= {}
         updatedWidget.originalName = updatedWidget.name
         angular.extend(w,updatedWidget)

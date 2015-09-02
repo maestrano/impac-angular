@@ -37,9 +37,9 @@
         </div>
         <div class="row table-header" ng-hide="widget.width > 3">
           <div class="col-xs-7">{{entityTypeCap}}</div>
-          <div class="col-xs-4" ng-show="orderBy=="paid "">Paid</div>
-          <div class="col-xs-4" ng-show="orderBy=="due "">Due</div>
-          <div class="col-xs-4" ng-hide="orderBy=="paid " || orderBy=="due "">Invoiced</div>
+          <div class="col-xs-4" ng-show="orderBy == 'paid '">Paid</div>
+          <div class="col-xs-4" ng-show="orderBy == 'due '">Due</div>
+          <div class="col-xs-4" ng-hide="orderBy == 'paid ' || orderBy == 'due '">Invoiced</div>
         </div>
       </div>
       <div class="widget-lines-container">
@@ -62,9 +62,9 @@
             </div>
           <div ng-hide="widget.width > 3">
             <div class="col-xs-7">{{entity.name}}</div>
-            <div class="col-xs-4" ng-show="orderBy=="paid ""><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
-            <div class="col-xs-4" ng-show="orderBy=="due ""><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
-            <div class="col-xs-4" ng-hide="orderBy=="paid " || orderBy=="due ""><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
+            <div class="col-xs-4" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
+            <div class="col-xs-4" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
+            <div class="col-xs-4" ng-hide="orderBy == 'paid' || orderBy == 'due '"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
           </div>
         </div>
       </div>
