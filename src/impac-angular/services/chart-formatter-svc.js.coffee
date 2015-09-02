@@ -1,26 +1,10 @@
 angular
   .module('maestrano.analytics.chart-formatter-svc', [])
-  .factory('ChartFormatterSvc', () ->
+  .factory('ChartFormatterSvc', (impacTheming) ->
 
     service = {}
 
-    # TODO: Colors should be stored by dashboard and retrieved in analytics services
-    # We could populate dashboard.colors with default settings during the dashboard creation.
-    # Then, the user could modify the colors palette of a dashboard, or import it from another dashboard
-    #
-    # Retrieved from Miscellaneous:
-    # {
-    #   positive: "#1de9b6",
-    #   negative: "#7c4dff",
-    #   array:
-    #     [
-    #       "#3fc4ff",
-    #       "#ff8e01",
-    #       "#c6ff00",
-    #     ]
-    # }
-    # todo::endpoint: get this from an endpoint of somesort.
-    COLORS = JSON.parse("{\"positive\":\"#3FC4FF\",\"negative\":\"#1DE9B6\",\"array\":[\"#1de9b6\",\"#7c4dff\",\"#ffc928\",\"#3fc4ff\",\"#ff8e01\",\"#c6ff00\",\"#d500fa\",\"#ff6e41\",\"#ffeb3c\",\"#ff1844\"]}")
+    COLORS = impacTheming.getChartColors()
 
     # Returns the color defined for positive values
     service.getPositiveColor = ->

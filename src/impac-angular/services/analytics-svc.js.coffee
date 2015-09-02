@@ -1,7 +1,7 @@
 # angular.module('maestrano.services.analytics-svc', []).factory('DhbAnalyticsSvc', [
 module = angular.module('maestrano.analytics.analytics-svc', [])
   # REFACTOR INTO A SERVICE
-module.factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout, UserSvc) ->
+module.factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout) ->
   # Configuration
   service = {};
   service.routes = {
@@ -110,7 +110,13 @@ module.factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout, UserSvc) ->
   #======================================
   # Widgets Management #### REFACTOR INTO FACTORY ####
   #======================================
-  service.widgets = []
+  service.widgets = {}
+
+  service.widgets.setGetOrganizations = (callback) ->
+    service.widgets.getOrganizations = callback
+
+  service.widgets.setGetSsoSession = (callback) ->
+    service.widgets.getSsoSessionId = callback
 
   # Create a new widget
   # Attributes
@@ -128,19 +134,19 @@ module.factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout, UserSvc) ->
 
   # Call Impac! API to retrieve the widget content (will be stored in widget.content)
   service.widgets.show = (widget, refresh_cache=false) ->
-    # deferred = $q.defer();
     self = service
-    data = { owner: widget.owner, sso_session: UserSvc.getSsoSessionId(), metadata: widget.metadata, engine: widget.category }
+    data = {
+      owner: widget.owner,
+      sso_session: service.widgets.getSsoSessionId(),
+      metadata: widget.metadata,
+      engine: widget.category
+    }
     angular.extend(data, {refresh_cache: true}) if refresh_cache
 
-    # todo: this should set elsewhere.
-    data.metadata.organization_ids = ["org-fbhm"]
+
+    data.metadata.organization_ids = service.widgets.getOrganizations()
 
     $http.post(self.routes.showWidgetPath, data)
-
-    # deferred.resolve({data: })
-    # return deferred.promise
-
 
   # Delete a widget
   # TODO: currentDhbId should be stored in the service

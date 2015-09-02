@@ -38,6 +38,11 @@ angular.module('impac',
 **************************************************************************/
 angular.module('maestrano.analytics' ,
   [
+    /*
+    ** MODULES
+    */
+    'ui.sortable',
+    'ui.bootstrap',
     'maestrano.analytics.config',
     'maestrano.analytics.templates',
     'maestrano.analytics.widgets-common',
@@ -91,8 +96,9 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.impac-widget-template-admin',
     'maestrano.analytics.impac-widget-catalogue',
     /*
-    ** SERVICES / FACTORIES (to-be refactored)
+    ** SERVICES / FACTORIES
     */
+    'maestrano.analytics.impac-theming',
     'maestrano.analytics.analytics-svc',
     'maestrano.analytics.message-svc',
     'maestrano.analytics.message-bus',

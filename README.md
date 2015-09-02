@@ -15,3 +15,6 @@
     - modular / component structure.
 - Console errors are not giving accurate stack trace lines (something to do with the sourcemaps)
 - Gulp task for updating dist/.bower.json
+- impacThemingProvier
+  - Redesign chartColors to use a different color palette model structure with named colors rather than just an array of hexcodes.
+  - Look into how angular material does their theming and build upon impacThemingProvider

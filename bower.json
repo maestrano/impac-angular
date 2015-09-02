@@ -18,7 +18,9 @@
   ],
   "dependencies": {
     "Chart.js": "~1.0.2",
-    "angular": "~1.4.0"
+    "angular": "~1.4.0",
+    "angular-bootstrap": "~0.13.3",
+    "angular-ui-sortable": "~0.13.4"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0",
