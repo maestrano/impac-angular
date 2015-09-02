@@ -25,7 +25,7 @@
           <h5>Select which accounts you wish to compare.</h5>
           <div class="col-md-6">
             <div class="input-group">
-              <select ng-model="movedAccount" ng-options="account.name + " (" + formatAmount(account) + ")" for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
+              <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
             <div class="border" />
             <div class="add-account">
               <div class="input-group">
-                <select ng-model="movedAccount" ng-options="account.name + " (" + formatAmount(account) + ")" for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0">
+                <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0">
                   <option value="" disabled selected>+ ADD ACCOUNT</option>
                 </select>
               </div>

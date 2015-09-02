@@ -1,6 +1,6 @@
 module = angular.module('maestrano.analytics.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ['$scope', ($scope) ->
+module.controller('SettingWidthCtrl', ($scope) ->
 
   w = $scope.parentWidget
 
@@ -36,9 +36,9 @@ module.controller('SettingWidthCtrl', ['$scope', ($scope) ->
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingWidth', ['$templateCache', ($templateCache) ->
+module.directive('settingWidth', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -49,4 +49,4 @@ module.directive('settingWidth', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/width.html'),
     controller: 'SettingWidthCtrl'
   }
-])
+)

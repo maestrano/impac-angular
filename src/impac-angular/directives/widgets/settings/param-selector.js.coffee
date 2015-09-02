@@ -1,8 +1,6 @@
 module = angular.module('maestrano.analytics.widgets-settings.param-selector',[])
 
-module.controller('SettingParamSelectorCtrl',
-  ['$scope', 'DhbAnalyticsSvc',
-  ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingParamSelectorCtrl', ($scope) ->
 
     $scope.showOptions = false
 
@@ -36,9 +34,9 @@ module.controller('SettingParamSelectorCtrl',
 
     w.settings ||= []
     w.settings.push(setting)
-])
+)
 
-module.directive('settingParamSelector', ['$templateCache', ($templateCache) ->
+module.directive('settingParamSelector', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -54,4 +52,4 @@ module.directive('settingParamSelector', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/param-selector.html'),
     controller: 'SettingParamSelectorCtrl'
   }
-])
+)

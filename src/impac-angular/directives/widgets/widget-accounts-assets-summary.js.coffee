@@ -1,8 +1,5 @@
-module = angular.module('maestrano.analytics.widget-accounts-assets-summary',[])
-
-module.controller('WidgetAccountsAssetsSummaryCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module = angular.module('maestrano.analytics.widget-accounts-assets-summary', [])
+module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -48,7 +45,7 @@ module.controller('WidgetAccountsAssetsSummaryCtrl',[
       w.loadContent() if total == 1
 
     return w
-])
+)
 
 module.directive('widgetAccountsAssetsSummary', ->
   return {

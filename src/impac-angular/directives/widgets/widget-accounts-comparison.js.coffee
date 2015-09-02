@@ -33,15 +33,15 @@ module.controller('WidgetAccountsComparisonCtrl',[
       ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts, anAccount))
 
     $scope.addAccount = (anAccount) ->
-      w.moveAccountToAnotherList(anAccount,w.remainingAccounts,w.selectedAccounts)
+      w.moveAccountToAnotherList(anAccount, w.remainingAccounts, w.selectedAccounts)
       w.format()
 
     $scope.removeAccount = (anAccount) ->
-      w.moveAccountToAnotherList(anAccount,w.selectedAccounts,w.remainingAccounts)
+      w.moveAccountToAnotherList(anAccount, w.selectedAccounts, w.remainingAccounts)
       w.format()
 
     $scope.formatAmount = (anAccount) ->
-      return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
+      return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency)
 
 
     # TODO: Refactor once we have understood exactly how the angularjs compilation process works:

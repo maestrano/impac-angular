@@ -11,3 +11,7 @@
 - Re-organise modules
 - Re-organise file structure to reflect modules
 - By god, do something about the less.
+    - Move Less to Sass
+    - modular / component structure.
+- Console errors are not giving accurate stack trace lines (something to do with the sourcemaps)
+- Gulp task for updating dist/.bower.json

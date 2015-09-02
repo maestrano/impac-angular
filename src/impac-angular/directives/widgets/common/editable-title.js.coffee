@@ -1,8 +1,6 @@
 module = angular.module('maestrano.analytics.widgets-common.editable-title',[])
 
-module.controller('CommonEditableTitleCtrl',
-  ['$scope', 'DhbAnalyticsSvc',
-  ($scope, DhbAnalyticsSvc) ->
+module.controller('CommonEditableTitleCtrl', ($scope, DhbAnalyticsSvc) ->
 
     w = $scope.parentWidget
 
@@ -19,9 +17,9 @@ module.controller('CommonEditableTitleCtrl',
           , ->
             w.name = w.originalName
         )
-])
+)
 
-module.directive('commonEditableTitle', ['$templateCache', ($templateCache) ->
+module.directive('commonEditableTitle', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -30,4 +28,4 @@ module.directive('commonEditableTitle', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/common/editable-title.html'),
     controller: 'CommonEditableTitleCtrl'
   }
-])
+)

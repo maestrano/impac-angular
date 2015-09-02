@@ -7,7 +7,9 @@
       "email": "xaunlopez@gmail.com"
     }
   ],
-  "main": ["dist/impac-angular.js"],
+  "main": [
+    "dist/impac-angular.js"
+  ],
   "ignore": [
     "src",
     "test",
@@ -15,6 +17,7 @@
     "**/.*"
   ],
   "dependencies": {
+    "Chart.js": "~1.0.2",
     "angular": "~1.4.0"
   },
   "devDependencies": {

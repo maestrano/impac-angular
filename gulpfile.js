@@ -149,8 +149,8 @@ gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('./dist/'))
-    .pipe(strip())
     .pipe(uglify())
+    .pipe(strip())
     .pipe(rename('impac-angular.min.js'))
     .pipe(gulp.dest('./dist'));
 

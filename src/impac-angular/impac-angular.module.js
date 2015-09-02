@@ -40,6 +40,8 @@ angular.module('maestrano.analytics' ,
   [
     'maestrano.analytics.config',
     'maestrano.analytics.templates',
+    'maestrano.analytics.widgets-common',
+    'maestrano.analytics.widgets-settings',
     /*
     ** DIRECTIVES
     */
@@ -103,7 +105,7 @@ angular.module('maestrano.analytics' ,
     'maestrano.analytics.chart-formatter-svc'
   ]
 );
-angular.module('maestrano.analytics.widget-settings',
+angular.module('maestrano.analytics.widgets-settings',
   [
     'maestrano.analytics.widgets-settings.account',
     'maestrano.analytics.widgets-settings.accounts-list',

@@ -6,7 +6,7 @@
 </div>
 
 <div ng-mouseenter="showEditActive=true" ng-mouseleave="showEditActive=false" class="edit-widget" ng-show="parentWidget.hasEditAbility">
-  <button ng-class=""btn top-button" + (parentWidget.isEditMode ? " btn-editmode" : " btn-edit")" ng-click="toogleEditMode()">
+  <button ng-class="{'btn top-button' : (parentWidget.isEditMode ? ' btn-editmode' : ' btn-edit')}" ng-click="toogleEditMode()">
     <span class="fa fa-cog"></span>
   </button>
 </div>
