@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-hr-superannuation-accruals',[])
+module = angular.module('impac.components.widgets.hr-superannuation-accruals',[])
 
-module.controller('WidgetHrSuperannuationAccrualsCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities',
-  ($scope, DhbAnalyticsSvc, Utilities) ->
+module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, DhbAnalyticsSvc, Utilities) ->
 
     w = $scope.widget
 
@@ -49,7 +47,7 @@ module.controller('WidgetHrSuperannuationAccrualsCtrl',[
 
     return w
 
-])
+)
 
 module.directive('widgetHrSuperannuationAccruals', ->
   return {

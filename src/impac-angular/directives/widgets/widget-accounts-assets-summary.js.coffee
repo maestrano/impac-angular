@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-accounts-assets-summary', [])
+module = angular.module('impac.components.widgets.accounts-assets-summary', [])
 module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget

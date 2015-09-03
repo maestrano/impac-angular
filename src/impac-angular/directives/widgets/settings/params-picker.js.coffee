@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.params-picker',[])
+module = angular.module('impac.components.widgets-settings.params-picker',[])
 
-module.controller('SettingParamsPickerCtrl',
-  ['$scope', 'DhbAnalyticsSvc',
-  ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingParamsPickerCtrl', ($scope, DhbAnalyticsSvc) ->
 
     w = $scope.parentWidget
 
@@ -28,9 +26,9 @@ module.controller('SettingParamsPickerCtrl',
 
     w.settings ||= []
     w.settings.push(setting)
-])
+)
 
-module.directive('settingParamsPicker', ['$templateCache', ($templateCache) ->
+module.directive('settingParamsPicker', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -43,4 +41,4 @@ module.directive('settingParamsPicker', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/params-picker.html'),
     controller: 'SettingParamsPickerCtrl'
   }
-])
+)

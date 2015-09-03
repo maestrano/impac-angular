@@ -1,11 +1,8 @@
-module = angular.module('maestrano.analytics.chart',[])
-
-#============================================
-# Component
-#============================================
-
-module.directive('dhbChart', ['$templateCache','$compile', '$timeout', ($templateCache,$compile, $timeout) ->
-  return {
+# chart.js charting attribute directive.
+angular
+  .module('impac.components.chart',[])
+  .directive('dhbChart', ($templateCache, $compile, $timeout) ->
+    return {
       restrict: 'A',
       scope: {
         data: '='
@@ -46,4 +43,4 @@ module.directive('dhbChart', ['$templateCache','$compile', '$timeout', ($templat
               $timeout((-> scope.draw()),100)
         ,true)
     }
-])
+  )

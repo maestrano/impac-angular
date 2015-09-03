@@ -1,6 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.chart-filters',[])
+module = angular.module('impac.components.widgets-settings.chart-filters',[])
 
-module.controller('SettingChartFiltersCtrl', ['$scope', ($scope) ->
+module.controller('SettingChartFiltersCtrl', ($scope) ->
 
   w = $scope.parentWidget
 
@@ -34,9 +34,9 @@ module.controller('SettingChartFiltersCtrl', ['$scope', ($scope) ->
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingChartFilters', ['$templateCache', ($templateCache) ->
+module.directive('settingChartFilters', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -45,4 +45,4 @@ module.directive('settingChartFilters', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/chart-filters.html'),
     controller: 'SettingChartFiltersCtrl'
   }
-])
+)

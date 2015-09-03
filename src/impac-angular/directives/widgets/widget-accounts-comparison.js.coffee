@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-comparison',[])
+module = angular.module('impac.components.widgets.accounts-comparison',[])
 
-module.controller('WidgetAccountsComparisonCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsComparisonCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -62,7 +60,7 @@ module.controller('WidgetAccountsComparisonCtrl',[
 
     return w
 
-])
+)
 
 module.directive('widgetAccountsComparison', ->
   return {

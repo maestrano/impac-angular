@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-leads-funnel',[])
+module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -122,7 +120,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl',[
       w.loadContent() if total >= 5
 
     return w
-])
+)
 
 module.directive('widgetSalesLeadsFunnel', ->
   return {

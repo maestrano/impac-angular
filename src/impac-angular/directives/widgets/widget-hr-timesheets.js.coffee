@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-hr-timesheets',[])
+module = angular.module('impac.components.widgets.hr-timesheets',[])
 
-module.controller('WidgetHrTimesheetsCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrTimesheetsCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -95,7 +93,7 @@ module.controller('WidgetHrTimesheetsCtrl',[
       w.loadContent() if total >= 4
 
     return w
-])
+)
 
 module.directive('widgetHrTimesheets', ->
   return {

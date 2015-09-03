@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-hr-leaves-schedule',[])
+module = angular.module('impac.components.widgets.hr-leaves-schedule',[])
 
-module.controller('WidgetHrLeavesScheduleCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrLeavesScheduleCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
     $scope.eventSources = []
@@ -42,7 +40,7 @@ module.controller('WidgetHrLeavesScheduleCtrl',[
       w.loadContent() if total >= 1
 
     return w
-])
+)
 
 module.directive('widgetHrLeavesSchedule', ->
   return {

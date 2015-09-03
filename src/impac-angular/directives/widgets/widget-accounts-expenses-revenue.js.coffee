@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-expenses-revenue',[])
+module = angular.module('impac.components.widgets.accounts-expenses-revenue',[])
 
-module.controller('WidgetAccountsExpensesRevenueCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -66,7 +64,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl',[
       w.loadContent() if total >= 3
 
     return w
-])
+)
 
 module.directive('widgetAccountsExpensesRevenue', ->
   return {

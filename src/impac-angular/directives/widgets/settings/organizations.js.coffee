@@ -1,6 +1,5 @@
-module = angular.module('maestrano.analytics.widgets-settings.organizations',[])
-
-module.controller('SettingOrganizationsCtrl', ['$scope', ($scope) ->
+module = angular.module('impac.components.widgets-settings.organizations',[])
+module.controller('SettingOrganizationsCtrl', ($scope) ->
 
   w = $scope.parentWidget
 
@@ -34,15 +33,15 @@ module.controller('SettingOrganizationsCtrl', ['$scope', ($scope) ->
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingOrganizations', ['$templateCache', ($templateCache) ->
+module.directive('settingOrganizations', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('analytics/widgets/settings/organizations.html'),
+    template: $templateCache.get('widgets/settings/organizations.html'),
     controller: 'SettingOrganizationsCtrl'
   }
-])
+)

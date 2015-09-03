@@ -1,25 +1,25 @@
 angular
-  .module('maestrano.analytics.chart-formatter-svc', [])
-  .factory('ChartFormatterSvc', (impacTheming) ->
+  .module('impac.services.chart-formatter', [])
+  .service('ChartFormatterSvc', (impacTheming) ->
 
-    service = {}
+    _self = @
 
     COLORS = impacTheming.getChartColors()
 
     # Returns the color defined for positive values
-    service.getPositiveColor = ->
+    @getPositiveColor = ->
       return COLORS.positive
 
     # Returns the color defined for negative values
-    service.getNegativeColor = ->
+    @getNegativeColor = ->
       return COLORS.negative
 
     # Returns the color defined for "others" value
-    service.getOthersColor = ->
+    @getOthersColor = ->
       return COLORS.others
 
     # Returns a color from the array retrieved from Maestrano Rails app (set in config files)
-    service.getColor = (index) ->
+    @getColor = (index) ->
       return COLORS.array[index%COLORS.array.length]
 
     # Removes the # from an HTML color value
@@ -51,8 +51,7 @@ angular
     #   values: [15.25,7.4]
     # }]
     # versusMode: put the negative dataset first
-    service.lineChart = (inputDataArray, opts={}, versusMode=false) ->
-      self = service
+    @lineChart = (inputDataArray, opts={}, versusMode=false) ->
       index = 0
       return {
         chartType: 'Line',
@@ -62,11 +61,11 @@ angular
           datasets: _.map inputDataArray, (inputData) ->
             if versusMode
               if index == 0
-                color = self.getNegativeColor()
+                color = _self.getNegativeColor()
               else
-                color = self.getPositiveColor()
+                color = _self.getPositiveColor()
             else
-              color = self.getColor(index)
+              color = _self.getColor(index)
             index++
             return {
               label: inputData.title,
@@ -90,8 +89,7 @@ angular
     #   values: [15.25,7.4]
     # }
     # positivesOnly: if true (default), negative bars will be turned into their opposite
-    service.barChart = (inputData, opts={}, positivesOnly=true) ->
-      self = service
+    @barChart = (inputData, opts={}, positivesOnly=true) ->
       index = 0
       return {
         chartType: 'Bar',
@@ -125,8 +123,7 @@ angular
     #     label: "Customer 1",
     #     value: 1550.12
     # ] }
-    service.pieChart = (inputData, opts={}, versusMode=false) ->
-      self = service
+    @pieChart = (inputData, opts={}, versusMode=false) ->
       index = 0
       return {
         chartType: 'Pie',
@@ -134,11 +131,11 @@ angular
         data: _.map inputData, (data) ->
           if versusMode
             if index == 0
-              color = self.getNegativeColor()
+              color = _self.getNegativeColor()
             else
-              color = self.getPositiveColor()
+              color = _self.getPositiveColor()
           else
-            color = self.getColor(index)
+            color = _self.getColor(index)
           index++
           return {
             value: data.value,
@@ -148,5 +145,5 @@ angular
           }
       }
 
-    return service
+    return
 )

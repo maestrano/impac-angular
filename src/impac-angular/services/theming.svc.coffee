@@ -1,6 +1,8 @@
+# provider for configuring impac-angular colour theme & layout.
 angular
-  .module('maestrano.analytics.impac-theming', [])
+  .module('impac.services.theming', [])
   .provider('impacTheming', () ->
+
     provider = @
     # #################################### #
     # private default parameters           #

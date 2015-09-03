@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.width',[])
+module = angular.module('impac.components.widgets-settings.width',[])
 
 module.controller('SettingWidthCtrl', ($scope) ->
 

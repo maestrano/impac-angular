@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.impac-widget',[])
+module = angular.module('impac.components.widget', [])
 
 module.controller('ImpacWidgetCtrl', ($scope, $timeout, DhbAnalyticsSvc, Utilities) ->
 

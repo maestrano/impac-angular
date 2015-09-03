@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-hr-payroll-taxes',[])
+module = angular.module('impac.components.widgets.hr-payroll-taxes',[])
 
-module.controller('WidgetHrPayrollTaxesCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrPayrollTaxesCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -53,7 +51,7 @@ module.controller('WidgetHrPayrollTaxesCtrl',[
       w.loadContent() if total >= 3
 
     return w
-])
+)
 
 module.directive('widgetHrPayrollTaxes', ->
   return {

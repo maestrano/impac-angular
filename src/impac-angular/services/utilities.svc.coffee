@@ -1,11 +1,12 @@
-# This service provides oftenly used methods like Rails error processing
-# angular.module('maestrano.utilities', []).factory('Utilities', [() ->
-angular.module('maestrano.analytics.utilities', []).factory('Utilities', [() ->
-  service = {}
+# This service provides oftenly used methods like Rails error processing.
+# todo::lib-structure: should this be in impac-angular?
+angular
+  .module('impac.services.utilities', [])
+  .service('Utilities', () ->
 
   # Parse a Rails model error and return an array of messages
   # ready to be displayed
-  service.processRailsError = (error) ->
+  @processRailsError = (error) ->
     messages = []
 
     if error.status && error.status == 401
@@ -43,7 +44,7 @@ angular.module('maestrano.analytics.utilities', []).factory('Utilities', [() ->
     return messages
 
   # Camelize a string
-  service.camelize = (word) ->
+  @camelize = (word) ->
     return word.replace(/(?:^|[-_])(\w)/g
       , (_, c) ->
         if c then c.toUpperCase() else ''
@@ -51,12 +52,12 @@ angular.module('maestrano.analytics.utilities', []).factory('Utilities', [() ->
 
   # Camelize a string for javascript
   # (camelize with first letter lower case)
-  service.jsCamelize = (word) ->
+  @jsCamelize = (word) ->
     camelized = this.camelize(word)
     return camelized.charAt(0).toLowerCase() + camelized.slice(1)
 
-  service.capitalize = (word) ->
+  @capitalize = (word) ->
     return (word.charAt(0).toUpperCase() + word.slice(1))
 
-  return service
-])
+  return
+)

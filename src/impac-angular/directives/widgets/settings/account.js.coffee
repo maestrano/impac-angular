@@ -1,6 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.account',[])
+module = angular.module('impac.components.widgets-settings.account',[])
 
-module.controller('SettingAccountCtrl', ['$scope', '$filter', ($scope, $filter) ->
+module.controller('SettingAccountCtrl', ($scope, $filter) ->
 
   w = $scope.parentWidget
 
@@ -26,9 +26,9 @@ module.controller('SettingAccountCtrl', ['$scope', '$filter', ($scope, $filter) 
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingAccount', ['$templateCache', ($templateCache) ->
+module.directive('settingAccount', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -37,4 +37,4 @@ module.directive('settingAccount', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/account.html'),
     controller: 'SettingAccountCtrl'
   }
-])
+)

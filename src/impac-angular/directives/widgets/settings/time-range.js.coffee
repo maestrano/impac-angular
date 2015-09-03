@@ -1,6 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.time-range',[])
+module = angular.module('impac.components.widgets-settings.time-range',[])
 
-module.controller('SettingTimeRangeCtrl', ['$scope', ($scope) ->
+module.controller('SettingTimeRangeCtrl', ($scope) ->
 
   w = $scope.parentWidget
 
@@ -37,9 +37,9 @@ module.controller('SettingTimeRangeCtrl', ['$scope', ($scope) ->
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingTimeRange', ['$templateCache', ($templateCache) ->
+module.directive('settingTimeRange', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -48,4 +48,4 @@ module.directive('settingTimeRange', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/time-range.html'),
     controller: 'SettingTimeRangeCtrl'
   }
-])
+)

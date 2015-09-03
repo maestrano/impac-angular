@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.impac-dashboard',[])
+module = angular.module('impac.components.dashboard', [])
 
 module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities) ->
 
@@ -13,7 +13,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     DhbAnalyticsSvc.widgets.setGetSsoSession($scope.getUserSsoSessionCallback)
 
     # todo::assets: implement new assets serving system
-    # $scope.assetPath = AssetPath
+    # $scope.assetPath = assetPath
     # $scope.impacLogo = $scope.assetPath['impac/transparent-logo.png']
 
     # todo::endpoint: get this from an endpoint of some sort.
@@ -237,6 +237,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self = modalCreateDashboard
       self.model = { name: null }
       self.organizations = angular.copy($scope.user.organizations)
+      # todo::linking: replace DhbOrganizationSvc calls with impacLinking service
       self.currentOrganization = _.findWhere(self.organizations,{id: DhbOrganizationSvc.getId()})
       self.selectMode('single')
       # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']

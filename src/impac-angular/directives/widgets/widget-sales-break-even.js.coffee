@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-break-even',[])
+module = angular.module('impac.components.widgets.sales-break-even',[])
 
-module.controller('WidgetSalesBreakEvenCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesBreakEvenCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -67,7 +65,7 @@ module.controller('WidgetSalesBreakEvenCtrl',[
       w.loadContent() if total >= 3
 
     return w
-])
+)
 
 module.directive('widgetSalesBreakEven', ->
   return {

@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-balance-sheet',[])
+module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -75,7 +73,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl',[
       w.loadContent() if total >= 3
 
     return w
-])
+)
 
 module.directive('widgetAccountsBalanceSheet', ->
   return {

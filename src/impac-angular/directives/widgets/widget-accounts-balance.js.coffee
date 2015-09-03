@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-accounts-balance',[])
+module = angular.module('impac.components.widgets.accounts-balance',[])
 
 module.controller('WidgetAccountsBalanceCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 

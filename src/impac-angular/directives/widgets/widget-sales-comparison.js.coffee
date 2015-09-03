@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-comparison',[])
+module = angular.module('impac.components.widgets.sales-comparison',[])
 
-module.controller('WidgetSalesComparisonCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesComparisonCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -199,7 +197,7 @@ module.controller('WidgetSalesComparisonCtrl',[
       w.loadContent() if total >= 7
 
     return w
-])
+)
 
 module.directive('widgetSalesComparison', ->
   return {

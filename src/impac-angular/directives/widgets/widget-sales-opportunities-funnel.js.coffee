@@ -1,10 +1,8 @@
 # TODO factor with leads funnel !
 
-module = angular.module('maestrano.analytics.widget-sales-opportunities-funnel',[])
+module = angular.module('impac.components.widgets.sales-opportunities-funnel',[])
 
-module.controller('WidgetSalesOpportunitiesFunnelCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -105,7 +103,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl',[
       w.loadContent() if total >= 4
 
     return w
-])
+)
 
 module.directive('widgetSalesOpportunitiesFunnel', ->
   return {

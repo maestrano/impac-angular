@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-custom-calculation',[])
+module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl',[
-  '$scope', '$timeout', '$modal', 'DhbAnalyticsSvc', '$templateCache',
-  ($scope, $timeout, $modal, DhbAnalyticsSvc, $templateCache) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, DhbAnalyticsSvc, $templateCache) ->
 
     w = $scope.widget
 
@@ -125,7 +123,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl',[
         $scope.blockLoadContent = true
 
     return w
-])
+)
 
 module.directive('widgetAccountsCustomCalculation', ->
   return {

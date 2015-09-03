@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widget-sales-segmented-turnover',[])
+module = angular.module('impac.components.widgets.sales-segmented-turnover',[])
 
 module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFormatterSvc) ->
 

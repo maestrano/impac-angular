@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-settings.param-selector',[])
+module = angular.module('impac.components.widgets-settings.param-selector',[])
 
 module.controller('SettingParamSelectorCtrl', ($scope) ->
 

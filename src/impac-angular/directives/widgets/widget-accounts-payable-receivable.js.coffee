@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-payable-receivable',[])
+module = angular.module('impac.components.widgets.accounts-payable-receivable',[])
 
-module.controller('WidgetAccountsPayableReceivableCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -55,7 +53,7 @@ module.controller('WidgetAccountsPayableReceivableCtrl',[
       w.loadContent() if total == 3
 
     return w
-])
+)
 
 module.directive('widgetAccountsPayableReceivable', ->
   return {

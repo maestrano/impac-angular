@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-invoices-aged-payables-receivables',[])
+module = angular.module('impac.components.widgets.invoices-aged-payables-receivables',[])
 
-module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -185,7 +183,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl',[
       w.loadContent() if total >= 5
 
     return w
-])
+)
 
 module.directive('widgetInvoicesAgedPayablesReceivables', ->
   return {

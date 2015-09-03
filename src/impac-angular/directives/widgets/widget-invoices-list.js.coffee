@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-invoices-list',[])
+module = angular.module('impac.components.widgets.invoices-list',[])
 
-module.controller('WidgetInvoicesListCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities', '$filter',
-  ($scope, DhbAnalyticsSvc, Utilities, $filter) ->
+module.controller('WidgetInvoicesListCtrl', ($scope, DhbAnalyticsSvc, Utilities, $filter) ->
 
     w = $scope.widget
 
@@ -58,7 +56,7 @@ module.controller('WidgetInvoicesListCtrl',[
 
     return w
 
-])
+)
 
 module.directive('widgetInvoicesList', ->
   return {

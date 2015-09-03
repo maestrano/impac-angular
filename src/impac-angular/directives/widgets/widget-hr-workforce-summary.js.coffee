@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-hr-workforce-summary',[])
+module = angular.module('impac.components.widgets.hr-workforce-summary',[])
 
-module.controller('WidgetHrWorkforceSummaryCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -94,7 +92,7 @@ module.controller('WidgetHrWorkforceSummaryCtrl',[
       w.loadContent() if total == 4
 
     return w
-])
+)
 
 module.directive('widgetHrWorkforceSummary', ->
   return {

@@ -1,7 +1,6 @@
-module = angular.module('maestrano.analytics.impac-widget-template-admin',[])
+module = angular.module('impac.components.widgets.template-admin',[])
 
-module.controller('ImpacWidgetTemplateAdminCtrl',[
-  '$scope', 'WidgetTemplateSvc', '$http', ($scope, WidgetTemplateSvc, $http) ->
+module.controller('ImpacWidgetTemplateAdminCtrl',($scope, WidgetTemplateSvc, $http) ->
 
     $scope.activatedCat = false
     $scope.cat = {}
@@ -299,13 +298,13 @@ module.controller('ImpacWidgetTemplateAdminCtrl',[
       index.getLastUpdate()
 
     $scope.init()
-])
+)
 
-module.directive('impacWidgetTemplateAdmin', ['$templateCache', ($templateCache) ->
+module.directive('impacWidgetTemplateAdmin', ($templateCache) ->
   return {
       restrict: 'A',
       scope: {},
       template: $templateCache.get('widgets/widget_template_admin.html'),
       controller: 'ImpacWidgetTemplateAdminCtrl'
   }
-])
+)

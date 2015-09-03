@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-forecast',[])
+module = angular.module('impac.components.widgets.sales-forecast',[])
 
-module.controller('WidgetSalesForecastCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesForecastCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -72,7 +70,7 @@ module.controller('WidgetSalesForecastCtrl',[
       w.loadContent() if total >= 1
 
     return w
-])
+)
 
 module.directive('widgetSalesForecast', ->
   return {

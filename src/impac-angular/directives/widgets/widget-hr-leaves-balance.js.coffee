@@ -1,10 +1,8 @@
 # TODO: factor with superannuation accruals (exact same controller)
 
-module = angular.module('maestrano.analytics.widget-hr-leaves-balance',[])
+module = angular.module('impac.components.widgets.hr-leaves-balance',[])
 
-module.controller('WidgetHrLeavesBalanceCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities',
-  ($scope, DhbAnalyticsSvc, Utilities) ->
+module.controller('WidgetHrLeavesBalanceCtrl', ($scope, DhbAnalyticsSvc, Utilities) ->
 
     w = $scope.widget
 
@@ -51,7 +49,7 @@ module.controller('WidgetHrLeavesBalanceCtrl',[
 
     return w
 
-])
+)
 
 module.directive('widgetHrLeavesBalance', ->
   return {

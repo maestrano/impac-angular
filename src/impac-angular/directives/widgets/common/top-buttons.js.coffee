@@ -1,4 +1,4 @@
-module = angular.module('maestrano.analytics.widgets-common.top-buttons', [])
+module = angular.module('impac.components.widgets-common.top-buttons', [])
 module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc) ->
 
   w = $scope.parentWidget

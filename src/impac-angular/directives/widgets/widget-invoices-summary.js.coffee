@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-invoices-summary',[])
+module = angular.module('impac.components.widgets.invoices-summary',[])
 
-module.controller('WidgetInvoicesSummaryCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'Utilities', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc) ->
+module.controller('WidgetInvoicesSummaryCtrl', ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -40,7 +38,7 @@ module.controller('WidgetInvoicesSummaryCtrl',[
       w.loadContent() if total == 2
 
     return w
-])
+)
 
 module.directive('widgetInvoicesSummary', ->
   return {

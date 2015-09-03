@@ -1,6 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-common.data-not-found',[])
+module = angular.module('impac.components.widgets-common.data-not-found',[])
 
-module.directive('commonDataNotFound', [ '$templateCache', ($templateCache) ->
+module.directive('commonDataNotFound', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -12,4 +12,4 @@ module.directive('commonDataNotFound', [ '$templateCache', ($templateCache) ->
     	# bgImagePath = ["impac/data_not_found",scope.widgetEngine].join('/')
     	# scope.bgImage = AssetPath[[bgImagePath,"png"].join('.')]
   }
-])
+)

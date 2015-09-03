@@ -1,6 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.formula',[])
+module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter) ->
 
   w = $scope.parentWidget
   w.formula = ""
@@ -71,9 +71,9 @@ module.controller('SettingFormulaCtrl', ['$scope', '$filter', ($scope, $filter) 
 
   w.settings ||= []
   w.settings.push(setting)
-])
+)
 
-module.directive('settingFormula', [ () ->
+module.directive( () ->
   return {
     restrict: 'A',
     scope: {
@@ -81,4 +81,4 @@ module.directive('settingFormula', [ () ->
     },
     controller: 'SettingFormulaCtrl'
   }
-])
+)

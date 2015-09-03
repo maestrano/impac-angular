@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widgets-settings.hist-mode',[])
+module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl',
-  ['$scope', 'DhbAnalyticsSvc',
-  ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingHistModeCtrl', ($scope, DhbAnalyticsSvc) ->
 
     w = $scope.parentWidget
     w.isHistoryMode = false
@@ -35,9 +33,9 @@ module.controller('SettingHistModeCtrl',
 
     w.settings ||= []
     w.settings.push(setting)
-])
+)
 
-module.directive('settingHistMode', ['$templateCache', ($templateCache) ->
+module.directive('settingHistMode', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
@@ -46,4 +44,4 @@ module.directive('settingHistMode', ['$templateCache', ($templateCache) ->
     template: $templateCache.get('widgets/settings/hist-mode.html'),
     controller: 'SettingHistModeCtrl'
   }
-])
+)

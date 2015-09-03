@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-number-of-leads',[])
+module = angular.module('impac.components.widgets.sales-number-of-leads',[])
 
-module.controller('WidgetSalesNumberOfLeadsCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -95,7 +93,7 @@ module.controller('WidgetSalesNumberOfLeadsCtrl',[
       w.loadContent() if total >= 2
 
     return w
-])
+)
 
 module.directive('widgetSalesNumberOfLeads', ->
   return {

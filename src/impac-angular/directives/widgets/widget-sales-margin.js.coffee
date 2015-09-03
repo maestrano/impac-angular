@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-margin',[])
+module = angular.module('impac.components.widgets.sales-margin',[])
 
-module.controller('WidgetSalesMarginCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc', '$filter',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesMarginCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -76,7 +74,7 @@ module.controller('WidgetSalesMarginCtrl',[
       w.loadContent() if total >= 4
 
     return w
-])
+)
 
 module.directive('widgetSalesMargin', ->
   return {

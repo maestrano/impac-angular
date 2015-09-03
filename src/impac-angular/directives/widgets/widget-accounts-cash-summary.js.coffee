@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-accounts-cash-summary',[])
+module = angular.module('impac.components.widgets.accounts-cash-summary',[])
 
-module.controller('WidgetAccountsCashSummaryCtrl',[
-  '$scope', 'ChartFormatterSvc', '$filter',
-  ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
@@ -167,7 +165,7 @@ module.controller('WidgetAccountsCashSummaryCtrl',[
       w.loadContent() if total == 5
 
     return w
-])
+)
 
 module.directive('widgetAccountsCashSummary', ->
   return {

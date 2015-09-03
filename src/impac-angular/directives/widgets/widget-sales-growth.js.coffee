@@ -1,8 +1,6 @@
-module = angular.module('maestrano.analytics.widget-sales-growth',[])
+module = angular.module('impac.components.widgets.sales-growth',[])
 
-module.controller('WidgetSalesGrowthCtrl',[
-  '$scope', 'DhbAnalyticsSvc', 'ChartFormatterSvc',
-  ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetSalesGrowthCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -76,7 +74,7 @@ module.controller('WidgetSalesGrowthCtrl',[
       w.loadContent() if total >= 4
 
     return w
-])
+)
 
 module.directive('widgetSalesGrowth', ->
   return {
