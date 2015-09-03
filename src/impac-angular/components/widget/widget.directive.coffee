@@ -31,7 +31,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, DhbAnalyticsSvc, Utiliti
   w.parentDashboard ||= $scope.parentDashboard
   w.settings = []
   w.isLoading = true
-  # TODO
   w.hasEditAbility = true
   w.hasDeleteAbility = true
 

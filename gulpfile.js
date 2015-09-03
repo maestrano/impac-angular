@@ -75,10 +75,10 @@ var gulp = require('gulp'),
 // Builds $templateCache code from each of the html files within the src directory,
 // outputting it into a file named templates.tmp at the root destination.
 gulp.task('templates', function () {
-  return gulp.src('src/impac-angular/templates/**/*.html')
+  return gulp.src('src/impac-angular/components/**/*.{*.html,.html}')
     .pipe(templates('tmp/templates/templates.tmp', {
       // root: '/templates/',
-      module: 'maestrano.analytics.templates'
+      module: 'impac.components.templates'
     }))
     .pipe(gulp.dest('.'));
 });
