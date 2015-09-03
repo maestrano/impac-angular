@@ -7,7 +7,7 @@ angular
 
     service.routes = {
       # Dashboard routes
-      basePath: -> "/mnoe/jpi/v1/impac/dashboards"=
+      basePath: -> "/mnoe/jpi/v1/impac/dashboards"
       showPath: (id) -> "#{service.routes.basePath()}/#{id}"
       createPath: -> service.routes.basePath()
       updatePath: (id) -> service.routes.showPath(id)

@@ -75,12 +75,12 @@ var gulp = require('gulp'),
 // Builds $templateCache code from each of the html files within the src directory,
 // outputting it into a file named templates.tmp at the root destination.
 gulp.task('templates', function () {
-  return gulp.src('src/impac-angular/components/**/*.{*.html,.html}')
+  console.log('running templates..');
+  return gulp.src('/src/impac-angular/components/**/*.*.html')
     .pipe(templates('tmp/templates/templates.tmp', {
-      // root: '/templates/',
       module: 'impac.components.templates'
     }))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('./tmp'));
 });
 
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
@@ -102,9 +102,9 @@ var buildSourceFiles = [
     ],
     // CoffeeScript file directories to be compiled before build.
     coffeeFiles = [
-      'src/impac-angular/directives/**/*.js.coffee',
-      'src/impac-angular/filters/**/*.js.coffee',
-      'src/impac-angular/services/**/*.js.coffee',
+      'src/impac-angular/components/**/*.directive.coffee',
+      'src/impac-angular/services/**/*.svc.coffee',
+      'src/impac-angular/filters/**/*.js.coffee'
     ],
     lessFiles = [
       'src/impac-angular/stylesheets/analytics.less'
