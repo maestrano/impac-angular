@@ -71,7 +71,7 @@ var gulp = require('gulp'),
 /* **************************
 ** Template Caching Tasks ***
 ** *************************/
-var templateFiles = ['src/impac-angular/components/**/*.*.html'];
+var templateFiles = ['src/impac-angular/components/**/*.html'];
 // builds html templates into angular $templateCache setters in a new module's .run() function.
 gulp.task('templates', function () {
   return gulp.src(templateFiles)
@@ -105,9 +105,9 @@ var buildSourceFiles = [
     ],
     // CoffeeScript file directories to be compiled before build.
     coffeeFiles = [
-      'src/impac-angular/components/**/*.directive.coffee',
-      'src/impac-angular/services/**/*.svc.coffee',
-      'src/impac-angular/filters/**/*.filter.coffee'
+      'src/impac-angular/components/**/*.coffee',
+      'src/impac-angular/services/**/*.coffee',
+      'src/impac-angular/filters/**/*.coffee'
     ],
     lessFiles = [
       'src/impac-angular/stylesheets/analytics.less'
@@ -125,7 +125,7 @@ gulp.task('coffee', ['clean'], function () {
     .pipe(rename(function (path) {
       path.basename = path.basename.split('.')[0];
     }))
-    .pipe(gulp.dest('./tmp/scripts'));
+    .pipe(gulp.dest('tmp/scripts'));
 });
 
 // compiles less into css and adds a sourcemap file.
@@ -136,12 +136,12 @@ gulp.task('less', function () {
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('dist'))
     .pipe(minifyCss({compatibility: 'ie8'}))
     .pipe(rename(function (path) {
       path.basename += '.min';
     }))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
 
 
@@ -149,11 +149,11 @@ gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('dist/'))
     .pipe(uglify())
     .pipe(strip())
     .pipe(rename('impac-angular.min.js'))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 
   stream.on('end', function () {
     del(['tmp']);
