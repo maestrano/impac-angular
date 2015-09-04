@@ -7,7 +7,7 @@ angular
       scope: {
         data: '='
       },
-      template: $templateCache.get('chart.html'),
+      template: $templateCache.get('chart.tmpl.html'),
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,

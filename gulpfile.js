@@ -30,12 +30,11 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),
     // promise library
     // Q = require('q'),
-    // construct pipes of streams of events
-    // es = require('event-stream'),
     pkg = require('./package.json');
 
 /*
 ** Testing Tasks
+** todo::test: write tests for gulp build processes.
 */
 // // Run test once and exit
 // gulp.task('test', function (done) {
@@ -72,22 +71,26 @@ var gulp = require('gulp'),
 /* **************************
 ** Template Caching Tasks ***
 ** *************************/
-// Builds $templateCache code from each of the html files within the src directory,
-// outputting it into a file named templates.tmp at the root destination.
+var templateFiles = ['src/impac-angular/components/**/*.*.html'];
+// builds html templates into angular $templateCache setters in a new module's .run() function.
 gulp.task('templates', function () {
-  console.log('running templates..');
-  return gulp.src('/src/impac-angular/components/**/*.*.html')
+  return gulp.src(templateFiles)
     .pipe(templates('tmp/templates/templates.tmp', {
-      module: 'impac.components.templates'
+      standalone: true, // creates a new module
+      module: 'impac.components.templates', // module name
+      transformUrl: function (url) {
+        // Removing nested directory urls generated from component template paths.
+        return url.split('/').splice(-1, 1).join('');
+      }
     }))
-    .pipe(gulp.dest('./tmp'));
+    .pipe(gulp.dest('.'));
 });
 
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
 gulp.task('templates:concat', ['templates'], function () {
-  return gulp.src(['src/impac-angular/impac-angular.module.js', './tmp/templates/templates.tmp'])
+  return gulp.src(['src/impac-angular/impac-angular.module.js', 'tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
-    .pipe(gulp.dest('./tmp/')); // output destination
+    .pipe(gulp.dest('tmp/')); // output destination
 });
 
 /* **********************
@@ -104,7 +107,7 @@ var buildSourceFiles = [
     coffeeFiles = [
       'src/impac-angular/components/**/*.directive.coffee',
       'src/impac-angular/services/**/*.svc.coffee',
-      'src/impac-angular/filters/**/*.js.coffee'
+      'src/impac-angular/filters/**/*.filter.coffee'
     ],
     lessFiles = [
       'src/impac-angular/stylesheets/analytics.less'
@@ -113,14 +116,12 @@ var buildSourceFiles = [
 // compiles CoffeeScript files into JS, wraps each file in a self-invoking anonymous function,
 // and writes the sourcemaps.
 gulp.task('coffee', ['clean'], function () {
-  gutil.log('running coffee..');
   return gulp.src(coffeeFiles)
-    .pipe(sourcemaps.init())
+    // .pipe(sourcemaps.init())
     .pipe(coffee({bare: true}).on('error', gutil.log))
     .pipe(insert.wrap('(function () {\n\'use strict\';\n', '})();')) // encapsulates components
-    .pipe(sourcemaps.write())
-    // Removes the double '.js' file extension which is created due to the current nameing
-    // convention '.js.coffee' through the components.
+    // .pipe(sourcemaps.write())
+    // Removes the prefixed extension from files names.
     .pipe(rename(function (path) {
       path.basename = path.basename.split('.')[0];
     }))
