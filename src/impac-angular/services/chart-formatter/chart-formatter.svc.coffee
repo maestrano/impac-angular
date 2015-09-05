@@ -97,7 +97,7 @@ angular
         data: {
           labels: [""],
           datasets: _.map inputData.values, (value) ->
-            color = self.getColor(index)
+            color = _self.getColor(index)
             index++
 
             if !value?

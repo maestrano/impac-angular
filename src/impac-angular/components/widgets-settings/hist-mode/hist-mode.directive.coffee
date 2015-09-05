@@ -41,7 +41,7 @@ module.directive('settingHistMode', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/settings/hist-mode.html'),
+    template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'
   }
 )

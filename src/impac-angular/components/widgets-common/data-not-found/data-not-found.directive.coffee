@@ -6,7 +6,7 @@ module.directive('commonDataNotFound', ($templateCache) ->
     scope: {
     	widgetEngine: '='
     },
-    template: $templateCache.get('widgets/common/data-not-found.html'),
+    template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
     link: (scope, element) ->
         # todo::assets implement new assets system
     	# bgImagePath = ["impac/data_not_found",scope.widgetEngine].join('/')

@@ -110,10 +110,10 @@ module.directive('impacWidget', ($templateCache) ->
     link: (scope, element) ->
       # DEFINITION of TEMPLATE and CLASS
       # All templates are defined by the first two elements of the corresponding path
-      # the "width" (number of bootstrap columns) is stored in the widget model
+      # the "width" (number of bootstrap columns) is stored in the widget model.
       splittedPath = angular.copy(scope.widget.category).split("/")
-      templateElems = ["widgets/widget"].concat(splittedPath.splice(0,2))
-      scope.templateUrl = templateElems.join("-").replace(/_/g,"-").concat(".html")
+      templateName = splittedPath.join("-").replace(/_/g, "-")
+      scope.templateUrl = "widgets/" + templateName + ".tmpl.html"
 
       scope.isTemplateLoaded = ->
         return !!$templateCache.get(scope.templateUrl)

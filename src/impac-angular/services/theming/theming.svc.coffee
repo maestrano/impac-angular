@@ -1,14 +1,16 @@
+#=======================================
 # provider for configuring impac-angular colour theme & layout.
+#=======================================
 angular
   .module('impac.services.theming', [])
   .provider('impacTheming', () ->
 
     provider = @
-    # #################################### #
-    # private default parameters           #
-    # #################################### #
+    #=======================================
+    # Private Defaults
+    #=======================================
     options =
-      # todo::impacTheming: rework chartColors to using color naming conventions /
+      # TODO::impacTheming: rework chartColors to using color naming conventions /
       # angular material influenced structure.
       chartColors:
         positive: '#3FC4FF',
@@ -25,21 +27,20 @@ angular
           "#ffeb3c",
           "#ff1844"
         ]
-    # #################################### #
-    # public methods available in config   #
-    # #################################### #
+    #=======================================
+    # Public methods available in config
+    #=======================================
     provider.configureChartTheme = (configOptions) ->
       angular.extend(options.chartColors, configOptions)
 
 
-    # #################################### #
-    # provider function
-    # todo::research does ng-annotate annotate $get methods in the gulp build process?
+    #=======================================
+    # TODO: does ng-annotate annotate provider $get methods in the gulp build process?
     _$get = () ->
       service = @
-      # #################################### #
-      # public methods available as service  #
-      # #################################### #
+      #=======================================
+      # Public methods available as service
+      #=======================================
       service.getChartColors = ->
         return options.chartColors
 

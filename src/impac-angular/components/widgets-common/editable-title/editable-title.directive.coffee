@@ -25,7 +25,7 @@ module.directive('commonEditableTitle', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/common/editable-title.html'),
+    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
     controller: 'CommonEditableTitleCtrl'
   }
 )

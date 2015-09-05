@@ -45,7 +45,7 @@ module.directive('commonTopButtons', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/common/top-buttons.html'),
+    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'
   }
 )

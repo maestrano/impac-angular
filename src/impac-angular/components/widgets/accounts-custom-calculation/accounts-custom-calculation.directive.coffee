@@ -64,7 +64,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     $scope.formulaModal.config = {
       instance: {
         backdrop: 'static'
-        template: $templateCache.get('modals/formula-modal.html')
+        template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html')
         size: 'lg'
         scope: $scope
         keyboard: false

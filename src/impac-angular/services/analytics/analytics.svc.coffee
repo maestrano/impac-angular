@@ -1,24 +1,9 @@
 angular
   .module('impac.services.analytics', [])
-  .factory('DhbAnalyticsSvc', ($http,$q,$window, $timeout) ->
+  # REFACTOR THIS INTO A SERVICE
+  .factory('DhbAnalyticsSvc', ($http, $q, $window, $timeout, $log, impacLinking, impacRoutes) ->
     # Configuration
-    service = {};
-
-
-    service.routes = {
-      # Dashboard routes
-      basePath: -> "/mnoe/jpi/v1/impac/dashboards"
-      showPath: (id) -> "#{service.routes.basePath()}/#{id}"
-      createPath: -> service.routes.basePath()
-      updatePath: (id) -> service.routes.showPath(id)
-      deletePath: (id) -> service.routes.showPath(id)
-      baseWidgetPath: (id) -> "/mnoe/jpi/v1/impac/widgets/#{id}"
-      # Impac! js_api # todo::impac: make this more dynamic, put it in a config variable somewhere.
-      showWidgetPath: "http://localhost:4000/api/v1/get_widget",
-      createWidgetPath: (dashboardId) -> "#{service.routes.showPath(dashboardId)}/widgets"
-      updateWidgetPath: (id) -> service.routes.baseWidgetPath(id)
-      deleteWidgetPath: (id) -> service.routes.baseWidgetPath(id)
-    }
+    self = service = {};
 
     service.defaultConfig = {
       delay: 1000 * 60 * 10 # minutes - long polling delay
@@ -59,9 +44,8 @@ angular
 
     # loads the dashboards
     service.load = (force = false) ->
-      self = service
       if !self.config.$q? || force
-        self.config.$q = $http.get(self.routes.basePath()).then (success) ->
+        self.config.$q = $http.get(impacRoutes.baseDhbPath()).then (success) ->
           angular.copy(success.data,self.data)
           console.log('dashboards: ', self.data)
       return self.config.$q
@@ -75,11 +59,10 @@ angular
     # - name: the dashboard name
     # - organization_id: the organization id
     service.dashboards.create = (opts) ->
-      self = service
       data = { dashboard: opts }
       data['dashboard']['organization_id'] ||= self.config.organizationId
 
-      $http.post(self.routes.createPath(),data).then(
+      $http.post(impacRoutes.createDhbPath(), data).then(
         (success) ->
           dashboard = success.data
           self.data.push(dashboard)
@@ -89,8 +72,7 @@ angular
 
     # Delete a dashboard
     service.dashboards.delete = (id) ->
-      self = service
-      $http.delete(self.routes.deletePath(id)).then(
+      $http.delete(impacRoutes.deleteDhbPath(id)).then(
         (success) ->
           self.config.id = null
           dhbs = self.data
@@ -99,34 +81,25 @@ angular
 
     # Update a dashboard
     service.dashboards.update = (id, opts, overrideCurrentDhb=yes) ->
-      self = service
       data = { dashboard: opts }
-      $http.put(self.routes.updatePath(id),data).then(
+      $http.put(impacRoutes.updateDhbPath(id),data).then(
         (success) ->
           dhb = _.findWhere(self.data,{id: id})
           angular.extend(dhb,success.data) if overrideCurrentDhb
-        , (->)
+        , (err) ->
+          $log.error err
       )
 
     #======================================
     # Widgets Management #### REFACTOR INTO FACTORY ####
     #======================================
     service.widgets = {}
-
-    # todo::data-link: move to provider
-    service.widgets.setGetOrganizations = (callback) ->
-      service.widgets.getOrganizations = callback
-
-    service.widgets.setGetSsoSession = (callback) ->
-      service.widgets.getSsoSessionId = callback
-
     # Create a new widget
     # Attributes
     # - widget_category category of widgets
     service.widgets.create = (dashboardId, opts) ->
-      self = service
       data = { widget: opts }
-      $http.post(self.routes.createWidgetPath(dashboardId), data).then(
+      $http.post(impacRoutes.createWidgetPath(dashboardId), data).then(
         (success) ->
           widget = success.data
           dashboard = _.findWhere(self.data,{ id: dashboardId })
@@ -136,34 +109,30 @@ angular
 
     # Call Impac! API to retrieve the widget content (will be stored in widget.content)
     service.widgets.show = (widget, refresh_cache=false) ->
-      self = service
       data = {
         owner: widget.owner,
-        sso_session: service.widgets.getSsoSessionId(),
+        sso_session: impacLinking.getSsoSession(),
         metadata: widget.metadata,
         engine: widget.category
       }
       angular.extend(data, {refresh_cache: true}) if refresh_cache
 
-      # todo::data-link
-      data.metadata.organization_ids = service.widgets.getOrganizations()
+      data.metadata.organization_ids = impacLinking.getOrganizations()
 
-      $http.post(self.routes.showWidgetPath, data)
+      $http.post(impacRoutes.showWidgetPath(), data)
 
     # Delete a widget
     service.widgets.delete = (widgetId, currentDhb) ->
-      self = service
       $http
-        .delete(self.routes.deleteWidgetPath(widgetId))
+        .delete(impacRoutes.deleteWidgetPath(widgetId))
         .then( ->
           currentDhb.widgets = _.reject(currentDhb.widgets, (widget) -> widget.id == widgetId)
         )
 
     # Call the Maestrano API interface to update (mainly the metadata)
     service.widgets.update = (widget,opts) ->
-      self = service
       data = { widget: opts }
-      $http.put(self.routes.updateWidgetPath(widget.id),data)
+      $http.put(impacRoutes.updateWidgetPath(widget.id),data)
 
     return service
   )

@@ -34,7 +34,7 @@ module.directive('settingAccount', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/settings/account.html'),
+    template: $templateCache.get('widgets-settings/account.tmpl.html'),
     controller: 'SettingAccountCtrl'
   }
 )

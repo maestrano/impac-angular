@@ -32,10 +32,10 @@ var gulp = require('gulp'),
     // Q = require('q'),
     pkg = require('./package.json');
 
-/*
-** Testing Tasks
-** todo::test: write tests for gulp build processes.
-*/
+
+/* ************************************ */
+/* TODO: Testing Tasks                  */
+/* ************************************ */
 // // Run test once and exit
 // gulp.task('test', function (done) {
 //   karma.start({
@@ -68,9 +68,9 @@ var gulp = require('gulp'),
 //   }, done);
 // });
 
-/* **************************
-** Template Caching Tasks ***
-** *************************/
+/* ************************************ */
+/* Template Caching Tasks               */
+/* ************************************ */
 var templateFiles = ['src/impac-angular/components/**/*.html'];
 // builds html templates into angular $templateCache setters in a new module's .run() function.
 gulp.task('templates', function () {
@@ -78,9 +78,20 @@ gulp.task('templates', function () {
     .pipe(templates('tmp/templates/templates.tmp', {
       standalone: true, // creates a new module
       module: 'impac.components.templates', // module name
+      // Shorten component $templaceCache paths for simpler dynamic selection, and
+      // cleaner includes.
       transformUrl: function (url) {
-        // Removing nested directory urls generated from component template paths.
-        return url.split('/').splice(-1, 1).join('');
+            // parent component e.g dashboard, widgets.
+        var parentFolderName  = url.split('/').splice(0, 1),
+            // component's template name.
+            fileName          = url.split('/').splice(-1, 1);
+
+        // if html file is a modal, return full path for semantic purposes.
+        if (fileName[0].indexOf('.modal.') >= 0) {
+          return url;
+        }
+        // e.g widgets/accounts-balance
+        return parentFolderName + '/' + fileName;
       }
     }))
     .pipe(gulp.dest('.'));
@@ -93,9 +104,9 @@ gulp.task('templates:concat', ['templates'], function () {
     .pipe(gulp.dest('tmp/')); // output destination
 });
 
-/* **********************
-** Build tasks        ***
-** **********************/
+/* ************************************ */
+/* Build Tasks                          */
+/* ************************************ */
     // Source files for final dist build
 var buildSourceFiles = [
       'src/impac-angular/impac-angular.prefix',
@@ -103,38 +114,37 @@ var buildSourceFiles = [
       'src/impac-angular/impac-angular.suffix',
       'tmp/scripts/**/*.js'
     ],
-    // CoffeeScript file directories to be compiled before build.
+    // CoffeeScript & Less file directories to be compiled before build.
     coffeeFiles = [
-      'src/impac-angular/components/**/*.coffee',
       'src/impac-angular/services/**/*.coffee',
-      'src/impac-angular/filters/**/*.coffee'
+      'src/impac-angular/filters/**/*.coffee',
+      'src/impac-angular/components/**/*.coffee'
     ],
     lessFiles = [
       'src/impac-angular/stylesheets/analytics.less'
     ];
 
-// compiles CoffeeScript files into JS, wraps each file in a self-invoking anonymous function,
-// and writes the sourcemaps.
+// TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
+// TODO::gulp-coffee: is stripping comments on compile, cant find options or
+// alternative.
 gulp.task('coffee', ['clean'], function () {
   return gulp.src(coffeeFiles)
-    // .pipe(sourcemaps.init())
     .pipe(coffee({bare: true}).on('error', gutil.log))
-    .pipe(insert.wrap('(function () {\n\'use strict\';\n', '})();')) // encapsulates components
-    // .pipe(sourcemaps.write())
-    // Removes the prefixed extension from files names.
+    // encapsulates components
+    .pipe(insert.wrap('(function () {\n\'use strict\';\n', '}).call(this);'))
+    // Removes the prefixed extension from files names e.g name.directive.coffee.
     .pipe(rename(function (path) {
       path.basename = path.basename.split('.')[0];
     }))
     .pipe(gulp.dest('tmp/scripts'));
 });
 
-// compiles less into css and adds a sourcemap file.
 gulp.task('less', function () {
   return gulp.src(lessFiles)
-    .pipe(sourcemaps.init())
     .pipe(less({
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
+    .pipe(sourcemaps.init())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist'))
     .pipe(minifyCss({compatibility: 'ie8'}))
@@ -144,7 +154,6 @@ gulp.task('less', function () {
     .pipe(gulp.dest('dist'));
 });
 
-
 gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
@@ -153,7 +162,7 @@ gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
     .pipe(uglify())
     .pipe(strip())
     .pipe(rename('impac-angular.min.js'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/'));
 
   stream.on('end', function () {
     del(['tmp']);
@@ -169,9 +178,9 @@ gulp.task('watch', ['build'], function () {
   gulp.watch(['src/**/*.js', 'src/**/*.html'], ['build']);
 });
 
-/* **********************
-** Commands           ***
-** **********************/
+/* ************************************ */
+/* Commands                             */
+/* ************************************ */
 gulp.task('default', ['build']);
 gulp.task('start:watch', ['watch']);
 gulp.task('build:less', ['less']);

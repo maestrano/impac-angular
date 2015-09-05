@@ -38,7 +38,7 @@ module.directive('settingParamsPicker', ($templateCache) ->
     },
     link: (scope, elements, attrs) ->
       scope.formattedParam = scope.param.replace('_',' ')
-    template: $templateCache.get('widgets/settings/params-picker.html'),
+    template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
     controller: 'SettingParamsPickerCtrl'
   }
 )

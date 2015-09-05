@@ -49,7 +49,7 @@ module.directive('settingParamSelector', ($templateCache) ->
     link: (scope, elements, attrs) ->
       scope.noReload = typeof attrs.noReload != 'undefined'
       scope.truncateNo = attrs.truncateNo || 20
-    template: $templateCache.get('widgets/settings/param-selector.html'),
+    template: $templateCache.get('widgets-settings/param-selector.tmpl.html'),
     controller: 'SettingParamSelectorCtrl'
   }
 )

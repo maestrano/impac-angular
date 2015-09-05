@@ -45,7 +45,7 @@ module.directive('settingTimeRange', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/settings/time-range.html'),
+    template: $templateCache.get('widgets-settings/time-range.tmpl.html'),
     controller: 'SettingTimeRangeCtrl'
   }
 )

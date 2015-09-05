@@ -41,7 +41,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/settings/organizations.html'),
+    template: $templateCache.get('widgets-settings/organizations.tmpl.html'),
     controller: 'SettingOrganizationsCtrl'
   }
 )

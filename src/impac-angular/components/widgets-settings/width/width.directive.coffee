@@ -46,7 +46,7 @@ module.directive('settingWidth', ($templateCache) ->
       min: '@',
       max: '@',
     },
-    template: $templateCache.get('widgets/settings/width.html'),
+    template: $templateCache.get('widgets-settings/width.tmpl.html'),
     controller: 'SettingWidthCtrl'
   }
 )

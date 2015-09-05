@@ -7,9 +7,9 @@
 angular.module('maestrano.impac',
   [
     'impac.config',
-    'impac.components',
-    'impac.filters',
     'impac.services',
+    'impac.filters',
+    'impac.components',
     // EXTERNAL DEPENDENCIES //
     'ui.sortable',
     'ui.bootstrap'
@@ -33,8 +33,8 @@ angular.module('impac.components.widgets',
   [
     'impac.components.widgets.catalogue',
     'impac.components.widgets.template-admin',
-    'impac.components.widgets.accounts-accouting-values',
-    'impac.components.widgets.accounts-assets-sumary',
+    'impac.components.widgets.accounts-accounting-values',
+    'impac.components.widgets.accounts-assets-summary',
     'impac.components.widgets.accounts-balance-sheet',
     'impac.components.widgets.accounts-balance',
     'impac.components.widgets.accounts-cash-summary',
@@ -56,7 +56,7 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.invoices-aged-payables-receivables',
     'impac.components.widgets.invoices-list',
     'impac.components.widgets.invoices-summary',
-    'impac.components.widgets.sales-ages',
+    'impac.components.widgets.sales-aged',
     'impac.components.widgets.sales-break-even',
     'impac.components.widgets.sales-comparison',
     'impac.components.widgets.sales-customer-details',
@@ -105,10 +105,10 @@ angular.module('impac.filters', []);
 */
 angular.module('impac.services',
   [
+    'impac.services.linking',
     'impac.services.routes',
     'impac.services.theming',
     'impac.services.assets',
-    'impac.services.linking',
     'impac.services.analytics',
     'impac.services.chart-formatter',
     'impac.services.message-bus',

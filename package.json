@@ -6,7 +6,9 @@
     "email": "xaunlopez@gmail.com"
   },
   "main": "src/impac-angular/impac-angular.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^3.10.1"
+  },
   "devDependencies": {
     "chai": "^1.9.1",
     "chai-jquery": "^1.2.3",

@@ -42,7 +42,7 @@ module.directive('settingChartFilters', ($templateCache) ->
     scope: {
       parentWidget: '='
     },
-    template: $templateCache.get('widgets/settings/chart-filters.html'),
+    template: $templateCache.get('widgets-settings/chart-filters.tmpl.html'),
     controller: 'SettingChartFiltersCtrl'
   }
 )
