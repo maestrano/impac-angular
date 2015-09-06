@@ -8,7 +8,7 @@ angular
     #=======================================
     defaults =
       # TODO: there must be a better way to reference assets, maybe a gulp module that creates relative url paths or something? Not even sure if this would support prod builds =\
-      baseDir: 'bower_components/impac-angular/images'
+      baseDir: 'bower_components/impac-angular/images/'
     #=======================================
     # Public methods available in config
     #=======================================
@@ -22,9 +22,11 @@ angular
       # Public methods available as service
       #=======================================
       service.get = (path) ->
-        # remove trailing '/' if present
+        # adds trailing slash onto baseDir unless baseDir is an empty string.
         dir = defaults.baseDir.split('')
-        dir = if dir[dir.length - 1] != '/' then dir.concat('/').join('') else dir.join('')
+        dir = if dir.length and dir[dir.length - 1] != '/'
+        then dir.concat('/').join('')
+        else dir.join('')
         return dir + path
 
       return service
