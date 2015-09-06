@@ -16,4 +16,6 @@
 - fix coffee sourcemaps as they are not working with stack-trace & debugger in console.
 
 
+
 TODO: instructions on required provider configurations.
+

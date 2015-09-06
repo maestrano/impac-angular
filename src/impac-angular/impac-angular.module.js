@@ -105,8 +105,8 @@ angular.module('impac.filters', []);
 */
 angular.module('impac.services',
   [
-    'impac.services.linking',
     'impac.services.routes',
+    'impac.services.linking',
     'impac.services.theming',
     'impac.services.assets',
     'impac.services.analytics',

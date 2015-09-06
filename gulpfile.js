@@ -28,8 +28,8 @@ var gulp = require('gulp'),
     path = require('path'),
     // minify css
     minifyCss = require('gulp-minify-css'),
-    // promise library
-    // Q = require('q'),
+    // Minify PNG, JPEG, GIF and SVG images
+    imagemin = require('gulp-imagemin'),
     pkg = require('./package.json');
 
 
@@ -154,7 +154,16 @@ gulp.task('less', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
+gulp.task('imagemin', function () {
+  return gulp.src('src/impac-angular/images/**/*')
+    .pipe(imagemin({
+      progressive: true,
+      svgoPLugins: [{removeViewBox: false}]
+    }))
+    .pipe(gulp.dest('dist/images'));
+});
+
+gulp.task('build', ['coffee', 'less', 'templates:concat', 'imagemin'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())

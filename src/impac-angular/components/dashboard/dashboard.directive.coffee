@@ -1,14 +1,12 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, impacAssets) ->
 
     #====================================
     # Initialization
     #====================================
 
-    # todo::assets: implement new assets serving system
-    # $scope.assetPath = assetPath
-    # $scope.impacLogo = $scope.assetPath['impac/transparent-logo.png']
+    $scope.impacLogo = impacAssets.get('transparent-logo.png')
 
     $scope.widgetsList = [];
 

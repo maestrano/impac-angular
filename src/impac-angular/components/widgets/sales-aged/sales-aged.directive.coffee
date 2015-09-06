@@ -95,6 +95,7 @@ module.directive('widgetSalesAged', ->
   return {
     restrict: 'A',
     link: (scope, element) ->
+      debugger;
       element.addClass("sales")
       element.addClass("aged")
     ,controller: 'WidgetSalesAgedCtrl'

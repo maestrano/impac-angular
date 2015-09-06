@@ -7,7 +7,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, DhbAnalyticsSvc, Utiliti
   # ---------------------------------------------------------
 
   $scope.loaderImage = '';
-  # todo: assets: implement new assets system
+  # TODO: add this?
   # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
   # ---------------------------------------------------------

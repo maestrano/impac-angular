@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc, impacAssets) ->
 
   w = $scope.parentWidget
 
@@ -7,12 +7,8 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
   $scope.showEditActive = false
   $scope.showConfirmDelete = false
 
-  $scope.closeWidgetButtonImage = ''
-  $scope.closeWidgetButtonImageActive = ''
-
-  # todo::assets implement new assets system
-  # $scope.closeWidgetButtonImage = AssetPath['impac/close-widget.png']
-  # $scope.closeWidgetButtonImageActive = AssetPath['impac/close-widget-pink.png']
+  $scope.closeWidgetButtonImage = impacAssets.get('close-widget.png')
+  $scope.closeWidgetButtonImageActive = impacAssets.get('close-widget-pink.png')
 
   w.isEditMode = false
 

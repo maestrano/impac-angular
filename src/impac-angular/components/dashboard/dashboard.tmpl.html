@@ -25,7 +25,7 @@
           <i ng-hide="showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" ng-click="toogleShowChangeDhbName(dhb)"/>
         </div>
 
-        <!-- <div ng-show="showCreateDhb" class="option create" ng-click="modal.createDashboard.open() ; showChangeDhbName = false"><i class="fa fa-plus" /> Create Dashboard</div> -->
+        <div ng-show="showCreateDhb" class="option create" ng-click="modal.createDashboard.open() ; showChangeDhbName = false"><i class="fa fa-plus" /> Create Dashboard</div>
       </div>
 
       <div ng-show="showChangeDhbName" class="change-name">
@@ -166,7 +166,7 @@
 
   <!-- Widgets -->
   <div class='row'>
-    <div ui:sortable='sortableOptions' ng-model="currentDhb.widgets" class='widgets-container'>
+    <div ui:sortable="sortableOptions" ng-model="currentDhb.widgets" class="widgets-container">
       <div impac-widget widget="widget" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
     </div>
   </div>
