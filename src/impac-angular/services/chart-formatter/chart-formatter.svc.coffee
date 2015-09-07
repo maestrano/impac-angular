@@ -1,10 +1,10 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (impacTheming) ->
+  .service('ChartFormatterSvc', (ImpacTheming) ->
 
     _self = @
 
-    COLORS = impacTheming.getChartColors()
+    COLORS = ImpacTheming.getChartColors()
 
     # Returns the color defined for positive values
     @getPositiveColor = ->

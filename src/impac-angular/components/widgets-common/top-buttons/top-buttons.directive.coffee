@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc, impacAssets) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) ->
 
   w = $scope.parentWidget
 
@@ -7,8 +7,8 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
   $scope.showEditActive = false
   $scope.showConfirmDelete = false
 
-  $scope.closeWidgetButtonImage = impacAssets.get('close-widget.png')
-  $scope.closeWidgetButtonImageActive = impacAssets.get('close-widget-pink.png')
+  $scope.closeWidgetButtonImage = ImpacAssets.get('close-widget.png')
+  $scope.closeWidgetButtonImageActive = ImpacAssets.get('close-widget-pink.png')
 
   w.isEditMode = false
 

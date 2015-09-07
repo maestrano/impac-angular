@@ -1,7 +1,7 @@
 angular
   .module('impac.services.analytics', [])
   # REFACTOR THIS INTO A SERVICE
-  .factory('DhbAnalyticsSvc', ($http, $q, $window, $timeout, $log, impacLinking, impacRoutes) ->
+  .factory('DhbAnalyticsSvc', ($http, $q, $window, $timeout, $log, ImpacLinking, ImpacRoutes) ->
     # Configuration
     self = service = {};
 
@@ -45,7 +45,7 @@ angular
     # loads the dashboards
     service.load = (force = false) ->
       if !self.config.$q? || force
-        self.config.$q = $http.get(impacRoutes.baseDhbPath()).then (success) ->
+        self.config.$q = $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
           angular.copy(success.data,self.data)
           console.log('dashboards: ', self.data)
       return self.config.$q
@@ -62,7 +62,7 @@ angular
       data = { dashboard: opts }
       data['dashboard']['organization_id'] ||= self.config.organizationId
 
-      $http.post(impacRoutes.createDhbPath(), data).then(
+      $http.post(ImpacRoutes.createDhbPath(), data).then(
         (success) ->
           dashboard = success.data
           self.data.push(dashboard)
@@ -72,7 +72,7 @@ angular
 
     # Delete a dashboard
     service.dashboards.delete = (id) ->
-      $http.delete(impacRoutes.deleteDhbPath(id)).then(
+      $http.delete(ImpacRoutes.deleteDhbPath(id)).then(
         (success) ->
           self.config.id = null
           dhbs = self.data
@@ -82,7 +82,7 @@ angular
     # Update a dashboard
     service.dashboards.update = (id, opts, overrideCurrentDhb=yes) ->
       data = { dashboard: opts }
-      $http.put(impacRoutes.updateDhbPath(id),data).then(
+      $http.put(ImpacRoutes.updateDhbPath(id),data).then(
         (success) ->
           dhb = _.findWhere(self.data,{id: id})
           angular.extend(dhb,success.data) if overrideCurrentDhb
@@ -99,7 +99,7 @@ angular
     # - widget_category category of widgets
     service.widgets.create = (dashboardId, opts) ->
       data = { widget: opts }
-      $http.post(impacRoutes.createWidgetPath(dashboardId), data).then(
+      $http.post(ImpacRoutes.createWidgetPath(dashboardId), data).then(
         (success) ->
           widget = success.data
           dashboard = _.findWhere(self.data,{ id: dashboardId })
@@ -111,20 +111,20 @@ angular
     service.widgets.show = (widget, refresh_cache=false) ->
       data = {
         owner: widget.owner,
-        sso_session: impacLinking.getSsoSession(),
+        sso_session: ImpacLinking.getSsoSession(),
         metadata: widget.metadata,
         engine: widget.category
       }
       angular.extend(data, {refresh_cache: true}) if refresh_cache
 
-      data.metadata.organization_ids = impacLinking.getOrganizations()
+      data.metadata.organization_ids = ImpacLinking.getOrganizations()
 
-      $http.post(impacRoutes.showWidgetPath(), data)
+      $http.post(ImpacRoutes.showWidgetPath(), data)
 
     # Delete a widget
     service.widgets.delete = (widgetId, currentDhb) ->
       $http
-        .delete(impacRoutes.deleteWidgetPath(widgetId))
+        .delete(ImpacRoutes.deleteWidgetPath(widgetId))
         .then( ->
           currentDhb.widgets = _.reject(currentDhb.widgets, (widget) -> widget.id == widgetId)
         )
@@ -132,7 +132,7 @@ angular
     # Call the Maestrano API interface to update (mainly the metadata)
     service.widgets.update = (widget,opts) ->
       data = { widget: opts }
-      $http.put(impacRoutes.updateWidgetPath(widget.id),data)
+      $http.put(ImpacRoutes.updateWidgetPath(widget.id),data)
 
     return service
   )

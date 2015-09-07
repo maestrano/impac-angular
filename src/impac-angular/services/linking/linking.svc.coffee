@@ -5,7 +5,7 @@
 #=======================================
 angular
   .module('impac.services.linking', [])
-  .provider('impacLinking', () ->
+  .provider('ImpacLinking', () ->
     provider = @
     #=======================================
     # Private Defaults

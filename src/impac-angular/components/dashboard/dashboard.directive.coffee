@@ -1,12 +1,12 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, impacAssets) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, ImpacAssets) ->
 
     #====================================
     # Initialization
     #====================================
 
-    $scope.impacLogo = impacAssets.get('transparent-logo.png')
+    $scope.impacLogo = ImpacAssets.get('transparent-logo.png')
 
     $scope.widgetsList = [];
 
@@ -230,7 +230,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self = modalCreateDashboard
       self.model = { name: null }
       self.organizations = angular.copy($scope.user.organizations)
-      # todo::linking: replace DhbOrganizationSvc calls with impacLinking service
+      # todo::linking: replace DhbOrganizationSvc calls with ImpacLinking service
       self.currentOrganization = _.findWhere(self.organizations,{id: DhbOrganizationSvc.getId()})
       self.selectMode('single')
       # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']

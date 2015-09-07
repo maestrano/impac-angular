@@ -3,14 +3,14 @@
 #=======================================
 angular
   .module('impac.services.theming', [])
-  .provider('impacTheming', () ->
+  .provider('ImpacTheming', () ->
 
     provider = @
     #=======================================
     # Private Defaults
     #=======================================
     options =
-      # TODO::impacTheming: rework chartColors to using color naming conventions /
+      # TODO::ImpacTheming: rework chartColors to using color naming conventions /
       # angular material influenced structure.
       chartColors:
         positive: '#3FC4FF',
