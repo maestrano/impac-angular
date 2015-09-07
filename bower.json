@@ -2,17 +2,19 @@
   "name": "impac-angular",
   "version": "0.0.1",
   "main": [
-    "impac-angular.js",
-    "analytics.css"
+    "dist/impac-angular.js",
+    "dist/analytics.css"
   ],
   "description": "Impac! Front-End Library",
   "ignore": [
     "src",
     "test",
-    "Gruntfile.js",
+    "gulpfile.js",
     "**/.*",
     "bower_components",
-    "node_modules"
+    "node_modules",
+    "karma-*",
+    "*.sublime*"
   ],
   "moduleType": ["globals"],
   "dependencies": {
