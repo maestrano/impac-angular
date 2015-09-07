@@ -1,6 +1,7 @@
 {
   "name": "impac-angular",
   "version": "0.0.1",
+  "private": true,
   "main": [
     "dist/impac-angular.js",
     "dist/analytics.css"
