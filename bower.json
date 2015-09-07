@@ -1,22 +1,20 @@
 {
   "name": "impac-angular",
   "version": "0.0.1",
-  "authors": [
-    {
-      "name": "Xaun Lopez",
-      "email": "xaunlopez@gmail.com"
-    }
-  ],
   "main": [
     "impac-angular.js",
     "analytics.css"
   ],
+  "description": "Impac! Front-End Library",
   "ignore": [
     "src",
     "test",
     "Gruntfile.js",
-    "**/.*"
+    "**/.*",
+    "bower_components",
+    "node_modules"
   ],
+  "moduleType": ["globals"],
   "dependencies": {
     "Chart.js": "~1.0.2",
     "angular": "~1.4.0",
@@ -26,5 +24,10 @@
   "devDependencies": {
     "angular-mocks": "~1.4.0",
     "angular-scenario": "~1.4.0"
+  },
+  "license": "Copyright 2015 Maestrano Pty Ltd",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xaun/impac-angular.git"
   }
 }
