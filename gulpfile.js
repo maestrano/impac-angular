@@ -25,6 +25,7 @@ var gulp = require('gulp'),
     strip = require('gulp-strip-comments'),
     // Compile less to css.
     less = require('gulp-less'),
+    inject = require('gulp-inject'),
     path = require('path'),
     // minify css
     minifyCss = require('gulp-minify-css'),
@@ -121,8 +122,10 @@ var buildSourceFiles = [
       'src/impac-angular/components/**/*.coffee'
     ],
     lessFiles = [
-      'src/impac-angular/stylesheets/analytics.less'
-    ];
+      'src/impac-angular/components/**/*.less',
+      'src/impac-angular/components/**/**/*.less'
+    ],
+    mainLessFile = 'src/impac-angular/stylesheets/import.less';
 
 // TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
 // TODO::gulp-coffee: is stripping comments on compile, cant find options or
@@ -139,31 +142,42 @@ gulp.task('coffee', ['clean'], function () {
     .pipe(gulp.dest('tmp/scripts'));
 });
 
-gulp.task('less', function () {
-  return gulp.src(lessFiles)
+// Dynamically injects @import's into the main .less file, allowing less files to be places
+// around the app structure with the component page they apply to.
+gulp.task('less:inject', function() {
+    return gulp.src(mainLessFile)
+      .pipe(inject(gulp.src(lessFiles, {
+        read: false,
+      }), {
+        starttag: '/* inject:imports */',
+        endtag: '/* endinject */',
+        transform: function (filepath) {
+          return '@import ".' + filepath + '";';
+        }
+      }))
+      .pipe(gulp.dest('src/impac-angular/stylesheets'));
+});
+
+gulp.task('less', ['less:inject'], function () {
+  return gulp.src(mainLessFile)
     .pipe(less({
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
     .pipe(sourcemaps.init())
     .pipe(sourcemaps.write())
+    .pipe(rename(function (path) {
+      path.basename = 'impac-angular';
+    }))
     .pipe(gulp.dest('dist'))
     .pipe(minifyCss({compatibility: 'ie8'}))
     .pipe(rename(function (path) {
+      path.basename = 'impac-angular';
       path.basename += '.min';
     }))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('imagemin', function () {
-  return gulp.src('src/impac-angular/images/**/*')
-    .pipe(imagemin({
-      progressive: true,
-      svgoPLugins: [{removeViewBox: false}]
-    }))
-    .pipe(gulp.dest('dist/images'));
-});
-
-gulp.task('build', ['coffee', 'less', 'templates:concat', 'imagemin'], function () {
+gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
@@ -193,6 +207,7 @@ gulp.task('watch', ['build'], function () {
 gulp.task('start:watch', ['watch']);
 gulp.task('build:dist', ['build']);
 gulp.task('build:less', ['less']);
+gulp.task('build:less:inject', ['less:inject']);
 gulp.task('build:coffee', ['coffee']);
 gulp.task('build:templates', ['templates:concat']);
 

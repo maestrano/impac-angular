@@ -6,7 +6,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Initialization
     #====================================
 
-    $scope.impacLogo = ImpacAssets.get('transparent-logo.png')
+    # Retreive assets from parent application
+    $scope.impacTitleLogo = ImpacAssets.get('impacTitleLogo')
+    # todo: maybe rename this? not exactly sure when this background image is shown.
+    $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
     $scope.widgetsList = [];
 
@@ -206,6 +209,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Dashboard management - Modals
     #====================================
 
+    # TODO: This needs to be tested and DhbOrganizationsSvc Dependency needs to be resolve with
+    #       ImpacLinkingProvider. Also could do with a refactor.
+
     # Would it be possible to manage modals in a separate module ?
     # -> Check maestrano-modal (modal-svc) for further update
     $scope.modal = {}
@@ -233,7 +239,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # todo::linking: replace DhbOrganizationSvc calls with ImpacLinking service
       self.currentOrganization = _.findWhere(self.organizations,{id: DhbOrganizationSvc.getId()})
       self.selectMode('single')
-      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
       self.multiOrganizationReporting = $scope.user.multi_organization_reporting
@@ -325,7 +331,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalDeleteDashboard.open = ->
       self = modalDeleteDashboard
-      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 
@@ -361,7 +367,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     modalWidgetSuggestion.open = ->
       self = modalWidgetSuggestion
       self.userName = UserSvc.document.user.name
-      # self.loadingGif = $scope.assetPath['loader-darkblue-bg.gif']
+      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 

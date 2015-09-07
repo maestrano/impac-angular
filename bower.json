@@ -4,7 +4,7 @@
   "private": true,
   "main": [
     "dist/impac-angular.js",
-    "dist/analytics.css"
+    "dist/impac-angular.css"
   ],
   "description": "Impac! Front-End Library",
   "ignore": [
@@ -31,6 +31,6 @@
   "license": "Copyright 2015 Maestrano Pty Ltd",
   "repository": {
     "type": "git",
-    "url": "git://github.com/xaun/impac-angular.git"
+    "url": "git://github.com/maestrano/impac-angular.git"
   }
 }

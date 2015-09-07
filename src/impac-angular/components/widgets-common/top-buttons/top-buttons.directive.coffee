@@ -7,9 +7,6 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
   $scope.showEditActive = false
   $scope.showConfirmDelete = false
 
-  $scope.closeWidgetButtonImage = ImpacAssets.get('close-widget.png')
-  $scope.closeWidgetButtonImageActive = ImpacAssets.get('close-widget-pink.png')
-
   w.isEditMode = false
 
   $scope.deleteWidget = ->

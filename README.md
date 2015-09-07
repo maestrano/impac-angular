@@ -57,12 +57,23 @@ See example below:
   )
   
 ```
+### Optional Configurations
+[TODO: Expand on this section]<br>
+There are other new provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is a assets provider for configuring static assets.
+
 ### Developement
 
-Easiest way to develop for impac-angular at the moment is to clone this repo and sym-link dist folder as impac-angular in your bower_components.
+Easiest way to develop for impac-angular at the moment is to create a sym-link of the dist folder into your app, and the bower.json file into the root of angular-impac.
 
+```
+  ln -s impac-angular/dist your-app/bower_components/angular-impac/dist
+  cp impac-angular/dist your-app/bower_components/angular-impac 
+```
 When making changes in angular-impac src files, you will need to run `gulp build:dist`.
+
 Note, there is a `gulp start:watch` task that will run `gulp build:dist`, although it has proven to be inconsitant and needs debugging.
+
+<!-- dev information on stylesheets @imports, structure & gulptask -->
 
 ### Conventions within impac-angular
 
@@ -80,6 +91,7 @@ Note, there is a `gulp start:watch` task that will run `gulp build:dist`, althou
 - Gulp sourcemap errors are not giving accurate stack trace lines in browser console, have removed for now.
 - ImpacThemingProvider: look into how angular material does their custom themes.
 - Fix gulp watch task, seems to be not working consitantly. 
+- dashboard.tmpl.html dashboard management sections is currently broken.
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd

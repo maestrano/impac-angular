@@ -1,7 +1,3 @@
-@import 'bootstrap/bootstrap';
-@import 'custom_bootstrap/variables';
-@import 'custom_bootstrap/mixins';
-
 /*-----------------------------------------------------------------------*/
 /*                          Color palette                                */
 /*-----------------------------------------------------------------------*/
@@ -466,12 +462,14 @@
 
         .box-shadow(0px 1px 8px -4px);
 
+        /*
+        ** ABSTRACTED INTO top-buttons.less
         .top-button {
           float: right;
           background: transparent;
           border: none;
           color: silver;
-          padding: 0px;
+          padding: 1px;
           margin-left: 3px;
           outline: none;
 
@@ -496,13 +494,13 @@
             }
           }
           &.btn-close {
-            img {
-              vertical-align: top;
+            &:hover {
+              color: @pink
             }
           }
           &.btn-refresh {
             font-size: 17px;
-            margin: 1px 1px 0px 0px;
+            margin-top: -1px;
             &:hover {
               color: @mblue;
             }
@@ -511,6 +509,8 @@
             }
           }
         }
+        **********/
+
         .confirm-delete-popover {
           position: absolute;
           top: 90px;

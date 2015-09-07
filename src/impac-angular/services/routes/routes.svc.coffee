@@ -36,7 +36,7 @@ angular
       service.deleteWidgetPath = (id) -> service.widgetBasePath(id)
 
       return service
-    # inject service dependencies here
+    # inject service dependencies here, and declare in _$get function args.
     _$get.$inject = [];
     # attach provider function onto the provider object
     provider.$get = _$get

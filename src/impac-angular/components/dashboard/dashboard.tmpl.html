@@ -8,7 +8,7 @@
     <div class="col-md-6 col-sm-12">
 
       <h2>
-        <img ng-src="{{impacLogo}}" style="float: left; margin-right: 15px;" />
+        <img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />
         <!-- <div class="text-info" style="padding-top:12px; height: 48px;">Beta</div> -->
         <div class="text-info" style="padding-top:12px; height: 48px;"></div>
       </h2>
@@ -115,7 +115,8 @@
   <div class='spacer1'></div>
 
   <div class="text-center impac-background ng-hide" ng-show='(showChooseDhbMsg || showNoWidgetsMsg) && !isLoading'>
-    <img ng-src="{{assetPath['impac/impac_background.png']}}" class="bg">
+
+    <img ng-src="{{impacDashboardBackground}}" class="bg">
 
     <div class="impac-info-message">
       <!-- First Time Dashboard Creation -->

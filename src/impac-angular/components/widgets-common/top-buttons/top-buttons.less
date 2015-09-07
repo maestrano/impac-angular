@@ -1,0 +1,39 @@
+#module__top-buttons {
+
+  i.fa {
+    margin-left: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: silver;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+}
