@@ -22,7 +22,7 @@ Embed angular-impac's wrapper directive 'impacDashboard'. You can use either Ele
   <div impac-dashboard></div>
 ```
 
-impac-angular requires that you configure it's ImpacLinkingProvider service with some core data.
+impac-angular requires that you configure it's **ImpacLinkingProvider service** with some core data.
 
 **Below is the API & an example:**
 
@@ -51,7 +51,7 @@ See example below:
           organizations: OrganizationProvider.$get().getOrgUIDs
           ssoSession: UserAuthProvider.$get().getSession
             
-        ImpacLinking.linkData(data) 
+        ImpacLinkingProvider.linkData(data) 
       
     )
   )
@@ -59,7 +59,7 @@ See example below:
 ```
 ### Optional Configurations
 [TODO: Expand on this section]<br>
-There are other new provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is a assets provider for configuring static assets.
+There are other provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is an assets provider for configuring static assets.
 
 ### Developement
 
@@ -67,31 +67,65 @@ Easiest way to develop for impac-angular at the moment is to create a sym-link o
 
 ```
   ln -s impac-angular/dist your-app/bower_components/angular-impac/dist
-  cp impac-angular/dist your-app/bower_components/angular-impac 
+  cp impac-angular/bower.json your-app/bower_components/angular-impac 
 ```
 When making changes in angular-impac src files, you will need to run `gulp build:dist`.
 
 Note, there is a `gulp start:watch` task that will run `gulp build:dist`, although it has proven to be inconsitant and needs debugging.
 
-<!-- dev information on stylesheets @imports, structure & gulptask -->
-
 ### Conventions within impac-angular
 
-- HTML Templates must not use double-quotes for strings (I'm looking at you, Ruby devs). Only html attribute values may be wrapped in double qoutes. 
+##### General
+- HTML Templates **must not use double-quotes for strings** (I'm looking at you, Ruby devs). Only html attribute values may be wrapped in double qoutes. 
   - **REASON**: when gulp-angular-templatecache module works its build magic, having double quotes within double qoutes breaks the escaping.
  
 - I have found [this angular style guide](https://github.com/johnpapa/angular-styleguide) to be an excellent reference which outlines good ways to write angular. I try to write CoffeeScript so it compiles in line with this style guide.
+
+##### File Naming
+
+- slug style file naming, e.g `this-is-slug-style`.
+- prefix file basename rather than adding to filename. e.g `some-file.svc.coffee` instead of `some-file-svc.coffee`, or `some-file.modal.html` instead of `some-file-modal.html`.
+
+
+##### Stylesheets
+
+The goal is to be able to work on a specific component / peice of functionality and be able to quickly isolate the javascript and css without having to dig through a 1000 line + css / js file, and also preventing styles from bleeding.
+
+Stylesheets should be kept within the components file structure, with styles concerning that component.
+
+Only main stylesheets should be kept in the stylesheets folder, like `variables.less`, `global.less`, and `imports.less`.
+
+Component specific styles should be wrapped in a containing ID to prevent bleeding. 
+
+```
+  #module__component-name {
+    /* styles that wont bleed and are easily identifiable as only within this component */
+    ul {}
+  }
+```
+Template to match above:
+
+``` 
+  <!-- components/component-name/component-name.tmpl.html -->
+  <div id="module__component-name">
+    <!-- html template for component -->
+  </div>
+```
+
+Running `gulp build:less:inject` will inject `@import` declarations from `.less` files in `components/` into `stylesheets/import.less`.
+
+Running `gulp build:less` will run the inject task, and then compile all imports.less into one big css file in dist.
   
 ### Tests
 [TODO]
 
 ### Bugs & Things to Improve
-- By god, do something about the less file.
-    - modular / component scoped structure would be nice.
+- Refactor `analytics.less` into modular structure.
 - Gulp sourcemap errors are not giving accurate stack trace lines in browser console, have removed for now.
 - ImpacThemingProvider: look into how angular material does their custom themes.
 - Fix gulp watch task, seems to be not working consitantly. 
 - dashboard.tmpl.html dashboard management sections is currently broken.
+- bootstrap files are currently included within the project, this should be a dependency of angular-impac.
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd
