@@ -1,0 +1,60 @@
+<div class="top-line">
+  <div common-top-buttons parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" />
+</div>
+
+<div widget-hr-salaries-summary class="content">
+
+  <div ng-hide="widget.isLoading">
+    <div class="edit" ng-show="widget.isEditMode">
+      <h4>Widget settings</h4>
+
+      <div setting-organizations parent-widget="widget" class="part" />
+
+      <div align="right">
+        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      </div>
+    </div>
+
+    <div align="center" ng-hide="widget.isEditMode">
+
+      <div ng-show="isDataFound" class="row">
+        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+          <div setting-width parent-widget="widget" min="3" max="6" class="settings width" />
+
+          <h3 class="left">Average Salary Rate</h3>
+          <div class="price">
+             {{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}
+          </div>
+          <div class="currency" setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/>
+          <div class="legend">
+            <span>({{widget.content.total.employees}} employee{{widget.content.total.employees > 1 ? "s" : null}} with known salary)</span>
+          </div>
+        </div>
+
+        <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
+          <h3 class="right">Filter: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter"/></h3>
+          <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
+            <div dhb-chart data="widget.chart"></div>
+          </div>
+          <div class="widget-lines-container">
+            <div class="widget-line" ng-repeat="data in widget.content.summary.data">
+              <i style="float: right; margin-right: 10px;"><b>{{data.value | mnoCurrency : widget.content.total.currency}} (av.)</b></i>
+              <i ng-hide="widget.content.summary.filter=='age_range'" class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
+              {{data.label}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    </div>
+
+  </div>
+
+  <div class="loader" align="center" ng-show="widget.isLoading">
+    Your data is being retrieved...
+    <img class="gif" ng-src="{{loaderImage}}"/>
+  </div>
+</div>

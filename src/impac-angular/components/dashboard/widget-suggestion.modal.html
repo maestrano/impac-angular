@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <div class="close" type="button" ng-click="close()" >×</div>
+  <h3>Suggest a widget</h3>
+</div>
+
+<div class="modal-body">
+  
+  <div class="row">
+    <div class="col-md-6">
+      <label>What would you name your widget?</label><br />
+      <input type="text" ng-model="widgetDetails.name" ng-disabled="isLoading" />
+    </div>
+    <div class="col-md-6">
+      <label>In which category?</label><br />
+      <input type="text" ng-model="widgetDetails.category" ng-disabled="isLoading" />
+    </div>
+  </div>
+
+  <div class="spacer1" />
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>What kind of information would your widget display?</label><br />
+      <textarea ng-model="widgetDetails.description" ng-disabled="isLoading" />
+    </div>
+  </div>
+
+  <div class="spacer1" ng-show="isLoading" />
+
+  <div class="row" ng-show="isLoading">
+    <div class="col-md-12 text-center">
+      <h3 class="thanks-message">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>
+    </div>
+  </div>
+  
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-sm-12" ng-class="isLoading ? 'text-center' : null">
+      <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading">Cancel</button>
+      <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">Send your suggestion</button>
+      <img ng-src="{{loadingGif}}" ng-show="isLoading" alt="Loading">
+    </div>
+  </div>
+</div>

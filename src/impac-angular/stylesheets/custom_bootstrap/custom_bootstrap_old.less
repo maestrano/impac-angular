@@ -1,0 +1,784 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! AUTOMATICALLY GENERATED FILE. DO NOT MODIFY !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Core variables and mixins
+@import "twitter/bootstrap/variables.less";
+@import "custom_bootstrap/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "twitter/bootstrap/mixins.less";
+@import "custom_bootstrap/mixins.less"; // Modify this for custom mixins
+
+// Reset and dependencies
+@import "twitter/bootstrap/normalize.less";
+@import "twitter/bootstrap/print.less";
+@import "twitter/bootstrap/glyphicons.less";
+
+// Core CSS
+@import "twitter/bootstrap/scaffolding.less";
+@import "twitter/bootstrap/type.less";
+@import "twitter/bootstrap/code.less";
+@import "twitter/bootstrap/grid.less";
+@import "twitter/bootstrap/tables.less";
+@import "twitter/bootstrap/forms.less";
+@import "twitter/bootstrap/buttons.less";
+
+// Components
+@import "twitter/bootstrap/component-animations.less";
+@import "twitter/bootstrap/dropdowns.less";
+@import "twitter/bootstrap/button-groups.less";
+@import "twitter/bootstrap/input-groups.less";
+@import "twitter/bootstrap/navs.less";
+@import "twitter/bootstrap/navbar.less";
+@import "twitter/bootstrap/breadcrumbs.less";
+@import "twitter/bootstrap/pagination.less";
+@import "twitter/bootstrap/pager.less";
+@import "twitter/bootstrap/labels.less";
+@import "twitter/bootstrap/badges.less";
+@import "twitter/bootstrap/jumbotron.less";
+@import "twitter/bootstrap/thumbnails.less";
+@import "twitter/bootstrap/alerts.less";
+@import "twitter/bootstrap/progress-bars.less";
+@import "twitter/bootstrap/media.less";
+@import "twitter/bootstrap/list-group.less";
+@import "twitter/bootstrap/panels.less";
+@import "twitter/bootstrap/responsive-embed.less";
+@import "twitter/bootstrap/wells.less";
+@import "twitter/bootstrap/close.less";
+
+// Components w/ JavaScript
+@import "twitter/bootstrap/modals.less";
+@import "twitter/bootstrap/tooltip.less";
+@import "twitter/bootstrap/popovers.less";
+@import "twitter/bootstrap/carousel.less";
+
+// Utility classes
+@import "twitter/bootstrap/utilities.less";
+@import "twitter/bootstrap/responsive-utilities.less";
+
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*                   Boostrap 2 (to be removed as we go)                 */
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+
+.bootstrap2 {
+  font-family:'Helvetica Neue', 'Helvetica', 'Arial';
+  //=======================================
+  // Title defaults
+  //=======================================
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0px;
+  }
+
+  h1 {
+    font-size: 29.25px;
+  }
+
+  h2 {
+    font-size: 22.75px;
+  }
+
+  h3 {
+    font-size: 16.25px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+
+  //=======================================
+  // Border Utilities
+  //=======================================
+  // Round Border
+  .border.border-round {
+    .border-radius(5px);
+  }
+
+  // Dashed border
+  .border.border-dashed {
+    border-style: dashed;
+  }
+
+  // Need to resize spans to allow border
+  .span4.border,
+  .span4.border-right,
+  .span4.border-left {
+    width: 365px;
+  }
+
+  .span5.border,
+  .span5.border-right,
+  .span5.border-left {
+    width: 470px;
+  }
+
+  .span8.border,
+  .span8.border-right,
+  .span8.border-left {
+    width: 765px;
+  }
+
+  // Default
+  .border {
+    border: solid 1px lighten(@mgrey, 5%);
+  }
+  .border-right {
+    border-right: solid 1px lighten(@mgrey, 5%);
+  }
+  .border-left {
+    border-left: solid 1px lighten(@mgrey, 5%);
+  }
+
+  // Dark Grey
+  .border.border-darkgrey {
+    border: 1px solid #bbb;
+  }
+
+  // Grey
+  .border.border-grey {
+    border: 1px solid #eeeeee;
+  }
+  .border-right.border-grey {
+    border-right: solid 1px #eeeeee;
+  }
+  .border-left.border-grey {
+    border-left: solid 1px #eeeeee;
+  }
+
+  // Blue
+  .border.border-blue {
+    border: 1px solid @mlightblue;
+  }
+  .border-right.border-blue {
+    border-right: 1px solid @mlightblue;
+  }
+  .border-left.border-blue {
+    border-left: 1px solid @mlightblue;
+  }
+
+  // Mgreen
+  .border.border-mgreen {
+    border: 1px solid @mgreen;
+  }
+  .border-right.border-mgreen {
+    border-right: solid 1px @mgreen;
+  }
+  .border-left.border-mgreen {
+    border-left: solid 1px @mgreen;
+  }
+
+  //=======================================
+  // Utilities
+  //=======================================
+
+  // Blocks
+  .inline-block {
+    display: inline-block;
+  }
+
+  .mini-thumb-block {
+    display: block;
+    height: 40px;
+    width: 40px;
+  }
+
+  a.mini-thumb-block {
+    line-height: 40px;
+  }
+
+  // Text Size
+  .text-xsmall {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .text-small {
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .text-medium {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  // Text-color
+  .text-grey {
+    color: darken(@mgrey, 10%);
+  }
+
+  a.text-grey:hover {
+    color: darken(@mgrey, 30%);
+  }
+
+  .text-orange {
+    color: #DB9024;
+  }
+
+  // Vertical Separators
+  hr.blue {
+    border-top: 1px solid @mlightblue;
+    border-bottom: 1px solid #ffffff;
+  }
+
+  hr.transparent {
+    border: solid 1px transparent;
+  }
+
+  hr.small-margin {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  hr.margin-xsmall {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  hr.margin-small {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  hr.margin-medium {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  // Backgrounds
+  .bg-white {
+    background-color: white;
+  }
+
+  .bg-lightgrey {
+    background-color: darken(white, 2%);
+  }
+
+  //=======================================
+  // Fade variants
+  //=======================================
+  // light-fade will fade/unfade the
+  // item between 0.1 and 1
+  //------------------------
+  .light-fade {
+    opacity: 0.1;
+    filter: alpha(opacity=10);
+    .transition(opacity .15s linear);
+    &.in {
+      opacity: 1;
+      filter: alpha(opacity=100);
+    }
+  }
+
+
+  // Allow images to become responsive
+  img {
+    max-width: 100%;
+  }
+
+  // To be removed when upgraded to v2.0.3
+  button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+  }
+
+  // Small
+  // Links coloring
+  small a {
+    color: #999;
+
+    &:hover {
+      color: darken(#999, 20%);
+      text-decoration: underline;
+    }
+  }
+
+  //=======================================
+  // Layout
+  //=======================================
+  // This section is used for the sticky footer
+  @navbar-padding: 40px;
+  @footer-height: 450px;
+
+  * {
+    margin: 0;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  .wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -(@footer-height+@navbar-padding);
+  }
+
+  .push {
+    padding-top: @navbar-padding + 40px;
+    height: @footer-height;
+  }
+
+  .mgreen {
+    color: @mgreen;
+  }
+
+  .mgreener {
+    color: #A9B665;
+  }
+
+  .mred {
+    color: #bd352f;
+  }
+
+  .mgrey {
+    color: darken(#e5e5e5, 50%);
+  }
+
+  .mlightgrey {
+    color: @mlightgrey;
+  }
+
+  .morange {
+    color: @morange;
+  }
+
+  .mdarkblue {
+    color: @mdarkblue;
+  }
+
+  .mwhite {
+    color: white;
+  }
+
+  .overflow-y-visible {
+    overflow-y: visible;
+  }
+
+
+
+  // Modify nav-pills style
+  .nav-pills > li {
+    margin-left: 10px;
+    text-align: center;
+  }
+
+  .nav-pills > li > a {
+    cursor: pointer;
+    .border-radius(0px);
+    color: #878787;
+    background-color: #f4f4f4;
+    min-width: 100px;
+  }
+
+  .nav-pills > .active > a,
+  .nav-pills > .active > a:hover,
+  .nav-pills > .active > a:focus {
+    cursor: default;
+    background-color: #dae173;
+    color: white;
+    font-weight: bold;
+  }
+
+  .nav-pills > li > input,
+  .nav-pills > li > button {
+    margin-bottom: -17px;
+  }
+
+  .nav-pills > li.separator {
+    height: 1px;
+    width: 10px;
+  }
+
+  // Make sure there is a pointer
+  .nav.nav-tabs > li {
+    cursor: pointer;
+  }
+
+  // Additional tabbing style configuration
+  // To be called on top of nav-tabs
+  .nav-tabs-bordered {
+    li {
+      a {
+        border-top: 1px solid lighten(@tableBorder, 10%);
+        border-left: 1px solid lighten(@tableBorder, 10%);
+        border-right: 1px solid lighten(@tableBorder, 10%);
+
+        &:hover{
+          background-color: lighten(@tableBorder, 10%);
+        }
+      }
+    }
+  }
+
+  // Additional well style
+  .well-transparent {
+    .border-radius(0px);
+    .box-shadow(inset 0 0px 0px rgba(0,0,0,.05));
+    background-color: transparent;
+    border: none;
+  }
+
+  .well-small {
+    .well();
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  .well-danger {
+    .well();
+    background-color: lighten(red,48%)
+  }
+
+  //Add alert style
+  // Alert stays on top
+  .alert-over {
+    position: absolute;
+    z-index: 9999;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .alert-over.in{
+    opacity: 0.95;
+  }
+
+  /*.alert-over.fade.in{
+    opacity: 0.95;
+  }*/
+
+  .alert h2 {
+    font-size: 13px;
+    text-align: left;
+    line-height: 15px;
+  }
+
+  .alert ul {
+    text-align: left;
+  }
+
+  .alert.alert-top {
+    position: fixed;
+    top: 5px;
+    left: 30%;
+    z-index: -1;
+    width: 500px;
+  }
+  .alert.alert-top.fade.in {
+    opacity: 0.95;
+    z-index: 1500;
+  }
+
+  // Links
+  a.discrete {
+    color: inherit;
+  }
+
+  // Additional badges
+  .badge-validated {
+    background-color: #56B357
+  }
+
+  // Enclosure for navs
+  .pill-bar {
+    .border-radius(6px);
+    .box-shadow(0 1px 3px rgba(0,0,0,0.3));
+    background-color: lighten(#e5e5e5, 5%);
+    padding: 5px;
+    border: solid 1px #e5e5e5;
+    .nav {
+      margin-bottom: 0px;
+    }
+  }
+
+  .light-border {
+    border: 1px solid #E7E7E7;
+
+    a {
+      color: #E7E7E7;
+    }
+  }
+
+  a.light-border {
+    border: 1px solid #E7E7E7;
+    color: #E7E7E7;
+  }
+
+  .right-border {
+    border-right: solid 1px  #e5e5e5;
+  }
+
+  //Badges
+  .msg-badge-tab-heading {
+    margin-right: -22px;
+    margin-top: -36px;
+    float: right;
+    position: relative;
+  }
+
+  .msg-badge-nav {
+    position: relative;
+    top: -42px;
+    right: -86%;
+  }
+
+  .msg-badge-tab {
+    position: relative;
+    top: -42px;
+    right: -120px;
+  }
+
+
+  //=======================================
+  // Glows
+  //=======================================
+  .glow {
+    border-color: lighten(@morange, 10%);
+    @shadow: 0px 2px 6px lighten(@morange, 10%);
+    .box-shadow(@shadow) !important;
+  }
+
+  .border-top-orange {
+    border-top-color: lighten(@morange, 10%);
+  }
+  .border-right-orange {
+    border-right-color: lighten(@morange, 10%);
+  }
+  .border-bottom-orange {
+    border-bottom-color: lighten(@morange, 10%);
+  }
+  .border-left-orange {
+    border-left-color: lighten(@morange, 10%);
+  }
+
+  // List style - badged-list
+  // Align text after badge when used
+  // as first element
+  ul.badged-list li p {
+    padding-left: 40px;
+    margin-top: -20px;
+    font-weight: 500;
+  }
+
+  ul.large-badged-list li p {
+    padding-left: 40px;
+    margin-top: -35px;
+    font-weight: 500;
+  }
+
+  // List style - Comfortable
+  ul.comfortable {
+    margin-top: 20px;
+    margin-left: 0px;
+    list-style: none;
+    margin-bottom: 0px;
+  }
+
+  ul.comfortable li {
+    margin-bottom: 20px;
+  }
+
+  // List style - Cozy
+  ul.cozy {
+    margin-top: 10px;
+    margin-left: 0px;
+    list-style: none;
+    margin-bottom: 0px;
+  }
+
+  ul.cozy li {
+    margin-bottom: 10px;
+  }
+
+  // List style - Compact
+  ul.compact {
+    margin-top: 5px;
+    margin-left: 0px;
+    list-style: none;
+    margin-bottom: 0px;
+  }
+
+  ul.compact li {
+    margin-bottom: 5px;
+  }
+
+
+
+  //dark-box
+  //------------------
+  .dark-box {
+    color: #eeeeee;
+    border: solid 1px darken(#232528, 10%);
+    background-color: @mdarkblue;
+    @shadow: 0px 4px 8px @mdarkblue;
+    .box-shadow(@shadow);
+  }
+
+  .dark-box hr {
+    border-top: 1px solid lighten(@mdarkblue,10%);
+    border-bottom: 1px solid lighten(@mdarkblue,20%);
+  }
+
+  .dark-box h2 {
+    font-size: 17px;
+    line-height: 20px;
+  }
+
+  .dark-box h2 b {
+    color: #d1e17c;
+    text-shadow: 0 1px 2px rgba(0,0,0,1);
+  }
+
+  .dark-box ul {
+    margin-top: 30px;
+    margin-left: 0px;
+    list-style: none;
+    text-align: left;
+  }
+
+  .dark-box ul li {
+    margin-bottom: 30px;
+  }
+
+
+  // Badge Maestrano
+  // -----------------
+  .badge-mno {
+    background-color: #d1e17c;
+    @shadow: 0 1px 1px rgba(55, 57, 54, 0.75);
+    .box-shadow(@shadow);
+  }
+
+  // Add border to white inputs
+  .modal-body {
+    input[type='text'], input[type='date'], input[type='email'] {
+      border: 1px solid #909090;
+    }
+  }
+
+  // Bootstrap Overrides
+  @import "twitter-bootstrap2/forms";
+  @import "twitter-bootstrap2/modal";
+  @import "twitter-bootstrap2/alert";
+
+  // Additional Modules
+  @import "twitter-bootstrap2/utilities";
+  /*@import "twitter-bootstrap2/header";*/
+  /*@import "twitter-bootstrap3/header";*/
+  @import "twitter-bootstrap2/footer";
+  @import "twitter-bootstrap2/devise";
+  @import "twitter-bootstrap2/button_extension";
+  @import "twitter-bootstrap2/buttons_flat";
+  @import "twitter-bootstrap2/well_box";
+  @import "twitter-bootstrap2/well_flat";
+  @import "twitter-bootstrap2/home_page";
+  @import "twitter-bootstrap2/jobs_page";
+  @import "twitter-bootstrap2/contact_us_page";
+  @import "twitter-bootstrap2/tutobox";
+  @import "twitter-bootstrap2/pricing_page";
+  @import "twitter-bootstrap2/my_space";
+  @import "twitter-bootstrap2/currency_widget";
+  @import "twitter-bootstrap2/app_page";
+  @import "twitter-bootstrap2/app_new";
+  @import "twitter-bootstrap2/bootstrap_gallery";
+  @import "twitter-bootstrap2/apps_finder";
+  @import "twitter-bootstrap2/app_omnibox";
+  @import "twitter-bootstrap2/price_simulator";
+  @import "twitter-bootstrap2/user_guide";
+  @import "twitter-bootstrap2/landing_page";
+  @import "twitter-bootstrap2/first_open_instructions";
+  @import "twitter-bootstrap2/flipbox";
+  @import "twitter-bootstrap2/electronic_fund_transfer";
+  @import "twitter-bootstrap2/why_page";
+  @import "twitter-bootstrap2/partners_page";
+  @import "twitter-bootstrap2/partners_platform";
+  @import "twitter-bootstrap2/partners_directory";
+  @import "twitter-bootstrap2/industry_bundles";
+  @import "twitter-bootstrap2/credit_card";
+  @import "twitter-bootstrap2/cloud_partner_platform";
+  @import "twitter-bootstrap2/connec";
+  @import "twitter-bootstrap2/async_job";
+  @import "twitter-bootstrap2/star_wizard";
+}
+
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*                            Bootstrap 3                                */
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+@import "twitter-bootstrap3/header";
+@import "twitter-bootstrap3/form";
+@import "twitter-bootstrap3/button";
+@import "twitter-bootstrap3/footer";
+@import "twitter-bootstrap3/bootstrap-on-juice";
+@import "twitter-bootstrap3/utilities";
+@import "twitter-bootstrap3/modal";
+@import "twitter-bootstrap3/accordion";
+@import "twitter-bootstrap3/alert";
+@import "twitter-bootstrap3/xeditable";
+
+/*-----------------------------------------------------------------------*/
+/*               Include the utilities spreadsheets                      */
+/*-----------------------------------------------------------------------*/
+@import "twitter-bootstrap3/utility/helptext";
+@import "twitter-bootstrap3/utility/banners";
+@import "twitter-bootstrap3/utility/testimonial";
+@import "twitter-bootstrap3/utility/text";
+@import "twitter-bootstrap3/utility/miscellaneous";
+@import "twitter-bootstrap3/utility/app-presentation";
+@import "twitter-bootstrap3/utility/step";
+@import "twitter-bootstrap3/utility/progress-bar";
+@import "twitter-bootstrap3/utility/carousel";
+
+/*-----------------------------------------------------------------------*/
+/*               Include the stylsheets specific to the views            */
+/*-----------------------------------------------------------------------*/
+@import "twitter-bootstrap3/views/myspace";
+@import "twitter-bootstrap3/views/pages/home";
+@import "twitter-bootstrap3/views/pages/contact-us";
+@import "twitter-bootstrap3/views/pages/why";
+@import "twitter-bootstrap3/views/pages/pricing";
+@import "twitter-bootstrap3/views/pages/pricing-faq";
+@import "twitter-bootstrap3/views/pages/support";
+@import "twitter-bootstrap3/views/partners";
+@import "twitter-bootstrap3/views/apps";
+@import "twitter-bootstrap3/views/registration";
+@import "twitter-bootstrap3/views/industry-bundle";
+@import "twitter-bootstrap3/views/connec";
+@import "twitter-bootstrap3/views/knowledge_center";
+@import "twitter-bootstrap3/views/star";
+@import "twitter-bootstrap3/views/press";
+@import "twitter-bootstrap3/views/pages/confirmation_lounge";
+@import "twitter-bootstrap3/views/pages/jobs";
+@import "twitter-bootstrap3/views/promo/general-lp";
+@import "twitter-bootstrap3/views/promo/app-lp";
+
+
+/*-----------------------------------------------------------------------*/
+/*       Include the stylsheets specific to angular templates            */
+/*-----------------------------------------------------------------------*/
+@import "twitter-bootstrap3/views/templates/why-use-maestrano";
+@import "twitter-bootstrap3/views/templates/apps-bundle-builder";
+@import "twitter-bootstrap3/views/templates/app-bundle-custom";
+@import "twitter-bootstrap3/views/templates/price-simulator";
+@import "twitter-bootstrap3/views/templates/shopping-cart";
+@import "twitter-bootstrap3/views/templates/notification-widget";
+@import "twitter-bootstrap3/views/templates/password-strength";
+@import "twitter-bootstrap3/views/templates/star-wizard";
+
+@import "twitter-bootstrap3/views/templates/dashboard/dashboard-organization";
+@import "twitter-bootstrap3/views/templates/dashboard/partner-summary";
+@import "twitter-bootstrap3/views/templates/dashboard/dashboard-marketplace";
+@import "twitter-bootstrap3/views/templates/dashboard/tickets";
+@import "twitter-bootstrap3/views/templates/dashboard/support";
+@import "twitter-bootstrap3/views/templates/dashboard/concierge-support";
+@import "twitter-bootstrap3/views/templates/mno-editable";

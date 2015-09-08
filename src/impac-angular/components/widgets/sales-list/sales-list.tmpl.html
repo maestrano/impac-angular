@@ -1,0 +1,60 @@
+<div class="top-line">
+  <div common-top-buttons parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" />
+</div>
+
+<div widget-sales-list class="content">
+
+  <div ng-show="widget.isLoading" class="loader" align="center">
+    Your data is being retrieved...
+    <img class="gif" ng-src="{{loaderImage}}"/>
+  </div>
+
+  <div ng-hide="widget.isLoading">
+
+    <div class="edit" ng-show="widget.isEditMode">
+      <h4>Widget settings</h4>
+
+      <div setting-organizations parent-widget="widget" class="part" />
+
+      <div align="right">
+        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      </div>
+    </div>
+
+    <div ng-hide="widget.isEditMode">
+
+      <div ng-show="isDataFound">
+
+        <div class="selector">
+          See: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter"/> for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/>
+          ({{widget.content.hist_parameters.from | date : "d MMM"}} to {{widget.content.hist_parameters.to | date : "d MMM"}})
+        </div>
+
+        <div class="widget-lines-container">
+          <div class="row widget-line total" ng-repeat="company in widget.content.summary" >
+            <div class="row widget-line" >
+              <div class="col-sm-1" ng-click="toogleCollapsed(company.name)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(company.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-7"><strong>{{company.name | titleize}}</strong></div>
+              <div class="col-sm-4 text-right" ng-show="{{filter.value.match('quantity')}}"><strong>{{company.total}}</strong></div>
+              <div class="col-sm-4 text-right" ng-hide="{{filter.value.match('quantity')}}"><strong>{{company.total | mnoCurrency : company.currency}}</strong></div>
+            </div>
+            <div collapse="isCollapsed(company.name)">
+              <div class="row widget-line" ng-repeat="product in company.products" >
+                <div class="col-sm-1" />
+                <div class="col-sm-7">{{product.name | titleize}}</div>
+                <div class="col-sm-4 text-right" ng-show="{{filter.value.match('quantity')}}"><strong>{{product.total}}</strong></div>
+                <div class="col-sm-4 text-right" ng-hide="{{filter.value.match('quantity')}}"><strong>{{product.total | mnoCurrency : product.currency}}</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    </div>
+
+  </div>
+</div>

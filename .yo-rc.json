@@ -1,0 +1,29 @@
+{
+  "generator-angularjs-gulp-library": {
+    "props": {
+      "author": {
+        "name": "Xaun Lopez",
+        "email": "xaunlopez@gmail.com"
+      },
+      "libraryName": {
+        "original": "impac-angular",
+        "camelized": "impacAngular",
+        "dasherized": "impac-angular",
+        "slugified": "impac-angular",
+        "parts": [
+          "impac",
+          "angular"
+        ]
+      },
+      "includeModuleDirectives": true,
+      "includeModuleFilters": true,
+      "includeModuleServices": true,
+      "includeAngularModuleResource": false,
+      "includeAngularModuleCookies": false,
+      "includeAngularModuleSanitize": false,
+      "librarySrcDirectory": "src/impacAngular",
+      "libraryUnitTestDirectory": "test/unit/impacAngular",
+      "libraryUnitE2eDirectory": "test/e2e/impacAngular"
+    }
+  }
+}

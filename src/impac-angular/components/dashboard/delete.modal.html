@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="close" type="button" ng-click="close()" >×</div>
+  <h3>Delete Dashboard</h3>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-error" ng-show="errors">
+        <button class="close" ng-click="errors=''">×</button>
+        <ul>
+          <li ng-repeat="error in errors">{{error}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create a new widget -->
+  <p>Are you sure you want to delete this analytics dashboard?</p>
+  
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading" ng-disabled="isLoading">Cancel</button>
+      <button class="btn btn-danger" ng-click="proceed()" ng-hide="isLoading" ng-disabled="isLoading">Delete</button>
+      <img ng-src="{{loadingGif}}" ng-show="isLoading" alt="Loading">
+    </div>
+    
+  </div>
+</div>
