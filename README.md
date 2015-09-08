@@ -8,13 +8,13 @@ Install package via bower.
   bower install --save impac-angular=git@github.com:maestrano/impac-angular.git#develop
 ```
 
-Add 'maestrano.impac' module as dependacy of your angular application.
+Add `'maestrano.impac'` module as dependacy of your angular application.
 
 ```
   angular.module('yourApp', ['maestrano.impac'])
 ```
 
-Embed angular-impac's wrapper directive 'impacDashboard'. You can use either Element or Attribute binding
+Embed angular-impac's wrapper directive `'impacDashboard'`. You can use either Element or Attribute binding
 
 ```
   <impac-dashboard></impac-dashboard>
@@ -119,15 +119,26 @@ Running `gulp build:less` will run the inject task, and then compile all imports
 ### Tests
 [TODO]
 
-### Bugs & Things to Improve
+### Bugs, Refactor and Improvements
 - Refactor `analytics.less` into modular structure.
 - Gulp sourcemap errors are not giving accurate stack trace lines in browser console, have removed for now.
 - ImpacThemingProvider: look into how angular material does their custom themes.
 - Fix gulp watch task, seems to be not working consitantly. 
 - dashboard.tmpl.html dashboard management sections is currently broken.
-- bootstrap files are currently included within the project, this should be a dependency of angular-impac.
+- bootstrap files are currently included within the project, this should be a dependency of impac-angular.
+
+### Roadmap
+- tabs components
+  - multi-tab lazy loading
+  - switch between 'tabs' & 'pills' UI style
+  - ng-include options for app specific custom template include. 
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd
+
+
+
+
+
 
 
