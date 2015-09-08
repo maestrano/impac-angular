@@ -128,10 +128,14 @@ Running `gulp build:less` will run the inject task, and then compile all imports
 - bootstrap files are currently included within the project, this should be a dependency of impac-angular.
 
 ### Roadmap
-- tabs components
+- Refactor `analytics.less`
+- Accessiblity
+- Testing 
+- tabs component
   - multi-tab lazy loading
   - switch between 'tabs' & 'pills' UI style
   - ng-include options for app specific custom template include. 
+- remove bootstrap files from stylesheets
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd

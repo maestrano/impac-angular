@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-aged-payables-receivables',[])
 
-module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $filter, DhbAnalyticsSvc, ChartFormatterSvc) ->
 
     w = $scope.widget
 
@@ -178,9 +178,13 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, DhbAnaly
       else
         return 0
 
-    # width + time range + organization_ids + unCollapsed + selectedElement
+    # TODO: This is probably not needed, we need to replace with simply
+    # `w.loadContent()` and test.
     $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 5
+      $log.debug('getSettingsCount WATCH FIRED: ', total);
+      if total >= 5
+        $log.debug('getSettingCount LOADING CONTENT: ', total);
+        w.loadContent()
 
     return w
 )

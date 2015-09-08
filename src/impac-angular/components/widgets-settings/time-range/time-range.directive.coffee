@@ -1,8 +1,10 @@
 module = angular.module('impac.components.widgets-settings.time-range',[])
 
-module.controller('SettingTimeRangeCtrl', ($scope) ->
+module.controller('SettingTimeRangeCtrl', ($scope, $log) ->
 
   w = $scope.parentWidget
+
+  $log.debug('SettingTimeRangeCtrl START', w);
 
   $scope.numberOfPeriods = (new Date()).getMonth() + 1
   $scope.selectedPeriod = "MONTHLY"
@@ -26,6 +28,7 @@ module.controller('SettingTimeRangeCtrl', ($scope) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
+    $log.debug('SettingTimeRangeCtrl: settings.initialize START');
     # if w.content? && hist = w.content.hist_parameters
     if w.metadata? && hist = w.metadata.hist_parameters
       $scope.selectedPeriod = hist.period if hist.period?
@@ -36,6 +39,7 @@ module.controller('SettingTimeRangeCtrl', ($scope) ->
     return { hist_parameters: {period: $scope.selectedPeriod, number_of_periods: $scope.numberOfPeriods} }
 
   w.settings ||= []
+  $log.debug('SettingTimeRangeCtrl FINISH', w.settings);
   w.settings.push(setting)
 )
 

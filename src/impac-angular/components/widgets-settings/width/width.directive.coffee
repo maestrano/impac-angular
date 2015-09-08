@@ -1,8 +1,10 @@
 module = angular.module('impac.components.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ($scope) ->
+module.controller('SettingWidthCtrl', ($scope, $log) ->
 
   w = $scope.parentWidget
+
+  $log.debug('SettingWidthCtrl START', w);
 
   w.toogleExpanded = ->
     $scope.expanded = !$scope.expanded
@@ -23,6 +25,7 @@ module.controller('SettingWidthCtrl', ($scope) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
+    $log.debug('SettingWidthCtrl: setting.initialize START')
     if w.width?
       $scope.expanded = (w.width == parseInt($scope.max))
       setting.isInitialized = true
@@ -35,6 +38,7 @@ module.controller('SettingWidthCtrl', ($scope) ->
     return { width: parseInt(newWidth) }
 
   w.settings ||= []
+  $log.debug('SettingWidthCtrl FINISH', w.settings);
   w.settings.push(setting)
 )
 
