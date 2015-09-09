@@ -178,12 +178,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
       else
         return 0
 
-    # TODO: This is probably not needed, we need to replace with simply
-    # `w.loadContent()` and test.
     $scope.$watch getSettingsCount, (total) ->
-      $log.debug('getSettingsCount WATCH FIRED: ', total);
       if total >= 5
-        $log.debug('getSettingCount LOADING CONTENT: ', total);
         w.loadContent()
 
     return w

@@ -83,8 +83,21 @@ Note, there is a `gulp start:watch` task that will run `gulp build:dist`, althou
 
 ##### File Naming
 
-- slug style file naming, e.g `this-is-slug-style`.
-- prefix file basename rather than adding to filename. e.g `some-file.svc.coffee` instead of `some-file-svc.coffee`, or `some-file.modal.html` instead of `some-file-modal.html`.
+- Slug style file naming, e.g `this-is-slug-style`.
+- Prefix file basename rather than adding to filename. e.g `some-file.svc.coffee` instead of `some-file-svc.coffee`, or `some-file.modal.html` instead of `some-file-modal.html`.
+
+<br>
+**IMPORTANT:**
+Widget folder and file names must be the same as the widget's category that is stored in the back-end, for example:
+
+```
+  # widget data returned from maestrano database
+  widget: {
+    category: "invoices/aged_payables_receivables",
+    ...
+  }
+```
+**Component folder & file name should be:** `invoices-aged-payables-receivables`
 
 
 ##### Stylesheets
@@ -124,8 +137,8 @@ Running `gulp build:less` will run the inject task, and then compile all imports
 - Gulp sourcemap errors are not giving accurate stack trace lines in browser console, have removed for now.
 - ImpacThemingProvider: look into how angular material does their custom themes.
 - Fix gulp watch task, seems to be not working consitantly. 
-- dashboard.tmpl.html dashboard management sections is currently broken.
-- bootstrap files are currently included within the project, this should be a dependency of impac-angular.
+- Dashboard.tmpl.html dashboard management sections is currently broken.
+- Bootstrap files are currently included within the project, this should be a dependency of impac-angular.
 
 ### Roadmap
 - Refactor `analytics.less`
@@ -135,14 +148,9 @@ Running `gulp build:less` will run the inject task, and then compile all imports
   - multi-tab lazy loading
   - switch between 'tabs' & 'pills' UI style
   - ng-include options for app specific custom template include. 
-- remove bootstrap files from stylesheets
+- Remove bootstrap files from stylesheets, as as bower dep.
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd
-
-
-
-
-
 
 

@@ -6,8 +6,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   # ### Widget template scope
   # ---------------------------------------------------------
 
-  $scope.loaderImage = '';
-  # TODO: add this?
+  $scope.loaderImage = ''
+  # TODO: add loader image options to impac-assets.svc
   # $scope.loaderImage = AssetPath['loader-white-bg.gif']
 
   # ---------------------------------------------------------
@@ -34,12 +34,12 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   w.hasEditAbility = true
   w.hasDeleteAbility = true
 
-  # Retrieve the widget content from Impac! and initialize the widget from it
+  # Retrieve the widget content from Impac! and initialize the widget from it.
   w.loadContent = (refreshCache=false) ->
     w.isLoading = true
     DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
       (success) ->
-        $log.debug('widget loadContent SUCCESS: ', success);
+        $log.debug('widget loadContent SUCCESS: ', success)
         updatedWidget = success.data
         updatedWidget.content ||= {}
         updatedWidget.originalName = updatedWidget.name
@@ -56,9 +56,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
         w.errors = Utilities.processRailsError(errors)
         w.isLoading = false
     )
-
-  # TODO: is this needed?
-  # w.loadContent();
 
   # Initialize all the settings of the widget
   w.initSettings = ->
@@ -108,17 +105,35 @@ module.directive('impacWidget', ($templateCache) ->
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
-      # DEFINITION of TEMPLATE and CLASS
-      # All templates are defined by the first two elements of the corresponding path
-      # the "width" (number of bootstrap columns) is stored in the widget model.
+      #=======================================
+      # DYNAMIC WIDGET TEMPLATE LOADING
+      # Widget data sent from Maestrano db have a category value in url format.
+      # The structure of the url is `category/widget-template-name/data-extension`.
+      # 'data-extension' means the widget re-uses a widget template, but signifies that
+      # different data will be fed through.
+      #=======================================
       splittedPath = angular.copy(scope.widget.category).split("/")
+      # remove any number of items beyond index 2
+      splittedPath.splice(2) if splittedPath.length > 2
+      # format into slug-case for filename matching
       templateName = splittedPath.join("-").replace(/_/g, "-")
+      # url for retreiving widget templates from angular $templateCache service.
       scope.templateUrl = "widgets/" + templateName + ".tmpl.html"
 
       scope.isTemplateLoaded = ->
         return !!$templateCache.get(scope.templateUrl)
 
-    ,template: '<div ng-show="isTemplateLoaded()" ng-include="templateUrl"></div><div ng-hide="isTemplateLoaded()"><div class="top-line"><div common-top-buttons parent-widget="widget" />
-  <div common-editable-title parent-widget="widget" /></div><div class="content"><div class="loader" align="center"><img class="gif" ng-src="{{loaderImage}}"/></div></div></div>'
+    ,template: '<div ng-show="isTemplateLoaded()" ng-include="templateUrl"></div>'+
+    '<div ng-hide="isTemplateLoaded()">'+
+      '<div class="top-line">'+
+        '<div common-top-buttons parent-widget="widget" />'+
+        '<div common-editable-title parent-widget="widget" />'+
+      '</div>'+
+      '<div class="content">'+
+        '<div class="loader" align="center">'+
+          '<img class="gif" ng-src="{{loaderImage}}"/>'+
+        '</div>'+
+      '</div>'+
+    '</div>'
   }
 )
