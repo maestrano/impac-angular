@@ -119,7 +119,7 @@ angular
           }
           angular.extend(data, {refresh_cache: true}) if refresh_cache
 
-          data.metadata.organization_ids = ImpacLinking.getOrganizations()
+          data.metadata.organization_ids = data.metadata.organization_ids
 
           $http.post(ImpacRoutes.showWidgetPath(), data)
         (error) ->

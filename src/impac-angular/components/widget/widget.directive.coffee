@@ -37,7 +37,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   # Retrieve the widget content from Impac! and initialize the widget from it
   w.loadContent = (refreshCache=false) ->
     w.isLoading = true
-    $log.debug('w.loadContent START', w);
     DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
       (success) ->
         $log.debug('widget loadContent SUCCESS: ', success);
@@ -63,11 +62,9 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
 
   # Initialize all the settings of the widget
   w.initSettings = ->
-    $log.debug('w.initSettings START', w.settings.length, w.settings);
     angular.forEach(w.settings, (setting) ->
       setting.initialize()
     )
-    $log.debug('w.initSettings FINISH', w, w.settings.length);
     # TODO: following is still true ?
     # For discreet metadata updates, we don't want to force editMode to be false example: changing hist mode
     w.isEditMode = false

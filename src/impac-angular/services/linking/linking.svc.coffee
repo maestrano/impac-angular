@@ -12,7 +12,6 @@ angular
     #=======================================
     # Required data:
     links = {
-      organizations: null,
       ssoSession: null
     }
     #=======================================
@@ -34,9 +33,6 @@ angular
       #=======================================
       # Public methods available as service
       #=======================================
-      service.getOrganizations = ->
-        return links.organizations()
-
       service.getSsoSession = ->
         deferred = $q.defer()
         links.ssoSession().then(
