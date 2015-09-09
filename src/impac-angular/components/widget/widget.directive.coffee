@@ -114,7 +114,7 @@ module.directive('impacWidget', ($templateCache) ->
       #=======================================
       splittedPath = angular.copy(scope.widget.category).split("/")
       # remove any number of items beyond index 2
-      splittedPath.splice(2) if splittedPath.length > 2
+      splittedPath.splice(2)
       # format into slug-case for filename matching
       templateName = splittedPath.join("-").replace(/_/g, "-")
       # url for retreiving widget templates from angular $templateCache service.
