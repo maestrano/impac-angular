@@ -113,7 +113,8 @@ var buildSourceFiles = [
       'src/impac-angular/impac-angular.prefix',
       'tmp/impac-angular.js',
       'src/impac-angular/impac-angular.suffix',
-      'tmp/scripts/**/*.js'
+      'tmp/scripts/**/*.js',
+      'lib/*.js'
     ],
     // CoffeeScript & Less file directories to be compiled before build.
     coffeeFiles = [
