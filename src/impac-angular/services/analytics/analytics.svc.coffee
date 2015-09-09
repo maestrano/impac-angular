@@ -109,17 +109,22 @@ angular
 
     # Call Impac! API to retrieve the widget content (will be stored in widget.content)
     service.widgets.show = (widget, refresh_cache=false) ->
-      data = {
-        owner: widget.owner,
-        sso_session: ImpacLinking.getSsoSession(),
-        metadata: widget.metadata,
-        engine: widget.category
-      }
-      angular.extend(data, {refresh_cache: true}) if refresh_cache
+      ImpacLinking.getSsoSession().then(
+        (ssoSession) ->
+          data = {
+            owner: widget.owner,
+            sso_session: ssoSession,
+            metadata: widget.metadata,
+            engine: widget.category
+          }
+          angular.extend(data, {refresh_cache: true}) if refresh_cache
 
-      data.metadata.organization_ids = ImpacLinking.getOrganizations()
+          data.metadata.organization_ids = ImpacLinking.getOrganizations()
 
-      $http.post(ImpacRoutes.showWidgetPath(), data)
+          $http.post(ImpacRoutes.showWidgetPath(), data)
+        (error) ->
+          $log.error('Unable to retrieve widget data due to session auth fail.', error)
+      )
 
     # Delete a widget
     service.widgets.delete = (widgetId, currentDhb) ->
