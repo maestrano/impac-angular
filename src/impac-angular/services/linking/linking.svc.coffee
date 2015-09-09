@@ -12,7 +12,6 @@ angular
     #=======================================
     # Required data:
     links = {
-      organizations: null,
       ssoSession: null
     }
     #=======================================
@@ -29,21 +28,25 @@ angular
       return
 
     #=======================================
-    _$get = () ->
+    _$get = ($q) ->
       service = @
       #=======================================
       # Public methods available as service
       #=======================================
-
-      service.getOrganizations = ->
-        return links.organizations()
-
       service.getSsoSession = ->
-        return links.ssoSession()
+        deferred = $q.defer()
+        links.ssoSession().then(
+          (ssoSession) ->
+            deferred.resolve(ssoSession)
+          (error) ->
+            # handle error
+            deferred.reject(error)
+        )
+        return deferred.promise
 
       return service
     # inject service dependencies here, and declare in _$get function args.
-    _$get.$inject = [];
+    _$get.$inject = ['$q'];
     # attach provider function onto the provider object
     provider.$get = _$get
 

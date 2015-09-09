@@ -4,8 +4,6 @@ module.controller('SettingWidthCtrl', ($scope, $log) ->
 
   w = $scope.parentWidget
 
-  $log.debug('SettingWidthCtrl START', w);
-
   w.toogleExpanded = ->
     $scope.expanded = !$scope.expanded
     # We want to resize the widget without waiting for the response from the dashboarding API
@@ -25,7 +23,6 @@ module.controller('SettingWidthCtrl', ($scope, $log) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    $log.debug('SettingWidthCtrl: setting.initialize START')
     if w.width?
       $scope.expanded = (w.width == parseInt($scope.max))
       setting.isInitialized = true
@@ -38,7 +35,6 @@ module.controller('SettingWidthCtrl', ($scope, $log) ->
     return { width: parseInt(newWidth) }
 
   w.settings ||= []
-  $log.debug('SettingWidthCtrl FINISH', w.settings);
   w.settings.push(setting)
 )
 
