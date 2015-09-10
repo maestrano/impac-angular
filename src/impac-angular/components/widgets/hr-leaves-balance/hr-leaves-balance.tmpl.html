@@ -1,4 +1,4 @@
-<div widget-hr-leaves-balance class="hr-leaves-balance">
+<div widget-hr-leaves-balance>
 
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
@@ -16,7 +16,7 @@
 
     <div ng-show="isDataFound" >
 
-      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" />
+      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="selector" />
 
       <div class="widget-lines-container">
         <div class="widget-line">
@@ -30,7 +30,7 @@
       </div>
 
       <h3>Leave Balance</h3>
-      <div class="price">{{(getEmployee().total_leaves - getEmployee().total_timeoff)}} hours</div>
+      <div class="balance">{{(getEmployee().total_leaves - getEmployee().total_timeoff)}} hours</div>
       <div class="legend">
         <span>(from {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}})</span>
       </div>
