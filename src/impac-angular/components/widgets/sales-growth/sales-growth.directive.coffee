@@ -79,9 +79,6 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, DhbAnalyticsSvc, ChartFormat
 module.directive('widgetSalesGrowth', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("growth")
-    ,controller: 'WidgetSalesGrowthCtrl'
+    controller: 'WidgetSalesGrowthCtrl'
   }
 )

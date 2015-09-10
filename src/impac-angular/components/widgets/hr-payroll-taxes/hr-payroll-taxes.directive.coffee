@@ -56,9 +56,6 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, DhbAnalyticsSvc, ChartFor
 module.directive('widgetHrPayrollTaxes', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("payroll-taxes")
-    ,controller: 'WidgetHrPayrollTaxesCtrl',
+    controller: 'WidgetHrPayrollTaxesCtrl',
   }
 )

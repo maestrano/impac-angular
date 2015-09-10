@@ -69,9 +69,6 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, DhbAnalyticsSvc,
 module.directive('widgetAccountsExpensesRevenue', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("expenses-revenue")
-    ,controller: 'WidgetAccountsExpensesRevenueCtrl'
+    controller: 'WidgetAccountsExpensesRevenueCtrl'
   }
 )

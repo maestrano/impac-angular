@@ -75,9 +75,6 @@ module.controller('WidgetSalesForecastCtrl', ($scope, DhbAnalyticsSvc, ChartForm
 module.directive('widgetSalesForecast', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("profit-and-loss")
-    ,controller: 'WidgetSalesForecastCtrl'
+    controller: 'WidgetSalesForecastCtrl'
   }
 )

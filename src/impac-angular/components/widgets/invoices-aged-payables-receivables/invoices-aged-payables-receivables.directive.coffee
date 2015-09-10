@@ -188,9 +188,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
 module.directive('widgetInvoicesAgedPayablesReceivables', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("invoices")
-      element.addClass("aged-payables-receivables")
-    ,controller: 'WidgetInvoicesAgedPayablesReceivablesCtrl'
+    controller: 'WidgetInvoicesAgedPayablesReceivablesCtrl'
   }
 )

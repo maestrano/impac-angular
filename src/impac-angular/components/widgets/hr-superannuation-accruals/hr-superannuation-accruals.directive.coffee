@@ -52,9 +52,6 @@ module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, DhbAnalyticsSvc
 module.directive('widgetHrSuperannuationAccruals', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("superannuation-accruals")
-    ,controller: 'WidgetHrSuperannuationAccrualsCtrl'
+    controller: 'WidgetHrSuperannuationAccrualsCtrl'
   }
 )

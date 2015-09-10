@@ -1,29 +1,19 @@
-<div class="top-line">
-  <div common-top-buttons parent-widget="widget" />
-  <div common-editable-title parent-widget="widget" />
-</div>
+<div widget-accounts-custom-calculation class="accounts-custom-calculation">
 
-<div widget-accounts-custom-calculation class="content">
   <div setting-organizations parent-widget="widget" ng-hide="true" />
   <div setting-accounts-list parent-widget="widget" />
   <div setting-formula parent-widget="widget" />
 
-  <div ng-hide="widget.isLoading">
-    <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
-      <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
-    </h3>
+  <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
+    <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
+  </h3>
 
-    <div class="price" ng-show="widget.isFormulaCorrect">
-      {{widget.evaluatedFormula}}
-    </div>
-    <!-- Should be put in a tooltip/popover instead -->
+  <div class="price" ng-show="widget.isFormulaCorrect">
+    {{widget.evaluatedFormula}}
+  </div>
+  <!-- Should be put in a tooltip/popover instead -->
 <!--     <div class="legend" ng-show="widget.isFormulaCorrect">
-      {{widget.legend}}
-    </div> -->
-  </div>
+    {{widget.legend}}
+  </div> -->
 
-  <div class="loader" align="center" ng-show="widget.isLoading">
-    Your data is being retrieved...
-    <img class="gif" ng-src="{{loaderImage}}"/>
-  </div>
 </div>

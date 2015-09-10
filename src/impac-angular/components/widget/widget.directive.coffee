@@ -113,27 +113,16 @@ module.directive('impacWidget', ($templateCache) ->
       # different data will be fed through.
       #=======================================
       splittedPath = angular.copy(scope.widget.category).split("/")
-      # remove any number of items beyond index 2
+      # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
       splittedPath.splice(2)
       # format into slug-case for filename matching
       templateName = splittedPath.join("-").replace(/_/g, "-")
       # url for retreiving widget templates from angular $templateCache service.
-      scope.templateUrl = "widgets/" + templateName + ".tmpl.html"
+      scope.widgetContentTemplate = "widgets/" + templateName + ".tmpl.html"
 
       scope.isTemplateLoaded = ->
-        return !!$templateCache.get(scope.templateUrl)
+        return !!$templateCache.get(scope.widgetContentTemplate)
 
-    ,template: '<div ng-show="isTemplateLoaded()" ng-include="templateUrl"></div>'+
-    '<div ng-hide="isTemplateLoaded()">'+
-      '<div class="top-line">'+
-        '<div common-top-buttons parent-widget="widget" />'+
-        '<div common-editable-title parent-widget="widget" />'+
-      '</div>'+
-      '<div class="content">'+
-        '<div class="loader" align="center">'+
-          '<img class="gif" ng-src="{{loaderImage}}"/>'+
-        '</div>'+
-      '</div>'+
-    '</div>'
+    ,templateUrl: "widget/widget.tmpl.html"
   }
 )

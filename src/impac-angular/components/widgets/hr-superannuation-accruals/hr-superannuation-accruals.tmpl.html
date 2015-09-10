@@ -1,45 +1,32 @@
-<div class="top-line">
-  <div common-top-buttons parent-widget="widget" />
-  <div common-editable-title parent-widget="widget" />
-</div>
+<div widget-hr-superannuation-accruals class="hr-superannuation-accruals">
 
-<div widget-hr-superannuation-accruals class="content">
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
 
-  <div ng-show="widget.isLoading" class="loader" align="center">
-    Your data is being retrieved...
-    <img class="gif" ng-src="{{loaderImage}}"/>
+    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-time-range parent-widget="widget" class="part" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+    </div>
   </div>
 
-  <div ng-hide="widget.isLoading">
+  <div ng-hide="widget.isEditMode">
 
-    <div class="edit" ng-show="widget.isEditMode">
-      <h4>Widget settings</h4>
+    <div ng-show="isDataFound" class="row" >
 
-      <div setting-organizations parent-widget="widget" class="part" />
-      <div setting-time-range parent-widget="widget" class="part" />
+      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" />
 
-      <div align="right">
-        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
-      </div>
-    </div>
-
-    <div ng-hide="widget.isEditMode">
-
-      <div ng-show="isDataFound" class="row" >
-
-        <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" />
-
-        <h3>Superannuation Balance</h3>
-        <div class="price">{{getEmployee().total_super | mnoCurrency : getEmployee().currency}}</div>
-        <div class="legend">
-          <span>(from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}})</span>
-        </div>
-
+      <h3>Superannuation Balance</h3>
+      <div class="price">{{getEmployee().total_super | mnoCurrency : getEmployee().currency}}</div>
+      <div class="legend">
+        <span>(from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}})</span>
       </div>
 
-      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
     </div>
 
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
   </div>
+
 </div>

@@ -79,9 +79,6 @@ module.controller('WidgetSalesMarginCtrl', ($scope, DhbAnalyticsSvc, ChartFormat
 module.directive('widgetSalesMargin', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("accounting-value")
-    ,controller: 'WidgetSalesMarginCtrl',
+    controller: 'WidgetSalesMarginCtrl',
   }
 )

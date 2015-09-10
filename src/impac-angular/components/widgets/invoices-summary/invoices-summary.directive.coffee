@@ -43,9 +43,6 @@ module.controller('WidgetInvoicesSummaryCtrl', ($scope, DhbAnalyticsSvc, Utiliti
 module.directive('widgetInvoicesSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("invoices")
-      element.addClass("summary")
-    ,controller: 'WidgetInvoicesSummaryCtrl'
+    controller: 'WidgetInvoicesSummaryCtrl'
   }
 )

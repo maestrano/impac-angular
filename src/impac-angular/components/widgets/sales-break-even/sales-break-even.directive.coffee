@@ -70,9 +70,6 @@ module.controller('WidgetSalesBreakEvenCtrl', ($scope, DhbAnalyticsSvc, ChartFor
 module.directive('widgetSalesBreakEven', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("break-even")
-    ,controller: 'WidgetSalesBreakEvenCtrl'
+    controller: 'WidgetSalesBreakEvenCtrl'
   }
 )

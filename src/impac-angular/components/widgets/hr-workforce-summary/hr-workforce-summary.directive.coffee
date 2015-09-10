@@ -97,9 +97,6 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, DhbAnalyticsSvc, Char
 module.directive('widgetHrWorkforceSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("workforce-summary")
-    ,controller: 'WidgetHrWorkforceSummaryCtrl'
+    controller: 'WidgetHrWorkforceSummaryCtrl'
   }
 )

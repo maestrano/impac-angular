@@ -78,9 +78,6 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, DhbAnalyticsSvc, Ch
 module.directive('widgetAccountsBalanceSheet', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("balance-sheet")
-    ,controller: 'WidgetAccountsBalanceSheetCtrl'
+    controller: 'WidgetAccountsBalanceSheetCtrl'
   }
 )
