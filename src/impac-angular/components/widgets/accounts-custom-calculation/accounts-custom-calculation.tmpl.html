@@ -1,4 +1,4 @@
-<div widget-accounts-custom-calculation class="accounts-custom-calculation">
+<div widget-accounts-custom-calculation>
 
   <div setting-organizations parent-widget="widget" ng-hide="true" />
   <div setting-accounts-list parent-widget="widget" />
@@ -7,7 +7,7 @@
   <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
     <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
   </h3>
-
+  
   <div class="price" ng-show="widget.isFormulaCorrect">
     {{widget.evaluatedFormula}}
   </div>
