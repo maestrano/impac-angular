@@ -1,4 +1,4 @@
-<div widget-accounts-comparison class="accounts-comparison">
+<div widget-accounts-comparison>
   <div setting-accounts-list parent-widget="widget" />
 
   <div ng-show="widget.isEditMode" class="edit">
@@ -47,7 +47,6 @@
         </div>
 
         <div class="row">
-          <div class="border" />
           <div class="add-account">
             <div class="input-group">
               <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0">

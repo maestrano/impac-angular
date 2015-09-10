@@ -1,5 +1,60 @@
+.top-line {
+  cursor: move;
+  background-color: white;
+  padding: 9px 9px 0px 9px;
+  border-radius: 5px 5px 0px 0px;
+  border: solid 1px darken(@lightgray,10%);
+  border-bottom: none;
+  min-height: 41px;
+
+  .box-shadow(0px 1px 8px -4px);
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+  }
+
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: solid 1px #e6e6e6;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: uppercase;
+      .font(12px,600,#5b6667);
+      text-align: left;
+      cursor: text;
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: uppercase;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
 .content {
-	padding: 9px;
+  padding: 9px;
   border-radius: 0px 0px 5px 5px;
   border: solid 1px darken(@lightgray,10%);
   border-top: none;

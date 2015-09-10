@@ -428,132 +428,132 @@
     // Common to all widgets
     //-----------------------------
 
-    .placeHolderBox {
-      margin: 12px;
-      height: 267px;
-      width: 300px;
-      float: left;
-      border: 2px dashed @lightblue;
-      background: none;
-    }
+    // .placeHolderBox {
+    //   margin: 12px;
+    //   height: 267px;
+    //   width: 300px;
+    //   float: left;
+    //   border: 2px dashed @lightblue;
+    //   background: none;
+    // }
 
     .widget-item {
-      padding: 12px;
+      // padding: 12px;
 
-      select {
-        margin-top: 5px;
-        background-color: white;
-        height: 32px;
-      }
+      // select {
+      //   margin-top: 5px;
+      //   background-color: white;
+      //   height: 32px;
+      // }
 
       &.new_row {
         // disabled to test double-height widgets (like accounts comparison)
         // clear: both;
       }
 
-      .top-line {
-        cursor: move;
-        background-color: white;
-        padding: 9px 9px 0px 9px;
-        border-radius: 5px 5px 0px 0px;
-        border: solid 1px darken(@lightgray,10%);
-        border-bottom: none;
-        min-height: 41px;
+      // .top-line {
+      //   cursor: move;
+      //   background-color: white;
+      //   padding: 9px 9px 0px 9px;
+      //   border-radius: 5px 5px 0px 0px;
+      //   border: solid 1px darken(@lightgray,10%);
+      //   border-bottom: none;
+      //   min-height: 41px;
 
-        .box-shadow(0px 1px 8px -4px);
+      //   .box-shadow(0px 1px 8px -4px);
 
-        /*
-        ** ABSTRACTED INTO top-buttons.less
-        .top-button {
-          float: right;
-          background: transparent;
-          border: none;
-          color: silver;
-          padding: 1px;
-          margin-left: 3px;
-          outline: none;
+        
+      //   ** ABSTRACTED INTO top-buttons.less
+      //   .top-button {
+      //     float: right;
+      //     background: transparent;
+      //     border: none;
+      //     color: silver;
+      //     padding: 1px;
+      //     margin-left: 3px;
+      //     outline: none;
 
-          &:active, &:focus {
-            -webkit-box-shadow: none;
-          }
+      //     &:active, &:focus {
+      //       -webkit-box-shadow: none;
+      //     }
 
-          &.btn-edit {
-            font-size: 18px;
-            &:hover {
-              color: darken(@mgreen,10%);
-            }
-            span {
-              vertical-align: top;
-            }
-          }
-          &.btn-editmode {
-            font-size: 18px;
-            color: darken(@mgreen,10%);
-            span {
-              vertical-align: top;
-            }
-          }
-          &.btn-close {
-            &:hover {
-              color: @pink
-            }
-          }
-          &.btn-refresh {
-            font-size: 17px;
-            margin-top: -1px;
-            &:hover {
-              color: @mblue;
-            }
-            span {
-              vertical-align: top;
-            }
-          }
-        }
-        **********/
+      //     &.btn-edit {
+      //       font-size: 18px;
+      //       &:hover {
+      //         color: darken(@mgreen,10%);
+      //       }
+      //       span {
+      //         vertical-align: top;
+      //       }
+      //     }
+      //     &.btn-editmode {
+      //       font-size: 18px;
+      //       color: darken(@mgreen,10%);
+      //       span {
+      //         vertical-align: top;
+      //       }
+      //     }
+      //     &.btn-close {
+      //       &:hover {
+      //         color: @pink
+      //       }
+      //     }
+      //     &.btn-refresh {
+      //       font-size: 17px;
+      //       margin-top: -1px;
+      //       &:hover {
+      //         color: @mblue;
+      //       }
+      //       span {
+      //         vertical-align: top;
+      //       }
+      //     }
+      //   }
+      //   *********
 
-        .confirm-delete-popover {
-          position: absolute;
-          top: 90px;
-          left: 15%;
-          width: 70%;
-          background-color: #17262d;
-          padding: 10px;
-          border-radius: 4px;
-          z-index: 50;
-          color: white;
-          text-align: center;
-          opacity: 0.9;
-          cursor: default;
-          .box-shadow(0px 0px 25px 4px black);
-        }
+      //   .confirm-delete-popover {
+      //     position: absolute;
+      //     top: 90px;
+      //     left: 15%;
+      //     width: 70%;
+      //     background-color: #17262d;
+      //     padding: 10px;
+      //     border-radius: 4px;
+      //     z-index: 50;
+      //     color: white;
+      //     text-align: center;
+      //     opacity: 0.9;
+      //     cursor: default;
+      //     .box-shadow(0px 0px 25px 4px black);
+      //   }
 
-        .title-wrapper {
-          width: 100%;
-          padding: 0px 10px 10px 10px;
-          border-bottom: solid 1px #e6e6e6;
-          white-space: nowrap;
-          .title {
-            display: inline;
-            text-transform: uppercase;
-            .font(12px,600,#5b6667);
-            text-align: left;
-            cursor: text;
-          }
-          .editable-wrap {
-            height: 20px;
-            width: 75%;
-            .editable-controls {
-              width: 100%;
-              .editable-input {
-                height: 20px;
-                font-size: 12px;
-                text-transform: uppercase;
-                width: 100%;
-              }
-            }
-          }
-        }
-      }
+      //   .title-wrapper {
+      //     width: 100%;
+      //     padding: 0px 10px 10px 10px;
+      //     border-bottom: solid 1px #e6e6e6;
+      //     white-space: nowrap;
+      //     .title {
+      //       display: inline;
+      //       text-transform: uppercase;
+      //       .font(12px,600,#5b6667);
+      //       text-align: left;
+      //       cursor: text;
+      //     }
+      //     .editable-wrap {
+      //       height: 20px;
+      //       width: 75%;
+      //       .editable-controls {
+      //         width: 100%;
+      //         .editable-input {
+      //           height: 20px;
+      //           font-size: 12px;
+      //           text-transform: uppercase;
+      //           width: 100%;
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
       .content {
         // padding: 9px;
@@ -613,7 +613,7 @@
           }
         }
 
-        .edit {
+        // .edit {
           // max-height: 230px;
           // overflow-y: auto;
           // overflow-x: hidden;
@@ -763,8 +763,8 @@
           //     }
           //   }
 
-          // }
-        }
+            // }
+        // }
 
         .fa-pencil-square {
           float: right;
@@ -864,9 +864,9 @@
         //   margin-top: 30px;
         // }
 
-        .right-panel {
-          border-left: solid 1px #e6e6e6;
-        }
+        // .right-panel {
+        //   border-left: solid 1px #e6e6e6;
+        // }
 
         // .widget-lines-container {
         //   text-align: left;
@@ -1016,72 +1016,72 @@
           //   }
           // }
 
-          &.comparison {
-            min-height: 565px;
-            @media (min-width: @screen-md-min) {
-              height: 565px;
-            }
-            .add-account {
-              position: absolute;
-              right: 40px;
-              bottom: 30px;
-              width: 160px;
-              select {
-                font-size: 13px;
-                background-color: @purple;
-                color: white;
-                outline: none;
-                border: none;
-                cursor: pointer;
-                &[disabled] {
-                  cursor: not-allowed;
-                  background-color: lighten(@purple,10%);
-                  &:hover {
-                    background-color: lighten(@purple,10%);
-                  }
-                }
-                &:hover {
-                  background-color: darken(@purple,10%);
-                }
-                option {
-                  background-color: white;
-                  color: lighten(@mdarkbg,40%);
-                  &[disabled] {
-                    color:white;
-                  }
-                }
-              }
-            }
-            .border {
-              margin: 15px 0px;
-              border-color: #E6E6E6;
-              border-top: 0px;
-              border-left: 0px;
-              border-right: 0px;
-            }
-            button.close {
-              font-size: 15px;
-            }
-            .legend {
-              text-align: left;
-              max-height: 103px;
-              overflow-y: auto;
-              overflow-x: hidden;
-            }
-            .loader {
-              margin: 75px 0px 77px 0px;
-            }
-            .row {
-              margin: 0;
-              &.chart {
-                // min-height: 241px;
-              }
-            }
-            .widget-lines-container {
-              font-size: 11px;
-              max-height: 240px;
-            }
-          }
+          // &.comparison {
+          //   min-height: 565px;
+          //   @media (min-width: @screen-md-min) {
+          //     height: 565px;
+          //   }
+          //   .add-account {
+          //     position: absolute;
+          //     right: 40px;
+          //     bottom: 30px;
+          //     width: 160px;
+          //     select {
+          //       font-size: 13px;
+          //       background-color: @purple;
+          //       color: white;
+          //       outline: none;
+          //       border: none;
+          //       cursor: pointer;
+          //       &[disabled] {
+          //         cursor: not-allowed;
+          //         background-color: lighten(@purple,10%);
+          //         &:hover {
+          //           background-color: lighten(@purple,10%);
+          //         }
+          //       }
+          //       &:hover {
+          //         background-color: darken(@purple,10%);
+          //       }
+          //       option {
+          //         background-color: white;
+          //         color: lighten(@mdarkbg,40%);
+          //         &[disabled] {
+          //           color:white;
+          //         }
+          //       }
+          //     }
+          //   }
+          //   .border {
+          //     margin: 15px 0px;
+          //     border-color: #E6E6E6;
+          //     border-top: 0px;
+          //     border-left: 0px;
+          //     border-right: 0px;
+          //   }
+          //   button.close {
+          //     font-size: 15px;
+          //   }
+          //   .legend {
+          //     text-align: left;
+          //     max-height: 103px;
+          //     overflow-y: auto;
+          //     overflow-x: hidden;
+          //   }
+          //   .loader {
+          //     margin: 75px 0px 77px 0px;
+          //   }
+          //   .row {
+          //     margin: 0;
+          //     &.chart {
+          //       // min-height: 241px;
+          //     }
+          //   }
+          //   .widget-lines-container {
+          //     font-size: 11px;
+          //     max-height: 240px;
+          //   }
+          // }
 
           &.custom-calculation {
             h3 {
