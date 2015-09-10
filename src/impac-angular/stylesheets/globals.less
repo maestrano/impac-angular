@@ -99,108 +99,111 @@
 }
 
 
-// ---------------------------------------------------------------------------
-// --- Titles
-// ---------------------------------------------------------------------------
+.analytics {
 
-h3 {
-  margin: 0;
-  .left-thin();
-}
+  // ---------------------------------------------------------------------------
+  // --- Titles
+  // ---------------------------------------------------------------------------
 
-h4 {
-  color: #5b6667;
-  font-size: 16px;
-}
-
-// ---------------------------------------------------------------------------
-// --- Colors - TODO: put in variables
-// ---------------------------------------------------------------------------
-
-.blue {
-  color: #3fc4ff;
-}
-
-.pink {
-  // no longer pink since matter update
-  color: #1de9b6;
-}
-
-.positive {
-  color: green;
-}
-.negative {
-  color: @pink;
-}
-
-
-// ---------------------------------------------------------------------------
-// --- Misc
-// ---------------------------------------------------------------------------
-
-a {
-  font-weight: bold;
-  color: @mlightblue;
-  cursor: pointer;
-}
-
-select {
-  margin-top: 5px;
-  background-color: white;
-  height: 32px;
-}
-
-
-// ---------------------------------------------------------------------------
-// --- Shared styles
-// ---------------------------------------------------------------------------
-
-.chart-container {
-  margin-top: 10px;
-}
-
-.currency {
-  .center-thin();
-}
-
-.legend {
-  .center-small();
-  .scrollable();
-}
-
-.price {
-  .center-bold();
-}
-
-.widget-lines-container {
-  .scrollable();
-  max-height: 200px;
-  
-  text-align: left;
-  font-size: 12px;
-
-  .widget-line {
-    width: 100%;
+  h3 {
     margin: 0px;
-    padding: 5px;
-    color: @mediumblue;
+    .left-thin();
+  }
 
-    // TODO: replace by .header
-    .table-header {
-      font-weight: bold;
-    }
+  h4 {
+    color: #5b6667;
+    font-size: 16px;
+  }
 
-    &.header {
-      .font(12px,500,#acb0b1);
-      text-transform: uppercase;
-    }
-    &.total {
-      padding: 0px;
-      border-top: solid 1px @lightgray;
+  // ---------------------------------------------------------------------------
+  // --- Colors - TODO: put in variables
+  // ---------------------------------------------------------------------------
+
+  .blue {
+    color: #3fc4ff;
+  }
+
+  .pink {
+    // no longer pink since matter update
+    color: #1de9b6;
+  }
+
+  .positive {
+    color: green;
+  }
+  .negative {
+    color: @pink;
+  }
+
+
+  // ---------------------------------------------------------------------------
+  // --- Misc
+  // ---------------------------------------------------------------------------
+
+  a {
+    font-weight: bold;
+    color: @mlightblue;
+    cursor: pointer;
+  }
+
+  select {
+    margin-top: 5px;
+    background-color: white;
+    height: 32px;
+  }
+
+
+  // ---------------------------------------------------------------------------
+  // --- Shared styles
+  // ---------------------------------------------------------------------------
+
+  .chart-container {
+    margin-top: 10px;
+  }
+
+  .currency {
+    .center-thin();
+  }
+
+  .legend {
+    .center-small();
+    .scrollable();
+  }
+
+  .price {
+    .center-bold();
+  }
+
+  .widget-lines-container {
+    .scrollable();
+    max-height: 200px;
+    
+    text-align: left;
+    font-size: 12px;
+
+    .widget-line {
+      width: 100%;
+      margin: 0px;
+      padding: 5px;
+      color: @mediumblue;
+
+      // TODO: replace by .header
+      .table-header {
+        font-weight: bold;
+      }
+
+      &.header {
+        .font(12px,500,#acb0b1);
+        text-transform: uppercase;
+      }
+      &.total {
+        padding: 0px;
+        border-top: solid 1px @lightgray;
+      }
     }
   }
-}
 
-.right-panel {
-  border-left: solid 1px #e6e6e6;
+  .right-panel {
+    border-left: solid 1px #e6e6e6;
+  }
 }
