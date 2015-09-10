@@ -31,11 +31,6 @@
   margin-top: @margin-top;
 }
 
-.scrollable () {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .widget-height (@height: 250px) {
   min-height: @height;
   @media (min-width: @screen-md-min) {
@@ -44,43 +39,62 @@
 }
 .short-widget () {
   .widget-height();
+  .edit {
+    max-height: 230px;
+  }
 }
 .tall-widget () {
   .widget-height(565px);
+  .edit {
+    max-height: 540px;
+    .widget-lines-container {
+      .scrollable(hidden);
+    }
+  }
+}
+.drill-down-widget () {
+  .tall-widget();
+
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+    margin-right: 10px;
+
+    .widget-line.total {
+      .selectable();
+    }
+  }
+
+  .right-panel {
+    .widget-lines-container {
+      .scrollable(auto);
+      max-height: 235px;
+    }
+  }
 }
 
-.widget-lines-container (@max-height: 200px) {
-  .scrollable();
-  max-height: @max-height;
-  
-  text-align: left;
-  font-size: 12px;
+.scrollable (@scroll-mode: auto) {
+  overflow-y: @scroll-mode;
+  overflow-x: hidden;
+}
 
-  .widget-line {
-    width: 100%;
-    margin: 0px;
-    padding: 5px;
-    color: @mediumblue;
-    // &:nth-child(even) {
-    //   background-color: @lightgray;
-    // }
-    // &:nth-child(odd) {
-    //   background-color: white;
-    // }
+.selectable () {
+  cursor: pointer;
+  :hover {
+    color: @purple;
+  }
+  .selected {
+    border: solid 1px @purple;
+    background-color: lighten(@purple, 22%)
+  }
+}
 
-    // TODO: replace by .header
-    .table-header {
-      font-weight: bold;
-    }
-
-    &.header {
-      .font(12px,500,#acb0b1);
-      text-transform: uppercase;
-    }
-    &.total {
-      padding: 0px;
-      border-top: solid 1px @lightgray;
-    }
+.alternate-bg (@even-color: @lightgray) {
+  &:nth-child(even) {
+    background-color: @even-color;
+  }
+  &:nth-child(odd) {
+    background-color: white;
   }
 }
 
@@ -94,6 +108,10 @@ h3 {
   .left-thin();
 }
 
+h4 {
+  color: #5b6667;
+  font-size: 16px;
+}
 
 // ---------------------------------------------------------------------------
 // --- Colors - TODO: put in variables
@@ -106,6 +124,13 @@ h3 {
 .pink {
   // no longer pink since matter update
   color: #1de9b6;
+}
+
+.positive {
+  color: green;
+}
+.negative {
+  color: @pink;
 }
 
 
@@ -139,4 +164,37 @@ a {
 
 .price {
   .center-bold();
+}
+
+.widget-lines-container {
+  .scrollable();
+  max-height: 200px;
+  
+  text-align: left;
+  font-size: 12px;
+
+  .widget-line {
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    color: @mediumblue;
+
+    // TODO: replace by .header
+    .table-header {
+      font-weight: bold;
+    }
+
+    &.header {
+      .font(12px,500,#acb0b1);
+      text-transform: uppercase;
+    }
+    &.total {
+      padding: 0px;
+      border-top: solid 1px @lightgray;
+    }
+  }
+}
+
+.right-panel {
+  border-left: solid 1px #e6e6e6;
 }

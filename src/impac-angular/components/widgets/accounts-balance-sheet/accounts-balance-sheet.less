@@ -1,6 +1,7 @@
 .accounts-balance-sheet {
   .tall-widget();
-  .widget-lines-container(540px) {
-    overflow-y: scroll;
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
   }
 }
