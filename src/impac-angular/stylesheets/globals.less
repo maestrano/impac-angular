@@ -15,6 +15,16 @@
   margin-top: @margin-top;
 }
 
+.center-thin () {
+  .font(16px,300,@darkblue);
+  text-align: center;
+}
+
+.center-small () {
+	.font(12px,300,@mediumblue);
+	text-align: center;
+}
+
 .left-thin (@margin-top: 0px) {
   .font(14px,300,@mdarkbg);
   text-align: left;
@@ -29,4 +39,48 @@
 h3 {
 	margin: 0;
 	.left-thin();
+}
+
+
+// ---------------------------------------------------------------------------
+// --- Colors - TODO: put in variables
+// ---------------------------------------------------------------------------
+
+.blue {
+  color: #3fc4ff;
+}
+
+.pink {
+  // no longer pink since matter update
+  color: #1de9b6;
+}
+
+
+// ---------------------------------------------------------------------------
+// --- Misc
+// ---------------------------------------------------------------------------
+
+a {
+	font-weight: bold;
+	color: @mlightblue;
+	cursor: pointer;
+}
+
+
+// ---------------------------------------------------------------------------
+// --- Shared styles
+// ---------------------------------------------------------------------------
+
+.currency {
+  .center-thin();
+}
+
+.price {
+	.center-bold();
+}
+
+.legend {
+  .center-small();
+  overflow-y: auto;
+  overflow-x: hidden;
 }
