@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 .center-bold (@margin-top: 30px) {
-	.font(22px,900,#5b6667);
+  .font(22px,900,#5b6667);
   text-align: center;
   margin-top: @margin-top;
 }
@@ -21,8 +21,8 @@
 }
 
 .center-small () {
-	.font(12px,300,@mediumblue);
-	text-align: center;
+  .font(12px,300,@mediumblue);
+  text-align: center;
 }
 
 .left-thin (@margin-top: 0px) {
@@ -31,14 +31,67 @@
   margin-top: @margin-top;
 }
 
+.scrollable () {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.widget-height (@height: 250px) {
+  min-height: @height;
+  @media (min-width: @screen-md-min) {
+    height: @height;
+  }
+}
+.short-widget () {
+  .widget-height();
+}
+.tall-widget () {
+  .widget-height(565px);
+}
+
+.widget-lines-container (@max-height: 200px) {
+  .scrollable();
+  max-height: @max-height;
+  
+  text-align: left;
+  font-size: 12px;
+
+  .widget-line {
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    color: @mediumblue;
+    // &:nth-child(even) {
+    //   background-color: @lightgray;
+    // }
+    // &:nth-child(odd) {
+    //   background-color: white;
+    // }
+
+    // TODO: replace by .header
+    .table-header {
+      font-weight: bold;
+    }
+
+    &.header {
+      .font(12px,500,#acb0b1);
+      text-transform: uppercase;
+    }
+    &.total {
+      padding: 0px;
+      border-top: solid 1px @lightgray;
+    }
+  }
+}
+
 
 // ---------------------------------------------------------------------------
 // --- Titles
 // ---------------------------------------------------------------------------
 
 h3 {
-	margin: 0;
-	.left-thin();
+  margin: 0;
+  .left-thin();
 }
 
 
@@ -61,9 +114,9 @@ h3 {
 // ---------------------------------------------------------------------------
 
 a {
-	font-weight: bold;
-	color: @mlightblue;
-	cursor: pointer;
+  font-weight: bold;
+  color: @mlightblue;
+  cursor: pointer;
 }
 
 
@@ -71,16 +124,19 @@ a {
 // --- Shared styles
 // ---------------------------------------------------------------------------
 
+.chart-container {
+  margin-top: 10px;
+}
+
 .currency {
   .center-thin();
 }
 
-.price {
-	.center-bold();
-}
-
 .legend {
   .center-small();
-  overflow-y: auto;
-  overflow-x: hidden;
+  .scrollable();
+}
+
+.price {
+  .center-bold();
 }

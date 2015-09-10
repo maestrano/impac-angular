@@ -1,4 +1,4 @@
-<div widget-accounts-balance class="accounts-balance">
+<div widget-accounts-balance>
 
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
@@ -18,7 +18,7 @@
       <div setting-hist-mode parent-widget="widget" />
 
       <!-- the display condition must be an "if" and its value must change for the chart to be drawn again -->
-      <div ng-if="widget.isHistoryMode" class="history">
+      <div ng-if="widget.isHistoryMode" class="chart-container">
         <div dhb-chart data="widget.chart"></div>
         <div class="legend">{{getName()}}</div>
       </div>

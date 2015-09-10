@@ -116,9 +116,9 @@ module.directive('impacWidget', ($templateCache) ->
       # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
       splittedPath.splice(2)
       # format into slug-case for filename matching
-      templateName = splittedPath.join("-").replace(/_/g, "-")
+      scope.templateName = splittedPath.join("-").replace(/_/g, "-")
       # url for retreiving widget templates from angular $templateCache service.
-      scope.widgetContentTemplate = "widgets/" + templateName + ".tmpl.html"
+      scope.widgetContentTemplate = "widgets/" + scope.templateName + ".tmpl.html"
 
       scope.isTemplateLoaded = ->
         return !!$templateCache.get(scope.widgetContentTemplate)
