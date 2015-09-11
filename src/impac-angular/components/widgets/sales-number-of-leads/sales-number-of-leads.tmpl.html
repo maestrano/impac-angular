@@ -1,4 +1,4 @@
-<div widget-sales-number-of-leads class="sales-number-of-leads">
+<div widget-sales-number-of-leads>
 
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
@@ -14,7 +14,9 @@
   <div ng-hide="widget.isEditMode">
 
     <div ng-show="isDataFound" class="align-center">
-      Leads for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/>
+      <div class="selector">
+        Leads for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/>
+      </div>
 
       <div class="stats">
         <div class="stat row align-left" ng-repeat="carac in ['new', 'converted', 'lost']">
