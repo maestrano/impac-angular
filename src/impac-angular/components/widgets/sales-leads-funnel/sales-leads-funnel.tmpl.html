@@ -1,4 +1,4 @@
-<div widget-sales-leads-funnel class="sales-leads-funnel">
+<div widget-sales-leads-funnel>
 
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
@@ -37,7 +37,7 @@
         </div>
 
         <div ng-show="selectedStatus" class="widget-lines-container">
-          <div class="row widget-line total" ng-repeat="lead in getSelectedLeads()" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-html-unsafe="{{getLeadDescription(lead)}}" tooltip-animation="false">
+          <div class="row widget-line total" ng-repeat="lead in getSelectedLeads()" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-html-unsafe="{{getLeadDescription(lead)}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
             <div class="row widget-line" >
               <div class="col-sm-7">
                 {{lead.first_name | titleize}} {{lead.last_name | titleize}}

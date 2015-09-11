@@ -1,0 +1,106 @@
+// --- Reusable widget style mixins
+
+// Payroll-Summary - Profit-and-Loss
+.drill-down-widget () {
+  .tall-widget();
+
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+    margin-right: 10px;
+
+    .widget-line.total {
+      .selectable();
+    }
+  }
+
+  .right-panel {
+    .widget-lines-container {
+      .scrollable(auto);
+      max-height: 235px;
+    }
+  }
+}
+
+// Top customers summary - Sales cycle...
+.simple-summary-widget() {
+  .chart-container {
+    max-width: 410px;
+  }
+  .legend {
+    max-height: 28px;
+  }
+}
+
+// Workforce-Summary - Salaries-Summary
+.expandable-filterable-widget() {
+  h3.left {
+    margin-top: 69px;
+    text-align: center;
+  }
+  h3.right {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .price {
+    margin-top: 0;
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
+  }
+}
+
+// Leads funnel - Opportunities funnel
+.funnel-widget() {
+  .tall-widget();
+  .funnel-container {
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    padding-right: 10px;
+    max-height: 515px;
+    overflow: auto;
+    .tile {
+      background-color: rgb(247,247,247);
+      box-shadow: 0px 7px 10px -7px #17262d;
+      height: 45px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      cursor: pointer;
+      &:hover {
+        background-color: darken(#F1F9FF, 3%);
+      }
+      .colored-area {
+        background-color: #3FC4FF;
+        height: 100%;
+        float: right;
+        color: white;
+        text-align: right;
+        padding: 5px 10px;
+        min-width: 8%;
+        &.selected {
+          background-color: @purple;
+        }
+      }
+      .status {
+        color: #5B6667;
+        padding: 20px 0px 0px 5px;
+        height: 100%;
+        font-style: italic;
+        font-weight: bold;
+      }
+    }
+  }
+  .right-panel {
+    .widget-lines-container {
+      max-height: 540px;
+      margin-right: 10px;
+      .widget-line {
+        cursor: default;
+      }
+    }
+  }
+}
