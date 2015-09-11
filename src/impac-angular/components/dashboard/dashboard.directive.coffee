@@ -18,6 +18,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.starWizardModal = { value:false }
     MsgBus.publish('starWizardModal',$scope.starWizardModal)
 
+    $scope.accessibility = false
+
     $scope.openStarWizard = ->
       $scope.starWizardModal.value = true
 
@@ -129,6 +131,16 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         dhb.id == $scope.dashboardToChange.id
       ).full_name = $scope.dashboardToChange.name
       $scope.showChangeDhbName = false
+
+    $scope.toogleAccessibilityMode = ->
+      $scope.accessibility = !$scope.accessibility
+      angular.forEach $scope.currentDhb.widgets, (w) ->
+        w.loadContent().then (success) ->
+          if $scope.accessibility
+            w.initialWidth = w.width
+            w.width = 12
+          else
+            w.width = w.initialWidth
 
 
     #====================================

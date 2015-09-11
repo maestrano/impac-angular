@@ -101,7 +101,8 @@ module.directive('impacWidget', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentDashboard: '=',
-      widget: '='
+      widget: '=',
+      isAccessibility: '='
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
@@ -112,16 +113,22 @@ module.directive('impacWidget', ($templateCache) ->
       # 'data-extension' means the widget re-uses a widget template, but signifies that
       # different data will be fed through.
       #=======================================
-      splittedPath = angular.copy(scope.widget.category).split("/")
-      # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
-      splittedPath.splice(2)
-      # format into slug-case for filename matching
-      scope.templateName = splittedPath.join("-").replace(/_/g, "-")
-      # url for retreiving widget templates from angular $templateCache service.
-      scope.widgetContentTemplate = "widgets/" + scope.templateName + ".tmpl.html"
+      scope.widgetContentTemplate = ->
+        splittedPath = angular.copy(scope.widget.category).split("/")
+        # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
+        splittedPath.splice(2)
+        # format into slug-case for filename matching
+        scope.templateName = splittedPath.join("-").replace(/_/g, "-")
+        # url for retreiving widget templates from angular $templateCache service.
+        templatePath = "widgets/" + scope.templateName + ".tmpl.html"
+
+        if scope.isAccessibility && $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
+          templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
+
+        return templatePath
 
       scope.isTemplateLoaded = ->
-        return !!$templateCache.get(scope.widgetContentTemplate)
+        return !!$templateCache.get(scope.widgetContentTemplate())
 
     ,templateUrl: "widget/widget.tmpl.html"
   }
