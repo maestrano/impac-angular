@@ -37,8 +37,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
       $scope.currentDhb = _.where($scope.dashboardsList, {id: $scope.currentDhbId})[0]
 
+      if $scope.currentDhb && $scope.currentDhb.data_sources
+        DhbAnalyticsSvc.setOrganizations($scope.currentDhb.data_sources)
+        DhbAnalyticsSvc.config.organizationId = DhbAnalyticsSvc.organizations[0].id
+
       # Change current dhb if not for the select org
-      unless $scope.currentDhb?
+      if $scope.currentDhb == null
         $scope.currentDhb = $scope.dashboardsList[0]
         $scope.currentDhbId = ($scope.currentDhb? && $scope.currentDhb.id) || null
 
@@ -235,14 +239,16 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     modalCreateDashboard.open = ->
       self = modalCreateDashboard
       self.model = { name: null }
-      self.organizations = angular.copy($scope.user.organizations)
-      # todo::linking: replace DhbOrganizationSvc calls with ImpacLinking service
-      self.currentOrganization = _.findWhere(self.organizations,{id: DhbOrganizationSvc.getId()})
+      self.organizations = angular.copy(DhbAnalyticsSvc.organizations)
+      self.currentOrganization = _.findWhere(self.organizations, {
+        id: DhbAnalyticsSvc.getOrganizationId()
+      })
       self.selectMode('single')
       self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
-      self.multiOrganizationReporting = $scope.user.multi_organization_reporting
+      # TODO: what is this?
+      # self.multiOrganizationReporting = $scope.user.multi_organization_reporting
 
     modalCreateDashboard.close = ->
       modalCreateDashboard.$instance.close()
@@ -256,7 +262,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       if self.mode == 'multi'
         organizations = _.select(self.organizations, (o) -> o.$selected )
       else
-        organizations = [ { id: DhbOrganizationSvc.getId() } ]
+        organizations = [ { id: DhbAnalyticsSvc.getOrganizationId() } ]
 
       if organizations.length > 0
         dashboard.organization_ids = _.pluck(organizations, 'id')
@@ -283,7 +289,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # Check that user can access the analytics data for this company
       additional_condition ||= _.select(selectedCompanies, (o) -> self.canAccessAnalyticsData(o)).length == 0
 
-      return self.isLoading || additional_condition
+      # TODO: remove this when permissions are implemented
+      # return self.isLoading || additional_condition
+      return self.isLoading || false
 
     modalCreateDashboard.btnBlassFor = (mode) ->
       self = modalCreateDashboard
@@ -294,6 +302,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalCreateDashboard.selectMode = (mode) ->
       self = modalCreateDashboard
+      debugger;
       _.each(self.organizations, (o) -> o.$selected = false)
       self.currentOrganization.$selected = (mode == 'single')
       self.mode = mode
