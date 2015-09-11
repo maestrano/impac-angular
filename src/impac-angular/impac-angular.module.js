@@ -31,8 +31,6 @@ angular.module('impac.components',
 );
 angular.module('impac.components.widgets',
   [
-    'impac.components.widgets.catalogue',
-    'impac.components.widgets.template-admin',
     'impac.components.widgets.accounts-accounting-values',
     'impac.components.widgets.accounts-assets-summary',
     'impac.components.widgets.accounts-balance-sheet',
@@ -113,7 +111,6 @@ angular.module('impac.services',
     'impac.services.chart-formatter',
     'impac.services.message-bus',
     'impac.services.utilities',
-    'impac.services.widget-templates'
   ]
 );
 /*
