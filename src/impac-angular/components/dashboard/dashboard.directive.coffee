@@ -135,12 +135,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.toogleAccessibilityMode = ->
       $scope.accessibility = !$scope.accessibility
       angular.forEach $scope.currentDhb.widgets, (w) ->
-        w.loadContent().then (success) ->
-          if $scope.accessibility
-            w.initialWidth = w.width
-            w.width = 12
-          else
-            w.width = w.initialWidth
+        w.loadContent()
 
 
     #====================================

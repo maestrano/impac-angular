@@ -44,6 +44,13 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
         updatedWidget.content ||= {}
         updatedWidget.originalName = updatedWidget.name
         angular.extend(w,updatedWidget)
+
+        if $scope.isAccessibility
+          w.initialWidth = w.width
+          w.width = 12
+        else if w.initialWidth 
+          w.width = w.initialWidth
+
         # triggers the initialization of the widget's specific params (defined in the widget specific controller)
         w.initContext()
         # triggers the initialization of all the widget's settings
@@ -122,8 +129,10 @@ module.directive('impacWidget', ($templateCache) ->
         # url for retreiving widget templates from angular $templateCache service.
         templatePath = "widgets/" + scope.templateName + ".tmpl.html"
 
-        if scope.isAccessibility && $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
-          templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
+        if scope.isAccessibility 
+          if $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
+            templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
+          scope.templateName = scope.templateName + " accessible"
 
         return templatePath
 
