@@ -52,26 +52,6 @@
     }
   }
 }
-.drill-down-widget () {
-  .tall-widget();
-
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-    margin-right: 10px;
-
-    .widget-line.total {
-      .selectable();
-    }
-  }
-
-  .right-panel {
-    .widget-lines-container {
-      .scrollable(auto);
-      max-height: 235px;
-    }
-  }
-}
 
 .scrollable (@scroll-mode: auto) {
   overflow-y: @scroll-mode;
@@ -95,6 +75,51 @@
   }
   &:nth-child(odd) {
     background-color: white;
+  }
+}
+
+// --- Reusable widget classes
+
+// Eg: Hr/Payroll-Summary - Accounts/Profit-and-Loss
+.drill-down-widget () {
+  .tall-widget();
+
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+    margin-right: 10px;
+
+    .widget-line.total {
+      .selectable();
+    }
+  }
+
+  .right-panel {
+    .widget-lines-container {
+      .scrollable(auto);
+      max-height: 235px;
+    }
+  }
+}
+
+// Eg: Hr/Workforce-Summary - Hr/Salaries-Summary
+.expandable-filterable-widget() {
+  h3.left {
+    margin-top: 69px;
+    text-align: center;
+  }
+  h3.right {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .price {
+    margin-top: 0;
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
   }
 }
 
@@ -143,7 +168,7 @@
 
 
   // ---------------------------------------------------------------------------
-  // --- Misc
+  // --- Base elements
   // ---------------------------------------------------------------------------
 
   a {
@@ -160,7 +185,7 @@
 
 
   // ---------------------------------------------------------------------------
-  // --- Shared styles
+  // --- Custom elements
   // ---------------------------------------------------------------------------
 
   .chart-container {
