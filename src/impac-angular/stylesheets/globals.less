@@ -70,6 +70,22 @@
     border: none;
   }
 
+  .widget-item .content {
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: lighten(#233845,35%);
+      border-radius: 10px;
+      &:hover {
+        background-color: lighten(#233845,40%);
+      }
+    }
+  }
+
 
   // ---------------------------------------------------------------------------
   // --- Custom elements

@@ -137,14 +137,14 @@ $templateCache.put("dashboard/dashboard.tmpl.html","<!-- DASHBOARD -->\n<div cla
 $templateCache.put("dashboard/delete.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"close()\" >×</div>\n  <h3>Delete Dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new widget -->\n  <p>Are you sure you want to delete this analytics dashboard?</p>\n  \n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"close()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\">Cancel</button>\n      <button class=\"btn btn-danger\" ng-click=\"proceed()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\">Delete</button>\n      <img ng-src=\"{{loadingGif}}\" ng-show=\"isLoading\" alt=\"Loading\">\n    </div>\n    \n  </div>\n</div>");
 $templateCache.put("dashboard/widget-suggestion.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"close()\" >×</div>\n  <h3>Suggest a widget</h3>\n</div>\n\n<div class=\"modal-body\">\n  \n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <label>What would you name your widget?</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.name\" ng-disabled=\"isLoading\" />\n    </div>\n    <div class=\"col-md-6\">\n      <label>In which category?</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.category\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" />\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <label>What kind of information would your widget display?</label><br />\n      <textarea ng-model=\"widgetDetails.description\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" ng-show=\"isLoading\" />\n\n  <div class=\"row\" ng-show=\"isLoading\">\n    <div class=\"col-md-12 text-center\">\n      <h3 class=\"thanks-message\">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>\n    </div>\n  </div>\n  \n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\" ng-class=\"isLoading ? \'text-center\' : null\">\n      <button class=\"btn btn-shaded\" ng-click=\"close()\" ng-hide=\"isLoading\">Cancel</button>\n      <button class=\"btn btn-info\" ng-click=\"proceed()\" ng-hide=\"isLoading\" ng-disabled=\"!(widgetDetails.name && widgetDetails.category && widgetDetails.description)\">Send your suggestion</button>\n      <img ng-src=\"{{loadingGif}}\" ng-show=\"isLoading\" alt=\"Loading\">\n    </div>\n  </div>\n</div>");
 $templateCache.put("widget/widget.tmpl.html","<!-- Class wrapper: widget-item -->\n<!-- TODO: rename (impac-widget) -->\n\n<div class=\"top-line\">\n  <div common-top-buttons parent-widget=\"widget\" />\n  <div common-editable-title parent-widget=\"widget\" />\n</div>\n\n<div ng-show=\"isTemplateLoaded()\" class=\"content\" ng-class=\"templateName\">\n\n  <div ng-show=\"widget.isLoading\">\n    <div class=\"loader\" align=\"center\">\n      Your data is being retrieved...\n      <img class=\"gif\" ng-src=\"{{loaderImage}}\"/>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isLoading\" ng-include=\"widgetContentTemplate\" />\n\n</div>\n\n<div ng-hide=\"isTemplateLoaded()\" class=\"content\">\n  <div class=\"loader\" align=\"center\">\n    <img class=\"gif\" ng-src=\"{{loaderImage}}\"/>\n  </div>\n</div>\n");
-$templateCache.put("widgets-common/data-not-found.tmpl.html","<div class=\"data-not-found\">\n	<img ng-src=\"{{bgImage}}\" />\n	<div class=\"message\">\n	  Data not found\n    <!-- TODO: provider for html hyperlinks? -->\n		<a ng-href=\"\" target=\"_blank\">\n			Are you missing an app ?\n		</a>\n	</div>\n</div>\n");
 $templateCache.put("widgets-common/editable-title.tmpl.html","<div class=\"visible-lg title-wrapper\" ng-if=\"parentWidget.width >= 3 && parentWidget.width < 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:25:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:25:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-lg title-wrapper\" ng-if=\"parentWidget.width >= 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:60:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:60:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-md visible-sm title-wrapper\" ng-if=\"parentWidget.width == 3 && parentWidget.width < 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:18:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:18:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-md visible-sm title-wrapper\" ng-if=\"parentWidget.width >= 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:45:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:45:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-xs title-wrapper\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:30:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:30:\".\"}}\n  </div>\n</div>");
+$templateCache.put("widgets-common/data-not-found.tmpl.html","<div class=\"data-not-found\">\n	<img ng-src=\"{{bgImage}}\" />\n	<div class=\"message\">\n	  Data not found\n    <!-- TODO: provider for html hyperlinks? -->\n		<a ng-href=\"\" target=\"_blank\">\n			Are you missing an app ?\n		</a>\n	</div>\n</div>\n");
 $templateCache.put("widgets-common/top-buttons.tmpl.html","<div id=\"module__top-buttons\">\n  <div ng-mouseenter=\"showCloseActive=true\" ng-mouseleave=\"showCloseActive=false\" class=\"delete-widget\" ng-show=\"parentWidget.hasDeleteAbility\">\n    <button class=\"btn btn-close top-button\" ng-click=\"showConfirmDelete = !showConfirmDelete\">\n      <i class=\"fa fa-times-circle-o fa-lg\"></i>\n    </button>\n  </div>\n\n  <div ng-mouseenter=\"showEditActive=true\" ng-mouseleave=\"showEditActive=false\" class=\"edit-widget\" ng-show=\"parentWidget.hasEditAbility\">\n    <button class=\"btn top-button btn-edit\" ng-click=\"toogleEditMode()\">\n      <i class=\"fa fa-cog fa-lg\"></i>\n    </button>\n  </div>\n\n  <div class=\"refresh-widget\">\n    <button class=\"btn top-button btn-refresh\" ng-click=\"parentWidget.loadContent(true)\">\n      <i class=\"fa fa-refresh\"></i>\n    </button>\n  </div>\n\n  <div class=\"confirm-delete-popover\" ng-show=\"showConfirmDelete\">\n  	<h4>Are you sure you want to delete this widget ?</h4>\n  	<p>(it will not erase your data)</p>\n  	<button ng-click=\"showConfirmDelete = false\" class=\"btn btn-sm btn-default\">Cancel</button>\n  	<button ng-click=\"deleteWidget()\" class=\"btn btn-sm btn-danger\" style=\"margin-left: 10px;\">Delete</button>\n  </div>\n</div>\n");
 $templateCache.put("widgets-settings/account.tmpl.html","<h5>Account to monitor</h5>\n<div class=\"input-group select-account\">\n	<select ng-model=\"parentWidget.selectedAccount\" ng-options=\"account.name + \' (\' + formatAmount(account) + \')\' for account in parentWidget.content.account_list track by account.uid\" class=\"form-control\" />\n</div>");
 $templateCache.put("widgets-settings/chart-filters.tmpl.html","<h5>Chart filters</h5>\n<div class=\"row chart-filters\">\n  <div class=\"col-md-6\">\n    <input type=\"radio\" ng-model=\"filterCriteria\" value=\"number\">\n    <label for=\"number\" ng-click=\"filterCriteria = \'number\'\">Top {{filterValueNumber}} {{entityType}}</label>\n  </div>\n  <div class=\"col-md-6\">\n    <input type=\"range\" ng-model=\"filterValueNumber\" ng-change=\"filterCriteria = \'number\'\" min=\"3\" max=\"{{maxEntities}}\" step=\"1\">\n  </div>\n</div>\n<div class=\"row chart-filters\">\n  <div class=\"col-md-6\">\n    <input type=\"radio\" ng-model=\"filterCriteria\" value=\"percentage\">\n    <label for=\"percentage\" ng-click=\"filterCriteria = \"percentage\"\">Top {{filterValuePercentage}}% {{filterLabel}}</label>\n  </div>\n  <div class=\"col-md-6\">\n    <input type=\"range\" ng-model=\"filterValuePercentage\" ng-change=\"filterCriteria = \'percentage\'\" min=\"20\" max=\"100\" step=\"5\">\n  </div>\n</div>");
 $templateCache.put("widgets-settings/hist-mode.tmpl.html","<div align=\"center\" class=\"histModeChoser\">\n  <a ng-click=\"toogleHistMode(\'current\')\" ng-class=\"!parentWidget.isHistoryMode ? \'active\' : \'inactive\'\">current</a> |\n  <a ng-click=\"toogleHistMode(\'history\')\" ng-class=\"parentWidget.isHistoryMode ? \'active\' : \'inactive\'\">history</a>\n</div>\n<div class=\"{{parentWidget.isHistoryMode ? \'arrow-container right\' : \'arrow-container left\'}}\">\n  <div class=\"arrow\" />\n  <div class=\"arrow-border\" />\n</div>");
-$templateCache.put("widgets-settings/organizations.tmpl.html","<h5>Select Companies</h5>\n\n<div class=\"widget-lines-container\">\n  <div class=\"widget-line\" ng-repeat=\"org in dashboardOrganizations\">\n    {{org.label}}\n    <i ng-class=\"isOrganizationSelected(org.uid) ? \'fa fa-toggle-on\' : \'fa fa-toggle-off\'\" ng-click=\"toogleSelectOrganization(org.uid)\" tooltip=\"{{isOrganizationSelected(org.uid) ? \'disable\' : \'enable\'}}\" />\n  </div>\n</div>");
 $templateCache.put("widgets-settings/param-selector.tmpl.html","<span class=\"settings param-selector\">\n	<a ng-click=\"toogleShowOptions()\">{{selected.label | titleize | truncate : getTruncateValue() : \"...\" : false}} <i class=\"fa fa-chevron-down\" /></a>\n	<div class=\"options-container\" collapse=\"!showOptions\">\n		<div ng-repeat=\"option in options\" ng-click=\"selectOption(option)\">\n			{{option.label | titleize}}\n		</div>\n	</div>\n</span>");
+$templateCache.put("widgets-settings/organizations.tmpl.html","<h5>Select Companies</h5>\n\n<div class=\"widget-lines-container\">\n  <div class=\"widget-line\" ng-repeat=\"org in dashboardOrganizations\">\n    {{org.label}}\n    <i ng-class=\"isOrganizationSelected(org.uid) ? \'fa fa-toggle-on\' : \'fa fa-toggle-off\'\" ng-click=\"toogleSelectOrganization(org.uid)\" tooltip=\"{{isOrganizationSelected(org.uid) ? \'disable\' : \'enable\'}}\" />\n  </div>\n</div>");
 $templateCache.put("widgets-settings/params-picker.tmpl.html","<h5>{{formattedParam | titleize}}</h5>\n<div class=\"params-picker\">\n  <div style=\"margin-bottom: 8px;\">\n    The selected criteria will be displayed in this order (drag/drop to modify):\n  </div>\n  <div ui:sortable=\"sortableOptions\" ng-model=\"options\" class=\"input-group\">\n    <span ng-repeat=\"parameter in options track by $index\" class=\"parameter\" ng-class=\"!parameter.selected ? \'unchecked\' : \'\'\">\n      <span class=\"badge\">{{$index + 1}}</span>\n      {{parameter.label | titleize}}\n      <input type=\"checkbox\" ng-model=\"parameter.selected\" />\n    </span>\n  </div>\n</div>");
 $templateCache.put("widgets-settings/time-range.tmpl.html","<h5>Time range</h5>\n<div class=\"time-range\">\n	<div class=\"row\">\n	  <div class=\"col-md-12\">\n	    Show last {{numberOfPeriods}} {{periodToUnit()}}\n	  </div>\n	</div>\n	<div class=\"row input-group\" align=\"center\" style=\"margin: 0; margin-top: 3px;\">\n	  <div class=\"col-xs-6\" style=\"padding: 0; padding-right: 5px;\">\n	    <select ng-model=\"selectedPeriod\" ng-options=\"period.toLowerCase() for period in PERIODS track by period\" class=\"form-control\" style=\"height: 22px; margin-top: 0; padding: 0; padding-left: 1px; padding-bottom: 1px;\"></select>\n	  </div>\n	  <div class=\"col-xs-6\" style=\"padding: 0;\">\n	    <input type=\"range\" ng-model=\"numberOfPeriods\" min=\"1\" max=\"12\" step=\"1\">\n	  </div>\n	</div>\n</div>");
 $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-double-left reduce\" ng-show=\"expanded\" ng-click=\"parentWidget.toogleExpanded()\" tooltip=\"reduce\"/>\n<i class=\"fa fa-angle-double-right expand\" ng-hide=\"expanded\" ng-click=\"parentWidget.toogleExpanded()\" tooltip=\"expand\"/>");
@@ -1480,6 +1480,114 @@ angular.module('impac.services.widget-templates', []).service('WidgetTemplateSvc
   };
   this.generatePdf = function() {
     return $http.post(_self.config.generatePdfPath);
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.data-not-found', []);
+
+module.directive('commonDataNotFound', ["$templateCache", "ImpacAssets", function($templateCache, ImpacAssets) {
+  return {
+    restrict: 'A',
+    scope: {
+      widgetEngine: '='
+    },
+    template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
+    link: function(scope, element) {
+      var baseDir, dir;
+      scope.bgImage = '';
+      baseDir = ImpacAssets.get('dataNotFound');
+      if (scope.widgetEngine && baseDir.length > 0) {
+        dir = baseDir.split('');
+        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
+        return scope.bgImage = dir + scope.widgetEngine + '.png';
+      }
+    }
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.editable-title', []);
+
+module.controller('CommonEditableTitleCtrl', ["$scope", "DhbAnalyticsSvc", function($scope, DhbAnalyticsSvc) {
+  var w;
+  w = $scope.parentWidget;
+  return $scope.updateName = function() {
+    var data;
+    if (w.name.length === 0) {
+      w.name = w.originalName;
+      return "Incorrect name";
+    } else {
+      data = {
+        name: w.name
+      };
+      return DhbAnalyticsSvc.widgets.update(w, data).then(function(success) {
+        w.originalName = w.name;
+        return angular.extend(w, success.data);
+      }, function() {
+        return w.name = w.originalName;
+      });
+    }
+  };
+}]);
+
+module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
+    controller: 'CommonEditableTitleCtrl'
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.top-buttons', []);
+
+module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "DhbAnalyticsSvc", "ImpacAssets", function($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) {
+  var w;
+  w = $scope.parentWidget;
+  $scope.showCloseActive = false;
+  $scope.showEditActive = false;
+  $scope.showConfirmDelete = false;
+  w.isEditMode = false;
+  $scope.deleteWidget = function() {
+    return DhbAnalyticsSvc.widgets["delete"](w.id, w.parentDashboard).then(function() {
+      return $log.debug('Successfully removed widget!');
+    }, function(errors) {
+      w.errors = Utilities.processRailsError(errors);
+      return $log.error('Error deleting widget: ', errors);
+    });
+  };
+  return $scope.toogleEditMode = function() {
+    if (!w.isLoading) {
+      if (w.isEditMode) {
+        return w.initSettings();
+      } else {
+        return w.isEditMode = true;
+      }
+    }
+  };
+}]);
+
+module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
+    controller: 'CommonTopButtonsCtrl'
   };
 }]);
 }).call(this);
@@ -6747,114 +6855,6 @@ module.directive('settingWidth', ["$templateCache", function($templateCache) {
     },
     template: $templateCache.get('widgets-settings/width.tmpl.html'),
     controller: 'SettingWidthCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.data-not-found', []);
-
-module.directive('commonDataNotFound', ["$templateCache", "ImpacAssets", function($templateCache, ImpacAssets) {
-  return {
-    restrict: 'A',
-    scope: {
-      widgetEngine: '='
-    },
-    template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
-    link: function(scope, element) {
-      var baseDir, dir;
-      scope.bgImage = '';
-      baseDir = ImpacAssets.get('dataNotFound');
-      if (scope.widgetEngine && baseDir.length > 0) {
-        dir = baseDir.split('');
-        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
-        return scope.bgImage = dir + scope.widgetEngine + '.png';
-      }
-    }
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.editable-title', []);
-
-module.controller('CommonEditableTitleCtrl', ["$scope", "DhbAnalyticsSvc", function($scope, DhbAnalyticsSvc) {
-  var w;
-  w = $scope.parentWidget;
-  return $scope.updateName = function() {
-    var data;
-    if (w.name.length === 0) {
-      w.name = w.originalName;
-      return "Incorrect name";
-    } else {
-      data = {
-        name: w.name
-      };
-      return DhbAnalyticsSvc.widgets.update(w, data).then(function(success) {
-        w.originalName = w.name;
-        return angular.extend(w, success.data);
-      }, function() {
-        return w.name = w.originalName;
-      });
-    }
-  };
-}]);
-
-module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
-    controller: 'CommonEditableTitleCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.top-buttons', []);
-
-module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "DhbAnalyticsSvc", "ImpacAssets", function($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) {
-  var w;
-  w = $scope.parentWidget;
-  $scope.showCloseActive = false;
-  $scope.showEditActive = false;
-  $scope.showConfirmDelete = false;
-  w.isEditMode = false;
-  $scope.deleteWidget = function() {
-    return DhbAnalyticsSvc.widgets["delete"](w.id, w.parentDashboard).then(function() {
-      return $log.debug('Successfully removed widget!');
-    }, function(errors) {
-      w.errors = Utilities.processRailsError(errors);
-      return $log.error('Error deleting widget: ', errors);
-    });
-  };
-  return $scope.toogleEditMode = function() {
-    if (!w.isLoading) {
-      if (w.isEditMode) {
-        return w.initSettings();
-      } else {
-        return w.isEditMode = true;
-      }
-    }
-  };
-}]);
-
-module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
-    controller: 'CommonTopButtonsCtrl'
   };
 }]);
 }).call(this);
