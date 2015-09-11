@@ -1,4 +1,4 @@
-<div widget-sales-aged class="sales-aged">
+<div widget-sales-aged>
 
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
@@ -16,7 +16,7 @@
 
     <div ng-show="isDataFound" class="center">
 
-      <div setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" no-reload truncate-no="60" />
+      <div setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" no-reload truncate-no="60" style="text-align: center;"/>
 
       <div class="chart-container">
         <div dhb-chart data="widget.chart"></div>
