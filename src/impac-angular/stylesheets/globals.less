@@ -218,11 +218,6 @@
       padding: 5px;
       color: @mediumblue;
 
-      // TODO: replace by .header
-      .table-header {
-        font-weight: bold;
-      }
-
       &.header {
         .font(12px,500,#acb0b1);
         text-transform: uppercase;
@@ -236,5 +231,15 @@
 
   .right-panel {
     border-left: solid 1px #e6e6e6;
+  }
+}
+
+.tooltip .tooltip-inner.ng-binding {
+  text-align: left;
+  background-color: @mdarkblue;
+  max-width: 100%;
+  white-space: nowrap;
+  strong {
+    color: @green;
   }
 }
