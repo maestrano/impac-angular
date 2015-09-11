@@ -25,7 +25,7 @@
         <div class="funnel-container">
           <div class="tile" ng-repeat="elem in funnel" ng-click="toogleSelectStatus(elem.status)">
             <div class="colored-area" ng-style="elem.coloredWidth" ng-class="isSelected(elem.status) ? 'selected' : ''">{{elem.number}}</div>
-            <div class="status" ng-style="elem.statusWidth">{{elem.status | titleize}}</div>
+            <div class="main-text" ng-style="elem.statusWidth">{{elem.status | titleize}}</div>
           </div>
         </div>
       </div>

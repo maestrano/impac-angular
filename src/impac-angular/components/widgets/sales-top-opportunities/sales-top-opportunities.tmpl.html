@@ -1,4 +1,4 @@
-<div widget-sales-top-opportunities class="sales-top-opportunities">
+<div widget-sales-top-opportunities>
 
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
@@ -22,7 +22,7 @@
       <div class="opps-container">
         <div class="tile" ng-repeat="opp in widget.content.opportunities track by $index" ng-class="getOppClass($index)">
           <div class="colored-area">{{$index +1 }}</div>
-          <div class="name">
+          <div class="main-text">
             {{opp.name | titleize}}
             <br />
             <i style="font-size: 13px;">{{getOppDetails(opp)}}</i>
