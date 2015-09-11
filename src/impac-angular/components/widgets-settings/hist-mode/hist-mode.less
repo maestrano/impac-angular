@@ -1,0 +1,45 @@
+.analytics .widget-item .content {
+  .hist-mode-choser {
+    width: 150px;
+    margin: auto;
+    padding-bottom: 8px;
+    border-bottom: solid 1px #e6e6e6;
+    .font(12px,500,#acb0b1);
+    a {
+      .font(12px,500,#acb0b1);
+      text-transform: uppercase;
+      &.active {
+        color: @purple;
+      }
+    }
+  }
+  .arrow-container {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top: -14px;
+    margin: auto;
+    &.right {
+      left: 30px;
+    }
+    &.left {
+      left: -30px;
+    }
+    .arrow-border {
+      border-top: 14px solid #e6e6e6;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      width: 0px;
+      height: 0px;
+    }
+    .arrow {
+      border-top: 14px solid #ffffff;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      position: relative;
+      top: 12px;
+      width: 0px;
+      height: 0px;
+    }
+  }
+}
