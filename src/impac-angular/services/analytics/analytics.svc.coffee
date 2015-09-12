@@ -51,7 +51,6 @@ angular
       if !self.config.$q? || force
         self.config.$q = $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
           angular.copy(success.data, self.data)
-          console.log('dashboards: ', self.data)
       return self.config.$q
 
     #======================================

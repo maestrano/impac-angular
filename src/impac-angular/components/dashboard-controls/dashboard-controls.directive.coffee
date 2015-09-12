@@ -3,7 +3,6 @@ module = angular.module('impac.components.dashboard-controls', [])
 module.directive('dashboardControls', ($templateCache) ->
   return {
     restrict: 'E'
-    transclude: true
     scope: {
       type: '@' # selector type | defaults 'dropdown'
     }
@@ -20,12 +19,10 @@ module.directive('dashboardControls', ($templateCache) ->
         _.forEach(dashboards, (dhb) ->
           dhb.active = false
         )
-        console.log('watch fired, dashboards: ', dashboards)
       )
 
       # For setting active tab on dashboard create
       $scope.$watch('dhbCtrl.currentDhbId', (newVal) ->
-        console.log('watch fired: ', newVal)
         return unless newVal
         _.forEach($scope.dhbCtrl.dashboardsList, (dhb) ->
           dhb.active = true if dhb.id == newVal
@@ -40,7 +37,6 @@ module.directive('dashboardControls', ($templateCache) ->
 
       setTemplate = (path) ->
         scope.selectorTmpl = path
-        console.log('selectorTmpl', scope.selectorTmpl)
 
       setClasses = (x, y, scrolling) ->
         scope.scrolling = scrolling
