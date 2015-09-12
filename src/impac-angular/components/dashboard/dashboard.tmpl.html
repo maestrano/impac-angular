@@ -1,57 +1,28 @@
 <!-- DASHBOARD -->
-<div class="analytics">
+<div class="analytics module__dashboard">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
+  <!-- Title and Dashboard selection -->
   <div class='row head-title'>
 
-    <!-- Title and Dashboard selection -->
-    <div class="col-md-6 col-sm-12">
+    <!-- Heading -->
+    <!-- <h2 ng-show="false">
+      <img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />
+      <div class="text-info" style="padding-top:12px; height: 48px;">Beta</div>
+      <div class="text-info" style="padding-top:12px; height: 48px;"></div>
+    </h2> -->
 
-      <h2>
-        <img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />
-        <!-- <div class="text-info" style="padding-top:12px; height: 48px;">Beta</div> -->
-        <div class="text-info" style="padding-top:12px; height: 48px;"></div>
-      </h2>
-
-      <h4 ng-hide='showChooseDhbMsg' class='dashboard-title' ng-click="toogleShowDashboardsList()">
-        {{currentDhb.full_name}}
-        <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
-        <i ng-hide="showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" ng-click="toogleShowChangeDhbName(currentDhb)"/>
-      </h4>
-
-      <div collapse="!showDashboardsList" class='dashboard-select'>
-        <div ng-hide="dhb.id == currentDhbId" class='option' ng-repeat="dhb in dashboardsList">
-          <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
-          <i ng-hide="showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" ng-click="toogleShowChangeDhbName(dhb)"/>
-        </div>
-
-        <div ng-show="showCreateDhb" class="option create" ng-click="modal.createDashboard.open() ; showChangeDhbName = false"><i class="fa fa-plus" /> Create Dashboard</div>
-      </div>
-
-      <div ng-show="showChangeDhbName" class="change-name">
-        <p>Change dashboard name:</p>
-        <input type="text" class="form-control" id="changeDhbNameInput" ng-model="dashboardToChange.name" ng-keyup="checkChangeDhbNameAndConfirm($event)"/>
-        <button class="btn btn-sm btn-default" ng-click="showChangeDhbName=false">Cancel</button>
-        <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="updateDhbName()">Confirm</button>
-      </div>
-
-
-      <p ng-hide='showChooseDhbMsg' class="data-source-label">
-        <small><b>Source:</b> {{currentDhb.organizationsNames}}</small>
-      </p>
-
-    </div>
+    <div dashboard-selector type="tabs" class="buttons-bar"></div>
 
     <!-- Buttons -->
-    <div class='col-md-6 buttons-bar col-sm-12'>
+    <div class='buttons-bar' id="dashboard-actions">
       <div class='actions-panel'>
         <button ng-click="showWidgetSelector = true" class='btn btn-warning' ng-show="showCreateWidget" ng-disabled="showWidgetSelector"><span class='fa fa-plus'></span> Add Widget</button>
-        <!-- <button ng-click="modal.createDashboard.open()" class='btn btn-warning' ng-show="showCreateDhb"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
-        <button id='data-upload-wizard' ng-click='openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button>
-        <button ng-click="modal.deleteDashboard.open()" class='btn btn-danger hidden-xs' ng-show="showDeleteDhb" tooltip="Delete Dashboard"><span class='fa fa-trash-o'></span> </button> -->
+        <button ng-click="modal.createDashboard.open()" class='btn btn-warning' ng-show="showCreateDhb"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
+        <!-- <button id='data-upload-wizard' ng-click='openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
+        <button ng-click="modal.deleteDashboard.open()" class='btn btn-danger hidden-xs' ng-show="showDeleteDhb" tooltip="Delete Dashboard"><span class='fa fa-trash-o'></span> </button>
       </div>
     </div>
-
   </div>
 
 

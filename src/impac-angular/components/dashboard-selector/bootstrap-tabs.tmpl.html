@@ -1,0 +1,4 @@
+<tabset type="{{type}}">
+  <tab get-width ng-repeat="dhb in parentScope.dashboardsList" heading="{{dhb.full_name}}" select="parentScope.selectDashboard(dhb.id)"></tab>
+  <!-- <tab get-width ng-repeat="dhb in testTabs" heading="{{dhb.full_name}}"></tab> -->
+</tabset>

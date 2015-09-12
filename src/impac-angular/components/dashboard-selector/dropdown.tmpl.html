@@ -1,0 +1,25 @@
+<h4 ng-hide='parentScope.showChooseDhbMsg' class='dashboard-title' ng-click="parentScope.toogleShowDashboardsList()">
+  {{parentScope.currentDhb.full_name}}
+  <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
+  <i ng-hide="parentScope.showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="parentScope.toogleShowChangeDhbName(parentScope.currentDhb)"></i>
+</h4>
+
+<div collapse="!parentScope.showDashboardsList" class='dashboard-select'>
+  <div ng-hide="dhb.id == parentScope.currentDhbId" class='option' ng-repeat="dhb in parentScope.dashboardsList">
+    <span class="name" ng-click="parentScope.selectDashboard(dhb.id)">{{dhb.full_name}}</span>
+    <i ng-hide="parentScope.showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="parentScope.toogleShowChangeDhbName(dhb)"/>
+  </div>
+
+  <div ng-show="parentScope.showCreateDhb" class="option create" ng-click="parentScope.modal.createDashboard.open() ; parentScope.showChangeDhbName = false"><i class="fa fa-plus" /> Create Dashboard</div>
+</div>
+
+<div ng-show="parentScope.showChangeDhbName" class="change-name">
+  <p>Change dashboard name:</p>
+  <input type="text" class="form-control" id="changeDhbNameInput" ng-model="parentScope.dashboardToChange.name" ng-keyup="parentScope.checkChangeDhbNameAndConfirm($event)"/>
+  <button class="btn btn-sm btn-default" ng-click="parentScope.showChangeDhbName=false">Cancel</button>
+  <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="parentScope.updateDhbName()">Confirm</button>
+</div>
+
+<p ng-hide='parentScope.showChooseDhbMsg' class="data-source-label">
+  <small><b>Source:</b> {{parentScope.currentDhb.organizationsNames}}</small>
+</p>

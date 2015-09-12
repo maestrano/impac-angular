@@ -1,0 +1,30 @@
+// This Less module currently applies to all templates of the dashboardSelector directive.
+#module__dashboard-selector {
+
+  position: relative;
+
+  .scrolling-tabs {
+    // min-width: 10000px;
+    position: relative;
+    // margin-left: 25px;
+    right: 0px;
+  }
+
+  .bootstrap-tabs {
+    &.button {
+      position: absolute;
+      width: 25px;
+      height: 100%;
+      padding: 17px 7px;
+      background-color: #EEEEEE;
+      cursor: pointer;
+      &.left {
+        top: 0;
+      }
+      &.right {
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}

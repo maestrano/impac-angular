@@ -163,8 +163,6 @@ gulp.task('less', ['less:inject'], function () {
     .pipe(less({
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
-    .pipe(sourcemaps.init())
-    .pipe(sourcemaps.write())
     .pipe(rename(function (path) {
       path.basename = 'impac-angular';
     }))

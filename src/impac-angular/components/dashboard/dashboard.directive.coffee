@@ -302,7 +302,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalCreateDashboard.selectMode = (mode) ->
       self = modalCreateDashboard
-      debugger;
       _.each(self.organizations, (o) -> o.$selected = false)
       self.currentOrganization.$selected = (mode == 'single')
       self.mode = mode
