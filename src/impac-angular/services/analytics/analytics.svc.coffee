@@ -17,6 +17,7 @@ angular
     }
 
     service.data = []
+    service.organizations = []
 
     service.isLocked = false
 
@@ -37,6 +38,9 @@ angular
     service.getOrganizationId = ->
       service.config.organizationId
 
+    service.setOrganizations = (orgs) ->
+      service.organizations = orgs
+
     # Configure the service
     service.configure = (opts) ->
       angular.copy(opts, service.config)
@@ -46,8 +50,7 @@ angular
     service.load = (force = false) ->
       if !self.config.$q? || force
         self.config.$q = $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
-          angular.copy(success.data,self.data)
-          console.log('dashboards: ', self.data)
+          angular.copy(success.data, self.data)
       return self.config.$q
 
     #======================================

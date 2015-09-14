@@ -51,7 +51,7 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, DhbAnalyticsSvc
     return w
 )
 
-module.directive('widgetAccountsAccountingValue', ->
+module.directive('widgetAccountsAccountingValues', ->
   return {
     restrict: 'A',
     controller: 'WidgetAccountsAccountingValuesCtrl',

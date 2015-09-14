@@ -1,0 +1,22 @@
+<div class="buttons-bar col-md-12">
+  <tabset type="{{selectorType}}">
+    <tab ng-repeat="dhb in dhbCtrl.dashboardsList" select="dhbCtrl.selectDashboard(dhb.id)" active="dhb.active">
+      <tab-heading>
+        {{dhb.full_name}}
+        <a href="">
+          <i class="fa fa-times" ng-click="dhbCtrl.modal.deleteDashboard.open()"></i>
+        </a>
+      </tab-heading>
+    </tab>
+    <tab active="false" ng-click="toogleAccessibilityMode()">
+      <tab-heading>
+        <a href=""><i class="fa fa-wheelchair"></i></a>
+      </tab-heading>
+    </tab>
+    <tab active="false" ng-click="dhbCtrl.modal.createDashboard.open()">
+      <tab-heading>
+        <a href=""><i class="fa fa-plus"></i></a>
+      </tab-heading>
+    </tab>
+  </tabset>
+</div>
