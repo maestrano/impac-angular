@@ -13,7 +13,7 @@
   h2 {
     margin-top: 2px;
     font-size: 14px;
-    color: #5B6667;
+    color: @impac-widget-text-color;
   }
 
   h3 {
@@ -22,29 +22,28 @@
   }
 
   h4 {
-    color: #5b6667;
+    color: @impac-widget-text-color;
     font-size: 16px;
   }
 
   // ---------------------------------------------------------------------------
-  // --- Colors - TODO: put in variables
+  // --- Colors
   // ---------------------------------------------------------------------------
 
-  .blue {
-    color: #3fc4ff;
-  }
-
-  .pink {
-    // no longer pink since matter update
-    color: #1de9b6;
+  .positive,.green {
+    color: @impac-positive !important;
   }
 
   .negative,.red {
-    color: @pink;
+    color: @impac-negative !important;
   }
 
-  .positive,.green {
-    color: green;
+  .positive2 {
+    color: @impac-positive2 !important;
+  }
+
+  .negative2 {
+    color: @impac-negative2 !important;
   }
 
   // ---------------------------------------------------------------------------
@@ -53,7 +52,7 @@
 
   a {
     font-weight: bold;
-    color: @mlightblue;
+    color: @impac-widget-link-color;
     cursor: pointer;
   }
 
@@ -63,7 +62,7 @@
 
   select {
     margin-top: 5px;
-    background-color: white;
+    background-color: @impac-widget-background-color;
     height: 32px;
   }
 
@@ -82,10 +81,10 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: lighten(#233845,35%);
+      background-color: lighten(@impac-widget-scrollbar-color,35%);
       border-radius: 10px;
       &:hover {
-        background-color: lighten(#233845,40%);
+        background-color: lighten(@impac-widget-scrollbar-color,40%);
       }
     }
   }
@@ -95,17 +94,19 @@
   // --- Custom elements
   // ---------------------------------------------------------------------------
 
+  .price {
+    .center-bold();
+  }
+
   .currency {
     .center-thin();
+    color: @impac-widget-text-color-medium;
   }
 
   .legend {
     .center-small();
     .scrollable();
-  }
-
-  .price {
-    .center-bold();
+    color: @impac-widget-text-color-light;
   }
 
   .right-panel {
@@ -138,11 +139,11 @@
       padding: 5px 10px;
       min-width: 8%;
       &.selected {
-        background-color: @purple;
+        background-color: @impac-widget-tile-selected-color;
       }
     }
     .main-text {
-      color: #5B6667;
+      color: @impac-widget-text-color;
       padding: 20px 0px 0px 5px;
       height: 100%;
       font-style: italic;
@@ -152,7 +153,7 @@
 
   .widget-lines-container {
     .scrollable();
-    max-height: 200px;
+    max-height: @impac-widget-lines-container-max-height;
     
     text-align: left;
     font-size: 12px;
@@ -164,7 +165,7 @@
       color: @mediumblue;
 
       &.header {
-        .font(12px,500,#acb0b1);
+        .font(12px,500,@impac-widget-text-color-medium);
         text-transform: uppercase;
       }
       &.total {
@@ -182,6 +183,6 @@
   max-width: 100%;
   white-space: nowrap;
   strong {
-    color: @green;
+    color: @mgreen;
   }
 }

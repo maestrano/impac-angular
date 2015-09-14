@@ -20,15 +20,15 @@
       <div ng-if="widget.isHistoryMode">
         <div dhb-chart data="widget.chart"></div>
         <div class="legend">
-          <span class="pink">Payable</span> -
-          <span class="blue">Receivable</span>
+          <span class="negative2">Payable</span> -
+          <span class="positive2">Receivable</span>
         </div>
       </div>
 
       <div ng-hide="widget.isHistoryMode">
         <div class="receivable">
           <h3>Accounts Receivable</h3>
-          <div class="price blue">
+          <div class="price positive2">
              {{getCurrentReceivable() | mnoCurrency : getCurrency() : false}}
           </div>
           <div class="currency">{{getCurrency()}}</div>
@@ -36,7 +36,7 @@
 
         <div class="payable">
           <h3>Accounts Payable</h3>
-          <div class="price pink">
+          <div class="price negative2">
             {{getCurrentPayable() | mnoCurrency : getCurrency() : false}}
           </div>
           <div class="currency">{{getCurrency()}}</div>

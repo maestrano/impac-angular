@@ -1,5 +1,8 @@
 .analytics {
 
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
+
   #head-title {
     padding: 5px;
     border-bottom: 1px solid @lightblue;
@@ -21,26 +24,26 @@
     }
 
     .dashboard-select {
-      margin: 5px 0px 10px 100px;
+      margin: 5px 0px 10px 30px;
       height: auto;
-      border-left: 1px solid rgb(151, 123, 240);
-      border-bottom: 1px solid rgb(151, 123, 240);
+      border-left: 1px solid @impac-dashboard-title-color;
+      border-bottom: 1px solid @impac-dashboard-title-color;
       width: 300px;
       background-color: @lightgray;
       cursor: pointer;
       .option {
-        color: lighten(@mdarkbg,50%);
+        color: @impac-dashboard-title-label-color;
         white-space: nowrap;
         &:hover {
-          background-color: white;
+          background-color: @impac-widget-background-color;
         }
         &.create {
-          background-color: @purple;
-          color: white;
+          background-color: @impac-dashboard-title-color;
+          color: @impac-dashboard-title-label-create-color;
           height: 30px;
           padding: 5px 10px 5px 10px;
           &:hover {
-            background-color: darken(@purple,10%);
+            background-color: darken(@impac-dashboard-title-color,10%);
           }
         }
         i.fa.fa-pencil {
@@ -50,7 +53,7 @@
           width: 15%;
           height: 30px;
           &:hover {
-            color: @mgreen;
+            color: darken(@impac-dashboard-title-color,10%);
           }
         }
         span.name {
@@ -87,18 +90,20 @@
       .btn {
         float: right;
         margin: 3px;
+        border-radius: @impac-dashboard-buttons-border-radius;
       }
     }
 
     .data-source-label {
+      color: @impac-dashboard-source-color;
       padding-left: 3px;
       margin: 0px;
     }
   }
 
   #widget-selector {
-    background-color: #233845;
-    color: white;
+    background-color: @impac-dashboard-widget-selector-bg;
+    color: @impac-dashboard-widget-selector-text-color;
     padding: 0px 45px 10px 45px;
     margin: 10px -45px;
 
@@ -117,7 +122,7 @@
 
     .title {
       padding: 15px 0px;
-      border-bottom: solid 1px lighten(#233845,6%);
+      border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
       i.fa.fa-times-circle {
         float: right;
         cursor: pointer;
@@ -136,14 +141,14 @@
       border-radius: 3px;
 
       .categories {
-        background-color: darken(#233845,6%);
+        background-color: darken(@impac-dashboard-widget-selector-bg,6%);
         padding-bottom: 15px;
         .row.lines {
           p:hover {
-            background-color: darken(#233845,3%);
+            background-color: darken(@impac-dashboard-widget-selector-bg,3%);
           }
           p.selected {
-            background-color: @purple;
+            background-color: @impac-widget-link-color;
             font-weight: bold;
             .box-shadow(-2px 2px 10px -4px black);
           }
@@ -159,11 +164,11 @@
             position: absolute;
             top: 10px;
             right: 17px;
-            background-color: @purple;
+            background-color: @impac-widget-link-color;
           }
           i.fa.fa-caret-right {
             font-size: 52px;
-            color: @purple;
+            color: @impac-widget-link-color;
             float: right;
             position: absolute;
             top: 0px;
@@ -173,17 +178,17 @@
       }
 
       .widgets {
-        background-color: darken(#233845,3%);
+        background-color: darken(@impac-dashboard-widget-selector-bg,3%);
         padding-bottom: 15px;
         .row.header {
           text-transform: uppercase;
           font-size: 12px;
-          color: @purple;
+          color: @impac-widget-link-color;
         }
         .row.lines {
           padding: 3px 0px;
           p:hover {
-            background-color: darken(#233845,6%);
+            background-color: darken(@impac-dashboard-widget-selector-bg,6%);
             font-weight: normal;
           }
           .fa.fa-plus-circle {
@@ -209,10 +214,10 @@
         p {
           padding: 5px;
           margin: 0px;
-          border-bottom: solid 1px #233845;
+          border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
           &:hover, &.selected {
-            color: white;
+            color: @impac-dashboard-widget-selector-text-color;
           }
         }
 
@@ -222,10 +227,10 @@
         }
 
         &::-webkit-scrollbar-thumb {
-          background-color: lighten(#233845,3%);
+          background-color: lighten(@impac-dashboard-widget-selector-bg,3%);
           border-radius: 10px;
           &:hover {
-            background-color: lighten(#233845,6%);
+            background-color: lighten(@impac-dashboard-widget-selector-bg,6%);
           }
         }
       }
@@ -269,16 +274,16 @@
 
   #widgets-container {
     .placeHolderBox {
-      margin: 12px;
+      margin: @impac-padding-between-widgets;
       height: 267px;
       width: 300px;
       float: left;
-      border: 2px dashed @lightblue;
+      border: @impac-placeholder-border;
       background: none;
     }
 
     .widget-item {
-      padding: 12px;
+      padding: @impac-padding-between-widgets;
     }
   }
 }

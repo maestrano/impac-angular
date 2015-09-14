@@ -3,9 +3,9 @@
   .parameter {
     margin: 0px 3px 3px 0px;
     padding: 3px 5px;
-    background-color: #1E303B;
+    background-color: @impac-widget-params-picker-bg;
     color: white;
-    border: solid 1px #1E303B;
+    border: solid 1px @impac-widget-params-picker-bg;
     border-radius: 4px;
     cursor: move;
     font-weight: bold;
@@ -21,8 +21,8 @@
     .badge {
       margin-right: 3px;
       font-size: 10px;
-      background-color: @lightgray;
-      color: #1E303B;
+      background-color: darken(@impac-widget-background-color, 5%);
+      color: @impac-widget-params-picker-bg;
       padding: 2px 6px;
     }
 
@@ -30,9 +30,9 @@
       background-color: inherit;
       font-weight: normal;
       color: inherit;
-      border-color: #c2c4c4;
+      border-color: @impac-widget-params-picker-unchecked-bg;
       .badge {
-        background-color: #c2c4c4;
+        background-color: @impac-widget-params-picker-unchecked-bg;
         color: white;
       }
     }

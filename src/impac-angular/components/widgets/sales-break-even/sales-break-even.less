@@ -13,23 +13,23 @@
       width: 100px;
     }
     &.to-date {
-      background-color: rgb(247,247,247);
-      color: #5b6667;
+      background-color: @impac-widget-sub-bg-color;
+      color: @impac-widget-text-color;
     }
     &.to-breakeven {
       margin-top: 10px;
-      background-color: rgb(25,40,49);
-      color: #1de9b6;
+      background-color: @impac-widget-sales-break-even-bg;
+      color: @impac-widget-sales-break-even-text-color;
       .title {
-        border-bottom: solid 1px lighten(rgb(25,40,49), 10%);
+        border-bottom: solid 1px lighten(@impac-widget-sales-break-even-bg, 10%);
       }
       .define-text {
         .center-thin();
         padding-top: 5px;
-        color: #1de9b6;
+        color: @impac-widget-sales-break-even-text-color;
       }
       .price {
-        color: #1de9b6;
+        color: @impac-widget-sales-break-even-text-color;
       }
     }
 

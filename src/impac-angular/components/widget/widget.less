@@ -1,8 +1,8 @@
 .widget-item .top-line {
   cursor: move;
-  background-color: white;
+  background-color: @impac-widget-title-bg;
   padding: 9px 9px 0px 9px;
-  border-radius: 5px 5px 0px 0px;
+  border-radius: @impac-widget-title-border-radius;
   border: solid 1px darken(@lightgray,10%);
   border-bottom: none;
   min-height: 41px;
@@ -11,10 +11,10 @@
 
 .widget-item .content {
   padding: 9px;
-  border-radius: 0px 0px 5px 5px;
+  border-radius: @impac-widget-content-border-radius;
   border: solid 1px darken(@lightgray,10%);
   border-top: none;
-  background-color: white;
+  background-color: @impac-widget-background-color;
 
   vertical-align: top;
   .box-shadow(0px 1px 8px -4px);

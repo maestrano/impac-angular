@@ -8,26 +8,26 @@
     width: 160px;
     select {
       font-size: 13px;
-      background-color: @purple;
-      color: white;
+      background-color: @impac-widget-link-color;
+      color: @impac-widget-background-color;
       outline: none;
       border: none;
       cursor: pointer;
       &[disabled] {
         cursor: not-allowed;
-        background-color: lighten(@purple,10%);
+        background-color: lighten(@impac-widget-link-color,10%);
         &:hover {
-          background-color: lighten(@purple,10%);
+          background-color: lighten(@impac-widget-link-color,10%);
         }
       }
       &:hover {
-        background-color: darken(@purple,10%);
+        background-color: darken(@impac-widget-link-color,10%);
       }
       option {
-        background-color: white;
-        color: lighten(@mdarkbg,40%);
+        background-color: @impac-widget-background-color;
+        color: lighten(@impac-widget-text-color,40%);
         &[disabled] {
-          color:white;
+          color: @impac-widget-background-color;
         }
       }
     }
@@ -47,6 +47,6 @@
   }
   .widget-lines-container {
     font-size: 11px;
-    max-height: 220px;
+    max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
 }

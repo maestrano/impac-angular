@@ -20,17 +20,17 @@
       <div ng-if="widget.isHistoryMode && !widget.isLoading">
         <div dhb-chart data="widget.hist_chart"></div>
         <div class="legend">
-          <span class="pink">Expenses</span> -
-          <span class="blue">Revenue</span>
+          <span class="negative2">Expenses</span> -
+          <span class="positive2">Revenue</span>
         </div>
       </div>
 
       <div ng-if="!widget.isHistoryMode && !widget.isLoading" class="chart-container">
         <div dhb-chart data="widget.cur_chart"></div>
         <div class="legend">
-          <span class="pink">Expenses: {{getCurrentExpenses() | mnoCurrency : getCurrency()}}</span>
+          <span class="negative2">Expenses: {{getCurrentExpenses() | mnoCurrency : getCurrency()}}</span>
           </br>
-          <span class="blue">Revenue: {{getCurrentRevenue() | mnoCurrency : getCurrency()}}</span>
+          <span class="positive2">Revenue: {{getCurrentRevenue() | mnoCurrency : getCurrency()}}</span>
         </div>
       </div>
     </div>

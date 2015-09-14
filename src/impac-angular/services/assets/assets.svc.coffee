@@ -27,7 +27,7 @@ angular
       #=======================================
       service.get = (key) ->
         path = ''
-        msg = 'impac-angular warning: There are missing assets, please refer to the including assets section in the docs.'
+        msg = 'impac-angular warning: There are missing assets (' + key + '), please refer to the including assets section in the docs.'
         if paths[key]?
           path = paths[key]
         else

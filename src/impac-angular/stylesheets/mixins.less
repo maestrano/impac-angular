@@ -1,26 +1,26 @@
 .center-bold (@margin-top: 30px) {
-  .font(22px,900,#5b6667);
+  .font(22px, 900, @impac-widget-text-color);
   text-align: center;
   margin-top: @margin-top;
 }
 
 .center-thin () {
-  .font(16px,300,@darkblue);
+  .font(16px, 300, @impac-widget-text-color);
   text-align: center;
 }
 
 .center-small () {
-  .font(12px,300,@mediumblue);
+  .font(12px, 300, @impac-widget-text-color);
   text-align: center;
 }
 
 .left-thin (@margin-top: 0px) {
-  .font(14px,300,@mdarkbg);
+  .font(14px, 300, @impac-widget-text-color);
   text-align: left;
   margin-top: @margin-top;
 }
 
-.widget-height (@height: 250px) {
+.widget-height (@height: @impac-minimum-widget-size) {
   min-height: @height;
   @media (min-width: @screen-md-min) {
     height: @height;
@@ -30,14 +30,14 @@
 .short-widget () {
   .widget-height();
   .edit {
-    max-height: 230px;
+    max-height: @impac-minimum-widget-size - 20px;
   }
 }
 
 .tall-widget () {
-  .widget-height(565px);
+  .widget-height(@impac-big-widget-size);
   .edit {
-    max-height: 540px;
+    max-height: @impac-big-widget-size - 20px;
     .widget-lines-container {
       .scrollable(hidden);
     }
@@ -52,26 +52,26 @@
 .selectable () {
   cursor: pointer;
   :hover {
-    color: @purple;
+    color: @impac-widget-selectable-color;
   }
   .selected {
-    border: solid 1px @purple;
-    background-color: lighten(@purple, 22%)
+    border: solid 1px @impac-widget-selectable-color;
+    background-color: lighten(@impac-widget-selectable-color, 22%)
   }
 }
 
-.alternate-bg (@even-color: @lightgray) {
+.alternate-bg (@even-color: @impac-widget-sub-bg-color) {
   &:nth-child(even) {
     background-color: @even-color;
   }
   &:nth-child(odd) {
-    background-color: white;
+    background-color: @impac-widget-background-color;
   }
 }
 
 .edit-panel-style() {
   .scrollable();
-  color: @mdarkbg;
+  color: @impac-widget-text-color;
   padding: 2px;
   font-size: 12px;
 
@@ -97,22 +97,22 @@
     margin: 0;
     margin-bottom: 8px;
     text-align: left;
-    .font(12px,normal,#acb0b1);
+    .font(12px,normal,@impac-widget-text-color-light);
   }
 
   .part {
     margin-bottom: 8px;
     padding: 10px 0px;
-    background-color: #f3f4f4;
-    color: #626d6d;
-    border: solid 1px #f3f4f4;
+    background-color: @impac-widget-sub-bg-color-light;
+    // color: #626d6d;
+    border: solid 1px @impac-widget-borders-color;
 
     h5 {
       margin: 0;
       margin-bottom: 10px;
       padding: 0px 15px;
       text-transform: uppercase;
-      font-size: 12px;
+      .font(12px,normal,@impac-widget-text-color-light);
     }
 
     label {
@@ -131,7 +131,7 @@
 }
 
 .loader-style() {
-  color: @mblue;
+  color: @impac-widget-text-color-light;
   font-weight: bold;
   .gif {
     display: block;

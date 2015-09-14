@@ -4,12 +4,12 @@
     margin: auto;
     padding-bottom: 8px;
     border-bottom: solid 1px #e6e6e6;
-    .font(12px,500,#acb0b1);
+    .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
     a {
-      .font(12px,500,#acb0b1);
-      text-transform: uppercase;
+      .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+      text-transform: @impac-widget-hist-text-transform;
       &.active {
-        color: @purple;
+        color: @impac-widget-link-color;
       }
     }
   }
@@ -33,7 +33,7 @@
       height: 0px;
     }
     .arrow {
-      border-top: 14px solid #ffffff;
+      border-top: 14px solid @impac-widget-background-color;
       border-left: 14px solid transparent;
       border-right: 14px solid transparent;
       position: relative;
