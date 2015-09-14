@@ -1,17 +1,17 @@
 angular
 .module('impac.components.dashboard-selector', [])
-.directive('dashboardSelector', ($compile, $templateCache, ImpacTheming) ->
+.directive('dashboardSelector', ($compile, $templateCache, $http, ImpacTheming) ->
   return {
     restrict: 'E'
     scope: {}
     controller: ($scope) ->
       # Accessing parent scope to speed up implementing this component.
-      # TODO: refactor methods & variables relating to dashboard controls out of the
-      #       dashboard controller into this controller, and children directive wrappers.
+      # TODO: refactor methods & variables relating to this component out of the
+      #       DashboardCtrl, and into this controller.
       $scope.dhbCtrl = $scope.$parent
 
       # TODO: These watchers will be REMOVED when the above refactor has been made.
-      # They add values to the dhb objects for watching change.
+      # adds values to the dhb objects for watching change.
       $scope.$watch('dhbCtrl.dashboardsList', (dashboards) ->
         return if !dashboards or !dashboards.length
         _.forEach(dashboards, (dhb) ->
@@ -49,7 +49,29 @@ angular
         when 'pills' then setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html')
         else setTemplate(customUrl)
 
-      element.html($templateCache.get(selectorTemplate)).show()
-      $compile(element.contents())(scope)
+
+      # gets custom template from local path, returns as string.
+      getCustomTemplate = ->
+        $http.get(selectorTemplate, {cache: $templateCache}).then(
+          (tmplContent) ->
+            if !tmplContent or !tmplContent.data or !tmplContent.data.length
+              $log.warn 'dashboardSelector custom template: no content found'
+            _compile(tmplContent.data)
+          (err) ->
+            $log.error 'Error retrieving custom template: ', err
+        )
+
+      # gets template string from templateCache
+      getTemplate = ->
+        _compile($templateCache.get(selectorTemplate))
+
+      # compiles html string to element
+      _compile = (htmlString) ->
+        element.html(htmlString).show()
+        $compile(element.contents())(scope)
+
+      if customUrl then getCustomTemplate() else getTemplate()
   }
 )
+
+
