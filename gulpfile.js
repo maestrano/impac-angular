@@ -99,7 +99,7 @@ gulp.task('templates', function () {
 });
 
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
-gulp.task('templates:concat', ['templates'], function () {
+gulp.task('templates-concat', ['templates'], function () {
   return gulp.src(['src/impac-angular/impac-angular.module.js', 'tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
     .pipe(gulp.dest('tmp/')); // output destination
@@ -131,7 +131,7 @@ var buildSourceFiles = [
 // TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
 // TODO::gulp-coffee: is stripping comments on compile, cant find options or
 // alternative.
-gulp.task('coffee', ['clean'], function () {
+gulp.task('coffee-compile', ['clean'], function () {
   return gulp.src(coffeeFiles)
     .pipe(coffee({bare: true}).on('error', gutil.log))
     // encapsulates components
@@ -145,7 +145,7 @@ gulp.task('coffee', ['clean'], function () {
 
 // Dynamically injects @import's into the main .less file, allowing less files to be places
 // around the app structure with the component page they apply to.
-gulp.task('less:inject', function() {
+gulp.task('less-inject', function() {
     return gulp.src(mainLessFile)
       .pipe(inject(gulp.src(lessFiles, {
         read: false,
@@ -159,7 +159,7 @@ gulp.task('less:inject', function() {
       .pipe(gulp.dest('src/impac-angular/stylesheets'));
 });
 
-gulp.task('less', ['less:inject'], function () {
+gulp.task('less-compile', ['less:inject'], function () {
   return gulp.src(mainLessFile)
     .pipe(less({
       paths: [ path.join(__dirname, 'less', 'includes') ]
@@ -178,7 +178,20 @@ gulp.task('less', ['less:inject'], function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
+gulp.task('less-concat', function () {
+  return gulp.src([
+      './src/impac-angular/stylesheets/variables.less',
+      './src/impac-angular/stylesheets/custom_bootstrap/variables.less',
+      './src/impac-angular/stylesheets/mixins.less',
+      './src/impac-angular/stylesheets/globals.less',
+      './src/impac-angular/stylesheets/widget-master-styles.less',
+      './src/impac-angular/components/**/*.less'
+    ])
+    .pipe(concat('impac-angular.less'))
+    .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('build', ['coffee-compile', 'less-compile', 'less-concat', 'templates-concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
@@ -186,7 +199,7 @@ gulp.task('build', ['coffee', 'less', 'templates:concat'], function () {
     .pipe(uglify())
     .pipe(strip())
     .pipe(rename('impac-angular.min.js'))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('./dist/'));
 
   stream.on('end', function () {
     del(['tmp']);
@@ -207,8 +220,9 @@ gulp.task('watch', ['build'], function () {
 /* ************************************ */
 gulp.task('start:watch', ['watch']);
 gulp.task('build:dist', ['build']);
-gulp.task('build:less', ['less']);
-gulp.task('build:less:inject', ['less:inject']);
-gulp.task('build:coffee', ['coffee']);
-gulp.task('build:templates', ['templates:concat']);
+gulp.task('less:compile', ['less-compile']);
+gulp.task('less:inject', ['less-inject']);
+gulp.task('less:concat', ['less-concat']);
+gulp.task('coffee:compile', ['coffee-compile']);
+gulp.task('build:templates', ['templates-concat']);
 
