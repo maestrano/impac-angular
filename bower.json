@@ -15,11 +15,11 @@
     "bower_components",
     "node_modules",
     "karma-*",
-    "*.sublime*"
+    "*.sublime*",
+    "lib"
   ],
   "moduleType": ["globals"],
   "dependencies": {
-    "Chart.js": "~1.0.2",
     "angular": "~1.4.0",
     "angular-bootstrap": "~0.13.3",
     "angular-ui-sortable": "~0.13.4"
