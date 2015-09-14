@@ -1,11 +1,9 @@
 module = angular.module('impac.components.dashboard-controls', [])
 
-module.directive('dashboardControls', ($templateCache) ->
+module.directive('dashboardControls', ($templateCache, ImpacTheming) ->
   return {
     restrict: 'E'
-    scope: {
-      type: '@' # selector type | defaults 'dropdown'
-    }
+    scope: {}
     controller: ($scope) ->
       # Accesses parent scope to speed up implementing this component.
       # todo: refactor methods & variables relating to dashboard controls out of the
@@ -21,7 +19,7 @@ module.directive('dashboardControls', ($templateCache) ->
         )
       )
 
-      # For setting active tab on dashboard create
+      # Sets tab as 'active' when creating a new dashboard
       $scope.$watch('dhbCtrl.currentDhbId', (newVal) ->
         return unless newVal
         _.forEach($scope.dhbCtrl.dashboardsList, (dhb) ->
@@ -45,7 +43,9 @@ module.directive('dashboardControls', ($templateCache) ->
         $actionsContainer = angular.element(document.getElementById('dashboard-actions'))
         $actionsContainer.addClass('col-md-' + y)
 
-      switch scope.type
+      dhbSelectorType = ImpacTheming.getDhbSelectorType()
+
+      switch dhbSelectorType
         when 'dropdown'
           setClasses(6, 6)
           setTemplate(defaultTmpl)
@@ -56,7 +56,7 @@ module.directive('dashboardControls', ($templateCache) ->
           setClasses(8, 4, true)
           setTemplate('dashboard-controls/bootstrap-tabs.tmpl.html')
         else
-          scope.type = 'dropdown'
+          dhbSelectorType = 'dropdown'
           setClasses(6, 6)
           setTemplate(defaultTmpl)
 
