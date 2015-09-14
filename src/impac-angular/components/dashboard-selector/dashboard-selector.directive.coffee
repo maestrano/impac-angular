@@ -1,6 +1,6 @@
 angular
 .module('impac.components.dashboard-selector', [])
-.directive('dashboardSelector', ($compile, $templateCache, $http, ImpacTheming) ->
+.directive('dashboardSelector', ($log, $compile, $templateCache, $http, ImpacTheming) ->
   return {
     restrict: 'E'
     scope: {}
@@ -48,7 +48,6 @@ angular
         when 'tabs' then setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html')
         when 'pills' then setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html')
         else setTemplate(customUrl)
-
 
       # gets custom template from local path, returns as string.
       getCustomTemplate = ->
