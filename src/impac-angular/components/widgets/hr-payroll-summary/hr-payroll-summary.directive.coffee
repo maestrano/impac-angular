@@ -237,9 +237,6 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartF
 module.directive('widgetHrPayrollSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("payroll-summary")
-    ,controller: 'WidgetHrPayrollSummaryCtrl'
+    controller: 'WidgetHrPayrollSummaryCtrl'
   }
 )

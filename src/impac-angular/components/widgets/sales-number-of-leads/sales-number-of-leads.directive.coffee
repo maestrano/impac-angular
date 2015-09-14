@@ -98,9 +98,6 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, DhbAnalyticsSvc, Char
 module.directive('widgetSalesNumberOfLeads', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("number-of-leads")
-    ,controller: 'WidgetSalesNumberOfLeadsCtrl'
+    controller: 'WidgetSalesNumberOfLeadsCtrl'
   }
 )

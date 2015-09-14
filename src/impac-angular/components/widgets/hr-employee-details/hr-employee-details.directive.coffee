@@ -79,9 +79,6 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, DhbAnalyticsSvc, Utili
 module.directive('widgetHrEmployeeDetails', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("employee-details")
-    ,controller: 'WidgetHrEmployeeDetailsCtrl'
+    controller: 'WidgetHrEmployeeDetailsCtrl'
   }
 )

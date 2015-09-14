@@ -202,9 +202,6 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, DhbAnalyticsSvc, ChartFo
 module.directive('widgetSalesComparison', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("profit-and-loss")
-    ,controller: 'WidgetSalesComparisonCtrl'
+    controller: 'WidgetSalesComparisonCtrl'
   }
 )

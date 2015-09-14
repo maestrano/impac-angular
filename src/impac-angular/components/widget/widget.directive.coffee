@@ -44,6 +44,13 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
         updatedWidget.content ||= {}
         updatedWidget.originalName = updatedWidget.name
         angular.extend(w,updatedWidget)
+
+        if $scope.isAccessibility
+          w.initialWidth = w.width
+          w.width = 12
+        else if w.initialWidth 
+          w.width = w.initialWidth
+
         # triggers the initialization of the widget's specific params (defined in the widget specific controller)
         w.initContext()
         # triggers the initialization of all the widget's settings
@@ -101,7 +108,8 @@ module.directive('impacWidget', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentDashboard: '=',
-      widget: '='
+      widget: '=',
+      isAccessibility: '='
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
@@ -112,28 +120,25 @@ module.directive('impacWidget', ($templateCache) ->
       # 'data-extension' means the widget re-uses a widget template, but signifies that
       # different data will be fed through.
       #=======================================
-      splittedPath = angular.copy(scope.widget.category).split("/")
-      # remove any number of items beyond index 2
-      splittedPath.splice(2) if splittedPath.length > 2
-      # format into slug-case for filename matching
-      templateName = splittedPath.join("-").replace(/_/g, "-")
-      # url for retreiving widget templates from angular $templateCache service.
-      scope.templateUrl = "widgets/" + templateName + ".tmpl.html"
+      scope.widgetContentTemplate = ->
+        splittedPath = angular.copy(scope.widget.category).split("/")
+        # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
+        splittedPath.splice(2)
+        # format into slug-case for filename matching
+        scope.templateName = splittedPath.join("-").replace(/_/g, "-")
+        # url for retreiving widget templates from angular $templateCache service.
+        templatePath = "widgets/" + scope.templateName + ".tmpl.html"
+
+        if scope.isAccessibility 
+          if $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
+            templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
+          scope.templateName = scope.templateName + " accessible"
+
+        return templatePath
 
       scope.isTemplateLoaded = ->
-        return !!$templateCache.get(scope.templateUrl)
+        return !!$templateCache.get(scope.widgetContentTemplate())
 
-    ,template: '<div ng-show="isTemplateLoaded()" ng-include="templateUrl"></div>'+
-    '<div ng-hide="isTemplateLoaded()">'+
-      '<div class="top-line">'+
-        '<div common-top-buttons parent-widget="widget" />'+
-        '<div common-editable-title parent-widget="widget" />'+
-      '</div>'+
-      '<div class="content">'+
-        '<div class="loader" align="center">'+
-          '<img class="gif" ng-src="{{loaderImage}}"/>'+
-        '</div>'+
-      '</div>'+
-    '</div>'
+    ,templateUrl: "widget/widget.tmpl.html"
   }
 )

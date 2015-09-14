@@ -128,9 +128,6 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
 module.directive('widgetAccountsCustomCalculation', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("custom-calculation")
-    ,controller: 'WidgetAccountsCustomCalculationCtrl'
+    controller: 'WidgetAccountsCustomCalculationCtrl'
   }
 )

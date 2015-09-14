@@ -1,78 +1,65 @@
-<div class="top-line">
-  <div common-top-buttons parent-widget="widget" />
-  <div common-editable-title parent-widget="widget" />
-</div>
+<div widget-hr-timesheets>
 
-<div widget-hr-timesheets class="content">
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
 
-  <div ng-show="widget.isLoading" class="loader" align="center">
-    Your data is being retrieved...
-    <img class="gif" ng-src="{{loaderImage}}"/>
+    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-time-range parent-widget="widget" class="part" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+    </div>
   </div>
 
-  <div ng-hide="widget.isLoading">
+  <div ng-hide="widget.isEditMode">
 
-    <div class="edit" ng-show="widget.isEditMode">
-      <h4>Widget settings</h4>
+    <div ng-show="isDataFound">
 
-      <div setting-organizations parent-widget="widget" class="part" />
-      <div setting-time-range parent-widget="widget" class="part" />
+      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" />
 
-      <div align="right">
-        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
-      </div>
-    </div>
-
-    <div ng-hide="widget.isEditMode">
-
-      <div ng-show="isDataFound">
-
-        <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" />
-
-        <div class="widget-lines-container">
-          <div class="row widget-line header">
-            <div class="col-sm-12">From {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}</div>
+      <div class="widget-lines-container">
+        <div class="row widget-line header">
+          <div class="col-sm-12">From {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}</div>
+        </div>
+        <div class="row widget-line total" >
+          <div class="row widget-line" >
+            <div class="col-sm-1" ng-click="toogleCollapsed('total_time_worked')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+            <div class="col-sm-7"><strong>Total Time Worked</strong></div>
+            <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeWorked()}} h</strong></div>
           </div>
-          <div class="row widget-line total" >
-            <div class="row widget-line" >
-              <div class="col-sm-1" ng-click="toogleCollapsed('total_time_worked')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-              <div class="col-sm-7"><strong>Total Time Worked</strong></div>
-              <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeWorked()}} h</strong></div>
-            </div>
-            <div collapse="isCollapsed('total_time_worked')">
-              <div class="row widget-line">
-                <div class="col-sm-1" />
-                <div class="col-sm-11"><i>Activities detail not found</i></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row widget-line total" >
-            <div class="row widget-line" >
-              <div class="col-sm-1" ng-click="toogleCollapsed('total_time_of')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-              <div class="col-sm-7"><strong>Total Time Off</strong></div>
-              <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeOff()}} h</strong></div>
-            </div>
-            <div collapse="isCollapsed('total_time_of')">
-              <div class="row widget-line">
-                <div class="col-sm-1" />
-                <div class="col-sm-7">PTO</div>
-                <div class="col-sm-4 text-right">0 h</div>
-              </div>
-              <div class="row widget-line">
-                <div class="col-sm-1" />
-                <div class="col-sm-7">Vacation</div>
-                <div class="col-sm-4 text-right">0 h</div>
-              </div>
+          <div collapse="isCollapsed('total_time_worked')">
+            <div class="row widget-line">
+              <div class="col-sm-1" />
+              <div class="col-sm-11"><i>Activities detail not found</i></div>
             </div>
           </div>
         </div>
 
+        <div class="row widget-line total" >
+          <div class="row widget-line" >
+            <div class="col-sm-1" ng-click="toogleCollapsed('total_time_of')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+            <div class="col-sm-7"><strong>Total Time Off</strong></div>
+            <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeOff()}} h</strong></div>
+          </div>
+          <div collapse="isCollapsed('total_time_of')">
+            <div class="row widget-line">
+              <div class="col-sm-1" />
+              <div class="col-sm-7">PTO</div>
+              <div class="col-sm-4 text-right">0 h</div>
+            </div>
+            <div class="row widget-line">
+              <div class="col-sm-1" />
+              <div class="col-sm-7">Vacation</div>
+              <div class="col-sm-4 text-right">0 h</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
     </div>
 
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
   </div>
+
 </div>

@@ -1,0 +1,50 @@
+#module__dashboard-selector {
+
+  // angular bootstrap tabs & pills
+  .nav.nav-tabs,
+  .nav.nav-pills {
+    // tab
+    li > a {
+      padding-right: 0;
+    }
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+  .nav.nav-tabs {
+    // add new tab
+    li:last-child.active > a {
+      border: 0px;
+      padding-bottom: 18px;
+    }
+  }
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+  }
+  ////////
+
+}

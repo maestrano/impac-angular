@@ -89,9 +89,6 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, DhbAnalyticsSvc, Chart
 module.directive('widgetHrSalariesSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("salaries-summary")
-    ,controller: 'WidgetHrSalariesSummaryCtrl'
+    controller: 'WidgetHrSalariesSummaryCtrl'
   }
 )

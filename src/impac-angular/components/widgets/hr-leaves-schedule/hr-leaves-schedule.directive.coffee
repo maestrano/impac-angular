@@ -45,10 +45,7 @@ module.controller('WidgetHrLeavesScheduleCtrl', ($scope, DhbAnalyticsSvc, ChartF
 module.directive('widgetHrLeavesSchedule', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("leaves-schedule")
-    ,controller: 'WidgetHrLeavesScheduleCtrl'
+    controller: 'WidgetHrLeavesScheduleCtrl'
   }
 )
 

@@ -1,0 +1,37 @@
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: solid 1px darken(@impac-widget-title-bg,10%);
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-style();
+    margin-top: 75px;
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}

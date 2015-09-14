@@ -77,9 +77,6 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, DhbAnalyticsSvc, Utilities,
 module.directive('widgetSalesSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("summary")
-    ,controller: 'WidgetSalesSummaryCtrl'
+    controller: 'WidgetSalesSummaryCtrl'
   }
 )

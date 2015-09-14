@@ -1,8 +1,10 @@
-<h5>Select Companies</h5>
+<div class="settings organizations">
+  <h5>Select Companies</h5>
 
-<div class="widget-lines-container">
-  <div class="widget-line" ng-repeat="org in dashboardOrganizations">
-    {{org.label}}
-    <i ng-class="isOrganizationSelected(org.uid) ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toogleSelectOrganization(org.uid)" tooltip="{{isOrganizationSelected(org.uid) ? 'disable' : 'enable'}}" />
+  <div class="widget-lines-container">
+    <div class="widget-line" ng-repeat="org in dashboardOrganizations">
+      {{org.label}}
+      <i ng-class="isOrganizationSelected(org.uid) ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toogleSelectOrganization(org.uid)" tooltip="{{isOrganizationSelected(org.uid) ? 'disable' : 'enable'}}" tooltip-append-to-body="true" />
+    </div>
   </div>
 </div>

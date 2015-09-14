@@ -1,0 +1,40 @@
+.analytics .widget-item .content .settings.params-picker {
+  padding: 0px 10px;
+  .parameter {
+    margin: 0px 3px 3px 0px;
+    padding: 3px 5px;
+    background-color: @impac-widget-params-picker-bg;
+    color: white;
+    border: solid 1px @impac-widget-params-picker-bg;
+    border-radius: 4px;
+    cursor: move;
+    font-weight: bold;
+    white-space: nowrap;
+    float: left;
+    input[type="checkbox"] {
+      margin: 0px -3px 0px 3px;
+      vertical-align: middle;
+      height: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+    .badge {
+      margin-right: 3px;
+      font-size: 10px;
+      background-color: darken(@impac-widget-background-color, 5%);
+      color: @impac-widget-params-picker-bg;
+      padding: 2px 6px;
+    }
+
+    &.unchecked {
+      background-color: inherit;
+      font-weight: normal;
+      color: inherit;
+      border-color: @impac-widget-params-picker-unchecked-bg;
+      .badge {
+        background-color: @impac-widget-params-picker-unchecked-bg;
+        color: white;
+      }
+    }
+  }
+}

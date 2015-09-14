@@ -1,0 +1,90 @@
+// --- Reusable widget style mixins
+
+// Payroll-Summary - Profit-and-Loss
+.drill-down-widget () {
+  .tall-widget();
+
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+    margin-right: 10px;
+
+    .widget-line.total {
+      .selectable();
+    }
+  }
+
+  .right-panel {
+    .widget-lines-container {
+      .scrollable(auto);
+      max-height: 235px;
+    }
+  }
+}
+
+// Top customers summary - Sales cycle...
+.simple-summary-widget() {
+  .chart-container {
+    max-width: 410px;
+  }
+  .legend {
+    max-height: 28px;
+  }
+}
+
+// Invoices list - sales list
+.simple-list-widget() {
+  .widget-lines-container {
+    max-height: 230px;
+    .widget-line {
+      cursor: default;
+      .alternate-bg();
+      &.header {
+        background-color: white;
+      }
+    }
+  }
+}
+
+// Workforce-Summary - Salaries-Summary
+.expandable-filterable-widget() {
+  h3.left {
+    margin-top: 69px;
+    text-align: center;
+  }
+  h3.right {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .price {
+    margin-top: 0;
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
+  }
+}
+
+// Leads funnel - Opportunities funnel
+.funnel-widget() {
+  .tall-widget();
+  .funnel-container {
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    padding-right: 10px;
+    max-height: 515px;
+    overflow: auto;
+  }
+  .right-panel {
+    .widget-lines-container {
+      max-height: 540px;
+      margin-right: 10px;
+      .widget-line {
+        cursor: default;
+      }
+    }
+  }
+}

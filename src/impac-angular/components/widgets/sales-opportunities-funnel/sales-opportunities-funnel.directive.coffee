@@ -66,7 +66,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc
     $scope.getOppDetails = (anOpp) ->
       oppDetails = []
       oppDetails.push($filter('mnoCurrency')(anOpp.amount.amount, anOpp.amount.currency || 'AUD')) if anOpp.amount
-      oppDetails.push("proba #{anOpp.probability}%") if anOpp.probability
+      oppDetails.push("prob. #{anOpp.probability}%") if anOpp.probability
 
       return oppDetails.join(' / ')
 
@@ -108,9 +108,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc
 module.directive('widgetSalesOpportunitiesFunnel', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("leads-funnel")
-    ,controller: 'WidgetSalesOpportunitiesFunnelCtrl'
+    controller: 'WidgetSalesOpportunitiesFunnelCtrl'
   }
 )

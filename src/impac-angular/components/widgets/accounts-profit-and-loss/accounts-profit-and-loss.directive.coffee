@@ -189,9 +189,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, DhbAnalyticsSvc, C
 module.directive('widgetAccountsProfitAndLoss', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("profit-and-loss")
-    ,controller: 'WidgetAccountsProfitAndLossCtrl'
+    controller: 'WidgetAccountsProfitAndLossCtrl'
   }
 )

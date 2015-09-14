@@ -46,9 +46,6 @@ module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, DhbAnalyticsSvc, U
 module.directive('widgetSalesTopOpportunities', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("top-opportunities")
-    ,controller: 'WidgetSalesTopOpportunitiesCtrl'
+    controller: 'WidgetSalesTopOpportunitiesCtrl'
   }
 )

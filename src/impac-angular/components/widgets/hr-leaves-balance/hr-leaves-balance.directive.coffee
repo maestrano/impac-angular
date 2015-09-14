@@ -54,9 +54,6 @@ module.controller('WidgetHrLeavesBalanceCtrl', ($scope, DhbAnalyticsSvc, Utiliti
 module.directive('widgetHrLeavesBalance', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("leaves-balance")
-    ,controller: 'WidgetHrLeavesBalanceCtrl'
+    controller: 'WidgetHrLeavesBalanceCtrl'
   }
 )

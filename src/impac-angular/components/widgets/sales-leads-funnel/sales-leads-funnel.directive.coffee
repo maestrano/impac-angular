@@ -125,9 +125,6 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, DhbAnalyticsSvc, Utilit
 module.directive('widgetSalesLeadsFunnel', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("leads-funnel")
-    ,controller: 'WidgetSalesLeadsFunnelCtrl'
+    controller: 'WidgetSalesLeadsFunnelCtrl'
   }
 )

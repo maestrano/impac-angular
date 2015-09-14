@@ -51,12 +51,9 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, DhbAnalyticsSvc
     return w
 )
 
-module.directive('widgetAccountsAccountingValue', ->
+module.directive('widgetAccountsAccountingValues', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("accounting-value")
-    ,controller: 'WidgetAccountsAccountingValuesCtrl',
+    controller: 'WidgetAccountsAccountingValuesCtrl',
   }
 )

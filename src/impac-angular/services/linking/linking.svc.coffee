@@ -22,7 +22,7 @@ angular
       _.forIn(links, (value, key) ->
         link = configData[key]
         unless link?
-          throw 'Missing core data to run impac-angular, please refer to impac.services.linking module or impac-angular README.md on required provider configurations.'
+          throw "Missing core data (#{key}) to run impac-angular, please refer to impac.services.linking module or impac-angular README.md on required provider configurations."
         links[key] = link
       )
       return

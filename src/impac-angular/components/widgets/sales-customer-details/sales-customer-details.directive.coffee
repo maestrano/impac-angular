@@ -63,9 +63,6 @@ module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, DhbAnalyticsSvc, Ut
 module.directive('widgetSalesCustomerDetails', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("customer-details")
-    ,controller: 'WidgetSalesCustomerDetailsCtrl'
+    controller: 'WidgetSalesCustomerDetailsCtrl'
   }
 )

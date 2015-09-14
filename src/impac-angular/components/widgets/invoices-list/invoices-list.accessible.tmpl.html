@@ -1,0 +1,39 @@
+<div widget-invoices-list>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <table class="table widget-lines-container" ng-hide="widget.isEditMode">
+
+    <!-- Header line -->
+    <tr class="widget-line header">
+      <td>{{entityTypeCap}}</td>
+      <td>Paid</td>
+      <td>Due</td>
+      <td>Invoiced</td>
+    </tr>
+
+    <!-- Data not found line -->
+    <tr class="widget-line" ng-hide="isDataFound">
+      <td>No {{orderBy}}invoice found for your {{entityType}}</td>
+    </tr>
+    
+    <!-- Content lines -->
+    <tr class="widget-line" ng-show="isDataFound" ng-repeat="entity in widget.content.entities">
+      <td>{{entity.name}}</td>
+      <td><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></td>
+      <td><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></td>
+      <td><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></td>
+    </tr>
+
+  </table>
+
+</div>

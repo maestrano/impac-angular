@@ -83,9 +83,6 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFor
 module.directive('widgetSalesSegmentedTurnover', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("sales")
-      element.addClass("segmented-turnover")
-    ,controller: 'WidgetSalesSegmentedTurnoverCtrl'
+    controller: 'WidgetSalesSegmentedTurnoverCtrl'
   }
 )

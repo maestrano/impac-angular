@@ -170,9 +170,6 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $
 module.directive('widgetAccountsCashSummary', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("cash-summary")
-    ,controller: 'WidgetAccountsCashSummaryCtrl'
+    controller: 'WidgetAccountsCashSummaryCtrl'
   }
 )

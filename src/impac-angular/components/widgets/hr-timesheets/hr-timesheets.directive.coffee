@@ -98,9 +98,6 @@ module.controller('WidgetHrTimesheetsCtrl', ($scope, DhbAnalyticsSvc, ChartForma
 module.directive('widgetHrTimesheets', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("hr")
-      element.addClass("timesheets")
-    ,controller: 'WidgetHrTimesheetsCtrl'
+    controller: 'WidgetHrTimesheetsCtrl'
   }
 )

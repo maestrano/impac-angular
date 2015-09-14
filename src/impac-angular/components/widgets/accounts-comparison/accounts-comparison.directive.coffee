@@ -65,9 +65,6 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, DhbAnalyticsSvc, Char
 module.directive('widgetAccountsComparison', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("comparison")
-    ,controller: 'WidgetAccountsComparisonCtrl'
+    controller: 'WidgetAccountsComparisonCtrl'
   }
 )

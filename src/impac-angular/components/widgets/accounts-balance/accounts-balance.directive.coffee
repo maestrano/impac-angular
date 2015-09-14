@@ -59,9 +59,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, DhbAnalyticsSvc, ChartFo
 module.directive('widgetAccountsBalance', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("balance")
-    ,controller: 'WidgetAccountsBalanceCtrl'
+    controller: 'WidgetAccountsBalanceCtrl'
   }
 )

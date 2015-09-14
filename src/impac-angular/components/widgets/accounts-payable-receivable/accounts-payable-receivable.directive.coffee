@@ -58,9 +58,6 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, DhbAnalyticsSv
 module.directive('widgetAccountsPayableReceivable', ->
   return {
     restrict: 'A',
-    link: (scope, element) ->
-      element.addClass("accounts")
-      element.addClass("payable-receivable")
-    ,controller: 'WidgetAccountsPayableReceivableCtrl'
+    controller: 'WidgetAccountsPayableReceivableCtrl'
   }
 )

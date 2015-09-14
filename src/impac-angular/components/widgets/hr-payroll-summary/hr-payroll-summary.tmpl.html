@@ -1,110 +1,97 @@
-<div class="top-line">
-  <div common-top-buttons parent-widget="widget" />
-  <div common-editable-title parent-widget="widget" />
-</div>
+<div widget-hr-payroll-summary>
 
-<div widget-hr-payroll-summary class="content">
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
 
-  <div ng-show="widget.isLoading" class="loader" align="center">
-    Your data is being retrieved...
-    <img class="gif" ng-src="{{loaderImage}}"/>
+    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-time-range parent-widget="widget" class="part" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+    </div>
   </div>
 
-  <div ng-hide="widget.isLoading">
+  <div ng-hide="widget.isEditMode">
 
-    <div class="edit" ng-show="widget.isEditMode">
-      <h4>Widget settings</h4>
+    <div ng-show="isDataFound" class="row" >
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
 
-      <div setting-organizations parent-widget="widget" class="part" />
-      <div setting-time-range parent-widget="widget" class="part" />
-
-      <div align="right">
-        <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-        <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
-      </div>
-    </div>
-
-    <div ng-hide="widget.isEditMode">
-
-      <div ng-show="isDataFound" class="row" >
-        <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
-          <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
-
-          <div class="widget-lines-container">
-            <div class="row widget-line header">
-              <div class="col-sm-12">Payroll Summary - {{getPeriod()}}</div>
-            </div>
-            <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
-              <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-                <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.employees" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-                <div class="col-sm-7" ng-click="toogleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
-                <div class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)">
-                  <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
-                </div>
+        <div class="widget-lines-container">
+          <div class="row widget-line header">
+            <div class="col-sm-12">Payroll Summary - {{getPeriod()}}</div>
+          </div>
+          <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
+            <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
+              <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.employees" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-7" ng-click="toogleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
+              <div class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)">
+                <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
               </div>
-              <div collapse="isCollapsed(statement)">
-                <div class="row widget-line" ng-click="toogleSelectedElement(employee)" ng-repeat="employee in statement.employees" ng-class="isSelected(employee) ? 'selected' : null" >
-                  <div class="col-sm-1" />
-                  <div class="col-sm-7">{{employee.name}}</div>
-                  <div class="col-sm-4 text-right">
-                    <span>{{getLastValue(employee) | mnoCurrency : employee.currency}}</span>
-                  </div>
+            </div>
+            <div collapse="isCollapsed(statement)">
+              <div class="row widget-line" ng-click="toogleSelectedElement(employee)" ng-repeat="employee in statement.employees" ng-class="isSelected(employee) ? 'selected' : null" >
+                <div class="col-sm-1" />
+                <div class="col-sm-7">{{employee.name}}</div>
+                <div class="col-sm-4 text-right">
+                  <span>{{getLastValue(employee) | mnoCurrency : employee.currency}}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
-          <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Payroll Summary</h4>
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
+        <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Payroll Summary</h4>
 
-          <div setting-hist-mode parent-widget="widget" />
+        <div setting-hist-mode parent-widget="widget" />
 
-          <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
+        <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
-          <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
-            <div ng-if="widget.isHistoryMode" dhb-chart data="widget.hist_chart"></div>
-            <div ng-if="!widget.isHistoryMode" dhb-chart data="widget.cur_chart"></div>
-          </div>
+        <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
+          <div ng-if="widget.isHistoryMode" dhb-chart data="widget.hist_chart"></div>
+          <div ng-if="!widget.isHistoryMode" dhb-chart data="widget.cur_chart"></div>
+        </div>
 
-          <div ng-show="selectedElements.length < 2" class="widget-lines-container">
-            <div ng-show="getTrackedField()" class="legend">{{getTrackedField()}}</div>
-            <div class="row widget-line">
-              <div class="col-sm-2 text-center" ng-repeat="date in widget.content.dates" style="padding: 5px 0px;">
-                <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{formatDate(date)}}</div></div>
-                <div class="row widget-line">
-                  <div class="col-sm-12" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}</div>
-                </div>
+        <div ng-show="selectedElements.length < 2" class="widget-lines-container">
+          <div ng-show="getTrackedField()" class="legend">{{getTrackedField()}}</div>
+          <div class="row widget-line">
+            <div class="col-sm-2 text-center" ng-repeat="date in widget.content.dates" style="padding: 5px 0px;">
+              <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{formatDate(date)}}</div></div>
+              <div class="row widget-line">
+                <div class="col-sm-12" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}</div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
+        <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
 
-            <div ng-if="widget.isHistoryMode" class="widget-line header">
-              <span ng-show="getTrackedField()">{{getTrackedField()}} - </span>From {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}
-            </div>
-            <div ng-if="!widget.isHistoryMode" class="widget-line header">
-              <span ng-show="getTrackedField()">{{getTrackedField()}} - </span>{{getPeriod()}}
-            </div>
+          <div ng-if="widget.isHistoryMode" class="widget-line header">
+            <span ng-show="getTrackedField()">{{getTrackedField()}} - </span>From {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}
+          </div>
+          <div ng-if="!widget.isHistoryMode" class="widget-line header">
+            <span ng-show="getTrackedField()">{{getTrackedField()}} - </span>{{getPeriod()}}
+          </div>
 
-            <div class="widget-line" ng-repeat="element in selectedElements">
-              <i style="float: right; margin-right: 10px;">
-                <span ng-if="widget.isHistoryMode">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>
-                <span ng-if="!widget.isHistoryMode">{{getLastValue(element) | mnoCurrency : element.currency}}</span>
-              </i>
-              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
-              {{getName(element) | titleize}}
-            </div>
-
+          <div class="widget-line" ng-repeat="element in selectedElements">
+            <i style="float: right; margin-right: 10px;">
+              <span ng-if="widget.isHistoryMode">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>
+              <span ng-if="!widget.isHistoryMode">{{getLastValue(element) | mnoCurrency : element.currency}}</span>
+            </i>
+            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+            {{getName(element) | titleize}}
           </div>
 
         </div>
 
       </div>
 
-      <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
     </div>
 
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
   </div>
+
 </div>
