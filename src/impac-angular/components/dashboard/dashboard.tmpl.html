@@ -1,21 +1,21 @@
 <!-- DASHBOARD -->
 <div class="analytics module__dashboard">
-  <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
+  <div mno-star-wizard='true' modal-open='starWizardModal.value'></div>
+
 
   <!-- Title and Dashboard selection -->
-
-  <!-- Heading -->
-  <!-- <div class="row head-title">
-    <h2 ng-show="false">
+  <div class="row head-title">
+    <!-- Heading TODO: add these variables to dashboard ctrl -->
+    <h2 ng-show="{{showDhbHeading}}">
       <img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />
-      <div class="text-info" style="padding-top:12px; height: 48px;">Beta</div>
+      <div class="text-info" style="padding-top:12px; height: 48px;">{{dhbHeadingText}}</div>
       <div class="text-info" style="padding-top:12px; height: 48px;"></div>
     </h2>
-  </div> -->
 
-  <dashboard-controls></dashboard-controls>
+    <dashboard-selector id="module__dashboard-selector"></dashboard-selector>
+  </div>
 
-  <!-- Widgets selection container -->
+  <!-- Widgets selection container TODO: move to wrapper directive, encapsulating logic -->
   <div id="widget-selector" collapse="!showWidgetSelector">
     <div class="title">
       <i class="fa fa-times-circle" ng-click="showWidgetSelector = false"/>

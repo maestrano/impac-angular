@@ -1,0 +1,36 @@
+<div class="buttons-bar col-md-6">
+  <h4 ng-hide='dhbCtrl.showChooseDhbMsg' class='dashboard-title' ng-click="dhbCtrl.toogleShowDashboardsList()">
+    {{dhbCtrl.currentDhb.full_name}}
+    <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
+    <i ng-hide="dhbCtrl.showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="dhbCtrl.toogleShowChangeDhbName(dhbCtrl.currentDhb)"></i>
+  </h4>
+
+  <div collapse="!dhbCtrl.showDashboardsList" class='dashboard-select'>
+    <div ng-hide="dhb.id == dhbCtrl.currentDhbId" class='option' ng-repeat="dhb in dhbCtrl.dashboardsList">
+      <span class="name" ng-click="dhbCtrl.selectDashboard(dhb.id)">{{dhb.full_name}}</span>
+      <i ng-hide="dhbCtrl.showChangeDhbName" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="dhbCtrl.toogleShowChangeDhbName(dhb)"/>
+    </div>
+
+    <div ng-show="dhbCtrl.showCreateDhb" class="option create" ng-click="dhbCtrl.modal.createDashboard.open() ; dhbCtrl.showChangeDhbName = false"><i class="fa fa-plus" /> Create Dashboard</div>
+  </div>
+
+  <div ng-show="dhbCtrl.showChangeDhbName" class="change-name">
+    <p>Change dashboard name:</p>
+    <input type="text" class="form-control" id="changeDhbNameInput" ng-model="dhbCtrl.dashboardToChange.name" ng-keyup="dhbCtrl.checkChangeDhbNameAndConfirm($event)"/>
+    <button class="btn btn-sm btn-default" ng-click="dhbCtrl.showChangeDhbName=false">Cancel</button>
+    <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="dhbCtrl.updateDhbName()">Confirm</button>
+  </div>
+
+  <p ng-hide='dhbCtrl.showChooseDhbMsg' class="data-source-label">
+    <small><b>Source:</b> {{dhbCtrl.currentDhb.organizationsNames}}</small>
+  </p>
+</div>
+
+<div class='buttons-bar col-md-6'>
+  <div class='actions-panel'>
+    <button ng-click="dhbCtrl.showWidgetSelector = true" class='btn btn-warning' ng-show="dhbCtrl.showCreateWidget" ng-disabled="dhbCtrl.showWidgetSelector"><span class='fa fa-plus'></span> Add Widget</button>
+    <button ng-click="dhbCtrl.modal.createDashboard.open()" class='btn btn-warning' ng-show="dhbCtrl.showCreateDhb"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
+    <!-- <button id='data-upload-wizard' ng-click='dhbCtrl.openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
+    <button ng-click="dhbCtrl.modal.deleteDashboard.open()" class='btn btn-danger hidden-xs' ng-show="dhbCtrl.showDeleteDhb" tooltip="Delete Dashboard"><span class='fa fa-trash-o'></span> </button>
+  </div>
+</div>

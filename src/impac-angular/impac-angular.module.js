@@ -21,7 +21,7 @@ angular.module('maestrano.impac',
 angular.module('impac.components',
   [
     'impac.components.dashboard',
-    'impac.components.dashboard-controls',
+    'impac.components.dashboard-selector',
     'impac.components.chart',
     'impac.components.widget',
     'impac.components.widgets',
