@@ -134,8 +134,8 @@ $templateCache.put("dashboard/create.modal.html","<div class=\"modal-header\">\n
 $templateCache.put("dashboard/dashboard.tmpl.html","<!-- DASHBOARD -->\n<div class=\"analytics\">\n  <div mno-star-wizard=true modal-open=\'starWizardModal.value\'></div>\n\n  <div id=\"head-title\" class=\'row\'>\n\n    <!-- Title and Dashboard selection -->\n  <div class=\"row head-title\">\n    <!-- Heading TODO: add these variables to dashboard ctrl -->\n    <h2 ng-show=\"{{showDhbHeading}}\">\n      <img ng-src=\"{{impacTitleLogo}}\" style=\"float: left; margin-right: 15px;\" />\n      <div class=\"text-info\" style=\"padding-top:12px; height: 48px;\">{{dhbHeadingText}}</div>\n      <div class=\"text-info\" style=\"padding-top:12px; height: 48px;\"></div>\n    </h2>\n\n    <dashboard-selector id=\"module__dashboard-selector\"></dashboard-selector>\n  </div>\n\n\n  <!-- Widgets selection container -->\n  <div id=\"widget-selector\" collapse=\"!showWidgetSelector\">\n    <div class=\"title\">\n      <i class=\"fa fa-times-circle\" ng-click=\"showWidgetSelector = false\"/>\n      <span class=\"badge confirmation\">Widget added!</span>\n      Select the widgets you want to add to your dashboard.\n    </div>\n\n    <div class=\"row top-container\">\n      <div class=\"col-md-3 categories\">\n        <div class=\"row header\">\n          All categories\n        </div>\n        <div class=\"row lines\">\n          <div class=\"col-md-12\" style=\"padding: 3px 12px;\">\n            <p ng-click=\"selectedCategory=\'accounts\'\" ng-class=\"isCategorySelected(\'accounts\') ? \'selected\' : none\">Accounting</p>\n            <p ng-click=\"selectedCategory=\'invoices\'\" ng-class=\"isCategorySelected(\'invoices\') ? \'selected\' : none\">Invoicing</p>\n            <p ng-click=\"selectedCategory=\'hr\'\" ng-class=\"isCategorySelected(\'hr\') ? \'selected\' : none\">HR / Payroll</p>\n            <p ng-click=\"selectedCategory=\'sales\'\" ng-class=\"isCategorySelected(\'sales\') ? \'selected\' : none\">Sales</p>\n          </div>\n        </div>\n\n        <div class=\"arrow\" ng-style=\"getSelectedCategoryTop()\">\n          <div class=\"square\" />\n          <i class=\"fa fa-caret-right\" />\n        </div>\n\n      </div>\n\n      <div class=\"col-md-9 widgets\">\n        <div class=\"row header\">\n          {{getSelectedCategoryName() | titleize}}\n        </div>\n        <div class=\"row lines\">\n          <div class=\"col-md-4\" ng-repeat=\"widgetPattern in getWidgetsForSelectedCategory()\" style=\"padding: 0px 8px;\">\n            <p ng-click=\"addWidget(widgetPattern.path, widgetPattern.metadata)\" tooltip=\"{{widgetPattern.desc}}\" tooltip-placement=\"{{$index < 9 ? \'bottom\' : \'top\'}}\" tooltip-animation=\"false\"  tooltip-append-to-body=\"true\" tooltip-class=\"impac-widget-selector-tooltip\"><i class=\"fa fa-{{widgetPattern.icon}}\" /> {{widgetPattern.name}} <i class=\"fa fa-plus-circle\" /></p>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"bottom\">\n      <span class=\"suggestion\">\n        Can\'t find the widget you\'re looking for? <a ng-click=\"modal.widgetSuggestion.open()\">Give us your suggestions here!</a>\n      </span>\n    </div>\n  </div>\n\n\n  <!-- Errors -->\n  <div class=\"alert alert-error\" ng-show=\"errors\">\n    <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n    <ul>\n      <li ng-repeat=\"error in errors\">{{error}}</li>\n    </ul>\n  </div>\n\n  <div class=\'spacer1\'></div>\n\n  <div id=\"no-widget-container\" class=\"text-center ng-hide\" ng-show=\'(showChooseDhbMsg || showNoWidgetsMsg) && !isLoading\'>\n\n    <img ng-src=\"{{impacDashboardBackground}}\" class=\"bg\">\n\n    <div class=\"impac-info-message\">\n      <!-- First Time Dashboard Creation -->\n      <div class=\"ng-hide\" ng-show=\'showChooseDhbMsg && !isLoading\'>\n        <div class=\'hidden-xs\'>\n          <div class=\'spacer4\'></div>\n          <div class=\"row\">\n            <div class=\"col-md-8 col-md-offset-2\">\n              <div class=\"testimonial promo-dark\">\n                <p><b>It\'s time to add a reporting dashboard!</b></p><p>In 2 clicks, you\'ll be able to visualize how your business is performing.</p>\n              </div>\n            </div>\n          </div>\n          <div class=\'spacer2\'></div>\n        </div>\n        <div class=\"align-center\">\n          <button ng-click=\"modal.createDashboard.open()\" class=\'btn btn-lg btn-warning\'><span class=\'fa fa-plus\'></span> Create a Dashboard!</button>\n        </div>\n      </div>\n\n      <!-- Empty Dashboard -->\n      <div class=\"ng-hide\" ng-show=\'showNoWidgetsMsg && !isLoading\'>\n        <div class=\'hidden-xs\'>\n          <div class=\'spacer4\'></div>\n          <div class=\"row\">\n            <div class=\"col-md-8 col-md-offset-2\">\n              <div class=\"testimonial promo-dark\">\n                <p><b>Now it\'s time to select the metrics you want to see!</b></p><p>Add widgets to your dashboard to help make an Impac!™ to your business.</p>\n              </div>\n            </div>\n          </div>\n          <div class=\"spacer2\"></div>\n        </div>\n        <div class=\"align-center\">\n          <button ng-disabled=\"showWidgetSelector\" ng-click=\"showWidgetSelector=true\" class=\'btn btn-lg btn-warning\'><span class=\'fa fa-plus\'></span> Add a new Widget</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- First Time Dashboard Creation -->\n  <div class=\"row text-center\" ng-show=\'showChooseDhbMsg && !isLoading\'>\n    <div class=\"spacer2 hidden-xs\"></div>\n    <div class=\'col-md-8 col-md-offset-2\'>\n      <p class=\"text-muted\"><small><em>Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.</em></small></p>\n    </div>\n  </div>\n\n  <!-- Widgets -->\n  <div class=\'row\'>\n    <div ui:sortable=\"sortableOptions\" ng-model=\"currentDhb.widgets\" id=\"widgets-container\">\n      <div impac-widget widget=\"widget\" is-accessibility=\"accessibility\" parent-dashboard=\"currentDhb\" ng-repeat=\"widget in currentDhb.widgets\" class=\"widget-item\" ng-class=\"widget.getColClass()\" />\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("dashboard/delete.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"close()\" >×</div>\n  <h3>Delete Dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new widget -->\n  <p>Are you sure you want to delete this analytics dashboard?</p>\n  \n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"close()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\">Cancel</button>\n      <button class=\"btn btn-danger\" ng-click=\"proceed()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\">Delete</button>\n      <img ng-src=\"{{loadingGif}}\" ng-show=\"isLoading\" alt=\"Loading\">\n    </div>\n    \n  </div>\n</div>");
 $templateCache.put("dashboard/widget-suggestion.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"close()\" >×</div>\n  <h3>Suggest a widget</h3>\n</div>\n\n<div class=\"modal-body\">\n  \n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <label>What would you name your widget?</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.name\" ng-disabled=\"isLoading\" />\n    </div>\n    <div class=\"col-md-6\">\n      <label>In which category?</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.category\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" />\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <label>What kind of information would your widget display?</label><br />\n      <textarea ng-model=\"widgetDetails.description\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" ng-show=\"isLoading\" />\n\n  <div class=\"row\" ng-show=\"isLoading\">\n    <div class=\"col-md-12 text-center\">\n      <h3 class=\"thanks-message\">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>\n    </div>\n  </div>\n  \n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\" ng-class=\"isLoading ? \'text-center\' : null\">\n      <button class=\"btn btn-shaded\" ng-click=\"close()\" ng-hide=\"isLoading\">Cancel</button>\n      <button class=\"btn btn-info\" ng-click=\"proceed()\" ng-hide=\"isLoading\" ng-disabled=\"!(widgetDetails.name && widgetDetails.category && widgetDetails.description)\">Send your suggestion</button>\n      <img ng-src=\"{{loadingGif}}\" ng-show=\"isLoading\" alt=\"Loading\">\n    </div>\n  </div>\n</div>");
-$templateCache.put("dashboard-selector/bootstrap-tabs.tmpl.html","<div class=\"buttons-bar col-md-12\">\n  <tabset type=\"{{selectorType}}\">\n    <tab ng-repeat=\"dhb in dhbCtrl.dashboardsList\" select=\"dhbCtrl.selectDashboard(dhb.id)\" active=\"dhb.active\">\n      <tab-heading>\n        {{dhb.full_name}}\n        <a href=\"\">\n          <i class=\"fa fa-times\" ng-click=\"dhbCtrl.modal.deleteDashboard.open()\"></i>\n        </a>\n      </tab-heading>\n    </tab>\n    <tab active=\"false\" ng-click=\"toogleAccessibilityMode()\">\n      <tab-heading>\n        <a href=\"\"><i class=\"fa fa-wheelchair\"></i></a>\n      </tab-heading>\n    </tab>\n    <tab active=\"false\" ng-click=\"dhbCtrl.modal.createDashboard.open()\">\n      <tab-heading>\n        <a href=\"\"><i class=\"fa fa-plus\"></i></a>\n      </tab-heading>\n    </tab>\n  </tabset>\n</div>\n");
-$templateCache.put("dashboard-selector/dropdown.tmpl.html","<div class=\"buttons-bar col-md-6\">\n  <h4 ng-hide=\'dhbCtrl.showChooseDhbMsg\' class=\'dashboard-title\' ng-click=\"dhbCtrl.toogleShowDashboardsList()\">\n    {{dhbCtrl.currentDhb.full_name}}\n    <i class=\"fa fa-chevron-down\" style=\"font-size: 18px;\"></i>\n    <i ng-hide=\"dhbCtrl.showChangeDhbName\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"dhbCtrl.toogleShowChangeDhbName(dhbCtrl.currentDhb)\"></i>\n  </h4>\n\n  <div collapse=\"!dhbCtrl.showDashboardsList\" class=\'dashboard-select\'>\n    <div ng-hide=\"dhb.id == dhbCtrl.currentDhbId\" class=\'option\' ng-repeat=\"dhb in dhbCtrl.dashboardsList\">\n      <span class=\"name\" ng-click=\"dhbCtrl.selectDashboard(dhb.id)\">{{dhb.full_name}}</span>\n      <i ng-hide=\"dhbCtrl.showChangeDhbName\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"dhbCtrl.toogleShowChangeDhbName(dhb)\"/>\n    </div>\n\n    <div ng-show=\"dhbCtrl.showCreateDhb\" class=\"option create\" ng-click=\"dhbCtrl.modal.createDashboard.open() ; dhbCtrl.showChangeDhbName = false\"><i class=\"fa fa-plus\" /> Create Dashboard</div>\n  </div>\n\n  <div ng-show=\"dhbCtrl.showChangeDhbName\" class=\"change-name\">\n    <p>Change dashboard name:</p>\n    <input type=\"text\" class=\"form-control\" id=\"changeDhbNameInput\" ng-model=\"dhbCtrl.dashboardToChange.name\" ng-keyup=\"dhbCtrl.checkChangeDhbNameAndConfirm($event)\"/>\n    <button class=\"btn btn-sm btn-default\" ng-click=\"dhbCtrl.showChangeDhbName=false\">Cancel</button>\n    <button class=\"btn btn-sm btn-success\" style=\"margin-left: 10px\" ng-click=\"dhbCtrl.updateDhbName()\">Confirm</button>\n  </div>\n\n  <p ng-hide=\'dhbCtrl.showChooseDhbMsg\' class=\"data-source-label\">\n    <small><b>Source:</b> {{dhbCtrl.currentDhb.organizationsNames}}</small>\n  </p>\n</div>\n\n<div class=\'buttons-bar col-md-6\'>\n  <div class=\'actions-panel\'>\n    <button ng-click=\"toogleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"showWidgetSelector\"><span class=\'fa fa-wheelchair\'></span></button>\n    <button ng-click=\"dhbCtrl.showWidgetSelector = true\" class=\'btn btn-warning\' ng-show=\"dhbCtrl.showCreateWidget\" ng-disabled=\"dhbCtrl.showWidgetSelector\"><span class=\'fa fa-plus\'></span> Add Widget</button>\n    <button ng-click=\"dhbCtrl.modal.createDashboard.open()\" class=\'btn btn-warning\' ng-show=\"dhbCtrl.showCreateDhb\"><span class=\'fa fa-pencil-square-o\'></span> Create Dashboard</button>\n    <!-- <button id=\'data-upload-wizard\' ng-click=\'dhbCtrl.openStarWizard()\' class=\'btn btn-success hidden-xs\' ><span class=\'fa fa-upload\'></span> Data Upload</button> -->\n    <button ng-click=\"dhbCtrl.modal.deleteDashboard.open()\" class=\'btn btn-danger hidden-xs\' ng-show=\"dhbCtrl.showDeleteDhb\" tooltip=\"Delete Dashboard\"><span class=\'fa fa-trash-o\'></span> </button>\n  </div>\n</div>\n");
+$templateCache.put("dashboard-selector/bootstrap-tabs.tmpl.html","<div class=\"buttons-bar col-md-12\">\n  <tabset type=\"{{selectorType}}\">\n    <tab ng-repeat=\"dhb in dhbCtrl.dashboardsList\" select=\"dhbCtrl.selectDashboard(dhb.id)\" active=\"dhb.active\">\n      <tab-heading>\n        {{dhb.full_name}}\n        <a href=\"\">\n          <i class=\"fa fa-times\" ng-click=\"dhbCtrl.modal.deleteDashboard.open()\"></i>\n        </a>\n      </tab-heading>\n    </tab>\n    <tab active=\"false\" ng-if=\'isAccessibilityEnabled\' ng-click=\"toogleAccessibilityMode()\">\n      <tab-heading>\n        <a href=\"\"><i class=\"fa fa-wheelchair\"></i></a>\n      </tab-heading>\n    </tab>\n    <tab active=\"false\" ng-click=\"dhbCtrl.modal.createDashboard.open()\">\n      <tab-heading>\n        <a href=\"\"><i class=\"fa fa-plus\"></i></a>\n      </tab-heading>\n    </tab>\n  </tabset>\n</div>\n");
+$templateCache.put("dashboard-selector/dropdown.tmpl.html","<div class=\"buttons-bar col-md-6\">\n  <h4 ng-hide=\'dhbCtrl.showChooseDhbMsg\' class=\'dashboard-title\' ng-click=\"dhbCtrl.toogleShowDashboardsList()\">\n    {{dhbCtrl.currentDhb.full_name}}\n    <i class=\"fa fa-chevron-down\" style=\"font-size: 18px;\"></i>\n    <i ng-hide=\"dhbCtrl.showChangeDhbName\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"dhbCtrl.toogleShowChangeDhbName(dhbCtrl.currentDhb)\"></i>\n  </h4>\n\n  <div collapse=\"!dhbCtrl.showDashboardsList\" class=\'dashboard-select\'>\n    <div ng-hide=\"dhb.id == dhbCtrl.currentDhbId\" class=\'option\' ng-repeat=\"dhb in dhbCtrl.dashboardsList\">\n      <span class=\"name\" ng-click=\"dhbCtrl.selectDashboard(dhb.id)\">{{dhb.full_name}}</span>\n      <i ng-hide=\"dhbCtrl.showChangeDhbName\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"dhbCtrl.toogleShowChangeDhbName(dhb)\"/>\n    </div>\n\n    <div ng-show=\"dhbCtrl.showCreateDhb\" class=\"option create\" ng-click=\"dhbCtrl.modal.createDashboard.open() ; dhbCtrl.showChangeDhbName = false\"><i class=\"fa fa-plus\" /> Create Dashboard</div>\n  </div>\n\n  <div ng-show=\"dhbCtrl.showChangeDhbName\" class=\"change-name\">\n    <p>Change dashboard name:</p>\n    <input type=\"text\" class=\"form-control\" id=\"changeDhbNameInput\" ng-model=\"dhbCtrl.dashboardToChange.name\" ng-keyup=\"dhbCtrl.checkChangeDhbNameAndConfirm($event)\"/>\n    <button class=\"btn btn-sm btn-default\" ng-click=\"dhbCtrl.showChangeDhbName=false\">Cancel</button>\n    <button class=\"btn btn-sm btn-success\" style=\"margin-left: 10px\" ng-click=\"dhbCtrl.updateDhbName()\">Confirm</button>\n  </div>\n\n  <p ng-hide=\'dhbCtrl.showChooseDhbMsg\' class=\"data-source-label\">\n    <small><b>Source:</b> {{dhbCtrl.currentDhb.organizationsNames}}</small>\n  </p>\n</div>\n\n<div class=\'buttons-bar col-md-6\'>\n  <div class=\'actions-panel\'>\n    <button ng-click=\"toogleAccessibilityMode()\" class=\'btn btn-info\' ng-show=\'isAccessibilityEnabled\' ng-disabled=\"showWidgetSelector\"><span class=\'fa fa-wheelchair\'></span></button>\n    <button ng-click=\"dhbCtrl.showWidgetSelector = true\" class=\'btn btn-warning\' ng-show=\"dhbCtrl.showCreateWidget\" ng-disabled=\"dhbCtrl.showWidgetSelector\"><span class=\'fa fa-plus\'></span> Add Widget</button>\n    <button ng-click=\"dhbCtrl.modal.createDashboard.open()\" class=\'btn btn-warning\' ng-show=\"dhbCtrl.showCreateDhb\"><span class=\'fa fa-pencil-square-o\'></span> Create Dashboard</button>\n    <!-- <button id=\'data-upload-wizard\' ng-click=\'dhbCtrl.openStarWizard()\' class=\'btn btn-success hidden-xs\' ><span class=\'fa fa-upload\'></span> Data Upload</button> -->\n    <button ng-click=\"dhbCtrl.modal.deleteDashboard.open()\" class=\'btn btn-danger hidden-xs\' ng-show=\"dhbCtrl.showDeleteDhb\" tooltip=\"Delete Dashboard\"><span class=\'fa fa-trash-o\'></span> </button>\n  </div>\n</div>\n");
 $templateCache.put("widget/widget.tmpl.html","<!-- Class wrapper: widget-item -->\n<!-- TODO: rename (impac-widget) -->\n\n<div class=\"top-line\">\n  <div common-top-buttons parent-widget=\"widget\" />\n  <div common-editable-title parent-widget=\"widget\" />\n</div>\n\n<div ng-show=\"isTemplateLoaded()\" class=\"content\" ng-class=\"templateName\">\n\n  <div ng-show=\"widget.isLoading\">\n    <div class=\"loader\" align=\"center\">\n      Your data is being retrieved...\n      <img class=\"gif\" ng-src=\"{{loaderImage}}\"/>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isLoading\" ng-include=\"widgetContentTemplate()\" />\n\n</div>\n\n<div ng-hide=\"isTemplateLoaded()\" class=\"content\">\n  <div class=\"loader\" align=\"center\">\n    <img class=\"gif\" ng-src=\"{{loaderImage}}\"/>\n  </div>\n</div>\n");
 $templateCache.put("widgets-common/data-not-found.tmpl.html","<div class=\"data-not-found\">\n	<img ng-src=\"{{bgImage}}\" />\n	<div class=\"message\">\n	  Data not found\n    <!-- TODO: provider for html hyperlinks? -->\n		<a ng-href=\"\" target=\"_blank\">\n			Are you missing an app ?\n		</a>\n	</div>\n</div>\n");
 $templateCache.put("widgets-common/editable-title.tmpl.html","<div class=\"visible-lg title-wrapper\" ng-if=\"parentWidget.width >= 3 && parentWidget.width < 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:25:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:25:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-lg title-wrapper\" ng-if=\"parentWidget.width >= 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:60:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:60:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-md visible-sm title-wrapper\" ng-if=\"parentWidget.width == 3 && parentWidget.width < 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:18:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:18:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-md visible-sm title-wrapper\" ng-if=\"parentWidget.width >= 6\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:45:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:45:\".\"}}\n  </div>\n</div>\n\n<div class=\"visible-xs title-wrapper\">\n  <div ng-show=\"parentWidget.hasEditAbility\" class=\"title\" editable-text=\"parentWidget.name\" buttons=\"no\" onaftersave=\"updateName()\">\n  	{{parentWidget.name | truncate:30:\".\"}}\n  </div>\n\n  <div ng-hide=\"parentWidget.hasEditAbility\" class=\"title\">\n  	{{parentWidget.name | truncate:30:\".\"}}\n  </div>\n</div>");
@@ -1067,6 +1067,7 @@ angular.module('impac.components.dashboard-selector', []).directive('dashboardSe
     link: function(scope, element, attrs) {
       var _compile, customUrl, getCustomTemplate, getTemplate, options, selectorTemplate, setTemplate;
       options = ImpacTheming.getDhbSelectorConfig();
+      scope.isAccessibilityEnabled = options.accessibilityEnabled;
       if (!!options.customTmplPath) {
         customUrl = options.customTmplPath;
       } else {
@@ -1248,7 +1249,8 @@ angular.module('impac.services.theming', []).provider('ImpacTheming', function()
     },
     dhbSelectorConfig: {
       selectorType: 'dropdown',
-      customTmplPath: null
+      customTmplPath: null,
+      accessibilityEnabled: false
     }
   };
   provider.configureChartTheme = function(configOptions) {
@@ -1543,6 +1545,49 @@ module.directive('commonEditableTitle', ["$templateCache", function($templateCac
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets-common.top-buttons', []);
+
+module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "DhbAnalyticsSvc", "ImpacAssets", function($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) {
+  var w;
+  w = $scope.parentWidget;
+  $scope.showCloseActive = false;
+  $scope.showEditActive = false;
+  $scope.showConfirmDelete = false;
+  w.isEditMode = false;
+  $scope.deleteWidget = function() {
+    return DhbAnalyticsSvc.widgets["delete"](w.id, w.parentDashboard).then(function() {
+      return $log.debug('Successfully removed widget!');
+    }, function(errors) {
+      w.errors = Utilities.processRailsError(errors);
+      return $log.error('Error deleting widget: ', errors);
+    });
+  };
+  return $scope.toogleEditMode = function() {
+    if (!w.isLoading) {
+      if (w.isEditMode) {
+        return w.initSettings();
+      } else {
+        return w.isEditMode = true;
+      }
+    }
+  };
+}]);
+
+module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
+    controller: 'CommonTopButtonsCtrl'
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets.accounts-accounting-values', []);
 
 module.controller('WidgetAccountsAccountingValuesCtrl', ["$scope", "DhbAnalyticsSvc", "ChartFormatterSvc", function($scope, DhbAnalyticsSvc, ChartFormatterSvc) {
@@ -1607,49 +1652,6 @@ module.directive('widgetAccountsAccountingValues', function() {
     controller: 'WidgetAccountsAccountingValuesCtrl'
   };
 });
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.top-buttons', []);
-
-module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "DhbAnalyticsSvc", "ImpacAssets", function($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) {
-  var w;
-  w = $scope.parentWidget;
-  $scope.showCloseActive = false;
-  $scope.showEditActive = false;
-  $scope.showConfirmDelete = false;
-  w.isEditMode = false;
-  $scope.deleteWidget = function() {
-    return DhbAnalyticsSvc.widgets["delete"](w.id, w.parentDashboard).then(function() {
-      return $log.debug('Successfully removed widget!');
-    }, function(errors) {
-      w.errors = Utilities.processRailsError(errors);
-      return $log.error('Error deleting widget: ', errors);
-    });
-  };
-  return $scope.toogleEditMode = function() {
-    if (!w.isLoading) {
-      if (w.isEditMode) {
-        return w.initSettings();
-      } else {
-        return w.isEditMode = true;
-      }
-    }
-  };
-}]);
-
-module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
-    controller: 'CommonTopButtonsCtrl'
-  };
-}]);
 }).call(this);
 (function () {
 'use strict';

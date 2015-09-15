@@ -38,6 +38,8 @@ angular
 
       options = ImpacTheming.getDhbSelectorConfig()
 
+      scope.isAccessibilityEnabled = options.accessibilityEnabled
+
       if !!options.customTmplPath
         customUrl = options.customTmplPath
       else
