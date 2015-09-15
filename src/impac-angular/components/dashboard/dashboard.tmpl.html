@@ -40,8 +40,8 @@
         </div>
 
         <div class="arrow" ng-style="getSelectedCategoryTop()">
-          <div class="square" />
-          <i class="fa fa-caret-right" />
+          <div class="square"></div>
+          <i class="fa fa-caret-right"></i>
         </div>
 
       </div>
@@ -129,7 +129,7 @@
 
   <!-- Widgets -->
   <div class='row'>
-    <div ui:sortable="sortableOptions" ng-model="currentDhb.widgets" id="widgets-container">
+    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" >
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
     </div>
   </div>
