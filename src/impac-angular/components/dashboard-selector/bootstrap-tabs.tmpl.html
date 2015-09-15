@@ -9,7 +9,7 @@
           </a>
         </tab-heading>
       </tab>
-      <tab active="false" ng-click="toogleAccessibilityMode()">
+      <tab active="false" ng-if='isAccessibilityEnabled' ng-click="toogleAccessibilityMode()">
         <tab-heading>
           <a href=""><i class="fa fa-wheelchair"></i></a>
         </tab-heading>
