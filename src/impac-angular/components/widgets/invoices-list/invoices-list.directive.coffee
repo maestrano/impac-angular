@@ -9,7 +9,7 @@ module.controller('WidgetInvoicesListCtrl', ($scope, DhbAnalyticsSvc, Utilities,
 
     # No need to put this under initContext because it won't change after a settings update
     $scope.entityType = w.metadata.entity
-    $scope.entityTypeCap = Utilities.capitalize(w.metadata.entity)
+    $scope.entityTypeCap = _.capitalize(w.metadata.entity)
     if w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
       $scope.orderBy = ''
     else

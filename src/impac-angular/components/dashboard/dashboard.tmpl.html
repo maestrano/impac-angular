@@ -15,7 +15,7 @@
   </div>
 
   <!-- Widgets selection container -->
-  <div id="widget-selector" collapse="!showWidgetSelector">
+  <div id="widget-selector" collapse="!showWidgetSelector" ng-if="!customWidgetSelectorPath">
     <div class="title">
       <i class="fa fa-times-circle" ng-click="showWidgetSelector = false"/>
       <span class="badge confirmation">Widget added!</span>
@@ -62,6 +62,9 @@
     </div>
   </div>
 
+  <!-- custom widget selector template configured from ImpacThemingProvider -->
+  <div id="custom-widget-selector" ng-if="customWidgetSelectorPath" ng-include="customWidgetSelectorPath"></div>
+
 
   <!-- Errors -->
   <div class="alert alert-error" ng-show="errors">
@@ -73,7 +76,7 @@
 
   <div class='spacer1'></div>
 
-  <div id="no-widget-container" class="text-center ng-hide" ng-show='(showChooseDhbMsg || showNoWidgetsMsg) && !isLoading'>
+  <div id="no-widget-container" class="text-center ng-hide" ng-show='(showChooseDhbMsg || showNoWidgetsMsg || showNoWidgetsMsg) && !isLoading'>
 
     <img ng-src="{{impacDashboardBackground}}" class="bg">
 
@@ -126,8 +129,14 @@
 
   <!-- Widgets -->
   <div class='row'>
-    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" >
+    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
+      <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
+      <div ng-if="isAddChartEnabled" ui-sortable="sortableOptions.disabled=true">
+        <div class="col-md-6 widget-item add-chart">
+          <div class="a-content">+ chart</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

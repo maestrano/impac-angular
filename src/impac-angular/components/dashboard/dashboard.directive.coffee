@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, ImpacAssets) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, ImpacAssets, ImpacTheming) ->
 
     #====================================
     # Initialization
@@ -23,10 +23,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.openStarWizard = ->
       $scope.starWizardModal.value = true
 
-    DhbAnalyticsSvc.load().then () ->
-      $scope.currentDhbId = DhbAnalyticsSvc.getId()
-      $scope.refreshDashboards()
-      $scope.isLoading = false
+    DhbAnalyticsSvc.load().then(
+      (success) ->
+        $scope.currentDhbId = DhbAnalyticsSvc.getId()
+        $scope.refreshDashboards()
+        $scope.isLoading = false
+    )
 
     # When a call to the service is necessary before updating the display
     # (for example when the dashboards list is modified)
@@ -64,21 +66,29 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.$watch $scope.getCurrentDhbWidgetsNumber, (result) ->
       $scope.setDisplay()
 
+    # Default widget selector
+    $scope.showWidgetSelector = false
+
+    $scope.customWidgetSelectorPath = ImpacTheming.get().widgetSelectorConfig.customTmplPath
+
+    $scope.isAddChartEnabled = ImpacTheming.get().showAddChartTile
+
+    $scope.showNoWidgetMessages = ImpacTheming.get().showNoWidgetMessages
+
     # When there is no need to call the service again before updating the display
     # (for example, when widgets are modified)
     $scope.setDisplay = () ->
       aDashboardExists = $scope.currentDhbId?
       severalDashboardsExist = aDashboardExists && $scope.dashboardsList.length > 1
-      if (aDashboardExists)
+
+      if aDashboardExists
         aWidgetExists = $scope.currentDhb.widgets.length > 0
       else
         aWidgetExists = false
 
-      if aDashboardExists && !aWidgetExists
+      if aDashboardExists && !aWidgetExists && !$scope.customWidgetSelectorPath
         # add a timer to make sure the dom is loaded before the collapse directive is called
         $timeout (-> $scope.showWidgetSelector = true), 300
-      else if !aDashboardExists
-        $scope.showWidgetSelector = false
 
       # Permissions and 'show helpers'
       # dashboard name
@@ -429,7 +439,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         # _.each e.currentTarget.children, (w) ->
         #   w.style.height = cssHeight
         #   w.style.clear = 'none'
-
 
       # Options
       ,cursorAt: {left: 100, top: 20}
