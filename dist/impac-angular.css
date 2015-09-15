@@ -7451,112 +7451,6 @@ ul.compact li {
   color: #dae173;
 }
 /* inject:imports */
-.widget-item .top-line {
-  cursor: move;
-  background-color: white;
-  padding: 9px 9px 0px 9px;
-  border-radius: 5px 5px 0px 0px;
-  border: solid 1px #e6e6e6;
-  border-bottom: none;
-  min-height: 41px;
-  -webkit-box-shadow: 0px 1px 8px -4px;
-  box-shadow: 0px 1px 8px -4px;
-}
-.widget-item .content {
-  padding: 9px;
-  border-radius: 0px 0px 5px 5px;
-  border: solid 1px #c8d7d9;
-  border-top: none;
-  background-color: white;
-  vertical-align: top;
-  -webkit-box-shadow: 0px 1px 8px -4px;
-  box-shadow: 0px 1px 8px -4px;
-  min-height: 250px;
-}
-@media (min-width: 992px) {
-  .widget-item .content {
-    height: 250px;
-  }
-  .widget-item .content .chart-container {
-    max-width: 270px;
-    max-height: 125px;
-    margin: auto;
-  }
-}
-.widget-item .content .edit {
-  max-height: 230px;
-}
-.widget-item .content .loader {
-  color: #c4caca;
-  font-weight: bold;
-  margin-top: 75px;
-}
-.widget-item .content .loader .gif {
-  display: block;
-  margin-top: 10px;
-}
-.widget-item .content .edit {
-  overflow-y: auto;
-  overflow-x: hidden;
-  color: #5b6667;
-  padding: 2px;
-  font-size: 12px;
-}
-.widget-item .content .edit .btn {
-  border-radius: 2px;
-  margin-right: 5px;
-  padding: 3px 13px;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-.widget-item .content .edit .btn.btn-default {
-  background-color: #c2c4c4;
-  border: solid 1px #a8abab;
-  color: white;
-}
-.widget-item .content .edit .btn.btn-default:hover {
-  border: solid 1px #8e9292;
-  background-color: #a8abab;
-}
-.widget-item .content .edit h4 {
-  margin: 0;
-  margin-bottom: 8px;
-  text-align: left;
-  font-weight: normal;
-  font-size: 12px;
-  color: #c4caca;
-}
-.widget-item .content .edit .part {
-  margin-bottom: 8px;
-  padding: 10px 0px;
-  background-color: #f2f2f2;
-  border: solid 1px #dfe2e2;
-}
-.widget-item .content .edit .part h5 {
-  margin: 0;
-  margin-bottom: 10px;
-  padding: 0px 15px;
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: 12px;
-  color: #c4caca;
-}
-.widget-item .content .edit .part label {
-  font-weight: normal;
-}
-.widget-item .content .edit .part select.form-control {
-  margin: 0px;
-  border: solid 1px #acb0b1;
-  outline: none;
-  -webkit-box-shadow: none;
-  font-size: 13px;
-  color: #72728b;
-}
-.widget-item .content.accessible {
-  height: auto !important;
-  min-height: 250px !important;
-  max-height: auto !important;
-}
 .analytics {
   padding-top: 50px;
   margin-left: 100px;
@@ -7813,8 +7707,8 @@ ul.compact li {
   width: 100%;
 }
 .analytics #widgets-container {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 .analytics #widgets-container .placeHolderBox {
   margin: 12px;
@@ -7874,9 +7768,155 @@ ul.compact li {
   top: -9px;
   right: 1px;
 }
+.widget-item .top-line {
+  cursor: move;
+  background-color: white;
+  padding: 9px 9px 0px 9px;
+  border-radius: 5px 5px 0px 0px;
+  border: solid 1px #e6e6e6;
+  border-bottom: none;
+  min-height: 41px;
+  -webkit-box-shadow: 0px 1px 8px -4px;
+  box-shadow: 0px 1px 8px -4px;
+}
+.widget-item .content {
+  padding: 9px;
+  border-radius: 0px 0px 5px 5px;
+  border: solid 1px #c8d7d9;
+  border-top: none;
+  background-color: white;
+  vertical-align: top;
+  -webkit-box-shadow: 0px 1px 8px -4px;
+  box-shadow: 0px 1px 8px -4px;
+  min-height: 250px;
+}
+@media (min-width: 992px) {
+  .widget-item .content {
+    height: 250px;
+  }
+  .widget-item .content .chart-container {
+    max-width: 270px;
+    max-height: 125px;
+    margin: auto;
+  }
+}
+.widget-item .content .edit {
+  max-height: 230px;
+}
+.widget-item .content .loader {
+  color: #c4caca;
+  font-weight: bold;
+  margin-top: 75px;
+}
+.widget-item .content .loader .gif {
+  display: block;
+  margin-top: 10px;
+}
+.widget-item .content .edit {
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #5b6667;
+  padding: 2px;
+  font-size: 12px;
+}
+.widget-item .content .edit .btn {
+  border-radius: 2px;
+  margin-right: 5px;
+  padding: 3px 13px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.widget-item .content .edit .btn.btn-default {
+  background-color: #c2c4c4;
+  border: solid 1px #a8abab;
+  color: white;
+}
+.widget-item .content .edit .btn.btn-default:hover {
+  border: solid 1px #8e9292;
+  background-color: #a8abab;
+}
+.widget-item .content .edit h4 {
+  margin: 0;
+  margin-bottom: 8px;
+  text-align: left;
+  font-weight: normal;
+  font-size: 12px;
+  color: #c4caca;
+}
+.widget-item .content .edit .part {
+  margin-bottom: 8px;
+  padding: 10px 0px;
+  background-color: #f2f2f2;
+  border: solid 1px #dfe2e2;
+}
+.widget-item .content .edit .part h5 {
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0px 15px;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 12px;
+  color: #c4caca;
+}
+.widget-item .content .edit .part label {
+  font-weight: normal;
+}
+.widget-item .content .edit .part select.form-control {
+  margin: 0px;
+  border: solid 1px #acb0b1;
+  outline: none;
+  -webkit-box-shadow: none;
+  font-size: 13px;
+  color: #72728b;
+}
+.widget-item .content.accessible {
+  height: auto !important;
+  min-height: 250px !important;
+  max-height: auto !important;
+}
 .analytics .widget-item .content.accounts-assets-summary .legend {
   text-align: left;
   max-height: 98px;
+}
+.analytics .widget-item .content.accounts-balance h3 {
+  font-weight: 300;
+  font-size: 14px;
+  color: #5b6667;
+  text-align: left;
+  margin-top: 30px;
+  text-align: center;
+}
+.analytics .widget-item .content.accounts-balance .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5b6667;
+  text-align: center;
+  margin-top: 0px;
+}
+.analytics .widget-item .content.accounts-balance-sheet {
+  min-height: 565px;
+}
+@media (min-width: 992px) {
+  .analytics .widget-item .content.accounts-balance-sheet {
+    height: 565px;
+  }
+  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
+    max-width: 585px;
+    max-height: 440px;
+    margin: auto;
+  }
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit {
+  max-height: 545px;
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 540px;
 }
 .analytics .widget-item .content.accounts-cash-summary {
   min-height: 565px;
@@ -7921,21 +7961,6 @@ ul.compact li {
 }
 .analytics .widget-item .content.accounts-cash-summary .right-panel > .widget-lines-container {
   max-height: 215px;
-}
-.analytics .widget-item .content.accounts-balance h3 {
-  font-weight: 300;
-  font-size: 14px;
-  color: #5b6667;
-  text-align: left;
-  margin-top: 30px;
-  text-align: center;
-}
-.analytics .widget-item .content.accounts-balance .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5b6667;
-  text-align: center;
-  margin-top: 0px;
 }
 .analytics .widget-item .content.accounts-comparison {
   min-height: 565px;
@@ -8004,31 +8029,6 @@ ul.compact li {
 .analytics .widget-item .content.accounts-comparison .widget-lines-container {
   font-size: 11px;
   max-height: 220px;
-}
-.analytics .widget-item .content.accounts-balance-sheet {
-  min-height: 565px;
-}
-@media (min-width: 992px) {
-  .analytics .widget-item .content.accounts-balance-sheet {
-    height: 565px;
-  }
-  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
-    max-width: 585px;
-    max-height: 440px;
-    margin: auto;
-  }
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit {
-  max-height: 545px;
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 540px;
 }
 .analytics .widget-item .content.custom-calculation h3 {
   margin-top: 85px;
@@ -8114,6 +8114,22 @@ ul.compact li {
 .analytics .widget-item .content.accounts-expenses-revenue .legend {
   font-weight: bold;
 }
+.analytics .widget-item .content.accounts-payable-receivable h3 {
+  text-align: center;
+}
+.analytics .widget-item .content.accounts-payable-receivable .legend {
+  font-weight: bold;
+}
+.analytics .widget-item .content.accounts-payable-receivable .payable {
+  margin-top: 15px;
+}
+.analytics .widget-item .content.accounts-payable-receivable .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5b6667;
+  text-align: center;
+  margin-top: 0px;
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   min-height: 565px;
 }
@@ -8155,22 +8171,6 @@ ul.compact li {
   overflow-x: hidden;
   max-height: 235px;
 }
-.analytics .widget-item .content.accounts-payable-receivable h3 {
-  text-align: center;
-}
-.analytics .widget-item .content.accounts-payable-receivable .legend {
-  font-weight: bold;
-}
-.analytics .widget-item .content.accounts-payable-receivable .payable {
-  margin-top: 15px;
-}
-.analytics .widget-item .content.accounts-payable-receivable .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5b6667;
-  text-align: center;
-  margin-top: 0px;
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
 }
@@ -8197,24 +8197,20 @@ ul.compact li {
   margin-bottom: 10px;
   font-size: 14px;
 }
-.analytics .widget-item .content.hr-leaves-schedule .fc-button {
-  height: 22px;
-  font-size: 12px;
-  color: #977bf0;
-  background: white;
-  outline: none;
+.analytics .widget-item .content.hr-employees-list .legend {
+  margin-bottom: 9px;
 }
-.analytics .widget-item .content.hr-leaves-schedule .fc-button:hover {
-  color: white;
-  background: #977bf0;
+.analytics .widget-item .content.hr-employees-list .widget-lines-container {
+  text-align: center;
 }
-.analytics .widget-item .content.hr-leaves-schedule .fc-toolbar {
-  margin-bottom: 5px;
+.analytics .widget-item .content.hr-employees-list .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
 }
-.analytics .widget-item .content.hr-leaves-schedule .fc-day-grid,
-.analytics .widget-item .content.hr-leaves-schedule .fc-widget-header {
-  font-size: 12px;
-  color: #5b6667;
+.analytics .widget-item .content.hr-employees-list .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.hr-employees-list .edit .widget-lines-container {
+  text-align: left;
 }
 .analytics .widget-item .content.hr-leaves-balance .selector {
   font-weight: 300;
@@ -8236,6 +8232,25 @@ ul.compact li {
 }
 .analytics .widget-item .content.hr-leaves-balance .widget-lines-container {
   margin-top: 15px;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-button {
+  height: 22px;
+  font-size: 12px;
+  color: #977bf0;
+  background: white;
+  outline: none;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-button:hover {
+  color: white;
+  background: #977bf0;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-toolbar {
+  margin-bottom: 5px;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-day-grid,
+.analytics .widget-item .content.hr-leaves-schedule .fc-widget-header {
+  font-size: 12px;
+  color: #5b6667;
 }
 .analytics .widget-item .content.hr-payroll-summary {
   min-height: 565px;
@@ -8297,6 +8312,23 @@ ul.compact li {
 }
 .analytics .widget-item .content.hr-salaries-summary .widget-lines-container .widget-line {
   font-size: 11px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals h3 {
+  margin-top: 49px;
+  text-align: center;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .legend {
+  margin-top: 23px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .currency {
+  font-size: 14px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5b6667;
+  text-align: center;
+  margin-top: 0px;
 }
 .analytics .widget-item .content.hr-timesheets .currency {
   font-size: 14px;
@@ -8362,37 +8394,26 @@ ul.compact li {
   overflow-x: hidden;
   max-height: 235px;
 }
-.analytics .widget-item .content.hr-employees-list .legend {
-  margin-bottom: 9px;
+.analytics .widget-item .content.invoices-list .widget-lines-container {
+  max-height: 230px;
 }
-.analytics .widget-item .content.hr-employees-list .widget-lines-container {
-  text-align: center;
+.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line {
+  cursor: default;
 }
-.analytics .widget-item .content.hr-employees-list .widget-lines-container .widget-line:nth-child(even) {
+.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line:nth-child(even) {
   background-color: #e6e6e6;
 }
-.analytics .widget-item .content.hr-employees-list .widget-lines-container .widget-line:nth-child(odd) {
+.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line:nth-child(odd) {
   background-color: white;
 }
-.analytics .widget-item .content.hr-employees-list .edit .widget-lines-container {
-  text-align: left;
+.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line.header {
+  background-color: white;
 }
-.analytics .widget-item .content.hr-superannuation-accruals h3 {
-  margin-top: 49px;
-  text-align: center;
+.analytics .widget-item .content.invoices-summary .chart-container {
+  max-width: 410px;
 }
-.analytics .widget-item .content.hr-superannuation-accruals .legend {
-  margin-top: 23px;
-}
-.analytics .widget-item .content.hr-superannuation-accruals .currency {
-  font-size: 14px;
-}
-.analytics .widget-item .content.hr-superannuation-accruals .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5b6667;
-  text-align: center;
-  margin-top: 0px;
+.analytics .widget-item .content.invoices-summary .legend {
+  max-height: 28px;
 }
 .analytics .widget-item .content.sales-aged {
   min-height: 565px;
@@ -8529,50 +8550,30 @@ ul.compact li {
   margin-bottom: 10px;
   font-size: 14px;
 }
-.analytics .widget-item .content.invoices-summary .chart-container {
-  max-width: 410px;
-}
-.analytics .widget-item .content.invoices-summary .legend {
-  max-height: 28px;
-}
-.analytics .widget-item .content.invoices-list .widget-lines-container {
-  max-height: 230px;
-}
-.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line {
-  cursor: default;
-}
-.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
-}
-.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.invoices-list .widget-lines-container .widget-line.header {
-  background-color: white;
-}
 .analytics .widget-item .content.sales-cycle .chart-container {
   max-width: 410px;
 }
 .analytics .widget-item .content.sales-cycle .legend {
   max-height: 28px;
 }
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  max-height: 230px;
+.analytics .widget-item .content.sales-forecast {
+  min-height: 565px;
 }
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line {
-  cursor: default;
+@media (min-width: 992px) {
+  .analytics .widget-item .content.sales-forecast {
+    height: 565px;
+  }
+  .analytics .widget-item .content.sales-forecast .chart-container {
+    max-width: 585px;
+    max-height: 440px;
+    margin: auto;
+  }
 }
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
+.analytics .widget-item .content.sales-forecast .edit {
+  max-height: 545px;
 }
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  overflow-y: scroll;
+.analytics .widget-item .content.sales-forecast .edit .widget-lines-container {
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-growth .price {
@@ -8621,6 +8622,25 @@ ul.compact li {
 .analytics .widget-item .content.sales-leads-funnel .right-panel .widget-lines-container .widget-line {
   cursor: default;
 }
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  max-height: 230px;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line {
+  cursor: default;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 .analytics .widget-item .content.sales-list .widget-lines-container {
   max-height: 230px;
 }
@@ -8668,6 +8688,41 @@ ul.compact li {
   font-size: 14px;
   font-weight: 300;
   margin-top: 2px;
+}
+.analytics .widget-item .content.sales-opportunities-funnel {
+  min-height: 565px;
+}
+@media (min-width: 992px) {
+  .analytics .widget-item .content.sales-opportunities-funnel {
+    height: 565px;
+  }
+  .analytics .widget-item .content.sales-opportunities-funnel .chart-container {
+    max-width: 585px;
+    max-height: 440px;
+    margin: auto;
+  }
+}
+.analytics .widget-item .content.sales-opportunities-funnel .edit {
+  max-height: 545px;
+}
+.analytics .widget-item .content.sales-opportunities-funnel .edit .widget-lines-container {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.analytics .widget-item .content.sales-opportunities-funnel .funnel-container {
+  width: 95%;
+  margin: auto;
+  margin-top: 15px;
+  padding-right: 10px;
+  max-height: 515px;
+  overflow: auto;
+}
+.analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container {
+  max-height: 540px;
+  margin-right: 10px;
+}
+.analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container .widget-line {
+  cursor: default;
 }
 .analytics .widget-item .content.sales-performance .widget-lines-container {
   max-height: 230px;
@@ -8721,41 +8776,6 @@ ul.compact li {
 }
 .analytics .widget-item .content.sales-segmented-turnover .widget-lines-container .widget-line {
   font-size: 11px;
-}
-.analytics .widget-item .content.sales-opportunities-funnel {
-  min-height: 565px;
-}
-@media (min-width: 992px) {
-  .analytics .widget-item .content.sales-opportunities-funnel {
-    height: 565px;
-  }
-  .analytics .widget-item .content.sales-opportunities-funnel .chart-container {
-    max-width: 585px;
-    max-height: 440px;
-    margin: auto;
-  }
-}
-.analytics .widget-item .content.sales-opportunities-funnel .edit {
-  max-height: 545px;
-}
-.analytics .widget-item .content.sales-opportunities-funnel .edit .widget-lines-container {
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-.analytics .widget-item .content.sales-opportunities-funnel .funnel-container {
-  width: 95%;
-  margin: auto;
-  margin-top: 15px;
-  padding-right: 10px;
-  max-height: 515px;
-  overflow: auto;
-}
-.analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container {
-  max-height: 540px;
-  margin-right: 10px;
-}
-.analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container .widget-line {
-  cursor: default;
 }
 .analytics .widget-item .content.sales-summary .chart-container {
   max-width: 410px;
@@ -8813,28 +8833,113 @@ ul.compact li {
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5b6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
+}
+.analytics .widget-item .title-wrapper {
+  width: 100%;
+  padding: 0px 10px 10px 10px;
+  border-bottom: solid 1px #dfe2e2;
+  white-space: nowrap;
+}
+.analytics .widget-item .title-wrapper .title {
+  display: inline;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  color: #4f5959;
+  text-align: left;
+  cursor: text;
+}
+.analytics .widget-item .title-wrapper .editable-wrap {
+  height: 20px;
+  width: 75%;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls {
+  width: 100%;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-input {
+  height: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  width: 100%;
+}
+.analytics .widget-item .top-line #module__top-buttons i.fa {
+  margin-left: 3px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button {
+  float: right;
+  background: transparent;
+  border: none;
+  color: #c4caca;
+  padding: 1px;
+  margin-left: 3px;
+  outline: none;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button:active,
+.analytics .widget-item .top-line #module__top-buttons .top-button:focus {
+  -webkit-box-shadow: none;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button.btn-edit {
+  font-size: 14px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button.btn-edit:hover {
+  color: #cfd849;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button.btn-close:hover {
+  color: #ed1e79;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button.btn-refresh {
+  font-size: 17px;
+  margin-top: -1px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-button.btn-refresh:hover {
+  color: #358fdc;
+}
+.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover {
+  position: absolute;
+  top: 90px;
+  left: 15%;
+  width: 70%;
+  background-color: #17262d;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 50;
+  color: white;
+  text-align: center;
+  opacity: 0.9;
+  cursor: default;
+  -webkit-box-shadow: 0px 0px 25px 4px black;
+  box-shadow: 0px 0px 25px 4px black;
+}
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
-}
-.analytics .widget-item .content.sales-forecast {
-  min-height: 565px;
-}
-@media (min-width: 992px) {
-  .analytics .widget-item .content.sales-forecast {
-    height: 565px;
-  }
-  .analytics .widget-item .content.sales-forecast .chart-container {
-    max-width: 585px;
-    max-height: 440px;
-    margin: auto;
-  }
-}
-.analytics .widget-item .content.sales-forecast .edit {
-  max-height: 545px;
-}
-.analytics .widget-item .content.sales-forecast .edit .widget-lines-container {
-  overflow-y: hidden;
-  overflow-x: hidden;
 }
 .analytics .widget-item .content .settings.chart-filters .row {
   margin: 0px;
@@ -9000,35 +9105,6 @@ ul.compact li {
 .analytics .widget-item .content .settings.time-range {
   padding: 0px 5px;
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5b6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
-}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -9042,81 +9118,5 @@ ul.compact li {
 }
 .analytics .widget-item .content .settings.width i.expand {
   margin-right: -3px;
-}
-.analytics .widget-item .title-wrapper {
-  width: 100%;
-  padding: 0px 10px 10px 10px;
-  border-bottom: solid 1px #dfe2e2;
-  white-space: nowrap;
-}
-.analytics .widget-item .title-wrapper .title {
-  display: inline;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 12px;
-  color: #4f5959;
-  text-align: left;
-  cursor: text;
-}
-.analytics .widget-item .title-wrapper .editable-wrap {
-  height: 20px;
-  width: 75%;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls {
-  width: 100%;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-input {
-  height: 20px;
-  font-size: 12px;
-  text-transform: uppercase;
-  width: 100%;
-}
-.analytics .widget-item .top-line #module__top-buttons i.fa {
-  margin-left: 3px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button {
-  float: right;
-  background: transparent;
-  border: none;
-  color: #c4caca;
-  padding: 1px;
-  margin-left: 3px;
-  outline: none;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button:active,
-.analytics .widget-item .top-line #module__top-buttons .top-button:focus {
-  -webkit-box-shadow: none;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button.btn-edit {
-  font-size: 14px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button.btn-edit:hover {
-  color: #cfd849;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button.btn-close:hover {
-  color: #ed1e79;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button.btn-refresh {
-  font-size: 17px;
-  margin-top: -1px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-button.btn-refresh:hover {
-  color: #358fdc;
-}
-.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover {
-  position: absolute;
-  top: 90px;
-  left: 15%;
-  width: 70%;
-  background-color: #17262d;
-  padding: 10px;
-  border-radius: 4px;
-  z-index: 50;
-  color: white;
-  text-align: center;
-  opacity: 0.9;
-  cursor: default;
-  -webkit-box-shadow: 0px 0px 25px 4px black;
-  box-shadow: 0px 0px 25px 4px black;
 }
 /* endinject */
