@@ -63,6 +63,7 @@
 
 // Widgets container
 @impac-placeholder-border:                      2px dashed @lightblue;
+@impac-widgets-container-side-padding:          10px;
 @impac-padding-between-widgets:                 12px;
 @impac-minimum-widget-size:                     250px;
 
@@ -117,6 +118,7 @@
 // Sales break-even
 @impac-widget-sales-break-even-bg:             rgb(25,40,49);
 @impac-widget-sales-break-even-text-color:     #1de9b6;
+
 // Use this file to override Twitter Bootstrap variables or define own variables.
 
 // Variables I add to define
@@ -1519,6 +1521,9 @@ ul.compact li {
   }
 
   #widgets-container {
+    padding-left: @impac-widgets-container-side-padding;
+    padding-right: @impac-widgets-container-side-padding;
+
     .placeHolderBox {
       margin: @impac-padding-between-widgets;
       height: 267px;
@@ -1551,6 +1556,7 @@ ul.compact li {
     color: @mgreen;
   }
 }
+
 #module__dashboard-selector {
 
   // angular bootstrap tabs & pills
@@ -1935,14 +1941,14 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
     max-height: 98px;
   }
+}
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
 }
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1954,6 +1960,12 @@ ul.compact li {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1961,10 +1973,9 @@ ul.compact li {
     max-height: 540px;
   }
 }
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
   }
 }
 .analytics .widget-item .content.accounts-comparison {
@@ -2019,6 +2030,20 @@ ul.compact li {
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
 }
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.custom-calculation {
   h3 {
     margin-top: 85px;
@@ -2041,25 +2066,6 @@ ul.compact li {
   }
   .loader {
     .loader-style();
-  }
-}
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-}
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
@@ -2156,6 +2162,14 @@ ul.compact li {
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
+  }
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -2171,25 +2185,17 @@ ul.compact li {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.hr-timesheets {
-  .currency {
-    font-size: 14px;
-  }
-  .widget-lines-container {
-    max-height: 210px;
-  }
-}
 .analytics .widget-item .content.hr-workforce-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.invoices-aged-payables-receivables {
-  .drill-down-widget();
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 }
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
+.analytics .widget-item .content.invoices-aged-payables-receivables {
+  .drill-down-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -2270,12 +2276,6 @@ ul.compact li {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
-.analytics .widget-item .content.sales-forecast {
-  .tall-widget();
-}
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -2285,16 +2285,19 @@ ul.compact li {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
 }
-
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2304,9 +2307,6 @@ ul.compact li {
   .selector {
     margin-bottom: 4px;
   }
-}
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
@@ -2335,10 +2335,16 @@ ul.compact li {
     }
   }
 }
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-forecast {
+  .tall-widget();
+}
 .analytics .widget-item .content.sales-performance {
   .simple-list-widget();
   .widget-lines-container {
