@@ -73,8 +73,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     $scope.isAddChartEnabled = ImpacTheming.get().showAddChartTile
 
-    $scope.showNoWidgetMessages = ImpacTheming.get().showNoWidgetMessages
-
     # When there is no need to call the service again before updating the display
     # (for example, when widgets are modified)
     $scope.setDisplay = () ->
@@ -100,7 +98,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $scope.showCreateWidget = aDashboardExists
       # messages
       $scope.showChooseDhbMsg = !aDashboardExists
-      $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists
+      $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists && ImpacTheming.get().showNoWidgetMessages
       #widgets
       $scope.canManageWidgets = true
 
