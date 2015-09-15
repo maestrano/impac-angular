@@ -31,11 +31,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, DhbAnalyticsSvc, ChartFo
     $scope.getCurrency = ->
       w.selectedAccount.currency if w.selectedAccount?
 
-    # When the user tries to disable edit mode without having selected an account
-    # we force the edit mode to remain enabled
-    $scope.$watch (-> w.isEditMode), (result) ->
-      w.isEditMode = true if !w.selectedAccount?
-
 
     # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
     # in this order, we should:
@@ -51,7 +46,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, DhbAnalyticsSvc, ChartFo
         return 0
 
     $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total == 4
+      w.loadContent() if total >= 5
 
     return w
 )

@@ -30,6 +30,8 @@ angular
       dhbSelectorConfig:
         selectorType: 'dropdown'
         customTmplPath: null
+        accessibilityEnabled: false
+        
     #=======================================
     # Public methods available in config
     #=======================================

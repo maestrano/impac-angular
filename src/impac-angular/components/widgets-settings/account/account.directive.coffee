@@ -32,9 +32,14 @@ module.directive('settingAccount', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '='
+      parentWidget: '=',
+      label: '@'
     },
-    template: $templateCache.get('widgets-settings/account.tmpl.html'),
+
+    link: (scope, element) ->
+      scope.label = "Account to monitor" if !scope.label
+
+    ,template: $templateCache.get('widgets-settings/account.tmpl.html'),
     controller: 'SettingAccountCtrl'
   }
 )
