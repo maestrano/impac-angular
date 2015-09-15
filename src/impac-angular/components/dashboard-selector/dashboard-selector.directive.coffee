@@ -36,7 +36,7 @@ angular
 
     link: (scope, element, attrs) ->
 
-      options = ImpacTheming.getDhbSelectorConfig()
+      options = ImpacTheming.get().dhbSelectorConfig
 
       scope.isAccessibilityEnabled = options.accessibilityEnabled
 

@@ -1,10 +1,10 @@
 <div class="data-not-found">
 	<img ng-src="{{bgImage}}" />
 	<div class="message">
-	  Data not found
+	  {{content.mainMessage}}
     <!-- TODO: provider for html hyperlinks? -->
-		<a ng-href="" target="_blank">
-			Are you missing an app ?
+		<a ng-href="{{content.linkUrl}}" target="_blank">
+			{{content.linkMessage}}
 		</a>
 	</div>
 </div>

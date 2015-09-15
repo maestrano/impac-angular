@@ -30,11 +30,6 @@ impac-angular requires that you configure it's **ImpacLinkingProvider service** 
 _type_: Object<br>
 _usage_: Linking core User data into impac-angular to meet the requirements of the library, and keeping concerns seperate.
 
-**organizations**<br>
-_type_: {Function}<br>
-_return_: {Array|String}<br>
-_usage_: Retriving the right content belonging to the users organizations.
-
 **ssoSession**<br>
 _type_: Function<br>
 _return_: {String}<br>
@@ -45,13 +40,12 @@ See example below:
 ```
   angular
     .module('yourApp', [])
-    .config( (ImpacLinkingProvider, UserAuthProvider, OrganizationProvider) ->
+    .config( (ImpacLinkingProvider, MnoSessionProvider) ->
     
       data = 
-          organizations: OrganizationProvider.$get().getOrgUIDs
-          ssoSession: UserAuthProvider.$get().getSession
+          ssoSession: MnoSessionProvider.$get().getSession
             
-        ImpacLinkingProvider.linkData(data) 
+      ImpacLinkingProvider.linkData(data)
       
     )
   )
@@ -60,6 +54,12 @@ See example below:
 ### Optional Configurations
 [TODO: Expand on this section]<br>
 There are other provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is an assets provider for configuring static assets.
+
+
+<!--  # notes as reminder of optional config instructions to document.
+  - custom dhb selector templates
+    - valid url = 'app/views/foobar.html
+-->
 
 ### Developement
 
@@ -134,21 +134,12 @@ Running `gulp build:less` will run the inject task, and then compile all imports
 
 ### Bugs, Refactor and Improvements
 - Refactor `analytics.less` into modular structure.
-- Gulp sourcemap errors are not giving accurate stack trace lines in browser console, have removed for now.
-- ImpacThemingProvider: look into how angular material does their custom themes.
 - Fix gulp watch task, seems to be not working consitantly. 
-- Dashboard.tmpl.html dashboard management sections is currently broken.
-- Bootstrap files are currently included within the project, this should be a dependency of impac-angular.
 
 ### Roadmap
-- Refactor `analytics.less`
-- Accessiblity
-- Testing 
-- tabs component
-  - multi-tab lazy loading
-  - switch between 'tabs' & 'pills' UI style
-  - ng-include options for app specific custom template include. 
-- Remove bootstrap files from stylesheets, as as bower dep.
+- theming provider config for "data not found"
+- Option to add external widget selection UI
+- Finish Refactor `analytics.less`
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd
