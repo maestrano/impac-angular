@@ -39,10 +39,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
       $scope.currentDhb = _.where($scope.dashboardsList, {id: $scope.currentDhbId})[0]
 
-      if $scope.currentDhb && $scope.currentDhb.data_sources
-        DhbAnalyticsSvc.setOrganizations($scope.currentDhb.data_sources)
-        DhbAnalyticsSvc.config.organizationId = DhbAnalyticsSvc.organizations[0].id
-
       # Change current dhb if not for the select org
       if $scope.currentDhb == null
         $scope.currentDhb = $scope.dashboardsList[0]

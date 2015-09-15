@@ -12,7 +12,8 @@ angular
     #=======================================
     # Required data:
     links = {
-      ssoSession: null
+      ssoSession: null,
+      organizations: null
     }
     #=======================================
     # Public methods available in config
@@ -38,6 +39,17 @@ angular
         links.ssoSession().then(
           (ssoSession) ->
             deferred.resolve(ssoSession)
+          (error) ->
+            # handle error
+            deferred.reject(error)
+        )
+        return deferred.promise
+
+      service.getOrganizations = ->
+        deferred = $q.defer()
+        links.organizations().then(
+          (orgs) ->
+            deferred.resolve(orgs)
           (error) ->
             # handle error
             deferred.reject(error)
