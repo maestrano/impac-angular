@@ -43,20 +43,5 @@ angular
 
       return messages
 
-    # Camelize a string
-    @camelize = (word) ->
-      return word.replace(/(?:^|[-_])(\w)/g, (_, c) ->
-          if c then c.toUpperCase() else ''
-      )
-
-    # Camelize a string for javascript
-    # (camelize with first letter lower case)
-    @jsCamelize = (word) ->
-      camelized = this.camelize(word)
-      return camelized.charAt(0).toLowerCase() + camelized.slice(1)
-
-    @capitalize = (word) ->
-      return (word.charAt(0).toUpperCase() + word.slice(1))
-
     return
   )

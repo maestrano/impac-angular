@@ -4,7 +4,7 @@ angular
 
     _self = @
 
-    COLORS = ImpacTheming.getChartColors()
+    COLORS = ImpacTheming.get().chartColors
 
     # Returns the color defined for positive values
     @getPositiveColor = ->

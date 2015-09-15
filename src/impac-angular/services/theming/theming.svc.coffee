@@ -27,19 +27,29 @@ angular
           "#ffeb3c",
           "#ff1844"
         ]
+
       dhbSelectorConfig:
         selectorType: 'dropdown'
         customTmplPath: null
         accessibilityEnabled: false
-        
+
+      dataNotFoundConfig:
+        mainMessage: 'Data not found'
+        linkMessage: 'Are you missing an app?'
+        linkUrl: ''
+
+      widgetSelectorConfig:
+        customTmplPath: null
+
+      showNoWidgetMessages: true
+      showAddChartTile: false
+
+
     #=======================================
     # Public methods available in config
     #=======================================
-    provider.configureChartTheme = (configOptions) ->
-      angular.extend(options.chartColors, configOptions)
-
-    provider.configureDhbSelector = (configOptions) ->
-      angular.extend(options.dhbSelectorConfig, configOptions)
+    provider.configure = (configOptions) ->
+      angular.extend(options, configOptions)
 
     #=======================================
     # TODO: does ng-annotate annotate provider $get methods in the gulp build process?
@@ -48,11 +58,8 @@ angular
       #=======================================
       # Public methods available as service
       #=======================================
-      service.getChartColors = ->
-        return options.chartColors
-
-      service.getDhbSelectorConfig = ->
-        return options.dhbSelectorConfig
+      service.get = ->
+        return options
 
       return service
     # inject service dependencies here, and declare in _$get function args.
