@@ -7893,31 +7893,6 @@ ul.compact li {
   text-align: center;
   margin-top: 0px;
 }
-.analytics .widget-item .content.accounts-balance-sheet {
-  min-height: 565px;
-}
-@media (min-width: 992px) {
-  .analytics .widget-item .content.accounts-balance-sheet {
-    height: 565px;
-  }
-  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
-    max-width: 585px;
-    max-height: 440px;
-    margin: auto;
-  }
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit {
-  max-height: 545px;
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 540px;
-}
 .analytics .widget-item .content.accounts-cash-summary {
   min-height: 565px;
 }
@@ -7961,6 +7936,31 @@ ul.compact li {
 }
 .analytics .widget-item .content.accounts-cash-summary .right-panel > .widget-lines-container {
   max-height: 215px;
+}
+.analytics .widget-item .content.accounts-balance-sheet {
+  min-height: 565px;
+}
+@media (min-width: 992px) {
+  .analytics .widget-item .content.accounts-balance-sheet {
+    height: 565px;
+  }
+  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
+    max-width: 585px;
+    max-height: 440px;
+    margin: auto;
+  }
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit {
+  max-height: 545px;
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 540px;
 }
 .analytics .widget-item .content.accounts-comparison {
   min-height: 565px;
