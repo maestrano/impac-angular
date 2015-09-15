@@ -24,6 +24,11 @@
   min-height: @height;
   @media (min-width: @screen-md-min) {
     height: @height;
+    .chart-container {
+      max-width: @height + 20px;
+      max-height: @height - 125px;
+      margin: auto;
+    }
   }
 }
 
