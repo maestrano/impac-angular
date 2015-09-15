@@ -21,6 +21,10 @@ angular
 
     service.isLocked = false
 
+    ImpacLinking.getOrganizations().then (success) ->
+      service.organizations = success
+      service.config.organizationId = service.organizations[0].id if service.organizations.length > 0
+
     #======================================
     # Data Management
     #======================================
@@ -37,9 +41,6 @@ angular
     # Return the id of the currently loaded/loading organization
     service.getOrganizationId = ->
       service.config.organizationId
-
-    service.setOrganizations = (orgs) ->
-      service.organizations = orgs
 
     # Configure the service
     service.configure = (opts) ->
