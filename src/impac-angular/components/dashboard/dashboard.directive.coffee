@@ -439,7 +439,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       ,placeholder: "placeHolderBox"
       ,cursor: "move"
       ,revert: 250
-      }
+    }
 
 )
 

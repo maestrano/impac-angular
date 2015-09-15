@@ -63,6 +63,7 @@
 
 // Widgets container
 @impac-placeholder-border:                      2px dashed @lightblue;
+@impac-widgets-container-side-padding:          10px;
 @impac-padding-between-widgets:                 12px;
 @impac-minimum-widget-size:                     250px;
 @impac-big-widget-size:                         565px;
@@ -117,6 +118,7 @@
 // Sales break-even
 @impac-widget-sales-break-even-bg:             rgb(25,40,49);
 @impac-widget-sales-break-even-text-color:     #1de9b6;
+
 // Use this file to override Twitter Bootstrap variables or define own variables.
 
 // Variables I add to define
@@ -1247,6 +1249,43 @@ ul.compact li {
     }
   }
 }
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: solid 1px darken(@impac-widget-title-bg,10%);
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-style();
+    margin-top: 75px;
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
 .analytics {
 
   padding-top: @impac-dashboard-padding-top;
@@ -1524,6 +1563,9 @@ ul.compact li {
   }
 
   #widgets-container {
+    padding-left: @impac-widgets-container-side-padding;
+    padding-right: @impac-widgets-container-side-padding;
+
     .placeHolderBox {
       margin: @impac-padding-between-widgets;
       height: 267px;
@@ -1556,6 +1598,7 @@ ul.compact li {
     color: @mgreen;
   }
 }
+
 #module__dashboard-selector {
 
   // angular bootstrap tabs & pills
@@ -1607,43 +1650,6 @@ ul.compact li {
 
 }
 
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: solid 1px darken(@impac-widget-title-bg,10%);
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-style();
-    margin-top: 75px;
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1651,6 +1657,12 @@ ul.compact li {
   .legend {
     text-align: left;
     max-height: 98px;
+  }
+}
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
   }
 }
 .analytics .widget-item .content.accounts-balance {
@@ -1661,19 +1673,6 @@ ul.compact li {
   
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-balance-sheet {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
-}
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
   }
 }
 .analytics .widget-item .content.accounts-comparison {
@@ -1728,6 +1727,13 @@ ul.compact li {
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
 }
+.analytics .widget-item .content.accounts-balance-sheet {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+}
 .analytics .widget-item .content.custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1757,6 +1763,9 @@ ul.compact li {
     font-weight: bold;
   }
 }
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1770,9 +1779,6 @@ ul.compact li {
   .price {
     .center-bold(0px);
   }
-}
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
 }
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
@@ -1801,38 +1807,6 @@ ul.compact li {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
-  }
-}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -1853,28 +1827,26 @@ ul.compact li {
     color: @impac-widget-text-color;
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
+  }
+}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
       max-height: 200px;
-  }
-}
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
-}
-.analytics .widget-item .content.hr-superannuation-accruals {
-  h3 {
-    margin-top: 49px;
-    text-align: center;
-  }
-  .legend {
-    margin-top: 23px;
-  }
-  .currency {
-    font-size: 14px;
-  }
-  .price {
-    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.hr-salaries-summary {
@@ -1894,8 +1866,36 @@ ul.compact li {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
+.analytics .widget-item .content.hr-superannuation-accruals {
+  h3 {
+    margin-top: 49px;
+    text-align: center;
+  }
+  .legend {
+    margin-top: 23px;
+  }
+  .currency {
+    font-size: 14px;
+  }
+  .price {
+    .center-bold(0px);
+  }
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1903,9 +1903,6 @@ ul.compact li {
   .widget-lines-container {
     max-height: 260px;
   }
-}
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-break-even {
   .price {
@@ -1957,9 +1954,6 @@ ul.compact li {
     max-height: 270px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
   .details-container {
@@ -1982,8 +1976,23 @@ ul.compact li {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-forecast {
-  .tall-widget();
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
+}
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
 }
 .analytics .widget-item .content.sales-growth {
   .price {
@@ -1998,12 +2007,6 @@ ul.compact li {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2044,10 +2047,6 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .simple-list-widget();
   .widget-lines-container {
@@ -2079,6 +2078,10 @@ ul.compact li {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
   .selector {
@@ -2133,121 +2136,11 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    border-bottom: @impac-widget-title-border;
-    white-space: nowrap;
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-    }
-    .editable-wrap {
-      height: 20px;
-      width: 75%;
-      .editable-controls {
-        width: 100%;
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-left: 3px;
-  }
-
-  .top-button {
-    float: right;
-    background: transparent;
-    border: none;
-    color: @impac-widget-text-color-light;
-    padding: 1px;
-    margin-left: 3px;
-    outline: none;
-
-    &:active, &:focus {
-      -webkit-box-shadow: none;
-    }
-
-    &.btn-edit {
-      font-size: 14px;
-      &:hover {
-        color: darken(@mgreen,10%);
-      }
-    }
-    &.btn-close {
-      &:hover {
-        color: @pink
-      }
-    }
-    &.btn-refresh {
-      font-size: 17px;
-      margin-top: -1px;
-      &:hover {
-        color: @mblue;
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    opacity: 0.9;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-  }
-  
-}
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
+}
+.analytics .widget-item .content.sales-forecast {
+  .tall-widget();
 }
 .analytics .widget-item .content .settings.chart-filters {
   .row {
@@ -2415,6 +2308,35 @@ ul.compact li {
 .analytics .widget-item .content .settings.time-range {
   padding: 0px 5px;
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -2428,4 +2350,88 @@ ul.compact li {
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: @impac-widget-title-border;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-left: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: @impac-widget-text-color-light;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+  }
+  
 }
