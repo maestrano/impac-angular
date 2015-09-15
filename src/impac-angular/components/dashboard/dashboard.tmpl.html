@@ -2,20 +2,17 @@
 <div class="analytics">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
-  <div id="head-title" class='row'>
-
-    <!-- Title and Dashboard selection -->
-  <div class="row head-title">
-    <!-- Heading TODO: add these variables to dashboard ctrl -->
-    <h2 ng-show="{{showDhbHeading}}">
-      <img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />
-      <div class="text-info" style="padding-top:12px; height: 48px;">{{dhbHeadingText}}</div>
-      <div class="text-info" style="padding-top:12px; height: 48px;"></div>
-    </h2>
+  <!-- Title and Dashboard selection -->
+  <div id="head-title">
+    <!--&lt;!&ndash; Heading TODO: add these variables to dashboard ctrl &ndash;&gt;-->
+    <!--<h2 ng-show="showDhbHeadin">-->
+      <!--<img ng-src="{{impacTitleLogo}}" style="float: left; margin-right: 15px;" />-->
+      <!--<div class="text-info" style="padding-top:12px; height: 48px;">{{dhbHeadingText}}</div>-->
+      <!--<div class="text-info" style="padding-top:12px; height: 48px;"></div>-->
+    <!--</h2>-->
 
     <dashboard-selector id="module__dashboard-selector"></dashboard-selector>
   </div>
-
 
   <!-- Widgets selection container -->
   <div id="widget-selector" collapse="!showWidgetSelector">
