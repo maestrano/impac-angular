@@ -419,7 +419,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         DhbAnalyticsSvc.dashboards.update($scope.currentDhbId,data,false)
 
       # When the widget is starting to be dragged
-      ,start: updatePlaceHolderSize = (e, widget) ->
+      start: updatePlaceHolderSize = (e, widget) ->
         # width-1 to avoid return to line (succession of float left divs...)
         widget.placeholder.css("width",widget.item.width() - 1)
         widget.placeholder.css("height",widget.item.height())
@@ -439,13 +439,15 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         #   w.style.clear = 'none'
 
       # Options
-      ,cursorAt: {left: 100, top: 20}
-      ,opacity: 0.5
-      ,delay: 150
-      ,tolerance: 'pointer'
-      ,placeholder: "placeHolderBox"
-      ,cursor: "move"
-      ,revert: 250
+      cursorAt: {left: 100, top: 20}
+      opacity: 0.5
+      delay: 150
+      tolerance: 'pointer'
+      placeholder: "placeHolderBox"
+      cursor: "move"
+      revert: 250
+      # items with the class 'unsortable', are infact, unsortable.
+      cancel: ".unsortable"
     }
 
 )
