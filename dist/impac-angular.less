@@ -1651,8 +1651,127 @@ ul.compact li {
     max-height: auto !important;
   }
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: @impac-widget-title-border;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-left: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: @impac-widget-top-buttons-color;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+  }
+  
+}
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
+}
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 98px;
+  }
 }
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1662,12 +1781,6 @@ ul.compact li {
   
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 98px;
   }
 }
 .analytics .widget-item .content.accounts-balance-sheet {
@@ -1735,25 +1848,6 @@ ul.compact li {
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-}
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1776,6 +1870,25 @@ ul.compact li {
   }
   .loader {
     .loader-style();
+  }
+}
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+}
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
@@ -1824,12 +1937,6 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 175px;
-  }
-}
 .analytics .widget-item .content.hr-leaves-balance{
   .selector {
     .center-thin();
@@ -1845,9 +1952,6 @@ ul.compact li {
   .widget-lines-container {
     margin-top: 15px;
   }
-}
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
@@ -1868,6 +1972,15 @@ ul.compact li {
     font-size: 12px;
     color: @impac-widget-text-color;
   }
+}
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 175px;
+  }
+}
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
 }
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
@@ -1913,9 +2026,6 @@ ul.compact li {
   .widget-lines-container {
     max-height: 260px;
   }
-}
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-break-even {
   .price {
@@ -1989,6 +2099,9 @@ ul.compact li {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
 }
@@ -2005,9 +2118,6 @@ ul.compact li {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2023,6 +2133,9 @@ ul.compact li {
   .selector {
     margin-bottom: 4px;
   }
+}
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
@@ -2143,25 +2256,6 @@ ul.compact li {
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
-.analytics .widget-item .content .settings.organizations {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -2223,6 +2317,25 @@ ul.compact li {
       top: 12px;
       width: 0px;
       height: 0px;
+    }
+  }
+}
+.analytics .widget-item .content .settings.organizations {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
     }
   }
 }
@@ -2322,117 +2435,4 @@ ul.compact li {
       margin-right: -3px;
     }
   }
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    border-bottom: @impac-widget-title-border;
-    white-space: nowrap;
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-    }
-    .editable-wrap {
-      height: 20px;
-      width: 75%;
-      .editable-controls {
-        width: 100%;
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-left: 3px;
-  }
-
-  .top-button {
-    float: right;
-    background: transparent;
-    border: none;
-    color: @impac-widget-top-buttons-color;
-    padding: 1px;
-    margin-left: 3px;
-    outline: none;
-
-    &:active, &:focus {
-      -webkit-box-shadow: none;
-    }
-
-    &.btn-edit {
-      font-size: 14px;
-      &:hover {
-        color: darken(@mgreen,10%);
-      }
-    }
-    &.btn-close {
-      &:hover {
-        color: @pink
-      }
-    }
-    &.btn-refresh {
-      font-size: 17px;
-      margin-top: -1px;
-      &:hover {
-        color: @mblue;
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    opacity: 0.9;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-  }
-  
 }
