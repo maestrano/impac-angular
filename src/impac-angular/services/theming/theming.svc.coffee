@@ -10,8 +10,6 @@ angular
     # Private Defaults
     #=======================================
     options =
-      # TODO::ImpacTheming: rework chartColors to using color naming conventions /
-      # angular material influenced structure.
       chartColors:
         positive: '#3FC4FF',
         negative: '#1DE9B6',
@@ -39,10 +37,15 @@ angular
         linkUrl: ''
 
       widgetSelectorConfig:
-        customTmplPath: null
+        path: null
 
-      showNoWidgetMessages: true
-      showAddChartTile: false
+      addChartTile:
+        show: false
+        onClickOptions:
+          triggers: []
+
+      noWidgetMsg:
+        show: true
 
 
     #=======================================
