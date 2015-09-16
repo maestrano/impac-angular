@@ -7874,10 +7874,6 @@ ul.compact li {
   min-height: 250px !important;
   max-height: auto !important;
 }
-.analytics .widget-item .content.accounts-assets-summary .legend {
-  text-align: left;
-  max-height: 98px;
-}
 .analytics .widget-item .content.accounts-balance h3 {
   font-weight: 300;
   font-size: 14px;
@@ -7892,6 +7888,35 @@ ul.compact li {
   color: #5b6667;
   text-align: center;
   margin-top: 0px;
+}
+.analytics .widget-item .content.accounts-assets-summary .legend {
+  text-align: left;
+  max-height: 98px;
+}
+.analytics .widget-item .content.accounts-balance-sheet {
+  min-height: 565px;
+}
+@media (min-width: 992px) {
+  .analytics .widget-item .content.accounts-balance-sheet {
+    height: 565px;
+  }
+  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
+    max-width: 585px;
+    max-height: 440px;
+    margin: auto;
+  }
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit {
+  max-height: 545px;
+}
+.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 540px;
 }
 .analytics .widget-item .content.accounts-cash-summary {
   min-height: 565px;
@@ -7936,31 +7961,6 @@ ul.compact li {
 }
 .analytics .widget-item .content.accounts-cash-summary .right-panel > .widget-lines-container {
   max-height: 215px;
-}
-.analytics .widget-item .content.accounts-balance-sheet {
-  min-height: 565px;
-}
-@media (min-width: 992px) {
-  .analytics .widget-item .content.accounts-balance-sheet {
-    height: 565px;
-  }
-  .analytics .widget-item .content.accounts-balance-sheet .chart-container {
-    max-width: 585px;
-    max-height: 440px;
-    margin: auto;
-  }
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit {
-  max-height: 545px;
-}
-.analytics .widget-item .content.accounts-balance-sheet .edit .widget-lines-container {
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-.analytics .widget-item .content.accounts-balance-sheet .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 540px;
 }
 .analytics .widget-item .content.accounts-comparison {
   min-height: 565px;
@@ -8029,6 +8029,25 @@ ul.compact li {
 .analytics .widget-item .content.accounts-comparison .widget-lines-container {
   font-size: 11px;
   max-height: 220px;
+}
+.analytics .widget-item .content.accounts-expenses-revenue .legend {
+  font-weight: bold;
+}
+.analytics .widget-item .content.accounts-payable-receivable h3 {
+  text-align: center;
+}
+.analytics .widget-item .content.accounts-payable-receivable .legend {
+  font-weight: bold;
+}
+.analytics .widget-item .content.accounts-payable-receivable .payable {
+  margin-top: 15px;
+}
+.analytics .widget-item .content.accounts-payable-receivable .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5b6667;
+  text-align: center;
+  margin-top: 0px;
 }
 .analytics .widget-item .content.custom-calculation h3 {
   margin-top: 85px;
@@ -8110,25 +8129,6 @@ ul.compact li {
 .modal-custom-calculation .modal-body .loader .gif {
   display: block;
   margin-top: 10px;
-}
-.analytics .widget-item .content.accounts-expenses-revenue .legend {
-  font-weight: bold;
-}
-.analytics .widget-item .content.accounts-payable-receivable h3 {
-  text-align: center;
-}
-.analytics .widget-item .content.accounts-payable-receivable .legend {
-  font-weight: bold;
-}
-.analytics .widget-item .content.accounts-payable-receivable .payable {
-  margin-top: 15px;
-}
-.analytics .widget-item .content.accounts-payable-receivable .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5b6667;
-  text-align: center;
-  margin-top: 0px;
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
   min-height: 565px;
@@ -8212,46 +8212,6 @@ ul.compact li {
 .analytics .widget-item .content.hr-employees-list .edit .widget-lines-container {
   text-align: left;
 }
-.analytics .widget-item .content.hr-leaves-balance .selector {
-  font-weight: 300;
-  font-size: 16px;
-  color: #5b6667;
-  text-align: center;
-  font-size: 14px;
-}
-.analytics .widget-item .content.hr-leaves-balance .balance {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5b6667;
-  text-align: center;
-  margin-top: 0px;
-}
-.analytics .widget-item .content.hr-leaves-balance h3 {
-  margin-top: 24px;
-  text-align: center;
-}
-.analytics .widget-item .content.hr-leaves-balance .widget-lines-container {
-  margin-top: 15px;
-}
-.analytics .widget-item .content.hr-leaves-schedule .fc-button {
-  height: 22px;
-  font-size: 12px;
-  color: #977bf0;
-  background: white;
-  outline: none;
-}
-.analytics .widget-item .content.hr-leaves-schedule .fc-button:hover {
-  color: white;
-  background: #977bf0;
-}
-.analytics .widget-item .content.hr-leaves-schedule .fc-toolbar {
-  margin-bottom: 5px;
-}
-.analytics .widget-item .content.hr-leaves-schedule .fc-day-grid,
-.analytics .widget-item .content.hr-leaves-schedule .fc-widget-header {
-  font-size: 12px;
-  color: #5b6667;
-}
 .analytics .widget-item .content.hr-payroll-summary {
   min-height: 565px;
 }
@@ -8294,7 +8254,47 @@ ul.compact li {
   max-height: 235px;
 }
 .analytics .widget-item .content.hr-payroll-summary .right-panel .widget-lines-container {
-  max-height: 200px;
+  max-height: 175px;
+}
+.analytics .widget-item .content.hr-leaves-balance .selector {
+  font-weight: 300;
+  font-size: 16px;
+  color: #5b6667;
+  text-align: center;
+  font-size: 14px;
+}
+.analytics .widget-item .content.hr-leaves-balance .balance {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5b6667;
+  text-align: center;
+  margin-top: 0px;
+}
+.analytics .widget-item .content.hr-leaves-balance h3 {
+  margin-top: 24px;
+  text-align: center;
+}
+.analytics .widget-item .content.hr-leaves-balance .widget-lines-container {
+  margin-top: 15px;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-button {
+  height: 22px;
+  font-size: 12px;
+  color: #977bf0;
+  background: white;
+  outline: none;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-button:hover {
+  color: white;
+  background: #977bf0;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-toolbar {
+  margin-bottom: 5px;
+}
+.analytics .widget-item .content.hr-leaves-schedule .fc-day-grid,
+.analytics .widget-item .content.hr-leaves-schedule .fc-widget-header {
+  font-size: 12px;
+  color: #5b6667;
 }
 .analytics .widget-item .content.hr-salaries-summary h3.left {
   margin-top: 69px;
@@ -8438,6 +8438,12 @@ ul.compact li {
 .analytics .widget-item .content.sales-aged .widget-lines-container {
   max-height: 260px;
 }
+.analytics .widget-item .content.sales-cycle .chart-container {
+  max-width: 410px;
+}
+.analytics .widget-item .content.sales-cycle .legend {
+  max-height: 28px;
+}
 .analytics .widget-item .content.sales-break-even .price {
   font-weight: 900;
   font-size: 22px;
@@ -8550,12 +8556,6 @@ ul.compact li {
   margin-bottom: 10px;
   font-size: 14px;
 }
-.analytics .widget-item .content.sales-cycle .chart-container {
-  max-width: 410px;
-}
-.analytics .widget-item .content.sales-cycle .legend {
-  max-height: 28px;
-}
 .analytics .widget-item .content.sales-forecast {
   min-height: 565px;
 }
@@ -8612,11 +8612,11 @@ ul.compact li {
   margin: auto;
   margin-top: 15px;
   padding-right: 10px;
-  max-height: 515px;
+  max-height: 505px;
   overflow: auto;
 }
 .analytics .widget-item .content.sales-leads-funnel .right-panel .widget-lines-container {
-  max-height: 540px;
+  max-height: 545px;
   margin-right: 10px;
 }
 .analytics .widget-item .content.sales-leads-funnel .right-panel .widget-lines-container .widget-line {
@@ -8714,11 +8714,11 @@ ul.compact li {
   margin: auto;
   margin-top: 15px;
   padding-right: 10px;
-  max-height: 515px;
+  max-height: 505px;
   overflow: auto;
 }
 .analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container {
-  max-height: 540px;
+  max-height: 545px;
   margin-right: 10px;
 }
 .analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container .widget-line {
@@ -8833,6 +8833,187 @@ ul.compact li {
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
 }
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line {
+  padding: 5px 10px 5px 18px;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #f3f4f4;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa.fa-toggle-on {
+  color: #977bf0;
+}
+.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa.fa-toggle-off {
+  color: #9ba6a7;
+}
+.analytics .widget-item .content .settings.chart-filters .row {
+  margin: 0px;
+}
+.analytics .widget-item .content .settings.chart-filters input[type="radio"] {
+  margin: 0;
+  margin-right: 3px;
+  padding: 0;
+  width: 13px;
+  height: 13px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  outline: none;
+}
+.analytics .widget-item .content .settings.chart-filters input[type="range"] {
+  height: 20px;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .options {
+  width: 150px;
+  margin: auto;
+  padding-bottom: 8px;
+  border-bottom: solid 1px #e6e6e6;
+  font-weight: 500;
+  font-size: 12px;
+  color: #c4caca;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .options a {
+  font-weight: 500;
+  font-size: 12px;
+  color: #c4caca;
+  text-transform: uppercase;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .options a.active {
+  color: #977bf0;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .arrow-container {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  top: -14px;
+  margin: auto;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .arrow-container.right {
+  left: 30px;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .arrow-container.left {
+  left: -30px;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .arrow-container .arrow-border {
+  border-top: 14px solid #e6e6e6;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  width: 0px;
+  height: 0px;
+}
+.analytics .widget-item .content .settings.hist-mode-choser .arrow-container .arrow {
+  border-top: 14px solid white;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  position: relative;
+  top: 12px;
+  width: 0px;
+  height: 0px;
+}
+.analytics .widget-item .content .settings.param-selector {
+  display: inline-block;
+}
+.analytics .widget-item .content .settings.param-selector a {
+  font-weight: normal;
+  color: #977bf0;
+  white-space: nowrap;
+}
+.analytics .widget-item .content .settings.param-selector .options-container {
+  position: absolute;
+  background-color: white;
+  text-align: left;
+  min-width: 150px;
+  max-height: 200px;
+  z-index: 999;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-box-shadow: #000000 0px 3px 15px -3px;
+  box-shadow: #000000 0px 3px 15px -3px;
+}
+.analytics .widget-item .content .settings.param-selector .options-container div {
+  padding: 3px 5px;
+}
+.analytics .widget-item .content .settings.param-selector .options-container div:hover {
+  cursor: pointer;
+  background-color: #977bf0;
+  color: white;
+}
+.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar {
+  width: 8px;
+  background-color: #d7e2e4;
+}
+.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar-thumb {
+  background-color: #977bf0;
+}
+.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar-thumb:hover {
+  background-color: #a992f3;
+}
+.analytics .widget-item .content .settings.params-picker {
+  padding: 0px 10px;
+}
+.analytics .widget-item .content .settings.params-picker .parameter {
+  margin: 0px 3px 3px 0px;
+  padding: 3px 5px;
+  background-color: #1e303b;
+  color: white;
+  border: solid 1px #1e303b;
+  border-radius: 4px;
+  cursor: move;
+  font-weight: bold;
+  white-space: nowrap;
+  float: left;
+}
+.analytics .widget-item .content .settings.params-picker .parameter input[type="checkbox"] {
+  margin: 0px -3px 0px 3px;
+  vertical-align: middle;
+  height: inherit;
+  outline: none;
+  cursor: pointer;
+}
+.analytics .widget-item .content .settings.params-picker .parameter .badge {
+  margin-right: 3px;
+  font-size: 10px;
+  background-color: #f2f2f2;
+  color: #1e303b;
+  padding: 2px 6px;
+}
+.analytics .widget-item .content .settings.params-picker .parameter.unchecked {
+  background-color: inherit;
+  font-weight: normal;
+  color: inherit;
+  border-color: #c2c4c4;
+}
+.analytics .widget-item .content .settings.params-picker .parameter.unchecked .badge {
+  background-color: #c2c4c4;
+  color: white;
+}
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
+.analytics .widget-item .content .settings.width {
+  float: right;
+  font-size: 14px;
+}
+.analytics .widget-item .content .settings.width i {
+  color: silver;
+  cursor: pointer;
+}
+.analytics .widget-item .content .settings.width i.reduce {
+  margin-right: -10px;
+}
+.analytics .widget-item .content .settings.width i.expand {
+  margin-right: -3px;
+}
 .analytics .widget-item .content .data-not-found {
   text-align: center;
   font-size: 18px;
@@ -8937,186 +9118,5 @@ ul.compact li {
   cursor: default;
   -webkit-box-shadow: 0px 0px 25px 4px black;
   box-shadow: 0px 0px 25px 4px black;
-}
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
-}
-.analytics .widget-item .content .settings.chart-filters .row {
-  margin: 0px;
-}
-.analytics .widget-item .content .settings.chart-filters input[type="radio"] {
-  margin: 0;
-  margin-right: 3px;
-  padding: 0;
-  width: 13px;
-  height: 13px;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-  outline: none;
-}
-.analytics .widget-item .content .settings.chart-filters input[type="range"] {
-  height: 20px;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .options {
-  width: 150px;
-  margin: auto;
-  padding-bottom: 8px;
-  border-bottom: solid 1px #e6e6e6;
-  font-weight: 500;
-  font-size: 12px;
-  color: #c4caca;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .options a {
-  font-weight: 500;
-  font-size: 12px;
-  color: #c4caca;
-  text-transform: uppercase;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .options a.active {
-  color: #977bf0;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .arrow-container {
-  width: 28px;
-  height: 28px;
-  position: relative;
-  top: -14px;
-  margin: auto;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .arrow-container.right {
-  left: 30px;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .arrow-container.left {
-  left: -30px;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .arrow-container .arrow-border {
-  border-top: 14px solid #e6e6e6;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  width: 0px;
-  height: 0px;
-}
-.analytics .widget-item .content .settings.hist-mode-choser .arrow-container .arrow {
-  border-top: 14px solid white;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  position: relative;
-  top: 12px;
-  width: 0px;
-  height: 0px;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line {
-  padding: 5px 10px 5px 18px;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #f3f4f4;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa {
-  float: right;
-  font-size: 20px;
-  cursor: pointer;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa.fa-toggle-on {
-  color: #977bf0;
-}
-.analytics .widget-item .content .settings.organizations .widget-lines-container .widget-line .fa.fa-toggle-off {
-  color: #9ba6a7;
-}
-.analytics .widget-item .content .settings.param-selector {
-  display: inline-block;
-}
-.analytics .widget-item .content .settings.param-selector a {
-  font-weight: normal;
-  color: #977bf0;
-  white-space: nowrap;
-}
-.analytics .widget-item .content .settings.param-selector .options-container {
-  position: absolute;
-  background-color: white;
-  text-align: left;
-  min-width: 150px;
-  max-height: 200px;
-  z-index: 999;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-box-shadow: #000000 0px 3px 15px -3px;
-  box-shadow: #000000 0px 3px 15px -3px;
-}
-.analytics .widget-item .content .settings.param-selector .options-container div {
-  padding: 3px 5px;
-}
-.analytics .widget-item .content .settings.param-selector .options-container div:hover {
-  cursor: pointer;
-  background-color: #977bf0;
-  color: white;
-}
-.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar {
-  width: 8px;
-  background-color: #d7e2e4;
-}
-.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar-thumb {
-  background-color: #977bf0;
-}
-.analytics .widget-item .content .settings.param-selector .options-container::-webkit-scrollbar-thumb:hover {
-  background-color: #a992f3;
-}
-.analytics .widget-item .content .settings.params-picker {
-  padding: 0px 10px;
-}
-.analytics .widget-item .content .settings.params-picker .parameter {
-  margin: 0px 3px 3px 0px;
-  padding: 3px 5px;
-  background-color: #1e303b;
-  color: white;
-  border: solid 1px #1e303b;
-  border-radius: 4px;
-  cursor: move;
-  font-weight: bold;
-  white-space: nowrap;
-  float: left;
-}
-.analytics .widget-item .content .settings.params-picker .parameter input[type="checkbox"] {
-  margin: 0px -3px 0px 3px;
-  vertical-align: middle;
-  height: inherit;
-  outline: none;
-  cursor: pointer;
-}
-.analytics .widget-item .content .settings.params-picker .parameter .badge {
-  margin-right: 3px;
-  font-size: 10px;
-  background-color: #f2f2f2;
-  color: #1e303b;
-  padding: 2px 6px;
-}
-.analytics .widget-item .content .settings.params-picker .parameter.unchecked {
-  background-color: inherit;
-  font-weight: normal;
-  color: inherit;
-  border-color: #c2c4c4;
-}
-.analytics .widget-item .content .settings.params-picker .parameter.unchecked .badge {
-  background-color: #c2c4c4;
-  color: white;
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
-}
-.analytics .widget-item .content .settings.width {
-  float: right;
-  font-size: 14px;
-}
-.analytics .widget-item .content .settings.width i {
-  color: silver;
-  cursor: pointer;
-}
-.analytics .widget-item .content .settings.width i.reduce {
-  margin-right: -10px;
-}
-.analytics .widget-item .content .settings.width i.expand {
-  margin-right: -3px;
 }
 /* endinject */

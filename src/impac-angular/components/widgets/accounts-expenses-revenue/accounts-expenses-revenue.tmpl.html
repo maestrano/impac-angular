@@ -17,7 +17,7 @@
       <div setting-hist-mode parent-widget="widget" />
 
       <!-- the display condition must be an "if" and its value must change for the chart to be drawn again -->
-      <div ng-if="widget.isHistoryMode && !widget.isLoading">
+      <div ng-if="widget.isHistoryMode && !widget.isLoading" class="chart-container">
         <div dhb-chart data="widget.hist_chart"></div>
         <div class="legend">
           <span class="negative2">Expenses</span> -
