@@ -439,7 +439,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         #   w.style.clear = 'none'
 
       # Options
-      cursorAt: {left: 100, top: 20}
+      # cursorAt: {left: 100, top: 20}
       opacity: 0.5
       delay: 150
       tolerance: 'pointer'
@@ -448,6 +448,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       revert: 250
       # items with the class 'unsortable', are infact, unsortable.
       cancel: ".unsortable"
+      # only the top-line with title will provide the handle to drag/drop widgets
+      handle: ".top-line"
     }
 
 )
