@@ -69,9 +69,25 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Default widget selector
     $scope.showWidgetSelector = false
 
-    $scope.customWidgetSelectorPath = ImpacTheming.get().widgetSelectorConfig.customTmplPath
+    # Custom widget selector data
+    $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
 
-    $scope.isAddChartEnabled = ImpacTheming.get().showAddChartTile
+    # Add Chart Tile: optional feature for triggering widget selector, with configurability to
+    #                 modify onClick behaviour.
+    $scope.isAddChartEnabled = ImpacTheming.get().addChartTile.show
+    $scope.addChartTileOnClick = ->
+      triggers = ImpacTheming.get().addChartTile.onClickOptions.triggers
+      _.forEach(triggers, (trigger) ->
+
+        switch trigger.type
+          when 'objectProperty'
+            $scope[trigger.target][trigger.property] = trigger.value
+
+        # NOTE: These configuration options are designed to be extended on a case-by-case basis.
+        #       For example, a callback trigger.type, or a re-define function inside this ctrl,
+        #       with a function from external app.
+      )
+
 
     # When there is no need to call the service again before updating the display
     # (for example, when widgets are modified)
@@ -84,7 +100,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       else
         aWidgetExists = false
 
-      if aDashboardExists && !aWidgetExists && !$scope.customWidgetSelectorPath
+      if aDashboardExists && !aWidgetExists && !$scope.customWidgetSelector.path
         # add a timer to make sure the dom is loaded before the collapse directive is called
         $timeout (-> $scope.showWidgetSelector = true), 300
 

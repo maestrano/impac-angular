@@ -15,7 +15,7 @@
   </div>
 
   <!-- Widgets selection container -->
-  <div id="widget-selector" collapse="!showWidgetSelector" ng-if="!customWidgetSelectorPath">
+  <div id="widget-selector" collapse="!showWidgetSelector" ng-if="!customWidgetSelector.path">
     <div class="title">
       <i class="fa fa-times-circle" ng-click="showWidgetSelector = false"/>
       <span class="badge confirmation">Widget added!</span>
@@ -63,7 +63,7 @@
   </div>
 
   <!-- custom widget selector template configured from ImpacThemingProvider -->
-  <div id="custom-widget-selector" ng-if="customWidgetSelectorPath" ng-include="customWidgetSelectorPath"></div>
+  <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
 
 
   <!-- Errors -->
@@ -132,7 +132,7 @@
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
       <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
-      <div ng-if="isAddChartEnabled" class="unsortable">
+      <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
         <div class="col-md-6 widget-item add-chart">
           <div class="a-content">+ chart</div>
         </div>
