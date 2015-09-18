@@ -1423,7 +1423,7 @@ ul.compact li {
             color: @impac-widget-link-color;
             float: right;
             position: absolute;
-            top: 0px;
+            top: -1px;
             right: 0px;
           }
         }
@@ -1602,7 +1602,7 @@ ul.compact li {
     }
   }
   // tab icons
-  tab-heading a {
+  tab-heading a.close-link {
     border-bottom: 0px solid;
     margin-left: 12px;
     position: relative;
@@ -2050,10 +2050,6 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .simple-list-widget();
   .widget-lines-container {
@@ -2067,6 +2063,10 @@ ul.compact li {
     margin-bottom: 4px;
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -2089,6 +2089,35 @@ ul.compact li {
   .simple-summary-widget();
   .selector {
     margin-bottom: 5px;
+  }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
   }
 }
 .analytics .widget-item .content.sales-top-opportunities {
@@ -2139,35 +2168,6 @@ ul.compact li {
     }
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item {
   .title-wrapper {
     width: 100%;
@@ -2180,10 +2180,16 @@ ul.compact li {
       .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
       text-align: left;
       cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
     }
     .editable-wrap {
       height: 20px;
       width: 75%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
       .editable-controls {
         width: 100%;
         .editable-input {
@@ -2199,7 +2205,7 @@ ul.compact li {
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
-    margin-left: 3px;
+    margin-top: 3px;
   }
 
   .top-button {
@@ -2249,6 +2255,10 @@ ul.compact li {
     opacity: 0.9;
     cursor: default;
     .box-shadow(0px 0px 25px 4px black);
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
   }
   
 }

@@ -7619,7 +7619,7 @@ ul.compact li {
   color: #977bf0;
   float: right;
   position: absolute;
-  top: 0px;
+  top: -1px;
   right: 0px;
 }
 .analytics #widget-selector .top-container .widgets {
@@ -7761,7 +7761,7 @@ ul.compact li {
 #module__dashboard-selector .nav.nav-pills li:last-child.active > a {
   background-color: #f4f4f4;
 }
-#module__dashboard-selector tab-heading a {
+#module__dashboard-selector tab-heading a.close-link {
   border-bottom: 0px solid;
   margin-left: 12px;
   position: relative;
@@ -8680,6 +8680,36 @@ ul.compact li {
   font-weight: 300;
   margin-top: 2px;
 }
+.analytics .widget-item .content.sales-performance .widget-lines-container {
+  max-height: 230px;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.header {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 210px;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total {
+  cursor: pointer;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total :hover {
+  color: #977bf0;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total .selected {
+  border: solid 1px #977bf0;
+  background-color: #e6e0fb;
+}
+.analytics .widget-item .content.sales-performance .selector {
+  margin-bottom: 4px;
+}
 .analytics .widget-item .content.sales-opportunities-funnel {
   min-height: 565px;
 }
@@ -8715,36 +8745,6 @@ ul.compact li {
 .analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container .widget-line {
   cursor: default;
 }
-.analytics .widget-item .content.sales-performance .widget-lines-container {
-  max-height: 230px;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.header {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 210px;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total {
-  cursor: pointer;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total :hover {
-  color: #977bf0;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total .selected {
-  border: solid 1px #977bf0;
-  background-color: #e6e0fb;
-}
-.analytics .widget-item .content.sales-performance .selector {
-  margin-bottom: 4px;
-}
 .analytics .widget-item .content.sales-segmented-turnover h3.right {
   margin-top: 55px;
   text-align: center;
@@ -8773,6 +8773,35 @@ ul.compact li {
 }
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5b6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container {
   max-height: 195px;
@@ -8821,35 +8850,6 @@ ul.compact li {
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5b6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
-}
 .analytics .widget-item .title-wrapper {
   width: 100%;
   padding: 0px 10px 10px 10px;
@@ -8865,9 +8865,13 @@ ul.compact li {
   text-align: left;
   cursor: text;
 }
+.analytics .widget-item .title-wrapper .title.editable-hide {
+  display: none;
+}
 .analytics .widget-item .title-wrapper .editable-wrap {
   height: 20px;
   width: 75%;
+  white-space: nowrap;
 }
 .analytics .widget-item .title-wrapper .editable-wrap .editable-controls {
   width: 100%;
@@ -8879,7 +8883,7 @@ ul.compact li {
   width: 100%;
 }
 .analytics .widget-item .top-line #module__top-buttons i.fa {
-  margin-left: 3px;
+  margin-top: 3px;
 }
 .analytics .widget-item .top-line #module__top-buttons .top-button {
   float: right;
@@ -8925,6 +8929,10 @@ ul.compact li {
   cursor: default;
   -webkit-box-shadow: 0px 0px 25px 4px black;
   box-shadow: 0px 0px 25px 4px black;
+}
+.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover h4 {
+  color: #c4caca;
+  font-weight: bold;
 }
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
