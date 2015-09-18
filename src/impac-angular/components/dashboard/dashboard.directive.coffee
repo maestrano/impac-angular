@@ -168,6 +168,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       else
         return false
 
+    $scope.selectCategory = (aCatName) ->
+      $scope.selectedCategory = aCatName
+
     $scope.getSelectedCategoryName = ->
       if $scope.selectedCategory?
         switch $scope.selectedCategory
