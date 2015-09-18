@@ -161,12 +161,18 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Dashboard management - widget selector
     #====================================
 
+    $scope.hideWidgetSelector = ->
+      $scope.showWidgetSelector = false
+
     $scope.selectedCategory = 'accounts'
     $scope.isCategorySelected = (aCatName) ->
       if $scope.selectedCategory? && aCatName?
         return $scope.selectedCategory == aCatName
       else
         return false
+
+    $scope.selectCategory = (aCatName) ->
+      $scope.selectedCategory = aCatName
 
     $scope.getSelectedCategoryName = ->
       if $scope.selectedCategory?
