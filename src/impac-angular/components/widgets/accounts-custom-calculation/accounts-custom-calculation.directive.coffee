@@ -18,6 +18,8 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     # #====================================
 
     $scope.addAccountToFormula = (account) ->
+      return unless account?
+
       # When some accounts are already in savedList
       if w.selectedAccounts.length > 0
         w.formula += " + {#{w.selectedAccounts.length + 1}}"
