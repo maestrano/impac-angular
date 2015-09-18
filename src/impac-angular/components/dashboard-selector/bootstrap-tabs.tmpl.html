@@ -4,7 +4,7 @@
       <tab ng-repeat="dhb in dhbCtrl.dashboardsList" select="dhbCtrl.selectDashboard(dhb.id)" active="dhb.active">
         <tab-heading>
           {{dhb.full_name}}
-          <a href="">
+          <a href="" class="close-link">
             <i class="fa fa-times" ng-click="dhbCtrl.modal.deleteDashboard.open()"></i>
           </a>
         </tab-heading>
