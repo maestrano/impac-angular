@@ -180,6 +180,7 @@ gulp.task('less-concat', function () {
   return gulp.src([
       './src/impac-angular/stylesheets/variables.less',
       './src/impac-angular/stylesheets/custom_bootstrap/variables.less',
+      './src/impac-angular/stylesheets/custom_bootstrap/mixins.less',
       './src/impac-angular/stylesheets/mixins.less',
       './src/impac-angular/stylesheets/globals.less',
       './src/impac-angular/stylesheets/widget-master-styles.less',

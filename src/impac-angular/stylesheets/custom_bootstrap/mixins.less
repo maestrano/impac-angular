@@ -1,48 +1,4 @@
-// Use this file to override Twitter Bootstrap mixins or define own mixins.
-
-// .border-radius doesn't exist anymore in bootstrap3
-.border-radius(@radius) {
-  .border-top-radius(@radius);
-  .border-bottom-radius(@radius);
-}
-
-
-// Thoses mixins don't exist anymore in bootstrap 3. I just did a dummy
-// implementation of them to prevent errors
-.muted {
-}
-
-.rgba(@color,@alpha) {
-  background-color:@color;
-  background-color:rgba(red(@color),green(@color),blue(@color),@alpha);
-}
-
-.font(@size,@weight,@color) {
-  font-weight:@weight;
-  font-size:@size;
-  color:@color;
-}
-
-.buttonBackground(@a,@b) {
-}
-
-.border-top-left-radius(@a) {
-}
-
-.border-top-right-radius(@a) {
-}
-
-.border-bottom-right-radius(@a) {
-}
-
-.border-bottom-left-radius(@a) {
-}
-
-.inherit-all {
-  .font(inherit,inherit,inherit);
-  background-color:inherit;
-  text-align:inherit;
-}
+// Use this file to override Twitter Bootstrap mixins
 
 // Ribbon mix
 // http://codepen.io/mcbrwr/pen/uzydc
