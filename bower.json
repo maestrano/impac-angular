@@ -8,7 +8,6 @@
   ],
   "description": "Impac! Front-End Library",
   "ignore": [
-    "src",
     "test",
     "gulpfile.js",
     "**/.*",
