@@ -124,7 +124,7 @@ var buildSourceFiles = [
       'src/components/**/*.less',
       'src/components/**/**/*.less'
     ],
-    mainLessFile = 'src/stylesheets/import.less';
+    mainLessFile = 'src/impac-angular.less';
 
 // TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
 // TODO::gulp-coffee: is stripping comments on compile, cant find options or
@@ -151,10 +151,10 @@ gulp.task('less-inject', function() {
         starttag: '/* inject:imports */',
         endtag: '/* endinject */',
         transform: function (filepath) {
-          return '@import "' + filepath.replace('/src', '..') + '";';
+          return '@import "' + filepath.replace('/src/', '') + '";';
         }
       }))
-      .pipe(gulp.dest('src/stylesheets'));
+      .pipe(gulp.dest('src/'));
 });
 
 gulp.task('less-compile', ['less:inject'], function () {
