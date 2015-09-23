@@ -29,8 +29,6 @@ var gulp = require('gulp'),
     path = require('path'),
     // minify css
     minifyCss = require('gulp-minify-css'),
-    // Minify PNG, JPEG, GIF and SVG images
-    imagemin = require('gulp-imagemin'),
     pkg = require('./package.json');
 
 

@@ -30,6 +30,9 @@ angular
         selectorType: 'dropdown'
         customTmplPath: null
         accessibilityEnabled: false
+        addWidgetEnabled: true
+        addDhbEnabled: true
+        deleteDhbEnabled: true
 
       dataNotFoundConfig:
         mainMessage: 'Data not found'
@@ -52,7 +55,7 @@ angular
     # Public methods available in config
     #=======================================
     provider.configure = (configOptions) ->
-      angular.extend(options, configOptions)
+      angular.merge(options, configOptions)
 
     #=======================================
     # TODO: does ng-annotate annotate provider $get methods in the gulp build process?
