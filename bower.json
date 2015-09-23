@@ -4,7 +4,7 @@
   "private": true,
   "main": [
     "dist/impac-angular.js",
-    "dist/impac-angular.css"
+    "src/impac-angular.less"
   ],
   "description": "Impac! Front-End Library",
   "ignore": [
