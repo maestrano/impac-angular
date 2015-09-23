@@ -70,7 +70,7 @@ var gulp = require('gulp'),
 /* ************************************ */
 /* Template Caching Tasks               */
 /* ************************************ */
-var templateFiles = ['src/impac-angular/components/**/*.html'];
+var templateFiles = ['src/components/**/*.html'];
 // builds html templates into angular $templateCache setters in a new module's .run() function.
 gulp.task('templates', function () {
   return gulp.src(templateFiles)
@@ -98,7 +98,7 @@ gulp.task('templates', function () {
 
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
 gulp.task('templates-concat', ['templates'], function () {
-  return gulp.src(['src/impac-angular/impac-angular.module.js', 'tmp/templates/templates.tmp'])
+  return gulp.src(['src/impac-angular.module.js', 'tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
     .pipe(gulp.dest('tmp/')); // output destination
 });
@@ -108,23 +108,23 @@ gulp.task('templates-concat', ['templates'], function () {
 /* ************************************ */
     // Source files for final dist build
 var buildSourceFiles = [
-      'src/impac-angular/impac-angular.prefix',
+      'src/impac-angular.prefix',
       'tmp/impac-angular.js',
-      'src/impac-angular/impac-angular.suffix',
+      'src/impac-angular.suffix',
       'tmp/scripts/**/*.js',
       'lib/*.js'
     ],
     // CoffeeScript & Less file directories to be compiled before build.
     coffeeFiles = [
-      'src/impac-angular/services/**/*.coffee',
-      'src/impac-angular/filters/**/*.coffee',
-      'src/impac-angular/components/**/*.coffee'
+      'src/services/**/*.coffee',
+      'src/filters/**/*.coffee',
+      'src/components/**/*.coffee'
     ],
     lessFiles = [
-      'src/impac-angular/components/**/*.less',
-      'src/impac-angular/components/**/**/*.less'
+      'src/components/**/*.less',
+      'src/components/**/**/*.less'
     ],
-    mainLessFile = 'src/impac-angular/stylesheets/import.less';
+    mainLessFile = 'src/impac-angular.less';
 
 // TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
 // TODO::gulp-coffee: is stripping comments on compile, cant find options or
@@ -151,10 +151,10 @@ gulp.task('less-inject', function() {
         starttag: '/* inject:imports */',
         endtag: '/* endinject */',
         transform: function (filepath) {
-          return '@import ".' + filepath + '";';
+          return '@import "' + filepath.replace('/src/', '') + '";';
         }
       }))
-      .pipe(gulp.dest('src/impac-angular/stylesheets'));
+      .pipe(gulp.dest('src/'));
 });
 
 gulp.task('less-compile', ['less:inject'], function () {
@@ -176,18 +176,18 @@ gulp.task('less-compile', ['less:inject'], function () {
 
 gulp.task('less-concat', function () {
   return gulp.src([
-      './src/impac-angular/stylesheets/variables.less',
-      './src/impac-angular/stylesheets/custom_bootstrap/variables.less',
-      './src/impac-angular/stylesheets/mixins.less',
-      './src/impac-angular/stylesheets/globals.less',
-      './src/impac-angular/stylesheets/widget-master-styles.less',
-      './src/impac-angular/components/**/*.less'
+      './src/stylesheets/variables.less',
+      './src/stylesheets/custom_bootstrap/variables.less',
+      './src/stylesheets/mixins.less',
+      './src/stylesheets/globals.less',
+      './src/stylesheets/widget-master-styles.less',
+      './src/components/**/*.less'
     ])
     .pipe(concat('impac-angular.less'))
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build', ['coffee-compile', 'less-compile', 'less-concat', 'templates-concat'], function () {
+gulp.task('build', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
@@ -204,7 +204,7 @@ gulp.task('build', ['coffee-compile', 'less-compile', 'less-concat', 'templates-
 
 // cleans up tmp file created by 'templates' task.
 gulp.task('clean', function (asyncCallback) {
-  del(['tmp', './src/impac-angular/impac-angular.js'], asyncCallback);
+  del(['tmp', './src/impac-angular.js'], asyncCallback);
 });
 
 gulp.task('watch', ['build'], function () {
