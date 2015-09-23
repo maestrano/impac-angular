@@ -121,8 +121,7 @@ var buildSourceFiles = [
       'src/components/**/*.coffee'
     ],
     lessFiles = [
-      'src/components/**/*.less',
-      'src/components/**/**/*.less'
+      'src/components/**/*.less'
     ],
     mainLessFile = 'src/impac-angular.less';
 
