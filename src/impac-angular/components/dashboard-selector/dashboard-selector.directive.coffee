@@ -39,6 +39,9 @@ angular
       options = ImpacTheming.get().dhbSelectorConfig
 
       scope.isAccessibilityEnabled = options.accessibilityEnabled
+      scope.isAddWidgetEnabled = options.addWidgetEnabled
+      scope.isAddDhbEnabled = options.addDhbEnabled
+      scope.isdeleteDhbEnabled = options.deleteDhbEnabled
 
       if !!options.customTmplPath
         customUrl = options.customTmplPath

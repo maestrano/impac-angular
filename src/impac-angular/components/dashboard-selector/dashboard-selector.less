@@ -1,12 +1,18 @@
 #module__dashboard-selector {
-
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
   // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
   .nav.nav-tabs,
   .nav.nav-pills {
-    // tab
-    li > a {
-      padding-right: 0;
-    }
+
     // add new tab
     li:last-child > a {
       padding-right: 15px;
@@ -15,13 +21,31 @@
       }
     }
   }
+  // TABS
   .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
     // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
     li:last-child.active > a {
-      border: 0px;
-      padding-bottom: 18px;
+      background-color: @impac-dashboard-selector-tabs-background-color;
     }
   }
+  // PILLS
+  // TODO: Add less variables for customisation.
   .nav.nav-pills {
     // tab
     li > a {
@@ -44,7 +68,7 @@
     position: relative;
     top: -9px;
     right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
   }
   ////////
-
 }
