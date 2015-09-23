@@ -177,7 +177,6 @@ gulp.task('less-compile', ['less:inject'], function () {
 gulp.task('less-concat', function () {
   return gulp.src([
       './src/stylesheets/variables.less',
-      './src/stylesheets/custom_bootstrap/variables.less',
       './src/stylesheets/mixins.less',
       './src/stylesheets/globals.less',
       './src/stylesheets/widget-master-styles.less',

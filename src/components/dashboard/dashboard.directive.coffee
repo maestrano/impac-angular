@@ -402,7 +402,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalWidgetSuggestion.open = ->
       self = modalWidgetSuggestion
-      self.userName = UserSvc.document.user.name
+      # TODO retrieve the user name from the Theming provider
+      # self.userName = UserSvc.document.user.name
       self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
@@ -420,6 +421,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         widget_description: self.widgetDetails.description
       }
 
+      # TODO: add route in configuration + possibility to enable/disable
       $http.post('/js_api/v1/mailers',{template: 'widget_suggestion', opts: data})
 
       # Thank you, user...
