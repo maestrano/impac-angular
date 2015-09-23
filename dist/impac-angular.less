@@ -57,6 +57,16 @@
 @impac-dashboard-source-color:                  @impac-dashboard-title-label-color;
 @impac-dashboard-buttons-border-radius:         4px;
 
+// Dashboard Selector
+  // Tabs
+@impac-dashboard-selector-border:               1px solid @lightblue;
+@impac-dashboard-selector-tabs-margin:          0 2px 0 0;
+@impac-dashboard-selector-tabs-padding:         10px 8px 10px 15px;
+@impac-dashboard-selector-tabs-background-color: transparent;
+@impac-dashboard-selector-tabs-active-background-color: #ffffff;
+@impac-dashboard-selector-tabs-color:           black;
+@impac-dashboard-selector-tabs-active-color:    @purple;
+
 // Widget selector
 @impac-dashboard-widget-selector-bg:            #233845;
 @impac-dashboard-widget-selector-text-color:    white;
@@ -1255,8 +1265,6 @@ ul.compact li {
   margin-left: @impac-dashboard-margin-left;
 
   #head-title {
-    padding: 5px;
-    border-bottom: 1px solid @lightblue;
 
     .dashboard-title {
       color: @purple;
@@ -1563,14 +1571,20 @@ ul.compact li {
 }
 
 #module__dashboard-selector {
-
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
   // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
   .nav.nav-tabs,
   .nav.nav-pills {
-    // tab
-    li > a {
-      padding-right: 0;
-    }
+
     // add new tab
     li:last-child > a {
       padding-right: 15px;
@@ -1579,13 +1593,31 @@ ul.compact li {
       }
     }
   }
+  // TABS
   .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
     // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
     li:last-child.active > a {
-      border: 0px;
-      padding-bottom: 18px;
+      background-color: @impac-dashboard-selector-tabs-background-color;
     }
   }
+  // PILLS
+  // TODO: Add less variables for customisation.
   .nav.nav-pills {
     // tab
     li > a {
@@ -1608,9 +1640,9 @@ ul.compact li {
     position: relative;
     top: -9px;
     right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
   }
   ////////
-
 }
 
 .widget-item .top-line {
@@ -1618,7 +1650,7 @@ ul.compact li {
   background-color: @impac-widget-title-bg;
   padding: 9px 9px 0px 9px;
   border-radius: @impac-widget-title-border-radius;
-  border: solid 1px darken(@impac-widget-title-bg,10%);
+  border: @impac-widget-border;
   border-bottom: none;
   min-height: 41px;
   .box-shadow(0px 1px 8px -4px);
@@ -1650,6 +1682,7 @@ ul.compact li {
     max-height: auto !important;
   }
 }
+
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -2050,6 +2083,10 @@ ul.compact li {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-performance {
   .simple-list-widget();
   .widget-lines-container {
@@ -2063,10 +2100,6 @@ ul.compact li {
     margin-bottom: 4px;
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -2089,35 +2122,6 @@ ul.compact li {
   .simple-summary-widget();
   .selector {
     margin-bottom: 5px;
-  }
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
   }
 }
 .analytics .widget-item .content.sales-top-opportunities {
@@ -2165,6 +2169,35 @@ ul.compact li {
           padding-top: 8px;
         }
       }
+    }
+  }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
     }
   }
 }

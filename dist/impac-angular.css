@@ -7455,10 +7455,6 @@ ul.compact li {
   padding-top: 50px;
   margin-left: 100px;
 }
-.analytics #head-title {
-  padding: 5px;
-  border-bottom: 1px solid #abc4c6;
-}
 .analytics #head-title .dashboard-title {
   color: #977bf0;
   display: inline;
@@ -7735,9 +7731,14 @@ ul.compact li {
 .impac-widget-suggestion .modal-body .thanks-message {
   color: #dae173;
 }
-#module__dashboard-selector .nav.nav-tabs li > a,
-#module__dashboard-selector .nav.nav-pills li > a {
-  padding-right: 0;
+#module__dashboard-selector a {
+  font-weight: normal;
+}
+#module__dashboard-selector > div:first-child {
+  border-bottom: 1px solid #abc4c6;
+}
+#module__dashboard-selector .nav-tabs {
+  border-bottom: 0;
 }
 #module__dashboard-selector .nav.nav-tabs li:last-child > a,
 #module__dashboard-selector .nav.nav-pills li:last-child > a {
@@ -7747,9 +7748,19 @@ ul.compact li {
 #module__dashboard-selector .nav.nav-pills li:last-child > a tab-heading a {
   position: static;
 }
+#module__dashboard-selector .nav.nav-tabs li > a {
+  padding: 10px 8px 10px 15px;
+  margin: 0 2px 0 0;
+  background-color: transparent;
+  border: 1px solid #abc4c6;
+  color: black;
+}
+#module__dashboard-selector .nav.nav-tabs li.active > a {
+  background-color: #ffffff;
+  color: #977bf0;
+}
 #module__dashboard-selector .nav.nav-tabs li:last-child.active > a {
-  border: 0px;
-  padding-bottom: 18px;
+  background-color: transparent;
 }
 #module__dashboard-selector .nav.nav-pills li > a {
   min-width: 0px;
@@ -7767,13 +7778,14 @@ ul.compact li {
   position: relative;
   top: -9px;
   right: 1px;
+  color: black;
 }
 .widget-item .top-line {
   cursor: move;
   background-color: white;
   padding: 9px 9px 0px 9px;
   border-radius: 5px 5px 0px 0px;
-  border: solid 1px #e6e6e6;
+  border: solid 1px #c8d7d9;
   border-bottom: none;
   min-height: 41px;
   -webkit-box-shadow: 0px 1px 8px -4px;
@@ -8680,36 +8692,6 @@ ul.compact li {
   font-weight: 300;
   margin-top: 2px;
 }
-.analytics .widget-item .content.sales-performance .widget-lines-container {
-  max-height: 230px;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.header {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 210px;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total {
-  cursor: pointer;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total :hover {
-  color: #977bf0;
-}
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total .selected {
-  border: solid 1px #977bf0;
-  background-color: #e6e0fb;
-}
-.analytics .widget-item .content.sales-performance .selector {
-  margin-bottom: 4px;
-}
 .analytics .widget-item .content.sales-opportunities-funnel {
   min-height: 565px;
 }
@@ -8745,6 +8727,36 @@ ul.compact li {
 .analytics .widget-item .content.sales-opportunities-funnel .right-panel .widget-lines-container .widget-line {
   cursor: default;
 }
+.analytics .widget-item .content.sales-performance .widget-lines-container {
+  max-height: 230px;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.header {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 210px;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total {
+  cursor: pointer;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total :hover {
+  color: #977bf0;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total .selected {
+  border: solid 1px #977bf0;
+  background-color: #e6e0fb;
+}
+.analytics .widget-item .content.sales-performance .selector {
+  margin-bottom: 4px;
+}
 .analytics .widget-item .content.sales-segmented-turnover h3.right {
   margin-top: 55px;
   text-align: center;
@@ -8773,35 +8785,6 @@ ul.compact li {
 }
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5b6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container {
   max-height: 195px;
@@ -8849,6 +8832,35 @@ ul.compact li {
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5b6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
 }
 .analytics .widget-item .title-wrapper {
   width: 100%;
