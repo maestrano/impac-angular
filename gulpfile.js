@@ -151,7 +151,7 @@ gulp.task('less-inject', function() {
         starttag: '/* inject:imports */',
         endtag: '/* endinject */',
         transform: function (filepath) {
-          return '@import ".' + filepath + '";';
+          return '@import "' + filepath.replace('/src', '..') + '";';
         }
       }))
       .pipe(gulp.dest('src/stylesheets'));
