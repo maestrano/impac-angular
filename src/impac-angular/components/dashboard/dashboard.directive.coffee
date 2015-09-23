@@ -402,7 +402,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalWidgetSuggestion.open = ->
       self = modalWidgetSuggestion
-      self.userName = UserSvc.document.user.name
+      # TODO retrieve the user name from the Theming provider
+      # self.userName = UserSvc.document.user.name
       self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
