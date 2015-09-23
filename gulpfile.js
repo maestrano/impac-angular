@@ -187,7 +187,7 @@ gulp.task('less-concat', function () {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build', ['coffee-compile', 'less-compile', 'less-concat', 'templates-concat'], function () {
+gulp.task('build', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
