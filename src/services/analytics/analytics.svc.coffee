@@ -21,13 +21,22 @@ angular
 
     service.isLocked = false
 
-    ImpacLinking.getOrganizations().then (success) ->
-      service.organizations = success
-      service.config.organizationId = service.organizations[0].id if service.organizations.length > 0
+    # runs linking callback to retreive organizations
+    service.getOrganizations = ->
+      ImpacLinking.getOrganizations().then (success) ->
+        service.organizations = success.organizations
+        if success.currentOrgId
+          service.config.organizationId = success.currentOrgId
+        else if service.organizations? && service.organizations.length > 0
+          service.config.organizationId = service.organizations[0].id
 
-    #======================================
-    # Data Management
-    #======================================
+    # Return the id of the currently loaded/loading organization
+    service.getOrganizationId = ->
+      service.config.organizationId
+    
+    # pre-load the organizations
+    service.getOrganizations()
+
     # Return the id of the currently displayed dashboard, or the first dashboard.
     service.getId = ->
       if (!service.config.id && service.data.length > 0)
@@ -38,21 +47,42 @@ angular
     service.getDashboards = ->
       service.data
 
-    # Return the id of the currently loaded/loading organization
-    service.getOrganizationId = ->
-      service.config.organizationId
-
     # Configure the service
     service.configure = (opts) ->
-      angular.copy(opts, service.config)
-      angular.extend(service.config, service.defaultConfig)
+      # angular.copy(opts, service.config)
+      # angular.extend(service.config, service.defaultConfig)
+      angular.extend(service.config,opts)
 
-    # loads the dashboards
-    service.load = (force = false) ->
-      if !self.config.$q? || force
-        self.config.$q = $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
+    # # loads the dashboards
+    # service.load = (force = false) ->
+    #   if !self.config.$q? || force
+    #     self.config.$q = $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
+    #       angular.copy(success.data, self.data)
+    #   return self.config.$q
+
+
+    # loads the organizations & dashboards
+    service.load = () ->
+      deferred = $q.defer()
+      service.getOrganizations().then ->
+
+        $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
           angular.copy(success.data, self.data)
-      return self.config.$q
+          deferred.resolve(success.data)
+        ,(err) ->
+          $log.error 'impac-angular ERROR: Unable to get dashboards from API: ', err
+          deferred.reject(err)
+
+      (err) ->
+        deferred.reject(err)
+
+      return deferred.promise
+
+    # Refresh the dashboards contained in impac-dashboard scope from the outside
+    service.refreshDashboards = ->
+      self = service
+      if self.config.refreshDashboardsCallback?
+        self.load().then(-> self.config.refreshDashboardsCallback())
 
     #======================================
     # Analytics Dashboard Management ### REFACTOR INTO FACTORY ####
