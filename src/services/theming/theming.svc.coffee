@@ -26,6 +26,10 @@ angular
           "#ff1844"
         ]
 
+      dhbConfig:
+        showDhbHeading: false
+        dhbHeadingText: 'Impac!'
+
       dhbSelectorConfig:
         selectorType: 'dropdown'
         customTmplPath: null

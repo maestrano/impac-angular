@@ -11,6 +11,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # todo: maybe rename this? not exactly sure when this background image is shown.
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
+    $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
+    $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
+
     $scope.accessibility = false
 
     $scope.widgetsList = [];
