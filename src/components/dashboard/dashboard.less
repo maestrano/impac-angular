@@ -5,6 +5,7 @@
 
   #head-title {
 
+    // contains customisable impac logo, and heading text.
     #dashboard-heading {
       img {
       float: left;
@@ -266,9 +267,11 @@
     }
   }
 
+  // no widgets - empty dashboard.
   #no-widgets-container {
     position: relative;
 
+    // background image asset
     img.bg {
       left: 0;
       top: 0;
@@ -276,6 +279,7 @@
       min-height: 100%;
     }
 
+    // no widgets message that sits above image asset
     .impac-info-message {
       position: absolute;
       top: 0;
@@ -321,7 +325,8 @@
   }
 }
 
-// This style also applies to `accounts-custom-calculation/formula.modal.html`.
+// This style applies to dashboard modals, and also the
+// `accounts-custom-calculation/formula.modal.html` modal.
 .modal-footer .loader {
   .loader-style(@impac-dashboard-loading-spinner)
 }
