@@ -17,16 +17,15 @@
 
   <!-- Create a new widget -->
   <p>Are you sure you want to delete this analytics dashboard?</p>
-  
+
 </div>
 
 <div class="modal-footer">
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading" ng-disabled="isLoading">Cancel</button>
-      <button class="btn btn-danger" ng-click="proceed()" ng-hide="isLoading" ng-disabled="isLoading">Delete</button>
+      <button class="btn btn-default" ng-click="close()" ng-hide="isLoading" ng-disabled="isLoading">Cancel</button>
+      <button class="btn btn-warning" ng-click="proceed()" ng-hide="isLoading" ng-disabled="isLoading">Delete</button>
       <img ng-src="{{loadingGif}}" ng-show="isLoading" alt="Loading">
     </div>
-    
   </div>
 </div>
