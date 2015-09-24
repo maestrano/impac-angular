@@ -2,18 +2,21 @@
   <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" class="delete-widget" ng-show="parentWidget.hasDeleteAbility">
     <button class="btn btn-close top-button" ng-click="showConfirmDelete = !showConfirmDelete">
       <i class="fa fa-times-circle-o fa-lg"></i>
+      <span class="text-hide">Delete widget</span>
     </button>
   </div>
 
   <div ng-mouseenter="showEditActive=true" ng-mouseleave="showEditActive=false" class="edit-widget" ng-show="parentWidget.hasEditAbility">
     <button class="btn top-button btn-edit" ng-click="toogleEditMode()">
       <i class="fa fa-cog fa-lg"></i>
+      <span class="text-hide">Edit widget</span>
     </button>
   </div>
 
   <div class="refresh-widget">
     <button class="btn top-button btn-refresh" ng-click="parentWidget.loadContent(true)">
       <i class="fa fa-refresh"></i>
+      <span class="text-hide">Refresh widget</span>
     </button>
   </div>
 
