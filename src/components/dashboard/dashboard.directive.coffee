@@ -26,6 +26,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # When a call to the service is necessary before updating the display
     # (for example when the dashboards list is modified)
     $scope.refreshDashboards = () ->
+      $scope.isLoading = true
       $scope.dashboardsList = DhbAnalyticsSvc.getDashboards()
       # server sends back widgets list in dashboards, if there are no dashboards you cannot
       # add a widget.
@@ -43,6 +44,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         $scope.currentDhb = $scope.dashboardsList[0]
         $scope.currentDhbId = ($scope.currentDhb? && $scope.currentDhb.id) || null
 
+      # Define the data source label under the dashboard title
       if angular.isDefined($scope.currentDhb)
         $scope.currentDhb.organizationsNames = _.map($scope.currentDhb.data_sources, (org) ->
           org.label
@@ -56,9 +58,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     DhbAnalyticsSvc.load().then (success) ->
       $scope.currentDhbId = DhbAnalyticsSvc.getId()
       $scope.refreshDashboards()
-
-    $scope.test = ->
-      DhbAnalyticsSvc.refreshDashboards()
 
 
     # TODO? Move to service

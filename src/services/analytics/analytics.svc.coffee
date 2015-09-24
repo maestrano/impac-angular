@@ -25,8 +25,8 @@ angular
     service.getOrganizations = ->
       ImpacLinking.getOrganizations().then (success) ->
         service.organizations = success.organizations
-        if success.current
-          service.config.organizationId = success.current
+        if success.currentOrgId
+          service.config.organizationId = success.currentOrgId
         else if service.organizations? && service.organizations.length > 0
           service.config.organizationId = service.organizations[0].id
 
