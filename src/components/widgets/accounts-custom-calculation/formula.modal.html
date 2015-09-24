@@ -17,7 +17,7 @@
     </div>
 
     <!-- <div class='analytics'>  -->
-      
+
       <div class="edit">
         <div setting-organizations parent-widget="widget" class="part" />
       </div>
@@ -25,9 +25,11 @@
       <p>Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: ({1} + {2}) / {3})</p>
 
       <div class='row'>
-        <div ng-show="widget.isLoading" class='col-md-6 loader' align="center">
-          Your data is being retrieved...
-          <img class="gif" ng-src="{{loaderImage}}"/>
+        <div ng-show="widget.isLoading" class="col-md-6 loader" align="center">
+          <div>
+            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+            <p>Your data is being retrieved...</p>
+          </div>
         </div>
 
         <div ng-hide="widget.isLoading" class='col-md-6'>
@@ -47,7 +49,7 @@
             <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
           </div>
         </div>
-        
+
         <div class='col-md-6'>
           <p>Type your formula just below:</p>
           <input class='form-control' ng-model="widget.formula">
@@ -63,10 +65,12 @@
     <div class="row">
       <div class="col-sm-12">
         <button class="btn btn-gray" ng-click="formulaModal.cancel()" ng-hide="widget.isLoading" ng-disabled="isLoading">Cancel</button>
-        <button class="btn btn-warning" ng-click="formulaModal.proceed()" ng-hide="widget.isLoading" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>Save</button>
-        <img ng-src="{{loaderImage}}" ng-show="widget.isLoading" alt="Loading">
+        <button class="btn btn-warning" ng-click="formulaModal.proceed()" ng-hide="widget.isLoading" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>
+          <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
+          Save
+        </button>
       </div>
-      
+
     </div>
   </div>
 </div>

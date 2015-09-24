@@ -5,11 +5,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   # ---------------------------------------------------------
   # ### Widget template scope
   # ---------------------------------------------------------
-
-  $scope.loaderImage = ''
-  # TODO: add loader image options to impac-assets.svc
-  # $scope.loaderImage = AssetPath['loader-white-bg.gif']
-
   # ---------------------------------------------------------
   # ### Toolbox
   # ---------------------------------------------------------

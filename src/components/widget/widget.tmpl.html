@@ -8,19 +8,20 @@
 
 <div ng-show="isTemplateLoaded()" class="content" ng-class="templateName">
 
-  <div ng-show="widget.isLoading">
-    <div class="loader" align="center">
-      Your data is being retrieved...
-      <img class="gif" ng-src="{{loaderImage}}"/>
+  <div ng-show="widget.isLoading" class="loader" align="center">
+    <div>
+      <i class="fa fa-spinner fa-pulse fa-3x"></i>
+      <p>Your data is being retrieved...</p>
     </div>
   </div>
 
   <div ng-hide="widget.isLoading" ng-include="widgetContentTemplate()" />
-
 </div>
 
 <div ng-hide="isTemplateLoaded()" class="content">
   <div class="loader" align="center">
-    <img class="gif" ng-src="{{loaderImage}}"/>
+    <div>
+      <i class="fa fa-spinner fa-pulse fa-4x"></i>
+    </div>
   </div>
 </div>

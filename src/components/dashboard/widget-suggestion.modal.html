@@ -4,7 +4,7 @@
 </div>
 
 <div class="modal-body">
-  
+
   <div class="row">
     <div class="col-md-6">
       <label>What would you name your widget?</label><br />
@@ -33,15 +33,17 @@
       <h3 class="thanks-message">Thanks a lot for helping us improve Impac!&trade;</h3>
     </div>
   </div>
-  
+
 </div>
 
 <div class="modal-footer">
   <div class="row">
     <div class="col-sm-12" ng-class="isLoading ? 'text-center' : null">
       <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading">Cancel</button>
-      <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">Send your suggestion</button>
-      <img ng-src="{{loadingGif}}" ng-show="isLoading" alt="Loading">
+      <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">
+        <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
+        Send your suggestion
+      </button>
     </div>
   </div>
 </div>

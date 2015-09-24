@@ -275,7 +275,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         id: DhbAnalyticsSvc.getOrganizationId()
       })
       self.selectMode('single')
-      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
       # TODO: what is this?
@@ -370,7 +369,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     modalDeleteDashboard.open = ->
       self = modalDeleteDashboard
-      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 
@@ -407,7 +405,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self = modalWidgetSuggestion
       # TODO retrieve the user name from the Theming provider
       # self.userName = UserSvc.document.user.name
-      self.loadingGif = ImpacAssets.get('loader-darkblue-bg.gif')
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 

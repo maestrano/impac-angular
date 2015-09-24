@@ -277,9 +277,8 @@
     }
 
     .impac-info-message {
-      // position: absolute;
-      position: static;
-      // top: 0;
+      position: absolute;
+      top: 0;
       width: 100%;
     }
 
@@ -320,4 +319,9 @@
   .thanks-message {
     color: @mgreen;
   }
+}
+
+// This style also applies to `accounts-custom-calculation/formula.modal.html`.
+.modal-footer .loader {
+  .loader-style(@impac-dashboard-loading-spinner)
 }
