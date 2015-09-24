@@ -273,6 +273,9 @@
   }
 
   #widgets-container {
+    // Quick-fix to avoid screen flockering when tooltips are appended to body:
+    // min-height will force a scrollbar to appear...
+    min-height: 700px;
     padding-left: @impac-widgets-container-side-padding;
     padding-right: @impac-widgets-container-side-padding;
 
