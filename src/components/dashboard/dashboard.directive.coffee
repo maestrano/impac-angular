@@ -23,13 +23,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.openStarWizard = ->
       $scope.starWizardModal.value = true
 
-    DhbAnalyticsSvc.load().then(
-      (success) ->
-        $scope.currentDhbId = DhbAnalyticsSvc.getId()
-        $scope.refreshDashboards()
-        $scope.isLoading = false
-    )
-
     # When a call to the service is necessary before updating the display
     # (for example when the dashboards list is modified)
     $scope.refreshDashboards = () ->
@@ -39,10 +32,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       if $scope.dashboardsList.length and $scope.dashboardsList[0].widgets_templates?
         $scope.widgetsList = $scope.dashboardsList[0].widgets_templates
 
+      # Keep only dashboards that have the current organization in its data_sources
+      $scope.dashboardsList = _.filter $scope.dashboardsList, (dhb) ->
+        _.some(dhb.data_sources, (org) -> org.id == DhbAnalyticsSvc.getOrganizationId())
+
       $scope.currentDhb = _.where($scope.dashboardsList, {id: $scope.currentDhbId})[0]
 
       # Change current dhb if not for the select org
-      if $scope.currentDhb == null
+      if _.isEmpty $scope.currentDhb
         $scope.currentDhb = $scope.dashboardsList[0]
         $scope.currentDhbId = ($scope.currentDhb? && $scope.currentDhb.id) || null
 
@@ -52,6 +49,16 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         ).join(", ")
 
       $scope.setDisplay()
+
+
+    # First load
+    DhbAnalyticsSvc.configure({refreshDashboardsCallback: $scope.refreshDashboards})
+    DhbAnalyticsSvc.load().then (success) ->
+      $scope.currentDhbId = DhbAnalyticsSvc.getId()
+      $scope.refreshDashboards()
+
+    $scope.test = ->
+      DhbAnalyticsSvc.refreshDashboards()
 
 
     # TODO? Move to service
@@ -117,6 +124,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists && ImpacTheming.get().showNoWidgetMessages
       #widgets
       $scope.canManageWidgets = true
+
+      $scope.isLoading = false
 
 
     # Used by the dashboard selector (top of the page)

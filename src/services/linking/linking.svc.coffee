@@ -48,8 +48,8 @@ angular
       service.getOrganizations = ->
         deferred = $q.defer()
         links.organizations().then(
-          (orgs) ->
-            deferred.resolve(orgs)
+          (success) ->
+            deferred.resolve(success)
           (error) ->
             # handle error
             deferred.reject(error)
