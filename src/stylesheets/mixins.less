@@ -141,11 +141,16 @@
   }
 }
 
-.loader-style() {
-  color: @impac-widget-text-color-light;
-  font-weight: bold;
-  .gif {
-    display: block;
-    margin-top: 10px;
+.loader-style(@color: @impac-widget-loading-spinner) {
+  color: @color;
+}
+
+.loader-centered() {
+  height: 100%;
+  display: table;
+  width: 100%;
+  div {
+    display: table-cell;
+    vertical-align: middle;
   }
 }

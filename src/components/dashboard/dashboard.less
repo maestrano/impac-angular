@@ -5,6 +5,20 @@
 
   #head-title {
 
+    // contains customisable impac logo, and heading text.
+    #dashboard-heading {
+      img {
+      float: left;
+      margin-right: 15px;
+      }
+      h2 {
+        padding-top: 12px;
+        height: 48px;
+        font-size: 30px;
+        color: #67bbe9;
+      }
+    }
+
     .dashboard-title {
       color: @purple;
       display: inline;
@@ -253,9 +267,11 @@
     }
   }
 
+  // no widgets - empty dashboard.
   #no-widgets-container {
     position: relative;
 
+    // background image asset
     img.bg {
       left: 0;
       top: 0;
@@ -263,10 +279,10 @@
       min-height: 100%;
     }
 
+    // no widgets message that sits above image asset
     .impac-info-message {
-      // position: absolute;
-      position: static;
-      // top: 0;
+      position: absolute;
+      top: 0;
       width: 100%;
     }
 
@@ -310,4 +326,10 @@
   .thanks-message {
     color: @mgreen;
   }
+}
+
+// This style applies to dashboard modals, and also the
+// `accounts-custom-calculation/formula.modal.html` modal.
+.modal-footer .loader {
+  .loader-style(@impac-dashboard-loading-spinner)
 }

@@ -4,10 +4,6 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
 
     w = $scope.widget
 
-    $scope.loaderImage = ''
-    # todo::assets
-    # $scope.loaderImage = AssetPath['loader-white-bg.gif']
-
     w.initContext = ->
       $scope.movedAccount = {}
       $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
