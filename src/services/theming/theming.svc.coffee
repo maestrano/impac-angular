@@ -38,6 +38,7 @@ angular
         mainMessage: 'Data not found'
         linkMessage: 'Are you missing an app?'
         linkUrl: ''
+        linkTarget: '_blank'
 
       widgetSelectorConfig:
         path: null

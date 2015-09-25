@@ -3,7 +3,7 @@
 	<div class="message">
 	  {{content.mainMessage}}
     <!-- TODO: provider for html hyperlinks? -->
-		<a ng-href="{{content.linkUrl}}" target="_blank">
+		<a ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
 			{{content.linkMessage}}
 		</a>
 	</div>
