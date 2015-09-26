@@ -23,7 +23,7 @@ angular
       # Public methods available as service
       #=======================================
       # Dashboard routes
-      service.baseDhbPath = -> defaults.dhbBasePath
+      service.baseDhbPath = (orgId) -> if orgId? then "#{defaults.dhbBasePath}?org_id=#{orgId}" else defaults.dhbBasePath
       service.showDhbPath = (id) -> "#{defaults.dhbBasePath}/#{id}"
       service.createDhbPath = -> defaults.dhbBasePath
       service.updateDhbPath = (id) -> service.showDhbPath(id)
