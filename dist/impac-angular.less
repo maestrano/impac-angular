@@ -78,6 +78,9 @@
 @impac-minimum-widget-size:                     250px;
 @impac-big-widget-size:                         565px;
 
+// Dashboard Modals
+@impac-dashboard-loading-spinner:               white;
+
 // Widgets
 //--------------------------------------
 // Global
@@ -91,6 +94,7 @@
 @impac-widget-text-color-light:                lighten(@impac-widget-text-color,40%); //#acb0b1
 @impac-widget-borders-color:                   lighten(@impac-widget-text-color-light,10%); //#f3f4f4
 @impac-widget-scrollbar-color:                 #233845;
+@impac-widget-loading-spinner:                 #55E5ED;
 
 // Title
 @impac-widget-title-text-color:                darken(@impac-widget-text-color,5%);
@@ -273,12 +277,17 @@
   }
 }
 
-.loader-style() {
-  color: @impac-widget-text-color-light;
-  font-weight: bold;
-  .gif {
-    display: block;
-    margin-top: 10px;
+.loader-style(@color: @impac-widget-loading-spinner) {
+  color: @color;
+}
+
+.loader-centered() {
+  height: 100%;
+  display: table;
+  width: 100%;
+  div {
+    display: table-cell;
+    vertical-align: middle;
   }
 }
 
@@ -566,6 +575,20 @@
 
   #head-title {
 
+    // contains customisable impac logo, and heading text.
+    #dashboard-heading {
+      img {
+      float: left;
+      margin-right: 15px;
+      }
+      h2 {
+        padding-top: 12px;
+        height: 48px;
+        font-size: 30px;
+        color: #67bbe9;
+      }
+    }
+
     .dashboard-title {
       color: @purple;
       display: inline;
@@ -814,9 +837,11 @@
     }
   }
 
+  // no widgets - empty dashboard.
   #no-widgets-container {
     position: relative;
 
+    // background image asset
     img.bg {
       left: 0;
       top: 0;
@@ -824,16 +849,19 @@
       min-height: 100%;
     }
 
+    // no widgets message that sits above image asset
     .impac-info-message {
-      // position: absolute;
-      position: static;
-      // top: 0;
+      position: absolute;
+      top: 0;
       width: 100%;
     }
 
   }
 
   #widgets-container {
+    // Quick-fix to avoid screen flockering when tooltips are appended to body:
+    // min-height will force a scrollbar to appear...
+    min-height: 700px;
     padding-left: @impac-widgets-container-side-padding;
     padding-right: @impac-widgets-container-side-padding;
 
@@ -870,6 +898,12 @@
   }
 }
 
+// This style applies to dashboard modals, and also the
+// `accounts-custom-calculation/formula.modal.html` modal.
+.modal-footer .loader {
+  .loader-style(@impac-dashboard-loading-spinner)
+}
+
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -878,6 +912,11 @@
   & > div:first-child {
     border-bottom: @impac-dashboard-selector-border;
   }
+  // container for dashboard selector 'dropdown' template
+  .dropdown-container {
+    padding-bottom: 5px;
+  }
+
   // angular bootstrap tabs & pills
   .nav-tabs {
     border-bottom: 0;
@@ -968,8 +1007,13 @@
   .short-widget();
 
   .loader {
-    .loader-style();
-    margin-top: 75px;
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
   }
 
   .edit {
@@ -983,129 +1027,6 @@
   }
 }
 
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    border-bottom: @impac-widget-title-border;
-    white-space: nowrap;
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-    .editable-wrap {
-      height: 20px;
-      width: 75%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-      .editable-controls {
-        width: 100%;
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
-
-  .top-button {
-    float: right;
-    background: transparent;
-    border: none;
-    color: @impac-widget-top-buttons-color;
-    padding: 1px;
-    margin-left: 3px;
-    outline: none;
-
-    &:active, &:focus {
-      -webkit-box-shadow: none;
-    }
-
-    &.btn-edit {
-      font-size: 14px;
-      &:hover {
-        color: darken(@mgreen,10%);
-      }
-    }
-    &.btn-close {
-      &:hover {
-        color: @pink
-      }
-    }
-    &.btn-refresh {
-      font-size: 17px;
-      margin-top: -1px;
-      &:hover {
-        color: @mblue;
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    opacity: 0.9;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-  }
-  
-}
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1179,9 +1100,6 @@
     text-align: left;
     max-height: 103px;
   }
-  .loader {
-    margin: 75px 0px 77px 0px;
-  }
   .row {
     margin: 0;
   }
@@ -1190,6 +1108,7 @@
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
 }
+
 .analytics .widget-item .content.custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1202,18 +1121,29 @@
   }
 }
 
-.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
+.modal-custom-calculation {
+
+  .modal-body {
+    .edit {
+      .edit-panel-style();
+      padding: 5px;
+    }
     .part {
       width: 49%;
     }
   }
+
   .loader {
-    .loader-style();
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
   }
 }
+
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -1595,6 +1525,129 @@
     }
   }
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: @impac-widget-title-border;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-top: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: @impac-widget-top-buttons-color;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+  }
+  
+}
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -1761,9 +1814,6 @@
     }
   }
 }
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
-}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -1777,4 +1827,7 @@
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
 }
