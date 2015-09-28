@@ -38,6 +38,10 @@ angular
         addDhbEnabled: true
         deleteDhbEnabled: true
 
+      dhbKpisConfig:
+        enableKpis: false
+        parentElementId: ''
+
       dataNotFoundConfig:
         mainMessage: 'Data not found'
         linkMessage: 'Are you missing an app?'

@@ -22,6 +22,7 @@ angular.module('impac.components',
   [
     'impac.components.dashboard',
     'impac.components.dashboard-selector',
+    'impac.components.kpis',
     'impac.components.chart',
     'impac.components.widget',
     'impac.components.widgets',
@@ -98,7 +99,9 @@ angular.module('impac.components.widgets-common',
 /*
 ** FILTERS
 */
-angular.module('impac.filters', []);
+angular.module('impac.filters', [
+  'impac.filters.url-helper'
+]);
 /*
 ** SERVICES
 */

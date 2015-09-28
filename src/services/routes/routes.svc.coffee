@@ -7,9 +7,10 @@ angular
     # Private Defaults
     #=======================================
     defaults =
-      dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
-      widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
+      dhbBasePath: '/mnoe/jpi/v1/impac/dashboards'
+      widgetBasePath: '/mnoe/jpi/v1/impac/widgets'
       showWidgetPath: 'http://localhost:4000/api/v1/get_widget'
+      kpisBasePath: 'http://localhost:4000/api/v2/kpis'
     #=======================================
     # Public methods available in config
     #=======================================
@@ -34,6 +35,8 @@ angular
       service.createWidgetPath = (dashboardId) -> "#{service.showDhbPath(dashboardId)}/widgets"
       service.updateWidgetPath = (id) -> service.widgetBasePath(id)
       service.deleteWidgetPath = (id) -> service.widgetBasePath(id)
+      # kpi routes
+      service.kpisBasePath = -> defaults.kpisBasePath
 
       return service
     # inject service dependencies here, and declare in _$get function args.
