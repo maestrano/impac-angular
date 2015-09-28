@@ -65,8 +65,7 @@ angular
     service.load = () ->
       deferred = $q.defer()
       service.getOrganizations().then ->
-
-        $http.get(ImpacRoutes.baseDhbPath()).then (success) ->
+        $http.get(ImpacRoutes.baseDhbPath(self.config.organizationId)).then (success) ->
           angular.copy(success.data, self.data)
           deferred.resolve(success.data)
         ,(err) ->
