@@ -21,8 +21,7 @@ angular
     @kpis = null
 
     @getKPIs = ->
-      _self.kpis = _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()}).kpis
-      debugger;
+      _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()})[0].kpis
 
     @loadKpiContent = ->
 
