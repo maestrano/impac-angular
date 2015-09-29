@@ -1,6 +1,10 @@
 .analytics kpis-bar > .kpis {
 
+  color: @light-black;
+  padding: 10px 0px;
+
   .available-kpis-container {
+    text-align: left;
     position: absolute;
     z-index: 15;
     background-color: @impac-widget-background-color;
@@ -17,7 +21,17 @@
       padding-left: 8px;
     }
   }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
 }
 
 .analytics kpis-bar > .key-stats {
+  background-color: white;
+  color: @light-black;
+  padding: 5px 0px;
 }

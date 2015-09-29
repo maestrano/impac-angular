@@ -1,17 +1,9 @@
-#impac-kpis {
+.analytics kpis-bar .kpi {
+
   text-align: center;
-
-  .key-stats {
-    background-color: white;
-    color: @light-black;
-    padding: 0px 0px 3px 0px;
-  }
-
-  .tracking-kpis {
-    padding: 10px;
-    color: @light-black;
-    padding: 10px 0px;
-  }
+  min-height: 100px;
+  white-space: normal;
+  padding: 10px 3px;
 
   .kpi-title {
     .text-uppercase();
@@ -37,11 +29,8 @@
     padding: 2px 5px;
     max-width: 100px;
   }
+}
 
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 70px;
 }

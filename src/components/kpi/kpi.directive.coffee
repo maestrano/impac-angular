@@ -5,14 +5,27 @@ angular
       restrict: 'EA'
       scope: {
         kpi: '='
+        editMode: '='
       }
       templateUrl: 'kpi/kpi.tmpl.html'
 
       controller: ($scope) ->
-        Kpis.show($scope.kpi).then(
-          (success) ->
-            $scope.kpi.data = success.kpi
-            $log.debug 'KPI: ', $scope.kpi
-        ) unless $scope.kpi.data
+        $scope.showEditTarget = false
+
+        Kpis.show($scope.kpi) unless $scope.kpi.data
+
+        $scope.updateName = ->
+          Kpis.update($scope.kpi, {name: $scope.kpi.name}) unless $scope.kpi.static
+
+        $scope.updateTarget = ->
+          if !_.isEmpty $scope.kpi.target.limit
+            Kpis.update($scope.kpi, {target: $scope.kpi.target}) unless $scope.kpi.static
+          $scope.showEditTarget = false
+
+        $scope.displayEditTarget = ->
+          $scope.kpi.target ||= {}
+          $scope.kpi.target.limit ||= ""
+          $scope.showEditTarget = true
+
     }
   )

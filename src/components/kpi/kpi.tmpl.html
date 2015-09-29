@@ -1,7 +1,18 @@
-<div class="media">
-  <div class="media-body">
-    <small class="kpi-title">{{::kpi.name}}</small>
+<div class="tile kpi media">
+  <div class="media-body" ng-hide="showEditTarget">
+    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+    <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="no" onaftersave="updateName()">{{::kpi.name}}</small>
     <span class="kpi-value">{{::kpi.data.real_value}}</span>
     <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div>
+
+    <div class="kpi-edit" ng-show="editMode" ng-click="displayEditTarget()"><a href="">Edit settings</a></div> 
   </div>
+
+  <div class="media-body" ng-if="showEditTarget">
+    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+    KPI limit:
+    <input type="text" ng-model="kpi.target.limit" />
+    <div class="kpi-edit" ng-click="updateTarget()"><a href="">Save</a></div> 
+  </div>
+
 </div>

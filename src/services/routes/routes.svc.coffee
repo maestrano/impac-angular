@@ -42,6 +42,7 @@ angular
       service.impacKpisBasePath = -> defaults.impacKpisBasePath
       service.localKpisBasePath = -> defaults.localKpisBasePath
       service.createKpiPath = (id) -> "#{defaults.dhbBasePath}/#{id}/kpis"
+      service.updateKpiPath = (id) -> "#{defaults.localKpisBasePath}/#{id}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

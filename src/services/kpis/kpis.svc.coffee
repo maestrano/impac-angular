@@ -53,7 +53,7 @@ angular
     # retrieves data for kpi from api
     @show = (kpi) ->
       deferred = $q.defer()
-      
+
       _self.load().then (success) ->
 
         params = {}
@@ -72,13 +72,16 @@ angular
 
         $http.get(url).then(
           (response) ->
-            deferred.resolve(response.data)
+            kpi.data = response.data.kpi
+            $log.debug 'KPI: ', kpi
+            deferred.resolve(kpi)
           (err) ->
             $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
             deferred.reject(err)
         )
       
       return deferred.promise
+
 
     @create = (endpoint, element_watched, extra_param=null) ->
       params = {
@@ -91,10 +94,29 @@ angular
       
       $http.post(url, params).then(
         (success) ->
+          # TODO refresh dashboard or add the returned kpi to the kpis list?
           $log.debug 'success adding KPI: ', success
         (err) ->
           $log.error 'impac-angular ERROR: Unable to add KPI ', err
       )
+
+    @update = (kpi, params) ->
+      url = ImpacRoutes.updateKpiPath kpi.id
+
+      filtered_param = {}
+      filtered_param.name = params.name if params.name?
+      filtered_param.metadata = params.metadata if params.metadata?
+      filtered_param.target = params.target if params.target?
+      filtered_param.extra_param = params.extra_param if params.extra_param?
+
+      if !_.isEmpty filtered_param
+        $http.put(url, params).then (success) ->
+          # TODO verify
+          angular.extend kpi success.data
+          _self.show(kpi)
+          $log.debug 'success updating KPI: ', success
+        ,(err) ->
+          $log.error 'impac-angular ERROR: Unable to update KPI ', err
 
     return @
   )

@@ -7,9 +7,11 @@
       <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-click="addKpi(kpi)">{{formatKpiName(kpi.endpoint)}}</div>
     </div>
     
+    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPIs Settings</a></div>
+    
     <!-- <div><a href=""><i class="fa fa-exclamation-triangle"></i> set up an alert</a></div> -->
   </div>
-  <impac-kpi class="col-xs-2" kpi="kpi" ng-repeat="kpi in kpis track by $index"></impac-kpi>
+  <impac-kpi class="col-xs-2" kpi="kpi" edit-mode="showEditMode" ng-repeat="kpi in kpis track by $index"></impac-kpi>
 </div>
 
 <div class="row key-stats">
