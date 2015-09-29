@@ -53,7 +53,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           org.label
         ).join(", ")
 
-      DhbAnalyticsSvc.config.loadKpis()
+      # DhbAnalyticsSvc.config.loadKpis()
       $scope.setDisplay()
 
 

@@ -1,20 +1,18 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $templateCache, Kpis) ->
+  .directive('impacKpi', ($log, Kpis) ->
     return {
       restrict: 'EA'
       scope: {
-        kpi: '=kpiData'
+        kpi: '='
       }
+      templateUrl: 'kpi/kpi.tmpl.html'
+
       controller: ($scope) ->
-
-        if $scope.kpi.endpoint
-          Kpis.loadKpiContent($scope.kpi).then(
-            (success) ->
-              $scope.kpi.data = success.kpi
-              $log.debug 'KPI: ', $scope.kpi
-          )
-
-      template: $templateCache.get('kpi/kpi.tmpl.html')
+        Kpis.show($scope.kpi).then(
+          (success) ->
+            $scope.kpi.data = success.kpi
+            $log.debug 'KPI: ', $scope.kpi
+        ) unless $scope.kpi.data
     }
   )
