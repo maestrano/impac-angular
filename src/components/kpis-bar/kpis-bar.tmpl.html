@@ -1,0 +1,24 @@
+<div class="row tracking-kpis">
+  <div class="title-actions col-sm-2">
+    <div class="title">How I'm tracking</div>
+    <div ng-click="addKpiOnClick()"><a href=""><i class="fa fa-plus"></i> add another KPI</a></div>
+    <div><a href=""><i class="fa fa-exclamation-triangle"></i> set up an alert</a></div>
+  </div>
+  <impac-kpi ng-repeat="kpi in kpis track by $index" kpi-data="kpi"></impac-kpi>
+  <!-- <impac-kpi kpi-data="kpis.nextPayment" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="kpis.creditorDays" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="kpis.basDue" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="kpis.nextPayment" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="kpis.personalNetWorth" class="col-xs-2"></impac-kpi> -->
+</div>
+
+<div class="row key-stats">
+  <div class="title-actions col-xs-2">
+    <div class="title">Key stats</div>
+  </div>
+  <impac-kpi kpi-data="keyStats.interests" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="keyStats.profitability" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="keyStats.capital" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="keyStats.tax" class="col-xs-2"></impac-kpi>
+  <impac-kpi kpi-data="keyStats.super" class="col-xs-2"></impac-kpi>
+</div>

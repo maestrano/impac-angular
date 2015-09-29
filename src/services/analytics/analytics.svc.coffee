@@ -33,7 +33,7 @@ angular
     # Return the id of the currently loaded/loading organization
     service.getOrganizationId = ->
       service.config.organizationId
-    
+
     # pre-load the organizations
     service.getOrganizations()
 
