@@ -4,62 +4,91 @@ angular
 
     _self = @
 
-    # TODO: make this smarter, as currently it's called on every kpi load.
-    @getLinkingData = ->
-      return $q.all([ImpacLinking.getSsoSession(), ImpacLinking.getOrganizations()]).then(
-        (results) ->
-          return $q.when(results)
-        (err) ->
-          return $q.reject(err)
-      )
+    @config = {}
 
-    # gets users kpi's from dashboard
-    # @getKPIs = ->
-    #   _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()})[0].kpis
+    @load = (force=false) ->
+      deferred = $q.defer()
+
+      if _.isEmpty(@config) || force
+        ImpacLinking.getSsoSession().then (success) ->
+          _self.config.sso_session = success
+          deferred.resolve(_self.config)
+        ,(error) ->
+          $log.error('impac-angular ERROR: Could not retrieve sso_session id')
+          deferred.reject(error)
+
+      else
+        deferred.resolve(_self.config)
+
+      return deferred.promise
+
 
     formatShowQuery = (basePath, endpoint, watchable, params) ->
       baseUrl = [basePath,endpoint,watchable].join('/')
       url = [baseUrl,decodeURIComponent( $.param( params ) )].join('?')
       return url
 
+    # Retrieve all the available kpis from Impac!
+    @index = (metadata=null) ->
+      deferred = $q.defer()
+
+      _self.load().then (success) ->
+        params = {}
+        params.sso_session = success.sso_session
+        params.metadata = metadata if metadata?
+
+        host = ImpacRoutes.impacKpisBasePath()
+
+        url = [host,decodeURIComponent( $.param( params ) )].join('?')
+
+        $http.get(url).then (response) ->
+          deferred.resolve(response.data)
+        ,(err) ->
+          $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+          deferred.reject(err)
+      
+      return deferred.promise
+
+
     # retrieves data for kpi from api
     @show = (kpi) ->
       deferred = $q.defer()
-      _self.getLinkingData().then(
-        (results) ->
+      
+      _self.load().then (success) ->
 
-          params = {}
-          params.sso_session = results[0]
-          params.target = kpi.target if kpi.target?
-          params.metadata = kpi.metadata if kpi.metadata?
-          params.extra_param = kpi.extra_param if kpi.extra_param?
+        params = {}
+        params.sso_session = success.sso_session
+        params.target = kpi.target if kpi.target?
+        params.metadata = kpi.metadata if kpi.metadata?
+        params.extra_param = kpi.extra_param if kpi.extra_param?
 
-          switch kpi.source
-            when 'impac'
-              host = ImpacRoutes.impacKpisBasePath()
-            when 'local'
-              host = ImpacRoutes.localKpisBasePath()
+        switch kpi.source
+          when 'impac'
+            host = ImpacRoutes.impacKpisBasePath()
+          when 'local'
+            host = ImpacRoutes.localKpisBasePath()
 
-          url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
+        url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-          $http.get(url).then(
-            (response) ->
-              deferred.resolve(response.data)
-            (err) ->
-              $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
-              deferred.reject(err)
-          )
-      )
+        $http.get(url).then(
+          (response) ->
+            deferred.resolve(response.data)
+          (err) ->
+            $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+            deferred.reject(err)
+        )
+      
       return deferred.promise
 
-    # TODO: make this work.
-    @addKPI = () ->
+    @create = (endpoint, element_watched, extra_param=null) ->
       params = {
-        name: 'Finance Revenue',
-        element_watched: 'total'
-        endpoint: 'finance/revenue'
+        endpoint: endpoint
+        element_watched: element_watched
       }
+      params.extra_param = extra_param if extra_param?
+
       url = ImpacRoutes.createKpiPath DhbAnalyticsSvc.getId()
+      
       $http.post(url, params).then(
         (success) ->
           $log.debug 'success adding KPI: ', success
