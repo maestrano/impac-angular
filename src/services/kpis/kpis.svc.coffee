@@ -14,31 +14,33 @@ angular
       )
 
     # gets users kpi's from dashboard
-    @getKPIs = ->
-      _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()})[0].kpis
+    # @getKPIs = ->
+    #   _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()})[0].kpis
+
+    formatShowQuery = (basePath, endpoint, watchable, params) ->
+      baseUrl = [basePath,endpoint,watchable].join('/')
+      url = [baseUrl,decodeURIComponent( $.param( params ) )].join('?')
+      return url
 
     # retrieves data for kpi from api
-    @loadKpiContent = (kpi) ->
+    @show = (kpi) ->
       deferred = $q.defer()
       _self.getLinkingData().then(
         (results) ->
 
-          params = [ 'sso_session=' + results[0], 'target[limit]=15']
+          params = {}
+          params.sso_session = results[0]
+          params.target = kpi.target if kpi.target?
+          params.metadata = kpi.metadata if kpi.metadata?
+          params.extra_param = kpi.extra_param if kpi.extra_param?
 
-          _.forEach(_.pluck(results[1].organizations, 'uid'), (uid) ->
-            params.push('metadata[organization_ids][]=' + uid)
-          )
+          switch kpi.source
+            when 'impac'
+              host = ImpacRoutes.impacKpisBasePath()
+            when 'local'
+              host = ImpacRoutes.localKpisBasePath()
 
-          # # TODO: switch on kpis source
-          # switch kpi.source
-          #   when 'impac'
-          #     host = ImpacRoutes.impacKpisBasePath()
-          #   when 'local'
-          #     host = ImpacRoutes.localKpisBasePath()
-
-          host = ImpacRoutes.impacKpisBasePath()
-          url = host + '/' + kpi.endpoint + '/' + kpi.element_watched
-          url = $filter('urlHelper')(url, params)
+          url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
           $http.get(url).then(
             (response) ->
