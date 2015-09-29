@@ -1,7 +1,12 @@
-<div class="row tracking-kpis">
+<div class="row kpis">
   <div class="title-actions col-xs-2">
-    <div class="title">How I'm tracking</div>
-    <!-- <div ng-click="addKpiOnClick()"><a href=""><i class="fa fa-plus"></i> add another KPI</a></div> -->
+    <!-- <div class="title">How I'm tracking</div> -->
+    
+    <div ng-click="toggleAvailableKpis()"><a href=""><i class="fa fa-plus"></i> Attach KPI</a></div>
+    <div class="available-kpis-container" collapse="hideAvailableKpis">
+      <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-click="addKpi(kpi)">{{formatKpiName(kpi.endpoint)}}</div>
+    </div>
+    
     <!-- <div><a href=""><i class="fa fa-exclamation-triangle"></i> set up an alert</a></div> -->
   </div>
   <impac-kpi class="col-xs-2" kpi="kpi" ng-repeat="kpi in kpis track by $index"></impac-kpi>
