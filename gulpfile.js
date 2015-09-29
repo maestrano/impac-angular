@@ -1,3 +1,4 @@
+// TODO: Break this out into multiple files and clean up.
 var gulp = require('gulp'),
     // karma for gulp
     // karma = require('karma').server,
@@ -25,12 +26,25 @@ var gulp = require('gulp'),
     strip = require('gulp-strip-comments'),
     // Compile less to css.
     less = require('gulp-less'),
+    // Javascript, stylesheet and webcomponent injection
     inject = require('gulp-inject'),
+    // Node module for retreiving path name of a file
     path = require('path'),
-    // minify css
+    // Minify css
     minifyCss = require('gulp-minify-css'),
+    // A ternary gulp plugin: conditionally control the flow of vinyl objects.
+    gulpif = require('gulp-if'),
+    // Create immutable, lazily-initialized pipeline.
+    lazypipe = require('lazypipe'),
+    // Runs a sequence of gulp tasks in the specified order.
+    runSequence = require('run-sequence'),
+    // Require package.json file
     pkg = require('./package.json');
 
+// THIS VARIABLE IS SET BY RUNNING `NODE_ENV=value` before any task.
+// e.g `NODE_ENV=production gulp build`
+// OR just run `gulp build:dist`
+var env = process.env.NODE_ENV || 'development';
 
 /* ************************************ */
 /* TODO: Testing Tasks                  */
@@ -185,19 +199,36 @@ gulp.task('less-concat', function () {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
+gulp.task('build-lib', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
+  var isProd = (env === 'production') ? true : false;
+  // lazy pipeline steps to be run on env=production
+  var distChannel = lazypipe()
+    .pipe(uglify)
+    .pipe(strip)
+    .pipe(rename, 'impac-angular.min.js')
+    .pipe(gulp.dest, 'dist/');
+
   var stream = gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('dist/'))
-    .pipe(uglify())
-    .pipe(strip())
-    .pipe(rename('impac-angular.min.js'))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulpif(isProd, distChannel()));
+
+  // compile less into css and min.css for prod.
+  if (isProd) {
+    // note: uncomment bootstrap @import in impac-angular.less to run this task.
+    runSequence('less-compile');
+  }
 
   stream.on('end', function () {
     del(['tmp']);
   });
+});
+
+// shortcut for setting env and running production pipes.
+gulp.task('build-lib-dist', function () {
+  env = 'production';
+  runSequence('build-lib');
 });
 
 // cleans up tmp file created by 'templates' task.
@@ -205,15 +236,18 @@ gulp.task('clean', function (asyncCallback) {
   del(['tmp', './src/impac-angular.js'], asyncCallback);
 });
 
-gulp.task('watch', ['build'], function () {
-  gulp.watch(['src/**/*.js', 'src/**/*.html', 'src/**/*.less'], ['build']);
+gulp.task('watch', function () {
+  var tasks = [];
+  env === 'production' ? tasks.push('build-lib-dist') : tasks.push('build-lib');
+  gulp.watch(['src/**/*.js', 'src/**/*.html', 'src/**/*.less'], tasks);
 });
 
 /* ************************************ */
 /* Commands                             */
 /* ************************************ */
 gulp.task('start:watch', ['watch']);
-gulp.task('build:dist', ['build']);
+gulp.task('build', ['build-lib']);
+gulp.task('build:dist', ['build-lib-dist']);
 gulp.task('less:compile', ['less-compile']);
 gulp.task('less:inject', ['less-inject']);
 gulp.task('less:concat', ['less-concat']);
