@@ -4,12 +4,7 @@ angular
 
     _self = @
 
-    @getAvailableKpis = ->
-      return [
-        { end_point: '/finance/revenue/evolution', watchables: '' }
-      ]
-
-    # TODO: Improve this to save a local copy someone to reduce load times / queries.
+    # TODO: make this smarter, as currently it's called on every kpi load.
     @getLinkingData = ->
       return $q.all([ImpacLinking.getSsoSession(), ImpacLinking.getOrganizations()]).then(
         (results) ->
@@ -18,14 +13,44 @@ angular
           return $q.reject(err)
       )
 
-    @kpis = null
-
+    # gets users kpi's from dashboard
     @getKPIs = ->
       _.where(DhbAnalyticsSvc.data, {id: DhbAnalyticsSvc.getId()})[0].kpis
 
-    @loadKpiContent = ->
+    # retrieves data for kpi from api
+    @loadKpiContent = (kpi) ->
+      deferred = $q.defer()
+      _self.getLinkingData().then(
+        (results) ->
 
+          params = [ 'sso_session=' + results[0], 'target[limit]=15']
 
+          _.forEach(_.pluck(results[1].organizations, 'uid'), (uid) ->
+            params.push('metadata[organization_ids][]=' + uid)
+          )
+
+          # # TODO: switch on kpis source
+          # switch kpi.source
+          #   when 'impac'
+          #     host = ImpacRoutes.impacKpisBasePath()
+          #   when 'local'
+          #     host = ImpacRoutes.localKpisBasePath()
+
+          host = ImpacRoutes.impacKpisBasePath()
+          url = host + '/' + kpi.endpoint + '/' + kpi.element_watched
+          url = $filter('urlHelper')(url, params)
+
+          $http.get(url).then(
+            (response) ->
+              deferred.resolve(response.data)
+            (err) ->
+              $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+              deferred.reject(err)
+          )
+      )
+      return deferred.promise
+
+    # TODO: make this work.
     @addKPI = () ->
       params = {
         name: 'Finance Revenue',
@@ -39,51 +64,6 @@ angular
         (err) ->
           $log.error 'impac-angular ERROR: Unable to add KPI ', err
       )
-
-
-    # this.getKpi = ->
-    #   deferred = $q.defer()
-    #   getLinkingData.then(
-    #     (results) ->
-    #       kpis = []
-    #       promises = []
-
-    #       _.forEach(getAvailableKpis(), (kpi) ->
-
-    #         params = [ 'sso_session=' + results[0], 'target[limit]=15']
-
-    #         _.forEach(_.pluck(results[1].organizations, 'uid'), (uid) ->
-    #           params.push('metadata[organization_ids][]=' + uid)
-    #         )
-
-    #         # TODO: switch on kpis source
-    #         switch kpi.source
-    #           when 'impac'
-    #             host = ImpacRoutes.impacKpisBasePath()
-    #           when 'local'
-    #             host = ImpacRoutes.localKpisBasePath()
-
-    #         host = ImpacRoutes.impacKpisBasePath()
-
-    #         url = $filter('urlHelper')(host + kpi.end_point, params)
-
-    #         promises.push($http.get(url))
-    #       )
-
-    #       $q.all(promises).then(
-    #         (responses) ->
-
-    #           _.forEach(responses, (response) ->
-    #             debugger
-    #             kpis.push({
-
-    #             })
-    #           )
-    #         (err) ->
-    #           $log.error 'impac-angular ERROR: Could not retrieve KPI ' + kpi.end_point, err
-    #       )
-    #   )
-    #   return deferred.promise
 
     return @
   )

@@ -68,10 +68,9 @@ angular
         $http.get(ImpacRoutes.baseDhbPath(self.config.organizationId)).then (success) ->
           angular.copy(success.data, self.data)
           deferred.resolve(success.data)
-        ,(err) ->
+        (err) ->
           $log.error 'impac-angular ERROR: Unable to get dashboards from API: ', err
           deferred.reject(err)
-
       (err) ->
         deferred.reject(err)
 

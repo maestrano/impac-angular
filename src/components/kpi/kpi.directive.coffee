@@ -1,13 +1,19 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($templateCache) ->
+  .directive('impacKpi', ($log, $templateCache, Kpis) ->
     return {
-      restrict: 'A'
+      restrict: 'EA'
       scope: {
         kpi: '=kpiData'
       }
       controller: ($scope) ->
-        # dhb = DhbAnalyticsSvc.getCurrentDashboard()
+
+        if $scope.kpi.endpoint
+          Kpis.loadKpiContent($scope.kpi).then(
+            (success) ->
+              $scope.kpi.data = success.kpi
+              $log.debug 'KPI: ', $scope.kpi
+          )
 
       template: $templateCache.get('kpi/kpi.tmpl.html')
     }

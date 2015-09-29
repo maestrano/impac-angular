@@ -9,15 +9,41 @@ angular
         kpisConfig = ImpacTheming.get().dhbKpisConfig
 
         $scope.keyStats =
-          interests: { title: 'Interest %', value: '-15.30' }
-          profitability: { title: 'Profitability %', value: '8.34' }
-          capital: { title: 'Cost of capital', value: '20.00' }
-          tax: { title: 'TAX % based on FY14', value: '29.91' }
-          super: { title: 'Super', value: '$479,023' }
+          interests: {
+            name: 'Interest %',
+            data: {
+              real_value: '-15.30'
+            }
+          }
+          profitability: {
+            name: 'Profitability %',
+            data: {
+              real_value: '8.34'
+            }
+          }
+          capital: {
+            name: 'Cost of capital',
+            data: {
+              real_value: '20.00'
+            }
+          }
+          tax: {
+            name: 'TAX % based on FY14',
+            data: {
+              real_value: '29.91'
+            }
+          }
+          super: {
+            name: 'Super',
+            data: {
+              real_value: '$479,023'
+            }
+          }
 
         $scope.kpis = []
 
-        # Set callback for when dashboards and currentDhb are loaded
+        # Set callback for when dashboards and currentDhb are loaded, this gets called
+        # from the dashboard.directive ctrl.
         DhbAnalyticsSvc.config.loadKpis = ->
           $scope.kpis = Kpis.getKPIs()
 

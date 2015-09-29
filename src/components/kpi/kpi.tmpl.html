@@ -1,7 +1,7 @@
 <div class="media">
   <div class="media-body">
-    <small class="kpi-title">{{::kpi.title}}</small>
-    <span class="kpi-value">{{::kpi.value}}</span>
+    <small class="kpi-title">{{::kpi.name}}</small>
+    <span class="kpi-value">{{::kpi.data.real_value}}</span>
     <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div>
   </div>
 </div>
