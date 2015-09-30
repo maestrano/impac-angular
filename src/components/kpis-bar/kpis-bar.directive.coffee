@@ -11,6 +11,7 @@ angular
       controller: ($scope) ->
         $scope.hideAvailableKpis = true
         $scope.showEditMode = false
+        $scope.showKpisExpanded = false
 
         $scope.keyStats = [
           { name: 'Interest %', data: { real_value: '-15.30' }, static: true },
@@ -58,6 +59,12 @@ angular
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
+
+        $scope.expandKpis = ->
+          $scope.showKpisExpanded = true
+
+        $scope.collapseKpis = ->
+          $scope.showKpisExpanded = false
 
     }
   )
