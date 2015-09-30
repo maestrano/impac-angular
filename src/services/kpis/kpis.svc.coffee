@@ -59,7 +59,7 @@ angular
         params = {}
         params.sso_session = success.sso_session
         params.target = kpi.target if kpi.target?
-        params.metadata = kpi.metadata if kpi.metadata?
+        params.metadata = kpi.settings if kpi.settings?
         params.extra_param = kpi.extra_param if kpi.extra_param?
 
         switch kpi.source
@@ -110,14 +110,14 @@ angular
 
       filtered_param = {}
       filtered_param.name = params.name if params.name?
-      filtered_param.metadata = params.metadata if params.metadata?
+      filtered_param.settings = params.metadata if params.metadata?
       filtered_param.target = params.target if params.target?
       filtered_param.extra_param = params.extra_param if params.extra_param?
 
       if !_.isEmpty filtered_param
         $http.put(url, params).then (success) ->
           # TODO verify
-          angular.extend kpi success.data
+          angular.extend(kpi, success.data)
           _self.show(kpi)
           $log.debug 'success updating KPI: ', success
         ,(err) ->
