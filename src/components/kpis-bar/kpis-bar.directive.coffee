@@ -8,7 +8,7 @@ angular
       }
       templateUrl: 'kpis-bar/kpis-bar.tmpl.html'
       
-      controller: ($scope) ->
+      controller: ($scope, $timeout) ->
         $scope.hideAvailableKpis = true
         $scope.showEditMode = false
         $scope.showKpisExpanded = false
@@ -21,18 +21,26 @@ angular
           { name: 'Super', data: { real_value: '$479,023' }, static: true},
         ]
 
-        DhbAnalyticsSvc.load().then (success) ->
-          currentDhb = _.find success, (dhb) ->
-            dhb.id == DhbAnalyticsSvc.getId()
+        getAvailableKpis = ->
+          DhbAnalyticsSvc.load().then (success) ->
+            currentDhb = _.find success, (dhb) ->
+              dhb.id == DhbAnalyticsSvc.getId()
 
-          metadata = {}
-          metadata.organization_ids = _.map currentDhb.data_sources, (org) ->
-            org.uid
+            if currentDhb?
+              metadata = {}
+              metadata.organization_ids = _.map currentDhb.data_sources, (org) ->
+                org.uid
 
-          Kpis.index(metadata).then (success) ->
-            $scope.availableKpis = success.kpis
-            angular.forEach $scope.availableKpis, (kpi) ->
-              kpi.element_watched = kpi.watchables[0]
+              Kpis.index(metadata).then (success) ->
+                $scope.availableKpis = success.kpis
+                angular.forEach $scope.availableKpis, (kpi) ->
+                  kpi.element_watched = kpi.watchables[0]
+
+            else
+              $timeout (-> getAvailableKpis()), 1000
+
+        # 1st load
+        getAvailableKpis()
 
 
         $scope.toggleAvailableKpis = ->
