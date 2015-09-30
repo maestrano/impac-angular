@@ -568,86 +568,6 @@
     }
   }
 }
-#module__dashboard-selector {
-  a {
-    font-weight: normal;
-  }
-  // dashboard selector template wrapper div
-  & > div:first-child {
-    border-bottom: @impac-dashboard-selector-border;
-  }
-  // container for dashboard selector 'dropdown' template
-  .dropdown-container {
-    padding-bottom: 5px;
-  }
-
-  // angular bootstrap tabs & pills
-  .nav-tabs {
-    border-bottom: 0;
-  }
-  .nav.nav-tabs,
-  .nav.nav-pills {
-
-    // add new tab
-    li:last-child > a {
-      padding-right: 15px;
-      tab-heading a {
-        position: static;
-      }
-    }
-  }
-  // TABS
-  .nav.nav-tabs {
-    // tab
-    li > a {
-      padding: @impac-dashboard-selector-tabs-padding;
-      margin: @impac-dashboard-selector-tabs-margin;
-      background-color: @impac-dashboard-selector-tabs-background-color;
-      border: @impac-dashboard-selector-border;
-      color: @impac-dashboard-selector-tabs-color;
-    }
-    // active tab
-    li.active > a {
-      background-color: @impac-dashboard-selector-tabs-active-background-color;
-      color: @impac-dashboard-selector-tabs-active-color;
-    }
-    // add new tab
-    li:last-child > a {
-      // padding-left: 5px;
-    }
-    li:last-child.active > a {
-      background-color: @impac-dashboard-selector-tabs-background-color;
-    }
-  }
-  // PILLS
-  // TODO: Add less variables for customisation.
-  .nav.nav-pills {
-    // tab
-    li > a {
-      min-width: 0px;
-      padding-right: 8px;
-    }
-    // add a new tab
-    li:last-child tab-heading a {
-      margin-left: 2px;
-    }
-    // add a new tab
-    li:last-child.active > a {
-      background-color: #f4f4f4;
-    }
-  }
-  // tab icons
-  tab-heading a.close-link {
-    border-bottom: 0px solid;
-    margin-left: 12px;
-    position: relative;
-    top: -9px;
-    right: 1px;
-    color: @impac-dashboard-selector-tabs-color;
-  }
-  ////////
-}
-
 .analytics {
 
   padding-top: @impac-dashboard-padding-top;
@@ -984,6 +904,86 @@
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+#module__dashboard-selector {
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
+  // container for dashboard selector 'dropdown' template
+  .dropdown-container {
+    padding-bottom: 5px;
+  }
+
+  // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
+  .nav.nav-tabs,
+  .nav.nav-pills {
+
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+  // TABS
+  .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
+    // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
+    li:last-child.active > a {
+      background-color: @impac-dashboard-selector-tabs-background-color;
+    }
+  }
+  // PILLS
+  // TODO: Add less variables for customisation.
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a.close-link {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
+  }
+  ////////
+}
+
 .analytics kpis-bar .kpi {
 
   text-align: center;
@@ -1051,6 +1051,49 @@
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
 }
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
+
 .analytics kpis-bar > .kpis {
 
   color: @light-black;
@@ -1113,49 +1156,6 @@
   color: @light-black;
   padding: 5px 0px;
 }
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1295,6 +1295,22 @@
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 }
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1322,22 +1338,6 @@
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-leaves-balance{
   .selector {
     .center-thin();
@@ -1352,6 +1352,12 @@
   }
   .widget-lines-container {
     margin-top: 15px;
+  }
+}
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 175px;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1372,12 +1378,6 @@
   .fc-day-grid,.fc-widget-header {
     font-size: 12px;
     color: @impac-widget-text-color;
-  }
-}
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 175px;
   }
 }
 .analytics .widget-item .content.hr-payroll-taxes {

@@ -70,7 +70,10 @@ angular
           # reset data = list of all the dashboards for the organization selected
           angular.copy(success.data, self.data)
           # reset config.id = id of the first dashboard retrieved
-          service.config.id = service.data[0].id
+          if service.data.length > 0
+            service.config.id = service.data[0].id
+          else
+            service.config.id = null
 
           deferred.resolve(success.data)
         (err) ->
