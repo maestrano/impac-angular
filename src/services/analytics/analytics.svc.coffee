@@ -66,7 +66,12 @@ angular
       deferred = $q.defer()
       service.getOrganizations().then ->
         $http.get(ImpacRoutes.baseDhbPath(self.config.organizationId)).then (success) ->
+          
+          # reset data = list of all the dashboards for the organization selected
           angular.copy(success.data, self.data)
+          # reset config.id = id of the first dashboard retrieved
+          service.config.id = service.data[0].id
+
           deferred.resolve(success.data)
         (err) ->
           $log.error 'impac-angular ERROR: Unable to get dashboards from API: ', err
