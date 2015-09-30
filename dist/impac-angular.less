@@ -984,6 +984,79 @@
   ////////
 }
 
+.analytics kpis-bar .kpi {
+
+  text-align: center;
+  min-height: 100px;
+  white-space: normal;
+  padding: 10px 3px;
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    margin: 3px auto 0px auto;
+    padding: 2px 5px;
+    max-width: 100px;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 70px;
+}
+.analytics kpis-bar > .kpis {
+
+  color: @light-black;
+  padding: 10px 0px;
+
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 300px;
+    max-height: 150px;
+    box-shadow: 0px 3px 12px -4px;
+
+    .scrollable();
+
+    .available-kpi {
+      .selectable();
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+    }
+  }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  color: @light-black;
+  padding: 5px 0px;
+}
 .widget-item .top-line {
   cursor: move;
   background-color: @impac-widget-title-bg;
@@ -1440,19 +1513,6 @@
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-performance {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 210px;
-    .widget-line.total {
-      .selectable();
-    }
-  }
-  .selector {
-    margin-bottom: 4px;
-  }
-}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1469,6 +1529,19 @@
     .widget-line {
       font-size: 11px;
     }
+  }
+}
+.analytics .widget-item .content.sales-performance {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 210px;
+    .widget-line.total {
+      .selectable();
+    }
+  }
+  .selector {
+    margin-bottom: 4px;
   }
 }
 .analytics .widget-item .content.sales-summary {
@@ -1814,6 +1887,9 @@
     }
   }
 }
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -1827,7 +1903,4 @@
       margin-right: -3px;
     }
   }
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
 }
