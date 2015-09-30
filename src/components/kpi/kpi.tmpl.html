@@ -1,5 +1,5 @@
-<div class="tile kpi media">
-  <div class="media-body" ng-hide="showEditTarget">
+<div class="tile kpi">
+  <div ng-hide="showEditTarget">
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
     <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
     <span class="kpi-value">{{::kpi.data.real_value}}</span>
@@ -9,15 +9,19 @@
     <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div> 
   </div>
 
-  <div class="media-body" ng-if="showEditTarget">
+  <div ng-if="showEditTarget">
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+
     KPI target:
-    <select ng-model="kpi.target.reverse">
+    
+    <select ng-model="kpi.target.reverse" class="form-control input-sm">
       <option value="false" ng-selected="!isTargetReverse()">over</option>
       <option value="true" ng-selected="isTargetReverse()">below</option>
     </select>
-    <input type="text" ng-model="kpi.target.limit" />
-    <div class="kpi-edit" ng-click="updateTarget()"><a href="">Save</a></div> 
+    
+    <input type="text" ng-model="kpi.target.limit"  class="form-control input-sm" />
+    
+    <div class="kpi-alert" ng-click="updateTarget()"><a href="">Save</a></div> 
   </div>
 
 </div>
