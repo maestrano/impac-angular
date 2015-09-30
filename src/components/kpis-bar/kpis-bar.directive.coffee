@@ -31,7 +31,7 @@ angular
           Kpis.index(metadata).then (success) ->
             $scope.availableKpis = success.kpis
             angular.forEach $scope.availableKpis, (kpi) ->
-              kpi.element_watched = {}
+              kpi.element_watched = kpi.watchables[0]
 
 
         $scope.toggleAvailableKpis = ->
