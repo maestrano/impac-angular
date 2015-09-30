@@ -3,14 +3,19 @@
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
     <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
     <span class="kpi-value">{{::kpi.data.real_value}}</span>
-    <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div>
+    <!-- <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div> -->
+    <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
 
-    <div class="kpi-edit" ng-show="editMode" ng-click="displayEditTarget()"><a href="">Edit settings</a></div> 
+    <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div> 
   </div>
 
   <div class="media-body" ng-if="showEditTarget">
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
-    KPI limit:
+    KPI target:
+    <select ng-model="kpi.target.reverse">
+      <option value="false" ng-selected="!isTargetReverse()">over</option>
+      <option value="true" ng-selected="isTargetReverse()">below</option>
+    </select>
     <input type="text" ng-model="kpi.target.limit" />
     <div class="kpi-edit" ng-click="updateTarget()"><a href="">Save</a></div> 
   </div>

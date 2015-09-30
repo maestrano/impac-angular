@@ -27,5 +27,8 @@ angular
           $scope.kpi.target.limit ||= ""
           $scope.showEditTarget = true
 
+        $scope.isTargetReverse = ->
+          $scope.kpi.target['reverse']? && $scope.kpi.target['reverse'] == 'true'
+
     }
   )
