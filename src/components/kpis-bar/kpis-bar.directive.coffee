@@ -51,7 +51,8 @@ angular
           else
             extraParam = null
 
-          Kpis.create(kpi.endpoint, kpi.watchables[0], extraParam)
+          Kpis.create(kpi.endpoint, kpi.watchables[0], extraParam).then (success) ->
+            $scope.kpis.push(success)
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode

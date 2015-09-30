@@ -84,6 +84,8 @@ angular
 
 
     @create = (endpoint, element_watched, extra_param=null) ->
+      deferred = $q.defer()
+
       params = {
         endpoint: endpoint
         element_watched: element_watched
@@ -94,11 +96,14 @@ angular
       
       $http.post(url, params).then(
         (success) ->
-          # TODO refresh dashboard or add the returned kpi to the kpis list?
+          deferred.resolve(success.data)
           $log.debug 'success adding KPI: ', success
         (err) ->
+          deferred.reject(err)
           $log.error 'impac-angular ERROR: Unable to add KPI ', err
       )
+
+      return deferred.promise
 
     @update = (kpi, params) ->
       url = ImpacRoutes.updateKpiPath kpi.id
