@@ -105,6 +105,7 @@ angular
 
       return deferred.promise
 
+
     @update = (kpi, params) ->
       url = ImpacRoutes.updateKpiPath kpi.id
 
@@ -122,6 +123,19 @@ angular
           $log.debug 'success updating KPI: ', success
         ,(err) ->
           $log.error 'impac-angular ERROR: Unable to update KPI ', err
+
+
+    @delete = (kpi) ->
+      deferred = $q.defer()
+
+      url = ImpacRoutes.deleteKpiPath kpi.id
+      $http.delete(url).then (success) ->
+        return deferred.resolve(success)
+      ,(err) ->
+        return deferred.reject(err)
+
+      return deferred.promise
+
 
     return @
   )

@@ -41,6 +41,20 @@
     bottom: 15px;
     left: 15%;
     width: 70%;
+   
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+    } 
   }
 
   .kpi-watch {

@@ -8,6 +8,7 @@
     <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
 
     <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div> 
+    <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div> 
   </div>
 
   <div ng-if="showEditTarget">

@@ -57,6 +57,11 @@ angular
           Kpis.create(kpi.endpoint, kpi.element_watched, extraParam).then (success) ->
             $scope.kpis.push(success)
 
+        $scope.removeKpi = (kpiId) ->
+          kpisList = angular.copy($scope.kpis)
+          $scope.kpis = _.reject kpisList, (kpi) ->
+            kpi.id == kpiId
+
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
 

@@ -4,6 +4,7 @@ angular
     return {
       restrict: 'EA'
       scope: {
+        onDelete: '&'
         kpi: '='
         editMode: '='
       }
@@ -29,6 +30,11 @@ angular
 
         $scope.isTargetReverse = ->
           $scope.kpi.target['reverse']? && $scope.kpi.target['reverse'] == 'true'
+
+        $scope.deleteKpi = ->
+          unless $scope.kpi.static
+            Kpis.delete($scope.kpi).then (success)->
+              $scope.onDelete()
 
     }
   )
