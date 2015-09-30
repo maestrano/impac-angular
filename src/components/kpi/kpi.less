@@ -4,11 +4,21 @@
   min-height: 125px;
   white-space: normal;
   padding: 10px 3px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 4px 12px -7px #17262d;
 
   .kpi-title {
     .text-uppercase();
     font-size: 12px;
     font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
   }
 
   .kpi-value {
@@ -35,5 +45,5 @@
 }
 
 .analytics kpis-bar > .key-stats .kpi {
-  min-height: 70px;
+  min-height: 80px;
 }
