@@ -4,7 +4,13 @@
     
     <div ng-click="toggleAvailableKpis()"><a href=""><i class="fa fa-plus"></i> Attach KPI</a></div>
     <div class="available-kpis-container" collapse="hideAvailableKpis">
-      <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-click="addKpi(kpi)">{{formatKpiName(kpi.endpoint)}}</div>
+      <div ng-repeat="kpi in availableKpis" class="available-kpi">
+        <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
+        <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)" style="float:right;">+ Attach</button>
+        <select class="form-control-static input-sm" ng-model="kpi.element_watched" style="float:right;">
+          <option ng-repeat="watchable in kpi.watchables track by $index" value="{{watchable}}" ng-selected="$index == 0">{{watchable}}</option>
+        </select> 
+      </div>
     </div>
     
     <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPIs Settings</a></div>

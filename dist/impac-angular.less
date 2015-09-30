@@ -568,45 +568,6 @@
     }
   }
 }
-.analytics kpis-bar .kpi {
-
-  text-align: center;
-  min-height: 125px;
-  white-space: normal;
-  padding: 10px 3px;
-
-  .kpi-title {
-    .text-uppercase();
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .kpi-value {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .kpi-alert {
-    .text-uppercase();
-    font-size: 11px;
-    font-weight: 700;
-    background-color: white;
-    border: 1px solid @brand-danger;
-    border-radius: 4px;
-    color: @brand-danger;
-    padding: 2px 5px;
-
-    position: absolute;
-    bottom: 15px;
-    left: 15%;
-    width: 70%;
-  }
-}
-
-.analytics kpis-bar > .key-stats .kpi {
-  min-height: 70px;
-}
 .analytics {
 
   padding-top: @impac-dashboard-padding-top;
@@ -1023,6 +984,110 @@
   ////////
 }
 
+.analytics kpis-bar > .kpis {
+
+  color: @light-black;
+  padding: 10px 0px;
+
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 500px;
+    max-height: 150px;
+    box-shadow: 0px 3px 12px -4px;
+
+    .scrollable();
+
+    .available-kpi {
+      .selectable();
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+      height: 38px;
+
+      span.kpi-name {
+        padding-top: 5px;
+        display: inline-block;
+      }
+
+      .form-control-static, .btn.btn-sm.btn-info {
+        float: right;
+        min-height: 30px;
+        height: 30px;
+        float: right;
+        margin-left: 3px;
+        margin-top: 0px;
+        font-weight: bold;
+      }
+      
+    }
+
+  }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  color: @light-black;
+  padding: 5px 0px;
+}
+.analytics kpis-bar .kpi {
+
+  text-align: center;
+  min-height: 125px;
+  white-space: normal;
+  padding: 10px 3px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 4px 12px -7px #17262d;
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 80px;
+}
 .widget-item .top-line {
   cursor: move;
   background-color: @impac-widget-title-bg;
@@ -1066,51 +1131,14 @@
   }
 }
 
-.analytics kpis-bar > .kpis {
-
-  color: @light-black;
-  padding: 10px 0px;
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 300px;
-    max-height: 150px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      .selectable();
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-    }
-  }
-
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  color: @light-black;
-  padding: 5px 0px;
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
 }
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
     max-height: 98px;
   }
-}
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
 }
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1242,22 +1270,6 @@
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1283,6 +1295,22 @@
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+}
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
   }
 }
 .analytics .widget-item .content.hr-leaves-balance{
@@ -1333,14 +1361,6 @@
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.hr-timesheets {
-  .currency {
-    font-size: 14px;
-  }
-  .widget-lines-container {
-    max-height: 210px;
-  }
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1354,6 +1374,14 @@
   }
   .price {
     .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
   }
 }
 .analytics .widget-item .content.hr-workforce-summary {
@@ -1482,6 +1510,9 @@
     margin-bottom: 4px;
   }
 }
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1509,9 +1540,10 @@
     }
   }
 }
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
 }
+
 .analytics .widget-item .content.sales-performance {
   .simple-list-widget();
   .widget-lines-container {
@@ -1523,16 +1555,6 @@
   }
   .selector {
     margin-bottom: 4px;
-  }
-}
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
   }
 }
 .analytics .widget-item .content.sales-segmented-turnover {
@@ -1551,6 +1573,12 @@
     .widget-line {
       font-size: 11px;
     }
+  }
+}
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
   }
 }
 .analytics .widget-item .content.sales-top-opportunities {
