@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="buttons-bar col-md-8">
+    <tabset type="{{selectorType}}">
+      <tab ng-repeat="dhb in dhbCtrl.dashboardsList" select="dhbCtrl.selectDashboard(dhb.id)" active="dhb.active">
+        <tab-heading>
+          {{dhb.full_name}}
+          <a href="" class="close-link" ng-if="isdeleteDhbEnabled">
+            <i class="fa fa-times" ng-click="dhbCtrl.modal.deleteDashboard.open()"></i>
+          </a>
+        </tab-heading>
+      </tab>
+      <tab active="false" ng-if='isAccessibilityEnabled' ng-click="toogleAccessibilityMode()">
+        <tab-heading>
+          <a href=""><i class="fa fa-wheelchair"></i></a>
+        </tab-heading>
+      </tab>
+      <tab ng-if="isAddDhbEnabled" active="false" ng-click="dhbCtrl.modal.createDashboard.open()">
+        <tab-heading>
+          <a href="">+</a>
+        </tab-heading>
+      </tab>
+    </tabset>
+  </div>
+  <div class='buttons-bar col-md-4'>
+    <div class='actions-panel'>
+      <button ng-if='isAccessibilityEnabled' ng-click="toogleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector"><span class='fa fa-wheelchair'></span></button>
+      <button ng-if="isAddWidgetEnabled" ng-click="dhbCtrl.showWidgetSelector = true" class='btn btn-warning' ng-show="dhbCtrl.showCreateWidget" ng-disabled="dhbCtrl.showWidgetSelector"><span class='fa fa-plus'></span> Add Widget</button>
+      <!-- <button id='data-upload-wizard' ng-click='dhbCtrl.openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
+    </div>
+  </div>
+</div>
