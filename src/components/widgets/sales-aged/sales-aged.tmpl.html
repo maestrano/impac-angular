@@ -24,25 +24,20 @@
       <div class="legend">From {{widget.content.dates[0]}} to {{getLastDate()}}</div>
 
       <div class="widget-lines-container">
-        <!-- <div class="row widget-line"> -->
-          <div class="col-sm-2 text-center" ng-repeat="date in formattedDates track by $index" style="padding: 5px 0px;">
-            <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date}}</div></div>
-            <div class="row widget-line">
-            <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
-              {{getTotal($index) | mnoCurrency : widget.content.currency : false}}
-              <br />
-              {{widget.content.currency}}
-            </div>
-            <div ng-show="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
-              {{getTotal($index)}}
-            </div>
+        <div class="col-sm-2 text-center" ng-repeat="date in formattedDates track by $index" style="padding: 5px 0px;">
+          <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date}}</div></div>
+          <div class="row widget-line">
+          <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
+            {{getTotal($index) | mnoCurrency : widget.content.currency : false}}
+            <br />
+            {{widget.content.currency}}
           </div>
-        <!-- </div> -->
+          <div ng-show="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
+            {{getTotal($index)}}
+          </div>
+        </div>
       </div>
-
     </div>
-
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
   </div>
-
+  <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
 </div>
