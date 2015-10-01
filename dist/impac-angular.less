@@ -297,6 +297,15 @@
 **                            2 or more components.
 /* ************************************************************************ */
 
+// Not ideal: intends to force a scrollbar on the window (not on the body),
+// so that the tooltips appended to body are not making the screen flickering.
+// (see when there is only 1 invoices list widget on the dashboard)
+// It is better if the tooltips can be appended to body because otherwise it's
+// messing the alternate-bg() mixing (by adding a child to the parent element)
+body {
+  height: 101% !important;
+}
+
 .analytics {
 
   // ---------------------------------------------------------------------------
@@ -520,7 +529,7 @@
     .widget-line {
       .alternate-bg();
       &.header {
-        background-color: white;
+        background-color: @impac-widget-background-color;
       }
     }
   }
@@ -649,8 +658,8 @@
 
     .change-name {
       position: absolute;
-      top: 115px;
-      left: 20%;
+      top: 30px;
+      left: 20px;
       width: 60%;
       background-color: rgb(23, 38, 45);
       color: white;
@@ -1238,7 +1247,7 @@
   }
 }
 
-.analytics .widget-item .content.custom-calculation {
+.analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
     text-align: center;
@@ -1250,18 +1259,19 @@
   }
 }
 
-.modal-custom-calculation {
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
 
-  .modal-body {
-    .edit {
-      .edit-panel-style();
-      padding: 5px;
-    }
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
     .part {
       width: 49%;
     }
   }
-
   .loader {
     .loader-centered();
     i {
@@ -1272,7 +1282,6 @@
     }
   }
 }
-
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -1374,14 +1383,14 @@
     color: @impac-widget-text-color;
   }
 }
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
       max-height: 175px;
   }
-}
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
@@ -1844,7 +1853,7 @@
     }
   }
 }
-.analytics .widget-item .content .settings.organizations {
+.analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
       padding: 5px 10px 5px 18px;
