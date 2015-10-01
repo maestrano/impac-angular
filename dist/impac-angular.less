@@ -297,6 +297,15 @@
 **                            2 or more components.
 /* ************************************************************************ */
 
+// Not ideal: intends to force a scrollbar on the window (not on the body),
+// so that the tooltips appended to body are not making the screen flickering.
+// (see when there is only 1 invoices list widget on the dashboard)
+// It is better if the tooltips can be appended to body because otherwise it's
+// messing the alternate-bg() mixing (by adding a child to the parent element)
+body {
+  height: 101% !important;
+}
+
 .analytics {
 
   // ---------------------------------------------------------------------------
@@ -520,7 +529,7 @@
     .widget-line {
       .alternate-bg();
       &.header {
-        background-color: white;
+        background-color: @impac-widget-background-color;
       }
     }
   }
@@ -649,8 +658,8 @@
 
     .change-name {
       position: absolute;
-      top: 115px;
-      left: 20%;
+      top: 30px;
+      left: 20px;
       width: 60%;
       background-color: rgb(23, 38, 45);
       color: white;
@@ -904,6 +913,49 @@
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
+
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -984,57 +1036,8 @@
   ////////
 }
 
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
-}
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 98px;
-  }
 }
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1044,6 +1047,12 @@
   
   .price {
     .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 98px;
   }
 }
 .analytics .widget-item .content.accounts-balance-sheet {
@@ -1109,7 +1118,7 @@
   }
 }
 
-.analytics .widget-item .content.custom-calculation {
+.analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
     text-align: center;
@@ -1121,18 +1130,19 @@
   }
 }
 
-.modal-custom-calculation {
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
 
-  .modal-body {
-    .edit {
-      .edit-panel-style();
-      padding: 5px;
-    }
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
     .part {
       width: 49%;
     }
   }
-
   .loader {
     .loader-centered();
     i {
@@ -1143,7 +1153,6 @@
     }
   }
 }
-
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -1254,9 +1263,6 @@
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1271,6 +1277,9 @@
   .price {
     .center-bold(0px);
   }
+}
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {
@@ -1349,6 +1358,9 @@
     max-height: 270px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
   .details-container {
@@ -1371,9 +1383,6 @@
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
 }
@@ -1390,12 +1399,6 @@
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1404,6 +1407,12 @@
   }
   .selector {
     margin-bottom: 4px;
+  }
+}
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
   }
 }
 .analytics .widget-item .content.sales-margin {
@@ -1440,19 +1449,6 @@
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-performance {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 210px;
-    .widget-line.total {
-      .selectable();
-    }
-  }
-  .selector {
-    margin-bottom: 4px;
-  }
-}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1469,6 +1465,19 @@
     .widget-line {
       font-size: 11px;
     }
+  }
+}
+.analytics .widget-item .content.sales-performance {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 210px;
+    .widget-line.total {
+      .selectable();
+    }
+  }
+  .selector {
+    margin-bottom: 4px;
   }
 }
 .analytics .widget-item .content.sales-summary {
@@ -1715,7 +1724,7 @@
     }
   }
 }
-.analytics .widget-item .content .settings.organizations {
+.analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
       padding: 5px 10px 5px 18px;
@@ -1814,6 +1823,9 @@
     }
   }
 }
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -1827,7 +1839,4 @@
       margin-right: -3px;
     }
   }
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
 }
