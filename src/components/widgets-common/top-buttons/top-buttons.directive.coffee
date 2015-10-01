@@ -14,7 +14,7 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
       .widgets
       .delete(w.id, w.parentDashboard)
       .then( () ->
-        $log.debug('Successfully removed widget!')
+        return true
       ,(errors) ->
         w.errors = Utilities.processRailsError(errors)
         $log.error('Error deleting widget: ', errors)

@@ -34,7 +34,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
     w.isLoading = true
     DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
       (success) ->
-        $log.debug('widget loadContent SUCCESS: ', success)
         updatedWidget = success.data
         updatedWidget.content ||= {}
         updatedWidget.originalName = updatedWidget.name
