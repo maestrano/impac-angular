@@ -4,6 +4,15 @@
 **                            2 or more components.
 /* ************************************************************************ */
 
+// Not ideal: intends to force a scrollbar on the window (not on the body),
+// so that the tooltips appended to body are not making the screen flickering.
+// (see when there is only 1 invoices list widget on the dashboard)
+// It is better if the tooltips can be appended to body because otherwise it's
+// messing the alternate-bg() mixing (by adding a child to the parent element)
+body {
+  height: 101% !important;
+}
+
 .analytics {
 
   // ---------------------------------------------------------------------------
