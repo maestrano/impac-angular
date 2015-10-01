@@ -103,6 +103,18 @@ body {
   // --- Custom elements
   // ---------------------------------------------------------------------------
 
+  .btn.btn-shaded {
+    background-color: @impac-btn-shadded-bg;
+    border: solid 1px darken(@impac-btn-shadded-bg,5%);
+    color: @impac-btn-shadded-color;
+    font-weight: 400;
+
+    &:hover {
+      color: lighten(@impac-btn-shadded-color,5%);
+      background-color: lighten(@impac-btn-shadded-bg,5%);
+    }
+  }
+
   .price {
     .center-bold();
   }

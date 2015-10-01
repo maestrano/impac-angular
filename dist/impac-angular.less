@@ -78,6 +78,10 @@
 @impac-minimum-widget-size:                     250px;
 @impac-big-widget-size:                         565px;
 
+// Buttons
+@impac-btn-shadded-bg                           @darkblue;
+@impac-btn-shadded-color                        @mediumblue;
+
 // Dashboard Modals
 @impac-dashboard-loading-spinner:               white;
 
@@ -395,6 +399,18 @@ body {
   // ---------------------------------------------------------------------------
   // --- Custom elements
   // ---------------------------------------------------------------------------
+
+  .btn.btn-shaded {
+    background-color: @impac-btn-shadded-bg;
+    border: solid 1px darken(@impac-btn-shadded-bg,5%);
+    color: @impac-btn-shadded-color;
+    font-weight: 400;
+
+    &:hover {
+      color: lighten(@impac-btn-shadded-color,5%);
+      background-color: lighten(@impac-btn-shadded-bg,5%);
+    }
+  }
 
   .price {
     .center-bold();
@@ -1039,6 +1055,12 @@ body {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 98px;
+  }
+}
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -1047,12 +1069,6 @@ body {
   
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 98px;
   }
 }
 .analytics .widget-item .content.accounts-balance-sheet {
@@ -1263,6 +1279,9 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1277,9 +1296,6 @@ body {
   .price {
     .center-bold(0px);
   }
-}
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {
@@ -1358,9 +1374,6 @@ body {
     max-height: 270px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
   .details-container {
@@ -1383,6 +1396,9 @@ body {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
 }
@@ -1399,6 +1415,12 @@ body {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1407,12 +1429,6 @@ body {
   }
   .selector {
     margin-bottom: 4px;
-  }
-}
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
   }
 }
 .analytics .widget-item .content.sales-margin {
@@ -1449,6 +1465,19 @@ body {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-performance {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 210px;
+    .widget-line.total {
+      .selectable();
+    }
+  }
+  .selector {
+    margin-bottom: 4px;
+  }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1465,19 +1494,6 @@ body {
     .widget-line {
       font-size: 11px;
     }
-  }
-}
-.analytics .widget-item .content.sales-performance {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 210px;
-    .widget-line.total {
-      .selectable();
-    }
-  }
-  .selector {
-    margin-bottom: 4px;
   }
 }
 .analytics .widget-item .content.sales-summary {
