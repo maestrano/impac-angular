@@ -12,8 +12,8 @@ angular
     #=======================================
     # Required data:
     links = {
-      ssoSession: null,
-      organizations: null
+      user: null, # @params Function -> returns Promise
+      organizations: null # @params Function -> return Promise
     }
     #=======================================
     # Public methods available in config
@@ -26,7 +26,6 @@ angular
           throw "Missing core data (#{key}) to run impac-angular, please refer to impac.services.linking module or impac-angular README.md on required provider configurations."
         links[key] = link
       )
-      return
 
     #=======================================
     _$get = ($q) ->
@@ -34,27 +33,21 @@ angular
       #=======================================
       # Public methods available as service
       #=======================================
-      service.getSsoSession = ->
-        deferred = $q.defer()
-        links.ssoSession().then(
-          (ssoSession) ->
-            deferred.resolve(ssoSession)
-          (error) ->
-            # handle error
-            deferred.reject(error)
-        )
-        return deferred.promise
+      service.getUserData = ->
+        return links.user().then(
+          (success) ->
+            return success
+          (err) ->
+            return $q.reject(err)
+      )
 
       service.getOrganizations = ->
-        deferred = $q.defer()
-        links.organizations().then(
+        return links.organizations().then(
           (success) ->
-            deferred.resolve(success)
-          (error) ->
-            # handle error
-            deferred.reject(error)
+            return success
+          (err) ->
+            return $q.reject(err)
         )
-        return deferred.promise
 
       return service
     # inject service dependencies here, and declare in _$get function args.

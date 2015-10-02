@@ -20,17 +20,25 @@
 
   <div class="row">
     <div class="col-md-12">
-      <label>What kind of information would your widget display?</label><br />
+      <label>What kind of information would your widget display?</label><br/>
       <textarea ng-model="widgetDetails.description" ng-disabled="isLoading" />
     </div>
   </div>
 
   <div class="spacer1" ng-show="isLoading" />
 
-  <div class="row" ng-show="isLoading">
+  <div class="row" ng-show="onSuccess">
     <div class="col-md-12 text-center">
-      <!-- <h3 class="thanks-message">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3> -->
+       <h3 class="thanks-message">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>
       <h3 class="thanks-message">Thanks a lot for helping us improve Impac!&trade;</h3>
+    </div>
+  </div>
+
+  <div class="row" ng-show="error">
+    <div class="col-md-12 text-center">
+      <h5 style="color: red;">
+        Unable to send suggestions request, please try again or contact technical support.
+      </h5>
     </div>
   </div>
 
@@ -38,9 +46,9 @@
 
 <div class="modal-footer">
   <div class="row">
-    <div class="col-sm-12" ng-class="isLoading ? 'text-center' : null">
-      <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading">Cancel</button>
-      <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">
+    <div class="col-sm-12">
+      <button class="btn btn-shaded" ng-click="close()" ng-hide="onSuccess">Cancel</button>
+      <button class="btn btn-info" ng-click="proceed()" ng-hide="onSuccess" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">
         <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
         Send your suggestion
       </button>

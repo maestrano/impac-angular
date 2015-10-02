@@ -142,17 +142,15 @@ angular
 
     # Call Impac! API to retrieve the widget content (will be stored in widget.content)
     service.widgets.show = (widget, refresh_cache=false) ->
-      ImpacLinking.getSsoSession().then(
-        (ssoSession) ->
+      ImpacLinking.getUserData().then(
+        (user) ->
           data = {
             owner: widget.owner,
-            sso_session: ssoSession,
+            sso_session: user.sso_session,
             metadata: widget.metadata,
             engine: widget.category
           }
           angular.extend(data, {refresh_cache: true}) if refresh_cache
-
-          data.metadata.organization_ids = data.metadata.organization_ids
 
           $http.post(ImpacRoutes.showWidgetPath(), data)
         (error) ->

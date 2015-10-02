@@ -2,25 +2,6 @@ module = angular.module('impac.components.widget', [])
 
 module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, Utilities) ->
 
-  # ---------------------------------------------------------
-  # ### Widget template scope
-  # ---------------------------------------------------------
-  # ---------------------------------------------------------
-  # ### Toolbox
-  # ---------------------------------------------------------
-
-  # angular.merge doesn't exist in angular 1.2...
-  extendDeep = (dst, src) ->
-    angular.forEach src, (value, key) ->
-      if dst[key] and dst[key].constructor and dst[key].constructor is Object
-        extendDeep dst[key], value
-      else
-        dst[key] = value
-
-  # ---------------------------------------------------------
-  # ### Widget object management
-  # ---------------------------------------------------------
-
   # Initialization
   w = $scope.widget || {}
   w.parentDashboard ||= $scope.parentDashboard
@@ -73,7 +54,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   w.updateSettings = (needContentReload=true) ->
     meta = {}
     angular.forEach(w.settings, (setting) ->
-      extendDeep(meta,setting.toMetadata())
+      angular.merge(meta,setting.toMetadata())
     )
     pushMetadata(meta, needContentReload) if !_.isEmpty(meta)
     return true

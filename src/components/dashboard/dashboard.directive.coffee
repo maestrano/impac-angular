@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, ImpacAssets, ImpacTheming) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, DhbAnalyticsSvc, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacLinking) ->
 
     #====================================
     # Initialization
@@ -16,7 +16,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     $scope.accessibility = false
 
-    $scope.widgetsList = [];
+    $scope.widgetsList = []
 
     $scope.isLoading = true
 
@@ -123,7 +123,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $scope.showCreateWidget = aDashboardExists
       # messages
       $scope.showChooseDhbMsg = !aDashboardExists
-      $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists && ImpacTheming.get().showNoWidgetMessages
+      $scope.showNoWidgetsMsg = aDashboardExists && !aWidgetExists && ImpacTheming.get().noWidgetMsg.show
       #widgets
       $scope.canManageWidgets = true
 
@@ -252,8 +252,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Dashboard management - Modals
     #====================================
 
-    # TODO: This needs to be tested and DhbOrganizationsSvc Dependency needs to be resolve with
-    #       ImpacLinkingProvider. Also could do with a refactor.
+    # TODO: This needs to be tested and DhbOrganizationsSvc Dependency needs to be resolve with ImpacLinkingProvider. Also could do with a refactor.
 
     # Would it be possible to manage modals in a separate module ?
     # -> Check maestrano-modal (modal-svc) for further update
@@ -407,12 +406,18 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         windowClass: 'inverse impac-widget-suggestion',
         scope: modalWidgetSuggestion
       }
+      apiPath: ImpacRoutes.sendWidgetSuggestion()
     }
+    modalWidgetSuggestion.error = false
+    modalWidgetSuggestion.onSuccess = false
 
     modalWidgetSuggestion.open = ->
       self = modalWidgetSuggestion
-      # TODO retrieve the user name from the Theming provider
-      # self.userName = UserSvc.document.user.name
+      self.userName = ''
+      # TODO::refactor: linking service local / cache store architecture to allow for local retrieval of core data, without the need to resolve promises.
+      ImpacLinking.getUserData().then((success) ->
+        self.userName = success.name
+      )
       self.$instance = $modal.open(self.config.instance)
       self.isLoading = false
 
@@ -429,16 +434,27 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         widget_description: self.widgetDetails.description
       }
 
-      # TODO: add route in configuration + possibility to enable/disable
-      $http.post('/js_api/v1/mailers',{template: 'widget_suggestion', opts: data})
-
-      # Thank you, user...
-      $timeout ->
-        self.close()
-        self.widgetDetails = {}
-        self.isLoading = false
-      ,3000
-
+      if modalWidgetSuggestion.config.apiPath?
+        $http.post(modalWidgetSuggestion.config.apiPath, {
+          template: 'widget_suggestion',
+          opts: data
+        }).then( ->
+          # Smoother UI transition between loading and success thank you msg
+          $timeout ->
+            self.onSuccess = true
+          ,500
+          # Thank you, user...
+          $timeout ->
+            self.close()
+            self.widgetDetails = {}
+            self.isLoading = false
+            self.onSuccess = false
+          ,2000
+        (err) ->
+          self.isLoading = false
+          self.error = true
+          $log.error 'impac-angular ERROR: Unable to POST widget_suggestion mailer: ', err
+        )
 
     #====================================
     # Drag & Drop management
