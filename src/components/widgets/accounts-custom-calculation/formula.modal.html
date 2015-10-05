@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div ng-hide="widget.isLoading" class='col-md-6'>
+        <div class='col-md-6'>
           <div class='widget-line' ng-repeat='account in widget.selectedAccounts'>
             <div class='row'>
               <div class='col-md-6'>
@@ -64,8 +64,8 @@
   <div class="modal-footer">
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-gray" ng-click="formulaModal.cancel()" ng-hide="widget.isLoading" ng-disabled="isLoading">Cancel</button>
-        <button class="btn btn-warning" ng-click="formulaModal.proceed()" ng-hide="widget.isLoading" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>
+        <button class="btn btn-gray" ng-click="formulaModal.cancel()" ng-disabled="isLoading">Cancel</button>
+        <button class="btn btn-warning" ng-click="formulaModal.proceed()" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>
           <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
           Save
         </button>

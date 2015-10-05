@@ -309,7 +309,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           self.errors = ''
           $scope.currentDhbId = dashboard.id
           self.close()
-        , (errors) ->
+        (errors) ->
           self.errors = Utilities.processRailsError(errors)
       ).finally(-> $scope.refreshDashboards())
 
