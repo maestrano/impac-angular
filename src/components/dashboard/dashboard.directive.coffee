@@ -108,10 +108,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         aWidgetExists = $scope.currentDhb.widgets.length > 0
       else
         aWidgetExists = false
-
       if aDashboardExists && !aWidgetExists && !$scope.customWidgetSelector.path
         # add a timer to make sure the dom is loaded before the collapse directive is called
         $timeout (-> $scope.showWidgetSelector = true), 300
+      else
+        $timeout (-> $scope.showWidgetSelector = false), 300
 
       # Permissions and 'show helpers'
       # dashboard name
