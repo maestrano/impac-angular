@@ -31,8 +31,7 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       // impac-angular & test scripts.
       'dist/impac-angular.js',
-      'src/services/**/*.spec.js',
-      'src/components/**/*.spec.js'
+      'src/**/*.spec.js'
     ],
 
 
