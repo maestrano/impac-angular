@@ -106,11 +106,11 @@ gulp.task('templates-concat', ['templates'], function () {
 /* ************************************ */
 // Source files for final dist build
 var buildSourceFiles = [
-    'src/impac-angular.prefix',
-    'tmp/impac-angular.js',
-    'src/impac-angular.suffix',
-    'tmp/scripts/**/*.js',
-    'lib/*.js'
+      'src/impac-angular.prefix',
+      'tmp/impac-angular.js',
+      'src/impac-angular.suffix',
+      'tmp/scripts/**/*.js',
+      'lib/*.js'
     ],
     // CoffeeScript & Less file directories to be compiled before build.
     coffeeFiles = [
