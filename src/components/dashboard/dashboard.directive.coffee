@@ -471,7 +471,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         #   w.style.clear = 'none'
 
       # Options
-      # cursorAt: {left: 100, top: 20}
+      cursorAt: {left: 100, top: 20}
       opacity: 0.5
       delay: 150
       tolerance: 'pointer'
