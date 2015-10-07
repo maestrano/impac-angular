@@ -143,7 +143,7 @@ gulp.task('coffee-compile', ['clean'], function () {
 gulp.task('less-inject', function() {
   return gulp.src(mainLessFile)
     .pipe(inject(gulp.src(lessFiles, {
-      read: false,
+      read: false
     }), {
       starttag: '/* inject:imports */',
       endtag: '/* endinject */',
@@ -218,9 +218,7 @@ gulp.task('clean', function (asyncCallback) {
 });
 
 gulp.task('watch', function () {
-  var tasks = [];
-  env === 'production' ? tasks.push('build-lib-dist') : tasks.push('build-lib');
-  gulp.watch(['src/**/*.js', 'src/**/*.html', 'src/**/*.less'], tasks);
+  gulp.watch(['src/**/*'], 'build-lib');
 });
 
 /* ************************************ */
