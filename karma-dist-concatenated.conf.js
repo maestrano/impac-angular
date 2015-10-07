@@ -10,25 +10,29 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai'],
+    frameworks: ['jasmine'],
 
     plugins: [
-      'karma-mocha',
-      'karma-chai',
-      'karma-sinon-chai',
+      // 'karma-mocha',
+      // 'karma-chai',
+      // 'karma-sinon-chai',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
-      'karma-jquery',
-      'karma-chai-jquery',
-      'karma-mocha-reporter'
+      'karma-mocha-reporter',
+      'karma-jasmine'
     ],
 
     // list of files / patterns to load in the browser
     files: [
-      'bower/angular/angular.js',
-      'bower/angular-mocks/angular-mocks.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      // `maestrano.impac` module external dependencies.
+      'bower_components/angular-ui-sortable/sortable.js',
+      'bower_components/angular-bootstrap/ui-bootstrap.js',
+      // impac-angular & test scripts.
       'dist/impac-angular.js',
-      'test/unit/**/*.js'
+      'src/services/**/*.spec.js',
+      'src/components/**/*.spec.js'
     ],
 
 

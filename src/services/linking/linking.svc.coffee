@@ -23,7 +23,9 @@ angular
       _.forIn(links, (value, key) ->
         link = configData[key]
         unless link?
-          throw "Missing core data (#{key}) to run impac-angular, please refer to impac.services.linking module or impac-angular README.md on required provider configurations."
+          throw new Error("Missing core data (#{key}) to run impac-angular.", 'linking.svc.coffee', 22)
+        if typeof link != 'function'
+          throw new Error("impac-angular TypeError: #{key} should be a Function.", 'linking.svc.coffee', 22)
         links[key] = link
       )
 
