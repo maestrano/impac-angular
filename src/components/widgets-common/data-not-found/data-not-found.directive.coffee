@@ -32,8 +32,8 @@ module.directive('checkImage', ($log, $http) ->
         $http.get(ngSrc).success( () ->
           # do nothing
         ).error( () ->
-          # prevent broken image tile from being displayed, by attaching an empty src.
-          element.attr('src', '')
+          # prevent broken image tile from being displayed.
+          element.remove()
         )
       )
   }
