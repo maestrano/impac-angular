@@ -38,15 +38,30 @@ angular
         params.metadata = metadata if metadata?
 
         host = ImpacRoutes.impacKpisBasePath()
-
         url = [host,decodeURIComponent( $.param( params ) )].join('?')
 
-        $http.get(url).then (response) ->
-          deferred.resolve(response.data)
-        ,(err) ->
-          $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
-          deferred.reject(err)
-      
+        promises = {
+          impac: $http.get(url)
+        }
+
+        # Get local kpis
+        if ImpacRoutes.localKpisBasePath()
+          promises.local = $http.get(ImpacRoutes.localKpisBasePath())
+
+        $q.all(promises).then(
+          (response) ->
+            data = response.impac.data
+            if response.local
+              angular.forEach response.local.data.kpis, (kpi) ->
+                kpi.source = 'local'
+                data.kpis.push(kpi)
+
+            deferred.resolve(data)
+          (err) ->
+            $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+            deferred.reject(err)
+        )
+
       return deferred.promise
 
 
@@ -79,21 +94,22 @@ angular
             $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
             deferred.reject(err)
         )
-      
+
       return deferred.promise
 
 
-    @create = (endpoint, element_watched, extra_param=null) ->
+    @create = (source, endpoint, element_watched, extra_param=null) ->
       deferred = $q.defer()
 
       params = {
+        source: source
         endpoint: endpoint
         element_watched: element_watched
       }
       params.extra_param = extra_param if extra_param?
 
       url = ImpacRoutes.createKpiPath DhbAnalyticsSvc.getId()
-      
+
       $http.post(url, params).then(
         (success) ->
           deferred.resolve(success.data)
