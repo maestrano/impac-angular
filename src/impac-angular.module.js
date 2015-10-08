@@ -112,6 +112,9 @@ angular.module('impac.services',
     'impac.services.chart-formatter',
     'impac.services.message-bus',
     'impac.services.utilities',
+    'impac.services.main',
+    'impac.services.dashboards',
+    'impac.services.widgets',
   ]
 );
 /*
