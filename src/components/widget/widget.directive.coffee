@@ -1,21 +1,6 @@
 module = angular.module('impac.components.widget', [])
 
-module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, Utilities) ->
-
-  # ---------------------------------------------------------
-  # ### Widget template scope
-  # ---------------------------------------------------------
-  # ---------------------------------------------------------
-  # ### Toolbox
-  # ---------------------------------------------------------
-
-  # angular.merge doesn't exist in angular 1.2...
-  extendDeep = (dst, src) ->
-    angular.forEach src, (value, key) ->
-      if dst[key] and dst[key].constructor and dst[key].constructor is Object
-        extendDeep dst[key], value
-      else
-        dst[key] = value
+module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, Utilities) ->
 
   # ---------------------------------------------------------
   # ### Widget object management
@@ -32,7 +17,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   # Retrieve the widget content from Impac! and initialize the widget from it.
   w.loadContent = (refreshCache=false) ->
     w.isLoading = true
-    DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
+    ImpacWidgetsSvc.show(w.id, refreshCache).then(
       (success) ->
         updatedWidget = success.data
         updatedWidget.content ||= {}
@@ -72,7 +57,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
   w.updateSettings = (needContentReload=true) ->
     meta = {}
     angular.forEach(w.settings, (setting) ->
-      extendDeep(meta,setting.toMetadata())
+      angular.merge meta ,setting.toMetadata()
     )
     pushMetadata(meta, needContentReload) if !_.isEmpty(meta)
     return true
@@ -84,7 +69,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, U
     return if _.isEmpty(newMetadata)
     data = { metadata: newMetadata }
     w.isLoading = true if needContentReload
-    DhbAnalyticsSvc.widgets.update(w,data).then(
+    ImpacWidgetsSvc.update(w,data).then(
       (success) ->
         angular.extend(w,success.data)
         w.loadContent() if needContentReload
