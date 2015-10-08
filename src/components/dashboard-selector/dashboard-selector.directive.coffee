@@ -14,10 +14,9 @@ angular
       # Select dashboards
       # ============================================
 
-      $scope.selectDashboard = (dhbId) ->
-        ImpacDashboardsSvc.setCurrentDashboard(dhbId)
-        $scope.showDashboardsDropdown = false
-        $scope.onDisplayWidgetSelector({newValue: ImpacDashboardsSvc.isCurrentDashboardEmpty()})
+      $scope.organizationsNames = ->
+        _.pluck $scope.currentDhb.data_sources, 'label'
+        .join ", "
 
       $scope.toggleShowDashboardsDropdown = ->
         return if $scope.showChangeDashboardNameBox
@@ -27,9 +26,16 @@ angular
         else
           $scope.showDashboardsDropdown = false
 
-      $scope.organizationsNames = ->
-        _.pluck $scope.currentDhb.data_sources, 'label'
-        .join ", "
+      # Use of timeouts for better fluidity (avoid freewing the display)
+      $scope.selectDashboard = (dhbId) ->
+        $scope.showDashboardsDropdown = false
+        $scope.isLoading = true
+        $timeout (-> $scope.isLoading=false ), 300
+
+        $timeout ->
+          ImpacDashboardsSvc.setCurrentDashboard(dhbId)
+          $scope.onDisplayWidgetSelector({newValue: ImpacDashboardsSvc.isCurrentDashboardEmpty()})
+        , 50
 
 
       # ============================================
