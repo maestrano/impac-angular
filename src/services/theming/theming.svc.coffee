@@ -52,7 +52,7 @@ angular
         onClickOptions:
           triggers: []
 
-      noWidgetMsg:
+      showNoWidgetMsg:
         show: true
 
 
