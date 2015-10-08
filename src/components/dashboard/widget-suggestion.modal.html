@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <div class="close" type="button" ng-click="close()" >×</div>
+  <div class="close" type="button" ng-click="instance.close()" >×</div>
   <h3>Suggest a widget</h3>
 </div>
 
@@ -39,7 +39,7 @@
 <div class="modal-footer">
   <div class="row">
     <div class="col-sm-12" ng-class="isLoading ? 'text-center' : null">
-      <button class="btn btn-shaded" ng-click="close()" ng-hide="isLoading">Cancel</button>
+      <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading">Cancel</button>
       <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">
         <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
         Send your suggestion

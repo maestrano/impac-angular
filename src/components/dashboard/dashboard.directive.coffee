@@ -39,26 +39,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     # load dashboards with their widgets
     # -------------------------------------
-    # we force the reload: will cause the service to update the organization id
-    # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) from 'the outside', because the view will
+    # 'true' forces the reload: will cause the service to update the organization id and other core data that Impac! needs
+    # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
     # reload the <impac-dashboards> on organization change.
-    # In other apps, calling this method should be enough
+    # In other apps, calling this method should be enough to force a complete reload on Impac! contents
     ImpacDashboardsSvc.load(true).then (success) ->
       # initialize widget selector
       $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
       $scope.isLoading = false
-
-
-# Was in refreshDashboards()... seems to be useless by now...
-# --------------------
-    #   # Keep only dashboards that have the current organization in its data_sources
-    #   $scope.dashboardsList = _.filter $scope.dashboardsList, (dhb) ->
-    #     _.some(dhb.data_sources, (org) -> org.id == DhbAnalyticsSvc.getOrganizationId())
-
-    #   # Change current dhb if not for the select org
-    #   if _.isEmpty $scope.currentDhb
-    #     $scope.currentDhb = $scope.dashboardsList[0]
-    #     $scope.currentDhbId = ($scope.currentDhb? && $scope.currentDhb.id) || null
 
 
     #====================================
@@ -283,35 +271,37 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # TODO: This needs to be tested and DhbOrganizationsSvc Dependency needs to be resolve with
     #       ImpacLinkingProvider. Also could do with a refactor.
 
-    # Would it be possible to manage modals in a separate module ?
-    # -> Check maestrano-modal (modal-svc) for further update
-    $scope.modal = {}
-    $scope.modal.widgetSuggestion = modalWidgetSuggestion = $scope.$new(true)
+    $scope.widgetSuggestionModal = $scope.$new()
 
     # Modal Widget Suggestion
-    modalWidgetSuggestion.widgetDetails = {}
-    modalWidgetSuggestion.config = {
-      instance: {
-        backdrop: 'static',
-        template: $templateCache.get('dashboard/widget-suggestion.modal.html'),
-        size: 'md',
-        windowClass: 'inverse impac-widget-suggestion',
-        scope: modalWidgetSuggestion
-      }
+    $scope.widgetSuggestionModal.widgetDetails = {}
+    $scope.widgetSuggestionModal.config = {
+      backdrop: 'static',
+      template: $templateCache.get('dashboard/widget-suggestion.modal.html'),
+      size: 'md',
+      windowClass: 'inverse impac-widget-suggestion',
+      scope: $scope.widgetSuggestionModal
     }
 
-    modalWidgetSuggestion.open = ->
-      self = modalWidgetSuggestion
+    $scope.widgetSuggestionModal.open = ->
+      self = $scope.widgetSuggestionModal
+      return if self.locked
+
       # TODO retrieve the user name from the Theming provider
       # self.userName = UserSvc.document.user.name
-      self.$instance = $modal.open(self.config.instance)
+      self.instance = $modal.open(self.config)
+      
+      self.instance.rendered.then (onRender) ->
+        self.locked = true
+      self.instance.result.then (onClose) ->
+        self.locked = false
+      ,(onDismiss) ->
+        self.locked = false
+
       self.isLoading = false
 
-    modalWidgetSuggestion.close = ->
-      modalWidgetSuggestion.$instance.close()
-
-    modalWidgetSuggestion.proceed = ->
-      self = modalWidgetSuggestion
+    $scope.widgetSuggestionModal.proceed = ->
+      self = $scope.widgetSuggestionModal
       self.isLoading = true
 
       data = {
@@ -325,7 +315,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
       # Thank you, user...
       $timeout ->
-        self.close()
+        self.instance.close()
         self.widgetDetails = {}
         self.isLoading = false
       ,3000
