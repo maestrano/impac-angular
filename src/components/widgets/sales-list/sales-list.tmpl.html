@@ -23,7 +23,7 @@
       <div class="widget-lines-container">
         <div class="row widget-line total" ng-repeat="company in widget.content.summary" >
           <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toogleCollapsed(company.name)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(company.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+            <div class="col-sm-1" ng-click="toggleCollapsed(company.name)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(company.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
             <div class="col-sm-7"><strong>{{company.name | titleize}}</strong></div>
             <div class="col-sm-4 text-right" ng-show="{{filter.value.match('quantity')}}"><strong>{{company.total}}</strong></div>
             <div class="col-sm-4 text-right" ng-hide="{{filter.value.match('quantity')}}"><strong>{{company.total | mnoCurrency : company.currency}}</strong></div>

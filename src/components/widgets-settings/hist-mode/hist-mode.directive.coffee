@@ -5,7 +5,7 @@ module.controller('SettingHistModeCtrl', ($scope, DhbAnalyticsSvc) ->
     w = $scope.parentWidget
     w.isHistoryMode = false
 
-    $scope.toogleHistMode = (mode) ->
+    $scope.toggleHistMode = (mode) ->
       return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
       w.isHistoryMode = !w.isHistoryMode
       w.updateSettings(false)

@@ -30,13 +30,13 @@
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.sales_comparison" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.sales" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-              <div class="col-sm-7" ng-click="toogleSelectedElement(statement)"><strong>{{statement.name | titleize}}</strong></div>
-              <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement)}}</strong></div>
-              <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toogleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong></div>
+              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="statement.sales" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-7" ng-click="toggleSelectedElement(statement)"><strong>{{statement.name | titleize}}</strong></div>
+              <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement)}}</strong></div>
+              <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong></div>
             </div>
             <div collapse="isCollapsed(statement)">
-              <div class="row widget-line" ng-click="toogleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="isSelected(sale) ? 'selected' : null" >
+              <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="isSelected(sale) ? 'selected' : null" >
                 <div class="col-sm-1" />
                 <div class="col-sm-7">{{sale.name}}</div>
                 <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right">{{getTotalForPeriod(sale)}}</div>

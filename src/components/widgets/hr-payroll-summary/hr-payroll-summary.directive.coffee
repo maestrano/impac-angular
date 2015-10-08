@@ -125,7 +125,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartF
 
 # TODO selectedElement and collapsed should be factorized as settings or 'commons'
 
-    $scope.toogleSelectedElement = (element) ->
+    $scope.toggleSelectedElement = (element) ->
       if $scope.isSelected(element)
         $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
           if element.id
@@ -135,7 +135,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartF
         )
         w.format()
         if w.isExpanded() && $scope.selectedElements.length == 0
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
       else
@@ -143,7 +143,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartF
         $scope.selectedElements.push(element)
         w.format()
         if !w.isExpanded()
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
 
@@ -161,7 +161,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartF
       else
         return false
 
-    $scope.toogleCollapsed = (element) ->
+    $scope.toggleCollapsed = (element) ->
       if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->

@@ -23,7 +23,7 @@
         </div>
         <div class="row widget-line total" ng-repeat="category in categories" >
           <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toogleCollapsed(category)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(category) ? "fa-plus-square-o" : "fa-minus-square-o"" /></div>
+            <div class="col-sm-1" ng-click="toggleCollapsed(category)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(category) ? "fa-plus-square-o" : "fa-minus-square-o"" /></div>
             <div class="col-sm-5"><strong>{{category | titleize}}</strong></div>
             <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>
             <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>

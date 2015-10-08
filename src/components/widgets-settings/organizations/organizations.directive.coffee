@@ -8,7 +8,7 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log) ->
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
 
-  $scope.toogleSelectOrganization = (orgUid) ->
+  $scope.toggleSelectOrganization = (orgUid) ->
     w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
 
   # What will be passed to parentWidget

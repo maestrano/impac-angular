@@ -79,18 +79,18 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $
     $scope.getName = (element) ->
       element.name.replace("_", " ") if element? && element.name?
 
-    $scope.toogleSelectedElement = (element) ->
+    $scope.toggleSelectedElement = (element) ->
       if $scope.isSelected(element)
         $scope.selectedElement = null
         if w.isExpanded()
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
       else
         $scope.selectedElement = angular.copy(element)
         w.format()
         if !w.isExpanded()
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
 
@@ -103,7 +103,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $
       else
         return false
 
-    $scope.toogleCollapsed = (element) ->
+    $scope.toggleCollapsed = (element) ->
       if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->

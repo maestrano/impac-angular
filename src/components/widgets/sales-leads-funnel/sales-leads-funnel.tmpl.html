@@ -23,7 +23,7 @@
         <div class="legend">Your leads sales funnel from {{widget.content.from | date : 'd MMM yyyy'}} to {{widget.content.to | date : 'd MMM yyyy'}}</div>
 
         <div class="funnel-container">
-          <div class="tile" ng-repeat="elem in funnel" ng-click="toogleSelectStatus(elem.status)">
+          <div class="tile" ng-repeat="elem in funnel" ng-click="toggleSelectStatus(elem.status)">
             <div class="colored-area" ng-style="elem.coloredWidth" ng-class="isSelected(elem.status) ? 'selected' : ''">{{elem.number}}</div>
             <div class="main-text" ng-style="elem.statusWidth">{{elem.status | titleize}}</div>
           </div>

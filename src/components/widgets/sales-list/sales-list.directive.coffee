@@ -32,7 +32,7 @@ module.controller('WidgetSalesListCtrl', ($scope, DhbAnalyticsSvc, ChartFormatte
 
         $scope.unCollapsed = w.metadata.unCollapsed || []
 
-    $scope.toogleCollapsed = (categoryName) ->
+    $scope.toggleCollapsed = (categoryName) ->
       if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->

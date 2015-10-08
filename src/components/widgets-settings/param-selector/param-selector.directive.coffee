@@ -4,14 +4,14 @@ module.controller('SettingParamSelectorCtrl', ($scope) ->
 
     $scope.showOptions = false
 
-    $scope.toogleShowOptions = ->
+    $scope.toggleShowOptions = ->
       $scope.showOptions = !$scope.showOptions
 
     $scope.selectOption = (anOption) ->
       if anOption != $scope.selected
         $scope.selected = anOption
         w.updateSettings(!$scope.noReload)
-      $scope.toogleShowOptions()
+      $scope.toggleShowOptions()
 
     $scope.getTruncateValue = ->
       return parseInt($scope.truncateNo) || 20

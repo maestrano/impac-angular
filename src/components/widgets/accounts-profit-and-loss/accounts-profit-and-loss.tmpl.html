@@ -25,12 +25,12 @@
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toogleCollapsed(statement)"><i ng-show="statement.accounts" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-              <div class="col-sm-7" ng-click="toogleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
-              <div class="col-sm-4 text-right" ng-class="getClassColor(getLastValue(statement))" ng-click="toogleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
+              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="statement.accounts" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-7" ng-click="toggleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
+              <div class="col-sm-4 text-right" ng-class="getClassColor(getLastValue(statement))" ng-click="toggleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
             </div>
             <div collapse="isCollapsed(statement)">
-              <div class="row widget-line" ng-click="toogleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="isSelected(account) ? 'selected' : null" >
+              <div class="row widget-line" ng-click="toggleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="isSelected(account) ? 'selected' : null" >
                 <div class="col-sm-1" />
                 <div class="col-sm-7">{{account.name}}</div>
                 <div class="col-sm-4 text-right" ng-class="getClassColor(getLastValue(account))">{{getLastValue(account) | mnoCurrency : account.currency}}</div>

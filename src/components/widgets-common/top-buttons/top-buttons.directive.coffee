@@ -22,7 +22,7 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
     # Refresh needed to display the 'add a widget' message in case of no widget
     # ).finally(-> DhbAnalyticsSvc.load(true))
 
-  $scope.toogleEditMode = ->
+  $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode
         # Like a press on 'Cancel' button

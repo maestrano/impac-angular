@@ -85,7 +85,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
 
 # TODO selectedElement and collapsed should be factorized as settings or 'commons'
 
-    $scope.toogleSelectedElement = (element) ->
+    $scope.toggleSelectedElement = (element) ->
       if $scope.isSelected(element)
         $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
           if element.id
@@ -95,7 +95,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
         )
         w.format()
         if w.isExpanded() && $scope.selectedElements.length == 0
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
       else
@@ -103,7 +103,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
         $scope.selectedElements.push(element)
         w.format()
         if !w.isExpanded()
-          w.toogleExpanded()
+          w.toggleExpanded()
         else
           w.updateSettings(false)
 
@@ -121,7 +121,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
       else
         return false
 
-    $scope.toogleCollapsed = (element) ->
+    $scope.toggleCollapsed = (element) ->
       if element? && element.name?
         if _.find($scope.unCollapsed, ((name) -> element.name == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->

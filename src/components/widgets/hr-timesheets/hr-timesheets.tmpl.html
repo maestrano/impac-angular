@@ -24,7 +24,7 @@
         </div>
         <div class="row widget-line total" >
           <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toogleCollapsed('total_time_worked')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+            <div class="col-sm-1" ng-click="toggleCollapsed('total_time_worked')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
             <div class="col-sm-7"><strong>Total Time Worked</strong></div>
             <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeWorked()}} h</strong></div>
           </div>
@@ -38,7 +38,7 @@
 
         <div class="row widget-line total" >
           <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toogleCollapsed('total_time_of')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+            <div class="col-sm-1" ng-click="toggleCollapsed('total_time_of')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
             <div class="col-sm-7"><strong>Total Time Off</strong></div>
             <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeOff()}} h</strong></div>
           </div>

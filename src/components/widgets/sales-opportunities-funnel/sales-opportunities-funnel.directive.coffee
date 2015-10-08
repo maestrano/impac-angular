@@ -44,7 +44,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc
     $scope.getImpacColor = (index) ->
       ChartFormatterSvc.getColor(index)
 
-    $scope.toogleSelectStatus = (aStatus) ->
+    $scope.toggleSelectStatus = (aStatus) ->
       if $scope.selectedStatus && $scope.selectedStatus == aStatus
         $scope.selectedStatus = null
       else
@@ -52,7 +52,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc
 
       if !w.isExpanded() && $scope.selectedStatus
         # will trigger updateSettings(false)
-        w.toogleExpanded()
+        w.toggleExpanded()
       else
         w.updateSettings(false)
 

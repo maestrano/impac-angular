@@ -4,7 +4,7 @@ module.controller('SettingWidthCtrl', ($scope, $log) ->
 
   w = $scope.parentWidget
 
-  w.toogleExpanded = ->
+  w.toggleExpanded = ->
     $scope.expanded = !$scope.expanded
     # We want to resize the widget without waiting for the response from the dashboarding API
     w.updateSettings(false)

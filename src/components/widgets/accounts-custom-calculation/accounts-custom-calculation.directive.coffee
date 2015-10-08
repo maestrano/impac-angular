@@ -97,7 +97,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     $scope.formulaModal.close = ->
       $scope.formulaModal.$instance.close()
 
-    # Open the modal on toogleEditMode()
+    # Open the modal on toggleEditMode()
     $scope.$watch (-> w.isEditMode), (result, prev) ->
       $scope.formulaModal.open() if result && !prev
 

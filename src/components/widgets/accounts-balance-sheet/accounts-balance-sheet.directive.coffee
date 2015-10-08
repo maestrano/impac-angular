@@ -22,7 +22,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, DhbAnalyticsSvc, Ch
         $scope.unCollapsed = w.metadata.unCollapsed || []
         $scope.categories = Object.keys(w.content.summary)
 
-    $scope.toogleCollapsed = (categoryName) ->
+    $scope.toggleCollapsed = (categoryName) ->
       if categoryName?
         if _.find($scope.unCollapsed, ((name) -> categoryName == name))
           $scope.unCollapsed = _.reject($scope.unCollapsed, (name) ->
