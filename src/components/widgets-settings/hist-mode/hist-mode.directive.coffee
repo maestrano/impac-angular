@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope) ->
+module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
 
     w = $scope.parentWidget
     w.isHistoryMode = false
@@ -8,7 +8,7 @@ module.controller('SettingHistModeCtrl', ($scope) ->
     $scope.toggleHistMode = (mode) ->
       return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
       w.isHistoryMode = !w.isHistoryMode
-      w.updateSettings(false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     # What will be passed to parentWidget
     setting = {}
@@ -33,6 +33,10 @@ module.controller('SettingHistModeCtrl', ($scope) ->
 
     w.settings ||= []
     w.settings.push(setting)
+
+    # Setting is ready: trigger load content
+    # ------------------------------------
+    $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingHistMode', ($templateCache) ->
@@ -40,6 +44,7 @@ module.directive('settingHistMode', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'

@@ -1,9 +1,12 @@
 module = angular.module('impac.components.widgets-settings.organizations',[])
-module.controller('SettingOrganizationsCtrl', ($scope, $log) ->
+module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
-  $scope.dashboardOrganizations = w.parentDashboard.data_sources
   w.selectedOrganizations = {}
+  ImpacDashboardsSvc.load().then(
+    (config) ->
+      $scope.dashboardOrganizations = config.currentDashboard.data_sources
+  )
 
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
@@ -32,6 +35,10 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log) ->
 
   w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingOrganizations', ($templateCache) ->
@@ -39,6 +46,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     template: $templateCache.get('widgets-settings/organizations.tmpl.html'),
     controller: 'SettingOrganizationsCtrl'
