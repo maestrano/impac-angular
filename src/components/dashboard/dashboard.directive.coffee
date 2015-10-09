@@ -329,7 +329,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # When the widget is dropped
       stop: saveDashboard = ->
         data = { widgets_order: _.pluck($scope.currentDhb.widgets,'id') }
-        DashboardsSvc.update($scope.currentDhb.id,data)
+        ImpacDashboardsSvc.update($scope.currentDhb.id,data)
 
       # When the widget is starting to be dragged
       start: updatePlaceHolderSize = (e, widget) ->
