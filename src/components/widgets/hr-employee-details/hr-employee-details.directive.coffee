@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-employee-details',[])
 
-module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, DhbAnalyticsSvc, Utilities, $filter) ->
+module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, Utilities, $filter) ->
 
     w = $scope.widget
 

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-timesheets',[])
 
-module.controller('WidgetHrTimesheetsCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrTimesheetsCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget
 

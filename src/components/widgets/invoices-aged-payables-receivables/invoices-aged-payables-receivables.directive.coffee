@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-aged-payables-receivables',[])
 
-module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $filter, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $filter, ChartFormatterSvc) ->
 
     w = $scope.widget
 

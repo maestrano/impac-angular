@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-margin',[])
 
-module.controller('WidgetSalesMarginCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesMarginCtrl', ($scope,  ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

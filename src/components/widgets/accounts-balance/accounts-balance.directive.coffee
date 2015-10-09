@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance',[])
 
-module.controller('WidgetAccountsBalanceCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetAccountsBalanceCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget
 

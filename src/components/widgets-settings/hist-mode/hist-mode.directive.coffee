@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingHistModeCtrl', ($scope) ->
 
     w = $scope.parentWidget
     w.isHistoryMode = false

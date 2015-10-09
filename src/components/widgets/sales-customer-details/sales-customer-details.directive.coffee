@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-customer-details',[])
 
-module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, DhbAnalyticsSvc, Utilities, $filter) ->
+module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, Utilities, $filter) ->
 
     w = $scope.widget
 

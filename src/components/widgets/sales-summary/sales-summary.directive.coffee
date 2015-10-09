@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-summary',[])
 
-module.controller('WidgetSalesSummaryCtrl', ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc) ->
+module.controller('WidgetSalesSummaryCtrl', ($scope, Utilities, ChartFormatterSvc) ->
 
     w = $scope.widget
 

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.params-picker',[])
 
-module.controller('SettingParamsPickerCtrl', ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingParamsPickerCtrl', ($scope) ->
 
     w = $scope.parentWidget
 

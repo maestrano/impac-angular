@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-aged',[])
 
-module.controller('WidgetSalesAgedCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesAgedCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

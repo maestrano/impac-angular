@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-break-even',[])
 
-module.controller('WidgetSalesBreakEvenCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesBreakEvenCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

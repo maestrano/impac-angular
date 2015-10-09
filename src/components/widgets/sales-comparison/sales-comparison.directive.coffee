@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-comparison',[])
 
-module.controller('WidgetSalesComparisonCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesComparisonCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

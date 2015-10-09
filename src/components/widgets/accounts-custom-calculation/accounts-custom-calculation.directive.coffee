@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, DhbAnalyticsSvc, $templateCache) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $templateCache) ->
 
     w = $scope.widget
 

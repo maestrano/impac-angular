@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets.hr-leaves-balance',[])
 
-module.controller('WidgetHrLeavesBalanceCtrl', ($scope, DhbAnalyticsSvc, Utilities) ->
+module.controller('WidgetHrLeavesBalanceCtrl', ($scope, Utilities) ->
 
     w = $scope.widget
 

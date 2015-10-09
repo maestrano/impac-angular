@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-payroll-summary',[])
 
-module.controller('WidgetHrPayrollSummaryCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

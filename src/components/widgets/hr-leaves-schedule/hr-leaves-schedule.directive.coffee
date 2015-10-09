@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-leaves-schedule',[])
 
-module.controller('WidgetHrLeavesScheduleCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrLeavesScheduleCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget
     $scope.eventSources = []

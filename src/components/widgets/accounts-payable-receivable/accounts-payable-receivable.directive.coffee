@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-payable-receivable',[])
 
-module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, ChartFormatterSvc) ->
 
     w = $scope.widget
 

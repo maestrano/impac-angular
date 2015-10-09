@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 

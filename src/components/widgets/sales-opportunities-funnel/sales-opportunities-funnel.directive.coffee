@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets.sales-opportunities-funnel',[])
 
-module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, DhbAnalyticsSvc, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, Utilities, ChartFormatterSvc, $filter) ->
 
     w = $scope.widget
 
