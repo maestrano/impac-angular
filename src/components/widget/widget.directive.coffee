@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widget', [])
 
-module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, Utilities) ->
+module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, $q, ImpacWidgetsSvc, Utilities) ->
 
   # ---------------------------------------------------------
   # ### Widget object management
@@ -49,30 +49,32 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, U
     w.isEditMode = false
     return true
 
-  # Retrieve all the widgets settings, build the new metadata parameter, and call pushMetadata
+  # Retrieve all the widgets settings, build the new metadata parameter, and update the widget's settings
   w.updateSettings = (needContentReload=true) ->
+    deferred = $q.defer()
+
     meta = {}
     angular.forEach(w.settings, (setting) ->
-      angular.merge meta ,setting.toMetadata()
+      angular.merge meta, setting.toMetadata()
     )
-    pushMetadata(meta, needContentReload) if !_.isEmpty(meta)
-    return true
-
-  # Push a new metadata parameter associated to the widget to Impac! and reload the widget content
-  # should be considered as a private function: if it is called separately with only one setting,
-  # the other settings will be reinitialized...
-  pushMetadata = (newMetadata, needContentReload=true) ->
-    return if _.isEmpty(newMetadata)
-    data = { metadata: newMetadata }
-    w.isLoading = true if needContentReload
     
-    ImpacWidgetsSvc.update(w,data).then(
-      (updatedWidget) ->
-        w.loadContent() if needContentReload
-      , (errors) ->
-        w.errors = Utilities.processRailsError(errors)
-        w.isLoading = false
-    )
+    if _.isEmpty(meta)
+      deferred.reject('no setting to update')
+
+    else
+      w.isLoading = true if needContentReload
+      ImpacWidgetsSvc.update(w, { metadata: meta }).then(
+        (updatedWidget) ->
+          w.loadContent() if needContentReload
+          deferred.resolve(updatedWidget)
+        (errors) ->
+          w.errors = Utilities.processRailsError(errors)
+          w.isLoading = false
+          deferred.reject(errors)
+      )
+
+    return deferred.promise
+
 
   w.getColClass = ->
     "col-md-#{w.width}"
