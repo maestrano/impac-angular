@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets) ->
 
   w = $scope.parentWidget
 
@@ -10,17 +10,12 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalytic
   w.isEditMode = false
 
   $scope.deleteWidget = ->
-    DhbAnalyticsSvc
-      .widgets
-      .delete(w.id, w.parentDashboard)
-      .then( () ->
+    ImpacWidgetsSvc.delete(w).then(
+      (success) ->
         return true
-      ,(errors) ->
+      (errors) ->
         w.errors = Utilities.processRailsError(errors)
-        $log.error('Error deleting widget: ', errors)
-      )
-    # Refresh needed to display the 'add a widget' message in case of no widget
-    # ).finally(-> DhbAnalyticsSvc.load(true))
+    )
 
   $scope.toggleEditMode = ->
     if !w.isLoading

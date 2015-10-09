@@ -17,12 +17,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, U
   # Retrieve the widget content from Impac! and initialize the widget from it.
   w.loadContent = (refreshCache=false) ->
     w.isLoading = true
-    ImpacWidgetsSvc.show(w.id, refreshCache).then(
-      (success) ->
-        updatedWidget = success.data
-        updatedWidget.content ||= {}
-        updatedWidget.originalName = updatedWidget.name
-        angular.extend(w,updatedWidget)
+    ImpacWidgetsSvc.show(w, refreshCache).then(
+      (updatedWidget) ->
 
         if $scope.isAccessibility
           w.initialWidth = w.width
@@ -48,7 +44,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, U
     angular.forEach(w.settings, (setting) ->
       setting.initialize()
     )
-    # TODO: following is still true ?
+    # TODO: is following still true ?
     # For discreet metadata updates, we don't want to force editMode to be false example: changing hist mode
     w.isEditMode = false
     return true
@@ -69,9 +65,9 @@ module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, ImpacWidgetsSvc, U
     return if _.isEmpty(newMetadata)
     data = { metadata: newMetadata }
     w.isLoading = true if needContentReload
+    
     ImpacWidgetsSvc.update(w,data).then(
-      (success) ->
-        angular.extend(w,success.data)
+      (updatedWidget) ->
         w.loadContent() if needContentReload
       , (errors) ->
         w.errors = Utilities.processRailsError(errors)

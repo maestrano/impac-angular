@@ -12,11 +12,13 @@ angular
 
       if _.isEmpty(_self.config.ssoSessionId) || force
 
-        ImpacMainSvc.loadUserData(force).then (success) ->
-          _self.config.ssoSessionId = success.userData.ssoSession
-          deferred.resolve(_self.config)
-        ,(error) ->
-          deferred.reject(error)
+        $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
+          (results) ->
+            _self.config.ssoSessionId = results[0].userData.ssoSession
+            deferred.resolve(_self.config)
+          (error) ->
+            deferred.reject(error)
+        )
 
       else
          deferred.resolve(_self.config)
@@ -24,65 +26,134 @@ angular
       return deferred.promise
 
 
-    @show = (id, refreshCache=false) ->
+    isWidgetInCurrentDashboard = (widgetId) ->
+      currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+      return false if _.isEmpty(currentDhb) || _.isEmpty(currentDhb.widgets)
+      return _.contains( _.pluck(currentDhb.widgets, 'id'), widgetId)
+
+
+    @show = (widget, refreshCache=false) ->
       deferred = $q.defer()
 
-      _self.load().then ->
-        ImpacDashboardsSvc.load().then (success) ->
-          currentDhb = success.currentDashboard
-          if !_.isEmpty(currentDhb)
-            if currentDhb.widgets? && currentDhb.widgets.length > 0
-              widgetToLoad = _.find currentDhb.widgets, (widget) ->
-                id == widget.id
-
-              if _.isEmpty widgetToLoad
-                $log.info("Impac - ImpacWidgetsSvc: trying to load a widget (id: #{id}) that is not on currentDashboard")
-                deferred.reject("trying to load a widget (id: #{id}) that is not on currentDashboard")
-
-              else
-                data = {
-                  owner: widgetToLoad.owner
-                  sso_session: _self.config.ssoSessionId
-                  metadata: widgetToLoad.metadata
-                  engine: widgetToLoad.category
-                }
-                angular.extend(data, {refresh_cache: true}) if refreshCache
-
-                $http.post(ImpacRoutes.showWidgetPath(), data).then (success) ->
-                  deferred.resolve success
-                ,(error) ->
-                  deferred.reject(error)
-            else
-              $log.error("Impac - ImpacWidgetsSvc: current dashboard has no widget")
-              deferred.reject("current dashboard has no widget")
+      _self.load().then(
+        (config) ->
+          unless isWidgetInCurrentDashboard(widget.id)
+            $log.info("ImpacWidgetsSvc: trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
+            deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
 
           else
-            $log.error("Impac - ImpacWidgetsSvc: cannot load widget when currentDashboard is not set")
-            deferred.reject("cannot load widget when currentDashboard is not set")
+            data = {
+              owner: widget.owner
+              sso_session: _self.config.ssoSessionId
+              metadata: widget.metadata
+              engine: widget.category
+            }
+            angular.extend(data, {refresh_cache: true}) if refreshCache
 
-        ,(error) ->
-          $log.error("Impac - ImpacWidgetsSvc: error while loading ImpacDashboardsSvc")
+            $http.post(ImpacRoutes.showWidgetPath(widget.id), data).then(
+              (success) ->
+                updatedWidget = success.data
+                updatedWidget.content ||= {}
+                updatedWidget.originalName = updatedWidget.name
+                angular.merge widget, updatedWidget
+                deferred.resolve widget
+
+              (error) ->
+                $log.error("ImpacWidgetsSvc: cannot retrieve widget (#{widget.id}) content from API")
+                deferred.reject(error)
+            )
+
+        (errors) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
           deferred.reject(error)
-
-      ,(error) ->
-        $log.error("Impac - ImpacWidgetsSvc: error while loading ImpacWidgetsSvc")
-        deferred.reject(error)
+      )
 
       return deferred.promise
 
 
-    @create = (dashboard, opts) ->
+    @create = (opts) ->
       deferred = $q.defer()
-      data = { widget: opts }
+      
+      _self.load().then(
+        (config) ->
 
-      $http.post(ImpacRoutes.createWidgetPath(dashboard.id), data).then (success) ->
-        dashboard.widgets.push(success.data)
-        deferred.resolve(success.data)
-      ,(error) ->
-        $log.error("ImpacWidgetsSvc: cannot create widget on dashboard #{dashboard.id}")
-        deferred.reject(error)
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          data = { widget: opts }
+
+          $http.post(ImpacRoutes.createWidgetPath(dashboard.id), data).then(
+            (success) ->
+              newWidget = success.data
+              dashboard.widgets.push(newWidget)
+              deferred.resolve(newWidget)
+
+            (error) ->
+              $log.error("ImpacWidgetsSvc: cannot create widget on dashboard #{dashboard.id}")
+              deferred.reject(error)
+          )
+
+        (error) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
+          deferred.reject(error)
+      )
 
       return deferred.promise
+
+
+    @update = (widget, opts) ->
+      deferred = $q.defer()
+      
+      _self.load().then(
+        (config) ->
+      
+        unless isWidgetInCurrentDashboard(widget.id)
+          $log.info("ImpacWidgetsSvc: trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
+          deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
+
+        else
+          data = { widget: opts }
+          $http.put(ImpacRoutes.updateWidgetPath(widget.id),data).then(
+            (success) ->
+              updatedWidget = success.data
+              angular.merge widget, updatedWidget
+              deferred.resolve(updatedWidget)
+            (error) ->
+              $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
+              deferred.reject(error)
+          )
+
+        (error) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
+          deferred.reject(error)
+      )
+
+      return deferred.promise
+
+
+    @delete = (widgetToDelete) ->
+      deferred = $q.defer()
+      
+      _self.load().then(
+        (config) ->
+
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          $http.delete(ImpacRoutes.deleteWidgetPath(widgetToDelete.id)).then(
+            (success) ->
+              _.remove dashboard.widgets, (widget) -> 
+                widget.id == widgetToDelete.id
+              deferred.resolve(success)
+
+            (error) ->
+              $log.error("ImpacWidgetsSvc: error while trying to delete widget: #{widgetToDelete.id}")
+              deferred.reject(error)
+          )
+
+        (error) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
+          deferred.reject(error)
+      )
+
+      return deferred.promise
+
 
 
     return _self
