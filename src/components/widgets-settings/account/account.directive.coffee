@@ -32,8 +32,9 @@ module.directive('settingAccount', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '=',
+      parentWidget: '='
       label: '@'
+      onAccountSelected: '&'
     },
 
     link: (scope, element) ->
