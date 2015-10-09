@@ -1,13 +1,14 @@
 module = angular.module('impac.components.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ($scope, $log) ->
+module.controller('SettingWidthCtrl', ($scope, $log, ImpacWidgetsSvc) ->
 
   w = $scope.parentWidget
 
   w.toggleExpanded = ->
     $scope.expanded = !$scope.expanded
-    # We want to resize the widget without waiting for the response from the dashboarding API
-    w.updateSettings(false)
+    # false because we want to resize the widget without waiting for the response from the dashboarding API
+    ImpacWidgetsSvc.updateWidgetSettings(w,false)
+    
     if $scope.expanded
       w.width = parseInt($scope.max)
     else

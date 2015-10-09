@@ -2,7 +2,7 @@ module = angular.module('impac.components.widgets-settings.accounts-list', [])
 
 # There is no template associated to this setting, and though it won't appear in the 'settings' panel
 # However, as its metadata has to be initialized from, and saved to Impac!, we build ListAccounts as a setting
-module.controller('SettingAccountsListCtrl', ($scope) ->
+module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
 
   # ---------------------------------------------------------
   # ### Populate the widget
@@ -19,7 +19,7 @@ module.controller('SettingAccountsListCtrl', ($scope) ->
       account.uid == acc.uid
     dst.push(account)
 
-    w.updateSettings(false) if triggerUpdate
+    ImpacWidgetsSvc.updateWidgetSettings(w,false) if triggerUpdate
 
 
   # ---------------------------------------------------------

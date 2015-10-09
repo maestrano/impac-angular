@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.param-selector',[])
 
-module.controller('SettingParamSelectorCtrl', ($scope) ->
+module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
 
     $scope.showOptions = false
 
@@ -10,7 +10,8 @@ module.controller('SettingParamSelectorCtrl', ($scope) ->
     $scope.selectOption = (anOption) ->
       if anOption != $scope.selected
         $scope.selected = anOption
-        w.updateSettings(!$scope.noReload)
+        widget.isLoading = true if !$scope.noReload
+        ImpacWidgetsSvc.updateWidgetSettings(w,!$scope.noReload)
       $scope.toggleShowOptions()
 
     $scope.getTruncateValue = ->
