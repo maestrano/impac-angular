@@ -26,51 +26,6 @@ angular
       return deferred.promise
 
 
-    isWidgetInCurrentDashboard = (widgetId) ->
-      currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-      return false if _.isEmpty(currentDhb) || _.isEmpty(currentDhb.widgets)
-      return _.contains( _.pluck(currentDhb.widgets, 'id'), widgetId)
-
-
-    @show = (widget, refreshCache=false) ->
-      deferred = $q.defer()
-
-      _self.load().then(
-        (config) ->
-          unless isWidgetInCurrentDashboard(widget.id)
-            $log.info("ImpacWidgetsSvc: trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
-            deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
-
-          else
-            data = {
-              owner: widget.owner
-              sso_session: _self.config.ssoSessionId
-              metadata: widget.metadata
-              engine: widget.category
-            }
-            angular.extend(data, {refresh_cache: true}) if refreshCache
-
-            $http.post(ImpacRoutes.showWidgetPath(widget.id), data).then(
-              (success) ->
-                updatedWidget = success.data
-                updatedWidget.content ||= {}
-                updatedWidget.originalName = updatedWidget.name
-                angular.merge widget, updatedWidget
-                deferred.resolve widget
-
-              (error) ->
-                $log.error("ImpacWidgetsSvc: cannot retrieve widget (#{widget.id}) content from API")
-                deferred.reject(error)
-            )
-
-        (errors) ->
-          $log.error("ImpacWidgetsSvc: error while trying to load the service")
-          deferred.reject(error)
-      )
-
-      return deferred.promise
-
-
     @create = (opts) ->
       deferred = $q.defer()
       
@@ -99,6 +54,100 @@ angular
       return deferred.promise
 
 
+    isWidgetInCurrentDashboard = (widgetId) ->
+      currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+      return false if _.isEmpty(currentDhb) || _.isEmpty(currentDhb.widgets)
+      return _.contains( _.pluck(currentDhb.widgets, 'id'), widgetId)
+
+
+    @initWidgetSettings = (w) ->
+      return if _.isEmpty(w.settings)
+      for setting in w.settings
+        setting.initialize()
+      return true
+
+    @updateWidgetSettings = (widget, needContentReload=true) ->
+      deferred = $q.defer()
+
+      if _.isEmpty(widget.settings)
+        deferred.reject('no setting to update')
+
+      else
+        widget.isLoading = true if needContentReload
+        meta = {}
+        for setting in widget.settings
+          angular.merge meta, setting.toMetadata()
+
+        _self.update(widget, { metadata: meta }).then(
+          (updatedSettingsWidget) ->
+            if needContentReload
+              _self.show(updatedSettingsWidget).then(
+                (updatedContentWidget) ->
+                  updatedContentWidget.isLoading = false
+                  deferred.resolve(updatedContentWidget)
+                (error) ->
+                  updatedSettingsWidget.isLoading = false
+                  deferred.reject(error)
+              )
+            else
+              deferred.resolve(updatedSettingsWidget)
+
+          (error) ->
+            deferred.reject(error)
+        )
+
+      return deferred.promise
+
+
+    @show = (widget, refreshCache=false) ->
+      deferred = $q.defer()
+
+      _self.load().then(
+        (config) ->
+          unless isWidgetInCurrentDashboard(widget.id)
+            $log.info("ImpacWidgetsSvc: trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
+            deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
+
+          else
+            data = {
+              owner: widget.owner
+              sso_session: _self.config.ssoSessionId
+              metadata: widget.metadata
+              engine: widget.category
+            }
+            angular.extend(data, {refresh_cache: true}) if refreshCache
+
+            $http.post(ImpacRoutes.showWidgetPath(widget.id), data).then(
+              (success) ->
+                # Pushes new content to widget
+                content = success.data.content || {}
+                name: success.data.name
+                angular.extend widget, {content: content, originalName: name}
+
+                widget.initContext() if angular.isDefined(widget.initContext)
+
+                # Initializes each widget's setting
+                for setting in widget.settings
+                  setting.initialize() if angular.isDefined(setting.initialize)
+
+                # Formats the chart when necessary
+                widget.format() if angular.isDefined(widget.format)
+
+                deferred.resolve widget
+
+              (error) ->
+                $log.error("ImpacWidgetsSvc: cannot retrieve widget (#{widget.id}) content from API")
+                deferred.reject(error)
+            )
+
+        (errors) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
+          deferred.reject(error)
+      )
+
+      return deferred.promise
+
+
     @update = (widget, opts) ->
       deferred = $q.defer()
       
@@ -114,8 +163,8 @@ angular
           $http.put(ImpacRoutes.updateWidgetPath(widget.id),data).then(
             (success) ->
               updatedWidget = success.data
-              angular.merge widget, updatedWidget
-              deferred.resolve(updatedWidget)
+              angular.extend widget, updatedWidget
+              deferred.resolve(widget)
             (error) ->
               $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
               deferred.reject(error)

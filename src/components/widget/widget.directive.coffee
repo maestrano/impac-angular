@@ -1,79 +1,50 @@
 module = angular.module('impac.components.widget', [])
-
 module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, $q, ImpacWidgetsSvc, Utilities) ->
 
-  # ---------------------------------------------------------
-  # ### Widget object management
-  # ---------------------------------------------------------
-
-  # Initialization
   w = $scope.widget || {}
-  w.parentDashboard ||= $scope.parentDashboard
-  w.settings = []
-  w.isLoading = true
-  w.hasEditAbility = true
-  w.hasDeleteAbility = true
 
-  # Retrieve the widget content from Impac! and initialize the widget from it.
-  w.loadContent = (refreshCache=false) ->
-    w.isLoading = true
-    ImpacWidgetsSvc.show(w, refreshCache).then(
-      (updatedWidget) ->
+  # 1st load
+  # ---------------------------------------
+  # widgetDeferred will be resolved once the widget is ready (ie: at the end of the 'specific' directive)
+  $scope.widgetDeferred = $q.defer()
+  $scope.widgetDeferred.promise.then(
+    # each promise corresponds to a setting, and will be resolved once the setting is ready
+    (promises) ->
+      $q.all(promises).then(
+        (success) ->
+          
+          ImpacWidgetsSvc.show(w).then(
+            (updatedWidget) ->
+              #TODO: Accessibility should be treated differently (in service?)
+              if $scope.isAccessibility
+                w.initialWidth = w.width
+                w.width = 12
+              else if w.initialWidth 
+                w.width = w.initialWidth
 
-        if $scope.isAccessibility
-          w.initialWidth = w.width
-          w.width = 12
-        else if w.initialWidth 
-          w.width = w.initialWidth
+              w.isLoading = false
 
-        # triggers the initialization of the widget's specific params (defined in the widget specific controller)
-        w.initContext()
-        # triggers the initialization of all the widget's settings
-        w.initSettings()
-        # formats the widget's chart data when needed
-        w.isLoading = false
-        w.format() if angular.isDefined(w.format)
+            (error) ->
+              w.isLoading = false
+              $log.error(error)
+              # $scope.errors = Utilities.processRailsError(errors)
+          )
 
-      ,(errors) ->
-        w.errors = Utilities.processRailsError(errors)
-        w.isLoading = false
-    )
-
-  # Initialize all the settings of the widget
-  w.initSettings = ->
-    angular.forEach(w.settings, (setting) ->
-      setting.initialize()
-    )
-    # TODO: is following still true ?
-    # For discreet metadata updates, we don't want to force editMode to be false example: changing hist mode
-    w.isEditMode = false
-    return true
-
-  # Retrieve all the widgets settings, build the new metadata parameter, and update the widget's settings
-  w.updateSettings = (needContentReload=true) ->
-    deferred = $q.defer()
-
-    meta = {}
-    angular.forEach(w.settings, (setting) ->
-      angular.merge meta, setting.toMetadata()
-    )
-    
-    if _.isEmpty(meta)
-      deferred.reject('no setting to update')
-
-    else
-      w.isLoading = true if needContentReload
-      ImpacWidgetsSvc.update(w, { metadata: meta }).then(
-        (updatedWidget) ->
-          w.loadContent() if needContentReload
-          deferred.resolve(updatedWidget)
-        (errors) ->
-          w.errors = Utilities.processRailsError(errors)
+        (error) ->
           w.isLoading = false
-          deferred.reject(errors)
+          $log.error("widget #{w.id} failed to render")
+          $log.error(error)
       )
+  )
 
-    return deferred.promise
+
+  $scope.initSettings = ->
+    w.isEditMode = false
+    ImpacWidgetsSvc.initWidgetSettings(w)
+
+  $scope.updateSettings = (needContentReload=true) ->
+    w.isEditMode = false
+    ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
 
 
   w.getColClass = ->
@@ -90,6 +61,16 @@ module.directive('impacWidget', ($templateCache) ->
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
+
+      # initialize scope attributes
+      # --------------------------------------
+      scope.widget.isLoading = true
+      scope.widget.settings = []
+      # Unused so far -->
+      scope.widget.hasEditAbility = true
+      scope.widget.hasDeleteAbility = true
+      # <--
+
       #=======================================
       # DYNAMIC WIDGET TEMPLATE LOADING
       # Widget data sent from Maestrano db have a category value in url format.
