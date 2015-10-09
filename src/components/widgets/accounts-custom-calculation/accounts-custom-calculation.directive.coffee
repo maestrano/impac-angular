@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $templateCache) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $templateCache, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -83,7 +83,8 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
 
     # # # Reload the accounts lists on organizations list change
     $scope.$watch (-> w.selectedOrganizations), (result) ->
-      w.updateSettings() if !_.isEmpty(result)
+      if !_.isEmpty(result)
+        ImpacWidgetsSvc.updateWidgetSettings(w)
     ,true
 
     $scope.formulaModal.cancel = ->
@@ -91,7 +92,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
       $scope.formulaModal.close()
 
     $scope.formulaModal.proceed = ->
-      w.updateSettings(false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false)
       $scope.formulaModal.close()
 
     $scope.formulaModal.close = ->

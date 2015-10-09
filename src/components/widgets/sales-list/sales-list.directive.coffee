@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-list',[])
 
-module.controller('WidgetSalesListCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetSalesListCtrl', ($scope, ChartFormatterSvc, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -40,7 +40,7 @@ module.controller('WidgetSalesListCtrl', ($scope, ChartFormatterSvc) ->
           )
         else
           $scope.unCollapsed.push(categoryName)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (categoryName) ->
       if categoryName?

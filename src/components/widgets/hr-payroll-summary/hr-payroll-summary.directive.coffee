@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-payroll-summary',[])
 
-module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -137,7 +137,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $fil
         if w.isExpanded() && $scope.selectedElements.length == 0
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
       else
         $scope.selectedElements ||= []
         $scope.selectedElements.push(element)
@@ -145,7 +145,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $fil
         if !w.isExpanded()
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isSelected = (element) ->
       if element? && $scope.selectedElements?
@@ -169,7 +169,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, ChartFormatterSvc, $fil
           )
         else
           $scope.unCollapsed.push(element.name)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.getPeriod = ->
       if $scope.isDataFound && w.content.hist_parameters

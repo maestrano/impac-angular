@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-cash-summary',[])
 
-module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -85,14 +85,14 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $
         if w.isExpanded()
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
       else
         $scope.selectedElement = angular.copy(element)
         w.format()
         if !w.isExpanded()
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isSelected = (element) ->
       if element? && $scope.selectedElement?
@@ -111,7 +111,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, ChartFormatterSvc, $
           )
         else
           $scope.unCollapsed.push(element.name)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (element) ->
       if element? && element.name?

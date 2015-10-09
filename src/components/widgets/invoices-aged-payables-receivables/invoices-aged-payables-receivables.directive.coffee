@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-aged-payables-receivables',[])
 
-module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $filter, ChartFormatterSvc) ->
+module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $filter, ChartFormatterSvc, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -97,7 +97,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
         if w.isExpanded() && $scope.selectedElements.length == 0
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
       else
         $scope.selectedElements ||= []
         $scope.selectedElements.push(element)
@@ -105,7 +105,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
         if !w.isExpanded()
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isSelected = (element) ->
       if element? && $scope.selectedElements?
@@ -129,7 +129,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $log, $f
           )
         else
           $scope.unCollapsed.push(element.name)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (element) ->
       if element? && element.name?

@@ -111,7 +111,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, ChartFormatterSvc, $filt
         if w.isExpanded() && $scope.selectedElements.length == 0
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
       else
         $scope.selectedElements ||= []
         $scope.selectedElements.push(element)
@@ -119,7 +119,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, ChartFormatterSvc, $filt
         if !w.isExpanded()
           w.toggleExpanded()
         else
-          w.updateSettings(false)
+          ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isSelected = (element) ->
       if element? && $scope.selectedElements?
@@ -143,7 +143,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, ChartFormatterSvc, $filt
           )
         else
           $scope.unCollapsed.push(element.name)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (element) ->
       if element? && element.name?

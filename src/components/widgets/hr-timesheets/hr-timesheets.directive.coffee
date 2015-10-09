@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-timesheets',[])
 
-module.controller('WidgetHrTimesheetsCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetHrTimesheetsCtrl', ($scope, ChartFormatterSvc,ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -28,7 +28,7 @@ module.controller('WidgetHrTimesheetsCtrl', ($scope, ChartFormatterSvc) ->
           )
         else
           $scope.unCollapsed.push(categoryName)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (categoryName) ->
       if categoryName?

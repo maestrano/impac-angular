@@ -7,8 +7,8 @@
     <div setting-time-range parent-widget="widget" class="part" />
 
     <div align="right">
-      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
@@ -21,7 +21,7 @@
       <div class="block to-date">
         <div class="title">Sales to Date</div>
         <div class="price">{{widget.content.sales.to_date | mnoCurrency : widget.content.currency : false}}</div>
-        Target: <span class="edit-target" style="float: right;" editable-text="threshold" buttons="no" onaftersave="widget.updateSettings()">
+        Target: <span class="edit-target" style="float: right;" editable-text="threshold" buttons="no" onaftersave="updateSettings()">
           {{threshold | mnoCurrency : widget.content.currency : false}}
         </span>
       </div>
@@ -39,7 +39,7 @@
       <div ng-show="widget.content.break_even" class="legend">{{widget.content.break_even.eligible_opportunities}} eligible opportunities</div>
 
       <div ng-hide="widget.content.break_even" class="block to-breakeven">
-        <span class="edit-target" editable-text="threshold" buttons="no" onaftersave="widget.updateSettings()">
+        <span class="edit-target" editable-text="threshold" buttons="no" onaftersave="updateSettings()">
           <div class="define-text">Click to define your sales target</div>
         </span>
       </div>

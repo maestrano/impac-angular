@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, Utilities, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -52,7 +52,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, Utilities, ChartFormatt
         # will trigger updateSettings(false)
         w.toggleExpanded()
       else
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isSelected = (aStatus) ->
       return $scope.selectedStatus && aStatus == $scope.selectedStatus

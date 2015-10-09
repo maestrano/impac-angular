@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, ChartFormatterSvc, ImpacWidgetsSvc) ->
 
     w = $scope.widget
 
@@ -30,7 +30,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, ChartFormatterSvc) 
           )
         else
           $scope.unCollapsed.push(categoryName)
-        w.updateSettings(false)
+        ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
     $scope.isCollapsed = (categoryName) ->
       if categoryName?

@@ -1,12 +1,42 @@
 module = angular.module('impac.components.widgets.accounts-accounting-values',[])
 
-module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormatterSvc) ->
 
     w = $scope.widget
 
+    # Define settings
+    # --------------------------------------
+    $scope.orgDeferred = $q.defer()
+    $scope.timeRangeDeferred = $q.defer()
+    $scope.histModeDeferred = $q.defer()
+    $scope.chartDeferred = $q.defer()
+
+    settingsPromises = [
+      $scope.orgDeferred.promise
+      $scope.timeRangeDeferred.promise
+      $scope.histModeDeferred.promise
+      $scope.chartDeferred.promise
+    ]
+
+
+    # Widget specific methods
+    # --------------------------------------
     w.initContext = ->
       $scope.isDataFound = w.content? && w.content.accounting?
 
+    $scope.getCurrentPrice = ->
+      return _.last w.content.accounting.values if $scope.isDataFound
+
+    $scope.getCurrency = ->
+      return w.content.accounting.currency if $scope.isDataFound
+
+    $scope.getLegend = ->
+      return w.content.accounting.legend if $scope.isDataFound
+
+
+    # Chart formating function
+    # --------------------------------------
+    $scope.formatted = $q.defer()
     w.format = ->
       if $scope.isDataFound
         data = angular.copy(w.content.accounting)
@@ -20,35 +50,14 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, ChartFormatterS
           scaleBeginAtZero: all_values_are_positive,
           showXLabels: false,
         }
-        w.chart = ChartFormatterSvc.lineChart([inputData],options)
-
-    $scope.getCurrentPrice = ->
-      return _.last w.content.accounting.values if $scope.isDataFound
-
-    $scope.getCurrency = ->
-      return w.content.accounting.currency if $scope.isDataFound
-
-    $scope.getLegend = ->
-      return w.content.accounting.legend if $scope.isDataFound
+        data = ChartFormatterSvc.lineChart([inputData],options)
+        
+        $scope.formatted.notify(data)
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
-
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total == 3
-
-    return w
+    # Widget is ready: can trigger the "wait for settigns to be ready"
+    # --------------------------------------
+    $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetAccountsAccountingValues', ->

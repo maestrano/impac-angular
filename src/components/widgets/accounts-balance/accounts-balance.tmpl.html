@@ -8,15 +8,15 @@
     <div ng-hide="!isDataFound" setting-time-range parent-widget="widget" class="part" />
 
     <div align="right">
-      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
       <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="widget.updateSettings(false)" />
+      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="updateSettings(false)" />
 
       <!-- All the below divs will remain hidden until an account is selected -->
       <div setting-hist-mode ng-show="widget.selectedAccount" parent-widget="widget" />
