@@ -137,7 +137,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         angular.extend(params, {metadata: widgetMetadata})
       angular.element('#widget-selector').css('cursor', 'progress')
       angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'progress')
-      ImpacWidgetsSvc.create($scope.currentDhb,params).then(
+      ImpacWidgetsSvc.create(params).then(
         () ->
           $scope.errors = ''
           angular.element('#widget-selector').css('cursor', 'auto')

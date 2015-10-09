@@ -12,24 +12,15 @@ module.controller('SettingAccountsListCtrl', ($scope) ->
 
   # Used by the 'delete' button in the accounts list and by the comboBox
   w.moveAccountToAnotherList = (account, src, dst, triggerUpdate=true) ->
-    removeAccountFromList(account, src)
-    addAccountToList(account, dst)
+    return if _.isEmpty(src) || _.isEmpty(account)
+    dst ||= []
+
+    _.remove src, (acc) ->
+      account.uid == acc.uid
+    dst.push(account)
+
     w.updateSettings(false) if triggerUpdate
 
-  # ---------------------------------------------------------
-  # ### Helpers
-  # ---------------------------------------------------------
-
-  removeAccountFromList = (account, list) ->
-    if !_.isEmpty(list)
-      angular.copy _.reject(list, (accInList) ->
-        account.uid == accInList.uid
-      ), list
-
-  addAccountToList = (account, list) ->
-    if account?
-      list ||= []
-      list.push(account)
 
   # ---------------------------------------------------------
   # ### Setting definition
