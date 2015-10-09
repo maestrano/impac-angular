@@ -34,7 +34,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="widget-lines-container">
-              <div class="widget-line" ng-repeat="account in widget.selectedAccounts">
+              <div class="widget-line" ng-repeat="account in widget.selectedAccounts track by $index">
                 <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
                   x
                 </button>

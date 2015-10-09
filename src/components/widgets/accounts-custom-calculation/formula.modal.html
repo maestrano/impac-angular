@@ -31,7 +31,7 @@
       </div>
 
       <div ng-hide="widget.isLoading" class='col-md-6'>
-        <div class='widget-line' ng-repeat='account in widget.selectedAccounts'>
+        <div class='widget-line' ng-repeat='account in widget.selectedAccounts track by $index'>
           <div class='row'>
             <div class='col-md-6'>
               {{$index+1}} - {{account.name}}
