@@ -17,6 +17,10 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
         w.errors = Utilities.processRailsError(errors)
     )
 
+  $scope.refreshWidget = ->
+    w.isLoading = true
+    ImpacWidgetsSvc.show(w).finally(-> w.isLoading=false)
+
   $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode

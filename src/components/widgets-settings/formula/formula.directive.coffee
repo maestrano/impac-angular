@@ -69,8 +69,11 @@ module.controller('SettingFormulaCtrl', ($scope, $filter) ->
         if currency = firstAcc.currency
           w.evaluatedFormula = $filter('mnoCurrency')(w.evaluatedFormula, currency)
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingFormula', () ->
@@ -78,6 +81,7 @@ module.directive('settingFormula', () ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     controller: 'SettingFormulaCtrl'
   }

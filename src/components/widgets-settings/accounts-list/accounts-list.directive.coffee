@@ -52,8 +52,11 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
   setting.toMetadata = ->
     return { accounts_list: _.map(w.selectedAccounts, ((acc) -> acc.uid)) } if setting.isInitialized
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingAccountsList', () ->
@@ -61,6 +64,7 @@ module.directive('settingAccountsList', () ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     controller: 'SettingAccountsListCtrl'
   }

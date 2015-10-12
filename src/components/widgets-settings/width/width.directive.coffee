@@ -35,8 +35,11 @@ module.controller('SettingWidthCtrl', ($scope, $log, ImpacWidgetsSvc) ->
       newWidth = $scope.min
     return { width: parseInt(newWidth) }
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingWidth', ($templateCache) ->
@@ -44,6 +47,7 @@ module.directive('settingWidth', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '=',
+      deferred: '='
       min: '@',
       max: '@',
     },

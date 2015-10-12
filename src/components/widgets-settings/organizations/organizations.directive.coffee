@@ -33,7 +33,6 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
     ))
     return { organization_ids: newOrganizations }
 
-  w.settings ||= []
   w.settings.push(setting)
 
   # Setting is ready: trigger load content
