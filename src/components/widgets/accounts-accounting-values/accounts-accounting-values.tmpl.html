@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
-      <div setting-hist-mode parent-widget="widget" deferred="histModeDeferred" />
+      <div setting-hist-mode parent-widget="widget" deferred="histModeDeferred" on-hist-mode="unlockChart()" />
 
       <div ng-hide="widget.isHistoryMode" class="current">
         <div class="price">
@@ -25,7 +25,7 @@
       </div>
 
       <div ng-show="widget.isHistoryMode" class="history chart-container">
-        <div dhb-chart widget-rendered="formatted.promise" deferred="chartDeferred"></div>
+        <div dhb-chart chart-visible="chartVisible.promise" draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">{{getLegend()}}</div>
       </div>
     </div>

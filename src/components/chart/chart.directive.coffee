@@ -1,14 +1,15 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('dhbChart', ($templateCache, $compile, $timeout, $log) ->
+  .directive('dhbChart', ($templateCache, $compile, $timeout, $log, $q) ->
     return {
       restrict: 'A',
       scope: {
-        widgetRendered: '='
+        chartVisible: '='
+        drawTrigger: '='
         deferred: '='
       },
-      template: $templateCache.get('chart/chart.tmpl.html'),
+      template: '<canvas id="myChart"></canvas>',
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,
@@ -20,16 +21,15 @@ angular
           scaleShowGridLines: true,
         }
 
-        # myChart = null
         scope.draw = (data) ->
-          if !_.isEmpty(data.options)
-            angular.extend(options,data.options)
-
-          ctx = angular.element('#myChart').get(0).getContext("2d")
-
-          # $timeout will make sure the DOM is rendered before calling "new Chart",
-          # which is actually drawing the chart in the prepared canvas
+          # $timeout will make sure the DOM is rendered before drawing the chart
           $timeout ->
+            if !_.isEmpty(data.options)
+              angular.extend(options,data.options)
+
+            canvas = angular.element('#myChart').get(0)
+            ctx = canvas.getContext("2d")
+
             switch data.chartType
               when 'Bar'
                 new Chart(ctx).Bar(data.data,options)
@@ -40,19 +40,32 @@ angular
                 new Chart(ctx).Pie(data.data,options)
 
 
-        # Triggered by widget.format()
+        scope.dataAvailable = $q.defer()
+
+        # 1st chart draw
         # ------------------------------------
-        scope.widgetRendered.then(
+        $q.all([scope.dataAvailable.promise, scope.chartVisible]).then(
+          (success) ->
+            chartData = success[0]
+            scope.draw(chartData)
+            scope.drawnOnce = true
+        )
+
+        # All the following chart draws
+        # ------------------------------------
+        scope.drawTrigger.then(
           (success) ->
             $log.warn('chart promise has been resolved: use notify instead')
           (error) ->
             $log.error(error)
-          (notifiedData) ->
-            scope.draw(notifiedData)
+          (chartData) ->
+            if scope.drawnOnce
+              scope.draw(chartData)
+            else
+              scope.dataAvailable.resolve(chartData)
         )
 
-
-        # Setting is ready: trigger load content
+        # Chart is ready: trigger load content
         # ------------------------------------
         scope.deferred.resolve('chart ready')
     }

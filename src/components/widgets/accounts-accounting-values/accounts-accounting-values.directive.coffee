@@ -33,10 +33,14 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
     $scope.getLegend = ->
       return w.content.accounting.legend if $scope.isDataFound
 
+    $scope.chartVisible = $q.defer()
+    $scope.unlockChart = ->
+      $scope.chartVisible.resolve('draw chart')
 
     # Chart formating function
     # --------------------------------------
-    $scope.formatted = $q.defer()
+    $scope.drawTrigger = $q.defer()
+    drawnOnce = false
     w.format = ->
       if $scope.isDataFound
         data = angular.copy(w.content.accounting)
@@ -50,9 +54,10 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
           scaleBeginAtZero: all_values_are_positive,
           showXLabels: false,
         }
-        data = ChartFormatterSvc.lineChart([inputData],options)
+        chartData = ChartFormatterSvc.lineChart([inputData],options)
         
-        $scope.formatted.notify(data)
+        # calls chart.draw()
+        $scope.drawTrigger.notify(chartData)
 
 
     # Widget is ready: can trigger the "wait for settigns to be ready"
