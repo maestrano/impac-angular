@@ -5,15 +5,20 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
 
   $scope.showCloseActive = false
   $scope.showConfirmDelete = false
+  $scope.isDeletePopoverLoading = false
 
   w.isEditMode = false
 
   $scope.deleteWidget = ->
+    $scope.isDeletePopoverLoading = true
     ImpacWidgetsSvc.delete(w).then(
       (success) ->
         return true
       (errors) ->
         w.errors = Utilities.processRailsError(errors)
+    ).finally(
+      ->
+        $scope.isDeletePopoverLoading = false
     )
 
   $scope.refreshWidget = ->
