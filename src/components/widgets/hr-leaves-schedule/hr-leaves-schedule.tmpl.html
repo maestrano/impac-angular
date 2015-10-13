@@ -3,7 +3,7 @@
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
