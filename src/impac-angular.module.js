@@ -16,7 +16,7 @@ angular.module('maestrano.impac',
   ]);
 
 /*
-** COMPONTENTS
+** COMPONENTS
 */
 angular.module('impac.components',
   [
@@ -98,7 +98,13 @@ angular.module('impac.components.widgets-common',
 /*
 ** FILTERS
 */
-angular.module('impac.filters', []);
+angular.module('impac.filters',
+  [
+    'impac.filters.titleize',
+    'impac.filters.truncate',
+    'impac.filters.mno-currency'
+  ]
+);
 /*
 ** SERVICES
 */
