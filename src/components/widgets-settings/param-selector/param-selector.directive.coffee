@@ -30,7 +30,7 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
 
   setting.toMetadata = ->
     param = {}
-    param["#{$scope.param}"] = $scope.selected.value
+    param[$scope.param] = $scope.selected.value if !_.isEmpty($scope.selected)
     return param
 
   w.settings.push(setting)
