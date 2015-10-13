@@ -1,56 +1,67 @@
 module = angular.module('impac.components.widgets.hr-payroll-taxes',[])
 
-module.controller('WidgetHrPayrollTaxesCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = w.content? && w.content.total_tax && w.content.dates
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.timeRangeDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
-    w.format = ->
-      if $scope.isDataFound
-        inputData = {title: "Payroll Taxes", labels: w.content.dates, values: w.content.total_tax}
-        all_values_are_positive = true
-        angular.forEach(w.content.total_tax, (value) ->
-          all_values_are_positive &&= value >= 0
-        )
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.timeRangeDeferred.promise
+    $scope.histModeDeferred.promise
+    $scope.chartDeferred.promise
+  ]
 
-        options = {
-          scaleBeginAtZero: all_values_are_positive,
-          showXLabels: false,
-        }
-        w.chart = ChartFormatterSvc.lineChart([inputData],options)
 
-    $scope.getCurrentPrice = ->
-      return _.last w.content.total_tax if $scope.isDataFound
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = w.content? && w.content.total_tax && w.content.dates
 
-    $scope.getCurrency = ->
-      return w.content.currency || "USD" if $scope.isDataFound
+  $scope.getCurrentPrice = ->
+    return _.last w.content.total_tax if $scope.isDataFound
 
-    $scope.getPeriod = ->
-      if $scope.isDataFound && w.content.hist_parameters
-        period_param = w.content.hist_parameters.period || "MONTHLY"
-        period = "day"
-        period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
-        return "(current #{period})"
+  $scope.getCurrency = ->
+    return w.content.currency || "USD" if $scope.isDataFound
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
+  $scope.getPeriod = ->
+    if $scope.isDataFound && w.content.hist_parameters
+      period_param = w.content.hist_parameters.period || "MONTHLY"
+      period = "day"
+      period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
+      return "(current #{period})"
 
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 3
 
-    return w
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      inputData = {title: "Payroll Taxes", labels: w.content.dates, values: w.content.total_tax}
+      all_values_are_positive = true
+      angular.forEach(w.content.total_tax, (value) ->
+        all_values_are_positive &&= value >= 0
+      )
+
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false,
+      }
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetHrPayrollTaxes', ->
