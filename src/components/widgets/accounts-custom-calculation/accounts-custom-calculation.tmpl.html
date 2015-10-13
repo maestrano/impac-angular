@@ -1,8 +1,8 @@
 <div widget-accounts-custom-calculation>
 
-  <div setting-organizations parent-widget="widget" ng-hide="true" />
-  <div setting-accounts-list parent-widget="widget" />
-  <div setting-formula parent-widget="widget" />
+  <div setting-organizations parent-widget="widget" ng-hide="true" deferred="::orgDeferred" />
+  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" />
+  <div setting-formula parent-widget="widget" deferred="::formulaDeferred" />
 
   <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
     <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
@@ -11,9 +11,8 @@
   <div class="price" ng-show="widget.isFormulaCorrect">
     {{widget.evaluatedFormula}}
   </div>
-  <!-- Should be put in a tooltip/popover instead -->
-<!--     <div class="legend" ng-show="widget.isFormulaCorrect">
+  <div class="legend" ng-show="widget.isFormulaCorrect">
     {{widget.legend}}
-  </div> -->
+  </div>
 
 </div>
