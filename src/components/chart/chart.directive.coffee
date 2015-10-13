@@ -8,7 +8,7 @@ angular
         drawTrigger: '='
         deferred: '='
       },
-      template: '<canvas id="myChart"></canvas>',
+      template: '<canvas></canvas>',
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,
@@ -29,7 +29,7 @@ angular
             if !_.isEmpty(data.options)
               angular.extend(options,data.options)
 
-            canvas = angular.element('#myChart').get(0)
+            canvas = elem.children().get(0)
             ctx = canvas.getContext("2d")
 
             switch data.chartType
