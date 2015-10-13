@@ -4,7 +4,6 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
   w = $scope.parentWidget
 
   $scope.showCloseActive = false
-  $scope.showEditActive = false
   $scope.showConfirmDelete = false
 
   w.isEditMode = false
@@ -24,8 +23,9 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
   $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode
-        # Like a press on 'Cancel' button
-        w.initSettings()
+        # = press 'Cancel' button
+        w.isEditMode = false
+        ImpacWidgetsSvc.initWidgetSettings(w)
       else
         # Otherwise, we pass in edit mode
         w.isEditMode = true

@@ -1,13 +1,13 @@
 <div id="module__top-buttons">
-  <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" class="delete-widget" ng-show="parentWidget.hasDeleteAbility">
+  <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" ng-show="parentWidget.hasDeleteAbility">
     <button class="btn btn-close top-button" ng-click="showConfirmDelete = !showConfirmDelete">
       <i class="fa fa-times-circle-o fa-lg"></i>
       <span class="text-hide">Delete widget</span>
     </button>
   </div>
 
-  <div ng-mouseenter="showEditActive=true" ng-mouseleave="showEditActive=false" class="edit-widget" ng-show="parentWidget.hasEditAbility">
-    <button class="btn top-button btn-edit" ng-click="toggleEditMode()">
+  <div ng-show="parentWidget.hasEditAbility">
+    <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-class="{'edit-mode': parentWidget.isEditMode}">
       <i class="fa fa-cog fa-lg"></i>
       <span class="text-hide">Edit widget</span>
     </button>
