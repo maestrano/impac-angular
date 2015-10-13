@@ -3,8 +3,8 @@
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" />
-    <div setting-time-range parent-widget="widget" class="part" />
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
 
     <div align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -16,7 +16,7 @@
 
     <div ng-show="isDataFound" class="row" >
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
-        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" />
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
         <div class="widget-lines-container">
           <div class="row widget-line header">
@@ -41,35 +41,44 @@
       </div>
 
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
-        <h4>{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Profit and Loss</h4>
-        <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
+        <div ng-show="selectedElements"
+          <h4>{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Profit and Loss</h4>
+          <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
-        <div class="chart-container" ng-class="{'invisible': !isDataFound || !widget.isExpanded()}">
-          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
-        </div>
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+          </div>
 
-        <div ng-show="selectedElements.length < 2" class="widget-lines-container">
-          <div class="row widget-line">
-            <div class="col-sm-2 text-center" ng-repeat="date in dates" style="padding: 5px 0px;">
-              <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : "d-MMM"}}</div></div>
-              <div class="row widget-line"><div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}</div></div>
+          <div ng-show="selectedElements.length < 2" class="widget-lines-container">
+            <div class="row widget-line">
+              <span class="text-center" ng-repeat="date in dates track by $index">
+                <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
+
+                <div class="col-sm-2" style="padding: 5px 0px;">
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : "d-MMM"}}</div></div>
+                  <div class="row widget-line"><div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}</div></div>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
+            <div class="widget-line" ng-repeat="element in selectedElements">
+              <i style="float: right; margin-right: 10px;" ng-class="getClassColor(getLastValue(element))">{{getLastValue(element) | mnoCurrency : element.currency}}</i>
+              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+              {{getName(element) | titleize}}
             </div>
           </div>
         </div>
 
-        <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
-          <div class="widget-line" ng-repeat="element in selectedElements">
-            <i style="float: right; margin-right: 10px;" ng-class="getClassColor(getLastValue(element))">{{getLastValue(element) | mnoCurrency : element.currency}}</i>
-            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
-            {{getName(element) | titleize}}
-          </div>
+        <div ng-hide="selectedElements" class="no-element">
+          Select one or several account(s) or account(s) type(s) to display the corresponding PnL.
         </div>
-
       </div>
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>
