@@ -16,7 +16,7 @@
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
       <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="updateSettings(false)" deferred="::accountFrontDeferred" />
+      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
 
       <!-- All the below divs will remain hidden until an account is selected -->
       <div ng-show="widget.selectedAccount">
