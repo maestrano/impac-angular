@@ -29,6 +29,9 @@ angular
             if !_.isEmpty(data.options)
               angular.extend(options,data.options)
 
+            # canvas has to be removed/appended to be redrawned without superposition
+            elem.children().get(0).remove()
+            elem.append('<canvas></canvas>')
             canvas = elem.children().get(0)
             ctx = canvas.getContext("2d")
 
