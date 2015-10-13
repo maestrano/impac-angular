@@ -8,10 +8,10 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
     $scope.showOptions = !$scope.showOptions
 
   $scope.selectOption = (anOption) ->
-    if anOption != $scope.selected
-      $scope.selected = anOption
-      widget.isLoading = true if !$scope.noReload
-      ImpacWidgetsSvc.updateWidgetSettings(w,!$scope.noReload)
+    if anOption.value != $scope.selected.value
+      angular.extend $scope.selected, anOption
+      $scope.parentWidget.isLoading = true unless $scope.noReload
+      ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget,!$scope.noReload)
     $scope.toggleShowOptions()
 
   $scope.getTruncateValue = ->
