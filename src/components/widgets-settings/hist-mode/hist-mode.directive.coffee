@@ -9,7 +9,6 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
     return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
     w.isHistoryMode = !w.isHistoryMode
     ImpacWidgetsSvc.updateWidgetSettings(w,false)
-    $scope.onHistMode() if w.isHistoryMode
 
 
   # What will be passed to parentWidget
@@ -22,7 +21,6 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
     if w.content? && w.content.hist_parameters? && mode = w.content.hist_parameters.mode
       if mode == 'history'
         w.isHistoryMode = true
-        $scope.onHistMode()
       else
         w.isHistoryMode = false
       setting.isInitialized = true
@@ -47,7 +45,6 @@ module.directive('settingHistMode', ($templateCache) ->
     scope: {
       parentWidget: '='
       deferred: '='
-      onHistMode: '&'
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'

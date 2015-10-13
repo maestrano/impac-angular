@@ -1,11 +1,10 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('dhbChart', ($templateCache, $compile, $timeout, $log, $q) ->
+  .directive('impacChart', ($templateCache, $compile, $timeout, $log, $q) ->
     return {
       restrict: 'A',
       scope: {
-        chartVisible: '='
         drawTrigger: '='
         deferred: '='
       },
@@ -21,8 +20,11 @@ angular
           scaleShowGridLines: true,
         }
 
+        # Draw a chart in the canvas
+        # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
+        # ------------------------------------
         scope.draw = (data) ->
-          # $timeout will make sure the DOM is rendered before drawing the chart
+          # $timeout will wait for the DOM to be rendered before drawing the chart
           $timeout ->
             if !_.isEmpty(data.options)
               angular.extend(options,data.options)
@@ -40,18 +42,7 @@ angular
                 new Chart(ctx).Pie(data.data,options)
 
 
-        scope.dataAvailable = $q.defer()
-
-        # 1st chart draw
-        # ------------------------------------
-        $q.all([scope.dataAvailable.promise, scope.chartVisible]).then(
-          (success) ->
-            chartData = success[0]
-            scope.draw(chartData)
-            scope.drawnOnce = true
-        )
-
-        # All the following chart draws
+        # Triggered by widget.format()
         # ------------------------------------
         scope.drawTrigger.then(
           (success) ->
@@ -59,10 +50,7 @@ angular
           (error) ->
             $log.error(error)
           (chartData) ->
-            if scope.drawnOnce
-              scope.draw(chartData)
-            else
-              scope.dataAvailable.resolve(chartData)
+            scope.draw(chartData)
         )
 
         # Chart is ready: trigger load content

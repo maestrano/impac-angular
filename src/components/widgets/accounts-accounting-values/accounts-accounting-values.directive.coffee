@@ -33,14 +33,10 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
     $scope.getLegend = ->
       return w.content.accounting.legend if $scope.isDataFound
 
-    $scope.chartVisible = $q.defer()
-    $scope.unlockChart = ->
-      $scope.chartVisible.resolve('draw chart')
 
     # Chart formating function
     # --------------------------------------
     $scope.drawTrigger = $q.defer()
-    drawnOnce = false
     w.format = ->
       if $scope.isDataFound
         data = angular.copy(w.content.accounting)

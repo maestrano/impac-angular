@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
-      <div setting-hist-mode parent-widget="widget" deferred="histModeDeferred" on-hist-mode="unlockChart()" />
+      <div setting-hist-mode parent-widget="widget" deferred="histModeDeferred" />
 
       <div ng-hide="widget.isHistoryMode" class="current">
         <div class="price">
@@ -24,8 +24,9 @@
         <div class="legend">{{getLegend()}}</div>
       </div>
 
-      <div ng-show="widget.isHistoryMode" class="history chart-container">
-        <div dhb-chart chart-visible="chartVisible.promise" draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
+      <!-- Don't use ng-hide/show/if there: a canvas can't be drawn into a display: none element... -->
+      <div class="history chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
+        <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">{{getLegend()}}</div>
       </div>
     </div>
