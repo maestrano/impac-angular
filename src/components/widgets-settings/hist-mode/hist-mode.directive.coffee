@@ -9,6 +9,7 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
     return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
     w.isHistoryMode = !w.isHistoryMode
     ImpacWidgetsSvc.updateWidgetSettings(w,false)
+    $scope.onToggle() in angular.isDefined $scope.onToggle
 
 
   # What will be passed to parentWidget
@@ -45,6 +46,7 @@ module.directive('settingHistMode', ($templateCache) ->
     scope: {
       parentWidget: '='
       deferred: '='
+      onToggle: '&'
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'
