@@ -29,8 +29,8 @@
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
         <h3 class="right">Filter: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter"/></h3>
-        <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
-          <div dhb-chart data="widget.chart"></div>
+        <div class="chart-container" ng-class="{'invisible': !isDataFound || !widget.isExpanded()}">
+          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         </div>
         <div class="widget-lines-container">
           <div class="widget-line" ng-repeat="data in widget.content.summary.data">

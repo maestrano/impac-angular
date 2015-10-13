@@ -27,7 +27,7 @@
       <div ng-if="hasAccountsSelected()">
         <div class="row">
           <div class="col-md-12 chart-container">
-            <div dhb-chart data="widget.chart" />
+            <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
           </div>
         </div>
 

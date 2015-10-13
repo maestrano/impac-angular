@@ -21,9 +21,8 @@
       <!-- All the below divs will remain hidden until an account is selected -->
       <div setting-hist-mode ng-show="widget.selectedAccount" parent-widget="widget" />
 
-      <!-- the display condition must be an "if" and its value must change for the chart to be drawn again -->
-      <div ng-if="widget.isHistoryMode && widget.selectedAccount" class="chart-container">
-        <div dhb-chart data="widget.chart"></div>
+      <div class="chart-container" ng-class="{'invisible': !widget.isHistoryMode || !widget.selectedAccount}">
+        <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">{{getName()}}</div>
       </div>
 

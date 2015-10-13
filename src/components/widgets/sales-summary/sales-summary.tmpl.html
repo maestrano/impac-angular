@@ -20,8 +20,8 @@
       ({{widget.content.hist_parameters.from | date : 'd MMM'}} to {{widget.content.hist_parameters.to | date : 'd MMM'}})
     </div>
 
-    <div class="chart-container" ng-if="isDataFound && !incorrectPeriod">
-      <div dhb-chart data="widget.chart"></div>
+    <div class="chart-container" ng-class="{'invisible': !isDataFound || incorrectPeriod}">
+      <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
     </div>
 
     <div class="data-not-found" ng-if="incorrectPeriod">

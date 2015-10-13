@@ -1065,14 +1065,14 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
     max-height: 98px;
   }
-}
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
 }
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1231,22 +1231,6 @@ body {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
-  }
-}
 .analytics .widget-item .content.hr-employees-list {
   .legend {
     margin-bottom: 9px;
@@ -1261,6 +1245,22 @@ body {
     .widget-lines-container {
       text-align: left;
     }
+  }
+}
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1292,6 +1292,9 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1307,9 +1310,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -1324,11 +1324,11 @@ body {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
+}
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1387,9 +1387,6 @@ body {
     max-height: 270px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
   .details-container {
@@ -1411,6 +1408,9 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
   }
+}
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();

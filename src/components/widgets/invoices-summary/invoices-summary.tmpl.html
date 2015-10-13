@@ -13,8 +13,8 @@
   </div>
 
   <div align="center" ng-hide="widget.isEditMode">
-    <div class="chart-container" ng-if="isDataFound">
-      <div dhb-chart data="widget.chart"></div>
+    <div class="chart-container" ng-class="{'invisible': !isDataFound}">
+      <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
       <div class="legend">
         <span>{{widget.content.legend}}</span>
       </div>

@@ -48,8 +48,8 @@
       </div>
 
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
-        <div class="chart-container" ng-if="selectedElements.length > 0 && widget.isExpanded()">
-          <div dhb-chart data="widget.chart"></div>
+        <div class="chart-container" ng-class="{'invisible': selectedElements.length <= 0 || !widget.isExpanded()}">
+          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         </div>
 
         <div class="widget-lines-container">

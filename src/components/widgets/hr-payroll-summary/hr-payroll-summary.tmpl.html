@@ -50,9 +50,8 @@
 
         <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
-        <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
-          <div ng-if="widget.isHistoryMode" dhb-chart data="widget.hist_chart"></div>
-          <div ng-if="!widget.isHistoryMode" dhb-chart data="widget.cur_chart"></div>
+        <div class="chart-container" ng-class="{'invisible': !isDataFound || !widget.isExpanded()}">
+          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         </div>
 
         <div ng-show="selectedElements.length < 2" class="widget-lines-container">

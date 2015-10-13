@@ -19,8 +19,8 @@
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width"></div>
 
         <div class="selector">Filter: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter"/></div>
-        <div class="chart-container" ng-if="isDataFound">
-          <div dhb-chart data="widget.chart"></div>
+        <div class="chart-container">
+          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         </div>
         <div class="widget-lines-container">
           <div class="widget-line">

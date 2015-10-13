@@ -24,7 +24,6 @@
         <div class="legend">{{getLegend()}}</div>
       </div>
 
-      <!-- Don't use ng-hide/show/if there: a canvas can't be drawn into a display: none element... -->
       <div class="history chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
         <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">{{getLegend()}}</div>

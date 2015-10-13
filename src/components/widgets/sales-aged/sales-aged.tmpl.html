@@ -19,7 +19,7 @@
       <div setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" no-reload truncate-no="60" style="text-align: center;"/>
 
       <div class="chart-container">
-        <div dhb-chart data="widget.chart"></div>
+        <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
       </div>
       <div class="legend">From {{widget.content.dates[0]}} to {{getLastDate()}}</div>
 

@@ -16,7 +16,7 @@
     <div ng-show="isDataFound" >
 
       <div class="chart-container">
-        <div dhb-chart data="widget.chart"></div>
+        <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
       </div>
 
       <div class="widget-lines-container" style="max-height: 340px;">

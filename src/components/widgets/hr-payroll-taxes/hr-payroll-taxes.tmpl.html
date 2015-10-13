@@ -22,9 +22,8 @@
         <div class="legend">Taxes upon workforce costs<br />{{getPeriod()}}</div>
       </div>
 
-      <!-- the display condition must be an "if" and its value must change for the chart to be drawn again -->
-      <div ng-if="widget.isHistoryMode" class="history chart-container">
-        <div dhb-chart data="widget.chart"></div>
+      <div class="history chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
+        <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">Taxes upon workforce costs</div>
       </div>
     </div>

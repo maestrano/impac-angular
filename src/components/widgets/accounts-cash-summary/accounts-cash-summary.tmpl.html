@@ -46,8 +46,8 @@
 
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
         <h4>{{getName(selectedElement) | titleize}}</h4>
-        <div class="chart-container" ng-if="isDataFound && widget.isExpanded()">
-          <div dhb-chart data="widget.chart"></div>
+        <div class="chart-container" ng-class="{'invisible': !isDataFound || !widget.isExpanded()}">
+          <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         </div>
         <div class="legend">{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Cash Flow</div>
         <div class="widget-lines-container">
