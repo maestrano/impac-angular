@@ -12,6 +12,7 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
       angular.extend $scope.selected, anOption
       $scope.parentWidget.isLoading = true unless $scope.noReload
       ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget,!$scope.noReload)
+      $scope.onSelect() if angular.isDefined $scope.onSelect
     $scope.toggleShowOptions()
 
   $scope.getTruncateValue = ->
@@ -44,12 +45,13 @@ module.directive('settingParamSelector', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '=',
-      deferred: '=',
-      param: '@',
-      options: '=',
-      selected: '=',
-      truncateNo: '@',
+      parentWidget: '='
+      deferred: '='
+      param: '@'
+      options: '='
+      selected: '='
+      truncateNo: '@'
+      onSelect: '&'
     },
     link: (scope, elements, attrs) ->
       scope.noReload = typeof attrs.noReload != 'undefined'
