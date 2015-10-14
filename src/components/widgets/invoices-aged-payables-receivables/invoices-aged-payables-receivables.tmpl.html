@@ -88,12 +88,18 @@
 
           <div ng-show="selectedElements.length < 2" class="widget-lines-container">
             <div class="row widget-line">
-              <div class="col-sm-2 text-center" ng-repeat="date in widget.content.dates" style="padding: 5px 0px;">
-                <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : 'MMM-d'}}</div></div>
-                <div class="row widget-line">
-                  <div class="col-sm-12" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}</div>
+              <span class="text-center" ng-repeat="date in widget.content.dates track by $index">
+                <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
+
+                <div class="col-sm-2" style="padding: 5px 0px;">
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
+                    {{date | date : 'MMM-d'}}
+                  </div></div>
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
+                    {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+                  </div></div>
                 </div>
-              </div>
+              </span>
             </div>
           </div>
 

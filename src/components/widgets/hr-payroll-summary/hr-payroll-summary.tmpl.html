@@ -49,20 +49,25 @@
         
           <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Payroll Summary</h4>
           <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()"/>
-          <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
-          <!-- <div class="chart-container" ng-class="{'invisible': !isDataFound || !widget.isExpanded()}"> -->
           <div class="chart-container">
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+            <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
           </div>
 
           <div ng-show="selectedElements.length < 2" class="widget-lines-container">
             <div ng-show="getTrackedField()" class="legend">{{getTrackedField()}}</div>
             <div class="row widget-line">
-              <div class="col-sm-2 text-center" ng-repeat="date in widget.content.dates" style="padding: 5px 0px;">
-                <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{formatDate(date)}}</div></div>
-                <div class="row widget-line">
-                  <div class="col-sm-12" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}</div>
+              <span class="text-center" ng-repeat="date in widget.content.dates track by $index">
+                <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
+
+                <div class="col-sm-2" style="padding: 5px 0px;">
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
+                    {{formatDate(date)}}
+                    </div></div>
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
+                    {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}
+                  </div></div>
                 </div>
               </div>
             </div>
