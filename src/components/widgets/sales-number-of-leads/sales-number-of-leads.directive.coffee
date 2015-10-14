@@ -1,98 +1,101 @@
 module = angular.module('impac.components.widgets.sales-number-of-leads',[])
 
-module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.number_of_leads)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
 
-        $scope.periodOptions = [
-          {label: 'year', value: 'YEARLY'},
-          {label: 'quarter', value: 'QUARTERLY'},
-          {label: 'month', value: 'MONTHLY'},
-          {label: 'week', value: 'WEEKLY'},
-          {label: 'day', value: 'DAILY'},
-        ]
-        $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-          o.value == w.metadata.period
-        ) || $scope.periodOptions[3])
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.paramSelectorDeferred.promise
+  ]
 
-    $scope.formatNumberOfLeads = (carac) ->
-      formattedNominal = 0
-      formattedVariation = "- %"
 
-      return {nominal: formattedNominal, variation: formattedVariation, color: ''} if !$scope.isDataFound
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.number_of_leads)
 
-      n_hash = angular.copy(w.content.number_of_leads)
-      nominal=0
-      color=''
+      $scope.periodOptions = [
+        {label: 'year', value: 'YEARLY'},
+        {label: 'quarter', value: 'QUARTERLY'},
+        {label: 'month', value: 'MONTHLY'},
+        {label: 'week', value: 'WEEKLY'},
+        {label: 'day', value: 'DAILY'},
+      ]
+      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+        o.value == w.metadata.period
+      ) || $scope.periodOptions[3])
 
-      if carac=="new" && n_hash.total && n_hash.total.length == 2
-        nominal = n_hash.total[1] - n_hash.total[0]
-        variation = getVariation(n_hash.total)
-        if variation > 0
-          color = 'green'
-        else if variation < 0
-          color = 'red'
+  # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
+  w.processError = (error) ->
+    # TODO: better error management
+    if error.code == 404
+      $scope.isDataFound = false
 
-      else if carac=="converted" && n_hash.converted && n_hash.converted.length == 2
-        nominal = n_hash.converted[1]
-        variation = getVariation(n_hash.converted)
-        if variation > 0
-          color = 'green'
-        else if variation < 0
-          color = 'red'
+  $scope.formatNumberOfLeads = (carac) ->
+    formattedNominal = 0
+    formattedVariation = "- %"
 
-      else if carac=="lost" && n_hash.lost && n_hash.lost.length == 2
-        nominal = n_hash.lost[1]
-        variation = getVariation(n_hash.lost)
-        if variation < 0
-          color = 'green'
-        else if variation > 0
-          color = 'red'
+    return {nominal: formattedNominal, variation: formattedVariation, color: ''} if !$scope.isDataFound
 
-      else
-        return {nominal: formattedNominal, variation: formattedVariation, color: color}
+    n_hash = angular.copy(w.content.number_of_leads)
+    nominal=0
+    color=''
 
-      if nominal > 0
-        formattedNominal = "+#{nominal}"
-      else if nominal < 0
-        formattedNominal = nominal
+    if carac=="new" && n_hash.total && n_hash.total.length == 2
+      nominal = n_hash.total[1] - n_hash.total[0]
+      variation = getVariation(n_hash.total)
+      if variation > 0
+        color = 'green'
+      else if variation < 0
+        color = 'red'
 
-      if variation && variation > 0
-        formattedVariation = "+#{variation.toFixed(0)}%"
-      else if variation && variation < 0
-        formattedVariation = "#{variation.toFixed(0)}%"
+    else if carac=="converted" && n_hash.converted && n_hash.converted.length == 2
+      nominal = n_hash.converted[1]
+      variation = getVariation(n_hash.converted)
+      if variation > 0
+        color = 'green'
+      else if variation < 0
+        color = 'red'
 
+    else if carac=="lost" && n_hash.lost && n_hash.lost.length == 2
+      nominal = n_hash.lost[1]
+      variation = getVariation(n_hash.lost)
+      if variation < 0
+        color = 'green'
+      else if variation > 0
+        color = 'red'
+
+    else
       return {nominal: formattedNominal, variation: formattedVariation, color: color}
 
-    getVariation = (v_array) ->
-      if v_array[0] != 0
-        variation = 100 * ((v_array[1] / v_array[0]) - 1)
-      else
-        variation = "- "
+    if nominal > 0
+      formattedNominal = "+#{nominal}"
+    else if nominal < 0
+      formattedNominal = nominal
 
-    # -----------------
+    if variation && variation > 0
+      formattedVariation = "+#{variation.toFixed(0)}%"
+    else if variation && variation < 0
+      formattedVariation = "#{variation.toFixed(0)}%"
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
+    return {nominal: formattedNominal, variation: formattedVariation, color: color}
 
-    # organization_ids + param selector
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 2
+  getVariation = (v_array) ->
+    if v_array[0] != 0
+      variation = 100 * ((v_array[1] / v_array[0]) - 1)
+    else
+      variation = "- "
 
-    return w
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesNumberOfLeads', ->
