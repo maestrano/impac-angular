@@ -1,43 +1,51 @@
 module = angular.module('impac.components.widgets.invoices-summary',[])
 
-module.controller('WidgetInvoicesSummaryCtrl', ($scope, Utilities, ChartFormatterSvc) ->
+module.controller('WidgetInvoicesSummaryCtrl', ($scope, $q, Utilities, ChartFormatterSvc) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = !_.isEmpty(w.content.summary)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.chartFiltersDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
-    w.format = ->
-      if $scope.isDataFound
-        pieData = _.map w.content.summary, (entity) ->
-          {
-            label: entity.name,
-            value: entity.total,
-          }
-        pieOptions = {
-          percentageInnerCutout: 50,
-          tooltipFontSize: 12,
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.chartFiltersDeferred.promise
+    $scope.chartDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = !_.isEmpty(w.content.summary)
+
+
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      pieData = _.map w.content.summary, (entity) ->
+        {
+          label: entity.name,
+          value: entity.total,
         }
-        w.chart = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      pieOptions = {
+        percentageInnerCutout: 50,
+        tooltipFontSize: 12,
+      }
+      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
-
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total == 2
-
-    return w
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetInvoicesSummary', ->
