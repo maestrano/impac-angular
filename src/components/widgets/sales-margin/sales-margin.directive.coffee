@@ -1,79 +1,90 @@
 module = angular.module('impac.components.widgets.sales-margin',[])
 
-module.controller('WidgetSalesMarginCtrl', ($scope,  ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = w.content? && w.content.margins? && w.content.dates?
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.timeRangeDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
-      $scope.filterOptions = [
-        {label: 'Including taxes', value: 'gross_margin'},
-        {label: 'Excluding taxes', value: 'net_margin'}
-      ]
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.timeRangeDeferred.promise
+    $scope.histModeDeferred.promise
+    $scope.paramSelectorDeferred.promise
+    $scope.chartDeferred.promise
+  ]
 
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = w.content? && w.content.margins? && w.content.dates?
+
+    $scope.filterOptions = [
+      {label: 'Including taxes', value: 'gross_margin'},
+      {label: 'Excluding taxes', value: 'net_margin'}
+    ]
+
+    if w.metadata? && w.metadata.filter=="net_margin"
+      $scope.filter = angular.copy $scope.filterOptions[1]
+    else
+      $scope.filter = angular.copy $scope.filterOptions[0]
+
+  $scope.getTotalMargin = ->
+    if $scope.isDataFound
       if w.metadata? && w.metadata.filter=="net_margin"
-        $scope.filter = $scope.filterOptions[1]
+        return _.reduce w.content.margins.net, (memo, margin) ->
+          memo + margin
+        , 0
       else
-        $scope.filter = $scope.filterOptions[0]
+        return _.reduce w.content.margins.gross, (memo, margin) ->
+          memo + margin
+        , 0
 
-    w.format = ->
-      if $scope.isDataFound
-        if w.metadata? && w.metadata.filter=="net_margin"
-          values = w.content.margins.net
-        else
-          values = w.content.margins.gross
+  $scope.getCurrency = ->
+    if $scope.isDataFound
+      return w.content.currency || "USD"
 
-        inputData = {title: "Gross margin", labels: w.content.dates, values: values}
-        all_values_are_positive = true
-        angular.forEach(values, (value) ->
-          all_values_are_positive &&= value >= 0
-        )
-
-        options = {
-          scaleBeginAtZero: all_values_are_positive,
-          showXLabels: false,
-        }
-        w.chart = ChartFormatterSvc.lineChart([inputData],options)
-
-    $scope.getTotalMargin = ->
-      if $scope.isDataFound
-        if w.metadata? && w.metadata.filter=="net_margin"
-          return _.reduce w.content.margins.net, (memo, margin) ->
-            memo + margin
-          , 0
-        else
-          return _.reduce w.content.margins.gross, (memo, margin) ->
-            memo + margin
-          , 0
-
-    $scope.getCurrency = ->
-      if $scope.isDataFound
-        return w.content.currency || "USD"
-
-    $scope.getTimeSpan = ->
-      if $scope.isDataFound
-        return "From #{$filter('date')(_.first(w.content.dates), 'd MMM yy')} to #{$filter('date')(_.last(w.content.dates), 'd MMM yy')}"
+  $scope.getTimeSpan = ->
+    if $scope.isDataFound
+      return "From #{$filter('date')(_.first(w.content.dates), 'd MMM yy')} to #{$filter('date')(_.last(w.content.dates), 'd MMM yy')}"
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      if w.metadata? && w.metadata.filter=="net_margin"
+        values = w.content.margins.net
       else
-        return 0
+        values = w.content.margins.gross
 
-    # organizations + time range + hist mode + oaram selector
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 4
+      inputData = {title: "Gross margin", labels: w.content.dates, values: values}
+      all_values_are_positive = true
+      angular.forEach(values, (value) ->
+        all_values_are_positive &&= value >= 0
+      )
 
-    return w
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false,
+      }
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesMargin', ->
