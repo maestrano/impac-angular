@@ -37,6 +37,10 @@ module.controller('SettingTimeRangeCtrl', ($scope, $log) ->
 
   w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingTimeRange', ($templateCache) ->
@@ -44,6 +48,7 @@ module.directive('settingTimeRange', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     template: $templateCache.get('widgets-settings/time-range.tmpl.html'),
     controller: 'SettingTimeRangeCtrl'

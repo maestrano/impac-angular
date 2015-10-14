@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.data-not-found',[])
 
-module.directive('commonDataNotFound', ($templateCache, ImpacAssets, ImpacTheming) ->
+module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
@@ -8,10 +8,7 @@ module.directive('commonDataNotFound', ($templateCache, ImpacAssets, ImpacThemin
     },
     controller: ($scope) ->
       $scope.bgImage = ''
-
       $scope.content = ImpacTheming.get().dataNotFoundConfig
-
-      # returns a string that is either the asset directory path, or empty.
       baseDir = ImpacAssets.get('dataNotFound')
       if $scope.widgetEngine and baseDir.length > 0
         # checks for trailing slash and corrects.
@@ -19,7 +16,14 @@ module.directive('commonDataNotFound', ($templateCache, ImpacAssets, ImpacThemin
         dir = if dir[dir.length - 1] != '/'
         then dir.concat('/').join('')
         else dir.join('')
-        $scope.bgImage = dir + $scope.widgetEngine + '.png'
+
+        assetPath = dir + $scope.widgetEngine + '.png'
+        $http.get(assetPath).then(
+          (success) ->
+            $scope.bgImage = assetPath
+          (error) ->
+            $log.warn("Missing data-not-found image for #{$scope.widgetEngine}")
+        )
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
   }

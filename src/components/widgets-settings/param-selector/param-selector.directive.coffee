@@ -1,50 +1,57 @@
 module = angular.module('impac.components.widgets-settings.param-selector',[])
 
-module.controller('SettingParamSelectorCtrl', ($scope) ->
+module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
 
-    $scope.showOptions = false
+  $scope.showOptions = false
 
-    $scope.toogleShowOptions = ->
-      $scope.showOptions = !$scope.showOptions
+  $scope.toggleShowOptions = ->
+    $scope.showOptions = !$scope.showOptions
 
-    $scope.selectOption = (anOption) ->
-      if anOption != $scope.selected
-        $scope.selected = anOption
-        w.updateSettings(!$scope.noReload)
-      $scope.toogleShowOptions()
+  $scope.selectOption = (anOption) ->
+    if anOption.value != $scope.selected.value
+      angular.extend $scope.selected, anOption
+      $scope.parentWidget.isLoading = true unless $scope.noReload
+      ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget,!$scope.noReload)
+      $scope.onSelect() if angular.isDefined $scope.onSelect
+    $scope.toggleShowOptions()
 
-    $scope.getTruncateValue = ->
-      return parseInt($scope.truncateNo) || 20
+  $scope.getTruncateValue = ->
+    return parseInt($scope.truncateNo) || 20
 
-    w = $scope.parentWidget
+  w = $scope.parentWidget
 
-    # What will be passed to parentWidget
-    setting = {}
-    setting.key = "param-selector"
-    setting.isInitialized = false
+  # What will be passed to parentWidget
+  setting = {}
+  setting.key = "param-selector"
+  setting.isInitialized = false
 
-    # initialization of time range parameters from widget.content.hist_parameters
-    setting.initialize = ->
-      setting.isInitialized = true if w.content?
+  # initialization of time range parameters from widget.content.hist_parameters
+  setting.initialize = ->
+    setting.isInitialized = true if w.content?
 
-    setting.toMetadata = ->
-      param = {}
-      param["#{$scope.param}"] = $scope.selected.value
-      return param
+  setting.toMetadata = ->
+    param = {}
+    param[$scope.param] = $scope.selected.value if !_.isEmpty($scope.selected)
+    return param
 
-    w.settings ||= []
-    w.settings.push(setting)
+  w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingParamSelector', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '=',
-      param: '@',
-      options: '=',
-      selected: '=',
-      truncateNo: '@',
+      parentWidget: '='
+      deferred: '='
+      param: '@'
+      options: '='
+      selected: '='
+      truncateNo: '@'
+      onSelect: '&'
     },
     link: (scope, elements, attrs) ->
       scope.noReload = typeof attrs.noReload != 'undefined'

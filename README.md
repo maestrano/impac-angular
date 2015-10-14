@@ -30,48 +30,64 @@ impac-angular requires that you configure it's **ImpacLinkingProvider service** 
 _type_: Object<br>
 _usage_: Linking core User data into impac-angular to meet the requirements of the library, and keeping concerns seperate.
 
-**ssoSession**<br>
+**user**<br>
 _type_: Function<br>
-_return_: {String}<br>
-_usage_: Retrieving sso_session key for authenticating querys to Impac! API.
+_return_: Promise -> {sso_session: ssoSession, ... }<br>
+_usage_: Retrieving user details & sso_session key for authenticating querys to Impac! API, and displaying user data e.g name.
+
+**organizations**<br>
+_type_: Function<br>
+_return_: Promise -> {organizations: [ userOrgs, ... ], currentOrgId: currentOrgId}<br>
+_usage_: Retrieving organizations and current organization id.
 
 See example below:
 
 ```
   angular
     .module('yourApp', [])
-    .config( (ImpacLinkingProvider, MnoSessionProvider) ->
+    .run( (ImpacLinkingProvider, ImpacConfigProvider) ->
     
       data = 
-          ssoSession: MnoSessionProvider.$get().getSession
+          user: ImpacConfig.getUserData
+          organizations: ImpacConfig.getOrganizations
             
       ImpacLinkingProvider.linkData(data)
-      
+
     )
   )
   
 ```
 ### Optional Configurations
 [TODO: Expand on this section]<br>
+
 There are other provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is an assets provider for configuring static assets.
 
 
 <!--  # notes as reminder of optional config instructions to document.
-  - custom dhb selector templates
-    - valid url = 'app/views/foobar.html
+  	- custom dhb selector templates
+    	- valid url = 'app/views/foobar.html
 -->
 
 ### Developement
 
-Easiest way to develop for impac-angular at the moment is to create a sym-link of the dist folder into your app, and the bower.json file into the root of angular-impac.
+Easiest way to develop for impac-angular is by creating a **[bower link](http://bower.io/docs/api/#link)**. (Essentially a sym-link, so will sync with any changes).
+
+Steps are:
 
 ```
-  ln -s impac-angular/dist your-app/bower_components/angular-impac/dist
-  cp impac-angular/bower.json your-app/bower_components/angular-impac 
+	// Pointing bower to your local version of impac-angular
+	 
+	cd impac-angular/	
+	bower link	
+	cd your-project/
+	bower link impac-angular
+	
+	// Uninstalling bower link, and pointing bower to original github path.
+	
+	cd impac-angular/
+	bower uninstall impac-angular
+	bower update
 ```
-When making changes in angular-impac src files, you will need to run `gulp build:dist`.
-
-Note, there is a `gulp start:watch` task that will run `gulp build:dist`, although it has proven to be inconsitant and needs debugging.
 
 ### Conventions within impac-angular
 
@@ -106,7 +122,7 @@ The goal is to be able to work on a specific component / peice of functionality 
 
 Stylesheets should be kept within the components file structure, with styles concerning that component.
 
-Only main stylesheets should be kept in the stylesheets folder, like `variables.less`, `global.less`, and `imports.less`.
+Only main stylesheets should be kept in the stylesheets folder, like `variables.less`, `global.less`, and `mixins.less`, etc.
 
 Component specific styles should be wrapped in a containing ID to prevent bleeding. 
 
@@ -125,21 +141,40 @@ Template to match above:
   </div>
 ```
 
-Running `gulp build:less:inject` will inject `@import` declarations from `.less` files in `components/` into `stylesheets/import.less`.
+Running `gulp less:inject` will inject `@import` declarations from `.less` files in `components/` into `impac-angular.less`.
 
-Running `gulp build:less` will run the inject task, and then compile all imports.less into one big css file in dist.
+Running `gulp less:concat` will then concatinate all less files into a one.
+
+Running `gulp less:compile` will compile the dist less file into a dist css and min.css file. Note, you will need to uncomment an `@import` of `bower_components/bootstrap` in the `impac-angular.less`.
   
 ### Tests
-[TODO]
+
+Test should be created within service or component folders. Just be sure to mark them with a .spec extension.
+
+Example: 
+
+```
+	components/
+		some-component/
+			some-component.directive.coffee
+			some-component.directive.spec.js
+	services/
+		some-service/
+			some-service.service.coffee
+			some-service.service.spec.js
+```
+
+To run tests, first build impac-angular with `gulp build`. Then run `gulp test`.
+
+To run tests for production on the minified version, first build with `gulp build:dist`. Then run `gulp test:dist`.
+
+**NOTE:** with `gulp build:dist` you will need to uncomment the bower_components bootstrap `@import` in the `impac-angular.less` file.
 
 ### Bugs, Refactor and Improvements
-- Refactor `analytics.less` into modular structure.
-- Fix gulp watch task, seems to be not working consitantly. 
+
 
 ### Roadmap
-- theming provider config for "data not found"
-- Option to add external widget selection UI
-- Finish Refactor `analytics.less`
+
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd

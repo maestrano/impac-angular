@@ -24,16 +24,21 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingAccount', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '=',
+      parentWidget: '='
+      deferred: '='
       label: '@'
+      onAccountSelected: '&'
     },
 
     link: (scope, element) ->

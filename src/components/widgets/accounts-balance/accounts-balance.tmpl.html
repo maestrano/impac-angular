@@ -3,40 +3,41 @@
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" />
-    <div ng-hide="!isDataFound" setting-account parent-widget="widget" class="part" />
-    <div ng-hide="!isDataFound" setting-time-range parent-widget="widget" class="part" />
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-account parent-widget="widget" class="part" deferred="::accountBackDeferred" />
+    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
 
     <div align="right">
-      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
       <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' />
+      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
 
       <!-- All the below divs will remain hidden until an account is selected -->
-      <div setting-hist-mode ng-show="widget.selectedAccount" parent-widget="widget" />
+      <div ng-show="widget.selectedAccount">
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" />
 
-      <!-- the display condition must be an "if" and its value must change for the chart to be drawn again -->
-      <div ng-if="widget.isHistoryMode && widget.selectedAccount" class="chart-container">
-        <div dhb-chart data="widget.chart"></div>
-        <div class="legend">{{getName()}}</div>
-      </div>
-
-      <div ng-hide="widget.isHistoryMode || !widget.selectedAccount">
-        <h3>{{getName()}}</h3>
-        <div class="price">
-           {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
+        <div ng-hide="widget.isHistoryMode">
+          <h3>{{getName()}}</h3>
+          <div class="price">
+             {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
+          </div>
+          <div class="currency">{{getCurrency()}}</div>
         </div>
-        <div class="currency">{{getCurrency()}}</div>
+
+        <div class="chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
+          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+          <div class="legend">{{getName()}}</div>
+        </div>
       </div>
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found />
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

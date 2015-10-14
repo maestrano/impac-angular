@@ -7,13 +7,15 @@ angular
     # Private Defaults
     #=======================================
     defaults =
-      dhbBasePath: '/mnoe/jpi/v1/impac/dashboards'
-      widgetBasePath: '/mnoe/jpi/v1/impac/widgets'
-      showWidgetPath: 'http://localhost:4000/api/v1/get_widget'
-      # retrieve kpi data
+      dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
+      widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
+      showWidgetPath: 'http://localhost:4000/api/v1/get_widget',
+      sendWidgetSuggestionPath: null
+      # retrieve impac! kpis data
       impacKpisBasePath: 'http://localhost:4000/api/v2/kpis'
-      # retrieve the kpis data locally
+      # retrieve local kpis data
       localKpisBasePath: 'mnoe/jpi/v1/impac/kpis'
+
     #=======================================
     # Public methods available in config
     #=======================================
@@ -38,6 +40,8 @@ angular
       service.createWidgetPath = (dashboardId) -> "#{service.showDhbPath(dashboardId)}/widgets"
       service.updateWidgetPath = (id) -> service.widgetBasePath(id)
       service.deleteWidgetPath = (id) -> service.widgetBasePath(id)
+      # modal post routes
+      service.sendWidgetSuggestion = -> defaults.sendWidgetSuggestionPath
       # kpi routes
       service.impacKpisBasePath = -> defaults.impacKpisBasePath
       service.localKpisBasePath = -> defaults.localKpisBasePath

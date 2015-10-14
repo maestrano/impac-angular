@@ -1,126 +1,120 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, DhbAnalyticsSvc, $templateCache) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.movedAccount = {}
-      $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.accountsListDeferred = $q.defer()
+  $scope.formulaDeferred = $q.defer()
 
-
-    # #====================================
-    # # Formula management
-    # #====================================
-
-    $scope.addAccountToFormula = (account) ->
-      return unless account?
-
-      # When some accounts are already in savedList
-      if w.selectedAccounts.length > 0
-        w.formula += " + {#{w.selectedAccounts.length + 1}}"
-      # Otherwise
-      else
-        w.formula = "{1}"
-
-      w.moveAccountToAnotherList(account,w.remainingAccounts,w.selectedAccounts,false)
-
-    $scope.removeAccountFromFormula = (account) ->
-      prevUids = _.map(w.selectedAccounts, (e) ->
-        e.uid
-      )
-      nextUids = _.reject(prevUids, (e) ->
-        e == account.uid
-      )
-
-      diffAccountUid = _.first(_.difference(prevUids,nextUids))
-      diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1
-
-      if diffAccountIndex == 1
-        # We remove the next operator
-        removePattern = "{#{diffAccountIndex}\\}\\s*(-|\\*|\\/|\\+)*\\s*"
-      else
-        # We remove the previous operator
-        removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{#{diffAccountIndex}\\}"
-      newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'),'')
-
-      # We downgrade all the next indexes
-      i = diffAccountIndex + 1
-      while i <= prevUids.length
-        indexPattern = "\\{#{i}\\}"
-        newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{#{i-1}}")
-        i++
-
-      w.formula = angular.copy(newFormula)
-      w.moveAccountToAnotherList(account,w.selectedAccounts,w.remainingAccounts,false)
-
-    #====================================
-    # Modal management
-    #====================================
-
-    $scope.formulaModal = {}
-    $scope.formulaModal.config = {
-      instance: {
-        backdrop: 'static'
-        template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html')
-        size: 'lg'
-        scope: $scope
-        keyboard: false
-      }
-    }
-
-    $scope.formulaModal.open = ->
-      # A new organization setting directive is going to be inserted via the modal
-      # before loading it, we remove the initial setting
-      w.settings = angular.copy(_.reject w.settings, (elem) ->
-        elem.key == "organizations"
-      )
-      self = $scope.formulaModal
-      self.$instance = $modal.open(self.config.instance)
-      $timeout ->
-        w.initSettings()
-      ,200
-
-    # # # Reload the accounts lists on organizations list change
-    $scope.$watch (-> w.selectedOrganizations), (result) ->
-      w.updateSettings() if !_.isEmpty(result)
-    ,true
-
-    $scope.formulaModal.cancel = ->
-      w.initSettings()
-      $scope.formulaModal.close()
-
-    $scope.formulaModal.proceed = ->
-      w.updateSettings(false)
-      $scope.formulaModal.close()
-
-    $scope.formulaModal.close = ->
-      $scope.formulaModal.$instance.close()
-
-    # Open the modal on toogleEditMode()
-    $scope.$watch (-> w.isEditMode), (result, prev) ->
-      $scope.formulaModal.open() if result && !prev
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.accountsListDeferred.promise
+    $scope.formulaDeferred.promise
+  ]
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.movedAccount = {}
+    $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
 
-    $scope.$watch getSettingsCount, (total) ->
-      if total == 3 && !$scope.blockLoadContent
-        w.loadContent()
-        $scope.blockLoadContent = true
+  $scope.addAccountToFormula = (account) ->
+    return unless account?
 
-    return w
+    # When some accounts are already in savedList
+    if w.selectedAccounts.length > 0
+      w.formula += " + {#{w.selectedAccounts.length + 1}}"
+    # Otherwise
+    else
+      w.formula = "{1}"
+
+    w.moveAccountToAnotherList(account,w.remainingAccounts,w.selectedAccounts,false)
+
+  $scope.removeAccountFromFormula = (account) ->
+    prevUids = _.map(w.selectedAccounts, (e) ->
+      e.uid
+    )
+    nextUids = _.reject(prevUids, (e) ->
+      e == account.uid
+    )
+
+    diffAccountUid = _.first(_.difference(prevUids,nextUids))
+    diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1
+
+    if diffAccountIndex == 1
+      # We remove the next operator
+      removePattern = "{#{diffAccountIndex}\\}\\s*(-|\\*|\\/|\\+)*\\s*"
+    else
+      # We remove the previous operator
+      removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{#{diffAccountIndex}\\}"
+    newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'),'')
+
+    # We downgrade all the next indexes
+    i = diffAccountIndex + 1
+    while i <= prevUids.length
+      indexPattern = "\\{#{i}\\}"
+      newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{#{i-1}}")
+      i++
+
+    w.formula = angular.copy(newFormula)
+    w.moveAccountToAnotherList(account,w.selectedAccounts,w.remainingAccounts,false)
+
+
+  # Modal management
+  # --------------------------------------
+  $scope.formulaModal = $scope.$new()
+  $scope.formulaModal.config = {
+    backdrop: 'static'
+    template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html')
+    size: 'lg'
+    scope: $scope.formulaModal
+    keyboard: false
+  }
+
+  $scope.formulaModal.open = ->
+    self = $scope.formulaModal
+    self.modalOrgDeferred = $q.defer()
+
+    # remove the initial organizations setting...
+    _.remove w.settings, ((set) -> set.key == "organizations")
+    self.instance = $modal.open(self.config)
+    
+    # ...it will be replaced by a new one when the modal DOM is loaded
+    self.modalOrgDeferred.promise.then(
+      (success) ->
+        $scope.initSettings()
+    )
+
+  # Reload the accounts lists on organizations list change
+  $scope.$watch (-> w.selectedOrganizations), (result) ->
+    if !_.isEmpty(result)
+      ImpacWidgetsSvc.updateWidgetSettings(w)
+  ,true
+
+  $scope.formulaModal.cancel = ->
+    $scope.initSettings()
+    $scope.formulaModal.close()
+
+  $scope.formulaModal.proceed = ->
+    ImpacWidgetsSvc.updateWidgetSettings(w,false)
+    $scope.formulaModal.close()
+
+  $scope.formulaModal.close = ->
+    $scope.formulaModal.instance.close()
+
+  # Open the modal on toggleEditMode()
+  $scope.$watch (-> w.isEditMode), (result, prev) ->
+    $scope.formulaModal.open() if result && !prev
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetAccountsCustomCalculation', ->

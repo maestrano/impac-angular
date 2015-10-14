@@ -1,32 +1,36 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, DhbAnalyticsSvc, ImpacAssets) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets) ->
 
   w = $scope.parentWidget
 
   $scope.showCloseActive = false
-  $scope.showEditActive = false
   $scope.showConfirmDelete = false
+  $scope.isDeletePopoverLoading = false
 
   w.isEditMode = false
 
   $scope.deleteWidget = ->
-    DhbAnalyticsSvc
-      .widgets
-      .delete(w.id, w.parentDashboard)
-      .then( () ->
-        $log.debug('Successfully removed widget!')
-      ,(errors) ->
+    $scope.isDeletePopoverLoading = true
+    ImpacWidgetsSvc.delete(w).then(
+      (success) ->
+        return true
+      (errors) ->
         w.errors = Utilities.processRailsError(errors)
-        $log.error('Error deleting widget: ', errors)
-      )
-    # Refresh needed to display the 'add a widget' message in case of no widget
-    # ).finally(-> DhbAnalyticsSvc.load(true))
+    ).finally(
+      ->
+        $scope.isDeletePopoverLoading = false
+    )
 
-  $scope.toogleEditMode = ->
+  $scope.refreshWidget = ->
+    w.isLoading = true
+    ImpacWidgetsSvc.show(w).finally(-> w.isLoading=false)
+
+  $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode
-        # Like a press on 'Cancel' button
-        w.initSettings()
+        # = press 'Cancel' button
+        w.isEditMode = false
+        ImpacWidgetsSvc.initWidgetSettings(w)
       else
         # Otherwise, we pass in edit mode
         w.isEditMode = true

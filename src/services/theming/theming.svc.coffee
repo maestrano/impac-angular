@@ -7,9 +7,10 @@ angular
 
     provider = @
     #=======================================
-    # Private Defaults
+    # Private Defaults | Customisable features
     #=======================================
     options =
+      # widget charts colour palette
       chartColors:
         positive: '#3FC4FF',
         negative: '#1DE9B6',
@@ -25,11 +26,11 @@ angular
           "#ffeb3c",
           "#ff1844"
         ]
-
+      # general dashboard options
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
-
+      # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'
         customTmplPath: null
@@ -37,26 +38,25 @@ angular
         addWidgetEnabled: true
         addDhbEnabled: true
         deleteDhbEnabled: true
-
+      # kpis options
       dhbKpisConfig:
         enableKpis: false
         parentElementId: ''
-
+      # options for the data-not-found display panel messages.
       dataNotFoundConfig:
         mainMessage: 'Data not found'
         linkMessage: 'Are you missing an app?'
         linkUrl: ''
-        linkTarget: '_blank'
-
+      # options for the widget selector panel.
       widgetSelectorConfig:
         path: null
-
+      # add chart(widget) tile feature & configurations.
       addChartTile:
         show: false
         onClickOptions:
           triggers: []
-
-      noWidgetMsg:
+      # showing the no widgets / empty dashboard message panel & any configurations that belong.
+      showNoWidgetMsg:
         show: true
 
 
@@ -67,7 +67,6 @@ angular
       angular.merge(options, configOptions)
 
     #=======================================
-    # TODO: does ng-annotate annotate provider $get methods in the gulp build process?
     _$get = () ->
       service = @
       #=======================================

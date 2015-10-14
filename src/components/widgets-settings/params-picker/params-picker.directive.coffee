@@ -1,31 +1,34 @@
 module = angular.module('impac.components.widgets-settings.params-picker',[])
 
-module.controller('SettingParamsPickerCtrl', ($scope, DhbAnalyticsSvc) ->
+module.controller('SettingParamsPickerCtrl', ($scope) ->
 
-    w = $scope.parentWidget
+  w = $scope.parentWidget
 
-    # What will be passed to parentWidget
-    setting = {}
-    setting.key = "params-picker"
-    setting.isInitialized = false
+  # What will be passed to parentWidget
+  setting = {}
+  setting.key = "params-picker"
+  setting.isInitialized = false
 
-    setting.initialize = ->
-      $scope.sortableOptions = {
-        'ui-floating': true,
-        tolerance: 'pointer'
-      }
-      setting.isInitialized = true if _.isEmpty($scope.options)
+  setting.initialize = ->
+    $scope.sortableOptions = {
+      'ui-floating': true,
+      tolerance: 'pointer'
+    }
+    setting.isInitialized = true if _.isEmpty($scope.options)
 
 
-    setting.toMetadata = ->
-      param = {}
-      param["#{$scope.param}"] = _.compact(_.map $scope.options, (statusOption) ->
-        statusOption.label if statusOption.selected
-      )
-      return param
+  setting.toMetadata = ->
+    param = {}
+    param["#{$scope.param}"] = _.compact(_.map $scope.options, (statusOption) ->
+      statusOption.label if statusOption.selected
+    )
+    return param
 
-    w.settings ||= []
-    w.settings.push(setting)
+  w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingParamsPicker', ($templateCache) ->
@@ -33,6 +36,7 @@ module.directive('settingParamsPicker', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '=',
+      deferred: '='
       param: '@',
       options: '=',
     },

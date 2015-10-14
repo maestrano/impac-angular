@@ -1,13 +1,14 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('dhbChart', ($templateCache, $compile, $timeout) ->
+  .directive('impacChart', ($timeout, $log) ->
     return {
       restrict: 'A',
       scope: {
-        data: '='
+        drawTrigger: '='
+        deferred: '='
       },
-      template: $templateCache.get('chart/chart.tmpl.html'),
+      template: '<canvas></canvas>',
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,
@@ -19,28 +20,44 @@ angular
           scaleShowGridLines: true,
         }
 
-        myChart = null
-        scope.draw = ->
-          if !_.isEmpty(scope.data.options)
-            angular.extend(options,scope.data.options)
+        # Draw a chart in the canvas
+        # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
+        # ------------------------------------
+        scope.draw = (data) ->
+          # $timeout will wait for the DOM to be rendered before drawing the chart
+          $timeout ->
+            if !_.isEmpty(data.options)
+              angular.extend(options,data.options)
 
-          if myChart != null then myChart.destroy()
-          canvas = elem.children().get(0)
-          ctx = canvas.getContext("2d")
-          switch scope.data.chartType
-            # when 'Doughnut' then myChart = new Chart(ctx).Doughnut(scope.data.data,options)
-            when 'Bar' then myChart = new Chart(ctx).Bar(scope.data.data,options)
-            when 'Line' then myChart = new Chart(ctx).Line(scope.data.data,options)
-            when 'Pie'
-              angular.extend(options, {tooltipFixed: true})
-              myChart = new Chart(ctx).Pie(scope.data.data,options)
-          newWidth = angular.element(canvas).parent().width()
+            # canvas has to be removed/appended to be redrawned without superposition
+            elem.children().get(0).remove()
+            elem.append('<canvas></canvas>')
+            canvas = elem.children().get(0)
+            ctx = canvas.getContext("2d")
 
-        # Redraw the chart when data changes
-        scope.$watch((-> scope.data)
-          ,(value) ->
-            if value?
-              $timeout((-> scope.draw()),100)
-        ,true)
+            switch data.chartType
+              when 'Bar'
+                new Chart(ctx).Bar(data.data,options)
+              when 'Line'
+                new Chart(ctx).Line(data.data,options)
+              when 'Pie'
+                angular.extend(options, {tooltipFixed: true})
+                new Chart(ctx).Pie(data.data,options)
+
+
+        # Triggered by widget.format()
+        # ------------------------------------
+        scope.drawTrigger.then(
+          (success) ->
+            $log.warn('chart promise has been resolved: use notify instead')
+          (error) ->
+            $log.error(error)
+          (chartData) ->
+            scope.draw(chartData)
+        )
+
+        # Chart is ready: trigger load content
+        # ------------------------------------
+        scope.deferred.resolve('chart ready')
     }
   )
