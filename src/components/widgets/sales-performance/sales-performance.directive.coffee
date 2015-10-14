@@ -1,40 +1,41 @@
 module = angular.module('impac.components.widgets.sales-performance',[])
 
-module.controller('WidgetSalesPerformanceCtrl', ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.assignees)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
 
-    $scope.getOpportunityAmount = (anOpp) ->
-      if $scope.isDataFound && !_.isEmpty(anOpp)
-        if anOpp.amount && anOpp.amount.amount
-          amount = anOpp.amount.amount
-          return $filter('mnoCurrency')(amount, anOpp.amount.currency || 'AUD')
-        else
-          return '-'
+  settingsPromises = [
+    $scope.orgDeferred.promise
+  ]
 
-    # -----------------
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.assignees)
+
+  # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
+  w.processError = (error) ->
+    # TODO: better error management
+    if error.code == 404
+      $scope.isDataFound = false
+
+  $scope.getOpportunityAmount = (anOpp) ->
+    if $scope.isDataFound && !_.isEmpty(anOpp)
+      if anOpp.amount && anOpp.amount.amount
+        amount = anOpp.amount.amount
+        return $filter('mnoCurrency')(amount, anOpp.amount.currency || 'AUD')
       else
-        return 0
+        return '-'
 
-    # organization_ids
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 1
 
-    return w
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesPerformance', ->
