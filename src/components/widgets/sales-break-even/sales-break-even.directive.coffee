@@ -21,6 +21,12 @@ module.controller('WidgetSalesBreakEvenCtrl', ($scope, $q, ChartFormatterSvc, $f
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.sales)
     $scope.threshold = w.metadata.threshold
 
+  # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
+  w.processError = (error) ->
+    # TODO: better error management
+    if error.code == 404
+      $scope.isDataFound = false
+
   $scope.getProjectedDate = ->
     if $scope.isDataFound && w.content.break_even
       if "#{w.content.break_even.projected_date}".match('After')
