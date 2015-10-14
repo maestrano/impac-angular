@@ -1,6 +1,7 @@
+// TODO: Break this out into multiple files and clean up.
 var gulp = require('gulp'),
     // karma for gulp
-    // karma = require('karma').server,
+    karma = require('karma').server,
     // Concatenates and registers AngularJS templates in the $templateCache.
     templates = require('gulp-angular-templatecache'),
     // A gulp plugin for removing files and folders with support for multiple files & globs.
@@ -25,47 +26,44 @@ var gulp = require('gulp'),
     strip = require('gulp-strip-comments'),
     // Compile less to css.
     less = require('gulp-less'),
+    // Javascript, stylesheet and webcomponent injection
     inject = require('gulp-inject'),
+    // Node module for retreiving path name of a file
     path = require('path'),
-    // minify css
+    // Minify css
     minifyCss = require('gulp-minify-css'),
+    // A ternary gulp plugin: conditionally control the flow of vinyl objects.
+    gulpif = require('gulp-if'),
+    // Create immutable, lazily-initialized pipeline.
+    lazypipe = require('lazypipe'),
+    // Runs a sequence of gulp tasks in the specified order.
+    runSequence = require('run-sequence'),
+    // Require package.json file
     pkg = require('./package.json');
 
+// THIS VARIABLE IS SET BY RUNNING `NODE_ENV=value` before any task.
+// e.g `NODE_ENV=production gulp build`
+// OR just run `gulp build:dist`
+var env = process.env.NODE_ENV || 'development';
 
 /* ************************************ */
-/* TODO: Testing Tasks                  */
+/* Testing Tasks                        */
 /* ************************************ */
-// // Run test once and exit
-// gulp.task('test', function (done) {
-//   karma.start({
-//     configFile: __dirname + '/karma-src.conf.js',
-//     singleRun: true
-//   }, done);
-// });
+// run tests on concatinated and minified dist builds of impac-angular.
+gulp.task('test-dist-concatenated', function (done) {
+ karma.start({
+   configFile: __dirname + '/karma-dist-concatenated.conf.js',
+   singleRun: true
+ }, done);
+});
 
-// gulp.task('test-debug', function (done) {
-//   karma.start({
-//     configFile: __dirname + '/karma-src.conf.js',
-//     singleRun: false,
-//     autoWatch: true
-//   }, done);
-// });
-
-// // Run test once and exit
-// gulp.task('test-dist-concatenated', function (done) {
-//   karma.start({
-//     configFile: __dirname + '/karma-dist-concatenated.conf.js',
-//     singleRun: true
-//   }, done);
-// });
-
-// // Run test once and exit
-// gulp.task('test-dist-minified', function (done) {
-//   karma.start({
-//     configFile: __dirname + '/karma-dist-minified.conf.js',
-//     singleRun: true
-//   }, done);
-// });
+// run test on dist/impac-angular.min.js
+gulp.task('test-dist-minified', function (done) {
+ karma.start({
+   configFile: __dirname + '/karma-dist-minified.conf.js',
+   singleRun: true
+ }, done);
+});
 
 /* ************************************ */
 /* Template Caching Tasks               */
@@ -106,7 +104,7 @@ gulp.task('templates-concat', ['templates'], function () {
 /* ************************************ */
 /* Build Tasks                          */
 /* ************************************ */
-    // Source files for final dist build
+// Source files for final dist build
 var buildSourceFiles = [
     'src/impac-angular.prefix',
     'tmp/impac-angular.js',
@@ -143,17 +141,17 @@ gulp.task('coffee-compile', ['clean'], function () {
 // Dynamically injects @import's into the main .less file, allowing less files to be places
 // around the app structure with the component page they apply to.
 gulp.task('less-inject', function() {
-    return gulp.src(mainLessFile)
-      .pipe(inject(gulp.src(lessFiles, {
-        read: false,
-      }), {
-        starttag: '/* inject:imports */',
-        endtag: '/* endinject */',
-        transform: function (filepath) {
-          return '@import "' + filepath.replace('/src/', '') + '";';
-        }
-      }))
-      .pipe(gulp.dest('src/'));
+  return gulp.src(mainLessFile)
+    .pipe(inject(gulp.src(lessFiles, {
+      read: false
+    }), {
+      starttag: '/* inject:imports */',
+      endtag: '/* endinject */',
+      transform: function (filepath) {
+        return '@import "' + filepath.replace('/src/', '') + '";';
+      }
+    }))
+    .pipe(gulp.dest('src/'));
 });
 
 gulp.task('less-compile', ['less:inject'], function () {
@@ -185,38 +183,57 @@ gulp.task('less-concat', function () {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
-  var stream = gulp.src(buildSourceFiles)
+// TODO: figure out a way to emit .on 'finish' with lazypipe() streams, for deleting tmp file, and running tests once build task has completely finished.
+gulp.task('build-lib', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
+  var isProd = (env === 'production');
+  // lazy pipeline steps to be run on env=production
+  var distChannel = lazypipe()
+    .pipe(uglify)
+    .pipe(strip)
+    .pipe(rename, 'impac-angular.min.js')
+    .pipe(gulp.dest, 'dist/');
+
+  gulp.src(buildSourceFiles)
     .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('dist/'))
-    .pipe(uglify())
-    .pipe(strip())
-    .pipe(rename('impac-angular.min.js'))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulpif(isProd, distChannel()));
 
-  stream.on('end', function () {
-    del(['tmp']);
-  });
+  // note: uncomment bootstrap @import in impac-angular.less to run prod (build:dist).
+  if (isProd) {
+    // compile less into css and min.css for prod.
+    runSequence('less-compile');
+  }
+});
+
+// shortcut for setting env and running production pipes.
+gulp.task('build-lib-dist', function () {
+  env = 'production';
+  runSequence('build-lib');
 });
 
 // cleans up tmp file created by 'templates' task.
 gulp.task('clean', function (asyncCallback) {
-  del(['tmp', './src/impac-angular.js'], asyncCallback);
+  del(['tmp'], asyncCallback);
 });
 
-gulp.task('watch', ['build'], function () {
-  gulp.watch(['src/**/*.js', 'src/**/*.html', 'src/**/*.less'], ['build']);
+gulp.task('watch', function () {
+  gulp.watch(['src/**/*'], 'build-lib');
 });
 
 /* ************************************ */
 /* Commands                             */
 /* ************************************ */
 gulp.task('start:watch', ['watch']);
-gulp.task('build:dist', ['build']);
+// builds
+gulp.task('build', ['build-lib']);
+gulp.task('build:dist', ['build-lib-dist']);
+// tests
+gulp.task('test', ['test-dist-concatenated']);
+gulp.task('test:dist', ['test-dist-minified']);
+// individual build tasks
 gulp.task('less:compile', ['less-compile']);
 gulp.task('less:inject', ['less-inject']);
 gulp.task('less:concat', ['less-concat']);
 gulp.task('coffee:compile', ['coffee-compile']);
 gulp.task('build:templates', ['templates-concat']);
-

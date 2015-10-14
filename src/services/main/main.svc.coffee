@@ -86,8 +86,8 @@ angular
       deferred = $q.defer()
 
       # Integrate Xaun changes
-      ImpacLinking.getSsoSession().then (success) ->
-        _self.config.userData.ssoSession = success
+      ImpacLinking.getUserData().then (user) ->
+        angular.extend _self.config.userData = user
         deferred.resolve(_self.config)
       ,(error) ->
         $log.error('ImpacMainSvc: cannot retrieve user data')

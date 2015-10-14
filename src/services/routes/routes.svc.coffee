@@ -9,7 +9,9 @@ angular
     defaults =
       dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
       widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
-      showWidgetPath: 'http://localhost:4000/api/v1/get_widget'
+      showWidgetPath: 'http://localhost:4000/api/v1/get_widget',
+      sendWidgetSuggestionPath: null
+
     #=======================================
     # Public methods available in config
     #=======================================
@@ -34,6 +36,8 @@ angular
       service.createWidgetPath = (dashboardId) -> "#{service.showDhbPath(dashboardId)}/widgets"
       service.updateWidgetPath = (id) -> service.widgetBasePath(id)
       service.deleteWidgetPath = (id) -> service.widgetBasePath(id)
+      # modal post routes
+      service.sendWidgetSuggestion = -> defaults.sendWidgetSuggestionPath
 
       return service
     # inject service dependencies here, and declare in _$get function args.

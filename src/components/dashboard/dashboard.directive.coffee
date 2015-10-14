@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacLinking, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
 
     #====================================
     # Initialization
@@ -16,6 +16,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # -------------------------------------
     $scope.impacTitleLogo = ImpacAssets.get('impacTitleLogo')
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
+
 
     # dashboard heading
     # -------------------------------------
@@ -275,12 +276,20 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     # Modal Widget Suggestion
     $scope.widgetSuggestionModal.widgetDetails = {}
+    $scope.widgetSuggestionModal.error = false
+    $scope.widgetSuggestionModal.onSuccess = false
+
+    ImpacLinking.getUserData().then((success) ->
+      $scope.widgetSuggestionModal.userName = success.name
+    )
+
     $scope.widgetSuggestionModal.config = {
       backdrop: 'static',
       template: $templateCache.get('dashboard/widget-suggestion.modal.html'),
       size: 'md',
       windowClass: 'inverse impac-widget-suggestion',
       scope: $scope.widgetSuggestionModal
+      apiPath: ImpacRoutes.sendWidgetSuggestion()
     }
 
     $scope.widgetSuggestionModal.open = ->
@@ -310,15 +319,27 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         widget_description: self.widgetDetails.description
       }
 
-      # TODO: add route in configuration + possibility to enable/disable
-      $http.post('/js_api/v1/mailers',{template: 'widget_suggestion', opts: data})
-
-      # Thank you, user...
-      $timeout ->
-        self.instance.close()
-        self.widgetDetails = {}
-        self.isLoading = false
-      ,3000
+      if modalWidgetSuggestion.config.apiPath?
+        $http.post(modalWidgetSuggestion.config.apiPath, {
+          template: 'widget_suggestion',
+          opts: data
+        }).then( ->
+          # Smoother UI transition between loading and success thank you msg
+          $timeout ->
+            self.onSuccess = true
+          ,500
+          # Thank you, user...
+          $timeout ->
+            self.close()
+            self.widgetDetails = {}
+            self.isLoading = false
+            self.onSuccess = false
+          ,3000
+        (err) ->
+          self.isLoading = false
+          self.error = true
+          $log.error 'impac-angular ERROR: Unable to POST widget_suggestion mailer: ', err
+        )
 
 
     #====================================
