@@ -10,7 +10,7 @@ angular
 
 
     isConfigurationLoaded = ->
-      return !( _.isEmpty(_self.config.organizations) || _.isEmpty(_self.config.currentOrganization) )
+      return !( _.isEmpty(_self.config.organizations) || _.isEmpty(_self.config.currentOrganization || _.isEmpty(_self.config.userData)) )
 
 
     @load = (force=false) ->
@@ -85,13 +85,16 @@ angular
     @loadUserData = (force=false) ->
       deferred = $q.defer()
 
-      # Integrate Xaun changes
-      ImpacLinking.getUserData().then (user) ->
-        angular.extend _self.config.userData = user
-        deferred.resolve(_self.config)
-      ,(error) ->
-        $log.error('ImpacMainSvc: cannot retrieve user data')
-        deferred.reject(error)
+      if _.isEmpty(_self.config.userData) || force
+        ImpacLinking.getUserData().then (user) ->
+          angular.extend _self.config.userData, user
+          deferred.resolve(_self.config.userData)
+        ,(error) ->
+          $log.error('ImpacMainSvc: cannot retrieve user data')
+          deferred.reject(error)
+
+      else
+        deferred.resolve(_self.config.userData)
 
       return deferred.promise
 

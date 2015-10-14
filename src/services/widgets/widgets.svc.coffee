@@ -14,7 +14,7 @@ angular
 
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
           (results) ->
-            _self.config.ssoSessionId = results[0].userData.ssoSession
+            _self.config.ssoSessionId = results[0].sso_session
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)

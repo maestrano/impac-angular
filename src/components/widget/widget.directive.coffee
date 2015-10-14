@@ -15,6 +15,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
           
           ImpacWidgetsSvc.show(w).then(
             (updatedWidget) ->
+              w.isLoading = false
+
               #TODO: Accessibility should be treated differently (in service?)
               if $scope.isAccessibility
                 w.initialWidth = w.width
@@ -22,13 +24,11 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
               else if w.initialWidth 
                 w.width = w.initialWidth
 
-
             (errorResponse) ->
+              w.isLoading = false
               # TODO: better error management
               $scope.isDataFound = false
-              $log.error(errorResponse.data.error)
-          ).finally(
-            w.isLoading = false
+              $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
           )
 
         (error) ->
@@ -95,8 +95,8 @@ module.directive('impacWidget', ($templateCache) ->
 
         return templatePath
 
-      scope.isTemplateLoaded = ->
-        return !!$templateCache.get(scope.widgetContentTemplate())
+      # scope.isTemplateLoaded = ->
+      #   return !!$templateCache.get(scope.widgetContentTemplate())
 
     ,template: $templateCache.get("widget/widget.tmpl.html")
   }

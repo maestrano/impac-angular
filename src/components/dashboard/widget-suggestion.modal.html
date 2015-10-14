@@ -27,7 +27,7 @@
 
   <div class="spacer1" ng-show="isLoading" />
 
-  <div class="row" ng-show="onSuccess">
+  <div class="row" collapse="!onSuccess">
     <div class="col-md-12 text-center">
       <h3 class="thanks-message">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>
     </div>
@@ -45,9 +45,9 @@
 
 <div class="modal-footer">
   <div class="row">
-    <div class="col-sm-12" ng-class="{'text-center': isLoading}">
+    <div class="col-sm-12">
       <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading">Cancel</button>
-      <button class="btn btn-info" ng-click="proceed()" ng-hide="isLoading" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description)">
+      <button class="btn btn-info" ng-click="proceed()" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description) || isLoading">
         <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
         Send your suggestion
       </button>

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacLinking, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
 
     #====================================
     # Initialization
@@ -269,19 +269,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # Widget suggestion modal
     #====================================
 
-    # TODO: This needs to be tested and DhbOrganizationsSvc Dependency needs to be resolve with
-    #       ImpacLinkingProvider. Also could do with a refactor.
-
     $scope.widgetSuggestionModal = $scope.$new()
 
     # Modal Widget Suggestion
     $scope.widgetSuggestionModal.widgetDetails = {}
     $scope.widgetSuggestionModal.error = false
     $scope.widgetSuggestionModal.onSuccess = false
-
-    ImpacLinking.getUserData().then((success) ->
-      $scope.widgetSuggestionModal.userName = success.name
-    )
 
     $scope.widgetSuggestionModal.config = {
       backdrop: 'static',
@@ -296,8 +289,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self = $scope.widgetSuggestionModal
       return if self.locked
 
-      # TODO retrieve the user name from the Theming provider
-      # self.userName = UserSvc.document.user.name
+      ImpacMainSvc.loadUserData().then((user) ->
+        self.userName = user.name
+      )
       self.instance = $modal.open(self.config)
       
       self.instance.rendered.then (onRender) ->
@@ -319,18 +313,15 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         widget_description: self.widgetDetails.description
       }
 
-      if modalWidgetSuggestion.config.apiPath?
-        $http.post(modalWidgetSuggestion.config.apiPath, {
+      if self.config.apiPath?
+        $http.post(self.config.apiPath, {
           template: 'widget_suggestion',
           opts: data
         }).then( ->
-          # Smoother UI transition between loading and success thank you msg
-          $timeout ->
-            self.onSuccess = true
-          ,500
+          self.onSuccess = true
           # Thank you, user...
           $timeout ->
-            self.close()
+            self.instance.close()
             self.widgetDetails = {}
             self.isLoading = false
             self.onSuccess = false

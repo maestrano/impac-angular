@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.data-not-found',[])
 
-module.directive('commonDataNotFound', ($templateCache, ImpacAssets, ImpacTheming) ->
+module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
@@ -17,24 +17,14 @@ module.directive('commonDataNotFound', ($templateCache, ImpacAssets, ImpacThemin
         then dir.concat('/').join('')
         else dir.join('')
 
-        $scope.bgImage = dir + $scope.widgetEngine + '.png'
+        assetPath = dir + $scope.widgetEngine + '.png'
+        $http.get(assetPath).then(
+          (success) ->
+            $scope.bgImage = assetPath
+          (error) ->
+            $log.warn("Missing data-not-found image for #{$scope.widgetEngine}")
+        )
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
-  }
-)
-# TODO: where should this live? Is there a better way to do this?
-# Checks if image is available, preventing displaying the broken image tile - if not, displays nothing.
-module.directive('checkImage', ($log, $http) ->
-  return {
-    restrict: 'A'
-    link: (scope, element, attrs) ->
-      attrs.$observe('ngSrc', (ngSrc) ->
-        $http.get(ngSrc).success( () ->
-          # do nothing
-        ).error( () ->
-          # prevent broken image tile from being displayed.
-          element.remove()
-        )
-      )
   }
 )
