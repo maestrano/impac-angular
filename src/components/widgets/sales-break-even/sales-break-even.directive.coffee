@@ -1,70 +1,67 @@
 module = angular.module('impac.components.widgets.sales-break-even',[])
 
-module.controller('WidgetSalesBreakEvenCtrl', ($scope, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesBreakEvenCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.sales)
-      $scope.threshold = w.metadata.threshold
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.timeRangeDeferred = $q.defer()
 
-    $scope.getProjectedDate = ->
-      if $scope.isDataFound && w.content.break_even
-        if "#{w.content.break_even.projected_date}".match('After')
-          date = angular.copy(w.content.break_even.projected_date).replace('After ', '')
-          return "> #{$filter('date')(date, 'd-MM-yy')}"
-        else
-          return w.content.break_even.projected_date
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.timeRangeDeferred.promise
+  ]
 
-    $scope.getOpportunitiesToClose = ->
-      if $scope.isDataFound && w.content.break_even
-        if "#{w.content.break_even.opportunities_to_close}".match('>')
-          opps = angular.copy(w.content.break_even.opportunities_to_close).replace('>', '')
-          return "> #{opps}"
-        else
-          return w.content.break_even.opportunities_to_close
 
-    $scope.isTargetMet = ->
-      if $scope.isDataFound && w.content.break_even
-        return (w.content.break_even.variance < 0)
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.sales)
+    $scope.threshold = w.metadata.threshold
 
-    $scope.getVariance = ->
-      if $scope.isDataFound && w.content.break_even
-        return Math.abs(w.content.break_even.variance)
-
-    # -----------------
-
-    thresholdSetting = {}
-    thresholdSetting.initialized = false
-
-    thresholdSetting.initialize = ->
-      thresholdSetting.initialized = true
-
-    thresholdSetting.toMetadata = ->
-      {threshold: $scope.threshold}
-
-    w.settings.push(thresholdSetting)
-
-    # -----------------
-
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
+  $scope.getProjectedDate = ->
+    if $scope.isDataFound && w.content.break_even
+      if "#{w.content.break_even.projected_date}".match('After')
+        date = angular.copy(w.content.break_even.projected_date).replace('After ', '')
+        return "> #{$filter('date')(date, 'd-MM-yy')}"
       else
-        return 0
+        return w.content.break_even.projected_date
 
-    # organization_ids + time range + threshold
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 3
+  $scope.getOpportunitiesToClose = ->
+    if $scope.isDataFound && w.content.break_even
+      if "#{w.content.break_even.opportunities_to_close}".match('>')
+        opps = angular.copy(w.content.break_even.opportunities_to_close).replace('>', '')
+        return "> #{opps}"
+      else
+        return w.content.break_even.opportunities_to_close
 
-    return w
+  $scope.isTargetMet = ->
+    if $scope.isDataFound && w.content.break_even
+      return (w.content.break_even.variance < 0)
+
+  $scope.getVariance = ->
+    if $scope.isDataFound && w.content.break_even
+      return Math.abs(w.content.break_even.variance)
+
+  # Mini-settings
+  # --------------------------------------
+  thresholdSetting = {}
+  thresholdSetting.initialized = false
+
+  thresholdSetting.initialize = ->
+    thresholdSetting.initialized = true
+
+  thresholdSetting.toMetadata = ->
+    {threshold: $scope.threshold}
+
+  w.settings.push(thresholdSetting)
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesBreakEven', ->
