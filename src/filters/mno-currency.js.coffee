@@ -20,7 +20,7 @@ angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ["$filter
       else if currency != "AUD" && currency != "USD"
         s = s.replace('$','')
 
-      if showName
+      if showName && currency
         return "#{s} #{currency}"
       else
         return s
