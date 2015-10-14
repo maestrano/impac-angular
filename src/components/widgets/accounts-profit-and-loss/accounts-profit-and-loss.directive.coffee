@@ -120,6 +120,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         return false
       else
         return true
+
+  $scope.hasElements = ->
+    $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
 
 

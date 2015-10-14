@@ -40,8 +40,9 @@
         </div>
       </div>
 
-      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
-        <div ng-show="selectedElements"
+      <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
+
+        <div ng-show="hasElements()"
           <h4>{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Profit and Loss</h4>
           <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
@@ -71,7 +72,7 @@
           </div>
         </div>
 
-        <div ng-hide="selectedElements" class="no-element">
+        <div ng-hide="hasElements()" class="no-element">
           Select one or several account(s) or account(s) type(s) to display the corresponding PnL.
         </div>
       </div>
