@@ -111,7 +111,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, Utilities, ChartFor
   w.settings.push(selectedStatusSetting)
 
 
-  # Chart formating function
+  # Funnel formating function
   # --------------------------------------
   w.format = ->
     if $scope.isDataFound
