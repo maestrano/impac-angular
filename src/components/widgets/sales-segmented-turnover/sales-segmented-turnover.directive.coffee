@@ -11,9 +11,9 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFor
         {label: 'Gross revenue (incl. taxes)', value: 'gross'},
         {label: 'Net revenue (excl. taxes)', value: 'net'},
       ]
-      $scope.filter = _.find($scope.filterOptions, (o) ->
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
         o.value == w.content.filter
-      ) || $scope.filterOptions[0]
+      ) || $scope.filterOptions[0])
 
   w.format = ->
     if $scope.isDataFound

@@ -14,9 +14,9 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, ChartFormatterSvc, $f
           {label: 'week', value: 'WEEKLY'},
           {label: 'day', value: 'DAILY'},
         ]
-        $scope.period = _.find($scope.periodOptions, (o) ->
+        $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
           o.value == w.metadata.period
-        ) || $scope.periodOptions[3]
+        ) || $scope.periodOptions[3])
 
     $scope.formatNumberOfLeads = (carac) ->
       formattedNominal = 0

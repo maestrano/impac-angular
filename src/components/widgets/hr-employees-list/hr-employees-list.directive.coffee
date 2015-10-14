@@ -25,9 +25,9 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, Utilities, $filter) 
         {label: 'Weekly', value: 'weekly'},
         {label: 'Hourly', value: 'hourly'}
       ]
-      $scope.period = _.find($scope.periodOptions, (o) ->
+      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
         o.value == w.content.total.period.toLowerCase()
-      ) || $scope.periodOptions[0]
+      ) || $scope.periodOptions[0])
 
   $scope.getSingleCompanyName = ->
     if w.content && w.content.organizations

@@ -29,9 +29,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
         {label: 'week', value: 'WEEKLY'},
         {label: 'day', value: 'DAILY'},
       ]
-      $scope.period = _.find($scope.periodOptions, (o) ->
+      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
         o.value == w.content.hist_parameters.period
-      ) || $scope.periodOptions[0]
+      ) || $scope.periodOptions[0])
 
       $scope.filterOptions = [
         {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
@@ -41,9 +41,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
         {label: 'value purchased (excl. taxes)', value: 'net_value_purchased'},
         {label: 'quantity purchased', value: 'quantity_purchased'},
       ]
-      $scope.filter = _.find($scope.filterOptions, (o) ->
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
         o.value == w.content.filter
-      ) || $scope.filterOptions[0]
+      ) || $scope.filterOptions[0])
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
 

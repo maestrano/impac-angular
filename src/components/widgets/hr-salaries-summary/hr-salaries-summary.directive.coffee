@@ -32,18 +32,18 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc)
         {label: 'Weekly', value: 'weekly'},
         {label: 'Hourly', value: 'hourly'}
       ]
-      $scope.period = _.find($scope.periodOptions, (o) ->
+      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
         o.value == w.content.total.period.toLowerCase()
-      ) || $scope.periodOptions[0]
+      ) || $scope.periodOptions[0])
 
       $scope.filterOptions = [
         {label: 'Gender', value: 'gender'},
         {label: 'Age Range', value: 'age_range'},
         {label: 'Job Title', value: 'job_title'},
       ]
-      $scope.filter = _.find($scope.filterOptions, (o) ->
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
         o.value == w.content.summary.filter
-      ) || $scope.filterOptions[0]
+      ) || $scope.filterOptions[0])
 
   $scope.getColorByIndex = (index) ->
     ChartFormatterSvc.getColor(index)

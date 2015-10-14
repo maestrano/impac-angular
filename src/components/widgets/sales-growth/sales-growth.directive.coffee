@@ -30,9 +30,9 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc) ->
       $scope.productOptions = _.flatten(_.map(w.content.summary, (product) ->
         return {label: product.code, value: product.id}
       ))
-      $scope.product = _.find($scope.productOptions, (o) ->
+      $scope.product = angular.copy(_.find($scope.productOptions, (o) ->
         o.value == w.content.product
-      ) || {label: "SELECT PRODUCT", value: -1}
+      ) || {label: "SELECT PRODUCT", value: -1})
 
       $scope.filterOptions = [
         {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
@@ -42,9 +42,9 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc) ->
         {label: 'value purchased (excl. taxes)', value: 'net_value_purchased'},
         {label: 'quantity purchased', value: 'quantity_purchased'},
       ]
-      $scope.filter = _.find($scope.filterOptions, (o) ->
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
         o.value == w.content.filter
-      ) || $scope.filterOptions[0]
+      ) || $scope.filterOptions[0])
 
       $scope.isDataQuantity = $scope.filter.value.match('quantity')
 

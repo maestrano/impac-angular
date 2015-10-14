@@ -31,11 +31,11 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, Utilities, $filter
         {label: 'Hourly', value: 'hourly'}
       ]
       if w.metadata && w.metadata.period
-        $scope.period = _.find($scope.periodOptions, (o) ->
+        $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
           o.value == w.metadata.period.toLowerCase()
-        ) || $scope.periodOptions[0]
+        ) || $scope.periodOptions[0])
       else
-        $scope.period = $scope.periodOptions[0]
+        $scope.period = angular.copy($scope.periodOptions[0])
 
       $scope.employeesOptions = _.map(w.content.employees, (e) ->
         {
