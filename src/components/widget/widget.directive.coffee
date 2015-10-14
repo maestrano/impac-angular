@@ -22,12 +22,13 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
               else if w.initialWidth 
                 w.width = w.initialWidth
 
-              w.isLoading = false
 
-            (error) ->
-              w.isLoading = false
-              $log.error(error)
-              # $scope.errors = Utilities.processRailsError(errors)
+            (errorResponse) ->
+              # TODO: better error management
+              $scope.isDataFound = false
+              $log.error(errorResponse.data.error)
+          ).finally(
+            w.isLoading = false
           )
 
         (error) ->
