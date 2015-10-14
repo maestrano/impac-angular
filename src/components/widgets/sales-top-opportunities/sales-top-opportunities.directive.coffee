@@ -1,46 +1,48 @@
 module = angular.module('impac.components.widgets.sales-top-opportunities',[])
 
-module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, $q, Utilities, ChartFormatterSvc, $filter) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opportunities)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
 
-    $scope.getOppDetails = (anOpp) ->
-      oppDetails = []
-      oppDetails.push($filter('mnoCurrency')(anOpp.amount.amount, anOpp.amount.currency || 'AUD')) if anOpp.amount
-      oppDetails.push("proba #{anOpp.probability}%") if anOpp.probability
-      oppDetails.push(anOpp.sales_stage) if anOpp.sales_stage
-
-      return oppDetails.join(' / ')
-
-    $scope.getOppClass = (index) ->
-      switch index
-        when 0 then return 'first'
-        when 1 then return 'second'
-        when 2 then return 'second'
-        else return ''
+  settingsPromises = [
+    $scope.orgDeferred.promise
+  ]
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opportunities)
 
-    # organizations
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 1
+  # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
+  w.processError = (error) ->
+    # TODO: better error management
+    if error.code == 404
+      $scope.isDataFound = false
 
-    return w
+  $scope.getOppDetails = (anOpp) ->
+    oppDetails = []
+    oppDetails.push($filter('mnoCurrency')(anOpp.amount.amount, anOpp.amount.currency || 'AUD')) if anOpp.amount
+    oppDetails.push("proba #{anOpp.probability}%") if anOpp.probability
+    oppDetails.push(anOpp.sales_stage) if anOpp.sales_stage
+
+    return oppDetails.join(' / ')
+
+  $scope.getOppClass = (index) ->
+    switch index
+      when 0 then return 'first'
+      when 1 then return 'second'
+      when 2 then return 'second'
+      else return ''
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesTopOpportunities', ->
