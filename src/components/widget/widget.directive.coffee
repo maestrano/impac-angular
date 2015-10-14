@@ -95,9 +95,6 @@ module.directive('impacWidget', ($templateCache) ->
 
         return templatePath
 
-      # scope.isTemplateLoaded = ->
-      #   return !!$templateCache.get(scope.widgetContentTemplate())
-
     ,template: $templateCache.get("widget/widget.tmpl.html")
   }
 )
