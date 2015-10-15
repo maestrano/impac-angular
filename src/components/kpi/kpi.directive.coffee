@@ -7,25 +7,40 @@ angular
         onDelete: '&'
         kpi: '='
         editMode: '='
+        availableKpis: '='
       }
       templateUrl: 'kpi/kpi.tmpl.html'
 
       controller: ($scope) ->
         $scope.showEditTarget = false
-
         Kpis.show($scope.kpi) unless $scope.kpi.data
 
-        $scope.updateName = ->
-          Kpis.update($scope.kpi, {name: $scope.kpi.name}) unless $scope.kpi.static
+        $scope.tmp =
+          kpiName: ''
 
-        $scope.updateTarget = ->
-          if !_.isEmpty $scope.kpi.target.limit
-            Kpis.update($scope.kpi, {target: $scope.kpi.target}) unless $scope.kpi.static
+        $scope.updateName = ->
+          return if _.isEmpty($scope.tmp.kpiName) || $scope.kpi.static
+          $scope.kpi.name = $scope.tmp.kpiName
+          Kpis.update($scope.kpi, {name: $scope.kpi.name})
+
+        $scope.updateSettings = ->
+          params =
+            target: if _.isEmpty($scope.kpi.target) then null else $scope.kpi.target
+            extra_param: if _.isEmpty($scope.kpi.extra_param) then null else $scope.kpi.extra_param
+
+          unless _.isEmpty(params) || $scope.kpi.static
+            Kpis.update($scope.kpi, params)
+
           $scope.showEditTarget = false
 
+        buildExtraParams = ->
+          angular.forEach($scope.availableKpis, (aKpi) ->
+            $scope.extraParams = aKpi.extra_params if aKpi.endpoint == $scope.kpi.endpoint
+          )
+
         $scope.displayEditTarget = ->
-          $scope.kpi.target ||= {}
-          $scope.kpi.target.limit ||= ""
+          buildExtraParams()
+          $scope.kpi.target = {}
           $scope.showEditTarget = true
 
         $scope.isTargetReverse = ->

@@ -35,6 +35,7 @@ angular
       _self.load().then (success) ->
         params = {}
         params.sso_session = success.sso_session
+
         params.metadata = metadata if metadata?
 
         host = ImpacRoutes.impacKpisBasePath()
@@ -44,9 +45,9 @@ angular
         $http.get(url).then (response) ->
           deferred.resolve(response.data)
         ,(err) ->
-          $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+          $log.error 'impac-angular ERROR: Could not retrieve available KPI\'s: ', err
           deferred.reject(err)
-      
+
       return deferred.promise
 
 
@@ -79,21 +80,23 @@ angular
             $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
             deferred.reject(err)
         )
-      
+
       return deferred.promise
 
 
-    @create = (endpoint, element_watched, extra_param=null) ->
+    @create = (endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
 
       params = {
         endpoint: endpoint
-        element_watched: element_watched
+        element_watched: elementWatched
       }
-      params.extra_param = extra_param if extra_param?
+
+      for param in extraParams
+        params.extra_params ||= []
+        params.extra_params.push param
 
       url = ImpacRoutes.createKpiPath DhbAnalyticsSvc.getId()
-      
       $http.post(url, params).then(
         (success) ->
           deferred.resolve(success.data)
@@ -117,7 +120,6 @@ angular
 
       if !_.isEmpty filtered_param
         $http.put(url, params).then (success) ->
-          # TODO verify
           angular.extend(kpi, success.data)
           _self.show(kpi)
           $log.debug 'success updating KPI: ', success

@@ -1,29 +1,40 @@
-<div class="tile kpi">
+<div class="tile kpi" ng-class="{ 'vertical-scroll': showEditTarget }">
   <div ng-hide="showEditTarget">
-    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
-    <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
-    <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
-    <span class="kpi-value">{{::kpi.data.real_value}}</span>
-    <!-- <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div> -->
-    <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
+    <div>
+      <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+      <small class="kpi-title" ng-if="::!kpi.static" editable-text="tmp.kpiName" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
+      <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
+      <span class="kpi-value">{{kpi.data.real_value}}</span>
+      <!-- <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div> -->
+      <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
 
-    <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div> 
-    <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div> 
+      <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div>
+      <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
+    </div>
   </div>
 
   <div ng-if="showEditTarget">
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
 
     KPI target:
-    
+
     <select ng-model="kpi.target.reverse" class="form-control input-sm">
       <option value="false" ng-selected="!isTargetReverse()">over</option>
       <option value="true" ng-selected="isTargetReverse()">below</option>
     </select>
 
     <input type="text" ng-model="kpi.target.limit"  class="form-control input-sm" />
-    
-    <div class="kpi-alert" ng-click="updateTarget()"><a href="">Save</a></div> 
+
+
+    <div ng-repeat="param in extraParams track by $index">
+      {{param.param}}
+      <select ng-model="kpi.extra_param" ng-options="value.id as value.label for value in param.values">
+        <option value="">- select account -</option>
+        <!-- <option value="">Second Account</option> -->
+      </select>
+    </div>
+
+    <div class="kpi-alert static" ng-click="updateSettings()"><a href="">Save</a></div>
   </div>
 
 </div>
