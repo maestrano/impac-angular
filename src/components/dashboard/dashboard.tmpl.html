@@ -2,9 +2,6 @@
 <div class="analytics" ng-hide="isLoading">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
-  <!-- Impac KPI's -->
-  <kpis-bar kpis="currentDhb.kpis"></kpis-bar>
-
   <!-- Title and Dashboard selection -->
   <div id="head-title">
     <div class="row" ng-if="showDhbHeading">
@@ -15,6 +12,11 @@
         </h2>
       </div>
     </div>
+
+    <!-- Impac KPI's -->
+    <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
+
+    <!-- Dashboards selection/creation/deletion -->
     <dashboard-selector id="module__dashboard-selector" on-display-widget-selector="displayWidgetSelector(newValue)" is-widget-selector-shown="showWidgetSelector" on-create-dashboard="createDashboardModal.open()"></dashboard-selector>
   </div>
 

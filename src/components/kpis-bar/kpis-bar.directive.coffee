@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', (Kpis, DhbAnalyticsSvc) ->
+  .directive('kpisBar', (ImpacKpisSvc) ->
     return {
       restrict: 'E'
       scope: {
@@ -13,6 +13,10 @@ angular
         $scope.showEditMode = false
         $scope.showKpisExpanded = false
 
+        # references to services (bound objects shared between all controllers)
+        # -------------------------------------
+        $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+
         $scope.keyStats = [
           { name: 'Interest %', data: { real_value: '-15.30' }, static: true },
           { name: 'Profitability %', data: { real_value: '8.34' }, static: true},
@@ -20,27 +24,6 @@ angular
           { name: 'TAX % based on FY14', data: { real_value: '29.91' }, static: true},
           { name: 'Super', data: { real_value: '$479,023' }, static: true},
         ]
-
-        getAvailableKpis = ->
-          DhbAnalyticsSvc.load().then (success) ->
-            currentDhb = _.find success, (dhb) ->
-              dhb.id == DhbAnalyticsSvc.getId()
-
-            if currentDhb?
-              metadata = {}
-              metadata.organization_ids = _.map currentDhb.data_sources, (org) ->
-                org.uid
-
-              Kpis.index(metadata).then (success) ->
-                $scope.availableKpis = success.kpis
-                angular.forEach $scope.availableKpis, (kpi) ->
-                  kpi.element_watched = kpi.watchables[0]
-
-            else
-              $timeout (-> getAvailableKpis()), 1000
-
-        # 1st load
-        getAvailableKpis()
 
 
         $scope.toggleAvailableKpis = ->
@@ -62,7 +45,7 @@ angular
           else
             extraParam = null
 
-          Kpis.create(kpi.endpoint, kpi.element_watched, extraParam).then (success) ->
+          ImpacKpisSvc.create(kpi.endpoint, kpi.element_watched, extraParam).then (success) ->
             $scope.kpis.push(success)
 
         $scope.removeKpi = (kpiId) ->

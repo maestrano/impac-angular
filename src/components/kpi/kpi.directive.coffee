@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, Kpis) ->
+  .directive('impacKpi', ($log, ImpacKpisSvc) ->
     return {
       restrict: 'EA'
       scope: {
@@ -13,14 +13,14 @@ angular
       controller: ($scope) ->
         $scope.showEditTarget = false
 
-        Kpis.show($scope.kpi) unless $scope.kpi.data
+        ImpacKpisSvc.show($scope.kpi) unless $scope.kpi.data
 
         $scope.updateName = ->
-          Kpis.update($scope.kpi, {name: $scope.kpi.name}) unless $scope.kpi.static
+          ImpacKpisSvc.update($scope.kpi, {name: $scope.kpi.name}) unless $scope.kpi.static
 
         $scope.updateTarget = ->
           if !_.isEmpty $scope.kpi.target.limit
-            Kpis.update($scope.kpi, {target: $scope.kpi.target}) unless $scope.kpi.static
+            ImpacKpisSvc.update($scope.kpi, {target: $scope.kpi.target}) unless $scope.kpi.static
           $scope.showEditTarget = false
 
         $scope.displayEditTarget = ->
@@ -33,7 +33,7 @@ angular
 
         $scope.deleteKpi = ->
           unless $scope.kpi.static
-            Kpis.delete($scope.kpi).then (success)->
+            ImpacKpisSvc.delete($scope.kpi).then (success)->
               $scope.onDelete()
 
     }
