@@ -11,10 +11,12 @@ angular
       widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
       showWidgetPath: 'http://localhost:4000/api/v1/get_widget',
       sendWidgetSuggestionPath: null
+      # manage kpi in backend
+      kpiBasePath: '/mnoe/jpi/v1/impac/kpis'
       # retrieve impac! kpis data
       impacKpisBasePath: 'http://localhost:4000/api/v2/kpis'
       # retrieve local kpis data
-      localKpisBasePath: 'mnoe/jpi/v1/impac/kpis'
+      localKpisBasePath: null
 
     #=======================================
     # Public methods available in config
@@ -46,8 +48,8 @@ angular
       service.impacKpisBasePath = -> defaults.impacKpisBasePath
       service.localKpisBasePath = -> defaults.localKpisBasePath
       service.createKpiPath = (id) -> "#{defaults.dhbBasePath}/#{id}/kpis"
-      service.updateKpiPath = (id) -> "#{defaults.localKpisBasePath}/#{id}"
-      service.deleteKpiPath = (id) -> "#{defaults.localKpisBasePath}/#{id}"
+      service.updateKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
+      service.deleteKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

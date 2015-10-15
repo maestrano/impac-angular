@@ -70,13 +70,33 @@ angular
           sso_session: _self.config.ssoSessionId
           metadata: {organization_ids: orgUids}
         }
-        index(params).then(
+
+        promises = {
+          impac: index(params)
+        }
+
+        # Get local kpis
+        if ImpacRoutes.localKpisBasePath()
+          promises.local = $http.get(ImpacRoutes.localKpisBasePath())
+
+        $q.all(promises).then(
           (response) ->
             # clear array
             _.remove _self.config.kpisTemplates, (-> true)
-            # fill array with new values
-            for template in response.data.kpis
+
+            # fill array with new values from Impac! api
+            for template in response.impac.data.kpis
+              template.source ||= 'impac'
               _self.config.kpisTemplates.push template
+
+            if response.local
+              # fill array with new values from local endpoinst
+              for template in response.local.data.kpis
+                template.source = 'local'
+                _self.config.kpisTemplates.push template
+
+          (error) ->
+            $log.error('ImpacKpisSvc - cannot retrieve kpis templates list', error)
         )
       )
 
@@ -125,17 +145,19 @@ angular
       return deferred.promise
 
 
-    @create = (endpoint, element_watched, extra_param=null) ->
+    @create = (source, endpoint, element_watched, extra_param=null) ->
       deferred = $q.defer()
       deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}}) if !isInitialized()
 
-      params = {}
-      params.endpoint = endpoint
-      params.element_watched = element_watched
+      params = {
+        source: source
+        endpoint: endpoint
+        element_watched: element_watched
+      }
       params.extra_param = extra_param if extra_param?
 
       url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
-      
+
       $http.post(url, {kpi: params}).then(
         (success) ->
           deferred.resolve(success.data)
