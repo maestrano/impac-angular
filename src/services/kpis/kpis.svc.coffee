@@ -33,9 +33,7 @@ angular
       return url
 
     isInitialized = ->
-      !_.isEmpty _self.config.ssoSessionId and
-        !_.isEmpty _self.config.kpisTemplates and
-        !_.isEmpty _self.config.currentDashboardId
+      !(_.isEmpty _self.config.ssoSessionId or _.isEmpty _self.config.kpisTemplates or _.isEmpty _self.config.currentDashboardId)
 
 
     #====================================
@@ -116,56 +114,61 @@ angular
     # retrieves data for kpi from api
     @show = (kpi) ->
       deferred = $q.defer()
-      deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}}) if !isInitialized()
+      
+      if !isInitialized()
+        $log.error 'ImpacKpisSvc - Service not initialized'
+        deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
-      params = {}
-      params.sso_session = _self.config.ssoSessionId
-      params.target = kpi.target if kpi.target?
-      params.metadata = kpi.settings if kpi.settings?
-      params.extra_param = kpi.extra_param if kpi.extra_param?
+      else
+        params = {}
+        params.sso_session = _self.config.ssoSessionId
+        params.target = kpi.target if kpi.target?
+        params.metadata = kpi.settings if kpi.settings?
+        params.extra_param = kpi.extra_param if kpi.extra_param?
 
-      switch kpi.source
-        when 'impac'
-          host = ImpacRoutes.impacKpisBasePath()
-        when 'local'
-          host = ImpacRoutes.localKpisBasePath()
+        switch kpi.source
+          when 'impac'
+            host = ImpacRoutes.impacKpisBasePath()
+          when 'local'
+            host = ImpacRoutes.localKpisBasePath()
 
-      url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
+        url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-      $http.get(url).then(
-        (response) ->
-          kpi.data = response.data.kpi
-          $log.debug 'KPI: ', kpi
-          deferred.resolve(kpi)
-        (err) ->
-          $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
-          deferred.reject(err)
-      )
+        $http.get(url).then(
+          (response) ->
+            kpi.data = response.data.kpi
+            $log.debug 'KPI: ', kpi
+            deferred.resolve(kpi)
+          (err) ->
+            $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+            deferred.reject(err)
+        )
       
       return deferred.promise
 
 
     @create = (source, endpoint, element_watched, extra_param=null) ->
       deferred = $q.defer()
-      deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}}) if !isInitialized()
+      
+      if !isInitialized()
+        deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
-      params = {
-        source: source
-        endpoint: endpoint
-        element_watched: element_watched
-      }
-      params.extra_param = extra_param if extra_param?
+      else
+        params = {
+          source: source
+          endpoint: endpoint
+          element_watched: element_watched
+        }
+        params.extra_param = extra_param if extra_param?
 
-      url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
+        url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
 
-      $http.post(url, {kpi: params}).then(
-        (success) ->
-          deferred.resolve(success.data)
-          $log.debug 'success adding KPI: ', success
-        (err) ->
-          deferred.reject(err)
-          $log.error 'impac-angular ERROR: Unable to add KPI ', err
-      )
+        $http.post(url, {kpi: params}).then(
+          (success) ->
+            deferred.resolve(success.data)
+          (err) ->
+            deferred.reject(err)
+        )
 
       return deferred.promise
 

@@ -45,8 +45,12 @@ angular
           else
             extraParam = null
 
-          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, extraParam).then (success) ->
-            $scope.kpis.push(success)
+          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, extraParam).then(
+            (success) ->
+              $scope.kpis.push(success)
+            (error) ->
+              $log.error("Impac Kpis bar can't add a kpi", error)
+          )
 
         $scope.removeKpi = (kpiId) ->
           kpisList = angular.copy($scope.kpis)
