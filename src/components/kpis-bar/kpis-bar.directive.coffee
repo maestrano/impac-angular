@@ -1,17 +1,17 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', (ImpacKpisSvc) ->
+  .directive('kpisBar', ($templateCache, ImpacKpisSvc) ->
     return {
       restrict: 'E'
       scope: {
         kpis: '='
       }
-      templateUrl: 'kpis-bar/kpis-bar.tmpl.html'
-      
+      template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
+
       controller: ($scope, $timeout) ->
         $scope.hideAvailableKpis = true
-        $scope.showEditMode = false
         $scope.showKpisExpanded = false
+        $scope.showEditMode = false
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
@@ -22,7 +22,7 @@ angular
           { name: 'Profitability %', data: { real_value: '8.34' }, static: true},
           { name: 'Cost of capital', data: { real_value: '20.00' }, static: true},
           { name: 'TAX % based on FY14', data: { real_value: '29.91' }, static: true},
-          { name: 'Super', data: { real_value: '$479,023' }, static: true},
+          { name: 'Super', data: { real_value: '$479,023' }, static: true}
         ]
 
 
@@ -37,15 +37,13 @@ angular
 
         $scope.addKpi = (kpi) ->
           if kpi.extra_params
-            extraParam = []
+            extraParams = []
             angular.forEach kpi.extra_params, (ex_param) ->
               param = {}
-              param[ex_param.param] = ex_param.values[0]
-              extraParam.push(param)
-          else
-            extraParam = null
+              param[ex_param.param] = ex_param.values[0].id
+              extraParams.push(param)
 
-          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, extraParam).then(
+          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, extraParams).then(
             (success) ->
               $scope.kpis.push(success)
             (error) ->

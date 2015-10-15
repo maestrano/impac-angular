@@ -12,20 +12,34 @@ angular
 
       controller: ($scope) ->
         $scope.showEditTarget = false
+        $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+        $scope.tmp = { kpiName: '' }
 
         ImpacKpisSvc.show($scope.kpi) unless $scope.kpi.data
 
         $scope.updateName = ->
-          ImpacKpisSvc.update($scope.kpi, {name: $scope.kpi.name}) unless $scope.kpi.static
+          return if _.isEmpty($scope.tmp.kpiName)
+          $scope.kpi.name = $scope.tmp.kpiName
+          ImpacKpisSvc.update($scope.kpi, {name: $scope.kpi.name})
 
         $scope.updateTarget = ->
-          if !_.isEmpty $scope.kpi.target.limit
-            ImpacKpisSvc.update($scope.kpi, {target: $scope.kpi.target}) unless $scope.kpi.static
+          params = {}
+          params.target = $scope.kpi.target unless _.isEmpty($scope.kpi.target)
+          params.extra_param = $scope.kpi.extra_param unless _.isEmpty($scope.kpi.extra_param)
+
+          unless _.isEmpty(params)
+            ImpacKpisSvc.update($scope.kpi, params)
+
           $scope.showEditTarget = false
 
+        buildExtraParams = ->
+          angular.forEach($scope.availableKpis, (aKpi) ->
+            $scope.extraParams = aKpi.extra_params if aKpi.endpoint == $scope.kpi.endpoint
+          )
+
         $scope.displayEditTarget = ->
-          $scope.kpi.target ||= {}
-          $scope.kpi.target.limit ||= ""
+          buildExtraParams()
+          $scope.kpi.target = {}
           $scope.showEditTarget = true
 
         $scope.isTargetReverse = ->

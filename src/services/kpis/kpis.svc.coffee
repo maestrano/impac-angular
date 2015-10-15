@@ -147,7 +147,7 @@ angular
       return deferred.promise
 
 
-    @create = (source, endpoint, element_watched, extra_param=null) ->
+    @create = (source, endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
       
       if !isInitialized()
@@ -157,9 +157,11 @@ angular
         params = {
           source: source
           endpoint: endpoint
-          element_watched: element_watched
+          element_watched: elementWatched
         }
-        params.extra_param = extra_param if extra_param?
+        for param in extraParams
+          params.extra_params ||= []
+          params.extra_params.push param
 
         url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
 
