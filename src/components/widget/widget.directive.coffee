@@ -12,7 +12,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
     (promises) ->
       $q.all(promises).then(
         (success) ->
-          
           ImpacWidgetsSvc.show(w).then(
             (updatedWidget) ->
               w.isLoading = false

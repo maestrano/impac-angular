@@ -15,6 +15,14 @@
   <div ng-hide="widget.isEditMode">
 
     <div ng-show="isDataFound">
+      <!-- multi-companies mode -->
+      <div id="multi-company">
+        <label>
+          <input type="checkbox" ng-model="multiCompanyMode" ng-change="multiCompanyComparisonOnChange()">
+          <span>Compare matching accounts across your companies</span>
+        </label>
+      </div>
+      <!-- end -->
       <div ng-hide="hasAccountsSelected()" class="row">
         <h5>Select the accounts you wish to compare.</h5>
         <div class="col-md-6">

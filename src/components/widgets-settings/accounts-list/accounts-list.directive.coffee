@@ -14,12 +14,16 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
   w.moveAccountToAnotherList = (account, src, dst, triggerUpdate=true) ->
     return if _.isEmpty(src) || _.isEmpty(account)
     dst ||= []
-
-    _.remove src, (acc) ->
-      account.uid == acc.uid
+    _.remove src, (acc) -> account.uid == acc.uid
     dst.push(account)
+    ImpacWidgetsSvc.updateWidgetSettings(w, w.metadata) if triggerUpdate
+    return null
 
-    ImpacWidgetsSvc.updateWidgetSettings(w,false) if triggerUpdate
+  w.resetAccounts = (src, dst, triggerUpdate=false) ->
+    srcCopy = angular.copy(src)
+    _.forEach(srcCopy, (account) -> w.moveAccountToAnotherList(account, src, dst, triggerUpdate))
+    return null
+
 
 
   # ---------------------------------------------------------

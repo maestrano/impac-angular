@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-comparison',[])
 
-module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacMainSvc, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 
@@ -40,6 +40,22 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency)
 
+  $scope.resetAccounts = (triggerUpdate) ->
+    w.resetAccounts(w.selectedAccounts, w.remainingAccounts, triggerUpdate)
+
+  $scope.multiCompanyMode = false
+  $scope.multiCompanyComparisonOnChange = ->
+    w.isLoading = true
+    if $scope.multiCompanyMode
+      w.metadata.organization_ids = _.map(ImpacMainSvc.config.organizations, (n) -> n.uid )
+    else
+      w.metadata.organization_ids = [ImpacMainSvc.config.currentOrganization.uid]
+    console.log 'widget org_ids: ', w.metadata.organization_ids
+    ImpacWidgetsSvc.show(w).finally(->
+      $scope.resetAccounts()
+      w.isLoading = false
+    )
+
 
   # Chart formating function
   # --------------------------------------
@@ -59,10 +75,9 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
       barDatasetSpacing: 9,
     }
     chartData = ChartFormatterSvc.barChart(inputData,options)
-      
+
     # calls chart.draw()
     $scope.drawTrigger.notify(chartData)
-
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
