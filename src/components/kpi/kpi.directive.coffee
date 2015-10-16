@@ -22,7 +22,7 @@ angular
           $scope.kpi.name = $scope.tmp.kpiName
           ImpacKpisSvc.update($scope.kpi, {name: $scope.kpi.name})
 
-        $scope.updateTarget = ->
+        $scope.updateSettings = ->
           params = {}
           params.target = $scope.kpi.target unless _.isEmpty($scope.kpi.target)
           params.extra_param = $scope.kpi.extra_param unless _.isEmpty($scope.kpi.extra_param)

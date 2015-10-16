@@ -1,20 +1,19 @@
 <div class="tile kpi" ng-class="{ 'vertical-scroll': showEditTarget }">
   <div ng-hide="showEditTarget">
     <div>
-      <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
-      <small class="kpi-title" ng-if="::!kpi.static" editable-text="tmp.kpiName" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
-      <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
+      <small class="kpi-title" editable-text="tmp.kpiName" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
+      <div class="kpi-watch">({{::kpi.element_watched}})</div>
       <span class="kpi-value">{{kpi.data.real_value}}</span>
-      <!-- <div ng-if="::kpi.alert" class="kpi-alert">{{::kpi.alert}}</div> -->
+
       <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
 
-      <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit target</div>
+      <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit</div>
       <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
     </div>
   </div>
 
   <div ng-if="showEditTarget">
-    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+    <small class="kpi-title">{{::kpi.name}}</small>
 
     KPI target:
 
