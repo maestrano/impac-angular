@@ -122,9 +122,9 @@ angular
       else
         params = {}
         params.sso_session = _self.config.ssoSessionId
-        params.target = kpi.target if kpi.target?
+        params.targets = kpi.targets if kpi.targets?
         params.metadata = kpi.settings if kpi.settings?
-        params.extra_param = kpi.extra_param if kpi.extra_param?
+        params.extra_params = kpi.extra_params if kpi.extra_params?
 
         switch kpi.source
           when 'impac'
@@ -136,8 +136,14 @@ angular
 
         $http.get(url).then(
           (response) ->
-            kpi.data = response.data.kpi
-            $log.debug 'KPI: ', kpi
+            kpi.data ||= {}
+            angular.extend kpi.data, _.pick response.data.kpi, ['value', 'unit', 'results']
+
+            # When the kpi initial configuration is partial, we update it with what the API has picked by default
+            updatedConfig = response.data.kpi.configuration || {}
+            missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+            angular.extend kpi, _.pick(updatedConfig, missingParams)
+
             deferred.resolve(kpi)
           (err) ->
             $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
@@ -147,7 +153,8 @@ angular
       return deferred.promise
 
 
-    @create = (source, endpoint, elementWatched, extraParams=[]) ->
+    @create = (source, endpoint, elementWatched) ->
+    # @create = (source, endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
       
       if !isInitialized()
@@ -159,9 +166,9 @@ angular
           endpoint: endpoint
           element_watched: elementWatched
         }
-        for param in extraParams
-          params.extra_params ||= []
-          params.extra_params.push param
+        # for param in extraParams
+        #   params.extra_params ||= []
+        #   params.extra_params.push param
 
         url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
 
@@ -181,14 +188,13 @@ angular
       filtered_params = {}
       filtered_params.name = params.name if params.name?
       filtered_params.settings = params.metadata if params.metadata?
-      filtered_params.target = params.target if params.target?
-      filtered_params.extra_param = params.extra_param if params.extra_param?
+      filtered_params.targets = params.targets if params.targets?
+      filtered_params.extra_params = params.extra_params if params.extra_params?
 
       url = ImpacRoutes.updateKpiPath kpi.id
 
       if !_.isEmpty filtered_params
         $http.put(url, {kpi: params}).then (success) ->
-          # TODO verify
           angular.extend(kpi, success.data)
           _self.show(kpi)
           deferred.resolve(kpi)

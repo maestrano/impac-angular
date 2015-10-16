@@ -1,39 +1,41 @@
-<div class="tile kpi" ng-class="{ 'vertical-scroll': showEditTarget }">
-  <div ng-hide="showEditTarget">
+<div class="tile kpi" ng-class="{ 'edit': showEditSettings, 'static': kpi.static }">
+
+  <div ng-hide="showEditSettings">
     <div>
       <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
       <small class="kpi-title" ng-if="::!kpi.static" editable-text="tmp.kpiName" buttons="no" onaftersave="updateName()">{{kpi.name}}</small>
       <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
-      <span class="kpi-value">{{kpi.data.real_value}}</span>
+      <span class="kpi-value">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>
 
-      <div class="kpi-alert" ng-if="kpi.data.achieved == false && !editMode">{{ isTargetReverse() ? 'over' : 'below'}} {{::kpi.target.limit}}</div>
+      <!-- TODO: refactor design to handle multiple targets and ranges -->
+      <div class="kpi-alert" ng-repeat="target in kpi.targets track by $index" ng-hide="editMode || kpi.data.results[$index]">
+        <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit : false}}</span>
+        <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit : false}}</span>
+      </div>
 
-      <div class="kpi-alert" ng-show="editMode" ng-click="displayEditTarget()">Edit</div>
+      <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
       <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
     </div>
   </div>
 
-  <div ng-if="showEditTarget">
-    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
-
+  <div ng-show="showEditSettings">
     KPI target:
 
-    <select class="form-control input-sm" ng-model="kpi.target.reverse">
-      <option value="false" ng-selected="!isTargetReverse()">over</option>
-      <option value="true" ng-selected="isTargetReverse()">below</option>
+    <!-- TODO: refactor design to handle multiple targets and ranges -->
+    <select class="form-control input-sm" ng-model="limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
     </select>
 
-    <input class="form-control input-sm" type="text" ng-model="kpi.target.limit" />
+    <input class="form-control input-sm" type="text" ng-model="limit.value" style="width: 70%; float: left;" />
+    <span style="margin-top: 10px; display: inline-block;">{{kpi.data.unit}}</span>
 
-
-    <div ng-repeat="param in extraParams track by $index">
-      <div class="param-name">Select {{param.param | titleize}}:</div>
-      <select class="form-control input-sm" ng-model="kpi.extra_param" ng-options="value.id as value.label for value in param.values">
-        <option value="">- select account -</option>
+    <div ng-repeat="(param, paramValues) in possibleExtraParams track by $index">
+      <div class="param-name">Select {{param | titleize}}:</div>
+      <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
       </select>
     </div>
 
-    <div class="kpi-alert static" ng-click="updateSettings()"><a href="">Save</a></div>
+    <button class="btn btn-sm btn-default" ng-click="hideEditSettings()">Cancel</button>
+    <button class="btn btn-sm btn-success" ng-click="updateSettings()">Save</button>
   </div>
 
 </div>

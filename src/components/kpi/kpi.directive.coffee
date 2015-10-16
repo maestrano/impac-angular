@@ -11,11 +11,37 @@ angular
       templateUrl: 'kpi/kpi.tmpl.html'
 
       controller: ($scope) ->
-        $scope.showEditTarget = false
+        $scope.showEditSettings = false
+
         $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+        $scope.possibleExtraParams = []
+        $scope.limit = {}
+        $scope.possibleTargets = [
+          { label: 'over', mode: 'min' }
+          { label: 'below', mode: 'max' }
+        ]
         $scope.tmp = { kpiName: '' }
 
-        ImpacKpisSvc.show($scope.kpi) unless $scope.kpi.data
+        unless $scope.kpi.static
+          ImpacKpisSvc.show($scope.kpi).then(
+            (success) -> 
+              kpiTemplate = _.find $scope.availableKpis, (aKpi) -> 
+                aKpi.endpoint == $scope.kpi.endpoint
+
+              if kpiTemplate? && kpiTemplate.extra_params?
+                $scope.possibleExtraParams = kpiTemplate.extra_params
+
+              $scope.kpi.targets ||= []
+              if !_.isEmpty $scope.kpi.targets[0]
+                $scope.limit.mode = _.keys($scope.kpi.targets[0])[0]
+                $scope.limit.value = _.values($scope.kpi.targets[0])[0]
+          )
+
+        $scope.displayEditSettings = ->
+          $scope.showEditSettings = true
+
+        $scope.hideEditSettings = ->
+          $scope.showEditSettings = false
 
         $scope.updateName = ->
           return if _.isEmpty($scope.tmp.kpiName)
@@ -24,31 +50,19 @@ angular
 
         $scope.updateSettings = ->
           params = {}
-          params.target = $scope.kpi.target unless _.isEmpty($scope.kpi.target)
-          params.extra_param = $scope.kpi.extra_param unless _.isEmpty($scope.kpi.extra_param)
+          if !(_.isEmpty $scope.limit.value || _.isEmpty $scope.limit.mode)
+            target0 = {}
+            target0[$scope.limit.mode] = $scope.limit.value
+            params.targets = [target0]
+          params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
+          
+          ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
 
-          unless _.isEmpty(params)
-            ImpacKpisSvc.update($scope.kpi, params)
-
-          $scope.showEditTarget = false
-
-        buildExtraParams = ->
-          angular.forEach($scope.availableKpis, (aKpi) ->
-            $scope.extraParams = aKpi.extra_params if aKpi.endpoint == $scope.kpi.endpoint
-          )
-
-        $scope.displayEditTarget = ->
-          buildExtraParams()
-          $scope.kpi.target = {}
-          $scope.showEditTarget = true
-
-        $scope.isTargetReverse = ->
-          $scope.kpi.target['reverse']? && $scope.kpi.target['reverse'] == 'true'
+          $scope.showEditSettings = false
 
         $scope.deleteKpi = ->
-          unless $scope.kpi.static
-            ImpacKpisSvc.delete($scope.kpi).then (success)->
-              $scope.onDelete()
+          return if $scope.kpi.static
+          ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
 
     }
   )

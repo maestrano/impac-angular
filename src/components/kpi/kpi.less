@@ -7,18 +7,34 @@
   border-radius: 3px;
   background-color: white;
   box-shadow: 0px 4px 12px -7px #17262d;
-  cursor: auto;
 
-  input.form-control.input-sm {
-    height: 30px;
-    background-color: white;
-    border: solid 1px @impac-widget-borders-color;
-    margin-top: 5px;
+  &.static {
+    .kpi-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
   }
 
-  .param-name {
-    margin-top: 5px;
+  &.edit {
+    .scrollable();
+
+    input.form-control.input-sm {
+      height: 30px;
+      background-color: white;
+      border: solid 1px @impac-widget-borders-color;
+      margin-top: 5px;
+    }
+    
+    .btn.btn-sm {
+      margin-top: 8px;
+    }
+
+    .param-name {
+      margin-top: 5px;
+    }
   }
+
 
   .kpi-title {
     .text-uppercase();
