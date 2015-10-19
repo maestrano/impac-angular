@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-comparison',[])
 
-module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacMainSvc, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -40,22 +40,17 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency)
 
-  $scope.resetAccounts = (triggerUpdate) ->
-    w.resetAccounts(w.selectedAccounts, w.remainingAccounts, triggerUpdate)
+  $scope.purgeSelectedAccounts = -> w.clearAccounts(w.selectedAccounts, w.remainingAccounts)
 
   $scope.multiCompanyMode = false
   $scope.multiCompanyComparisonOnChange = ->
-    w.isLoading = true
+    $scope.purgeSelectedAccounts()
     if $scope.multiCompanyMode
-      w.metadata.organization_ids = _.map(ImpacMainSvc.config.organizations, (n) -> n.uid )
+      w.groupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
+      console.log 'w.remainingAccounts: ', w.remainingAccounts
     else
-      w.metadata.organization_ids = [ImpacMainSvc.config.currentOrganization.uid]
-    console.log 'widget org_ids: ', w.metadata.organization_ids
-    ImpacWidgetsSvc.show(w).finally(->
-      $scope.resetAccounts()
-      w.isLoading = false
-    )
-
+      w.ungroupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
+      console.log 'w.remainingAccounts: ', w.remainingAccounts
 
   # Chart formating function
   # --------------------------------------

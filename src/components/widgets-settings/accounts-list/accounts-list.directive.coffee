@@ -16,15 +16,48 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
     dst ||= []
     _.remove src, (acc) -> account.uid == acc.uid
     dst.push(account)
-    ImpacWidgetsSvc.updateWidgetSettings(w, w.metadata) if triggerUpdate
+    ImpacWidgetsSvc.updateWidgetSettings(w, false) if triggerUpdate
     return null
 
-  w.resetAccounts = (src, dst, triggerUpdate=false) ->
+  w.clearAccounts = (src, dst, triggerUpdate=false) ->
     srcCopy = angular.copy(src)
     _.forEach(srcCopy, (account) -> w.moveAccountToAnotherList(account, src, dst, triggerUpdate))
     return null
 
+  # rules:
+  # base account groupbyKey string matches other account's groupByKey
+  # account can only exist in one group
+  # an accounts group needs to have > 1 accounts to be included.
+  # --
+  # keeps local of src accounts for simply switching between grouped and ungrouped.
+  stashedAccounts = []
+  # groups accounts by a string matcher, from a src collection, into a destination collection.
+  # note: src collection can be the dst collection. Src will be cleared.
+  w.groupAccounts = (src, dst, groupByKey, regExp) ->
+    grouped = []
+    rgx = new RegExp(regExp || /[^a-z0-9]/g)
+    stashedAccounts = angular.copy(src)
+    normalise = (str) -> str.toLowerCase().replace(rgx, "")
+    sort = ->
+      baseAccount = src.shift()
+      matcher = normalise(baseAccount[groupByKey])
+      group = { name: baseAccount.account_name }
+      group.accounts = _.select(src, (acc, index) ->
+        src.splice(index, 1)[0] if !!acc && normalise(acc[groupByKey]) == matcher
+      )
+      if group.accounts.length > 0
+        group.accounts.unshift(baseAccount)
+        grouped.push(group)
+      unless src.length
+        _.forEach(grouped, (acc) -> dst.push(acc) )
+      else
+        sort()
+    sort()
 
+  w.ungroupAccounts = (src, dst) ->
+    src.splice(0, src.length)
+    _.forEach(stashedAccounts, (acc) -> src.push(acc) )
+    stashedAccounts = []
 
   # ---------------------------------------------------------
   # ### Setting definition
