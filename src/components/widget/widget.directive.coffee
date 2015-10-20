@@ -40,10 +40,10 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
     w.isEditMode = false
     ImpacWidgetsSvc.initWidgetSettings(w)
 
-  $scope.updateSettings = (needContentReload=true) ->
+  $scope.updateSettings = (needContentReload=true, beforeUpdateCallback) ->
     w.isEditMode = false
+    beforeUpdateCallback() if beforeUpdateCallback
     ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
-
 
   w.getColClass = ->
     "col-md-#{w.width}"

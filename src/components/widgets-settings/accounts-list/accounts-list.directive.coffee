@@ -24,29 +24,28 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
     _.forEach(srcCopy, (account) -> w.moveAccountToAnotherList(account, src, dst, triggerUpdate))
     return null
 
-  # rules:
-  # base account groupbyKey string matches other account's groupByKey
-  # account can only exist in one group
-  # an accounts group needs to have > 1 accounts to be included.
-  # --
-  # keeps local of src accounts for simply switching between grouped and ungrouped.
+  # keeps local of src accounts for switching between grouped and ungrouped.
   stashedAccounts = []
   # groups accounts by a string matcher, from a src collection, into a destination collection.
   # note: src collection can be the dst collection. Src will be cleared.
   w.groupAccounts = (src, dst, groupByKey, regExp) ->
     grouped = []
+    counter = 0
     rgx = new RegExp(regExp || /[^a-z0-9]/g)
     stashedAccounts = angular.copy(src)
     normalise = (str) -> str.toLowerCase().replace(rgx, "")
+    collectBalance = (arr) -> _.reduce(arr, (total, n) -> total + n )
     sort = ->
       baseAccount = src.shift()
       matcher = normalise(baseAccount[groupByKey])
-      group = { name: baseAccount.account_name }
-      group.accounts = _.select(src, (acc, index) ->
+      group = { name: baseAccount.account_name, uid: counter++ }
+      group.accounts = _.select src, (acc, index) ->
         src.splice(index, 1)[0] if !!acc && normalise(acc[groupByKey]) == matcher
-      )
       if group.accounts.length > 0
         group.accounts.unshift(baseAccount)
+        # TODO::multi-currency: support for conversions across multi-currency, multi-company accounts.
+        group.current_balance = collectBalance(_.map(group.accounts, (acc) -> acc.current_balance))
+        group.currency = _.map(group.accounts, (acc) -> acc.currency).join('/')
         grouped.push(group)
       unless src.length
         _.forEach(grouped, (acc) -> dst.push(acc) )

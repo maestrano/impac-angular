@@ -16,7 +16,6 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     $scope.chartDeferred.promise
   ]
 
-
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -27,7 +26,10 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     return w.selectedAccounts && w.selectedAccounts.length > 0
 
   $scope.getAccountColor = (anAccount) ->
-    ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts, anAccount))
+    if $scope.multiCompanyMode
+      ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts[0].accounts, anAccount))
+    else
+      ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts, anAccount))
 
   $scope.addAccount = (anAccount) ->
     w.moveAccountToAnotherList(anAccount, w.remainingAccounts, w.selectedAccounts)
@@ -40,6 +42,10 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency)
 
+  $scope.beforeUpdateCallback = ->
+    $scope.multiCompanyMode = false
+    $scope.purgeSelectedAccounts()
+
   $scope.purgeSelectedAccounts = -> w.clearAccounts(w.selectedAccounts, w.remainingAccounts)
 
   $scope.multiCompanyMode = false
@@ -47,19 +53,23 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     $scope.purgeSelectedAccounts()
     if $scope.multiCompanyMode
       w.groupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
-      console.log 'w.remainingAccounts: ', w.remainingAccounts
     else
       w.ungroupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
-      console.log 'w.remainingAccounts: ', w.remainingAccounts
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
     inputData = {labels: [], values: []}
-    _.map w.selectedAccounts, (account) ->
-      inputData.labels.push account.name
-      inputData.values.push account.current_balance
+    _.forEach w.selectedAccounts, (account) ->
+      if $scope.multiCompanyMode
+        _.forEach account.accounts, (groupedAccount) ->
+          inputData.labels.push groupedAccount.name
+          inputData.values.push groupedAccount.current_balance
+      else
+        inputData.labels.push account.name
+        inputData.values.push account.current_balance
+
     while inputData.values.length < 15
       inputData.labels.push ""
       inputData.values.push null
