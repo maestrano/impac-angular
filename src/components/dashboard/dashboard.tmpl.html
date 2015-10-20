@@ -12,6 +12,11 @@
         </h2>
       </div>
     </div>
+
+    <!-- Impac KPI's -->
+    <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
+
+    <!-- Dashboards selection/creation/deletion -->
     <dashboard-selector id="module__dashboard-selector" on-display-widget-selector="displayWidgetSelector(newValue)" is-widget-selector-shown="showWidgetSelector" on-create-dashboard="createDashboardModal.open()"></dashboard-selector>
   </div>
 

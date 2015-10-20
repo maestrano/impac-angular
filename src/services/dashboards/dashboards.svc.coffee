@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, ImpacMainSvc, ImpacRoutes) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc) ->
   
 
     #====================================
@@ -78,6 +78,7 @@ angular
         $log.info("Impac - DashboardSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
         _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
+        ImpacKpisSvc.initialize(_self.config.currentDashboard)
         _self.initializeActiveTabs()
         return true
       else
@@ -92,6 +93,7 @@ angular
         if !_.isEmpty(fetchedDhb)
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
           _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
+          ImpacKpisSvc.initialize(_self.config.currentDashboard)
           _self.initializeActiveTabs()
           return true
         else
@@ -119,15 +121,12 @@ angular
 
 
     @setWidgetsTemplates = (templatesArray) ->
-      # Will be filled only once...
+      # Will be filled only once
       return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
-      # ...but just in case, we clear the array before
-      _.drop _self.config.widgetsTemplates, _self.config.widgetsTemplates.length
       for template in templatesArray
         _self.config.widgetsTemplates.push template
 
       return true
-
 
     @initializeActiveTabs = ->
       for dhb in _self.config.dashboards

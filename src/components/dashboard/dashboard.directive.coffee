@@ -23,6 +23,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
 
+    # kpis
+    # -------------------------------------
+    $scope.showKpisBar = ImpacTheming.get().dhbKpisConfig.enableKpis
+
     # messages
     # -------------------------------------
     $scope.showChooseDhbMsg = ->
@@ -48,110 +52,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # initialize widget selector
       $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
       $scope.isLoading = false
-
-
-    #====================================
-    # Widgets selector
-    #====================================
-    # TODO: put in separate directive
-
-    $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
-    $scope.showWidgetSelector = false # just to initialize / will be overriden at first load anyway
-    $scope.showCloseWidgetSelectorButton = ->
-      !ImpacDashboardsSvc.isCurrentDashboardEmpty()
-
-    $scope.displayWidgetSelector = (newValue) ->
-      # the widget selector will never be toggled if there is a customWidgetSelector set in config
-      return if !newValue? || $scope.customWidgetSelector.path
-      $scope.showWidgetSelector = !!newValue
-
-    # Custom widgets selector
-    # --------------------------
-    # Add Chart Tile: optional feature for triggering widget selector, with configurability to
-    #                 modify onClick behaviour.
-    $scope.isAddChartEnabled = ImpacTheming.get().addChartTile.show
-    $scope.addChartTileOnClick = ->
-      triggers = ImpacTheming.get().addChartTile.onClickOptions.triggers
-      _.forEach(triggers, (trigger) ->
-
-        switch trigger.type
-          when 'objectProperty'
-            $scope[trigger.target][trigger.property] = trigger.value
-
-        # NOTE: These configuration options are designed to be extended on a case-by-case basis.
-        #       For example, a callback trigger.type, or a re-define function inside this ctrl,
-        #       with a function from external app.
-      )
-
-    $scope.selectedCategory = 'accounts'
-    $scope.isCategorySelected = (aCatName) ->
-      if $scope.selectedCategory? && aCatName?
-        return $scope.selectedCategory == aCatName
-      else
-        return false
-
-    $scope.selectCategory = (aCatName) ->
-      $scope.selectedCategory = aCatName
-
-    $scope.getSelectedCategoryName = ->
-      if $scope.selectedCategory?
-        switch $scope.selectedCategory
-          when 'accounts'
-            return 'Accounting'
-          when 'invoices'
-            return 'Invoicing'
-          when 'hr'
-            return 'HR / Payroll'
-          when 'sales'
-            return 'Sales'
-          else
-            return false
-      else
-        return false
-
-    $scope.getSelectedCategoryTop = ->
-      if $scope.selectedCategory?
-        switch $scope.selectedCategory
-          when 'accounts'
-            return {top: '33px'}
-          when 'invoices'
-            return {top: '64px'}
-          when 'hr'
-            return {top: '95px'}
-          when 'sales'
-            return {top: '126px'}
-          else
-            return {top: '9999999px'}
-      else
-        return false
-
-    $scope.getWidgetsForSelectedCategory = ->
-      if $scope.selectedCategory? && $scope.widgetsList?
-        return _.select $scope.widgetsList, (aWidgetTemplate) ->
-          aWidgetTemplate.path.split('/')[0] == $scope.selectedCategory
-      else
-        return []
-
-    $scope.addWidget = (widgetPath, widgetMetadata=null) ->
-      params = {widget_category: widgetPath}
-      if widgetMetadata?
-        angular.extend(params, {metadata: widgetMetadata})
-      angular.element('#widget-selector').css('cursor', 'progress')
-      angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'progress')
-      ImpacWidgetsSvc.create(params).then(
-        () ->
-          $scope.errors = ''
-          angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
-          angular.element('#widget-selector .badge.confirmation').fadeTo(250,1)
-          $timeout ->
-            angular.element('#widget-selector .badge.confirmation').fadeTo(700,0)
-          ,4000
-        , (errors) ->
-          $scope.errors = Utilities.processRailsError(errors)
-          angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
-      )
 
 
     # ============================================
@@ -262,6 +162,110 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       organization.current_user_role && (
         organization.current_user_role == "Super Admin" ||
         organization.current_user_role == "Admin"
+      )
+
+
+    #====================================
+    # Widgets selector
+    #====================================
+    # TODO: put in separate directive
+
+    $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
+    $scope.showWidgetSelector = false # just to initialize / will be overriden at first load anyway
+    $scope.showCloseWidgetSelectorButton = ->
+      !ImpacDashboardsSvc.isCurrentDashboardEmpty()
+
+    $scope.displayWidgetSelector = (newValue) ->
+      # the widget selector will never be toggled if there is a customWidgetSelector set in config
+      return if !newValue? || $scope.customWidgetSelector.path
+      $scope.showWidgetSelector = !!newValue
+
+    # Custom widgets selector
+    # --------------------------
+    # Add Chart Tile: optional feature for triggering widget selector, with configurability to
+    #                 modify onClick behaviour.
+    $scope.isAddChartEnabled = ImpacTheming.get().addChartTile.show
+    $scope.addChartTileOnClick = ->
+      triggers = ImpacTheming.get().addChartTile.onClickOptions.triggers
+      _.forEach(triggers, (trigger) ->
+
+        switch trigger.type
+          when 'objectProperty'
+            $scope[trigger.target][trigger.property] = trigger.value
+
+        # NOTE: These configuration options are designed to be extended on a case-by-case basis.
+        #       For example, a callback trigger.type, or a re-define function inside this ctrl,
+        #       with a function from external app.
+      )
+
+    $scope.selectedCategory = 'accounts'
+    $scope.isCategorySelected = (aCatName) ->
+      if $scope.selectedCategory? && aCatName?
+        return $scope.selectedCategory == aCatName
+      else
+        return false
+
+    $scope.selectCategory = (aCatName) ->
+      $scope.selectedCategory = aCatName
+
+    $scope.getSelectedCategoryName = ->
+      if $scope.selectedCategory?
+        switch $scope.selectedCategory
+          when 'accounts'
+            return 'Accounting'
+          when 'invoices'
+            return 'Invoicing'
+          when 'hr'
+            return 'HR / Payroll'
+          when 'sales'
+            return 'Sales'
+          else
+            return false
+      else
+        return false
+
+    $scope.getSelectedCategoryTop = ->
+      if $scope.selectedCategory?
+        switch $scope.selectedCategory
+          when 'accounts'
+            return {top: '33px'}
+          when 'invoices'
+            return {top: '64px'}
+          when 'hr'
+            return {top: '95px'}
+          when 'sales'
+            return {top: '126px'}
+          else
+            return {top: '9999999px'}
+      else
+        return false
+
+    $scope.getWidgetsForSelectedCategory = ->
+      if $scope.selectedCategory? && $scope.widgetsList?
+        return _.select $scope.widgetsList, (aWidgetTemplate) ->
+          aWidgetTemplate.path.split('/')[0] == $scope.selectedCategory
+      else
+        return []
+
+    $scope.addWidget = (widgetPath, widgetMetadata=null) ->
+      params = {widget_category: widgetPath}
+      if widgetMetadata?
+        angular.extend(params, {metadata: widgetMetadata})
+      angular.element('#widget-selector').css('cursor', 'progress')
+      angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'progress')
+      ImpacWidgetsSvc.create(params).then(
+        () ->
+          $scope.errors = ''
+          angular.element('#widget-selector').css('cursor', 'auto')
+          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
+          angular.element('#widget-selector .badge.confirmation').fadeTo(250,1)
+          $timeout ->
+            angular.element('#widget-selector .badge.confirmation').fadeTo(700,0)
+          ,4000
+        , (errors) ->
+          $scope.errors = Utilities.processRailsError(errors)
+          angular.element('#widget-selector').css('cursor', 'auto')
+          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
 
 

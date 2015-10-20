@@ -38,6 +38,10 @@ angular
         addWidgetEnabled: true
         addDhbEnabled: true
         deleteDhbEnabled: true
+      # kpis options
+      dhbKpisConfig:
+        enableKpis: false
+        parentElementId: ''
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
         mainMessage: 'Data not found'
