@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.editable-title',[])
 
-module.controller('CommonEditableTitleCtrl', ($scope, DhbAnalyticsSvc) ->
+module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc) ->
 
     w = $scope.parentWidget
 
@@ -10,11 +10,10 @@ module.controller('CommonEditableTitleCtrl', ($scope, DhbAnalyticsSvc) ->
         return "Incorrect name"
       else
         data = { name: w.name }
-        DhbAnalyticsSvc.widgets.update(w,data).then(
+        ImpacWidgetsSvc.update(w,data).then(
           (success)->
-            w.originalName = w.name
-            angular.extend(w, success.data)
-          , ->
+            return true
+          (error) ->
             w.name = w.originalName
         )
 )

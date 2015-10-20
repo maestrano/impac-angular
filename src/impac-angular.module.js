@@ -16,7 +16,7 @@ angular.module('maestrano.impac',
   ]);
 
 /*
-** COMPONTENTS
+** COMPONENTS
 */
 angular.module('impac.components',
   [
@@ -98,7 +98,13 @@ angular.module('impac.components.widgets-common',
 /*
 ** FILTERS
 */
-angular.module('impac.filters', []);
+angular.module('impac.filters',
+  [
+    'impac.filters.titleize',
+    'impac.filters.truncate',
+    'impac.filters.mno-currency'
+  ]
+);
 /*
 ** SERVICES
 */
@@ -108,10 +114,12 @@ angular.module('impac.services',
     'impac.services.linking',
     'impac.services.theming',
     'impac.services.assets',
-    'impac.services.analytics',
     'impac.services.chart-formatter',
     'impac.services.message-bus',
     'impac.services.utilities',
+    'impac.services.main',
+    'impac.services.dashboards',
+    'impac.services.widgets',
   ]
 );
 /*

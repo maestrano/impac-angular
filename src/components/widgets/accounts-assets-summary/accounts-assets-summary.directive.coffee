@@ -1,50 +1,55 @@
 module = angular.module('impac.components.widgets.accounts-assets-summary', [])
-module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, ChartFormatterSvc) ->
+module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
 
-    w = $scope.widget
+  w = $scope.widget
 
-    w.initContext = ->
-      $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
-    w.format = ->
-      if $scope.isDataFound
-        pieData = _.map w.content.summary, (account) ->
-          {
-            label: account.label,
-            value: account.total,
-          }
-        # currency = "$"
-        pieOptions = {
-          percentageInnerCutout: 50,
-          tooltipFontSize: 12,
-          # tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + ' #{currency}' %>"
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.chartDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+
+  $scope.getCurrency = ->
+    w.content.currency if $scope.isDataFound
+
+  $scope.getAccountColor = (anAccount) ->
+    ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
+
+
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      pieData = _.map w.content.summary, (account) ->
+        {
+          label: account.label,
+          value: account.total,
         }
-        w.chart = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      pieOptions = {
+        percentageInnerCutout: 50,
+        tooltipFontSize: 12,
+        # tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + ' #{currency}' %>"
+      }
+      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
 
-    $scope.getCurrency = ->
-      w.content.currency if $scope.isDataFound
-
-    $scope.getAccountColor = (anAccount) ->
-      ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
-
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total == 1
-
-    return w
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetAccountsAssetsSummary', ->

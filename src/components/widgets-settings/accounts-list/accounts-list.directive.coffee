@@ -2,7 +2,7 @@ module = angular.module('impac.components.widgets-settings.accounts-list', [])
 
 # There is no template associated to this setting, and though it won't appear in the 'settings' panel
 # However, as its metadata has to be initialized from, and saved to Impac!, we build ListAccounts as a setting
-module.controller('SettingAccountsListCtrl', ($scope) ->
+module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
 
   # ---------------------------------------------------------
   # ### Populate the widget
@@ -12,24 +12,15 @@ module.controller('SettingAccountsListCtrl', ($scope) ->
 
   # Used by the 'delete' button in the accounts list and by the comboBox
   w.moveAccountToAnotherList = (account, src, dst, triggerUpdate=true) ->
-    removeAccountFromList(account, src)
-    addAccountToList(account, dst)
-    w.updateSettings(false) if triggerUpdate
+    return if _.isEmpty(src) || _.isEmpty(account)
+    dst ||= []
 
-  # ---------------------------------------------------------
-  # ### Helpers
-  # ---------------------------------------------------------
+    _.remove src, (acc) ->
+      account.uid == acc.uid
+    dst.push(account)
 
-  removeAccountFromList = (account, list) ->
-    if !_.isEmpty(list)
-      angular.copy _.reject(list, (accInList) ->
-        account.uid == accInList.uid
-      ), list
+    ImpacWidgetsSvc.updateWidgetSettings(w,false) if triggerUpdate
 
-  addAccountToList = (account, list) ->
-    if account?
-      list ||= []
-      list.push(account)
 
   # ---------------------------------------------------------
   # ### Setting definition
@@ -61,8 +52,11 @@ module.controller('SettingAccountsListCtrl', ($scope) ->
   setting.toMetadata = ->
     return { accounts_list: _.map(w.selectedAccounts, ((acc) -> acc.uid)) } if setting.isInitialized
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingAccountsList', () ->
@@ -70,6 +64,7 @@ module.directive('settingAccountsList', () ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     controller: 'SettingAccountsListCtrl'
   }

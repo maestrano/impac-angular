@@ -3,11 +3,11 @@
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div align="right">
-      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
@@ -16,7 +16,7 @@
     <div ng-show="isDataFound" >
 
       <div class="chart-container">
-        <div dhb-chart data="widget.chart"></div>
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
 
       <div class="widget-lines-container" style="max-height: 340px;">
@@ -24,8 +24,8 @@
           <div class="col-sm-12">Projection on the next 6 months</div>
         </div>
         <div class="row widget-line total" ng-repeat="date in widget.content.dates.slice(6) track by $index" ng-init="collapsed = true" >
-          <div class="row widget-line" >
-            <div class="col-sm-6" ng-click="collapsed = !collapsed">{{date | date : 'MMMM yyyy'}}</div>
+          <div class="row widget-line" ng-class="{main: widget.content.opportunities.slice(6)[$index].length > 0}" ng-click="collapsed = !collapsed" >
+            <div class="col-sm-6">{{date | date : 'MMMM yyyy'}}</div>
             <div class="col-sm-6 text-right"><strong>{{widget.content.totals.slice(6)[$index] | mnoCurrency : widget.content.currency}}</strong></div>
           </div>
           <div collapse="collapsed">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

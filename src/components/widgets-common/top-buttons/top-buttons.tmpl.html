@@ -1,20 +1,20 @@
 <div id="module__top-buttons">
-  <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" class="delete-widget" ng-show="parentWidget.hasDeleteAbility">
+  <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" ng-show="parentWidget.hasDeleteAbility">
     <button class="btn btn-close top-button" ng-click="showConfirmDelete = !showConfirmDelete">
       <i class="fa fa-times-circle-o fa-lg"></i>
       <span class="text-hide">Delete widget</span>
     </button>
   </div>
 
-  <div ng-mouseenter="showEditActive=true" ng-mouseleave="showEditActive=false" class="edit-widget" ng-show="parentWidget.hasEditAbility">
-    <button class="btn top-button btn-edit" ng-click="toogleEditMode()">
+  <div ng-show="parentWidget.hasEditAbility">
+    <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-class="{'edit-mode': parentWidget.isEditMode}">
       <i class="fa fa-cog fa-lg"></i>
       <span class="text-hide">Edit widget</span>
     </button>
   </div>
 
   <div class="refresh-widget">
-    <button class="btn top-button btn-refresh" ng-click="parentWidget.loadContent(true)">
+    <button class="btn top-button btn-refresh" ng-click="refreshWidget()">
       <i class="fa fa-refresh"></i>
       <span class="text-hide">Refresh widget</span>
     </button>
@@ -23,8 +23,15 @@
   <div class="confirm-delete-popover" ng-show="showConfirmDelete">
     <h4>Are you sure you want to delete this widget ?</h4>
     <p>(it will not erase your data)</p>
-    <button ng-click="showConfirmDelete = false" class="btn btn-sm btn-default">Cancel</button>
-    <button ng-click="deleteWidget()" class="btn btn-sm btn-danger" style="margin-left: 10px;">Delete</button>
+    <div ng-hide="isDeletePopoverLoading">
+      <button ng-click="showConfirmDelete = false" class="btn btn-sm btn-default">Cancel</button>
+      <button ng-click="deleteWidget()" class="btn btn-sm btn-danger" style="margin-left: 10px;">Delete</button>
+    </div>
+    <div ng-show="isDeletePopoverLoading" class="loader" align="center">
+      <div>
+        <i class="fa fa-spinner fa-pulse fa-4x"></i>
+      </div>
+    </div>
   </div>
 </div>
 

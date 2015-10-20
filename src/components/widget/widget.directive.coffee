@@ -1,98 +1,50 @@
 module = angular.module('impac.components.widget', [])
+module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utilities) ->
 
-module.controller('ImpacWidgetCtrl', ($scope, $timeout, $log, DhbAnalyticsSvc, Utilities) ->
-
-  # ---------------------------------------------------------
-  # ### Widget template scope
-  # ---------------------------------------------------------
-  # ---------------------------------------------------------
-  # ### Toolbox
-  # ---------------------------------------------------------
-
-  # angular.merge doesn't exist in angular 1.2...
-  extendDeep = (dst, src) ->
-    angular.forEach src, (value, key) ->
-      if dst[key] and dst[key].constructor and dst[key].constructor is Object
-        extendDeep dst[key], value
-      else
-        dst[key] = value
-
-  # ---------------------------------------------------------
-  # ### Widget object management
-  # ---------------------------------------------------------
-
-  # Initialization
   w = $scope.widget || {}
-  w.parentDashboard ||= $scope.parentDashboard
-  w.settings = []
-  w.isLoading = true
-  w.hasEditAbility = true
-  w.hasDeleteAbility = true
 
-  # Retrieve the widget content from Impac! and initialize the widget from it.
-  w.loadContent = (refreshCache=false) ->
-    w.isLoading = true
-    DhbAnalyticsSvc.widgets.show(w, refreshCache).then(
-      (success) ->
-        $log.debug('widget loadContent SUCCESS: ', success)
-        updatedWidget = success.data
-        updatedWidget.content ||= {}
-        updatedWidget.originalName = updatedWidget.name
-        angular.extend(w,updatedWidget)
+  # 1st load
+  # ---------------------------------------
+  # widgetDeferred will be resolved once the widget is ready (ie: at the end of the 'specific' directive)
+  $scope.widgetDeferred = $q.defer()
+  $scope.widgetDeferred.promise.then(
+    # each promise corresponds to a setting, and will be resolved once the setting is ready
+    (promises) ->
+      $q.all(promises).then(
+        (success) ->
+          
+          ImpacWidgetsSvc.show(w).then(
+            (updatedWidget) ->
+              w.isLoading = false
+              #TODO: Accessibility should be treated differently (in service?)
+              if $scope.isAccessibility
+                w.initialWidth = w.width
+                w.width = 12
+              else if w.initialWidth 
+                w.width = w.initialWidth
 
-        if $scope.isAccessibility
-          w.initialWidth = w.width
-          w.width = 12
-        else if w.initialWidth 
-          w.width = w.initialWidth
+            (errorResponse) ->
+              w.isLoading = false
+              # TODO: better error management
+              $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
+          )
 
-        # triggers the initialization of the widget's specific params (defined in the widget specific controller)
-        w.initContext()
-        # triggers the initialization of all the widget's settings
-        w.initSettings()
-        # formats the widget's chart data when needed
-        w.isLoading = false
-        w.format() if angular.isDefined(w.format)
+        (error) ->
+          w.isLoading = false
+          $log.error("widget #{w.id} failed to render")
+          $log.error(error)
+      )
+  )
 
-      ,(errors) ->
-        w.errors = Utilities.processRailsError(errors)
-        w.isLoading = false
-    )
 
-  # Initialize all the settings of the widget
-  w.initSettings = ->
-    angular.forEach(w.settings, (setting) ->
-      setting.initialize()
-    )
-    # TODO: following is still true ?
-    # For discreet metadata updates, we don't want to force editMode to be false example: changing hist mode
+  $scope.initSettings = ->
     w.isEditMode = false
-    return true
+    ImpacWidgetsSvc.initWidgetSettings(w)
 
-  # Retrieve all the widgets settings, build the new metadata parameter, and call pushMetadata
-  w.updateSettings = (needContentReload=true) ->
-    meta = {}
-    angular.forEach(w.settings, (setting) ->
-      extendDeep(meta,setting.toMetadata())
-    )
-    pushMetadata(meta, needContentReload) if !_.isEmpty(meta)
-    return true
+  $scope.updateSettings = (needContentReload=true) ->
+    w.isEditMode = false
+    ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
 
-  # Push a new metadata parameter associated to the widget to Impac! and reload the widget content
-  # should be considered as a private function: if it is called separately with only one setting,
-  # the other settings will be reinitialized...
-  pushMetadata = (newMetadata, needContentReload=true) ->
-    return if _.isEmpty(newMetadata)
-    data = { metadata: newMetadata }
-    w.isLoading = true if needContentReload
-    DhbAnalyticsSvc.widgets.update(w,data).then(
-      (success) ->
-        angular.extend(w,success.data)
-        w.loadContent() if needContentReload
-      , (errors) ->
-        w.errors = Utilities.processRailsError(errors)
-        w.isLoading = false
-    )
 
   w.getColClass = ->
     "col-md-#{w.width}"
@@ -108,6 +60,16 @@ module.directive('impacWidget', ($templateCache) ->
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
+
+      # initialize scope attributes
+      # --------------------------------------
+      scope.widget.isLoading = true
+      scope.widget.settings = []
+      # Unused so far -->
+      scope.widget.hasEditAbility = true
+      scope.widget.hasDeleteAbility = true
+      # <--
+
       #=======================================
       # DYNAMIC WIDGET TEMPLATE LOADING
       # Widget data sent from Maestrano db have a category value in url format.
@@ -131,9 +93,6 @@ module.directive('impacWidget', ($templateCache) ->
 
         return templatePath
 
-      scope.isTemplateLoaded = ->
-        return !!$templateCache.get(scope.widgetContentTemplate())
-
-    ,templateUrl: "widget/widget.tmpl.html"
+    ,template: $templateCache.get("widget/widget.tmpl.html")
   }
 )

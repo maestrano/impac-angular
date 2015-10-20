@@ -1,45 +1,39 @@
 module = angular.module('impac.components.widgets.hr-leaves-schedule',[])
 
-module.controller('WidgetHrLeavesScheduleCtrl', ($scope, DhbAnalyticsSvc, ChartFormatterSvc) ->
+module.controller('WidgetHrLeavesScheduleCtrl', ($scope, $q, ChartFormatterSvc) ->
 
-    w = $scope.widget
-    $scope.eventSources = []
+  w = $scope.widget
 
-    w.initContext = ->
-      if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
 
-        eventsArray = []
-        angular.forEach(w.content.summary, (leave) ->
-          eventsArray.push(
-            {
-              title: "#{leave.employee_name} - #{leave.title}",
-              start: leave.start_date,
-              end: leave.end_date
-            }
-          )
+  settingsPromises = [
+    $scope.orgDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+
+      eventsArray = []
+      angular.forEach(w.content.summary, (leave) ->
+        eventsArray.push(
+          {
+            title: "#{leave.employee_name} - #{leave.title}",
+            start: leave.start_date,
+            end: leave.end_date
+          }
         )
-        $scope.eventSources = angular.copy(eventsArray)
+      )
+      $scope.eventSources = angular.copy(eventsArray)
 
-    # -----------------
 
-    # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-    # in this order, we should:
-    # 1- compile impac-widget controller
-    # 2- compile the specific widget template/controller
-    # 3- compile the settings templates/controllers
-    # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-    #     assessing that everything is compiled an ready is received)
-    getSettingsCount = ->
-      if w.settings?
-        return w.settings.length
-      else
-        return 0
-
-    # organization_ids
-    $scope.$watch getSettingsCount, (total) ->
-      w.loadContent() if total >= 1
-
-    return w
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetHrLeavesSchedule', ->
@@ -56,6 +50,8 @@ module.directive('widgetComponentCalendar', ->
     }
     restrict: 'A',
     link: (scope, element) ->
+      scope.eventSources = []
+
       calendarOptions = {
         header: {
           left: "prev",

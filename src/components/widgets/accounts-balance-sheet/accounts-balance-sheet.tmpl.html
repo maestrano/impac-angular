@@ -3,45 +3,51 @@
   <div class="edit" ng-show="widget.isEditMode">
     <h4>Widget settings</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" />
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div align="right">
-      <button class="btn btn-default" ng-click="widget.initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="widget.updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound">
+    <div class="no-data-block" ng-hide="isDataFound">
+      No balance sheet can be generated between this {{period.label.toLowerCase()}} and the previous {{period.label.toLowerCase()}}. <br />
+      Maybe try selecting a longer period? <br />
+      <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorFrontDeferred" />
+    </div>
 
-      <div class="widget-lines-container">
-        <div class="row widget-line header">
-          <div class="col-sm-6 text-center">Compare with previous: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period"/></div>
-          <div class="col-sm-3 text-right">{{widget.content.dates[0] | date : "d-MMM"}}</div>
-          <div class="col-sm-3 text-right">{{widget.content.dates[1] | date : "d-MMM"}}</div>
-        </div>
-        <div class="row widget-line total" ng-repeat="category in categories" >
-          <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toogleCollapsed(category)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(category) ? "fa-plus-square-o" : "fa-minus-square-o"" /></div>
-            <div class="col-sm-5"><strong>{{category | titleize}}</strong></div>
-            <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>
-            <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>
+    <div ng-show="isDataFound" class="widget-lines-container">
+      <div class="row widget-line header">
+        <div class="col-sm-6 text-left">Compare with previous: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorBackDeferred" /></div>
+        <div class="col-sm-3 text-right">{{widget.content.dates[0] | date : "d-MMM"}}</div>
+        <div class="col-sm-3 text-right">{{widget.content.dates[1] | date : "d-MMM"}}</div>
+      </div>
+     
+      <div class="row widget-line total" ng-repeat="category in categories" >
+        <div class="row widget-line" >
+          <div class="col-sm-1" ng-click="toggleCollapsed(category)" style="cursor: pointer;">
+            <i class="fa" ng-class="isCollapsed(category) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
           </div>
-          <div collapse="isCollapsed(category)">
-            <div class="row widget-line" ng-repeat="account in widget.content.summary[category].accounts" >
-              <div class="col-sm-1" />
-              <div class="col-sm-5">{{account.name | titleize}}</div>
-              <div class="col-sm-3 text-right">{{account.totals[0] | mnoCurrency : account.currency}}</div>
-              <div class="col-sm-3 text-right">{{account.totals[1] | mnoCurrency : account.currency}}</div>
-            </div>
+          <div class="col-sm-5 text-left"><strong>{{category | titleize}}</strong></div>
+          <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>
+          <div class="col-sm-3 text-right"><strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>
+        </div>
+        
+        <div collapse="isCollapsed(category)">
+          <div class="row widget-line" ng-repeat="account in widget.content.summary[category].accounts" >
+            <div class="col-sm-1" />
+            <div class="col-sm-5 text-left">{{account.name | titleize}}</div>
+            <div class="col-sm-3 text-right">{{account.totals[0] | mnoCurrency : account.currency}}</div>
+            <div class="col-sm-3 text-right">{{account.totals[1] | mnoCurrency : account.currency}}</div>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
   </div>
 
 </div>

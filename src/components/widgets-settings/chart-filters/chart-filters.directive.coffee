@@ -32,8 +32,11 @@ module.controller('SettingChartFiltersCtrl', ($scope) ->
     else
       return {}
 
-  w.settings ||= []
   w.settings.push(setting)
+
+  # Setting is ready: trigger load content
+  # ------------------------------------
+  $scope.deferred.resolve($scope.parentWidget)
 )
 
 module.directive('settingChartFilters', ($templateCache) ->
@@ -41,6 +44,7 @@ module.directive('settingChartFilters', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      deferred: '='
     },
     template: $templateCache.get('widgets-settings/chart-filters.tmpl.html'),
     controller: 'SettingChartFiltersCtrl'

@@ -1,9 +1,28 @@
 module = angular.module('impac.components.widgets.sales-segmented-turnover',[])
 
-module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFormatterSvc) ->
+module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, ChartFormatterSvc) ->
 
   w = $scope.widget
 
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.timeRangeDeferred = $q.defer()
+  $scope.widthDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
+
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.timeRangeDeferred.promise
+    $scope.widthDeferred.promise
+    $scope.paramSelectorDeferred.promise
+    $scope.chartDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)
 
@@ -11,26 +30,9 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFor
         {label: 'Gross revenue (incl. taxes)', value: 'gross'},
         {label: 'Net revenue (excl. taxes)', value: 'net'},
       ]
-      $scope.filter = _.find($scope.filterOptions, (o) ->
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
         o.value == w.content.filter
-      ) || $scope.filterOptions[0]
-
-  w.format = ->
-    if $scope.isDataFound
-      barData = {
-        labels: _.map(w.content.ranges, (elem) ->
-          elem.label
-        ),
-        values: _.map(w.content.ranges, (elem) ->
-          elem.value
-        )
-      }
-      barOptions = {
-        showTooltips: false,
-        showXLabels: false,
-        barDatasetSpacing: 15,
-      }
-      w.chart = ChartFormatterSvc.barChart(barData, barOptions)
+      ) || $scope.filterOptions[0])
 
   $scope.getAnalysis = ->
     if $scope.isDataFound
@@ -60,24 +62,34 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $filter, ChartFor
 
       return maxRange
 
-  # TODO: Refactor once we have understood exactly how the angularjs compilation process works:
-  # in this order, we should:
-  # 1- compile impac-widget controller
-  # 2- compile the specific widget template/controller
-  # 3- compile the settings templates/controllers
-  # 4- call widget.loadContent() (ideally, from impac-widget, once a callback
-  #     assessing that everything is compiled an ready is received)
-  getSettingsCount = ->
-    if w.settings?
-      return w.settings.length
-    else
-      return 0
 
-  # Settings: organizations + time range + 1*param-selector + width
-  $scope.$watch getSettingsCount, (total) ->
-    w.loadContent() if total >= 4
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      barData = {
+        labels: _.map(w.content.ranges, (elem) ->
+          elem.label
+        ),
+        values: _.map(w.content.ranges, (elem) ->
+          elem.value
+        )
+      }
+      barOptions = {
+        showTooltips: false,
+        showXLabels: false,
+        barDatasetSpacing: 15,
+      }
+      chartData = ChartFormatterSvc.barChart(barData, barOptions)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
-  return w
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
 )
 
 module.directive('widgetSalesSegmentedTurnover', ->
