@@ -39,7 +39,7 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
     sort = ->
       baseAccount = src.shift()
       matcher = normalise(baseAccount[groupByKey])
-      group = { name: baseAccount.account_name, uid: counter++ }
+      group = { name: baseAccount.account_name || baseAccount.name, uid: counter++ }
       group.accounts = _.select src, (acc, index) ->
         src.splice(index, 1)[0] if !!acc && normalise(acc[groupByKey]) == matcher
       if group.accounts.length > 0
