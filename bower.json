@@ -1,0 +1,40 @@
+{
+  "name": "impac-angular",
+  "version": "0.0.1",
+  "private": true,
+  "main": [
+    "dist/impac-angular.js",
+    "src/impac-angular.less"
+  ],
+  "description": "Impac! Front-End Library",
+  "ignore": [
+    "test",
+    "gulpfile.js",
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "karma-*",
+    "*.sublime*",
+    "lib"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "dependencies": {
+    "Chart.js": "~1.0.2",
+    "angular": "~1.4.0",
+    "angular-bootstrap": "~0.13.3",
+    "angular-ui-sortable": "~0.13.4",
+    "angular-xeditable": "~0.1.9",
+    "bootstrap": "~3.3.5"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.0",
+    "angular-scenario": "~1.4.0"
+  },
+  "license": "Copyright 2015 Maestrano Pty Ltd",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maestrano/impac-angular.git"
+  }
+}

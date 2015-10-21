@@ -1,0 +1,18 @@
+<div widget-accounts-custom-calculation>
+
+  <div setting-organizations parent-widget="widget" ng-hide="true" deferred="::orgDeferred" />
+  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" />
+  <div setting-formula parent-widget="widget" deferred="::formulaDeferred" />
+
+  <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
+    <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
+  </h3>
+  
+  <div class="price" ng-show="widget.isFormulaCorrect">
+    {{widget.evaluatedFormula}}
+  </div>
+  <div class="legend" ng-show="widget.isFormulaCorrect">
+    {{widget.legend}}
+  </div>
+
+</div>

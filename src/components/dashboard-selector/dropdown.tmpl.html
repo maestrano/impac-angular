@@ -1,0 +1,51 @@
+<div class="row buttons-bar">
+
+  <div class="col-md-6 dropdown-container" ng-hide="isLoading">
+    <div ng-if="isThereADashboard()">
+      <h4 class='dashboard-title' ng-click="toggleShowDashboardsDropdown()">
+        {{currentDhb.full_name}}
+        <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
+        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
+      </h4>
+
+      <div collapse="!showDashboardsDropdown" class='dashboard-select'>
+        <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
+          <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
+          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
+        </div>
+
+        <div ng-show="showCreateDashboardButton" class="option create" ng-click="onCreateDashboard()"><i class="fa fa-plus" /> Create Dashboard</div>
+      </div>
+
+      <div ng-show="showChangeDashboardNameBox" class="change-name">
+        <p>Change dashboard name:</p>
+        <input type="text" class="form-control" id="changeDhbNameInput" ng-model="dashboardToChange.name" ng-keyup="checkAndUpdateDashboardName($event)"/>
+        <button class="btn btn-sm btn-default" ng-click="showChangeDashboardNameBox=false">Cancel</button>
+        <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="updateDashboardName()">Confirm</button>
+      </div>
+
+      <p class="data-source-label">
+        <small><b>Source:</b> {{organizationsNames()}}</small>
+      </p>
+    </div>
+  </div>
+
+  <div class="col-md-6 loader-container" ng-show="isLoading">
+    <i class="fa fa-spinner fa-pulse fa-4x loading-spinner"/>
+  </div>
+
+  <div class='col-md-6 actions-panel'>
+
+    <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector"><span class='fa fa-wheelchair'></span></button>
+
+    <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector({newValue: true})" class='btn btn-warning' ng-disabled="isWidgetSelectorShown"><span class='fa fa-plus'></span> Add Widget</button>
+
+    <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
+
+    <!-- <button id='data-upload-wizard' ng-click='dhbCtrl.openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
+
+    <button ng-if="isDeleteDhbEnabled" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard"><span class='fa fa-trash-o'></span> </button>
+    
+  </div>
+
+</div>

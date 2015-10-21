@@ -1,0 +1,15 @@
+<div class="top-line">
+  <div common-top-buttons parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" />
+</div>
+
+<div class="content" ng-class="templateName">
+  <div ng-show="widget.isLoading" class="loader" align="center">
+    <div>
+      <i class="fa fa-spinner fa-pulse fa-3x"></i>
+      <p>Your data is being retrieved...</p>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isLoading" ng-include="widgetContentTemplate()" />
+</div>

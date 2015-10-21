@@ -1,0 +1,148 @@
+<!-- DASHBOARD -->
+<div class="analytics" ng-hide="isLoading">
+  <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
+
+  <!-- Title and Dashboard selection -->
+  <div id="head-title">
+    <div class="row" ng-if="showDhbHeading">
+      <div class="col-md-6 col-sm-12" id="dashboard-heading">
+        <img ng-src="{{impacTitleLogo}}" />
+        <h2>
+          {{dhbHeadingText}}
+        </h2>
+      </div>
+    </div>
+
+    <!-- Impac KPI's -->
+    <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
+
+    <!-- Dashboards selection/creation/deletion -->
+    <dashboard-selector id="module__dashboard-selector" on-display-widget-selector="displayWidgetSelector(newValue)" is-widget-selector-shown="showWidgetSelector" on-create-dashboard="createDashboardModal.open()"></dashboard-selector>
+  </div>
+
+  <!-- Widgets selection container -->
+  <div id="widget-selector" collapse="!showWidgetSelector" ng-if="!customWidgetSelector.path">
+    <div class="title">
+      <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
+      <span class="badge confirmation">Widget added!</span>
+      Select the widgets you want to add to your dashboard.
+    </div>
+
+    <div class="row top-container">
+      <div class="col-md-3 categories">
+        <div class="row header">
+          All categories
+        </div>
+        <div class="row lines">
+          <div class="col-md-12" style="padding: 3px 12px;">
+            <p ng-click="selectCategory('accounts')" ng-class="isCategorySelected('accounts') ? 'selected' : none">Accounting</p>
+            <p ng-click="selectCategory('invoices')" ng-class="isCategorySelected('invoices') ? 'selected' : none">Invoicing</p>
+            <p ng-click="selectCategory('hr')" ng-class="isCategorySelected('hr') ? 'selected' : none">HR / Payroll</p>
+            <p ng-click="selectCategory('sales')" ng-class="isCategorySelected('sales') ? 'selected' : none">Sales</p>
+          </div>
+        </div>
+
+        <div class="arrow" ng-style="getSelectedCategoryTop()">
+          <div class="square"></div>
+          <i class="fa fa-caret-right"></i>
+        </div>
+
+      </div>
+
+      <div class="col-md-9 widgets">
+        <div class="row header">
+          {{getSelectedCategoryName() | titleize}}
+        </div>
+        <div class="row lines">
+          <div class="col-md-4" ng-repeat="widgetPattern in getWidgetsForSelectedCategory()" style="padding: 0px 8px;">
+            <p ng-click="addWidget(widgetPattern.path, widgetPattern.metadata)" tooltip="{{widgetPattern.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetPattern.icon}}" /> {{widgetPattern.name}} <i class="fa fa-plus-circle" /></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom" ng-if="widgetSuggestionModal.config.apiPath">
+      <span class="suggestion">
+        Can't find the widget you're looking for? <a ng-click="widgetSuggestionModal.open()">Give us your suggestions here!</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- custom widget selector template configured from ImpacThemingProvider -->
+  <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
+
+
+  <!-- Errors -->
+  <div class="alert alert-error" ng-show="errors">
+    <button class="close" ng-click="errors=''">×</button>
+    <ul>
+      <li ng-repeat="error in errors">{{error}}</li>
+    </ul>
+  </div>
+
+  <div class='spacer1'></div>
+
+  <div id="no-widgets-container" class="text-center ng-hide" ng-show='(showChooseDhbMsg() || showNoWidgetsMsg())'>
+
+    <img ng-src="{{impacDashboardBackground}}" class="bg">
+
+    <div class="impac-info-message">
+      <!-- First Time Dashboard Creation -->
+      <div class="ng-hide" ng-show='showChooseDhbMsg()'>
+        <div class='hidden-xs'>
+          <div class='spacer4'></div>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="testimonial promo-dark">
+                <p><b>It's time to add a reporting dashboard!</b></p><p>In 2 clicks, you'll be able to visualize how your business is performing.</p>
+              </div>
+            </div>
+          </div>
+          <div class='spacer2'></div>
+        </div>
+        <div class="align-center">
+          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Create a Dashboard!</button>
+        </div>
+      </div>
+
+      <!-- Empty Dashboard -->
+      <div class="ng-hide" ng-show='showNoWidgetsMsg()'>
+        <div class='hidden-xs'>
+          <div class='spacer4'></div>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="testimonial promo-dark">
+                <p><b>Now it's time to select the metrics you want to see!</b></p><p>Add widgets to your dashboard to help make an Impac!™ to your business.</p>
+              </div>
+            </div>
+          </div>
+          <div class="spacer2"></div>
+        </div>
+        <div class="align-center">
+          <button ng-disabled="showWidgetSelector" ng-click="displayWidgetSelector(true)" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Add a new Widget</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- First Time Dashboard Creation -->
+  <div class="row text-center" ng-show='showChooseDhbMsg()'>
+    <div class="spacer2 hidden-xs"></div>
+    <div class='col-md-8 col-md-offset-2'>
+      <p class="text-muted"><small><em>Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.</em></small></p>
+    </div>
+  </div>
+
+  <!-- Widgets -->
+  <div class='row'>
+    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
+      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
+      <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
+      <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
+        <div class="col-md-6 widget-item add-chart">
+          <div class="a-content">+ chart</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

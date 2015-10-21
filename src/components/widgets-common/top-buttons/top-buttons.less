@@ -1,0 +1,64 @@
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-top: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: @impac-widget-top-buttons-color;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover, &.edit-mode {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+  
+}

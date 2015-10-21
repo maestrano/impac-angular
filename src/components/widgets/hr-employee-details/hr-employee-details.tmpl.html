@@ -1,0 +1,85 @@
+<div widget-hr-employee-details>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+
+    <div ng-show="isDataFound" class="row" >
+
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+        <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred" />
+        <div setting-param-selector parent-widget="widget" param="employee_uid" options="employeesOptions" selected="selectedEmployee" class="row title" deferred="::paramSelectorDeferred1" />
+
+        <div class="details-container">
+          <div class="row">
+            <div class="col-md-4"><label>Job Title</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().job_title || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Company</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().company || getSingleCompanyName()}}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Phone</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().phone || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Email</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().email || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Date of birth</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().dob || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Gender</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().gender || "-" }}</pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
+        <div class="legend">Salary calculation period: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" /></div>
+        <div class="details-container">
+          <div class="row">
+            <div class="col-md-4"><label>Salary</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().salary || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Address</label></div>
+            <div class="col-md-8"><pre>{{formatAddress(getEmployee().address) || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Job location</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().location || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Supervisor</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().supervisor || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Statuts</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().employment_status || "-" }}</pre></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><label>Note</label></div>
+            <div class="col-md-8"><pre>{{getEmployee().note || "-" }}</pre></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+  </div>
+
+</div>

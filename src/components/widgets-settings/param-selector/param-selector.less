@@ -1,0 +1,40 @@
+.analytics .widget-item .content .settings.param-selector {
+  display: inline-block;
+  a {
+    font-weight: normal;
+    color: @impac-widget-param-selector-color;
+    white-space: nowrap;
+  }
+  .options-container {
+    position: absolute;
+    background-color: white;
+    text-align: left;
+    min-width: 150px;
+    max-height: 200px;
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
+
+    div {
+      padding: 3px 5px;
+    }
+    div:hover {
+      cursor: pointer;
+      background-color: @impac-widget-param-selector-color;
+      color: white;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: darken(@lightgray,5%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: @impac-widget-param-selector-color;
+      &:hover {
+        background-color: lighten(@impac-widget-param-selector-color,5%);
+      }
+    }
+  }
+}

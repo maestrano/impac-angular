@@ -1,0 +1,72 @@
+module = angular.module('impac.components.widgets.hr-payroll-taxes',[])
+
+module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc) ->
+
+  w = $scope.widget
+
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.timeRangeDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
+
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.timeRangeDeferred.promise
+    $scope.histModeDeferred.promise
+    $scope.chartDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = w.content? && w.content.total_tax && w.content.dates
+
+  $scope.getCurrentPrice = ->
+    return _.last w.content.total_tax if $scope.isDataFound
+
+  $scope.getCurrency = ->
+    return w.content.currency || "USD" if $scope.isDataFound
+
+  $scope.getPeriod = ->
+    if $scope.isDataFound && w.content.hist_parameters
+      period_param = w.content.hist_parameters.period || "MONTHLY"
+      period = "day"
+      period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
+      return "(current #{period})"
+
+
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      inputData = {title: "Payroll Taxes", labels: w.content.dates, values: w.content.total_tax}
+      all_values_are_positive = true
+      angular.forEach(w.content.total_tax, (value) ->
+        all_values_are_positive &&= value >= 0
+      )
+
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false,
+      }
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
+)
+
+module.directive('widgetHrPayrollTaxes', ->
+  return {
+    restrict: 'A',
+    controller: 'WidgetHrPayrollTaxesCtrl',
+  }
+)

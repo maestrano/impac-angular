@@ -1,0 +1,34 @@
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: @impac-widget-title-border;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

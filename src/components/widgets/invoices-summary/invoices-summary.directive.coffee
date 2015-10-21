@@ -1,0 +1,56 @@
+module = angular.module('impac.components.widgets.invoices-summary',[])
+
+module.controller('WidgetInvoicesSummaryCtrl', ($scope, $q, Utilities, ChartFormatterSvc) ->
+
+  w = $scope.widget
+
+  # Define settings
+  # --------------------------------------
+  $scope.orgDeferred = $q.defer()
+  $scope.chartFiltersDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
+
+  settingsPromises = [
+    $scope.orgDeferred.promise
+    $scope.chartFiltersDeferred.promise
+    $scope.chartDeferred.promise
+  ]
+
+
+  # Widget specific methods
+  # --------------------------------------
+  w.initContext = ->
+    $scope.isDataFound = !_.isEmpty(w.content.summary)
+
+
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound
+      pieData = _.map w.content.summary, (entity) ->
+        {
+          label: entity.name,
+          value: entity.total,
+        }
+      pieOptions = {
+        percentageInnerCutout: 50,
+        tooltipFontSize: 12,
+      }
+      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
+
+
+  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # --------------------------------------
+  $scope.widgetDeferred.resolve(settingsPromises)
+)
+
+module.directive('widgetInvoicesSummary', ->
+  return {
+    restrict: 'A',
+    controller: 'WidgetInvoicesSummaryCtrl'
+  }
+)

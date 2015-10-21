@@ -1,0 +1,73 @@
+<div class="analytics modal-custom-calculation">
+  <div class="modal-header">
+    <div class="close" type="button" ng-click="cancel()" >×</div>
+    <h3>Custom Calculation</h3>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="alert alert-error" ng-show="errors">
+          <button class="close" ng-click="errors=''">×</button>
+          <ul>
+            <li ng-repeat="error in errors">{{error}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit">
+      <div setting-organizations parent-widget="widget" class="part" deferred="::modalOrgDeferred" />
+    </div>
+
+    <p>Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: ({1} + {2}) / {3})</p>
+
+    <div class='row'>
+      <div ng-show="widget.isLoading" class='col-md-6 loader' align="center">
+        <div>
+          <i class="fa fa-spinner fa-pulse fa-3x"></i>
+          <p>Your data is being retrieved...</p>
+        </div>
+      </div>
+
+      <div ng-hide="widget.isLoading" class='col-md-6'>
+        <div class='widget-line' ng-repeat='account in widget.selectedAccounts track by $index'>
+          <div class='row'>
+            <div class='col-md-6'>
+              {{$index+1}} - {{account.name}}
+            </div>
+            <div class='col-md-6'>
+              {{account.current_balance | mnoCurrency : account.currency}}
+              <button class="close" ng-click="removeAccountFromFormula(account)" ng-show="widget.hasEditAbility"><span class='fa fa-times-circle'></span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class='input-group' ng-show="widget.hasEditAbility">
+          <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
+        </div>
+      </div>
+      
+      <div ng-hide="widget.isLoading" class='col-md-6'>
+        <p>Type your formula just below:</p>
+        <input class='form-control' ng-model="widget.formula">
+
+        <p>Result: {{widget.evaluatedFormula}}</p>
+        <p>Legend: {{widget.legend}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn btn-gray" ng-click="cancel()" ng-hide="widget.isLoading" ng-disabled="isLoading">Cancel</button>
+        <button class="btn btn-warning" ng-click="proceed()" ng-hide="widget.isLoading" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>
+          <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
+          Save
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
