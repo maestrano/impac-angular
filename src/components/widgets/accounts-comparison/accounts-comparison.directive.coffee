@@ -54,9 +54,10 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     w.clearAccounts(w.selectedAccounts, w.remainingAccounts)
 
   # move selected accounts & set all comparisonModeOptions to false before updating settings.
-  $scope.beforeUpdateCallback = ->
+  $scope.beforeUpdateSettings = ->
     $scope.purgeSelectedAccounts()
     _.forEach $scope.comparisonModeOptions, (option) -> option.value = false if option.value
+    $scope.updateSettings()
 
   $scope.hasAccountsSelected = ->
     return w.selectedAccounts && w.selectedAccounts.length > 0
