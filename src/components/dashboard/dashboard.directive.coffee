@@ -373,7 +373,6 @@ module.directive('impacDashboard', ($templateCache) ->
   return {
       restrict: 'EA',
       scope: {
-        dashboards: '='
       },
       template: $templateCache.get('dashboard/dashboard.tmpl.html'),
       controller: 'ImpacDashboardCtrl'
