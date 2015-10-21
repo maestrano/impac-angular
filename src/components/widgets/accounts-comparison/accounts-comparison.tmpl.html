@@ -1,5 +1,5 @@
 <div widget-accounts-comparison>
-  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" />
+  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" callbacks="callbacks"/>
 
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
@@ -17,10 +17,7 @@
     <div ng-show="isDataFound">
       <!-- multi-companies mode -->
       <div id="multi-company" ng-show="widget.metadata.organization_ids.length > 1">
-        <label>
-          <input type="checkbox" ng-model="multiCompanyMode" ng-change="multiCompanyComparisonOnChange()">
-          <span>Compare matching accounts across your companies</span>
-        </label>
+        <div setting-params-checkboxes options="comparisonModeOptions" param="comparison_mode" parent-widget="widget" deferred="::paramsCheckboxesDeferred"/>
       </div>
       <!-- end -->
       <div ng-hide="hasAccountsSelected()" class="row">
@@ -43,7 +40,7 @@
           <div class="col-md-12">
             <div class="widget-lines-container">
               <div class="widget-line" ng-repeat="account in widget.selectedAccounts track by $index">
-                <div ng-if="multiCompanyMode" ng-repeat="groupedAccount in account.accounts track by $index">
+                <div ng-if="isMultiCompanyMode()" ng-repeat="groupedAccount in account.accounts track by $index">
                   <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
                     x
                   </button>
@@ -51,7 +48,7 @@
                   <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(groupedAccount)}}" />
                   {{groupedAccount.name}}
                 </div>
-                <div ng-if="!multiCompanyMode">
+                <div ng-if="!isMultiCompanyMode()">
                   <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
                     x
                   </button>
@@ -67,7 +64,7 @@
         <div class="row">
           <div class="add-account">
             <div class="input-group">
-              <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || multiCompanyMode">
+              <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isMultiCompanyMode()">
                 <option value="" disabled selected>+ ADD ACCOUNT</option>
               </select>
             </div>

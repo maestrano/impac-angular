@@ -19,6 +19,7 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
     ImpacWidgetsSvc.updateWidgetSettings(w, false) if triggerUpdate
     return null
 
+  # collection wrapper for w.moveAccountToAnotherList
   w.clearAccounts = (src, dst, triggerUpdate=false) ->
     srcCopy = angular.copy(src)
     _.forEach(srcCopy, (account) -> w.moveAccountToAnotherList(account, src, dst, triggerUpdate))
@@ -53,10 +54,14 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
         sort()
     sort()
 
+  # ungroups by removing manipulated(grouped) objects (src), and restores original accounts by re-applying stashedAccounts to dst.
   w.ungroupAccounts = (src, dst) ->
-    src.splice(0, src.length)
+    src.length = 0
     _.forEach(stashedAccounts, (acc) -> src.push(acc) )
     stashedAccounts = []
+
+  # applys comparison_mode setting data to either filter or not filter accounts on load.
+  initializeComparisonMode = -> $scope.callbacks.runMultiCompanyComparison()
 
   # ---------------------------------------------------------
   # ### Setting definition
@@ -72,7 +77,6 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
 
     if w.content? && !_.isEmpty(w.content.complete_list)
       w.remainingAccounts = angular.copy(w.content.complete_list)
-
       # Impac! returns the list of all the accounts, and we want that:
       # completeList + savedList = list of all accounts
       if !_.isEmpty(w.metadata.accounts_list)
@@ -82,7 +86,8 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
           )
           w.moveAccountToAnotherList(acc,w.remainingAccounts,w.selectedAccounts,false)
         )
-
+      stashedAccounts = angular.copy(w.remainingAccounts)
+      initializeComparisonMode() if $scope.callbacks?
       setting.isInitialized = true
 
   setting.toMetadata = ->
@@ -101,6 +106,7 @@ module.directive('settingAccountsList', () ->
     scope: {
       parentWidget: '='
       deferred: '='
+      callbacks: '=?'
     },
     controller: 'SettingAccountsListCtrl'
   }

@@ -86,6 +86,7 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.organizations',
     'impac.components.widgets-settings.param-selector',
     'impac.components.widgets-settings.params-picker',
+    'impac.components.widgets-settings.params-checkboxes',
     'impac.components.widgets-settings.time-range',
     'impac.components.widgets-settings.width'
   ]
