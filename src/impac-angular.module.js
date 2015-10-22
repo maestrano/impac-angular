@@ -36,6 +36,7 @@ angular.module('impac.components.widgets',
   [
     'impac.components.widgets.accounts-accounting-values',
     'impac.components.widgets.accounts-assets-summary',
+    'impac.components.widgets.accounts-assets-liability-summary',
     'impac.components.widgets.accounts-balance-sheet',
     'impac.components.widgets.accounts-balance',
     'impac.components.widgets.accounts-cash-summary',

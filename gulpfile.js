@@ -218,7 +218,7 @@ gulp.task('clean', function (asyncCallback) {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['src/**/*'], 'build-lib');
+  gulp.watch('src/**/*', ['build-lib']);
 });
 
 /* ************************************ */

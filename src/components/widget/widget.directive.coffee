@@ -12,7 +12,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
     (promises) ->
       $q.all(promises).then(
         (success) ->
-          
           ImpacWidgetsSvc.show(w).then(
             (updatedWidget) ->
               w.isLoading = false
@@ -20,7 +19,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
               if $scope.isAccessibility
                 w.initialWidth = w.width
                 w.width = 12
-              else if w.initialWidth 
+              else if w.initialWidth
                 w.width = w.initialWidth
 
             (errorResponse) ->
@@ -86,7 +85,7 @@ module.directive('impacWidget', ($templateCache) ->
         # url for retreiving widget templates from angular $templateCache service.
         templatePath = "widgets/" + scope.templateName + ".tmpl.html"
 
-        if scope.isAccessibility 
+        if scope.isAccessibility
           if $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
             templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
           scope.templateName = scope.templateName + " accessible"
