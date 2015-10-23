@@ -38,6 +38,7 @@ module.directive('settingAccount', ($templateCache) ->
       parentWidget: '='
       deferred: '='
       label: '@'
+      showLabel: '=?'
       onAccountSelected: '&'
     },
 
