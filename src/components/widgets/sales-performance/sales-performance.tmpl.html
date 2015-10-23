@@ -13,27 +13,70 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound">
 
-      <div class="widget-lines-container" style="max-height: 235px;">
-        <div class="row widget-line header">
-          <div class="col-sm-4">Users/Teams</div>
-          <div class="col-sm-4 text-right">Win ratio</div>
-          <div class="col-sm-4 text-right">Total won</div>
-        </div>
-        <div class="row widget-line total" ng-repeat="assignee in widget.content.assignees" ng-init="collapsed=true">
-          <div class="row widget-line" style="cursor: pointer;" ng-click="collapsed=!collapsed">
-            <div class="col-sm-4"><strong>{{assignee.name | titleize}}</strong></div>
-            <div class="col-sm-4 text-right"><strong>{{assignee.win_ratio}} %</strong></div>
-            <div class="col-sm-4 text-right"><strong>{{assignee.total_won | mnoCurrency : 'AUD'}}</strong></div>
+    <div ng-show="isDataFound" class="row" >
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
+
+        <div class="widget-lines-container">
+          <div class="row widget-line header">
+            <div class="col-sm-5">from {{widget.content.dates[0] | date : 'dd-MM-yy'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'dd-MM-yy'}}</div>
+            <div class="col-sm-3 text-right">Win ratio</div>
+            <div class="col-sm-4 text-right">Total won</div>
           </div>
-          <div collapse="collapsed">
-            <div class="row widget-line" ng-repeat="opp in assignee.opportunities">
-              <div class="col-sm-4">{{opp.name}}</div>
-              <div class="col-sm-4 text-right">{{opp.sales_stage}}</div>
-              <div class="col-sm-4 text-right">{{getOpportunityAmount(opp)}}</div>
+          <div class="row widget-line total" ng-repeat="assignee in widget.content.assignees" >
+            <div class="row widget-line" ng-class="{'selected': isSelected(assignee)}" ng-click="toggleSelectedElement(assignee)" >
+              <div class="col-sm-5"><strong>{{assignee.name | titleize}}</strong></div>
+              <div class="col-sm-3 text-right"><strong>{{assignee.win_ratio | mnoCurrency : '%'}}</strong></div>
+              <div class="col-sm-4 text-right"><strong>{{assignee.total_won | mnoCurrency}}</strong></div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
+
+        <div ng-show="selectedElement">
+          <h4>{{selectedElement.name | titleize}}</h4>
+
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+            <div class="legend">Total won (last 12 months): {{selectedElement.total_won | mnoCurrency}}</div>
+          </div>
+          
+          <div class="widget-lines-container">
+            <div class="row widget-line total" ng-init="collapsedWon=false">
+              <div class="row widget-line" style="cursor: pointer;" ng-click="collapsedWon=!collapsedWon">
+                <div class="col-sm-10"><strong>Closed Won</strong></div>
+                <div class="col-sm-2 text-right"><strong>{{getWonOpportunities(selectedElement).length}}</strong></div>
+              </div>
+              <div collapse="collapsedWon">
+                <div class="row widget-line" ng-repeat="opp in getWonOpportunities(selectedElement)">
+                  <div class="col-sm-6">{{opp.name}}</div>
+                  <div class="col-sm-3 text-right">{{getCloseDate(opp)}}</div>
+                  <div class="col-sm-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row widget-line total" ng-init="collapsedLost=false">
+              <div class="row widget-line" style="cursor: pointer;" ng-click="collapsedLost=!collapsedLost">
+                <div class="col-sm-10"><strong>Closed Lost</strong></div>
+                <div class="col-sm-2 text-right"><strong>{{getLostOpportunities(selectedElement).length}}</strong></div>
+              </div>
+              <div collapse="collapsedLost">
+                <div class="row widget-line" ng-repeat="opp in getLostOpportunities(selectedElement)" >
+                  <div class="col-sm-6">{{opp.name}}</div>
+                  <div class="col-sm-3 text-right">{{getCloseDate(opp)}}</div>
+                  <div class="col-sm-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-hide="selectedElement" class="no-element">
+          Select an employee or team to display the corresponding opportunities won/lost.
         </div>
       </div>
 
