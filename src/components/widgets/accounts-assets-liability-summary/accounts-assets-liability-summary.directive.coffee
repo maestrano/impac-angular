@@ -21,6 +21,9 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
     $scope.multiEntity = w.metadata.organization_ids.length > 1
+    if $scope.multiEntity
+      w.selectedAccount = w.content.account_list[0]
+      $scope.applyAccountSelection()
     if !$scope.selectedAccountsOption
       $scope.accountsOptions = [
         { label: 'Assets Accounts', value: 'ASSET' },
@@ -37,8 +40,14 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
   $scope.getAccountColor = (anAccount) ->
     ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
 
-  $scope.applyAccountSelection = ->
-    console.log 'SELECTED ACC: ', w.selectedAccount
+  $scope.applyAccountSelection = () ->
+    w.content.summary = _.map w.selectedAccount.accounts, (account) ->
+      {
+        label: account.org_name,
+        total: account.current_balance
+      }
+    w.format()
+
 
   # Chart formating function
   # --------------------------------------
