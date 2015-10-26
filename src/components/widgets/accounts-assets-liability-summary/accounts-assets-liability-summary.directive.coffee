@@ -21,7 +21,7 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
     $scope.multiEntity = w.metadata.organization_ids.length > 1
-    if $scope.multiEntity
+    if $scope.multiEntity && w.content.account_list
       w.selectedAccount = w.content.account_list[0]
       $scope.applyAccountSelection()
     if !$scope.selectedAccountsOption
