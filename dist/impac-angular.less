@@ -1808,9 +1808,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.hr-workforce-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -1818,6 +1815,9 @@ body {
   .widget-lines-container {
     max-height: 210px;
   }
+}
+.analytics .widget-item .content.hr-workforce-summary {
+  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
@@ -1980,17 +1980,21 @@ body {
 }
 
 .analytics .widget-item .content.sales-performance {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 210px;
-    .widget-line.total {
-      .selectable();
-    }
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
   }
-  .selector {
-    margin-bottom: 4px;
-  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
 }
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
