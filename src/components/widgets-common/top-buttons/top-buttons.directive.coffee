@@ -23,7 +23,7 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
 
   $scope.refreshWidget = ->
     w.isLoading = true
-    ImpacWidgetsSvc.show(w).finally(-> w.isLoading=false)
+    ImpacWidgetsSvc.show(w, true).finally(-> w.isLoading=false)
 
   $scope.toggleEditMode = ->
     if !w.isLoading
