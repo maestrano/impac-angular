@@ -55,6 +55,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
 
 
   # Mini-settings objects
+  # handles the saving of collapsed / uncollapsed list groups.
   # --------------------------------------
   unCollapsedSetting = {}
   unCollapsedSetting.initialized = false
