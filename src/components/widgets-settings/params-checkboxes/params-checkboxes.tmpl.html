@@ -1,0 +1,6 @@
+<div ng-repeat="parameter in options track by $index">
+  <label>
+    <input type="checkbox" ng-model="parameter.value" ng-change="parameter.onChangeCallback()">
+    <span>{{parameter.label}}</span>
+  </label>
+</div>
