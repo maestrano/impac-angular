@@ -7,9 +7,11 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, Utilities, $filter) ->
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
+  $scope.limitEntriesDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
+    $scope.limitEntriesDeferred.promise
   ]
 
 
@@ -17,6 +19,15 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, Utilities, $filter) ->
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = !_.isEmpty(w.content.entities)
+    
+    if $scope.isDataFound && $scope.orderBy=='due '
+      if $scope.entityType=='suppliers'
+        $scope.limitEntriesLabel = 'creditors'
+      else
+        $scope.limitEntriesLabel = 'debtors'
+
+    if w.metadata? && w.metadata.limit_entries?
+      $scope.limitEntriesSelected = w.metadata.limit_entries
 
   # No need to put this under initContext because it won't change after a settings update
   $scope.entityType = w.metadata.entity

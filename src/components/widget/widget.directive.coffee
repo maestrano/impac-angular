@@ -12,7 +12,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
     (promises) ->
       $q.all(promises).then(
         (success) ->
-          
           ImpacWidgetsSvc.show(w).then(
             (updatedWidget) ->
               w.isLoading = false
@@ -44,7 +43,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
   $scope.updateSettings = (needContentReload=true) ->
     w.isEditMode = false
     ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
-
 
   w.getColClass = ->
     "col-md-#{w.width}"

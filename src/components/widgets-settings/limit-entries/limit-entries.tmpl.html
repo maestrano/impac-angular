@@ -1,0 +1,15 @@
+<div class="settings limit-entries">
+  {{ entriesLabel ? 'Top' : 'Display' }}
+
+  <span ng-repeat="option in options | filter:isOptionValid:option track by $index">
+    {{ $index!=0 ? ' |' : '' }} 
+    <a target='#' ng-click="selectOption(option)" class="option" ng-class="{badge: option==selected}">{{ option }}</a>
+  </span>
+
+  <span ng-if="max">
+    | 
+    <a target='#' ng-click="selectOption(max)" class="option" ng-class="{badge: (!selected || selected==max)}">{{ max }}</a>
+  </span>
+
+   {{entriesLabel || 'entries'}}
+</div>

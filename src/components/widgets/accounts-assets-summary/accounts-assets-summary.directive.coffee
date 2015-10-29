@@ -18,12 +18,24 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+    
+    if w.metadata.organization_ids.length > 1
+      $scope.dataSource = w.content.repartition
+    else
+      $scope.dataSource = w.content.summary
+
+    #TODO: No .pluralize() in angular?
+    switch (w.metadata.classification || 'assets').toLowerCase()
+      when 'liability'
+        $scope.classification = "Liabilities"
+      else
+        $scope.classification = "Assets"
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
 
-  $scope.getAccountColor = (anAccount) ->
-    ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
+  $scope.getAccountColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.dataSource, elem)) if $scope.isDataFound
 
 
   # Chart formating function
@@ -31,11 +43,12 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      pieData = _.map w.content.summary, (account) ->
+      pieData = _.map $scope.dataSource, (company) ->
         {
-          label: account.label,
-          value: account.total,
+          label: company.label,
+          value: company.total,
         }
+
       pieOptions = {
         percentageInnerCutout: 50,
         tooltipFontSize: 12,
