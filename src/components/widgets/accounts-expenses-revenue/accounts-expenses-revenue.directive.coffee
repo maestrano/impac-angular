@@ -10,12 +10,14 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   $scope.timeRangeDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.paramsCheckboxesDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.timeRangeDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
+    $scope.paramsCheckboxesDeferred.promise
   ]
 
 
@@ -23,6 +25,16 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content? && w.content.values?
+
+    $scope.displayOptions = [{
+      id: 'show_net_profit',
+      label: 'Show net profit',
+      value: false,
+      onChangeCallback: $scope.toggleDisplayNetProfit
+    }]
+    if angular.isDefined w.metadata? && w.metadata.display?
+      angular.merge $scope.displayOptions, w.metadata.display
+    $scope.isNetProfitDisplayed = !!$scope.displayOptions[0].value
 
   $scope.getCurrentRevenue = ->
     _.last(w.content.values.revenue) if $scope.isDataFound
@@ -33,6 +45,11 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
 
+  $scope.toggleDisplayNetProfit = ->
+    $scope.isNetProfitDisplayed = !!$scope.displayOptions[0].value
+    $scope.updateSettings(false)
+    w.format()
+
 
   # Chart formating function
   # --------------------------------------
@@ -40,17 +57,28 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   w.format = ->
     if $scope.isDataFound
       if w.isHistoryMode
-        lineData = [
-          {title: "Expenses (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.expenses },
-          {title: "Revenue (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.revenue },
-        ]
-        all_values_are_positive = true
-        angular.forEach(w.content.values.expenses, (value) ->
-          all_values_are_positive &&= value >= 0
-        )
-        angular.forEach(w.content.values.revenue, (value) ->
-          all_values_are_positive &&= value >= 0
-        )
+        if $scope.isNetProfitDisplayed
+          lineData = [
+            {title: "Net Profit (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.net_profit },
+          ]
+          all_values_are_positive = true
+          angular.forEach(w.content.values.net_profit, (value) ->
+            all_values_are_positive &&= value >= 0
+          )
+
+        else
+          lineData = [
+            {title: "Expenses (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.expenses },
+            {title: "Revenue (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.revenue },
+          ]
+          all_values_are_positive = true
+          angular.forEach(w.content.values.expenses, (value) ->
+            all_values_are_positive &&= value >= 0
+          )
+          angular.forEach(w.content.values.revenue, (value) ->
+            all_values_are_positive &&= value >= 0
+          )
+
         lineOptions = {
           scaleBeginAtZero: all_values_are_positive,
           showXLabels: false,
