@@ -20,9 +20,9 @@ module.controller('WidgetAccountsClassBalanceDetailsCtrl', ($scope, $q, ImpacWid
     $scope.unCollapsed = w.metadata.unCollapsed || []
     $scope.multiEntity = w.metadata.organization_ids.length > 1
     unless $scope.multiEntity
-      $scope.availableClasses = w.content.account_class.available
+      $scope.availableClasses = w.content.classifications.available
       $scope.selectedClass = _.find($scope.availableClasses, {
-        value: w.content.account_class.selected
+        value: w.content.classifications.selected
       })
 
   $scope.toggleCollapsed = (groupName) ->

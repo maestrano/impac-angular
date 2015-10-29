@@ -14,7 +14,7 @@
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound" class="widget-lines-container">
 
-      <div class="account-class-title" ng-hide="multiEntity" setting-param-selector parent-widget="widget" param="account_class" options="availableClasses" selected="selectedClass" deferred="::paramSelecterDeferred"></div>
+      <div class="account-class-title" ng-hide="multiEntity" setting-param-selector parent-widget="widget" param="classification" options="availableClasses" selected="selectedClass" deferred="::paramSelecterDeferred"></div>
 
       <div class="row widget-line total" ng-repeat="group in widget.content.account_list track by group.uid">
         <div class="row widget-line">
