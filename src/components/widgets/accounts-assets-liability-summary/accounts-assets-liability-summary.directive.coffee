@@ -41,6 +41,7 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
     ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
 
   $scope.applyAccountSelection = () ->
+    return if !w.selectedAccount
     w.content.summary = _.map w.selectedAccount.accounts, (account) ->
       {
         label: account.org_name,

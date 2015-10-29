@@ -14,7 +14,7 @@
     <div ng-show="isDataFound" class="chart-container">
       <!-- account selectors -->
       <div ng-hide="multiEntity" setting-param-selector parent-widget="widget" param="account_class" options="accountsOptions" selected="selectedAccountsOption" class="row title" deferred="::paramSelectorDeferred"/>
-      <div ng-show="multiEntity" setting-account parent-widget="widget" class="part" deferred="::accountDeferred" grouped-options="groupedAccountSettingsOptions" on-account-selected="applyAccountSelection()" show-label="false"/>
+      <div ng-show="multiEntity" setting-account parent-widget="widget" class="part" deferred="::accountDeferred" on-account-selected="applyAccountSelection()" show-label="false"/>
       <!---->
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">

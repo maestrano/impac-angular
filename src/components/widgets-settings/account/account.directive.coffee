@@ -11,7 +11,7 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    w.selectedAccount = null
+    w.selectedAccount = w.selectedAccount || null
     if w.content? && w.content.account_list? && w.metadata? && w.metadata.account_uid?
       w.selectedAccount = _.find(w.content.account_list, (acc) ->
         acc.uid == w.metadata.account_uid
