@@ -32,7 +32,7 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
 
     if !$scope.selectedAccountsOption
       $scope.selectedAccountsOption = _.find($scope.accountsOptions, {
-        value: w.metadata.classification
+        value: w.metadata.classification || 'ASSET'
       });
 
     if w.metadata.organization_ids.length > 1
