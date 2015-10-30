@@ -1,7 +1,7 @@
 angular
   .module('impac.services.widgets', [])
   .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc) ->
-  
+
     _self = @
     @config = {}
     @config.ssoSessionId = ""
@@ -28,7 +28,7 @@ angular
 
     @create = (opts) ->
       deferred = $q.defer()
-      
+
       _self.load().then(
         (config) ->
 
@@ -185,14 +185,14 @@ angular
 
     @delete = (widgetToDelete) ->
       deferred = $q.defer()
-      
+
       _self.load().then(
         (config) ->
 
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           $http.delete(ImpacRoutes.deleteWidgetPath(widgetToDelete.id)).then(
             (success) ->
-              _.remove dashboard.widgets, (widget) -> 
+              _.remove dashboard.widgets, (widget) ->
                 widget.id == widgetToDelete.id
               deferred.resolve(success)
 
