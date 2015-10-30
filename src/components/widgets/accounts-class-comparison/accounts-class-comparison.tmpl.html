@@ -14,11 +14,22 @@
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound">
       <!-- account classification selectors -->
-      <div setting-param-selector parent-widget="widget" param="classification" options="classifications" selected="selectedClassification" class="row param-selector" deferred="::paramSelectorDeferred" on-select="selectClassification"/>
+      <div setting-param-selector parent-widget="widget" param="classification" options="classifications" selected="selectedClassification" class="row param-selector" deferred="::paramSelectorDeferred" on-select="selectClassification()" no-reload/>
       <!---->
       <div class="row">
         <div class="col-md-12 chart-container">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 widget-lines-container">
+          <div ng-repeat="entity in summary track by $index">
+            <i style="float: right; margin-right: 10px;">
+              {{formatAmount(entity.totals[classIndex])}}
+            </i>
+            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(entity)}}" />
+            {{entity.company}}
+          </div>
         </div>
       </div>
     </div>
