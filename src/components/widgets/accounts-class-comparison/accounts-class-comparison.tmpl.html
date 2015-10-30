@@ -12,8 +12,15 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="isDataFound" class="{{chartTypeContainerClass}}">
-      <p>{{widget.content.greet}}</p>
+    <div ng-show="isDataFound">
+      <!-- account classification selectors -->
+      <div setting-param-selector parent-widget="widget" param="classification" options="classifications" selected="selectedClassification" class="row param-selector" deferred="::paramSelectorDeferred" on-select="selectClassification"/>
+      <!---->
+      <div class="row">
+        <div class="col-md-12 chart-container">
+          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        </div>
+      </div>
     </div>
   </div>
 

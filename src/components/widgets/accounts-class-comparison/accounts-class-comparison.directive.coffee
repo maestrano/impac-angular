@@ -5,14 +5,14 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, ChartFormatt
 
   # Define settings
   # --------------------------------------
-  # organization (entity) settings panel switches - settingsOrganizations directive
   $scope.orgDeferred = $q.defer()
-  # chart loading component - impacChart directive
   $scope.chartDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    # $scope.chartDeferred.promise
+    $scope.chartDeferred.promise
+    $scope.paramSelectorDeferred.promise
   ]
 
   # Widget specific methods
@@ -20,30 +20,48 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, ChartFormatt
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content)
 
+    $scope.classifications = _.map w.content.classifications, (item) ->
+      return { label: _.capitalize(item.toLowerCase()), value: item }
+
+    if !$scope.selectedClassification
+      $scope.selectedClassification = _.find $scope.classifications, {
+        value: w.metadata.classification || $scope.classifications[0].value
+      }
+
+    # on load, runs classification filtering
+    $scope.selectClassification()
+
+
+  $scope.selectClassification = ->
+    # TODO: Refactor engine for this widget
+    # The classifications array returned by Impac's indexes match the summary object's totals attribute array indexes. This was originally designed to match chartJs barChart format.
+    $scope.classIndex = _.indexOf(w.content.classifications, $scope.selectedClassification.value)
+    w.format()
+
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
-    # inputData = {labels: [], values: []}
-    # _.forEach w.selectedAccounts, (account) ->
-    #   if $scope.isMultiCompanyMode()
-    #     _.forEach account.accounts, (groupedAccount) ->
-    #       inputData.labels.push groupedAccount.name
-    #       inputData.values.push groupedAccount.current_balance
-    #   else
-    #     inputData.labels.push account.name
-    #     inputData.values.push account.current_balance
+    inputData = {}
+    inputData.labels = _.map w.content.summary, (data) -> data.company
+    inputData.values = _.map w.content.summary, (data) -> data.totals[$scope.classIndex]
+    # maximum capacity for chartjs bar-chart
+    inputData.labels.length = 15 if inputData.labels.length > 15
+    inputData.values.length = 15 if inputData.values.length > 15
 
-    # while inputData.values.length < 15
-    #   inputData.labels.push ""
-    #   inputData.values.push null
+    while inputData.values.length < 15
+      inputData.labels.push ""
+      inputData.values.push null
 
-    # options = {
-    #   showTooltips: false,
-    #   showXLabels: false,
-    #   barDatasetSpacing: 9,
-    # }
-    # chartData = ChartFormatterSvc.barChart(inputData,options)
+    options = {
+      showTooltips: false,
+      showXLabels: false,
+      barDatasetSpacing: 9
+    }
+    console.log 'inputData: ', inputData
+    chartData = ChartFormatterSvc.barChart(inputData,options)
+
+    $scope.drawTrigger.notify(chartData)
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
