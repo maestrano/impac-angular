@@ -1,0 +1,40 @@
+<div widget-accounts-class-balance-details>
+
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+    <div ng-show="isDataFound" class="widget-lines-container">
+
+      <div class="account-class-title" ng-hide="multiEntity" setting-param-selector parent-widget="widget" param="classification" options="availableClasses" selected="selectedClass" deferred="::paramSelecterDeferred"></div>
+
+      <div class="row widget-line total" ng-repeat="group in widget.content.account_list track by group.uid">
+        <div class="row widget-line">
+          <div ng-show="multiEntity" class="col-sm-1" ng-click="toggleCollapsed(group.name)" style="cursor: pointer;">
+            <i class="fa" ng-class="isCollapsed(group.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+          </div>
+          <div class="col-sm-5 text-left"><strong>{{group.name | titleize}}</strong></div>
+          <div class="col-sm-6 text-right"><strong>{{group.total | mnoCurrency : group.currency}}</strong></div>
+        </div>
+
+        <div collapse="isCollapsed(group.name)">
+          <div class="row widget-line" ng-repeat="account in group.accounts track by account.uid" >
+            <div class="col-sm-1" />
+            <div class="col-sm-5 text-left">{{account.name | titleize}}</div>
+            <div class="col-sm-6 text-right">{{account.total | mnoCurrency : account.currency}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+  </div>
+</div>
+

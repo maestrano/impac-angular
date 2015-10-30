@@ -45,8 +45,12 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-expenses-revenue',
     'impac.components.widgets.accounts-payable-receivable',
     'impac.components.widgets.accounts-profit-and-loss',
+<<<<<<< HEAD
     'impac.components.widgets.accounts-expense-weight',
     'impac.components.widgets.accounts-assets-vs-liabilities',
+=======
+    'impac.components.widgets.accounts-class-balance-details',
+>>>>>>> xaun/pwc-finance/class-balance-details
     'impac.components.widgets.hr-employee-details',
     'impac.components.widgets.hr-employees-list',
     'impac.components.widgets.hr-leaves-balance',
