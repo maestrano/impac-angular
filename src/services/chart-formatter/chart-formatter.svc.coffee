@@ -118,6 +118,44 @@ angular
       }
 
 
+    # Bar Chart of several datasets with several values each
+    # ----------
+    # inputData:
+    #   labels: ['Company A', 'Company B']
+    #   datasets:
+    #     [
+    #       {title: 'ASSET', values: [1566,56156]}
+    #       {title: 'LIABILITY', values: [67868,686]}
+    #     ]
+    # positivesOnly: if true (default), negative bars will be turned into their opposite
+    @combinedBarChart = (inputData, opts={}, positivesOnly=true) ->
+      index = 0
+      result = {
+        chartType: 'Bar',
+        options: opts,
+        data: {
+          labels: inputData.labels
+          datasets: _.map inputData.datasets, (dataset) ->
+            color = _self.getColor(index)
+            index++
+
+            if positivesOnly
+              for value in dataset.values
+                value = Math.abs(value)
+
+            return {
+              label: dataset.title,
+              data: dataset.values,
+              fillColor: color,
+              strokeColor: color,
+              highlightFill: color,
+              highlightStroke: color,
+            }
+        }
+      }
+      return result
+
+
     # inputData:
     # [ {
     #     label: "Customer 1",

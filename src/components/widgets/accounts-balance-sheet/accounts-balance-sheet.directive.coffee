@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ChartFormatterSvc, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 
@@ -55,6 +55,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ChartFormatterS
 
 
   # Mini-settings objects
+  # handles the saving of collapsed / uncollapsed list groups.
   # --------------------------------------
   unCollapsedSetting = {}
   unCollapsedSetting.initialized = false
