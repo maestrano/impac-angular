@@ -19,7 +19,9 @@ bower_components
 
 # Sublime
 *.sublime-*
+coffeelint.json
 
 # Temp files
 tmp/
 dist/
+scripts/

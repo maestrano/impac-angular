@@ -19,10 +19,3 @@
 
   <impac-kpi class="col-xs-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by $index"></impac-kpi>
 </div>
-
-<div class="row key-stats">
-  <div class="title-actions col-xs-2">
-    <div class="title">Key stats</div>
-  </div>
-  <impac-kpi ng-repeat="keyStat in keyStats" kpi="keyStat" class="col-xs-2"></impac-kpi>
-</div>

@@ -54,6 +54,9 @@ angular
           elem.focus()
         ,100
 
+      $scope.hideChangeDashboardNameBox = ->
+        $scope.showChangeDashboardNameBox = false
+
       $scope.checkAndUpdateDashboardName = (event) ->
         $scope.updateDashboardName() if event.keyCode == 13
         $scope.showChangeDashboardNameBox = false if event.keyCode == 27
