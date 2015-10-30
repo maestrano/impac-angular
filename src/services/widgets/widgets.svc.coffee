@@ -132,7 +132,6 @@ angular
 
                 # Formats the chart when necessary
                 widget.format() if angular.isDefined(widget.format)
-                $log.debug('ImpacWidgetsSvc: SUCCES SHOW widget:', widget)
                 deferred.resolve widget
 
               (errorResponse) ->
@@ -170,7 +169,6 @@ angular
             (success) ->
               updatedWidget = success.data
               angular.extend widget, updatedWidget
-              $log.debug('ImpacWidgetsSvc: SUCCESS UPDATE widget: ', widget)
               deferred.resolve(widget)
             (error) ->
               $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")

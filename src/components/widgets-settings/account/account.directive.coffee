@@ -21,8 +21,15 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
   setting.toMetadata = ->
     return { account_uid: w.selectedAccount.uid } if w.selectedAccount?
 
-  $scope.formatAmount = (anAccount) ->
-    return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
+  formatAmount = (anAccount) ->
+    balance = anAccount.current_balance || anAccount.balance
+    return $filter('mnoCurrency')(balance,anAccount.currency)
+
+  $scope.formatLabel = (anAccount) ->
+    if anAccount.company?
+      "#{anAccount.company} - #{anAccount.name} (#{formatAmount(anAccount)})"
+    else
+      "#{anAccount.name} (#{formatAmount(anAccount)})"
 
   w.settings.push(setting)
 
