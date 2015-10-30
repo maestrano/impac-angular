@@ -74,10 +74,6 @@ module.directive('impacWidget', ($templateCache) ->
       #=======================================
       scope.widgetContentTemplate = ->
         # impac-angular component template name
-
-        if scope.widget.category == 'accounts/assets_liability_summary'
-          debugger
-
         if scope.widget.metadata.template
           scope.templateName = scope.widget.metadata.template.replace(/\/|_/g, '-')
 

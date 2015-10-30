@@ -7,58 +7,54 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
   $scope.orgDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
-  $scope.accountDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
-    $scope.accountDeferred.promise
   ]
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
-    $scope.multiEntity = w.metadata.organization_ids.length > 1
-    if $scope.multiEntity && w.content.account_list
-      w.selectedAccount = w.content.account_list[0]
-      $scope.applyAccountSelection()
+    #TODO: No .pluralize() in angular?
+    switch (w.metadata.classification || 'asset').toLowerCase()
+      when 'liability'
+        $scope.classification = "Liabilities"
+      else
+        $scope.classification = "Assets"
+
+    $scope.accountsOptions = [
+      { label: 'Assets Accounts', value: 'ASSET' },
+      { label: 'Liability Accounts', value: 'LIABILITY' }
+    ]
+
     if !$scope.selectedAccountsOption
-      $scope.accountsOptions = [
-        { label: 'Assets Accounts', value: 'ASSET' },
-        { label: 'Liability Accounts', value: 'LIABILITY' }
-      ]
-      $scope.selectedAccountsOption = {
-        label: 'Assets Accounts',
-        value: 'ASSET'
-      }
+      $scope.selectedAccountsOption = _.find($scope.accountsOptions, {
+        value: w.metadata.classification
+      });
+
+    if w.metadata.organization_ids.length > 1
+      $scope.dataSource = w.content.repartition
+    else
+      $scope.dataSource = w.content.summary
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
 
-  $scope.getAccountColor = (anAccount) ->
-    ChartFormatterSvc.getColor(_.indexOf(w.content.summary, anAccount)) if $scope.isDataFound
-
-  $scope.applyAccountSelection = () ->
-    return if !w.selectedAccount
-    w.content.summary = _.map w.selectedAccount.accounts, (account) ->
-      {
-        label: account.org_name,
-        total: account.current_balance
-      }
-    w.format()
-
+  $scope.getAccountColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.dataSource, elem)) if $scope.isDataFound
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      pieData = _.map w.content.summary, (account) ->
+      pieData = _.map $scope.dataSource, (company) ->
         {
-          label: account.label,
-          value: account.total,
+          label: company.label,
+          value: company.total,
         }
       pieOptions = {
         percentageInnerCutout: 50,

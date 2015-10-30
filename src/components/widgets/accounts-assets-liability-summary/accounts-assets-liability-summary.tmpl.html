@@ -12,13 +12,14 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="isDataFound" class="chart-container">
-      <!-- account selectors -->
-      <div ng-hide="multiEntity" setting-param-selector parent-widget="widget" param="account_class" options="accountsOptions" selected="selectedAccountsOption" class="row title" deferred="::paramSelectorDeferred"/>
-      <div ng-show="multiEntity" setting-account parent-widget="widget" class="part" deferred="::accountDeferred" on-account-selected="applyAccountSelection()" show-label="false"/>
+      <!-- account classification selectors -->
+      <div setting-param-selector parent-widget="widget" param="classification" options="accountsOptions" selected="selectedAccountsOption" class="row param-selector" deferred="::paramSelectorDeferred"/>
       <!---->
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">
-        <span ng-repeat="valuePair in widget.content.summary">
+        <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
+        <div class="title" ng-hide="widget.metadata.organization_ids.length==1">{{classification}} repartition</div>
+        <span ng-repeat="valuePair in dataSource">
           <span style="font-weight: bold; color: {{getAccountColor(valuePair)}};">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}
           <br />
         </span>
