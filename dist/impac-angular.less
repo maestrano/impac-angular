@@ -123,6 +123,8 @@
 // Params picker
 @impac-widget-params-picker-bg:                #1E303B;
 @impac-widget-params-picker-unchecked-bg:      #c2c4c4;
+// Limit emtries
+@impac-widget-limit-entries-color:             #1E303B;
 
 // Globals and Mixins
 @impac-widget-selectable-color:                @impac-widget-link-color;
@@ -941,10 +943,10 @@ body {
         color: white;
         padding: 10px;
         border-radius: 4px;
-        opacity: 0.9;
         text-align: center;
         .box-shadow(0px 0px 25px 4px black);
         z-index: 50;
+        border: solid 1px @impac-widget-background-color;
 
         .form-control {
           height: 25px;
@@ -1358,9 +1360,10 @@ body {
     z-index: 50;
     color: white;
     text-align: center;
-    opacity: 0.9;
     cursor: default;
     .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+
     h4 {
       color: @impac-widget-top-buttons-color;
       font-weight: bold;
@@ -1439,6 +1442,22 @@ body {
     }
   }
 }
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
+}
+
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -1496,6 +1515,15 @@ body {
         background-color: lighten(@impac-widget-param-selector-color,5%);
       }
     }
+  }
+}
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
   }
 }
 .analytics .widget-item .content .settings.params-picker {
@@ -1558,12 +1586,37 @@ body {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+    text-align: center;
+  }
+  .legend {
+    text-align: left;
+    max-height: 97px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+  p {
+    font-weight: bold;
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
-    max-height: 98px;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
   }
 }
+
+
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -1591,6 +1644,16 @@ body {
     max-height: 215px;
   }
 }
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
+  }
+}
+
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1639,6 +1702,10 @@ body {
     font-size: 11px;
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
   }
+
+  .settings.params-checkboxes {
+    margin-left: 13px;
+  }
 }
 
 .analytics .widget-item .content.accounts-custom-calculation {
@@ -1680,9 +1747,44 @@ body {
     }
   }
 }
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+  // single entity selected class title
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+  // .no-data-block {
+  //   .center-thin();
+  // }
+}
+
+
+
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-payable-receivable {

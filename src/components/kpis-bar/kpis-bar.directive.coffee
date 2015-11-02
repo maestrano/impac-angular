@@ -17,13 +17,13 @@ angular
         # -------------------------------------
         $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
 
-        $scope.keyStats = [
-          { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },
-          { name: 'Profitability', data: { value: '8.34', unit: '%' }, static: true},
-          { name: 'Cost of capital', data: { value: '20.00', unit: 'AUD' }, static: true},
-          { name: 'TAX % based on FY14', data: { value: '29.91', unit: '%' }, static: true},
-          { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
-        ]
+        # $scope.keyStats = [
+        #   { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },
+        #   { name: 'Profitability', data: { value: '8.34', unit: '%' }, static: true},
+        #   { name: 'Cost of capital', data: { value: '20.00', unit: 'AUD' }, static: true},
+        #   { name: 'TAX % based on FY14', data: { value: '29.91', unit: '%' }, static: true},
+        #   { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
+        # ]
 
 
         $scope.toggleAvailableKpis = ->

@@ -11,7 +11,7 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    w.selectedAccount = null
+    w.selectedAccount = w.selectedAccount || null
     if w.content? && w.content.account_list? && w.metadata? && w.metadata.account_uid?
       w.selectedAccount = _.find(w.content.account_list, (acc) ->
         acc.uid == w.metadata.account_uid
@@ -21,8 +21,15 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
   setting.toMetadata = ->
     return { account_uid: w.selectedAccount.uid } if w.selectedAccount?
 
-  $scope.formatAmount = (anAccount) ->
-    return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
+  formatAmount = (anAccount) ->
+    balance = anAccount.current_balance || anAccount.balance
+    return $filter('mnoCurrency')(balance,anAccount.currency)
+
+  $scope.formatLabel = (anAccount) ->
+    if anAccount.company?
+      "#{anAccount.company} - #{anAccount.name} (#{formatAmount(anAccount)})"
+    else
+      "#{anAccount.name} (#{formatAmount(anAccount)})"
 
   w.settings.push(setting)
 
@@ -38,6 +45,7 @@ module.directive('settingAccount', ($templateCache) ->
       parentWidget: '='
       deferred: '='
       label: '@'
+      showLabel: '=?'
       onAccountSelected: '&'
     },
 

@@ -19,7 +19,7 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
 
   setting.toMetadata = ->
     param = {}
-    param["#{$scope.param}"] = _.compact(_.map $scope.options, (statusOption) ->
+    param[$scope.param] = _.compact(_.map $scope.options, (statusOption) ->
       statusOption.label if statusOption.selected
     )
     return param

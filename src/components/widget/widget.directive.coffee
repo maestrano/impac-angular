@@ -12,7 +12,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
     (promises) ->
       $q.all(promises).then(
         (success) ->
-          
           ImpacWidgetsSvc.show(w).then(
             (updatedWidget) ->
               w.isLoading = false
@@ -20,7 +19,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
               if $scope.isAccessibility
                 w.initialWidth = w.width
                 w.width = 12
-              else if w.initialWidth 
+              else if w.initialWidth
                 w.width = w.initialWidth
 
             (errorResponse) ->
@@ -44,7 +43,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utiliti
   $scope.updateSettings = (needContentReload=true) ->
     w.isEditMode = false
     ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
-
 
   w.getColClass = ->
     "col-md-#{w.width}"
@@ -72,27 +70,30 @@ module.directive('impacWidget', ($templateCache) ->
 
       #=======================================
       # DYNAMIC WIDGET TEMPLATE LOADING
-      # Widget data sent from Maestrano db have a category value in url format.
-      # The structure of the url is `category/widget-template-name/data-extension`.
-      # 'data-extension' means the widget re-uses a widget template, but signifies that
-      # different data will be fed through.
+      # widget category and metadata.template data sent from Maestrano db.
       #=======================================
       scope.widgetContentTemplate = ->
-        splittedPath = angular.copy(scope.widget.category).split("/")
-        # remove any number of items beyond index 2 (eg: accounting_values is a template used by several different widgets)
-        splittedPath.splice(2)
-        # format into slug-case for filename matching
-        scope.templateName = splittedPath.join("-").replace(/_/g, "-")
-        # url for retreiving widget templates from angular $templateCache service.
-        templatePath = "widgets/" + scope.templateName + ".tmpl.html"
+        # impac-angular component template name
+        if scope.widget.metadata.template
+          scope.templateName = scope.widget.metadata.template.replace(/\/|_/g, '-')
 
-        if scope.isAccessibility 
-          if $templateCache.get("widgets/" + scope.templateName + ".accessible.tmpl.html")
-            templatePath = "widgets/" + scope.templateName + ".accessible.tmpl.html"
-          scope.templateName = scope.templateName + " accessible"
+        # backward compatibility for old widgets
+        else
+          splittedPath = angular.copy(scope.widget.category).split('/')
+          # remove any number of path extensions beyond length > 2. (eg: accounting_values is a template used by several different widgets)
+          splittedPath.length = 2
+          scope.templateName = splittedPath.join("-").replace(/_/g, '-')
+
+        # url for retreiving widget templates from angular $templateCache service.
+        templatePath = 'widgets/' + scope.templateName + '.tmpl.html'
+
+        if scope.isAccessibility
+          if $templateCache.get('widgets/' + scope.templateName + '.accessible.tmpl.html')
+            templatePath = 'widgets/' + scope.templateName + '.accessible.tmpl.html'
+          scope.templateName = scope.templateName + ' accessible'
 
         return templatePath
 
-    ,template: $templateCache.get("widget/widget.tmpl.html")
+    ,template: $templateCache.get('widget/widget.tmpl.html')
   }
 )

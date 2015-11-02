@@ -1,42 +1,50 @@
-module = angular.module('impac.components.widgets.accounts-assets-summary', [])
-module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
+module = angular.module('impac.components.widgets.accounts-assets-liability-summary', [])
+module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
 
   w = $scope.widget
-
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartDeferred.promise
+    $scope.paramSelectorDeferred.promise
   ]
-
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
-    
-    if w.metadata.organization_ids.length > 1
-      $scope.dataSource = w.content.repartition
-    else
-      $scope.dataSource = w.content.summary
-
     #TODO: No .pluralize() in angular?
-    switch (w.metadata.classification || 'assets').toLowerCase()
+    switch (w.metadata.classification || 'asset').toLowerCase()
       when 'liability'
         $scope.classification = "Liabilities"
       else
         $scope.classification = "Assets"
+
+    $scope.accountsOptions = [
+      { label: 'Assets Accounts', value: 'ASSET' },
+      { label: 'Liability Accounts', value: 'LIABILITY' }
+    ]
+
+    if !$scope.selectedAccountsOption
+      $scope.selectedAccountsOption = _.find($scope.accountsOptions, {
+        value: w.metadata.classification || 'ASSET'
+      });
+
+    if w.metadata.organization_ids.length > 1
+      $scope.dataSource = w.content.repartition
+    else
+      $scope.dataSource = w.content.summary
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
 
   $scope.getAccountColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.dataSource, elem)) if $scope.isDataFound
-
 
   # Chart formating function
   # --------------------------------------
@@ -48,7 +56,6 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
           label: company.label,
           value: company.total,
         }
-
       pieOptions = {
         percentageInnerCutout: 50,
         tooltipFontSize: 12,
@@ -65,9 +72,9 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   $scope.widgetDeferred.resolve(settingsPromises)
 )
 
-module.directive('widgetAccountsAssetsSummary', ->
+module.directive('widgetAccountsAssetsLiabilitySummary', ->
   return {
     restrict: 'A',
-    controller: 'WidgetAccountsAssetsSummaryCtrl'
+    controller: 'WidgetAccountsAssetsLiabilitySummaryCtrl'
   }
 )

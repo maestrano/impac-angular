@@ -1,0 +1,39 @@
+<div widget-accounts-expense-weight>
+
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-account parent-widget="widget" class="part" deferred="::accountBackDeferred" />
+
+    <div align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+    <div ng-show="isDataFound">
+      <!-- Will be hidden once an account is selected -->
+      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an expense account' on-account-selected="updateSettings()" deferred="::accountFrontDeferred" />
+
+      <!-- The chart will remain hidden until an account is selected -->
+      <div class="chart-container" ng-class="{'invisible': !widget.selectedAccount}">
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        <div class="legend">
+          <div class="title">
+            {{getName()}} to {{getComparator() | titleize}}
+            <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
+          </div>
+          <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
+            <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
+            <br />
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+  </div>
+
+</div>

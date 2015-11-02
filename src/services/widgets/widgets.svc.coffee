@@ -1,7 +1,7 @@
 angular
   .module('impac.services.widgets', [])
   .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc) ->
-  
+
     _self = @
     @config = {}
     @config.ssoSessionId = ""
@@ -28,7 +28,7 @@ angular
 
     @create = (opts) ->
       deferred = $q.defer()
-      
+
       _self.load().then(
         (config) ->
 
@@ -121,7 +121,7 @@ angular
               (success) ->
                 # Pushes new content to widget
                 content = success.data.content || {}
-                name: success.data.name
+                name = success.data.name
                 angular.extend widget, {content: content, originalName: name}
 
                 widget.initContext() if angular.isDefined(widget.initContext)
@@ -132,7 +132,6 @@ angular
 
                 # Formats the chart when necessary
                 widget.format() if angular.isDefined(widget.format)
-
                 deferred.resolve widget
 
               (errorResponse) ->
@@ -156,17 +155,17 @@ angular
 
     @update = (widget, opts) ->
       deferred = $q.defer()
-      
+
       _self.load().then(
         (config) ->
-      
+
         unless isWidgetInCurrentDashboard(widget.id)
           $log.info("ImpacWidgetsSvc: trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
           deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
 
         else
           data = { widget: opts }
-          $http.put(ImpacRoutes.updateWidgetPath(widget.id),data).then(
+          $http.put(ImpacRoutes.updateWidgetPath(widget.id), data).then(
             (success) ->
               updatedWidget = success.data
               angular.extend widget, updatedWidget
@@ -186,14 +185,14 @@ angular
 
     @delete = (widgetToDelete) ->
       deferred = $q.defer()
-      
+
       _self.load().then(
         (config) ->
 
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           $http.delete(ImpacRoutes.deleteWidgetPath(widgetToDelete.id)).then(
             (success) ->
-              _.remove dashboard.widgets, (widget) -> 
+              _.remove dashboard.widgets, (widget) ->
                 widget.id == widgetToDelete.id
               deferred.resolve(success)
 
