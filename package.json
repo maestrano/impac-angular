@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": {
     "name": "Xaun Lopez",
-    "email": "xaunlopez@gmail.com"
+    "email": "xaun.lopez@maestrano.com"
   },
   "main": "src/impac-angular/impac-angular.js",
   "dependencies": {
