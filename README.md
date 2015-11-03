@@ -8,7 +8,7 @@ The user is proposed to create dashboards, and to add widgets to these dashboard
 
 ### Developers
 
-Impac!™ frontend library can be included in any project based on the Maestrano platform: just fork this repository, have a look at [the developer guide](https://github.com/maestrano/impac-angular/blob/develop/DEVELOPER.md), and start developing your own widgets!
+Impac!™ frontend library can be included in any project based on the Maestrano platform: just fork this repository, have a look at DEVELOPER.md, and start developing your own widgets!
 
 #### Contributing
 
