@@ -32,7 +32,7 @@ Embed angular-impac's wrapper directive `'impacDashboard'`. You can use either E
 
 impac-angular requires that you configure it's **ImpacLinkingProvider service** with some core data.
 
-#### Example
+#### API
 
 ##### linkData(options)
 _type_: Object<br>
@@ -48,7 +48,7 @@ _type_: Function<br>
 _return_: Promise -> {organizations: [ userOrgs, ... ], currentOrgId: currentOrgId}<br>
 _usage_: Retrieving organizations and current organization id.
 
-See example below:
+#### Example
 
 ```
   angular
