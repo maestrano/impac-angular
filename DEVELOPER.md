@@ -101,7 +101,7 @@ Steps are:
 
 1. Define the widget's template. The base widgets templates list is retrieved from the MNOE API, within each dashboard object. Each widget template will have a structure similar to the following:
 
-  ```JSON
+  ```
   {
     // engine called in Impac! API
     // -----
