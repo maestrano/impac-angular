@@ -99,6 +99,8 @@ Steps are:
 
 #### How-to: Create a widget
 
+##### Process
+
 1. Define the widget's template. The base widgets templates list is retrieved from the MNOE API, within each dashboard object. Each widget template will have a structure similar to the following:
 
   ```
@@ -165,6 +167,22 @@ Steps are:
 
 #### How-to: Create a setting
 
+##### Conventions specific to settings development
+
+- A 'setting' is a directive that may be reused by any widget. The purpose of any setting is to handle the management of one 'metadata parameter', which will define the widget configuration. Basically, everytime a configuration information has to be saved before next dashboard reload, a setting should be used.
+
+- **Avoid** using the `$scope.parentWidget` inside of the setting's controller: when you have to call a method belonging to the widget object, pass a callback to the directive as an argument. When you need to access some data contained into `$scope.parentWidget.content`, try passing an object to the directive as well. Eg:
+  ```coffeescript
+  scope: {
+    parentWidget: '='
+    deferred: '='
+    callBackToWidget: '=onActivate'
+    widgetContentData: '=data'
+  }
+  ```
+
+##### Process
+
 1. Create the setting's files:
   - in /src/components/widgets-settings/, add a folder 'setting-name' (e.g: my-new-setting).
   - in this new folder, add three files:
@@ -193,18 +211,6 @@ Steps are:
 
 5. Notify the parent widget that the setting's context has been loaded and is ready: `$scope.deferred.resolve(setting)`.
 **IMPORTANT**: The parent widget's #show method (= call to the Impac! API to retrieve the widget's content) will be called only once all the settings are loaded (= once they have resolved their `$scope.deferred` object). 
-
-##### Conventions specific to settings development
-
-- **Avoid** using the `$scope.parentWidget` inside of the setting's controller: when you have to call a method belonging to the widget object, pass a callback to the directive as an argument. When you need to access some data contained into `$scope.parentWidget.content`, try passing an object to the directive as well. Eg:
-```coffeescript
-scope: {
-  parentWidget: '='
-  deferred: '='
-  callBackToWidget: '=onActivate'
-  widgetContentData: '=data'
-}
-```
 
 ### Conventions within impac-angular
 
