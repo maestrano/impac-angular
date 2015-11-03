@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-cycle',[])
 
-module.controller('WidgetSalesCycleCtrl', ($scope, $q, Utilities, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 

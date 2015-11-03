@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widget', [])
-module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc, Utilities) ->
+module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc) ->
 
   w = $scope.widget || {}
 

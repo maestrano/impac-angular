@@ -1,6 +1,6 @@
 angular
 .module('impac.components.dashboard-selector', [])
-.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc) ->
+.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) ->
   return {
     restrict: 'E'
     scope: {
@@ -116,7 +116,7 @@ angular
             self.instance.close()
             $scope.onDisplayWidgetSelector({newValue: ImpacDashboardsSvc.isCurrentDashboardEmpty()})
           , (errors) ->
-            self.errors = Utilities.processRailsError(errors)
+            self.errors = ImpacUtilities.processRailsError(errors)
             self.isLoading = false
         )
 
