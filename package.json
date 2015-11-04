@@ -10,6 +10,7 @@
     "lodash": "^3.10.1"
   },
   "devDependencies": {
+    "bower": "^1.6.5",
     "del": "^1.2.1",
     "event-stream": "^3.3.1",
     "gulp": "^3.8.7",

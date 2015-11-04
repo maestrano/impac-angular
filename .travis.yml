@@ -1,7 +1,7 @@
 language: node_js
 before_script:
-  - npm install -g gulp
-  - bower install
+  # - npm install -g gulp
+  - node_modules/.bin/bower install
 script:
-  - gulp
-  - gulp test
+  - node_modules/.bin/gulp
+  - node_modules/.bin/gulp test
