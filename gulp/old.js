@@ -1,7 +1,5 @@
 // TODO: Break this out into multiple files and clean up.
 var gulp = require('gulp'),
-    // Concatenates and registers AngularJS templates in the $templateCache.
-    templates = require('gulp-angular-templatecache'),
     // A gulp plugin for removing files and folders with support for multiple files & globs.
     del = require('del'),
     // Concatenates files
@@ -39,43 +37,6 @@ var gulp = require('gulp'),
 // OR just run `gulp build:dist`
 var env = process.env.NODE_ENV || 'development';
 
-
-
-/* ************************************ */
-/* Template Caching Tasks               */
-/* ************************************ */
-var templateFiles = ['src/components/**/*.html'];
-// builds html templates into angular $templateCache setters in a new module's .run() function.
-gulp.task('templates', function () {
-  return gulp.src(templateFiles)
-    .pipe(templates('tmp/templates/templates.tmp', {
-      standalone: true, // creates a new module
-      module: 'impac.components.templates', // module name
-      // Shorten component $templaceCache paths for simpler dynamic selection, and
-      // cleaner includes.
-      transformUrl: function (url) {
-            // parent component e.g dashboard, widgets.
-        var parentFolderName  = url.split('/').splice(0, 1),
-            // component's template name.
-            fileName          = url.split('/').splice(-1, 1);
-
-        // if html file is a modal, return full path for semantic purposes.
-        if (fileName[0].indexOf('.modal.') >= 0) {
-          return url;
-        }
-        // e.g widgets/accounts-balance
-        return parentFolderName + '/' + fileName;
-      }
-    }))
-    .pipe(gulp.dest('.'));
-});
-
-// makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
-gulp.task('templates-concat', ['templates'], function () {
-  return gulp.src(['src/impac-angular.module.js', 'tmp/templates/templates.tmp'])
-    .pipe(concat(pkg.name + '.js')) // output filename
-    .pipe(gulp.dest('tmp/')); // output destination
-});
 
 /* ************************************ */
 /* Build Tasks                          */
