@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) ->
 
   w = $scope.parentWidget
 
@@ -15,7 +15,7 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
       (success) ->
         return true
       (errors) ->
-        w.errors = Utilities.processRailsError(errors)
+        w.errors = ImpacUtilities.processRailsError(errors)
     ).finally(
       ->
         $scope.isDeletePopoverLoading = false

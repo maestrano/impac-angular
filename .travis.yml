@@ -1,0 +1,7 @@
+language: node_js
+before_script:
+  # - npm install -g gulp
+  - node_modules/.bin/bower install
+script:
+  - node_modules/.bin/gulp
+  - node_modules/.bin/gulp test

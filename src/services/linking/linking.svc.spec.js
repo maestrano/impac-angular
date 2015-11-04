@@ -1,4 +1,4 @@
-describe('Impac Linking Provider', function () {
+describe('<> ImpacLinking Provider', function () {
   'use strict';
 
   var ImpacLinking, provider, service;

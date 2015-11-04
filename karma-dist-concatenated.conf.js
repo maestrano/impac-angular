@@ -26,6 +26,7 @@ module.exports = function(config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/lodash/lodash.js',
       // `maestrano.impac` module external dependencies.
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-bootstrap/ui-bootstrap.js',
