@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/maestrano/impac-angular.svg?branch=master)](https://travis-ci.org/maestrano/impac-angular?branch=master)
+
 # Impac!™ Angular Frontend Library
 ---
 ### Description
