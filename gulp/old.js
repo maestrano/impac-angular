@@ -14,10 +14,6 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     // Add angularjs dependency injection annotations with ng-annotate
     ngAnnotate = require('gulp-ng-annotate'),
-    // Gulp compiler for coffee
-    coffee = require('gulp-coffee'),
-    // Utility functions for gulp plugins
-    gutil = require('gulp-util'),
     // Source map support for Gulp.js
     sourcemaps = require('gulp-sourcemaps'),
     // Append or Prepend a string with gulp
@@ -110,29 +106,7 @@ var buildSourceFiles = [
     'src/impac-angular.suffix',
     'tmp/scripts/**/*.js',
     'lib/*.js'
-  ],
-  // CoffeeScript & Less file directories to be compiled before build.
-  coffeeFiles = [
-    'src/services/**/*.coffee',
-    'src/filters/**/*.coffee',
-    'src/components/**/*.coffee'
   ];
-
-// TODO::gulp-sourcemaps: stack trace and debugger not working in browser console.
-// TODO::gulp-coffee: is stripping comments on compile, cant find options or
-// alternative.
-gulp.task('coffee-compile', ['clean'], function () {
-  return gulp.src(coffeeFiles)
-    .pipe(coffee({bare: true}).on('error', gutil.log))
-    // encapsulates components
-    .pipe(insert.wrap('(function () {\n\'use strict\';\n', '}).call(this);'))
-    // Removes the prefixed extension from files names e.g name.directive.coffee.
-    .pipe(rename(function (path) {
-      path.basename = path.basename.split('.')[0];
-    }))
-    .pipe(gulp.dest('tmp/scripts'));
-});
-
 
 
 // TODO: figure out a way to emit .on 'finish' with lazypipe() streams, for deleting tmp file, and running tests once build task has completely finished.
