@@ -82,7 +82,7 @@
 
   <div class='spacer1'></div>
 
-  <div id="no-widgets-container" class="text-center ng-hide" ng-show='(showChooseDhbMsg() || showNoWidgetsMsg())'>
+  <div id="no-widgets-container" class="row text-center ng-hide" ng-show='(showChooseDhbMsg() || showNoWidgetsMsg())'>
 
     <img ng-src="{{impacDashboardBackground}}" class="bg">
 
@@ -94,7 +94,8 @@
           <div class="row">
             <div class="col-md-8 col-md-offset-2">
               <div class="testimonial promo-dark">
-                <p><b>It's time to add a reporting dashboard!</b></p><p>In 2 clicks, you'll be able to visualize how your business is performing.</p>
+                <p><b>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
+                <p>{{dhbErrorsConfig.firstTimeCreated.second}}</p>
               </div>
             </div>
           </div>
@@ -112,7 +113,8 @@
           <div class="row">
             <div class="col-md-8 col-md-offset-2">
               <div class="testimonial promo-dark">
-                <p><b>Now it's time to select the metrics you want to see!</b></p><p>Add widgets to your dashboard to help make an Impac!™ to your business.</p>
+                <p><b>{{dhbErrorsConfig.empty.first}}</b></p>
+                <p>{{dhbErrorsConfig.empty.second}}</p>
               </div>
             </div>
           </div>
@@ -129,12 +131,12 @@
   <div class="row text-center" ng-show='showChooseDhbMsg()'>
     <div class="spacer2 hidden-xs"></div>
     <div class='col-md-8 col-md-offset-2'>
-      <p class="text-muted"><small><em>Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.</em></small></p>
+      <p class="text-muted"><small><em>{{dhbErrorsConfig.firstTimeCreated.note}}</em></small></p>
     </div>
   </div>
 
   <!-- Widgets -->
-  <div class='row'>
+  <div class='row' id="widgets-section">
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
       <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
