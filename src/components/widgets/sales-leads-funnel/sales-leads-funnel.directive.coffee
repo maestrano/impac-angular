@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, Utilities, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 

@@ -46,7 +46,8 @@ angular
       dataNotFoundConfig:
         mainMessage: 'Data not found'
         linkMessage: 'Are you missing an app?'
-        linkUrl: ''
+        linkUrl: '/apps'
+        linkTarget: '_blank'
       # options for the widget selector panel.
       widgetSelectorConfig:
         path: null
