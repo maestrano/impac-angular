@@ -21,10 +21,6 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
         $scope.isDeletePopoverLoading = false
     )
 
-  $scope.refreshWidget = ->
-    w.isLoading = true
-    ImpacWidgetsSvc.show(w, true).finally(-> w.isLoading=false)
-
   $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode
@@ -41,6 +37,7 @@ module.directive('commonTopButtons', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      onRefresh: '='
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'

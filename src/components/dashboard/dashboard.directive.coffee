@@ -50,9 +50,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # reload the <impac-dashboards> on organization change.
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
     ImpacDashboardsSvc.load(true).then (success) ->
-      # initialize widget selector
-      $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
-      $scope.isLoading = false
+      $scope.activateTimer()
 
 
     # ============================================
@@ -111,7 +109,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           self.errors = ''
           self.isLoading = false
           self.instance.close()
-          $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
         , (errors) ->
           self.isLoading = false
           self.errors = ImpacUtilities.processRailsError(errors)
@@ -172,14 +169,15 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # TODO: put in separate directive
 
     $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
-    $scope.showWidgetSelector = false # just to initialize / will be overriden at first load anyway
+    $scope.forceShowWidgetSelector = false # just to initialize / will be overriden at first load anyway
     $scope.showCloseWidgetSelectorButton = ->
       !ImpacDashboardsSvc.isCurrentDashboardEmpty()
 
-    $scope.displayWidgetSelector = (newValue) ->
-      # the widget selector will never be toggled if there is a customWidgetSelector set in config
-      return if !newValue? || $scope.customWidgetSelector.path
-      $scope.showWidgetSelector = !!newValue
+    $scope.displayWidgetSelector = (value=true) ->
+      $scope.forceShowWidgetSelector = value
+
+    $scope.showWidgetSelector = ->
+      $scope.forceShowWidgetSelector || (ImpacDashboardsSvc.isCurrentDashboardEmpty() && !$scope.customWidgetSelector.path)
 
     # Custom widgets selector
     # --------------------------
@@ -367,6 +365,16 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # only the top-line with title will provide the handle to drag/drop widgets
       handle: ".top-line"
     }
+
+    $scope.activateTimer = ->
+      $scope.isLoading = true
+      w = $scope.currentDhb.widgets
+      timer = 250
+      # The dashboard will load 100ms per widget before being displayed
+      timer = Math.max(100*w.length, 500) if w?
+      $timeout ->
+        $scope.isLoading=false
+      ,timer
 
 )
 
