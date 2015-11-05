@@ -9,6 +9,8 @@
     -o-filter: blur(2px);
     -ms-filter: blur(2px);
     filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
   }
   .message {
     position: absolute;

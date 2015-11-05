@@ -18,10 +18,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
 
-    # dashboard heading
+    # dashboard heading & error messages
     # -------------------------------------
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
+    $scope.dhbErrorsConfig = ImpacTheming.get().dhbErrorsConfig
 
     # kpis
     # -------------------------------------
@@ -74,7 +75,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self.errors = ''
       self.isLoading = true
       self.instance = $modal.open(self.config)
-      
+
       self.instance.rendered.then (onRender) ->
         self.locked = true
       self.instance.result.then (onClose) ->
@@ -295,7 +296,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         self.userName = user.name
       )
       self.instance = $modal.open(self.config)
-      
+
       self.instance.rendered.then (onRender) ->
         self.locked = true
       self.instance.result.then (onClose) ->
