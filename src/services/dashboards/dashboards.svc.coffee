@@ -57,7 +57,7 @@ angular
               _self.setCurrentDashboard()
               deferred.resolve(_self.config)
             (error) ->
-              deferre.reject(error)
+              deferred.reject(error)
 
           ,(error) ->
             $log.error("Impac - DashboardSvc: cannot retrieve dashboards list for org: #{orgId}")
@@ -110,7 +110,7 @@ angular
       return _.includes(_.pluck(dashboard.data_sources, 'id'), org.id)
 
 
-    @setDashboards = (dashboardsArray) ->
+    @setDashboards = (dashboardsArray=[]) ->
       ImpacMainSvc.loadOrganizations().then (config) ->
         curOrg = config.currentOrganization
         # Clear array
@@ -137,18 +137,16 @@ angular
     # CRUD methods
     #====================================
     
-    @create = (opts) ->
+    @create = (dashboard) ->
       deferred = $q.defer()
-      data = { dashboard: opts }
-      # Required?
-      # data['dashboard']['organization_id'] ||= self.config.organizationId
+      data = { dashboard: dashboard }
       
       $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
         _self.config.dashboards.push(success.data)
         _self.setCurrentDashboard(success.data.id)
         deferred.resolve(success.data)
       ,(error) ->
-        $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{opts}")
+        $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{dashboard}")
         deferred.reject(error)
 
       return deferred.promise

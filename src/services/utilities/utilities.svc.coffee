@@ -2,7 +2,7 @@
 # todo::lib-structure: should this be in impac-angular?
 angular
   .module('impac.services.utilities', [])
-  .service('Utilities', () ->
+  .service('ImpacUtilities', () ->
 
     # Parse a Rails model error and return an array of messages
     # ready to be displayed
@@ -20,7 +20,7 @@ angular
             )
           else if angular.isObject(error.data)
             _.each(error.data, (attrErrors, attribute) ->
-              capitalizedAttr = attribute.charAt(0).toUpperCase() + attribute.slice(1);
+              capitalizedAttr = (attribute.charAt(0).toUpperCase() + attribute.slice(1)).replace('_', ' ')
               if angular.isArray(attrErrors)
                 _.each(attrErrors, (attrError) ->
                   if capitalizedAttr.match(/base/i)

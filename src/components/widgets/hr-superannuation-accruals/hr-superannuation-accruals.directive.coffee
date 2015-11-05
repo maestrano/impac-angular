@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-superannuation-accruals',[])
 
-module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, $q, Utilities) ->
+module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, $q) ->
 
   w = $scope.widget
 

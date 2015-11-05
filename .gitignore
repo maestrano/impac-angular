@@ -25,3 +25,6 @@ coffeelint.json
 tmp/
 dist/
 scripts/
+
+# Generated filders
+reports/

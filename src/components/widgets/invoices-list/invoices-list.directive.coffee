@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-list',[])
 
-module.controller('WidgetInvoicesListCtrl', ($scope, $q, Utilities, $filter) ->
+module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
 
   w = $scope.widget
 

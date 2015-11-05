@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, Utilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
 
     #====================================
     # Initialization
@@ -114,7 +114,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
         , (errors) ->
           self.isLoading = false
-          self.errors = Utilities.processRailsError(errors)
+          self.errors = ImpacUtilities.processRailsError(errors)
       )
 
     $scope.createDashboardModal.isProceedDisabled = ->
@@ -264,7 +264,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
             angular.element('#widget-selector .badge.confirmation').fadeTo(700,0)
           ,4000
         , (errors) ->
-          $scope.errors = Utilities.processRailsError(errors)
+          $scope.errors = ImpacUtilities.processRailsError(errors)
           angular.element('#widget-selector').css('cursor', 'auto')
           angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
