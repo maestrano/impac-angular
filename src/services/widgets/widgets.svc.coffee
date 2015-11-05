@@ -124,14 +124,17 @@ angular
                 name = success.data.name
                 angular.extend widget, {content: content, originalName: name}
 
+                # Initializes widget's context, and determines if the data has been found
                 widget.initContext() if angular.isDefined(widget.initContext)
-
                 # Initializes each widget's setting
                 for setting in widget.settings
                   setting.initialize() if angular.isDefined(setting.initialize)
 
+                widget.isLoading = false
+
                 # Formats the chart when necessary
                 widget.format() if angular.isDefined(widget.format)
+
                 deferred.resolve widget
 
               (errorResponse) ->
