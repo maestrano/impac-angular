@@ -24,26 +24,43 @@ angular
         # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
         # ------------------------------------
         scope.draw = (data) ->
-          # $timeout will wait for the DOM to be rendered before drawing the chart
-          $timeout ->
-            if !_.isEmpty(data.options)
-              angular.extend(options,data.options)
+          if !_.isEmpty(data.options)
+            angular.extend(options,data.options)
 
-            # canvas has to be removed/appended to be redrawned without superposition
-            elem.children().get(0).remove()
-            elem.append('<canvas></canvas>')
-            canvas = elem.children().get(0)
-            ctx = canvas.getContext("2d")
+          # canvas has to be removed/appended to be redrawned without superposition
+          elem.children().get(0).remove()
+          elem.append('<canvas></canvas>')
+          canvas = elem.children().get(0)
+          ctx = canvas.getContext("2d")
 
-            switch data.chartType
-              when 'Bar'
-                new Chart(ctx).Bar(data.data,options)
-              when 'Line'
-                new Chart(ctx).Line(data.data,options)
-              when 'Pie'
-                angular.extend(options, {tooltipFixed: true})
-                new Chart(ctx).Pie(data.data,options)
+          switch data.chartType
+            when 'Bar'
+              new Chart(ctx).Bar(data.data,options)
+            when 'Line'
+              new Chart(ctx).Line(data.data,options)
+            when 'Pie'
+              angular.extend(options, {tooltipFixed: true})
+              new Chart(ctx).Pie(data.data,options)
 
+
+        hasVisibleParents = (element) ->
+          if angular.isDefined(element.parent) && element.parent()? && angular.isDefined(element.parent().css)
+            parent = element.parent()
+            try
+              return (parent.css('display') != 'none') && hasVisibleParents(parent)
+            catch e
+              # There will be an error when we reach the root element:
+              # TypeError: Cannot read property 'defaultView'
+              # ... in this case, we know that all the elements below are visible, so "true" can be returned
+              return true
+          else
+            return true
+
+        checkVisibilityAndDraw = (chartData) ->
+          if hasVisibleParents(elem)
+            scope.draw(chartData)
+          else
+            $timeout (-> checkVisibilityAndDraw(chartData)), 50
 
         # Triggered by widget.format()
         # ------------------------------------
@@ -53,7 +70,8 @@ angular
           (error) ->
             $log.error(error)
           (chartData) ->
-            scope.draw(chartData)
+            # wait for the current digest cycle to complete
+            $timeout -> checkVisibilityAndDraw(chartData)
         )
 
         # Chart is ready: trigger load content
