@@ -17,11 +17,11 @@
     <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
 
     <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" on-display-widget-selector="displayWidgetSelector(newValue)" is-widget-selector-shown="showWidgetSelector" on-create-dashboard="createDashboardModal.open()"></dashboard-selector>
+    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()"></dashboard-selector>
   </div>
 
   <!-- Widgets selection container -->
-  <div id="widget-selector" collapse="!showWidgetSelector" ng-if="!customWidgetSelector.path">
+  <div id="widget-selector" collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
       <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
       <span class="badge confirmation">Widget added!</span>
@@ -119,7 +119,7 @@
           <div class="spacer2"></div>
         </div>
         <div class="align-center">
-          <button ng-disabled="showWidgetSelector" ng-click="displayWidgetSelector(true)" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Add a new Widget</button>
+          <button ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Add a new Widget</button>
         </div>
       </div>
     </div>
@@ -136,13 +136,21 @@
   <!-- Widgets -->
   <div class='row'>
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
-      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
+      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets track by widget.id" class="widget-item" ng-class="widget.getColClass()" />
       <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
       <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
         <div class="col-md-6 widget-item add-chart">
           <div class="a-content">+ chart</div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="analytics" ng-show="isLoading">
+  <div class="row">
+    <div class="col-md-12 loader-container text-center" style="margin-top: 200px;">
+      <i class="fa fa-refresh fa-spin" style="font-size: 250px; opacity: 0.7;"/>
     </div>
   </div>
 </div>
