@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widget', [])
-module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc) ->
+module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSvc) ->
 
   w = $scope.widget || {}
 
@@ -12,21 +12,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc) ->
     (promises) ->
       $q.all(promises).then(
         (success) ->
-          ImpacWidgetsSvc.show(w).then(
-            (updatedWidget) ->
-              w.isLoading = false
-              #TODO: Accessibility should be treated differently (in service?)
-              if $scope.isAccessibility
-                w.initialWidth = w.width
-                w.width = 12
-              else if w.initialWidth
-                w.width = w.initialWidth
-
-            (errorResponse) ->
-              w.isLoading = false
-              # TODO: better error management
-              $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
-          )
+          $scope.showWidget()
 
         (error) ->
           w.isLoading = false
@@ -35,6 +21,23 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, ImpacWidgetsSvc) ->
       )
   )
 
+
+  $scope.showWidget = (refreshCache=false) ->
+    w.isLoading ||= true
+    ImpacWidgetsSvc.show(w, refreshCache).then(
+      (updatedWidget) ->
+        #TODO: Accessibility should be treated differently (in service?)
+        if $scope.isAccessibility
+          w.initialWidth = w.width
+          w.width = 12
+        else if w.initialWidth
+          w.width = w.initialWidth
+
+      (errorResponse) ->
+        w.isLoading = false
+        # TODO: better error management
+        $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
+    ) 
 
   $scope.initSettings = ->
     w.isEditMode = false
