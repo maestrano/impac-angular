@@ -612,247 +612,6 @@ body {
     }
   }
 }
-.analytics {
-
-  padding-top: @impac-dashboard-padding-top;
-  margin-left: @impac-dashboard-margin-left;
-
-  #head-title {
-    // contains customisable impac logo, and heading text.
-    #dashboard-heading {
-      img {
-      float: left;
-      margin-right: 15px;
-      }
-      h2 {
-        padding-top: 12px;
-        height: 48px;
-        font-size: 30px;
-        color: #67bbe9;
-      }
-    }
-  }
-
-  #widget-selector {
-    background-color: @impac-dashboard-widget-selector-bg;
-    color: @impac-dashboard-widget-selector-text-color;
-    padding: 0px 45px 10px 45px;
-    margin: 10px -45px;
-
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: none;
-    user-select: none;
-
-    .badge.confirmation {
-      float: right;
-      margin-right: 10px;
-      opacity: 0;
-    }
-
-    .title {
-      padding: 15px 0px;
-      border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
-      i.fa.fa-times-circle {
-        float: right;
-        cursor: pointer;
-        margin-right: -35px;
-        margin-top: -6px;
-        font-size: 20px;
-        &:hover {
-          color: @mlightgrey;
-        }
-      }
-    }
-
-    .top-container {
-      margin: 15px 0px;
-      background-color: transparent;
-      border-radius: 3px;
-
-      .categories {
-        background-color: darken(@impac-dashboard-widget-selector-bg,6%);
-        padding-bottom: 15px;
-        .row.lines {
-          p:hover {
-            background-color: darken(@impac-dashboard-widget-selector-bg,3%);
-          }
-          p.selected {
-            background-color: @impac-widget-link-color;
-            font-weight: bold;
-            .box-shadow(-2px 2px 10px -4px black);
-          }
-        }
-        .arrow {
-          position: absolute;
-          top: 33px;
-          right: -11px;
-          z-index: 1;
-          .square {
-            width: 50px;
-            height: 30px;
-            position: absolute;
-            top: 10px;
-            right: 17px;
-            background-color: @impac-widget-link-color;
-          }
-          i.fa.fa-caret-right {
-            font-size: 52px;
-            color: @impac-widget-link-color;
-            float: right;
-            position: absolute;
-            top: -1px;
-            right: 0px;
-          }
-        }
-      }
-
-      .widgets {
-        background-color: darken(@impac-dashboard-widget-selector-bg,3%);
-        padding-bottom: 15px;
-        .row.header {
-          text-transform: uppercase;
-          font-size: 12px;
-          color: @impac-widget-link-color;
-        }
-        .row.lines {
-          padding: 3px 0px;
-          p:hover {
-            background-color: darken(@impac-dashboard-widget-selector-bg,6%);
-            font-weight: normal;
-          }
-          .fa.fa-plus-circle {
-            float: right;
-            margin-top: 3px;
-          }
-        }
-      }
-
-      .row.header {
-        padding: 10px 20px;
-        font-weight: bold;
-        min-height: 40px;
-      }
-
-      .row.lines {
-        overflow-x: hidden;
-        overflow-y: scroll;
-        height: 200px;
-        margin-right: -10px;
-        margin-left: 0px;
-        .box-shadow(inset 0px 0px 10px -4px black);
-        p {
-          padding: 5px;
-          margin: 0px;
-          border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
-          cursor: pointer;
-          &:hover, &.selected {
-            color: @impac-dashboard-widget-selector-text-color;
-          }
-        }
-
-        &::-webkit-scrollbar {
-          width: 6px;
-          background-color: transparent;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: lighten(@impac-dashboard-widget-selector-bg,3%);
-          border-radius: 10px;
-          &:hover {
-            background-color: lighten(@impac-dashboard-widget-selector-bg,6%);
-          }
-        }
-      }
-    }
-
-    .bottom {
-      height: 20px;
-      .suggestion {
-        float: right;
-        opacity: 0.7;
-        a {
-          cursor: pointer;
-          &:hover {
-            color: @fluroblue;
-          }
-        }
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  // no widgets - empty dashboard.
-  #no-widgets-container {
-    position: relative;
-
-    // background image asset
-    img.bg {
-      left: 0;
-      top: 0;
-      min-width: 100%;
-      min-height: 100%;
-    }
-
-    // no widgets message that sits above image asset
-    .impac-info-message {
-      position: absolute;
-      top: 0;
-      width: 100%;
-    }
-
-  }
-
-  #widgets-container {
-    // Quick-fix to avoid screen flockering when tooltips are appended to body:
-    // min-height will force a scrollbar to appear...
-    min-height: 700px;
-    padding-left: @impac-widgets-container-side-padding;
-    padding-right: @impac-widgets-container-side-padding;
-
-    .placeHolderBox {
-      margin: @impac-padding-between-widgets;
-      height: 267px;
-      width: 300px;
-      float: left;
-      border: @impac-placeholder-border;
-      background: none;
-    }
-
-    .widget-item {
-      padding: @impac-padding-between-widgets;
-    }
-  }
-}
-
-// Tooltips are append to body
-.tooltip.impac-widget-selector-tooltip .tooltip-inner.ng-binding {
-  font-size: 14px;
-}
-
-.impac-widget-suggestion .modal-body {
-  input,textarea {
-    width: 100%;
-    color: black;
-  }
-  textarea {
-    height: 150px;
-  }
-  .thanks-message {
-    color: @mgreen;
-  }
-}
-
-// This style applies to dashboard modals, and also the
-// `accounts-custom-calculation/formula.modal.html` modal.
-.modal-footer .loader {
-  .loader-style(@impac-dashboard-loading-spinner)
-}
-
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -1041,6 +800,254 @@ body {
   ////////
 }
 
+.analytics {
+
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
+
+  #head-title {
+    // contains customisable impac logo, and heading text.
+    #dashboard-heading {
+      img {
+      float: left;
+      margin-right: 15px;
+      }
+      h2 {
+        padding-top: 12px;
+        height: 48px;
+        font-size: 30px;
+        color: #67bbe9;
+      }
+    }
+  }
+
+  #widget-selector {
+    background-color: @impac-dashboard-widget-selector-bg;
+    color: @impac-dashboard-widget-selector-text-color;
+    padding: 0px 45px 10px 45px;
+    margin: 10px -45px;
+
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+
+    .badge.confirmation {
+      float: right;
+      margin-right: 10px;
+      opacity: 0;
+    }
+
+    .title {
+      padding: 15px 0px;
+      border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
+      i.fa.fa-times-circle {
+        float: right;
+        cursor: pointer;
+        margin-right: -35px;
+        margin-top: -6px;
+        font-size: 20px;
+        &:hover {
+          color: @mlightgrey;
+        }
+      }
+    }
+
+    .top-container {
+      margin: 15px 0px;
+      background-color: transparent;
+      border-radius: 3px;
+
+      .categories {
+        background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+        padding-bottom: 15px;
+        .row.lines {
+          p:hover {
+            background-color: darken(@impac-dashboard-widget-selector-bg,3%);
+          }
+          p.selected {
+            background-color: @impac-widget-link-color;
+            font-weight: bold;
+            .box-shadow(-2px 2px 10px -4px black);
+          }
+        }
+        .arrow {
+          position: absolute;
+          top: 33px;
+          right: -11px;
+          z-index: 1;
+          .square {
+            width: 50px;
+            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 17px;
+            background-color: @impac-widget-link-color;
+          }
+          i.fa.fa-caret-right {
+            font-size: 52px;
+            color: @impac-widget-link-color;
+            float: right;
+            position: absolute;
+            top: -1px;
+            right: 0px;
+          }
+        }
+      }
+
+      .widgets {
+        background-color: darken(@impac-dashboard-widget-selector-bg,3%);
+        padding-bottom: 15px;
+        .row.header {
+          text-transform: uppercase;
+          font-size: 12px;
+          color: @impac-widget-link-color;
+        }
+        .row.lines {
+          padding: 3px 0px;
+          p:hover {
+            background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+            font-weight: normal;
+          }
+          .fa.fa-plus-circle {
+            float: right;
+            margin-top: 3px;
+          }
+        }
+      }
+
+      .row.header {
+        padding: 10px 20px;
+        font-weight: bold;
+        min-height: 40px;
+      }
+
+      .row.lines {
+        overflow-x: hidden;
+        overflow-y: scroll;
+        height: 200px;
+        margin-right: -10px;
+        margin-left: 0px;
+        .box-shadow(inset 0px 0px 10px -4px black);
+        p {
+          padding: 5px;
+          margin: 0px;
+          border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
+          cursor: pointer;
+          &:hover, &.selected {
+            color: @impac-dashboard-widget-selector-text-color;
+          }
+        }
+
+        &::-webkit-scrollbar {
+          width: 6px;
+          background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: lighten(@impac-dashboard-widget-selector-bg,3%);
+          border-radius: 10px;
+          &:hover {
+            background-color: lighten(@impac-dashboard-widget-selector-bg,6%);
+          }
+        }
+      }
+    }
+
+    .bottom {
+      height: 20px;
+      .suggestion {
+        float: right;
+        opacity: 0.7;
+        a {
+          cursor: pointer;
+          &:hover {
+            color: @fluroblue;
+          }
+        }
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // no widgets - empty dashboard.
+  #no-widgets-container {
+    position: relative;
+    min-height: 150px;
+
+    // background image asset
+    img.bg {
+      left: 0;
+      top: 0;
+      min-width: 100%;
+      min-height: 100%;
+    }
+
+    // no widgets message that sits above image asset
+    .impac-info-message {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+  }
+
+  // parent div section for widgets to be housed.
+  #widgets-section {
+    padding-left: @impac-widgets-container-side-padding;
+    padding-right: @impac-widgets-container-side-padding;
+
+    // container for widgets
+    #widgets-container {
+      // Quick-fix to avoid screen flockering when tooltips are appended to body:
+      // min-height will force a scrollbar to appear...
+      min-height: 700px;
+    }
+
+    .placeHolderBox {
+      margin: @impac-padding-between-widgets;
+      height: 267px;
+      width: 300px;
+      float: left;
+      border: @impac-placeholder-border;
+      background: none;
+    }
+
+    // individual widget
+    .widget-item {
+      padding: @impac-padding-between-widgets;
+    }
+  }
+}
+
+// Tooltips are append to body
+.tooltip.impac-widget-selector-tooltip .tooltip-inner.ng-binding {
+  font-size: 14px;
+}
+
+.impac-widget-suggestion .modal-body {
+  input,textarea {
+    width: 100%;
+    color: black;
+  }
+  textarea {
+    height: 150px;
+  }
+  .thanks-message {
+    color: @mgreen;
+  }
+}
+
+// This style applies to dashboard modals, and also the
+// `accounts-custom-calculation/formula.modal.html` modal.
+.modal-footer .loader {
+  .loader-style(@impac-dashboard-loading-spinner)
+}
+
 .analytics kpis-bar .kpi {
 
   text-align: center;
@@ -1142,6 +1149,49 @@ body {
   min-height: 80px;
 }
 
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
+
 .analytics kpis-bar > .kpis {
 
   // color: @light-black;
@@ -1204,49 +1254,6 @@ body {
   // color: @light-black;
   padding: 5px 0px;
 }
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1268,6 +1275,7 @@ body {
   }
 }
 
+
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -1279,7 +1287,6 @@ body {
     }
   }
 }
-
 
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
@@ -1511,6 +1518,22 @@ body {
     }
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
+  }
+}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -1529,22 +1552,6 @@ body {
   .fc-day-grid,.fc-widget-header {
     font-size: 12px;
     color: @impac-widget-text-color;
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-payroll-summary {
@@ -1845,6 +1852,8 @@ body {
     -o-filter: blur(2px);
     -ms-filter: blur(2px);
     filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
   }
   .message {
     position: absolute;
@@ -2104,6 +2113,15 @@ body {
     }
   }
 }
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -2142,15 +2160,6 @@ body {
         color: white;
       }
     }
-  }
-}
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
   }
 }
 .analytics .widget-item .content .settings.time-range {
