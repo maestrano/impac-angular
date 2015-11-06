@@ -5,7 +5,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     #====================================
     # Initialization
     #====================================
-    $scope.isLoading = true
+    # $scope.isLoading = true
 
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
@@ -49,8 +49,19 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
     # reload the <impac-dashboards> on organization change.
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
+    $scope.isLoading = true
     ImpacDashboardsSvc.load(true).then (success) ->
       $scope.activateTimer()
+
+    $scope.activateTimer = ->
+      $scope.isLoading ||= true
+      w = $scope.currentDhb.widgets
+      timer = 250
+      # The dashboard will load 100ms per widget before being displayed
+      timer = Math.max(100*w.length, 500) if w?
+      $timeout ->
+        $scope.isLoading=false
+      ,timer
 
 
     # ============================================
@@ -365,16 +376,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       # only the top-line with title will provide the handle to drag/drop widgets
       handle: ".top-line"
     }
-
-    $scope.activateTimer = ->
-      $scope.isLoading = true
-      w = $scope.currentDhb.widgets
-      timer = 250
-      # The dashboard will load 100ms per widget before being displayed
-      timer = Math.max(100*w.length, 500) if w?
-      $timeout ->
-        $scope.isLoading=false
-      ,timer
 
 )
 
