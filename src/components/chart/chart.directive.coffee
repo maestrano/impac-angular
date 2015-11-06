@@ -8,7 +8,7 @@ angular
         drawTrigger: '='
         deferred: '='
       },
-      template: '<canvas></canvas>',
+      template: '<canvas height="1" width="1"></canvas>',
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,
@@ -43,24 +43,31 @@ angular
               new Chart(ctx).Pie(data.data,options)
 
 
-        hasVisibleParents = (element) ->
-          if angular.isDefined(element.parent) && element.parent()? && angular.isDefined(element.parent().css)
+        getInvisibleParents = (elemsArray, element) ->
+          if angular.isDefined(element.parent) && element.parent()?
             parent = element.parent()
             try
-              return (parent.css('display') != 'none') && hasVisibleParents(parent)
+              elemsArray.push(parent) if parent.css('display')=='none'
+              getInvisibleParents(elemsArray, parent)
             catch e
-              # There will be an error when we reach the root element:
-              # TypeError: Cannot read property 'defaultView'
-              # ... in this case, we know that all the elements below are visible, so "true" can be returned
-              return true
+              return elemsArray
           else
-            return true
+            return elemsArray
+
+        waitForParentsAndDraw = (parentsArray, chartData) ->
+          for p in parentsArray
+            scope.$watch (-> p.css('display')), ->
+              _.remove(parentsArray, (p)->
+                p.css('display')!='none'
+              )
+              scope.draw(chartData) if _.isEmpty parentsArray
 
         checkVisibilityAndDraw = (chartData) ->
-          if hasVisibleParents(elem)
+          parentsArray = getInvisibleParents([], elem)
+          if parentsArray.length == 0
             scope.draw(chartData)
           else
-            $timeout (-> checkVisibilityAndDraw(chartData)), 50
+            waitForParentsAndDraw(parentsArray, chartData)
 
         # Triggered by widget.format()
         # ------------------------------------
@@ -70,8 +77,7 @@ angular
           (error) ->
             $log.error(error)
           (chartData) ->
-            # wait for the current digest cycle to complete
-            $timeout -> checkVisibilityAndDraw(chartData)
+            checkVisibilityAndDraw(chartData)
         )
 
         # Chart is ready: trigger load content
