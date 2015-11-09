@@ -53,8 +53,23 @@ angular
     # versusMode: put the negative dataset first
     @lineChart = (inputDataArray, opts={}, versusMode=false) ->
       index = 0
+      isFilled = inputDataArray.length == 1
+
+      # Defaut when several datasets: straight lines without point dot
+      if inputDataArray.length > 1 || (opts.pointDot? && !opts.pointDot)
+        angular.merge(opts, {
+          elements: {
+            point: {
+              radius: 1
+            }
+            line: {
+              tension: 0.3
+            }
+          }
+        })
+
       return {
-        chartType: 'Line',
+        type: 'line',
         options: opts,
         data: {
           labels: inputDataArray[0].labels,
@@ -68,14 +83,16 @@ angular
               color = _self.getColor(index)
             index++
             return {
-              label: inputData.title,
-              data: inputData.values,
-              fillColor: lightenColor(color,0.3),
-              strokeColor: color,
-              pointColor: color,
-              pointStrokeColor: color,
-              pointHighlightFill: color,
-              pointHighlightStroke: lightenColor(color,0.3),
+              label: inputData.title
+              data: inputData.values
+
+              fill: isFilled
+
+              backgroundColor: lightenColor(color,0.3)
+              borderColor: color
+              pointBorderColor: color
+              pointBackgroundColor: color
+              pointHoverBackgroundColor: 'rgb(0,0,0,)'
             }
         }
       }
@@ -92,7 +109,7 @@ angular
     @barChart = (inputData, opts={}, positivesOnly=true) ->
       index = 0
       return {
-        chartType: 'Bar',
+        type: 'bar',
         options: opts,
         data: {
           labels: [""],
@@ -131,7 +148,7 @@ angular
     @combinedBarChart = (inputData, opts={}, positivesOnly=true) ->
       index = 0
       result = {
-        chartType: 'Bar',
+        type: 'bar',
         options: opts,
         data: {
           labels: inputData.labels
@@ -164,7 +181,7 @@ angular
     @pieChart = (inputData, opts={}, versusMode=false) ->
       index = 0
       return {
-        chartType: 'Pie',
+        type: 'doughnut',
         options: opts,
         data: _.map inputData, (data) ->
           if versusMode

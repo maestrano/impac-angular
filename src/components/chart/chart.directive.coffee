@@ -1,7 +1,7 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('impacChart', ($timeout, $log) ->
+  .directive('impacChart', ($timeout, $log, ChartFormatterSvc) ->
     return {
       restrict: 'A',
       scope: {
@@ -9,24 +9,57 @@ angular
         deferred: '='
       },
       link: (scope,elem,attr) ->
-        options = {
-          bezierCurve: true,
-          pointDotRadius : 3,
-          responsive: true,
-          scaleShowLabels : true,
-          scaleShowLabelBackdrop : true,
-          scaleBeginAtZero: true,
-          scaleShowGridLines: true,
+        # options = {
+        #   bezierCurve: true,
+        #   pointDotRadius : 3,
+        #   responsive: true
+        #   scaleShowLabels : true,
+        #   scaleShowLabelBackdrop : true,
+        #   scaleBeginAtZero: true,
+        #   scaleShowGridLines: true,
+        # }
+        angular.merge Chart.defaults.global, {
+          defaultColor: ChartFormatterSvc.getColor(0)
+          tooltips: {
+            titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+            bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+            footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          }
+          elements: {
+            point: {
+              hitRadius: 8
+              hoverRadius: 8
+            }
+            line: {
+              tension: 0
+              borderWidth: 2
+            }
+          }
+        }
+
+        angular.merge Chart.defaults.scale, {
+          ticks: {
+            minRotation: 0
+            maxRotation: 0
+            fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          }
+          scaleLabel: {
+            fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          }
         }
 
         # Draw a chart in the canvas
         # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
         # ------------------------------------
-        scope.draw = (data) ->
-          if !_.isEmpty(data.options)
-            angular.extend(options,data.options)
+        scope.draw = (chartData) ->
 
-          args = {data: data.data, options: options}
+          angular.merge(chartData.options, {
+            scales: {
+              xAxes: [{
+                display: false
+              }]
+            }
+          }) if chartData.options.showXLabels? && !chartData.options.showXLabels
 
           # canvas has to be removed/appended to be redrawned without superposition
           elem.children().remove(0) if elem.children().length > 0
@@ -34,14 +67,8 @@ angular
           canvas = elem.children()[0]
           ctx = canvas.getContext("2d")
 
-          switch data.chartType
-            when 'Bar'
-              Chart.Bar(ctx, args)
-            when 'Line'
-              Chart.Line(ctx, args)
-            when 'Pie'
-              # angular.extend(options, {tooltipFixed: true})
-              Chart.Doughnut(ctx, args)
+          new Chart(ctx, chartData)
+
 
         # Triggered by widget.format()
         # ------------------------------------
