@@ -9,17 +9,9 @@ angular
         deferred: '='
       },
       link: (scope,elem,attr) ->
-        # options = {
-        #   bezierCurve: true,
-        #   pointDotRadius : 3,
-        #   responsive: true
-        #   scaleShowLabels : true,
-        #   scaleShowLabelBackdrop : true,
-        #   scaleBeginAtZero: true,
-        #   scaleShowGridLines: true,
-        # }
         angular.merge Chart.defaults.global, {
           defaultColor: ChartFormatterSvc.getColor(0)
+          responsiveAnimationDuration: 1000
           tooltips: {
             titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
             bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
