@@ -42,6 +42,40 @@ angular
       return "rgba(#{hexToRGB(htmlColor)},#{alpha})"
 
 
+    # Configure ChartJs global options
+    # ----------
+    angular.merge Chart.defaults.global, {
+      defaultColor: _self.getColor(0)
+      responsiveAnimationDuration: 1000
+      tooltips: {
+        titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+      }
+      elements: {
+        point: {
+          hitRadius: 8
+          hoverRadius: 8
+        }
+        line: {
+          tension: 0
+          borderWidth: 2
+        }
+      }
+    }
+
+    angular.merge Chart.defaults.scale, {
+      ticks: {
+        minRotation: 0
+        maxRotation: 0
+        fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+      }
+      scaleLabel: {
+        fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+      }
+    }
+
+
     # Line Chart of several datasets | versusMode can be used to force positive/negative colors
     # ----------
     # inputDataArray:

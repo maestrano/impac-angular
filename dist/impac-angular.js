@@ -339,35 +339,6 @@ angular.module('impac.components.chart', []).directive('impacChart', ["$timeout"
       deferred: '='
     },
     link: function(scope, elem, attr) {
-      angular.merge(Chart.defaults.global, {
-        defaultColor: ChartFormatterSvc.getColor(0),
-        responsiveAnimationDuration: 1000,
-        tooltips: {
-          titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
-          bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
-          footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-        },
-        elements: {
-          point: {
-            hitRadius: 8,
-            hoverRadius: 8
-          },
-          line: {
-            tension: 0,
-            borderWidth: 2
-          }
-        }
-      });
-      angular.merge(Chart.defaults.scale, {
-        ticks: {
-          minRotation: 0,
-          maxRotation: 0,
-          fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-        },
-        scaleLabel: {
-          fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-        }
-      });
       scope.draw = function(chartData) {
         var canvas, ctx;
         if ((chartData.options.showXLabels != null) && !chartData.options.showXLabels) {
@@ -437,6 +408,35 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
   lightenColor = function(htmlColor, alpha) {
     return "rgba(" + (hexToRGB(htmlColor)) + "," + alpha + ")";
   };
+  angular.merge(Chart.defaults.global, {
+    defaultColor: _self.getColor(0),
+    responsiveAnimationDuration: 1000,
+    tooltips: {
+      titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    },
+    elements: {
+      point: {
+        hitRadius: 8,
+        hoverRadius: 8
+      },
+      line: {
+        tension: 0,
+        borderWidth: 2
+      }
+    }
+  });
+  angular.merge(Chart.defaults.scale, {
+    ticks: {
+      minRotation: 0,
+      maxRotation: 0,
+      fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    },
+    scaleLabel: {
+      fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    }
+  });
   this.lineChart = function(inputDataArray, opts, versusMode) {
     var index, isFilled;
     if (opts == null) {
@@ -2483,6 +2483,44 @@ module.directive('commonDataNotFound', ["$templateCache", "$log", "$http", "Impa
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets-common.editable-title', []);
+
+module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
+  var w;
+  w = $scope.parentWidget;
+  return $scope.updateName = function() {
+    var data;
+    if (w.name.length === 0) {
+      w.name = w.originalName;
+      return "Incorrect name";
+    } else {
+      data = {
+        name: w.name
+      };
+      return ImpacWidgetsSvc.update(w, data).then(function(success) {
+        return true;
+      }, function(error) {
+        return w.name = w.originalName;
+      });
+    }
+  };
+}]);
+
+module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
+    controller: 'CommonEditableTitleCtrl'
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets-common.top-buttons', []);
 
 module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "ImpacWidgetsSvc", "ImpacAssets", "ImpacUtilities", function($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) {
@@ -2523,44 +2561,6 @@ module.directive('commonTopButtons', ["$templateCache", function($templateCache)
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.editable-title', []);
-
-module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
-  var w;
-  w = $scope.parentWidget;
-  return $scope.updateName = function() {
-    var data;
-    if (w.name.length === 0) {
-      w.name = w.originalName;
-      return "Incorrect name";
-    } else {
-      data = {
-        name: w.name
-      };
-      return ImpacWidgetsSvc.update(w, data).then(function(success) {
-        return true;
-      }, function(error) {
-        return w.name = w.originalName;
-      });
-    }
-  };
-}]);
-
-module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
-    controller: 'CommonEditableTitleCtrl'
   };
 }]);
 }).call(this);
@@ -3283,114 +3283,6 @@ module.directive('widgetAccountsClassComparison', function() {
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets.accounts-custom-calculation', []);
-
-module.controller('WidgetAccountsCustomCalculationCtrl', ["$scope", "$timeout", "$modal", "$q", "$templateCache", "ImpacWidgetsSvc", function($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.accountsListDeferred = $q.defer();
-  $scope.formulaDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.accountsListDeferred.promise, $scope.formulaDeferred.promise];
-  w.initContext = function() {
-    $scope.movedAccount = {};
-    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.complete_list);
-  };
-  $scope.addAccountToFormula = function(account) {
-    if (account == null) {
-      return;
-    }
-    if (w.selectedAccounts.length > 0) {
-      w.formula += " + {" + (w.selectedAccounts.length + 1) + "}";
-    } else {
-      w.formula = "{1}";
-    }
-    return w.moveAccountToAnotherList(account, w.remainingAccounts, w.selectedAccounts, false);
-  };
-  $scope.removeAccountFromFormula = function(account) {
-    var diffAccountIndex, diffAccountUid, i, indexPattern, newFormula, nextUids, prevUids, removePattern;
-    prevUids = _.map(w.selectedAccounts, function(e) {
-      return e.uid;
-    });
-    nextUids = _.reject(prevUids, function(e) {
-      return e === account.uid;
-    });
-    diffAccountUid = _.first(_.difference(prevUids, nextUids));
-    diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1;
-    if (diffAccountIndex === 1) {
-      removePattern = "{" + diffAccountIndex + "\\}\\s*(-|\\*|\\/|\\+)*\\s*";
-    } else {
-      removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{" + diffAccountIndex + "\\}";
-    }
-    newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'), '');
-    i = diffAccountIndex + 1;
-    while (i <= prevUids.length) {
-      indexPattern = "\\{" + i + "\\}";
-      newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{" + (i - 1) + "}");
-      i++;
-    }
-    w.formula = angular.copy(newFormula);
-    return w.moveAccountToAnotherList(account, w.selectedAccounts, w.remainingAccounts, false);
-  };
-  $scope.formulaModal = $scope.$new();
-  $scope.formulaModal.config = {
-    backdrop: 'static',
-    template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html'),
-    size: 'lg',
-    scope: $scope.formulaModal,
-    keyboard: false
-  };
-  $scope.formulaModal.open = function() {
-    var self;
-    self = $scope.formulaModal;
-    self.modalOrgDeferred = $q.defer();
-    _.remove(w.settings, (function(set) {
-      return set.key === "organizations";
-    }));
-    self.instance = $modal.open(self.config);
-    return self.modalOrgDeferred.promise.then(function(success) {
-      return $scope.initSettings();
-    });
-  };
-  $scope.$watch((function() {
-    return w.selectedOrganizations;
-  }), function(result) {
-    if (!_.isEmpty(result)) {
-      return ImpacWidgetsSvc.updateWidgetSettings(w);
-    }
-  }, true);
-  $scope.formulaModal.cancel = function() {
-    $scope.initSettings();
-    return $scope.formulaModal.close();
-  };
-  $scope.formulaModal.proceed = function() {
-    ImpacWidgetsSvc.updateWidgetSettings(w, false);
-    return $scope.formulaModal.close();
-  };
-  $scope.formulaModal.close = function() {
-    return $scope.formulaModal.instance.close();
-  };
-  $scope.$watch((function() {
-    return w.isEditMode;
-  }), function(result, prev) {
-    if (result && !prev) {
-      return $scope.formulaModal.open();
-    }
-  });
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetAccountsCustomCalculation', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetAccountsCustomCalculationCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.accounts-comparison', []);
 
 module.controller('WidgetAccountsComparisonCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
@@ -3511,6 +3403,114 @@ module.directive('widgetAccountsComparison', function() {
   return {
     restrict: 'A',
     controller: 'WidgetAccountsComparisonCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.accounts-custom-calculation', []);
+
+module.controller('WidgetAccountsCustomCalculationCtrl', ["$scope", "$timeout", "$modal", "$q", "$templateCache", "ImpacWidgetsSvc", function($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.accountsListDeferred = $q.defer();
+  $scope.formulaDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.accountsListDeferred.promise, $scope.formulaDeferred.promise];
+  w.initContext = function() {
+    $scope.movedAccount = {};
+    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.complete_list);
+  };
+  $scope.addAccountToFormula = function(account) {
+    if (account == null) {
+      return;
+    }
+    if (w.selectedAccounts.length > 0) {
+      w.formula += " + {" + (w.selectedAccounts.length + 1) + "}";
+    } else {
+      w.formula = "{1}";
+    }
+    return w.moveAccountToAnotherList(account, w.remainingAccounts, w.selectedAccounts, false);
+  };
+  $scope.removeAccountFromFormula = function(account) {
+    var diffAccountIndex, diffAccountUid, i, indexPattern, newFormula, nextUids, prevUids, removePattern;
+    prevUids = _.map(w.selectedAccounts, function(e) {
+      return e.uid;
+    });
+    nextUids = _.reject(prevUids, function(e) {
+      return e === account.uid;
+    });
+    diffAccountUid = _.first(_.difference(prevUids, nextUids));
+    diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1;
+    if (diffAccountIndex === 1) {
+      removePattern = "{" + diffAccountIndex + "\\}\\s*(-|\\*|\\/|\\+)*\\s*";
+    } else {
+      removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{" + diffAccountIndex + "\\}";
+    }
+    newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'), '');
+    i = diffAccountIndex + 1;
+    while (i <= prevUids.length) {
+      indexPattern = "\\{" + i + "\\}";
+      newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{" + (i - 1) + "}");
+      i++;
+    }
+    w.formula = angular.copy(newFormula);
+    return w.moveAccountToAnotherList(account, w.selectedAccounts, w.remainingAccounts, false);
+  };
+  $scope.formulaModal = $scope.$new();
+  $scope.formulaModal.config = {
+    backdrop: 'static',
+    template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html'),
+    size: 'lg',
+    scope: $scope.formulaModal,
+    keyboard: false
+  };
+  $scope.formulaModal.open = function() {
+    var self;
+    self = $scope.formulaModal;
+    self.modalOrgDeferred = $q.defer();
+    _.remove(w.settings, (function(set) {
+      return set.key === "organizations";
+    }));
+    self.instance = $modal.open(self.config);
+    return self.modalOrgDeferred.promise.then(function(success) {
+      return $scope.initSettings();
+    });
+  };
+  $scope.$watch((function() {
+    return w.selectedOrganizations;
+  }), function(result) {
+    if (!_.isEmpty(result)) {
+      return ImpacWidgetsSvc.updateWidgetSettings(w);
+    }
+  }, true);
+  $scope.formulaModal.cancel = function() {
+    $scope.initSettings();
+    return $scope.formulaModal.close();
+  };
+  $scope.formulaModal.proceed = function() {
+    ImpacWidgetsSvc.updateWidgetSettings(w, false);
+    return $scope.formulaModal.close();
+  };
+  $scope.formulaModal.close = function() {
+    return $scope.formulaModal.instance.close();
+  };
+  $scope.$watch((function() {
+    return w.isEditMode;
+  }), function(result, prev) {
+    if (result && !prev) {
+      return $scope.formulaModal.open();
+    }
+  });
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetAccountsCustomCalculation', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetAccountsCustomCalculationCtrl'
   };
 });
 }).call(this);
@@ -4245,6 +4245,55 @@ module.directive('widgetHrEmployeesList', function() {
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets.hr-leaves-balance', []);
+
+module.controller('WidgetHrLeavesBalanceCtrl', ["$scope", "$q", function($scope, $q) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.timeRangeDeferred = $q.defer();
+  $scope.paramSelectorDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.paramSelectorDeferred.promise];
+  w.initContext = function() {
+    if ($scope.isDataFound = !_.isEmpty(w.content.employees) && !_.isEmpty(w.content.dates)) {
+      $scope.employeesOptions = _.map(w.content.employees, function(e) {
+        return {
+          value: e.id,
+          label: e.lastname + " " + e.firstname
+        };
+      });
+      return $scope.selectedEmployee = {
+        value: $scope.getEmployee().id,
+        label: ($scope.getEmployee().lastname) + " " + ($scope.getEmployee().firstname)
+      };
+    }
+  };
+  $scope.getEmployee = function() {
+    if (!$scope.isDataFound) {
+      return false;
+    }
+    if (w.metadata && w.metadata.employee_id) {
+      return _.find(w.content.employees, function(e) {
+        return e.id === w.metadata.employee_id;
+      }) || w.content.employees[0];
+    } else {
+      return w.content.employees[0];
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetHrLeavesBalance', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetHrLeavesBalanceCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets.hr-leaves-schedule', []);
 
 module.controller('WidgetHrLeavesScheduleCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
@@ -4306,55 +4355,6 @@ module.directive('widgetComponentCalendar', function() {
         }
       }, true);
     }
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets.hr-leaves-balance', []);
-
-module.controller('WidgetHrLeavesBalanceCtrl', ["$scope", "$q", function($scope, $q) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.timeRangeDeferred = $q.defer();
-  $scope.paramSelectorDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.paramSelectorDeferred.promise];
-  w.initContext = function() {
-    if ($scope.isDataFound = !_.isEmpty(w.content.employees) && !_.isEmpty(w.content.dates)) {
-      $scope.employeesOptions = _.map(w.content.employees, function(e) {
-        return {
-          value: e.id,
-          label: e.lastname + " " + e.firstname
-        };
-      });
-      return $scope.selectedEmployee = {
-        value: $scope.getEmployee().id,
-        label: ($scope.getEmployee().lastname) + " " + ($scope.getEmployee().firstname)
-      };
-    }
-  };
-  $scope.getEmployee = function() {
-    if (!$scope.isDataFound) {
-      return false;
-    }
-    if (w.metadata && w.metadata.employee_id) {
-      return _.find(w.content.employees, function(e) {
-        return e.id === w.metadata.employee_id;
-      }) || w.content.employees[0];
-    } else {
-      return w.content.employees[0];
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetHrLeavesBalance', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetHrLeavesBalanceCtrl'
   };
 });
 }).call(this);
@@ -5912,84 +5912,6 @@ module.directive('widgetSalesCustomerDetails', function() {
 }).call(this);
 (function () {
 'use strict';
-var module;
-
-module = angular.module('impac.components.widgets.sales-forecast', []);
-
-module.controller('WidgetSalesForecastCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.totals);
-  };
-  w.processError = function(error) {
-    if (error.code === 404) {
-      return $scope.isDataFound = false;
-    }
-  };
-  $scope.getOpportunityAmount = function(anOpp) {
-    if ($scope.isDataFound && !_.isEmpty(anOpp)) {
-      if (anOpp.amount && anOpp.amount.amount) {
-        return anOpp.amount.amount;
-      } else {
-        return '-';
-      }
-    }
-  };
-  $scope.getOpportunityCurrency = function(anOpp) {
-    if ($scope.isDataFound && !_.isEmpty(anOpp)) {
-      if (anOpp.amount && anOpp.amount.currency) {
-        return anOpp.amount.currency;
-      } else if (w.content.currency) {
-        return w.content.currency;
-      } else {
-        return 'AUD';
-      }
-    }
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var all_values_are_positive, chartData, formattedDates, inputData, options;
-    if ($scope.isDataFound) {
-      all_values_are_positive = true;
-      formattedDates = _.map(w.content.dates, function(aDate) {
-        return $filter('date')(aDate, 'MMM-yy');
-      });
-      inputData = [
-        {
-          title: 'Sales Performance',
-          labels: formattedDates,
-          values: w.content.totals
-        }
-      ];
-      angular.forEach(w.content.totals, function(value) {
-        return all_values_are_positive && (all_values_are_positive = value >= 0);
-      });
-      options = {
-        scaleBeginAtZero: all_values_are_positive,
-        showXLabels: true,
-        datasetFill: true,
-        pointDot: false
-      };
-      chartData = ChartFormatterSvc.lineChart(inputData, options);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetSalesForecast', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetSalesForecastCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
 var module,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -6063,6 +5985,84 @@ module.directive('widgetSalesCycle', function() {
   return {
     restrict: 'A',
     controller: 'WidgetSalesCycleCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.sales-forecast', []);
+
+module.controller('WidgetSalesForecastCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.chartDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.totals);
+  };
+  w.processError = function(error) {
+    if (error.code === 404) {
+      return $scope.isDataFound = false;
+    }
+  };
+  $scope.getOpportunityAmount = function(anOpp) {
+    if ($scope.isDataFound && !_.isEmpty(anOpp)) {
+      if (anOpp.amount && anOpp.amount.amount) {
+        return anOpp.amount.amount;
+      } else {
+        return '-';
+      }
+    }
+  };
+  $scope.getOpportunityCurrency = function(anOpp) {
+    if ($scope.isDataFound && !_.isEmpty(anOpp)) {
+      if (anOpp.amount && anOpp.amount.currency) {
+        return anOpp.amount.currency;
+      } else if (w.content.currency) {
+        return w.content.currency;
+      } else {
+        return 'AUD';
+      }
+    }
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var all_values_are_positive, chartData, formattedDates, inputData, options;
+    if ($scope.isDataFound) {
+      all_values_are_positive = true;
+      formattedDates = _.map(w.content.dates, function(aDate) {
+        return $filter('date')(aDate, 'MMM-yy');
+      });
+      inputData = [
+        {
+          title: 'Sales Performance',
+          labels: formattedDates,
+          values: w.content.totals
+        }
+      ];
+      angular.forEach(w.content.totals, function(value) {
+        return all_values_are_positive && (all_values_are_positive = value >= 0);
+      });
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: true,
+        datasetFill: true,
+        pointDot: false
+      };
+      chartData = ChartFormatterSvc.lineChart(inputData, options);
+      return $scope.drawTrigger.notify(chartData);
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetSalesForecast', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetSalesForecastCtrl'
   };
 });
 }).call(this);
