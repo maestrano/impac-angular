@@ -8,7 +8,6 @@ angular
         drawTrigger: '='
         deferred: '='
       },
-      template: '<canvas height="1" width="1"></canvas>',
       link: (scope,elem,attr) ->
         options = {
           bezierCurve: true,
@@ -27,47 +26,22 @@ angular
           if !_.isEmpty(data.options)
             angular.extend(options,data.options)
 
+          args = {data: data.data, options: options}
+
           # canvas has to be removed/appended to be redrawned without superposition
-          elem.children().get(0).remove()
+          elem.children().remove(0) if elem.children().length > 0
           elem.append('<canvas></canvas>')
-          canvas = elem.children().get(0)
+          canvas = elem.children()[0]
           ctx = canvas.getContext("2d")
 
           switch data.chartType
             when 'Bar'
-              new Chart(ctx).Bar(data.data,options)
+              Chart.Bar(ctx, args)
             when 'Line'
-              new Chart(ctx).Line(data.data,options)
+              Chart.Line(ctx, args)
             when 'Pie'
-              angular.extend(options, {tooltipFixed: true})
-              new Chart(ctx).Pie(data.data,options)
-
-
-        getInvisibleParents = (elemsArray, element) ->
-          if angular.isDefined(element.parent) && element.parent()?
-            parent = element.parent()
-            try
-              elemsArray.push(parent) if parent.css('display')=='none'
-              getInvisibleParents(elemsArray, parent)
-            catch e
-              return elemsArray
-          else
-            return elemsArray
-
-        waitForParentsAndDraw = (parentsArray, chartData) ->
-          for p in parentsArray
-            scope.$watch (-> p.css('display')), ->
-              _.remove(parentsArray, (p)->
-                p.css('display')!='none'
-              )
-              scope.draw(chartData) if _.isEmpty parentsArray
-
-        checkVisibilityAndDraw = (chartData) ->
-          parentsArray = getInvisibleParents([], elem)
-          if parentsArray.length == 0
-            scope.draw(chartData)
-          else
-            waitForParentsAndDraw(parentsArray, chartData)
+              # angular.extend(options, {tooltipFixed: true})
+              Chart.Doughnut(ctx, args)
 
         # Triggered by widget.format()
         # ------------------------------------
@@ -77,7 +51,7 @@ angular
           (error) ->
             $log.error(error)
           (chartData) ->
-            checkVisibilityAndDraw(chartData)
+            scope.draw(chartData)
         )
 
         # Chart is ready: trigger load content
