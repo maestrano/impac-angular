@@ -60,7 +60,7 @@ angular
         angular.merge(opts, {
           elements: {
             point: {
-              radius: 1
+              radius: 0.0001
             }
             line: {
               tension: 0.3
@@ -98,7 +98,8 @@ angular
       }
 
 
-    # Bar Chart of several datasets with only 1 value each (eg: different coloured bars for several accounts)
+    # TODO refactor barChart and combinedChart (now we have chartjs v2.0...)
+    # Bar Chart of one dataset with several values (eg: different coloured bars for several accounts)
     # ----------
     # inputData:
     # {
@@ -108,29 +109,18 @@ angular
     # positivesOnly: if true (default), negative bars will be turned into their opposite
     @barChart = (inputData, opts={}, positivesOnly=true) ->
       index = 0
+      colors = []
+      for value in inputData.values
+        inputData.values[index] = Math.abs(value) if positivesOnly
+        colors.push(_self.getColor(index))
+        index++
+
       return {
-        type: 'bar',
-        options: opts,
+        type: 'bar'
+        options: opts
         data: {
-          labels: [""],
-          datasets: _.map inputData.values, (value) ->
-            color = _self.getColor(index)
-            index++
-
-            if !value?
-              value = 0.0
-              color = "rgba(0,0,0,0)"
-            if positivesOnly && value < 0.0
-              value = -value
-
-            return {
-              label: inputData.labels[index] || "",
-              data: [value],
-              fillColor: color,
-              strokeColor: color,
-              highlightFill: color,
-              highlightStroke: color,
-            }
+          labels: inputData.labels
+          datasets: [{ backgroundColor: colors, data: inputData.values }]
         }
       }
 
@@ -163,10 +153,7 @@ angular
             return {
               label: dataset.title,
               data: dataset.values,
-              fillColor: color,
-              strokeColor: color,
-              highlightFill: color,
-              highlightStroke: color,
+              backgroundColor: color,
             }
         }
       }
@@ -191,7 +178,7 @@ angular
         for data in inputData
           colors.push(_self.getColor(index))
           index++
-          
+
       {
         type: 'doughnut',
         options: opts,

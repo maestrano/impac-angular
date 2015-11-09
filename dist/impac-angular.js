@@ -159,8 +159,8 @@ $templateCache.put("widget/widget.tmpl.html","<div class=\"top-line\">\n  <div c
 $templateCache.put("widgets/accounts-accounting-values.tmpl.html","<div widget-accounts-accounting-values>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" />\n\n      <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n        <div class=\"price\">\n           {{ getCurrentPrice() | mnoCurrency : getCurrency() : false }}\n        </div>\n        <div class=\"currency\">{{getCurrency()}}</div>\n        <div class=\"legend\">{{getLegend()}}</div>\n      </div>\n\n      <div class=\"history chart-container\" ng-class=\"{\'invisible\': !widget.isHistoryMode}\">\n        <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        <div class=\"legend\">{{getLegend()}}</div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n  \n</div>");
 $templateCache.put("widgets/accounts-assets-liability-summary.tmpl.html","<div widget-accounts-assets-liability-summary>\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\" class=\"chart-container\">\n      <!-- account classification selectors -->\n      <div setting-param-selector parent-widget=\"widget\" param=\"classification\" options=\"accountsOptions\" selected=\"selectedAccountsOption\" class=\"row param-selector\" deferred=\"::paramSelectorDeferred\"/>\n      <!---->\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\">\n        <div class=\"title\" ng-show=\"widget.metadata.organization_ids.length==1\">{{widget.content.summary[0].company}} {{classification}}</div>\n        <div class=\"title\" ng-hide=\"widget.metadata.organization_ids.length==1\">{{classification}} repartition</div>\n        <span ng-repeat=\"valuePair in dataSource\">\n          <span style=\"font-weight: bold; color: {{getAccountColor(valuePair)}};\">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}\n          <br />\n        </span>\n      </div>\n    </div>\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n</div>\n");
 $templateCache.put("widgets/accounts-assets-summary.tmpl.html","<div widget-accounts-assets-summary>\n      \n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\" class=\"chart-container\">\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\">\n        <div class=\"title\" ng-show=\"widget.metadata.organization_ids.length==1\">{{widget.content.summary[0].company}} {{classification}}</div>\n        <div class=\"title\" ng-hide=\"widget.metadata.organization_ids.length==1\">{{classification}} repartition</div>\n        <span ng-repeat=\"valuePair in dataSource\">\n          <span style=\"font-weight: bold; color: {{getAccountColor(valuePair)}};\">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}\n          <br />\n        </span>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
-$templateCache.put("widgets/accounts-assets-vs-liabilities.tmpl.html","<div widget-accounts-assets-vs-liabilities>\n      \n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\" class=\"chart-container\">\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\" style=\"max-height: 115px;\">\n        <div class=\"title\">\n          <i class=\"fa fa-circle\" style=\"color: {{assetsColor}};\"> Assets</i> | \n          <i class=\"fa fa-circle\" style=\"color: {{liabilitiesColor}};\"> Liabilities</i>\n        </div>\n        <div class=\"row\">\n          <div ng-repeat=\"data in companiesList\" ng-class=\"{\'col-md-6\': (widget.content.companies.length > 1), \'col-md-12\': (widget.content.companies.length == 1)}\">\n            <span>{{ data.company }}</span><br />\n            <span style=\"color: {{assetsColor}};\"> {{ data.assets | mnoCurrency : data.currency }}</span> <br/>\n            <span style=\"color: {{liabilitiesColor}};\"> {{ data.liabilities | mnoCurrency : data.currency }}</span>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/accounts-balance.tmpl.html","<div widget-accounts-balance>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-account parent-widget=\"widget\" class=\"part\" deferred=\"::accountBackDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\">\n      <!-- Will be hidden once an account is selected -->\n      <div setting-account ng-hide=\"widget.selectedAccount\" parent-widget=\"widget\" label=\'Select an account to monitor\' on-account-selected=\"displayAccount()\" deferred=\"::accountFrontDeferred\" />\n\n      <!-- All the below divs will remain hidden until an account is selected -->\n      <div ng-show=\"widget.selectedAccount\">\n        <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" />\n\n        <div ng-hide=\"widget.isHistoryMode\">\n          <h3>{{getName()}}</h3>\n          <div class=\"price\">\n             {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}\n          </div>\n          <div class=\"currency\">{{getCurrency()}}</div>\n        </div>\n\n        <div class=\"chart-container\" ng-class=\"{\'invisible\': !widget.isHistoryMode}\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n          <div class=\"legend\">{{getName()}}</div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
+$templateCache.put("widgets/accounts-assets-vs-liabilities.tmpl.html","<div widget-accounts-assets-vs-liabilities>\n      \n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\" class=\"chart-container\">\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\" style=\"max-height: 115px;\">\n        <div class=\"title\">\n          <i class=\"fa fa-circle\" style=\"color: {{assetsColor}};\"> Assets</i> | \n          <i class=\"fa fa-circle\" style=\"color: {{liabilitiesColor}};\"> Liabilities</i>\n        </div>\n        <div class=\"row\">\n          <div ng-repeat=\"data in companiesList\" ng-class=\"{\'col-md-6\': (widget.content.companies.length > 1), \'col-md-12\': (widget.content.companies.length == 1)}\">\n            <span>{{ data.company }}</span><br />\n            <span style=\"color: {{assetsColor}};\"> {{ data.assets | mnoCurrency : data.currency }}</span> <br/>\n            <span style=\"color: {{liabilitiesColor}};\"> {{ data.liabilities | mnoCurrency : data.currency }}</span>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/accounts-balance-sheet.tmpl.html","<div widget-accounts-balance-sheet>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div class=\"no-data-block\" ng-hide=\"isDataFound\">\n      No balance sheet can be generated between this {{period.label.toLowerCase()}} and the previous {{period.label.toLowerCase()}}. <br />\n      Maybe try selecting a longer period? <br />\n      <span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorFrontDeferred\" />\n    </div>\n\n    <div ng-show=\"isDataFound\" class=\"widget-lines-container\">\n      <div class=\"row widget-line header\">\n        <div class=\"col-sm-6 text-left\">Compare with previous: <span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorBackDeferred\" /></div>\n        <div class=\"col-sm-3 text-right\">{{widget.content.dates[0] | date : \"d-MMM\"}}</div>\n        <div class=\"col-sm-3 text-right\">{{widget.content.dates[1] | date : \"d-MMM\"}}</div>\n      </div>\n     \n      <div class=\"row widget-line total\" ng-repeat=\"category in categories\" >\n        <div class=\"row widget-line\" >\n          <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(category)\" style=\"cursor: pointer;\">\n            <i class=\"fa\" ng-class=\"isCollapsed(category) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" />\n          </div>\n          <div class=\"col-sm-5 text-left\"><strong>{{category | titleize}}</strong></div>\n          <div class=\"col-sm-3 text-right\"><strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>\n          <div class=\"col-sm-3 text-right\"><strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong></div>\n        </div>\n        \n        <div collapse=\"isCollapsed(category)\">\n          <div class=\"row widget-line\" ng-repeat=\"account in widget.content.summary[category].accounts\" >\n            <div class=\"col-sm-1\" />\n            <div class=\"col-sm-5 text-left\">{{account.name | titleize}}</div>\n            <div class=\"col-sm-3 text-right\">{{account.totals[0] | mnoCurrency : account.currency}}</div>\n            <div class=\"col-sm-3 text-right\">{{account.totals[1] | mnoCurrency : account.currency}}</div>\n          </div>\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n\n</div>");
 $templateCache.put("widgets/accounts-cash-summary.tmpl.html","<div widget-accounts-cash-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n          <div class=\"row widget-line header\">\n            <div class=\"col-sm-1\" />\n            <div class=\"col-sm-5\"></div>\n            <div class=\"col-sm-3 text-right\">{{getLastDate() | date : \"d-MMM\"}}</div>\n            <div class=\"col-sm-3 text-right\">Variance</div>\n          </div>\n          <div class=\"row widget-line total\" ng-repeat=\"statement in widget.content.summary\" >\n            <div class=\"row widget-line\" ng-class=\"isSelected(statement) ? \'selected\' : null\" >\n              <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(statement)\"><i class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" /></div>\n              <div class=\"col-sm-5\" ng-click=\"toggleSelectedElement(statement)\"><strong>{{getName(statement) | titleize}}</strong></div>\n              <div class=\"col-sm-3 text-right\" ng-click=\"toggleSelectedElement(statement)\"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>\n              <div class=\"col-sm-3 text-right\" ng-click=\"toggleSelectedElement(statement)\" ng-class=\"getVarianceClassColor(getLastVariance(statement))\"><strong>{{getLastVariance(statement)}}</strong></div>\n            </div>\n            <div collapse=\"isCollapsed(statement)\">\n              <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(account)\" ng-repeat=\"account in statement.accounts\" ng-class=\"isSelected(account) ? \'selected\' : null\" >\n                <div class=\"col-sm-1\" />\n                <div class=\"col-sm-5\">{{account.name}}</div>\n                <div class=\"col-sm-3 text-right\">{{getLastValue(account) | mnoCurrency : account.currency }}</div>\n                <div class=\"col-sm-3 text-right\" ng-class=\"getVarianceClassColor(getLastVariance(account))\">{{getLastVariance(account)}}</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"right-panel text-center\" ng-class=\"{\'col-md-6\': widget.isExpanded(), \'col-md-12 invisible\': !widget.isExpanded()}\">\n\n        <div ng-show=\"selectedElement\">\n          <h4>{{getName(selectedElement) | titleize}}</h4>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n            <div class=\"legend\">{{(widget.metadata.hist_parameters.period || \"Monthly\") | titleize}} Cash Flow</div>\n          </div>\n          \n          <div class=\"widget-lines-container\">\n            <div class=\"row widget-line\">\n              <span class=\"text-center\" ng-repeat=\"date in dates track by $index\">\n                <div ng-if=\"$index % 6 == 0 && $index > 0\" class=\"clearfix dashed hidden-xs\"></div>\n\n                <div class=\"col-sm-2\" style=\"padding: 5px 0px;\">\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">{{date | date : \"d-MMM\"}}</div></div>\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">{{selectedElement.cash_flows[$index] | mnoCurrency : selectedElement.currency }}</div></div>\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\" ng-class=\"getVarianceClassColor(selectedElement.variances[$index])\">{{formatVariance(selectedElement.variances[$index])}}</div></div>\n                </div>\n              </span>\n            </div>\n          </div>\n        </div>\n\n        <div ng-hide=\"selectedElement\" class=\"no-element\">\n          Select an account or an account type to display the corresponding cash evolution.\n        </div>\n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n    \n</div>");
 $templateCache.put("widgets/accounts-class-comparison.tmpl.html","<div widget-accounts-class-comparison>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\">\n      <!-- account classification selectors -->\n      <div setting-param-selector parent-widget=\"widget\" param=\"classification\" options=\"classifications\" selected=\"selectedClassification\" class=\"row param-selector\" deferred=\"::paramSelectorDeferred\" on-select=\"selectClassification()\" no-reload/>\n      <!---->\n      <div class=\"row\">\n        <div class=\"col-md-12 chart-container\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-md-12 widget-lines-container\">\n          <div ng-repeat=\"entity in widget.content.companies track by $index\">\n            <i style=\"float: right; margin-right: 10px;\">\n              {{formatAmount(selectedClassificationItem.totals[$index])}}\n            </i>\n            <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getAccountColor(entity)}}\" />\n            {{entity}}\n          </div>\n        </div>\n      </div>\n    </div>\n    \n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>\n");
@@ -176,8 +176,8 @@ $templateCache.put("widgets/hr-employee-details.tmpl.html","<div widget-hr-emplo
 $templateCache.put("widgets/hr-employees-list.tmpl.html","<div widget-hr-employees-list>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" >\n\n      <div class=\"legend\">\n        <strong>{{widget.content.total.employees}}</strong> employee{{widget.content.total.employees > 1 ? \"s\" : null}} - Average salary rate (<span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred\"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>\n      </div>\n\n      <div class=\"widget-lines-container\">\n        <div class=\"row widget-line header\">\n          <div class=\"col-sm-2\">Company</div>\n          <div class=\"col-sm-3\">Employee</div>\n          <div class=\"col-sm-2\">Title</div>\n          <div class=\"col-sm-3\">Phone</div>\n          <div class=\"col-sm-2\">Salary</div>\n        </div>\n        <div class=\"row widget-line\" ng-repeat=\"employee in widget.content.employees\" >\n          <div class=\"col-sm-2\">{{employee.company || getSingleCompanyName()}}</div>\n          <div class=\"col-sm-3\">{{employee.lastname}} {{employee.firstname}}</div>\n          <div class=\"col-sm-2\"><i>{{employee.job_title}}</i></div>\n          <div class=\"col-sm-3\">{{employee.phone}}</div>\n          <div class=\"col-sm-2\"><i>{{getEmployeeSalary(employee)}}</i></div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-leaves-balance.tmpl.html","<div widget-hr-leaves-balance>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\"/>\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" >\n\n      <div setting-param-selector parent-widget=\"widget\" param=\"employee_id\" options=\"employeesOptions\" selected=\"selectedEmployee\" class=\"selector\" deferred=\"::paramSelectorDeferred\" />\n\n      <div class=\"widget-lines-container\">\n        <div class=\"widget-line\">\n          <i style=\"float: right; margin-right: 10px;\">{{getEmployee().total_leaves}} h</i>\n          Accrued\n        </div>\n        <div class=\"widget-line\">\n          <i style=\"float: right; margin-right: 10px;\">{{getEmployee().total_timeoff}} h</i>\n          Used\n        </div>\n      </div>\n\n      <h3>Leave Balance</h3>\n      <div class=\"balance\">{{(getEmployee().total_leaves - getEmployee().total_timeoff)}} hours</div>\n      <div class=\"legend\">\n        <span>(from {{widget.content.dates[0] | date : \"MMM-d\"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : \"MMM-d\"}})</span>\n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-leaves-schedule.tmpl.html","<div widget-hr-leaves-schedule>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\">\n\n      <div widget-component-calendar ng-model=\"eventSources\"></div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"widget.category\" />\n  </div>\n\n</div>");
-$templateCache.put("widgets/hr-payroll-summary.tmpl.html","<div widget-hr-payroll-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n          <div class=\"row widget-line header\">\n            <div class=\"col-sm-12\">Payroll Summary - {{getPeriod()}}</div>\n          </div>\n          <div class=\"row widget-line total\" ng-repeat=\"statement in widget.content.summary\" >\n            <div class=\"row widget-line\" ng-class=\"isSelected(statement) ? \'selected\' : null\" >\n              <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(statement)\"><i ng-show=\"statement.employees\" class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" /></div>\n              <div class=\"col-sm-7\" ng-click=\"toggleSelectedElement(statement)\"><strong>{{getName(statement) | titleize}}</strong></div>\n              <div class=\"col-sm-4 text-right\" ng-click=\"toggleSelectedElement(statement)\">\n                <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>\n              </div>\n            </div>\n            <div collapse=\"isCollapsed(statement)\">\n              <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(employee)\" ng-repeat=\"employee in statement.employees\" ng-class=\"isSelected(employee) ? \'selected\' : null\" >\n                <div class=\"col-sm-1\" />\n                <div class=\"col-sm-7\">{{employee.name}}</div>\n                <div class=\"col-sm-4 text-right\">\n                  <span>{{getLastValue(employee) | mnoCurrency : employee.currency}}</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"right-panel text-center\" ng-class=\"{\'col-md-6\': widget.isExpanded(), \'col-md-12 invisible\': !widget.isExpanded()}\">\n        \n        <div ng-show=\"hasElements()\">\n        \n          <h4>{{(widget.content.hist_parameters.period || \"Monthly\") | titleize}} Payroll Summary</h4>\n          <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" on-toggle=\"widget.format()\"/>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n            <div ng-show=\"selectedElements.length < 2\" class=\"legend\">{{getName(selectedElements[0]) | titleize}}</div>\n          </div>\n\n          <div ng-show=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n            <div ng-show=\"getTrackedField()\" class=\"legend\">{{getTrackedField()}}</div>\n            <div class=\"row widget-line\">\n              <span class=\"text-center\" ng-repeat=\"date in widget.content.dates track by $index\">\n                <div ng-if=\"$index % 6 == 0 && $index > 0\" class=\"clearfix dashed hidden-xs\"></div>\n\n                <div class=\"col-sm-2\" style=\"padding: 5px 0px;\">\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">\n                    {{formatDate(date)}}\n                    </div></div>\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">\n                    {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}\n                  </div></div>\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <div ng-hide=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n\n            <div ng-if=\"widget.isHistoryMode\" class=\"widget-line header\">\n              <span ng-show=\"getTrackedField()\">{{getTrackedField()}} - </span>From {{widget.content.dates[0] | date : \"MMM-d\"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : \"MMM-d\"}}\n            </div>\n            <div ng-if=\"!widget.isHistoryMode\" class=\"widget-line header\">\n              <span ng-show=\"getTrackedField()\">{{getTrackedField()}} - </span>{{getPeriod()}}\n            </div>\n\n            <div class=\"widget-line\" ng-repeat=\"element in selectedElements\">\n              <i style=\"float: right; margin-right: 10px;\">\n                <span ng-if=\"widget.isHistoryMode\">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>\n                <span ng-if=\"!widget.isHistoryMode\">{{getLastValue(element) | mnoCurrency : element.currency}}</span>\n              </i>\n              <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getElementChartColor($index)}}\" />\n              {{getName(element) | titleize}}\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-hide=\"hasElements()\" class=\"no-element\">\n          Select one or several employee(s) or category(ies) to display the corresponding summary\n        </div>\n      \n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-payroll-taxes.tmpl.html","<div widget-hr-payroll-taxes>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" />\n\n      <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n        <div class=\"price\">{{getCurrentPrice() | mnoCurrency : getCurrency() : false}}</div>\n        <div class=\"currency\">{{getCurrency()}}</div>\n        <div class=\"legend\">Taxes upon workforce costs<br />{{getPeriod()}}</div>\n      </div>\n\n      <div class=\"history chart-container\" ng-class=\"{\'invisible\': !widget.isHistoryMode}\">\n        <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        <div class=\"legend\">Taxes upon workforce costs</div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>\n");
+$templateCache.put("widgets/hr-payroll-summary.tmpl.html","<div widget-hr-payroll-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n          <div class=\"row widget-line header\">\n            <div class=\"col-sm-12\">Payroll Summary - {{getPeriod()}}</div>\n          </div>\n          <div class=\"row widget-line total\" ng-repeat=\"statement in widget.content.summary\" >\n            <div class=\"row widget-line\" ng-class=\"isSelected(statement) ? \'selected\' : null\" >\n              <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(statement)\"><i ng-show=\"statement.employees\" class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" /></div>\n              <div class=\"col-sm-7\" ng-click=\"toggleSelectedElement(statement)\"><strong>{{getName(statement) | titleize}}</strong></div>\n              <div class=\"col-sm-4 text-right\" ng-click=\"toggleSelectedElement(statement)\">\n                <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>\n              </div>\n            </div>\n            <div collapse=\"isCollapsed(statement)\">\n              <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(employee)\" ng-repeat=\"employee in statement.employees\" ng-class=\"isSelected(employee) ? \'selected\' : null\" >\n                <div class=\"col-sm-1\" />\n                <div class=\"col-sm-7\">{{employee.name}}</div>\n                <div class=\"col-sm-4 text-right\">\n                  <span>{{getLastValue(employee) | mnoCurrency : employee.currency}}</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"right-panel text-center\" ng-class=\"{\'col-md-6\': widget.isExpanded(), \'col-md-12 invisible\': !widget.isExpanded()}\">\n        \n        <div ng-show=\"hasElements()\">\n        \n          <h4>{{(widget.content.hist_parameters.period || \"Monthly\") | titleize}} Payroll Summary</h4>\n          <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" on-toggle=\"widget.format()\"/>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n            <div ng-show=\"selectedElements.length < 2\" class=\"legend\">{{getName(selectedElements[0]) | titleize}}</div>\n          </div>\n\n          <div ng-show=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n            <div ng-show=\"getTrackedField()\" class=\"legend\">{{getTrackedField()}}</div>\n            <div class=\"row widget-line\">\n              <span class=\"text-center\" ng-repeat=\"date in widget.content.dates track by $index\">\n                <div ng-if=\"$index % 6 == 0 && $index > 0\" class=\"clearfix dashed hidden-xs\"></div>\n\n                <div class=\"col-sm-2\" style=\"padding: 5px 0px;\">\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">\n                    {{formatDate(date)}}\n                    </div></div>\n                  <div class=\"row widget-line\"><div class=\"col-sm-12\" style=\"padding: 0px;\">\n                    {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}\n                  </div></div>\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <div ng-hide=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n\n            <div ng-if=\"widget.isHistoryMode\" class=\"widget-line header\">\n              <span ng-show=\"getTrackedField()\">{{getTrackedField()}} - </span>From {{widget.content.dates[0] | date : \"MMM-d\"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : \"MMM-d\"}}\n            </div>\n            <div ng-if=\"!widget.isHistoryMode\" class=\"widget-line header\">\n              <span ng-show=\"getTrackedField()\">{{getTrackedField()}} - </span>{{getPeriod()}}\n            </div>\n\n            <div class=\"widget-line\" ng-repeat=\"element in selectedElements\">\n              <i style=\"float: right; margin-right: 10px;\">\n                <span ng-if=\"widget.isHistoryMode\">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>\n                <span ng-if=\"!widget.isHistoryMode\">{{getLastValue(element) | mnoCurrency : element.currency}}</span>\n              </i>\n              <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getElementChartColor($index)}}\" />\n              {{getName(element) | titleize}}\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-hide=\"hasElements()\" class=\"no-element\">\n          Select one or several employee(s) or category(ies) to display the corresponding summary\n        </div>\n      \n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-salaries-summary.tmpl.html","<div widget-hr-salaries-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div align=\"center\" ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" class=\"row\">\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n        <div setting-width parent-widget=\"widget\" min=\"3\" max=\"6\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <h3 class=\"left\">Average Salary Rate</h3>\n        <div class=\"price\">\n           {{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}\n        </div>\n        <div class=\"currency\" setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred1\"/>\n        <div class=\"legend\">\n          <span>({{widget.content.total.employees}} employee{{widget.content.total.employees > 1 ? \"s\" : null}} with known salary)</span>\n        </div>\n      </div>\n\n      <div class=\"right-panel\" ng-class=\"{\'col-md-12 invisible\': !widget.isExpanded(), \'col-md-6\': widget.isExpanded()}\">\n        <h3 class=\"right\">Filter: <span setting-param-selector parent-widget=\"widget\" param=\"filter\" options=\"filterOptions\" selected=\"filter\" deferred=\"::paramSelectorDeferred2\"/></h3>\n        <div class=\"chart-container\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        </div>\n        <div class=\"widget-lines-container\">\n          <div class=\"widget-line\" ng-repeat=\"data in widget.content.summary.data\">\n            <i style=\"float: right; margin-right: 10px;\"><b>{{data.value | mnoCurrency : widget.content.total.currency}} (av.)</b></i>\n            <i ng-hide=\"widget.content.summary.filter==\'age_range\'\" class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getColorByIndex($index)}}\" />\n            {{data.label}}\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-superannuation-accruals.tmpl.html","<div widget-hr-superannuation-accruals>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\" class=\"row\" >\n\n      <div setting-param-selector parent-widget=\"widget\" param=\"employee_id\" options=\"employeesOptions\" selected=\"selectedEmployee\" class=\"currency\" deferred=\"::paramSelectorDeferred\" />\n\n      <h3>Superannuation Balance</h3>\n      <div class=\"price\">{{getEmployee().total_super | mnoCurrency : getEmployee().currency}}</div>\n      <div class=\"legend\">\n        <span>(from {{widget.content.dates[0] | date : \'MMM-d\'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : \'MMM-d\'}})</span>\n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
 $templateCache.put("widgets/hr-timesheets.tmpl.html","<div widget-hr-timesheets>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"isDataFound\">\n\n      <div setting-param-selector parent-widget=\"widget\" param=\"employee_id\" options=\"employeesOptions\" selected=\"selectedEmployee\" class=\"currency\" deferred=\"::paramSelectorDeferred\" />\n\n      <div class=\"widget-lines-container\">\n        <div class=\"row widget-line header\">\n          <div class=\"col-sm-12\">From {{widget.content.dates[0] | date : \'MMM-d\'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : \'MMM-d\'}}</div>\n        </div>\n        <div class=\"row widget-line total\" >\n          <div class=\"row widget-line\" >\n            <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(\'total_time_worked\')\" style=\"cursor: pointer;\"><i class=\"fa\" ng-class=\"isCollapsed(\'total_time_worked\') ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" /></div>\n            <div class=\"col-sm-7\"><strong>Total Time Worked</strong></div>\n            <div class=\"col-sm-4 text-right\"><strong>{{getEmployeeTimeWorked()}} h</strong></div>\n          </div>\n          <div collapse=\"isCollapsed(\'total_time_worked\')\">\n            <div class=\"row widget-line\">\n              <div class=\"col-sm-1\" />\n              <div class=\"col-sm-11\"><i>Activities detail not found</i></div>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row widget-line total\" >\n          <div class=\"row widget-line\" >\n            <div class=\"col-sm-1\" ng-click=\"toggleCollapsed(\'total_time_of\')\" style=\"cursor: pointer;\"><i class=\"fa\" ng-class=\"isCollapsed(\'total_time_of\') ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" /></div>\n            <div class=\"col-sm-7\"><strong>Total Time Off</strong></div>\n            <div class=\"col-sm-4 text-right\"><strong>{{getEmployeeTimeOff()}} h</strong></div>\n          </div>\n          <div collapse=\"isCollapsed(\'total_time_of\')\">\n            <div class=\"row widget-line\">\n              <div class=\"col-sm-1\" />\n              <div class=\"col-sm-7\">PTO</div>\n              <div class=\"col-sm-4 text-right\">0 h</div>\n            </div>\n            <div class=\"row widget-line\">\n              <div class=\"col-sm-1\" />\n              <div class=\"col-sm-7\">Vacation</div>\n              <div class=\"col-sm-4 text-right\">0 h</div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n\n</div>");
@@ -450,7 +450,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
       angular.merge(opts, {
         elements: {
           point: {
-            radius: 1
+            radius: 0.0001
           },
           line: {
             tension: 0.3
@@ -490,7 +490,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
     };
   };
   this.barChart = function(inputData, opts, positivesOnly) {
-    var index;
+    var colors, i, index, len, ref, value;
     if (opts == null) {
       opts = {};
     }
@@ -498,31 +498,27 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
       positivesOnly = true;
     }
     index = 0;
+    colors = [];
+    ref = inputData.values;
+    for (i = 0, len = ref.length; i < len; i++) {
+      value = ref[i];
+      if (positivesOnly) {
+        inputData.values[index] = Math.abs(value);
+      }
+      colors.push(_self.getColor(index));
+      index++;
+    }
     return {
       type: 'bar',
       options: opts,
       data: {
-        labels: [""],
-        datasets: _.map(inputData.values, function(value) {
-          var color;
-          color = _self.getColor(index);
-          index++;
-          if (value == null) {
-            value = 0.0;
-            color = "rgba(0,0,0,0)";
+        labels: inputData.labels,
+        datasets: [
+          {
+            backgroundColor: colors,
+            data: inputData.values
           }
-          if (positivesOnly && value < 0.0) {
-            value = -value;
-          }
-          return {
-            label: inputData.labels[index] || "",
-            data: [value],
-            fillColor: color,
-            strokeColor: color,
-            highlightFill: color,
-            highlightStroke: color
-          };
-        })
+        ]
       }
     };
   };
@@ -554,10 +550,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
           return {
             label: dataset.title,
             data: dataset.values,
-            fillColor: color,
-            strokeColor: color,
-            highlightFill: color,
-            highlightStroke: color
+            backgroundColor: color
           };
         })
       }
@@ -2457,123 +2450,6 @@ angular.module('impac.services.widgets', []).service('ImpacWidgetsSvc', ["$q", "
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets-common.editable-title', []);
-
-module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
-  var w;
-  w = $scope.parentWidget;
-  return $scope.updateName = function() {
-    var data;
-    if (w.name.length === 0) {
-      w.name = w.originalName;
-      return "Incorrect name";
-    } else {
-      data = {
-        name: w.name
-      };
-      return ImpacWidgetsSvc.update(w, data).then(function(success) {
-        return true;
-      }, function(error) {
-        return w.name = w.originalName;
-      });
-    }
-  };
-}]);
-
-module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
-    controller: 'CommonEditableTitleCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.data-not-found', []);
-
-module.directive('commonDataNotFound', ["$templateCache", "$log", "$http", "ImpacAssets", "ImpacTheming", function($templateCache, $log, $http, ImpacAssets, ImpacTheming) {
-  return {
-    restrict: 'A',
-    scope: {
-      widgetEngine: '='
-    },
-    controller: ["$scope", function($scope) {
-      var assetPath, baseDir, dir;
-      $scope.bgImage = '';
-      $scope.content = ImpacTheming.get().dataNotFoundConfig;
-      baseDir = ImpacAssets.get('dataNotFound');
-      if ($scope.widgetEngine && baseDir.length > 0) {
-        dir = baseDir.split('');
-        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
-        assetPath = dir + $scope.widgetEngine + '.png';
-        return $http.get(assetPath).then(function(success) {
-          return $scope.bgImage = assetPath;
-        }, function(error) {
-          return $log.warn("Missing data-not-found image for " + $scope.widgetEngine);
-        });
-      }
-    }],
-    template: $templateCache.get('widgets-common/data-not-found.tmpl.html')
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.top-buttons', []);
-
-module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "ImpacWidgetsSvc", "ImpacAssets", "ImpacUtilities", function($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) {
-  var w;
-  w = $scope.parentWidget;
-  $scope.showCloseActive = false;
-  $scope.showConfirmDelete = false;
-  $scope.isDeletePopoverLoading = false;
-  w.isEditMode = false;
-  $scope.deleteWidget = function() {
-    $scope.isDeletePopoverLoading = true;
-    return ImpacWidgetsSvc["delete"](w).then(function(success) {
-      return true;
-    }, function(errors) {
-      return w.errors = ImpacUtilities.processRailsError(errors);
-    })["finally"](function() {
-      return $scope.isDeletePopoverLoading = false;
-    });
-  };
-  return $scope.toggleEditMode = function() {
-    if (!w.isLoading) {
-      if (w.isEditMode) {
-        w.isEditMode = false;
-        return ImpacWidgetsSvc.initWidgetSettings(w);
-      } else {
-        return w.isEditMode = true;
-      }
-    }
-  };
-}]);
-
-module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '=',
-      onRefresh: '='
-    },
-    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
-    controller: 'CommonTopButtonsCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.accounts-accounting-values', []);
 
 module.controller('WidgetAccountsAccountingValuesCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
@@ -2782,76 +2658,6 @@ module.directive('widgetAccountsAssetsSummary', function() {
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets.accounts-balance', []);
-
-module.controller('WidgetAccountsBalanceCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.accountBackDeferred = $q.defer();
-  $scope.accountFrontDeferred = $q.defer();
-  $scope.timeRangeDeferred = $q.defer();
-  $scope.histModeDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.accountBackDeferred, $scope.accountFrontDeferred, $scope.timeRangeDeferred.promise, $scope.histModeDeferred.promise, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.account_list);
-  };
-  $scope.getName = function() {
-    if (w.selectedAccount != null) {
-      return w.selectedAccount.name;
-    }
-  };
-  $scope.getCurrentBalance = function() {
-    if (w.selectedAccount != null) {
-      return w.selectedAccount.current_balance;
-    }
-  };
-  $scope.getCurrency = function() {
-    if (w.selectedAccount != null) {
-      return w.selectedAccount.currency;
-    }
-  };
-  $scope.displayAccount = function() {
-    $scope.updateSettings(false);
-    return w.format();
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var all_values_are_positive, chartData, data, inputData, options;
-    if ($scope.isDataFound && (w.selectedAccount != null)) {
-      data = angular.copy(w.selectedAccount);
-      inputData = {
-        title: data.name,
-        labels: w.content.dates,
-        values: data.balances
-      };
-      all_values_are_positive = true;
-      angular.forEach(data.balances, function(value) {
-        return all_values_are_positive && (all_values_are_positive = value >= 0);
-      });
-      options = {
-        scaleBeginAtZero: all_values_are_positive,
-        showXLabels: false
-      };
-      chartData = ChartFormatterSvc.lineChart([inputData], options);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetAccountsBalance', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetAccountsBalanceCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.accounts-assets-vs-liabilities', []);
 
 module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
@@ -2918,6 +2724,76 @@ module.directive('widgetAccountsAssetsVsLiabilities', function() {
   return {
     restrict: 'A',
     controller: 'WidgetAccountsAssetsVsLiabilitiesCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.accounts-balance', []);
+
+module.controller('WidgetAccountsBalanceCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.accountBackDeferred = $q.defer();
+  $scope.accountFrontDeferred = $q.defer();
+  $scope.timeRangeDeferred = $q.defer();
+  $scope.histModeDeferred = $q.defer();
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.accountBackDeferred, $scope.accountFrontDeferred, $scope.timeRangeDeferred.promise, $scope.histModeDeferred.promise, $scope.chartDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.account_list);
+  };
+  $scope.getName = function() {
+    if (w.selectedAccount != null) {
+      return w.selectedAccount.name;
+    }
+  };
+  $scope.getCurrentBalance = function() {
+    if (w.selectedAccount != null) {
+      return w.selectedAccount.current_balance;
+    }
+  };
+  $scope.getCurrency = function() {
+    if (w.selectedAccount != null) {
+      return w.selectedAccount.currency;
+    }
+  };
+  $scope.displayAccount = function() {
+    $scope.updateSettings(false);
+    return w.format();
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var all_values_are_positive, chartData, data, inputData, options;
+    if ($scope.isDataFound && (w.selectedAccount != null)) {
+      data = angular.copy(w.selectedAccount);
+      inputData = {
+        title: data.name,
+        labels: w.content.dates,
+        values: data.balances
+      };
+      all_values_are_positive = true;
+      angular.forEach(data.balances, function(value) {
+        return all_values_are_positive && (all_values_are_positive = value >= 0);
+      });
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false
+      };
+      chartData = ChartFormatterSvc.lineChart([inputData], options);
+      return $scope.drawTrigger.notify(chartData);
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetAccountsBalance', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetAccountsBalanceCtrl'
   };
 });
 }).call(this);
@@ -3289,114 +3165,6 @@ module.directive('widgetAccountsClassComparison', function() {
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets.accounts-custom-calculation', []);
-
-module.controller('WidgetAccountsCustomCalculationCtrl', ["$scope", "$timeout", "$modal", "$q", "$templateCache", "ImpacWidgetsSvc", function($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.accountsListDeferred = $q.defer();
-  $scope.formulaDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.accountsListDeferred.promise, $scope.formulaDeferred.promise];
-  w.initContext = function() {
-    $scope.movedAccount = {};
-    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.complete_list);
-  };
-  $scope.addAccountToFormula = function(account) {
-    if (account == null) {
-      return;
-    }
-    if (w.selectedAccounts.length > 0) {
-      w.formula += " + {" + (w.selectedAccounts.length + 1) + "}";
-    } else {
-      w.formula = "{1}";
-    }
-    return w.moveAccountToAnotherList(account, w.remainingAccounts, w.selectedAccounts, false);
-  };
-  $scope.removeAccountFromFormula = function(account) {
-    var diffAccountIndex, diffAccountUid, i, indexPattern, newFormula, nextUids, prevUids, removePattern;
-    prevUids = _.map(w.selectedAccounts, function(e) {
-      return e.uid;
-    });
-    nextUids = _.reject(prevUids, function(e) {
-      return e === account.uid;
-    });
-    diffAccountUid = _.first(_.difference(prevUids, nextUids));
-    diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1;
-    if (diffAccountIndex === 1) {
-      removePattern = "{" + diffAccountIndex + "\\}\\s*(-|\\*|\\/|\\+)*\\s*";
-    } else {
-      removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{" + diffAccountIndex + "\\}";
-    }
-    newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'), '');
-    i = diffAccountIndex + 1;
-    while (i <= prevUids.length) {
-      indexPattern = "\\{" + i + "\\}";
-      newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{" + (i - 1) + "}");
-      i++;
-    }
-    w.formula = angular.copy(newFormula);
-    return w.moveAccountToAnotherList(account, w.selectedAccounts, w.remainingAccounts, false);
-  };
-  $scope.formulaModal = $scope.$new();
-  $scope.formulaModal.config = {
-    backdrop: 'static',
-    template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html'),
-    size: 'lg',
-    scope: $scope.formulaModal,
-    keyboard: false
-  };
-  $scope.formulaModal.open = function() {
-    var self;
-    self = $scope.formulaModal;
-    self.modalOrgDeferred = $q.defer();
-    _.remove(w.settings, (function(set) {
-      return set.key === "organizations";
-    }));
-    self.instance = $modal.open(self.config);
-    return self.modalOrgDeferred.promise.then(function(success) {
-      return $scope.initSettings();
-    });
-  };
-  $scope.$watch((function() {
-    return w.selectedOrganizations;
-  }), function(result) {
-    if (!_.isEmpty(result)) {
-      return ImpacWidgetsSvc.updateWidgetSettings(w);
-    }
-  }, true);
-  $scope.formulaModal.cancel = function() {
-    $scope.initSettings();
-    return $scope.formulaModal.close();
-  };
-  $scope.formulaModal.proceed = function() {
-    ImpacWidgetsSvc.updateWidgetSettings(w, false);
-    return $scope.formulaModal.close();
-  };
-  $scope.formulaModal.close = function() {
-    return $scope.formulaModal.instance.close();
-  };
-  $scope.$watch((function() {
-    return w.isEditMode;
-  }), function(result, prev) {
-    if (result && !prev) {
-      return $scope.formulaModal.open();
-    }
-  });
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetAccountsCustomCalculation', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetAccountsCustomCalculationCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.accounts-comparison', []);
 
 module.controller('WidgetAccountsComparisonCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
@@ -3524,6 +3292,114 @@ module.directive('widgetAccountsComparison', function() {
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets.accounts-custom-calculation', []);
+
+module.controller('WidgetAccountsCustomCalculationCtrl', ["$scope", "$timeout", "$modal", "$q", "$templateCache", "ImpacWidgetsSvc", function($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.accountsListDeferred = $q.defer();
+  $scope.formulaDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.accountsListDeferred.promise, $scope.formulaDeferred.promise];
+  w.initContext = function() {
+    $scope.movedAccount = {};
+    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.complete_list);
+  };
+  $scope.addAccountToFormula = function(account) {
+    if (account == null) {
+      return;
+    }
+    if (w.selectedAccounts.length > 0) {
+      w.formula += " + {" + (w.selectedAccounts.length + 1) + "}";
+    } else {
+      w.formula = "{1}";
+    }
+    return w.moveAccountToAnotherList(account, w.remainingAccounts, w.selectedAccounts, false);
+  };
+  $scope.removeAccountFromFormula = function(account) {
+    var diffAccountIndex, diffAccountUid, i, indexPattern, newFormula, nextUids, prevUids, removePattern;
+    prevUids = _.map(w.selectedAccounts, function(e) {
+      return e.uid;
+    });
+    nextUids = _.reject(prevUids, function(e) {
+      return e === account.uid;
+    });
+    diffAccountUid = _.first(_.difference(prevUids, nextUids));
+    diffAccountIndex = _.indexOf(prevUids, diffAccountUid) + 1;
+    if (diffAccountIndex === 1) {
+      removePattern = "{" + diffAccountIndex + "\\}\\s*(-|\\*|\\/|\\+)*\\s*";
+    } else {
+      removePattern = "\\s*(-|\\*|\\/|\\+)*\\s*\\{" + diffAccountIndex + "\\}";
+    }
+    newFormula = angular.copy(w.formula).replace(new RegExp(removePattern, 'g'), '');
+    i = diffAccountIndex + 1;
+    while (i <= prevUids.length) {
+      indexPattern = "\\{" + i + "\\}";
+      newFormula = newFormula.replace(new RegExp(indexPattern, 'g'), "{" + (i - 1) + "}");
+      i++;
+    }
+    w.formula = angular.copy(newFormula);
+    return w.moveAccountToAnotherList(account, w.selectedAccounts, w.remainingAccounts, false);
+  };
+  $scope.formulaModal = $scope.$new();
+  $scope.formulaModal.config = {
+    backdrop: 'static',
+    template: $templateCache.get('widgets/accounts-custom-calculation/formula.modal.html'),
+    size: 'lg',
+    scope: $scope.formulaModal,
+    keyboard: false
+  };
+  $scope.formulaModal.open = function() {
+    var self;
+    self = $scope.formulaModal;
+    self.modalOrgDeferred = $q.defer();
+    _.remove(w.settings, (function(set) {
+      return set.key === "organizations";
+    }));
+    self.instance = $modal.open(self.config);
+    return self.modalOrgDeferred.promise.then(function(success) {
+      return $scope.initSettings();
+    });
+  };
+  $scope.$watch((function() {
+    return w.selectedOrganizations;
+  }), function(result) {
+    if (!_.isEmpty(result)) {
+      return ImpacWidgetsSvc.updateWidgetSettings(w);
+    }
+  }, true);
+  $scope.formulaModal.cancel = function() {
+    $scope.initSettings();
+    return $scope.formulaModal.close();
+  };
+  $scope.formulaModal.proceed = function() {
+    ImpacWidgetsSvc.updateWidgetSettings(w, false);
+    return $scope.formulaModal.close();
+  };
+  $scope.formulaModal.close = function() {
+    return $scope.formulaModal.instance.close();
+  };
+  $scope.$watch((function() {
+    return w.isEditMode;
+  }), function(result, prev) {
+    if (result && !prev) {
+      return $scope.formulaModal.open();
+    }
+  });
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetAccountsCustomCalculation', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetAccountsCustomCalculationCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets.accounts-detailed-classifications', []);
 
 module.controller('WidgetAccountsDetailedClassificationsCtrl', ["$scope", "$q", "ImpacWidgetsSvc", function($scope, $q, ImpacWidgetsSvc) {
@@ -3611,76 +3487,6 @@ module.directive('widgetAccountsDetailedClassifications', function() {
   return {
     restrict: 'A',
     controller: 'WidgetAccountsDetailedClassificationsCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets.accounts-expense-weight', []);
-
-module.controller('WidgetAccountsExpenseWeightCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.accountBackDeferred = $q.defer();
-  $scope.accountFrontDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.accountBackDeferred, $scope.accountFrontDeferred, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.account_list);
-  };
-  $scope.getName = function() {
-    if (w.selectedAccount != null) {
-      return w.selectedAccount.name;
-    }
-  };
-  $scope.getComparator = function() {
-    switch (w.metadata.comparator) {
-      case 'turnover':
-        return "turnover";
-      default:
-        return "total expenses";
-    }
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var chartData, companies, inputData, options, ratios;
-    if ($scope.isDataFound && (w.content.summary != null)) {
-      companies = _.map(w.content.summary, function(s) {
-        return s.company;
-      });
-      ratios = _.map(w.content.summary, function(s) {
-        return s.ratio;
-      });
-      if (companies.length === 1) {
-        companies.push(companies[0]);
-        ratios.push(ratios[0]);
-      }
-      inputData = {
-        labels: companies,
-        values: ratios
-      };
-      options = {
-        scaleOverride: true,
-        scaleSteps: 4,
-        scaleStepWidth: 25,
-        scaleStartValue: 0,
-        showXLabels: false,
-        pointDot: false
-      };
-      chartData = ChartFormatterSvc.lineChart([inputData], options);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetAccountsExpenseWeight', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetAccountsExpenseWeightCtrl'
   };
 });
 }).call(this);
@@ -3802,6 +3608,76 @@ module.directive('widgetAccountsExpensesRevenue', function() {
   return {
     restrict: 'A',
     controller: 'WidgetAccountsExpensesRevenueCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.accounts-expense-weight', []);
+
+module.controller('WidgetAccountsExpenseWeightCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.accountBackDeferred = $q.defer();
+  $scope.accountFrontDeferred = $q.defer();
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.accountBackDeferred, $scope.accountFrontDeferred, $scope.chartDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = (w.content != null) && !_.isEmpty(w.content.account_list);
+  };
+  $scope.getName = function() {
+    if (w.selectedAccount != null) {
+      return w.selectedAccount.name;
+    }
+  };
+  $scope.getComparator = function() {
+    switch (w.metadata.comparator) {
+      case 'turnover':
+        return "turnover";
+      default:
+        return "total expenses";
+    }
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var chartData, companies, inputData, options, ratios;
+    if ($scope.isDataFound && (w.content.summary != null)) {
+      companies = _.map(w.content.summary, function(s) {
+        return s.company;
+      });
+      ratios = _.map(w.content.summary, function(s) {
+        return s.ratio;
+      });
+      if (companies.length === 1) {
+        companies.push(companies[0]);
+        ratios.push(ratios[0]);
+      }
+      inputData = {
+        labels: companies,
+        values: ratios
+      };
+      options = {
+        scaleOverride: true,
+        scaleSteps: 4,
+        scaleStepWidth: 25,
+        scaleStartValue: 0,
+        showXLabels: false,
+        pointDot: false
+      };
+      chartData = ChartFormatterSvc.lineChart([inputData], options);
+      return $scope.drawTrigger.notify(chartData);
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetAccountsExpenseWeight', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetAccountsExpenseWeightCtrl'
   };
 });
 }).call(this);
@@ -5405,6 +5281,50 @@ module.directive('widgetInvoicesList', function() {
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets.invoices-summary', []);
+
+module.controller('WidgetInvoicesSummaryCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.chartFiltersDeferred = $q.defer();
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.chartFiltersDeferred.promise, $scope.chartDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = !_.isEmpty(w.content.summary);
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var chartData, pieData, pieOptions;
+    if ($scope.isDataFound) {
+      pieData = _.map(w.content.summary, function(entity) {
+        return {
+          label: entity.name,
+          value: entity.total
+        };
+      });
+      pieOptions = {
+        percentageInnerCutout: 50,
+        tooltipFontSize: 12
+      };
+      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
+      return $scope.drawTrigger.notify(chartData);
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetInvoicesSummary', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetInvoicesSummaryCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets.sales-aged', []);
 
 module.controller('WidgetSalesAgedCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
@@ -5503,50 +5423,6 @@ module.directive('widgetSalesAged', function() {
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets.invoices-summary', []);
-
-module.controller('WidgetInvoicesSummaryCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.chartFiltersDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.chartFiltersDeferred.promise, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = !_.isEmpty(w.content.summary);
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var chartData, pieData, pieOptions;
-    if ($scope.isDataFound) {
-      pieData = _.map(w.content.summary, function(entity) {
-        return {
-          label: entity.name,
-          value: entity.total
-        };
-      });
-      pieOptions = {
-        percentageInnerCutout: 50,
-        tooltipFontSize: 12
-      };
-      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetInvoicesSummary', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetInvoicesSummaryCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.sales-break-even', []);
 
 module.controller('WidgetSalesBreakEvenCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
@@ -5614,6 +5490,73 @@ module.directive('widgetSalesBreakEven', function() {
   return {
     restrict: 'A',
     controller: 'WidgetSalesBreakEvenCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.sales-customer-details', []);
+
+module.controller('WidgetSalesCustomerDetailsCtrl', ["$scope", "$q", function($scope, $q) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.timeRangeDeferred = $q.defer();
+  $scope.widthDeferred = $q.defer();
+  $scope.paramSelectorDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.widthDeferred.promise, $scope.paramSelectorDeferred.promise];
+  w.initContext = function() {
+    if ($scope.isDataFound = !_.isEmpty(w.content.customers)) {
+      $scope.customersOptions = _.map(w.content.customers, function(e) {
+        return {
+          value: e.uid,
+          label: e.name
+        };
+      });
+      return $scope.selectedCustomer = {
+        value: $scope.getCustomer().uid,
+        label: $scope.getCustomer().name
+      };
+    }
+  };
+  $scope.getCustomer = function() {
+    var customer;
+    if (!$scope.isDataFound) {
+      return false;
+    }
+    if (w.metadata && w.metadata.customer_uid) {
+      customer = angular.copy(_.find(w.content.customers, function(e) {
+        return e.uid === w.metadata.customer_uid;
+      }) || w.content.customers[0]);
+    } else {
+      customer = angular.copy(w.content.customers[0]);
+    }
+    return customer;
+  };
+  $scope.formatAddress = function(anAddress) {
+    if (angular.isDefined(anAddress)) {
+      return anAddress.replace(/, /g, ',\n');
+    }
+  };
+  $scope.getFromDate = function() {
+    if ($scope.isDataFound) {
+      return w.content.from;
+    }
+  };
+  $scope.getToDate = function() {
+    if ($scope.isDataFound) {
+      return w.content.to;
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetSalesCustomerDetails', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetSalesCustomerDetailsCtrl'
   };
 });
 }).call(this);
@@ -5851,68 +5794,79 @@ module.directive('widgetSalesComparison', function() {
 }).call(this);
 (function () {
 'use strict';
-var module;
+var module,
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-module = angular.module('impac.components.widgets.sales-customer-details', []);
+module = angular.module('impac.components.widgets.sales-cycle', []);
 
-module.controller('WidgetSalesCustomerDetailsCtrl', ["$scope", "$q", function($scope, $q) {
+module.controller('WidgetSalesCycleCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
   var settingsPromises, w;
   w = $scope.widget;
   $scope.orgDeferred = $q.defer();
+  $scope.paramsPickerDeferred = $q.defer();
   $scope.timeRangeDeferred = $q.defer();
-  $scope.widthDeferred = $q.defer();
-  $scope.paramSelectorDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.widthDeferred.promise, $scope.paramSelectorDeferred.promise];
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.paramsPickerDeferred.promise, $scope.timeRangeDeferred.promise, $scope.chartDeferred.promise];
   w.initContext = function() {
-    if ($scope.isDataFound = !_.isEmpty(w.content.customers)) {
-      $scope.customersOptions = _.map(w.content.customers, function(e) {
-        return {
-          value: e.uid,
-          label: e.name
-        };
+    if ($scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.status_average_durations)) {
+      $scope.unit = (w.metadata.unit || w.content.unit || "days").toLowerCase();
+      $scope.statusOptions = _.compact(_.map(w.metadata.status_selection, function(status) {
+        if (angular.isDefined(w.content.status_average_durations[status])) {
+          return {
+            label: status,
+            selected: true
+          };
+        }
+      }));
+      return angular.forEach(w.content.status_average_durations, function(value, status) {
+        if (w.metadata.status_selection && !(indexOf.call(w.metadata.status_selection, status) >= 0)) {
+          return $scope.statusOptions.push({
+            label: status,
+            selected: false
+          });
+        } else if (_.isEmpty(w.metadata.status_selection)) {
+          return $scope.statusOptions.push({
+            label: status,
+            selected: true
+          });
+        }
       });
-      return $scope.selectedCustomer = {
-        value: $scope.getCustomer().uid,
-        label: $scope.getCustomer().name
+    }
+  };
+  w.processError = function(error) {
+    if (error.code === 404) {
+      return $scope.isDataFound = false;
+    }
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var chartData, pieData, pieOptions;
+    if ($scope.isDataFound) {
+      pieData = _.compact(_.map($scope.statusOptions, function(statusOption) {
+        var value;
+        value = w.content.status_average_durations[statusOption.label];
+        if (statusOption.selected && angular.isDefined(value)) {
+          return {
+            label: ($filter('titleize')(statusOption.label)) + ": " + value + " " + $scope.unit,
+            value: value
+          };
+        }
+      }));
+      pieOptions = {
+        percentageInnerCutout: 50,
+        tooltipFontSize: 12
       };
-    }
-  };
-  $scope.getCustomer = function() {
-    var customer;
-    if (!$scope.isDataFound) {
-      return false;
-    }
-    if (w.metadata && w.metadata.customer_uid) {
-      customer = angular.copy(_.find(w.content.customers, function(e) {
-        return e.uid === w.metadata.customer_uid;
-      }) || w.content.customers[0]);
-    } else {
-      customer = angular.copy(w.content.customers[0]);
-    }
-    return customer;
-  };
-  $scope.formatAddress = function(anAddress) {
-    if (angular.isDefined(anAddress)) {
-      return anAddress.replace(/, /g, ',\n');
-    }
-  };
-  $scope.getFromDate = function() {
-    if ($scope.isDataFound) {
-      return w.content.from;
-    }
-  };
-  $scope.getToDate = function() {
-    if ($scope.isDataFound) {
-      return w.content.to;
+      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
+      return $scope.drawTrigger.notify(chartData);
     }
   };
   return $scope.widgetDeferred.resolve(settingsPromises);
 }]);
 
-module.directive('widgetSalesCustomerDetails', function() {
+module.directive('widgetSalesCycle', function() {
   return {
     restrict: 'A',
-    controller: 'WidgetSalesCustomerDetailsCtrl'
+    controller: 'WidgetSalesCycleCtrl'
   };
 });
 }).call(this);
@@ -5991,84 +5945,6 @@ module.directive('widgetSalesForecast', function() {
   return {
     restrict: 'A',
     controller: 'WidgetSalesForecastCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module,
-  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-module = angular.module('impac.components.widgets.sales-cycle', []);
-
-module.controller('WidgetSalesCycleCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.paramsPickerDeferred = $q.defer();
-  $scope.timeRangeDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.paramsPickerDeferred.promise, $scope.timeRangeDeferred.promise, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    if ($scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.status_average_durations)) {
-      $scope.unit = (w.metadata.unit || w.content.unit || "days").toLowerCase();
-      $scope.statusOptions = _.compact(_.map(w.metadata.status_selection, function(status) {
-        if (angular.isDefined(w.content.status_average_durations[status])) {
-          return {
-            label: status,
-            selected: true
-          };
-        }
-      }));
-      return angular.forEach(w.content.status_average_durations, function(value, status) {
-        if (w.metadata.status_selection && !(indexOf.call(w.metadata.status_selection, status) >= 0)) {
-          return $scope.statusOptions.push({
-            label: status,
-            selected: false
-          });
-        } else if (_.isEmpty(w.metadata.status_selection)) {
-          return $scope.statusOptions.push({
-            label: status,
-            selected: true
-          });
-        }
-      });
-    }
-  };
-  w.processError = function(error) {
-    if (error.code === 404) {
-      return $scope.isDataFound = false;
-    }
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var chartData, pieData, pieOptions;
-    if ($scope.isDataFound) {
-      pieData = _.compact(_.map($scope.statusOptions, function(statusOption) {
-        var value;
-        value = w.content.status_average_durations[statusOption.label];
-        if (statusOption.selected && angular.isDefined(value)) {
-          return {
-            label: ($filter('titleize')(statusOption.label)) + ": " + value + " " + $scope.unit,
-            value: value
-          };
-        }
-      }));
-      pieOptions = {
-        percentageInnerCutout: 50,
-        tooltipFontSize: 12
-      };
-      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetSalesCycle', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetSalesCycleCtrl'
   };
 });
 }).call(this);
@@ -6174,6 +6050,76 @@ module.directive('widgetSalesGrowth', function() {
   return {
     restrict: 'A',
     controller: 'WidgetSalesGrowthCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.sales-leads-list', []);
+
+module.controller('WidgetSalesLeadsListCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.leads);
+  };
+  w.processError = function(error) {
+    if (error.code === 404) {
+      return $scope.isDataFound = false;
+    }
+  };
+  $scope.getLeadDescription = function(aLead) {
+    var nameLineArray, tooltip;
+    tooltip = [];
+    nameLineArray = ["<strong>"];
+    if (aLead.first_name) {
+      nameLineArray.push($filter('titleize')(aLead.first_name));
+    }
+    if (aLead.last_name) {
+      nameLineArray.push($filter('titleize')(aLead.last_name));
+    }
+    nameLineArray.push("</strong>");
+    tooltip.push(nameLineArray.join(' '));
+    tooltip.push("Status: " + ($filter('titleize')(aLead.lead_status)));
+    if (aLead.organization) {
+      tooltip.push("Organization: " + ($filter('titleize')(aLead.organization)));
+    }
+    if (aLead.opportunities) {
+      tooltip.push("<strong>Opportunities:</strong>");
+      angular.forEach(aLead.opportunities, function(opp) {
+        var oppLineArray;
+        oppLineArray = [];
+        if (opp.code) {
+          oppLineArray.push("#" + opp.code);
+        }
+        if (opp.name) {
+          oppLineArray.push("" + opp.name);
+        }
+        if (opp.amount) {
+          oppLineArray.push($filter('mnoCurrency')(opp.amount.total_amount, "USD", false));
+        }
+        if (opp.probability) {
+          oppLineArray.push(opp.probability + "%");
+        }
+        if (opp.sales_stage) {
+          oppLineArray.push("" + opp.sales_stage);
+        }
+        return tooltip.push(oppLineArray.join(' - '));
+      });
+    }
+    return tooltip.join("<br />");
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetSalesLeadsList', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetSalesLeadsListCtrl'
   };
 });
 }).call(this);
@@ -6358,76 +6304,6 @@ module.directive('widgetSalesLeadsFunnel', function() {
   return {
     restrict: 'A',
     controller: 'WidgetSalesLeadsFunnelCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets.sales-leads-list', []);
-
-module.controller('WidgetSalesLeadsListCtrl', ["$scope", "$q", "ChartFormatterSvc", "$filter", function($scope, $q, ChartFormatterSvc, $filter) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.leads);
-  };
-  w.processError = function(error) {
-    if (error.code === 404) {
-      return $scope.isDataFound = false;
-    }
-  };
-  $scope.getLeadDescription = function(aLead) {
-    var nameLineArray, tooltip;
-    tooltip = [];
-    nameLineArray = ["<strong>"];
-    if (aLead.first_name) {
-      nameLineArray.push($filter('titleize')(aLead.first_name));
-    }
-    if (aLead.last_name) {
-      nameLineArray.push($filter('titleize')(aLead.last_name));
-    }
-    nameLineArray.push("</strong>");
-    tooltip.push(nameLineArray.join(' '));
-    tooltip.push("Status: " + ($filter('titleize')(aLead.lead_status)));
-    if (aLead.organization) {
-      tooltip.push("Organization: " + ($filter('titleize')(aLead.organization)));
-    }
-    if (aLead.opportunities) {
-      tooltip.push("<strong>Opportunities:</strong>");
-      angular.forEach(aLead.opportunities, function(opp) {
-        var oppLineArray;
-        oppLineArray = [];
-        if (opp.code) {
-          oppLineArray.push("#" + opp.code);
-        }
-        if (opp.name) {
-          oppLineArray.push("" + opp.name);
-        }
-        if (opp.amount) {
-          oppLineArray.push($filter('mnoCurrency')(opp.amount.total_amount, "USD", false));
-        }
-        if (opp.probability) {
-          oppLineArray.push(opp.probability + "%");
-        }
-        if (opp.sales_stage) {
-          oppLineArray.push("" + opp.sales_stage);
-        }
-        return tooltip.push(oppLineArray.join(' - '));
-      });
-    }
-    return tooltip.join("<br />");
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetSalesLeadsList', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetSalesLeadsListCtrl'
   };
 });
 }).call(this);
@@ -7276,6 +7152,123 @@ module.directive('widgetSalesTopOpportunities', function() {
     controller: 'WidgetSalesTopOpportunitiesCtrl'
   };
 });
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.data-not-found', []);
+
+module.directive('commonDataNotFound', ["$templateCache", "$log", "$http", "ImpacAssets", "ImpacTheming", function($templateCache, $log, $http, ImpacAssets, ImpacTheming) {
+  return {
+    restrict: 'A',
+    scope: {
+      widgetEngine: '='
+    },
+    controller: ["$scope", function($scope) {
+      var assetPath, baseDir, dir;
+      $scope.bgImage = '';
+      $scope.content = ImpacTheming.get().dataNotFoundConfig;
+      baseDir = ImpacAssets.get('dataNotFound');
+      if ($scope.widgetEngine && baseDir.length > 0) {
+        dir = baseDir.split('');
+        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
+        assetPath = dir + $scope.widgetEngine + '.png';
+        return $http.get(assetPath).then(function(success) {
+          return $scope.bgImage = assetPath;
+        }, function(error) {
+          return $log.warn("Missing data-not-found image for " + $scope.widgetEngine);
+        });
+      }
+    }],
+    template: $templateCache.get('widgets-common/data-not-found.tmpl.html')
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.editable-title', []);
+
+module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
+  var w;
+  w = $scope.parentWidget;
+  return $scope.updateName = function() {
+    var data;
+    if (w.name.length === 0) {
+      w.name = w.originalName;
+      return "Incorrect name";
+    } else {
+      data = {
+        name: w.name
+      };
+      return ImpacWidgetsSvc.update(w, data).then(function(success) {
+        return true;
+      }, function(error) {
+        return w.name = w.originalName;
+      });
+    }
+  };
+}]);
+
+module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
+    controller: 'CommonEditableTitleCtrl'
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.top-buttons', []);
+
+module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "ImpacWidgetsSvc", "ImpacAssets", "ImpacUtilities", function($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) {
+  var w;
+  w = $scope.parentWidget;
+  $scope.showCloseActive = false;
+  $scope.showConfirmDelete = false;
+  $scope.isDeletePopoverLoading = false;
+  w.isEditMode = false;
+  $scope.deleteWidget = function() {
+    $scope.isDeletePopoverLoading = true;
+    return ImpacWidgetsSvc["delete"](w).then(function(success) {
+      return true;
+    }, function(errors) {
+      return w.errors = ImpacUtilities.processRailsError(errors);
+    })["finally"](function() {
+      return $scope.isDeletePopoverLoading = false;
+    });
+  };
+  return $scope.toggleEditMode = function() {
+    if (!w.isLoading) {
+      if (w.isEditMode) {
+        w.isEditMode = false;
+        return ImpacWidgetsSvc.initWidgetSettings(w);
+      } else {
+        return w.isEditMode = true;
+      }
+    }
+  };
+}]);
+
+module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '=',
+      onRefresh: '='
+    },
+    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
+    controller: 'CommonTopButtonsCtrl'
+  };
+}]);
 }).call(this);
 (function () {
 'use strict';
