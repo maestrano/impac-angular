@@ -294,43 +294,6 @@ angular.module("impac.filters.truncate", []).filter("truncate", function() {
 }).call(this);
 (function () {
 'use strict';
-angular.module('impac.services.assets', []).provider('ImpacAssets', function() {
-  var _$get, paths, provider;
-  provider = this;
-  paths = {
-    dataNotFound: null,
-    impacTitleLogo: null,
-    impacDashboardBackground: null,
-    noWarning: false
-  };
-  provider.configure = function(configOptions) {
-    return angular.extend(paths, configOptions);
-  };
-  _$get = function($log) {
-    var service;
-    service = this;
-    service.get = function(key) {
-      var msg, path;
-      path = '';
-      msg = 'impac-angular warning: There are missing assets (' + key + '), please refer to the including assets section in the docs.';
-      if (paths[key] != null) {
-        path = paths[key];
-      } else {
-        if (!paths.noWarning) {
-          $log.warn(msg);
-        }
-      }
-      return path;
-    };
-    return service;
-  };
-  _$get.$inject = ['$log'];
-  provider.$get = _$get;
-  return provider;
-});
-}).call(this);
-(function () {
-'use strict';
 angular.module('impac.components.chart', []).directive('impacChart', ["$timeout", "$log", "ChartFormatterSvc", function($timeout, $log, ChartFormatterSvc) {
   return {
     restrict: 'A',
@@ -371,6 +334,43 @@ angular.module('impac.components.chart', []).directive('impacChart', ["$timeout"
     }
   };
 }]);
+}).call(this);
+(function () {
+'use strict';
+angular.module('impac.services.assets', []).provider('ImpacAssets', function() {
+  var _$get, paths, provider;
+  provider = this;
+  paths = {
+    dataNotFound: null,
+    impacTitleLogo: null,
+    impacDashboardBackground: null,
+    noWarning: false
+  };
+  provider.configure = function(configOptions) {
+    return angular.extend(paths, configOptions);
+  };
+  _$get = function($log) {
+    var service;
+    service = this;
+    service.get = function(key) {
+      var msg, path;
+      path = '';
+      msg = 'impac-angular warning: There are missing assets (' + key + '), please refer to the including assets section in the docs.';
+      if (paths[key] != null) {
+        path = paths[key];
+      } else {
+        if (!paths.noWarning) {
+          $log.warn(msg);
+        }
+      }
+      return path;
+    };
+    return service;
+  };
+  _$get.$inject = ['$log'];
+  provider.$get = _$get;
+  return provider;
+});
 }).call(this);
 (function () {
 'use strict';
@@ -641,7 +641,6 @@ module.controller('ImpacDashboardCtrl', ["$scope", "$http", "$q", "$filter", "$m
     var timer, w;
     $scope.isLoading || ($scope.isLoading = true);
     w = $scope.currentDhb.widgets;
-    timer = 250;
     if (w != null) {
       timer = Math.max(100 * w.length, 500);
     }
