@@ -39,7 +39,7 @@ angular
             $scope.onSelectDashboard()
             $scope.isLoading = false
         , 50
-        
+
 
       # ============================================
       # Change dashboard name
@@ -100,7 +100,7 @@ angular
 
         self.errors = ''
         self.instance = $modal.open(self.config)
-      
+
         self.instance.rendered.then (onRender) ->
           self.locked = true
         self.instance.result.then (onClose) ->
