@@ -179,25 +179,31 @@ angular
     #     value: 1550.12
     # ] }
     @pieChart = (inputData, opts={}, versusMode=false) ->
+      colors = []
       index = 0
-      return {
+
+      if versusMode
+        colors.push(_self.getNegativeColor())
+        for data in inputData
+          colors.push(_self.getPositiveColor()) unless index==0
+          index++
+      else
+        for data in inputData
+          colors.push(_self.getColor(index))
+          index++
+          
+      {
         type: 'doughnut',
         options: opts,
-        data: _.map inputData, (data) ->
-          if versusMode
-            if index == 0
-              color = _self.getNegativeColor()
-            else
-              color = _self.getPositiveColor()
-          else
-            color = _self.getColor(index)
-          index++
-          return {
-            value: data.value,
-            label: data.label,
-            color: color,
-            highlight: lightenColor(color,0.7),
-          }
+        data: {
+          datasets: [
+            {
+              data: _.map inputData, ( (data) -> data.value )
+              backgroundColor: colors
+            }
+          ]
+          labels: _.map inputData, ( (data) -> data.label )
+        }
       }
 
     return
