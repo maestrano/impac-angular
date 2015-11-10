@@ -1,6 +1,6 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (ImpacTheming, $filter, $timeout) ->
+  .service('ChartFormatterSvc', (ImpacTheming, $filter) ->
 
     _self = @
 
