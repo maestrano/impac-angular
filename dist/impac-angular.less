@@ -1297,16 +1297,6 @@ body {
 }
 
 
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-  
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1316,6 +1306,16 @@ body {
 
   .no-data-block {
     .center-thin();
+  }
+}
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+  
+  .price {
+    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-cash-summary {
@@ -1334,45 +1334,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .price {
-    .center-bold(75px);
-  }
-
-  .legend {
-    max-height: 125px;
-  }
-}
-
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    .part {
-      width: 49%;
-    }
-  }
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1427,6 +1388,45 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .price {
+    .center-bold(75px);
+  }
+
+  .legend {
+    max-height: 125px;
+  }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    .part {
+      width: 49%;
+    }
+  }
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+}
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1572,9 +1572,6 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1589,6 +1586,9 @@ body {
   .price {
     .center-bold(0px);
   }
+}
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {

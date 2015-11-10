@@ -51,12 +51,20 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
       
 
       options = {
-        scaleOverride: true,
-        scaleSteps: 4,
-        scaleStepWidth: 25,
-        scaleStartValue: 0,
-        showXLabels: false,
-        pointDot: false,
+        # scaleOverride: true,
+        # scaleSteps: 4,
+        # scaleStepWidth: 25,
+        # scaleStartValue: 0,
+        scales: { yAxes: [
+          { ticks: {
+            suggestedMin: 0
+            suggestedMax: 100
+            maxTicksLimit: 5
+            }
+          }
+        ]}
+        showXLabels: false
+        pointDot: false
         currency: '%'
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
