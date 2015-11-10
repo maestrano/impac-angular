@@ -171,6 +171,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         datasetFill: false,
         pointDot: false,
       }
+      angular.merge(options, {currency: 'hide'}) if $scope.filter.value=='quantity_sold'
 
       chartData = ChartFormatterSvc.lineChart(inputData,options)
       

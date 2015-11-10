@@ -153,8 +153,8 @@ $templateCache.put("dashboard/widget-suggestion.modal.html","<div class=\"modal-
 $templateCache.put("dashboard-selector/bootstrap-tabs.tmpl.html","<div class=\"row\">\n  <div class=\"buttons-bar col-md-8\">\n    <tabset type=\"{{selectorType}}\">\n      <tab ng-repeat=\"dhb in dashboardsList\" select=\"selectDashboard(dhb.id)\" active=\"dhb.active\">\n        <tab-heading>\n          {{dhb.full_name}}\n          <a href=\"\" class=\"close-link\" ng-if=\"isDeleteDhbEnabled\">\n            <i class=\"fa fa-times\" ng-click=\"deleteDashboardModal.open()\"></i>\n          </a>\n        </tab-heading>\n      </tab>\n      <tab ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\">\n        <tab-heading>\n          <a href=\"\"><i class=\"fa fa-wheelchair\"></i></a>\n        </tab-heading>\n      </tab>\n      <tab ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\">\n        <tab-heading>\n          <a href=\"\">+</a>\n        </tab-heading>\n      </tab>\n    </tabset>\n  </div>\n  <div class=\'buttons-bar col-md-4\'>\n    <div class=\'actions-panel\'>\n      <button ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-wheelchair\'></span></button>\n      <button ng-if=\"isAddWidgetEnabled && isThereADashboard()\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-plus\'></span> Add Widget</button>\n      <!-- <button id=\'data-upload-wizard\' ng-click=\'openStarWizard()\' class=\'btn btn-success hidden-xs\' ><span class=\'fa fa-upload\'></span> Data Upload</button> -->\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("dashboard-selector/delete.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"instance.close()\" >×</div>\n  <h3>Delete Dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new widget -->\n  <p>Are you sure you want to delete this analytics dashboard?</p>\n\n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"instance.dismiss()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\">Cancel</button>\n      <button class=\"btn btn-danger\" ng-click=\"proceed()\" ng-disabled=\"isLoading\">\n        <i class=\"fa fa-spinner fa-pulse loader\" ng-show=\"isLoading\"></i>\n        Delete\n      </button>\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("dashboard-selector/dropdown.tmpl.html","<div class=\"row buttons-bar\">\n\n  <div class=\"col-md-6 dropdown-container\" ng-hide=\"isLoading\">\n    <div ng-if=\"isThereADashboard()\">\n      <h4 class=\'dashboard-title\'>\n        <div style=\"display: inline-block;\" ng-click=\"toggleShowDashboardsDropdown()\">\n          {{currentDhb.full_name}}\n          <i class=\"fa fa-chevron-down\" style=\"font-size: 18px;\"></i>\n        </div>\n        <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(currentDhb)\"></i>\n      </h4>\n\n      <div ng-show=\"showDashboardsDropdown\" class=\'dashboard-select\'>\n        <div ng-hide=\"dhb.id == currentDhb.id\" class=\'option\' ng-repeat=\"dhb in dashboardsList\">\n          <span class=\"name\" ng-click=\"selectDashboard(dhb.id)\">{{dhb.full_name}}</span>\n          <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" tooltip=\"Change name\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(dhb)\"/>\n        </div>\n\n        <div ng-show=\"showCreateDashboardButton\" class=\"option create\" ng-click=\"onCreateDashboard()\"><i class=\"fa fa-plus\" /> Create Dashboard</div>\n      </div>\n\n      <div ng-if=\"showChangeDashboardNameBox\" class=\"change-name\">\n        <p>Change dashboard name:</p>\n        <input type=\"text\" class=\"form-control\" id=\"changeDhbNameInput\" ng-model=\"dashboardToChange.name\" ng-keyup=\"checkAndUpdateDashboardName($event)\"/>\n        <button class=\"btn btn-sm btn-default\" ng-click=\"hideChangeDashboardNameBox()\">Cancel</button>\n        <button class=\"btn btn-sm btn-success\" style=\"margin-left: 10px\" ng-click=\"updateDashboardName()\">Confirm</button>\n      </div>\n\n      <p class=\"data-source-label\">\n        <small><b>Source:</b> {{organizationsNames()}}</small>\n      </p>\n    </div>\n  </div>\n\n  <div class=\"col-md-6 loader-container\" ng-show=\"isLoading\">\n    <i class=\"fa fa-spinner fa-pulse fa-4x loading-spinner\"/>\n  </div>\n\n  <div class=\'col-md-6 actions-panel\'>\n\n    <button ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"showWidgetSelector\"><span class=\'fa fa-wheelchair\'></span></button>\n\n    <button ng-if=\"isAddWidgetEnabled && isThereADashboard()\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-plus\'></span> Add Widget</button>\n\n    <button ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\" class=\'btn btn-warning\' ng-show=\"showCreateDashboardButton\"><span class=\'fa fa-pencil-square-o\'></span> Create Dashboard</button>\n\n    <!-- <button id=\'data-upload-wizard\' ng-click=\'dhbCtrl.openStarWizard()\' class=\'btn btn-success hidden-xs\' ><span class=\'fa fa-upload\'></span> Data Upload</button> -->\n\n    <button ng-if=\"isDeleteDhbEnabled\" ng-click=\"deleteDashboardModal.open()\" class=\'btn btn-danger hidden-xs\' ng-show=\"isThereADashboard()\" tooltip=\"Delete Dashboard\"><span class=\'fa fa-trash-o\'></span> </button>\n    \n  </div>\n\n</div>\n");
-$templateCache.put("kpi/kpi.tmpl.html","<div class=\"tile kpi\" ng-class=\"{ \'edit\': showEditSettings, \'static\': kpi.static }\">\n\n  <div ng-hide=\"showEditSettings\">\n    <div>\n      <small class=\"kpi-title\" ng-if=\"::kpi.static\">{{::kpi.name}}</small>\n      <small class=\"kpi-title\" ng-if=\"::!kpi.static\" editable-text=\"tmp.kpiName\" buttons=\"no\" onaftersave=\"updateName()\">{{kpi.name}}</small>\n      <div class=\"kpi-watch\" ng-if=\"::!kpi.static\">({{::kpi.element_watched}})</div>\n      <span class=\"kpi-value\">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>\n\n      <!-- TODO: refactor design to handle multiple targets and ranges -->\n      <div class=\"kpi-alert\" ng-repeat=\"target in kpi.targets track by $index\" ng-hide=\"editMode || kpi.data.results[$index]\">\n        <span ng-show=\"target.max\">over {{target.max | mnoCurrency : kpi.data.unit : false}}</span>\n        <span ng-show=\"target.min\">below {{target.min | mnoCurrency : kpi.data.unit : false}}</span>\n      </div>\n\n      <div class=\"kpi-alert\" ng-show=\"editMode\" ng-click=\"displayEditSettings()\">Edit</div>\n      <div class=\"kpi-alert kpi-close\" ng-show=\"editMode\" ng-click=\"deleteKpi()\">x</div>\n    </div>\n  </div>\n\n  <div ng-show=\"showEditSettings\">\n    KPI target:\n\n    <!-- TODO: refactor design to handle multiple targets and ranges -->\n    <select class=\"form-control input-sm\" ng-model=\"limit.mode\" ng-options=\"option.mode as option.label for option in possibleTargets\" >\n    </select>\n\n    <input class=\"form-control input-sm\" type=\"text\" ng-model=\"limit.value\" style=\"width: 70%; float: left;\" />\n    <span style=\"margin-top: 10px; display: inline-block;\">{{kpi.data.unit}}</span>\n\n    <div ng-repeat=\"(param, paramValues) in possibleExtraParams track by $index\">\n      <div class=\"param-name\">Select {{param | titleize}}:</div>\n      <select class=\"form-control input-sm\" ng-model=\"kpi.extra_params[param]\" ng-options=\"value.id as value.label for value in paramValues\">\n      </select>\n    </div>\n\n    <button class=\"btn btn-sm btn-default\" ng-click=\"hideEditSettings()\">Cancel</button>\n    <button class=\"btn btn-sm btn-success\" ng-click=\"updateSettings()\">Save</button>\n  </div>\n\n</div>\n");
 $templateCache.put("kpis-bar/kpis-bar.tmpl.html","<div class=\"row kpis\" ng-class=\"{expanded: showKpisExpanded}\">\n  <div class=\"title-actions col-xs-2\">\n\n    <div ng-click=\"toggleAvailableKpis()\"><a href=\"\"><i class=\"fa fa-plus\"></i> Attach KPI</a></div>\n    <div class=\"available-kpis-container\" collapse=\"hideAvailableKpis\">\n      <div ng-repeat=\"kpi in availableKpis\" class=\"available-kpi\" ng-init=\"kpi.element_watched = kpi.watchables[0]\">\n        <span class=\"kpi-name\">{{formatKpiName(kpi.endpoint)}}</span>\n        <button class=\"btn btn-sm btn-info\" ng-click=\"addKpi(kpi)\">+ Attach</button>\n        <select class=\"form-control-static input-sm\" ng-model=\"kpi.element_watched\" ng-options=\"watchable for watchable in kpi.watchables\"></select>\n      </div>\n    </div>\n\n    <div ng-click=\"toggleEditMode()\"><a href=\"\"><i class=\"fa fa-cog\"></i> Edit KPIs Settings</a></div>\n\n    <div ng-click=\"expandKpis()\" ng-hide=\"showKpisExpanded\"><a href=\"\"><i class=\"fa fa-chevron-down\"></i> Expand KPIs</a></div>\n    <div ng-click=\"collapseKpis()\" ng-show=\"showKpisExpanded\"><a href=\"\"><i class=\"fa fa-chevron-up\"></i> Collapse KPIs</a></div>\n\n  </div>\n\n  <impac-kpi class=\"col-xs-2\" kpi=\"kpi\" on-delete=\"removeKpi(kpi.id)\" edit-mode=\"showEditMode\" available-kpis=\"availableKpis\" ng-repeat=\"kpi in kpis track by $index\"></impac-kpi>\n</div>\n");
+$templateCache.put("kpi/kpi.tmpl.html","<div class=\"tile kpi\" ng-class=\"{ \'edit\': showEditSettings, \'static\': kpi.static }\">\n\n  <div ng-hide=\"showEditSettings\">\n    <div>\n      <small class=\"kpi-title\" ng-if=\"::kpi.static\">{{::kpi.name}}</small>\n      <small class=\"kpi-title\" ng-if=\"::!kpi.static\" editable-text=\"tmp.kpiName\" buttons=\"no\" onaftersave=\"updateName()\">{{kpi.name}}</small>\n      <div class=\"kpi-watch\" ng-if=\"::!kpi.static\">({{::kpi.element_watched}})</div>\n      <span class=\"kpi-value\">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>\n\n      <!-- TODO: refactor design to handle multiple targets and ranges -->\n      <div class=\"kpi-alert\" ng-repeat=\"target in kpi.targets track by $index\" ng-hide=\"editMode || kpi.data.results[$index]\">\n        <span ng-show=\"target.max\">over {{target.max | mnoCurrency : kpi.data.unit : false}}</span>\n        <span ng-show=\"target.min\">below {{target.min | mnoCurrency : kpi.data.unit : false}}</span>\n      </div>\n\n      <div class=\"kpi-alert\" ng-show=\"editMode\" ng-click=\"displayEditSettings()\">Edit</div>\n      <div class=\"kpi-alert kpi-close\" ng-show=\"editMode\" ng-click=\"deleteKpi()\">x</div>\n    </div>\n  </div>\n\n  <div ng-show=\"showEditSettings\">\n    KPI target:\n\n    <!-- TODO: refactor design to handle multiple targets and ranges -->\n    <select class=\"form-control input-sm\" ng-model=\"limit.mode\" ng-options=\"option.mode as option.label for option in possibleTargets\" >\n    </select>\n\n    <input class=\"form-control input-sm\" type=\"text\" ng-model=\"limit.value\" style=\"width: 70%; float: left;\" />\n    <span style=\"margin-top: 10px; display: inline-block;\">{{kpi.data.unit}}</span>\n\n    <div ng-repeat=\"(param, paramValues) in possibleExtraParams track by $index\">\n      <div class=\"param-name\">Select {{param | titleize}}:</div>\n      <select class=\"form-control input-sm\" ng-model=\"kpi.extra_params[param]\" ng-options=\"value.id as value.label for value in paramValues\">\n      </select>\n    </div>\n\n    <button class=\"btn btn-sm btn-default\" ng-click=\"hideEditSettings()\">Cancel</button>\n    <button class=\"btn btn-sm btn-success\" ng-click=\"updateSettings()\">Save</button>\n  </div>\n\n</div>\n");
 $templateCache.put("widget/widget.tmpl.html","<div class=\"top-line\">\n  <div common-top-buttons parent-widget=\"widget\" on-refresh=\"showWidget\" />\n  <div common-editable-title parent-widget=\"widget\" />\n</div>\n\n<div class=\"content\" ng-class=\"templateName\">\n  <div ng-show=\"widget.isLoading\" class=\"loader\" align=\"center\">\n    <div>\n      <i class=\"fa fa-spinner fa-pulse fa-3x\"></i>\n      <p>Your data is being retrieved...</p>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isLoading\" ng-include=\"widgetContentTemplate()\" />\n</div>\n");
 $templateCache.put("widgets/accounts-accounting-values.tmpl.html","<div widget-accounts-accounting-values>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-range parent-widget=\"widget\" class=\"part\" deferred=\"::timeRangeDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" />\n\n      <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n        <div class=\"price\">\n           {{ getCurrentPrice() | mnoCurrency : getCurrency() : false }}\n        </div>\n        <div class=\"currency\">{{getCurrency()}}</div>\n        <div class=\"legend\">{{getLegend()}}</div>\n      </div>\n\n      <div class=\"history chart-container\" ng-class=\"{\'invisible\': !widget.isHistoryMode}\">\n        <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        <div class=\"legend\">{{getLegend()}}</div>\n      </div>\n    </div>\n\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n  \n</div>");
 $templateCache.put("widgets/accounts-assets-liability-summary.tmpl.html","<div widget-accounts-assets-liability-summary>\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"isDataFound\" class=\"chart-container\">\n      <!-- account classification selectors -->\n      <div setting-param-selector parent-widget=\"widget\" param=\"classification\" options=\"accountsOptions\" selected=\"selectedAccountsOption\" class=\"row param-selector\" deferred=\"::paramSelectorDeferred\"/>\n      <!---->\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\">\n        <div class=\"title\" ng-show=\"widget.metadata.organization_ids.length==1\">{{widget.content.summary[0].company}} {{classification}}</div>\n        <div class=\"title\" ng-hide=\"widget.metadata.organization_ids.length==1\">{{classification}} repartition</div>\n        <span ng-repeat=\"valuePair in dataSource\">\n          <span style=\"font-weight: bold; color: {{getAccountColor(valuePair)}};\">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}\n          <br />\n        </span>\n      </div>\n    </div>\n    <div ng-hide=\"isDataFound\" common-data-not-found widget-engine=\"::widget.category\" />\n  </div>\n</div>\n");
@@ -238,7 +238,7 @@ angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', [
             return s + " €";
           } else if (currency !== "AUD" && currency !== "USD") {
             s = s.replace('$', '');
-            if (!currency.match(/[A-Z]{3}/) && currency !== '%') {
+            if (!currency.match(/[A-Z]{3}/) && currency !== '%' && currency !== '(ratio)') {
               s = parseInt(s);
             }
           }
@@ -294,49 +294,6 @@ angular.module("impac.filters.truncate", []).filter("truncate", function() {
 }).call(this);
 (function () {
 'use strict';
-angular.module('impac.components.chart', []).directive('impacChart', ["$timeout", "$log", "ChartFormatterSvc", function($timeout, $log, ChartFormatterSvc) {
-  return {
-    restrict: 'A',
-    scope: {
-      drawTrigger: '=',
-      deferred: '='
-    },
-    link: function(scope, elem, attr) {
-      scope.draw = function(chartData) {
-        var canvas, ctx;
-        if ((chartData.options.showXLabels != null) && !chartData.options.showXLabels) {
-          angular.merge(chartData.options, {
-            scales: {
-              xAxes: [
-                {
-                  display: false
-                }
-              ]
-            }
-          });
-        }
-        if (elem.children().length > 0) {
-          elem.children().remove(0);
-        }
-        elem.append('<canvas></canvas>');
-        canvas = elem.children()[0];
-        ctx = canvas.getContext("2d");
-        return new Chart(ctx, chartData);
-      };
-      scope.drawTrigger.then(function(success) {
-        return $log.warn('chart promise has been resolved: use notify instead');
-      }, function(error) {
-        return $log.error(error);
-      }, function(chartData) {
-        return scope.draw(chartData);
-      });
-      return scope.deferred.resolve('chart ready');
-    }
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
 angular.module('impac.services.assets', []).provider('ImpacAssets', function() {
   var _$get, paths, provider;
   provider = this;
@@ -374,7 +331,51 @@ angular.module('impac.services.assets', []).provider('ImpacAssets', function() {
 }).call(this);
 (function () {
 'use strict';
-angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc', ["ImpacTheming", function(ImpacTheming) {
+angular.module('impac.components.chart', []).directive('impacChart', ["$timeout", "$log", "ChartFormatterSvc", function($timeout, $log, ChartFormatterSvc) {
+  return {
+    restrict: 'A',
+    scope: {
+      drawTrigger: '=',
+      deferred: '='
+    },
+    link: function(scope, elem, attr) {
+      scope.draw = function(chartData) {
+        var canvas, ctx;
+        if ((chartData.options.showXLabels != null) && !chartData.options.showXLabels) {
+          angular.merge(chartData.options, {
+            scales: {
+              xAxes: [
+                {
+                  display: false
+                }
+              ]
+            }
+          });
+        }
+        if (elem.children().length > 0) {
+          elem.children().remove(0);
+          chartData.options.responsiveAnimationDuration = 1000;
+        }
+        elem.append('<canvas></canvas>');
+        canvas = elem.children()[0];
+        ctx = canvas.getContext("2d");
+        return new Chart(ctx, chartData);
+      };
+      scope.drawTrigger.then(function(success) {
+        return $log.warn('chart promise has been resolved: use notify instead');
+      }, function(error) {
+        return $log.error(error);
+      }, function(chartData) {
+        return scope.draw(chartData);
+      });
+      return scope.deferred.resolve('chart ready');
+    }
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc', ["ImpacTheming", "$filter", "$timeout", function(ImpacTheming, $filter, $timeout) {
   var COLORS, _self, cutHex, hexToB, hexToG, hexToR, hexToRGB, lightenColor;
   _self = this;
   COLORS = ImpacTheming.get().chartColors;
@@ -408,13 +409,69 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
   lightenColor = function(htmlColor, alpha) {
     return "rgba(" + (hexToRGB(htmlColor)) + "," + alpha + ")";
   };
+  this.customTooltip = function(tooltip) {
+    var canvasEl, innerHtml, obj, offset, ref, tooltipEl;
+    tooltipEl = angular.element('#chartjs-tooltip');
+    if (!tooltipEl[0]) {
+      angular.element('body').append('<div id="chartjs-tooltip"></div>');
+      tooltipEl = angular.element('#chartjs-tooltip');
+    }
+    if (!tooltip.opacity) {
+      tooltipEl.css({
+        opacity: 0.5
+      });
+      return;
+    }
+    tooltipEl.removeClass('above below no-transform');
+    if (tooltip.yAlign) {
+      tooltipEl.addClass(tooltip.yAlign);
+    } else {
+      tooltipEl.addClass('no-transform');
+    }
+    if (tooltip.body) {
+      innerHtml = _.compact([(tooltip.beforeTitle || []).join('<br/>'), (tooltip.title || []).join('<br/>'), (tooltip.afterTitle || []).join('<br/>'), (tooltip.beforeBody || []).join('<br/>'), (tooltip.body || []).join('<br/>'), (tooltip.afterBody || []).join('<br/>'), (tooltip.beforeFooter || []).join('<br/>'), (tooltip.footer || []).join('<br/>'), (tooltip.afterFooter || []).join('<br/>')]);
+      tooltipEl.html(innerHtml.join('<br/>'));
+    }
+    canvasEl = angular.element(this._chart.canvas);
+    offset = canvasEl.offset();
+    canvasEl.bind('mouseleave', function(event) {
+      if (event.toElement.id !== 'chartjs-tooltip') {
+        return tooltipEl.remove();
+      }
+    });
+    tooltipEl.bind('mouseleave', function(event) {
+      if (event.toElement.tagName !== 'CANVAS') {
+        return tooltipEl.remove();
+      }
+    });
+    return tooltipEl.css({
+      'background-color': '#17262d',
+      color: 'white',
+      opacity: 1,
+      transition: 'opacity 0.5s, top 0.5s, left 0.5s',
+      position: 'absolute',
+      width: (ref = tooltip.width) != null ? ref : (
+        obj = {},
+        obj[tooltip.width + "px"] = 'auto',
+        obj
+      ),
+      left: (offset.left + tooltip.x + 10) + "px",
+      top: (offset.top + tooltip.y + 10) + "px",
+      fontFamily: tooltip._fontFamily,
+      fontSize: tooltip.fontSize,
+      fontStyle: tooltip._fontStyle,
+      padding: tooltip.yPadding + "px " + tooltip.xPadding + "px",
+      'border-radius': '2px'
+    });
+  };
   angular.merge(Chart.defaults.global, {
     defaultColor: _self.getColor(0),
-    responsiveAnimationDuration: 1000,
     tooltips: {
       titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
       bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+      footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      enabled: false,
+      custom: _self.customTooltip
     },
     elements: {
       point: {
@@ -437,6 +494,36 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
       fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
     }
   });
+  this.setTooltipsTextLayout = function(opts, showSerieInTitle) {
+    if (showSerieInTitle == null) {
+      showSerieInTitle = false;
+    }
+    return angular.merge(opts, {
+      tooltips: {
+        callbacks: {
+          title: function(context, data) {
+            var title;
+            if (!showSerieInTitle) {
+              return data.labels[context[0].index];
+            } else {
+              title = [data.labels[context[0].index]];
+              if (data.datasets[context[0].datasetIndex].label) {
+                title.push(data.datasets[context[0].datasetIndex].label);
+              }
+              return title.join(' | ');
+            }
+          },
+          label: function(context, data) {
+            if (!((opts.currency != null) && opts.currency === 'hide')) {
+              return $filter('mnoCurrency')(data.datasets[context.datasetIndex].data[context.index], opts.currency);
+            } else {
+              return data.datasets[context.datasetIndex].data[context.index];
+            }
+          }
+        }
+      }
+    });
+  };
   this.lineChart = function(inputDataArray, opts, versusMode) {
     var index, isFilled;
     if (opts == null) {
@@ -445,6 +532,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
     if (versusMode == null) {
       versusMode = false;
     }
+    _self.setTooltipsTextLayout(opts, true);
     index = 0;
     isFilled = inputDataArray.length === 1;
     if (inputDataArray.length > 1 || ((opts.pointDot != null) && !opts.pointDot)) {
@@ -484,7 +572,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
             borderColor: color,
             pointBorderColor: color,
             pointBackgroundColor: color,
-            pointHoverBackgroundColor: 'rgb(0,0,0,)'
+            pointHoverBackgroundColor: 'rgb(255,255,255)'
           };
         })
       }
@@ -498,6 +586,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
     if (positivesOnly == null) {
       positivesOnly = true;
     }
+    _self.setTooltipsTextLayout(opts);
     index = 0;
     colors = [];
     ref = inputData.values;
@@ -531,6 +620,7 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
     if (positivesOnly == null) {
       positivesOnly = true;
     }
+    _self.setTooltipsTextLayout(opts, true);
     index = 0;
     result = {
       type: 'bar',
@@ -566,8 +656,9 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
     if (versusMode == null) {
       versusMode = false;
     }
-    colors = [];
+    _self.setTooltipsTextLayout(opts);
     index = 0;
+    colors = [];
     if (versusMode) {
       colors.push(_self.getNegativeColor());
       for (i = 0, len = inputData.length; i < len; i++) {
@@ -638,12 +729,9 @@ module.controller('ImpacDashboardCtrl', ["$scope", "$http", "$q", "$filter", "$m
     return $scope.activateTimer();
   });
   $scope.activateTimer = function() {
-    var timer, w;
+    var timer;
     $scope.isLoading || ($scope.isLoading = true);
-    w = $scope.currentDhb.widgets;
-    if (w != null) {
-      timer = Math.max(100 * w.length, 500);
-    }
+    timer = 500;
     return $timeout(function() {
       return $scope.isLoading = false;
     }, timer);
@@ -2611,7 +2699,8 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ["$scope", "$q", "ChartF
       });
       options = {
         scaleBeginAtZero: all_values_are_positive,
-        showXLabels: false
+        showXLabels: false,
+        currency: w.content.accounting.currency
       };
       chartData = ChartFormatterSvc.lineChart([inputData], options);
       return $scope.drawTrigger.notify(chartData);
@@ -3661,7 +3750,8 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ["$scope", "$q", "ChartForm
         scaleStepWidth: 25,
         scaleStartValue: 0,
         showXLabels: false,
-        pointDot: false
+        pointDot: false,
+        currency: '%'
       };
       chartData = ChartFormatterSvc.lineChart([inputData], options);
       return $scope.drawTrigger.notify(chartData);
@@ -4591,7 +4681,8 @@ module.controller('WidgetHrPayrollSummaryCtrl', ["$scope", "$q", "ChartFormatter
           scaleBeginAtZero: all_values_are_positive,
           showXLabels: true,
           datasetFill: $scope.selectedElements.length === 1,
-          pointDot: $scope.selectedElements.length === 1
+          pointDot: $scope.selectedElements.length === 1,
+          currency: 'hide'
         };
         chartData = ChartFormatterSvc.lineChart(inputData, options);
       } else {
@@ -4606,7 +4697,8 @@ module.controller('WidgetHrPayrollSummaryCtrl', ["$scope", "$q", "ChartFormatter
         pieOptions = {
           showTooltips: true,
           percentageInnerCutout: 50,
-          tooltipFontSize: 12
+          tooltipFontSize: 12,
+          currency: 'hide'
         };
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
       }
@@ -5522,6 +5614,11 @@ module.controller('WidgetSalesAgedCtrl', ["$scope", "$q", "ChartFormatterSvc", "
         datasetFill: true,
         pointDot: true
       };
+      if ($scope.filter.value === 'quantity_sold') {
+        angular.merge(options, {
+          currency: 'hide'
+        });
+      }
       chartData = ChartFormatterSvc.lineChart(inputData, options);
       return $scope.drawTrigger.notify(chartData);
     }
@@ -5806,6 +5903,11 @@ module.controller('WidgetSalesComparisonCtrl', ["$scope", "$q", "$filter", "Char
         datasetFill: false,
         pointDot: false
       };
+      if ($scope.filter.value === 'quantity_sold') {
+        angular.merge(options, {
+          currency: 'hide'
+        });
+      }
       chartData = ChartFormatterSvc.lineChart(inputData, options);
       return $scope.drawTrigger.notify(chartData);
     }
@@ -5971,7 +6073,8 @@ module.controller('WidgetSalesCycleCtrl', ["$scope", "$q", "ChartFormatterSvc", 
       }));
       pieOptions = {
         percentageInnerCutout: 50,
-        tooltipFontSize: 12
+        tooltipFontSize: 12,
+        currency: w.content.unit
       };
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
       return $scope.drawTrigger.notify(chartData);
@@ -6156,6 +6259,11 @@ module.controller('WidgetSalesGrowthCtrl', ["$scope", "$q", "ChartFormatterSvc",
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false
       };
+      if ($scope.filter.value === 'quantity_sold') {
+        angular.merge(options, {
+          currency: 'hide'
+        });
+      }
       chartData = ChartFormatterSvc.lineChart([inputData], options);
       return $scope.drawTrigger.notify(chartData);
     }
@@ -7201,6 +7309,11 @@ module.controller('WidgetSalesSummaryCtrl', ["$scope", "$q", "ChartFormatterSvc"
         percentageInnerCutout: 50,
         tooltipFontSize: 12
       };
+      if ($scope.filter.value === 'quantity_sold') {
+        angular.merge(pieOptions, {
+          currency: 'hide'
+        });
+      }
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions);
       return $scope.drawTrigger.notify(chartData);
     }

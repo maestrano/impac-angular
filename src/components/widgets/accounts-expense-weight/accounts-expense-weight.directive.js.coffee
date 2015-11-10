@@ -56,7 +56,8 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
         scaleStepWidth: 25,
         scaleStartValue: 0,
         showXLabels: false,
-        pointDot: false
+        pointDot: false,
+        currency: '%'
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
       

@@ -22,9 +22,13 @@ angular
             }
           }) if chartData.options.showXLabels? && !chartData.options.showXLabels
 
-          # TODO update chart instead of recreating it?
           # canvas has to be removed/appended to be redrawned without superposition
-          elem.children().remove(0) if elem.children().length > 0
+          if elem.children().length > 0
+            elem.children().remove(0)
+            # On dashboard load, there will be no animation to avoid the canvas to be only partially drawn
+            # Thus, we set responsiveAnimationDuration only when a chart was already defined before
+            chartData.options.responsiveAnimationDuration = 1000
+
           elem.append('<canvas></canvas>')
           canvas = elem.children()[0]
           ctx = canvas.getContext("2d")

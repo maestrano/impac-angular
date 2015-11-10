@@ -1,6 +1,6 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (ImpacTheming) ->
+  .service('ChartFormatterSvc', (ImpacTheming, $filter, $timeout) ->
 
     _self = @
 
@@ -44,13 +44,77 @@ angular
 
     # Configure ChartJs global options
     # ----------
+    @customTooltip = (tooltip) ->
+      # Find the tooltip
+      tooltipEl = angular.element('#chartjs-tooltip')
+      if (!tooltipEl[0]) 
+        angular.element('body').append('<div id="chartjs-tooltip"></div>')
+        tooltipEl = angular.element('#chartjs-tooltip')
+
+      # Hide if no tooltip
+      if (!tooltip.opacity)
+        tooltipEl.css({
+          opacity: 0.5
+        })
+        return
+
+      # Set caret Position
+      tooltipEl.removeClass('above below no-transform')
+      if (tooltip.yAlign)
+        tooltipEl.addClass(tooltip.yAlign)
+      else
+        tooltipEl.addClass('no-transform')
+
+      # Set Text
+      if (tooltip.body)
+        innerHtml = _.compact([
+          (tooltip.beforeTitle || []).join('<br/>'), (tooltip.title || []).join('<br/>'), (tooltip.afterTitle || []).join('<br/>'), (tooltip.beforeBody || []).join('<br/>'), (tooltip.body || []).join('<br/>'), (tooltip.afterBody || []).join('<br/>'), (tooltip.beforeFooter || [])
+          .join('<br/>'), (tooltip.footer || []).join('<br/>'), (tooltip.afterFooter || []).join('<br/>')
+        ])
+        tooltipEl.html(innerHtml.join('<br/>'))
+
+      # Alignment
+      canvasEl = angular.element(this._chart.canvas)
+      offset = canvasEl.offset()
+
+      # Avoid mouse glitches
+      canvasEl.bind 'mouseleave', (event) ->
+        tooltipEl.remove() unless event.toElement.id == 'chartjs-tooltip'
+
+      tooltipEl.bind 'mouseleave', (event) ->
+        tooltipEl.remove() unless event.toElement.tagName == 'CANVAS'
+
+
+      # Display, position, and set styles for font
+      tooltipEl.css({
+        'background-color': '#17262d'
+        color: 'white'
+        
+        opacity: 1
+        transition: 'opacity 0.5s, top 0.5s, left 0.5s'
+
+        position: 'absolute'
+        width: tooltip.width ? "#{tooltip.width}px" : 'auto'
+        left: "#{offset.left + tooltip.x + 10}px"
+        top: "#{offset.top + tooltip.y + 10}px"
+
+        fontFamily: tooltip._fontFamily
+        fontSize: tooltip.fontSize
+        fontStyle: tooltip._fontStyle
+        padding: "#{tooltip.yPadding}px #{tooltip.xPadding}px"
+        'border-radius': '2px'
+      })
+
     angular.merge Chart.defaults.global, {
       defaultColor: _self.getColor(0)
-      responsiveAnimationDuration: 1000
+      # responsiveAnimationDuration: 1000
       tooltips: {
         titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        
+        enabled: false
+        custom: _self.customTooltip
       }
       elements: {
         point: {
@@ -75,6 +139,27 @@ angular
       }
     }
 
+    @setTooltipsTextLayout = (opts, showSerieInTitle=false) ->
+      angular.merge opts, {
+        tooltips: {
+          callbacks: {
+            title: (context, data) ->
+              unless showSerieInTitle
+                return data.labels[context[0].index]
+              else
+                title = [data.labels[context[0].index]]
+                title.push data.datasets[context[0].datasetIndex].label if data.datasets[context[0].datasetIndex].label
+                return title.join(' | ')
+
+            label: (context, data) ->
+              unless opts.currency? && opts.currency=='hide'
+                return $filter('mnoCurrency')(data.datasets[context.datasetIndex].data[context.index], opts.currency)
+              else
+                return data.datasets[context.datasetIndex].data[context.index]
+          }
+        }
+      }
+
 
     # Line Chart of several datasets | versusMode can be used to force positive/negative colors
     # ----------
@@ -86,6 +171,8 @@ angular
     # }]
     # versusMode: put the negative dataset first
     @lineChart = (inputDataArray, opts={}, versusMode=false) ->
+      _self.setTooltipsTextLayout(opts, true)
+
       index = 0
       isFilled = inputDataArray.length == 1
 
@@ -126,7 +213,7 @@ angular
               borderColor: color
               pointBorderColor: color
               pointBackgroundColor: color
-              pointHoverBackgroundColor: 'rgb(0,0,0,)'
+              pointHoverBackgroundColor: 'rgb(255,255,255)'
             }
         }
       }
@@ -142,6 +229,8 @@ angular
     # }
     # positivesOnly: if true (default), negative bars will be turned into their opposite
     @barChart = (inputData, opts={}, positivesOnly=true) ->
+      _self.setTooltipsTextLayout(opts)
+      
       index = 0
       colors = []
       for value in inputData.values
@@ -170,6 +259,8 @@ angular
     #     ]
     # positivesOnly: if true (default), negative bars will be turned into their opposite
     @combinedBarChart = (inputData, opts={}, positivesOnly=true) ->
+      _self.setTooltipsTextLayout(opts, true)
+      
       index = 0
       result = {
         type: 'bar',
@@ -200,9 +291,10 @@ angular
     #     value: 1550.12
     # ] }
     @pieChart = (inputData, opts={}, versusMode=false) ->
-      colors = []
-      index = 0
+      _self.setTooltipsTextLayout(opts)
 
+      index=0
+      colors=[]
       if versusMode
         colors.push(_self.getNegativeColor())
         for data in inputData
