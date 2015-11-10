@@ -13,14 +13,14 @@ angular
         # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
         # ------------------------------------
         scope.draw = (chartData) ->
-
-          angular.merge(chartData.options, {
-            scales: {
-              xAxes: [{
-                display: false
-              }]
-            }
-          }) if chartData.options.showXLabels? && !chartData.options.showXLabels
+          if chartData.options.showXLabels? && !chartData.options.showXLabels
+            angular.merge(chartData.options, {
+              scales: {
+                xAxes: [{
+                  display: false
+                }]
+              }
+            })
 
           # canvas has to be removed/appended to be redrawned without superposition
           if elem.children().length > 0
