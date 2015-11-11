@@ -22,8 +22,9 @@ module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, $q) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.customers)
+    $scope.isDataFound = w.content? && !_.isEmpty(w.content.customers)
 
+    if $scope.isDataFound
       $scope.customersOptions = _.map(w.content.customers, (e) ->
         {
           value: e.uid,

@@ -22,7 +22,7 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && w.content.total_tax && w.content.dates
+    $scope.isDataFound = w.content? && !_.isEmpty(w.content.total_tax) && !_.isEmpty(w.content.dates)
 
   $scope.getCurrentPrice = ->
     return _.last w.content.total_tax if $scope.isDataFound
