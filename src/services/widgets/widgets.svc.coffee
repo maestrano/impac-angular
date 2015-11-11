@@ -141,6 +141,7 @@ angular
                 # If data not found ->
                 # Old widgets always return a content, even if its empty
                 # New widgets return a 404 error
+                widget.initContext() if angular.isDefined(widget.initContext)
                 widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
 
                 deferred.reject(errorResponse)
