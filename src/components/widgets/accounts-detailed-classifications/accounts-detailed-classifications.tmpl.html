@@ -26,7 +26,7 @@
         </div>
 
         <div collapse="isCollapsed(source.label)">
-          <div class="row widget-line" ng-repeat="entry in source.entries track by entry.label" >
+          <div class="row widget-line" ng-repeat="entry in source.entries" >
             <div class="col-sm-1" />
             <div class="col-sm-5 text-left">{{entry.label | titleize}}</div>
             <div class="col-sm-6 text-right">{{entry.value | mnoCurrency : entry.currency}}</div>

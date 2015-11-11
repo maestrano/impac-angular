@@ -869,107 +869,6 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
-.analytics kpis-bar .kpi {
-
-  text-align: center;
-  min-height: 125px;
-  white-space: normal;
-  padding: 10px 3px;
-  border-radius: 3px;
-  background-color: white;
-  box-shadow: 0px 4px 12px -7px #17262d;
-
-  &.static {
-    .kpi-value {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-    }
-  }
-
-  &.edit {
-    .scrollable();
-
-    input.form-control.input-sm {
-      height: 30px;
-      background-color: white;
-      border: solid 1px @impac-widget-borders-color;
-      margin-top: 5px;
-    }
-    
-    .btn.btn-sm {
-      margin-top: 8px;
-    }
-
-    .param-name {
-      margin-top: 5px;
-    }
-  }
-
-
-  .kpi-title {
-    .text-uppercase();
-    font-size: 12px;
-    font-weight: 600;
-    color: @impac-widget-text-color-medium;
-    border-bottom-color: @impac-widget-text-color-medium;
-
-    &:hover {
-      color: @impac-widget-text-color;
-      border-bottom-color: @impac-widget-text-color;
-    }
-  }
-
-  .kpi-value {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .kpi-alert {
-    .text-uppercase();
-    font-size: 11px;
-    font-weight: 700;
-    background-color: white;
-    border: 1px solid @brand-danger;
-    border-radius: 4px;
-    color: @brand-danger;
-    padding: 2px 5px;
-
-    position: absolute;
-    bottom: 15px;
-    left: 15%;
-    width: 70%;
-   
-    &.kpi-close {
-      bottom: auto;
-      right: 20px;
-      top: 5px;
-      border-radius: 10px;
-      width: 21px;
-      left: auto;
-    }
-
-    &:hover {
-      color: darken(@brand-danger, 10%);
-      border-color: darken(@brand-danger, 10%);
-    }
-
-    &.static {
-      position: static;
-      margin: 5px 20px;
-    }
-  }
-
-  .kpi-watch {
-    font-size: 11px;
-  }
-}
-
-.analytics kpis-bar > .key-stats .kpi {
-  min-height: 80px;
-}
-
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -1158,6 +1057,150 @@ body {
   ////////
 }
 
+.analytics kpis-bar .kpi {
+
+  text-align: center;
+  min-height: 125px;
+  white-space: normal;
+  padding: 10px 3px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 4px 12px -7px #17262d;
+
+  &.static {
+    .kpi-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  &.edit {
+    .scrollable();
+
+    input.form-control.input-sm {
+      height: 30px;
+      background-color: white;
+      border: solid 1px @impac-widget-borders-color;
+      margin-top: 5px;
+    }
+    
+    .btn.btn-sm {
+      margin-top: 8px;
+    }
+
+    .param-name {
+      margin-top: 5px;
+    }
+  }
+
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+   
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+    }
+
+    &.static {
+      position: static;
+      margin: 5px 20px;
+    }
+  }
+
+  .kpi-watch {
+    font-size: 11px;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 80px;
+}
+
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
+
 .analytics kpis-bar > .kpis {
 
   // color: @light-black;
@@ -1220,49 +1263,6 @@ body {
   // color: @light-black;
   padding: 5px 0px;
 }
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1307,12 +1307,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1322,6 +1316,12 @@ body {
 
   .no-data-block {
     .center-thin();
+  }
+}
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
   }
 }
 .analytics .widget-item .content.accounts-class-comparison {
@@ -1456,6 +1456,17 @@ body {
     }
   }
 }
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1468,17 +1479,6 @@ body {
   }
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
@@ -1572,6 +1572,9 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1586,9 +1589,6 @@ body {
   .price {
     .center-bold(0px);
   }
-}
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {
