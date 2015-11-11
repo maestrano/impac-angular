@@ -29,7 +29,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
       value: false,
       onChangeCallback: $scope.multiCompanyComparisonOnChange
     }]
-    if angular.isDefined w.metadata.comparison_mode
+    if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids.length > 1
       angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
     $scope.movedAccount = {}
 
