@@ -34,24 +34,17 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
           value: w.metadata.classification || $scope.classifications[0].value
         })
 
-      # on load, runs classification filtering
-      $scope.selectClassification()
-
-  $scope.selectClassification = ->
-    # TODO: Refactor engine for this widget
-    # The classifications array returned by Impac's indexes match the summary object's totals attribute array indexes. This was originally designed to match chartJs barChart format.
-    # $scope.classIndex = _.indexOf(w.content.classifications, $scope.selectedClassification.value)
-
-    $scope.selectedClassificationItem = _.find w.content.summary, (sum) ->
+  $scope.getTotals = ->
+    amount = _.find(w.content.summary, (sum) ->
       sum.classification == $scope.selectedClassification.value
+    ).totals
 
-    w.format()
+  $scope.getAmount = (index) ->
+    amount = $scope.getTotals[index]
+    return $filter('mnoCurrency')(amount, w.content.currency)
 
   $scope.getAccountColor = (anEntity) ->
     ChartFormatterSvc.getColor(_.indexOf(w.content.companies, anEntity))
-
-  $scope.formatAmount = (amount) ->
-    return $filter('mnoCurrency')(amount, w.content.currency)
 
   # Chart formating function
   # --------------------------------------
@@ -61,7 +54,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
       inputData = {}
 
       inputData.labels = w.content.companies
-      inputData.values = $scope.selectedClassificationItem.totals
+      inputData.values = $scope.getTotals()
 
       # inputData.labels = _.map w.content.summary, (data) -> data.company
       # inputData.values = _.map w.content.summary, (data) -> data.totals[$scope.classIndex]

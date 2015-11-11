@@ -13,12 +13,12 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="isDataFound">
+    <div ng-show="(isDataFound==true)">
       <!-- Will be hidden once an account is selected -->
       <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an expense account' on-account-selected="updateSettings()" deferred="::accountFrontDeferred" />
 
       <!-- The chart will remain hidden until an account is selected -->
-      <div class="chart-container" ng-class="{'invisible': !widget.selectedAccount}">
+      <div class="chart-container" ng-show="widget.selectedAccount">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         <div class="legend">
           <div class="title">
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

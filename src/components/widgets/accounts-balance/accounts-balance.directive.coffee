@@ -25,6 +25,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc) -
 
   # Widget specific methods
   # --------------------------------------
+  $scope.isDataFound=true
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
 

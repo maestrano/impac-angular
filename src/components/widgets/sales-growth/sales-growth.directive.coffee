@@ -75,6 +75,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc) ->
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
+      angular.merge(options, {currency: 'hide'}) if $scope.filter.value=='quantity_sold'
       chartData = ChartFormatterSvc.lineChart([inputData],options)
       
       # calls chart.draw()

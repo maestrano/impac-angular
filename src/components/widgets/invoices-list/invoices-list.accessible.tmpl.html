@@ -22,12 +22,12 @@
     </tr>
 
     <!-- Data not found line -->
-    <tr class="widget-line" ng-hide="isDataFound">
+    <tr class="widget-line" ng-show="(isDataFound==false)">
       <td>No {{orderBy}}invoice found for your {{entityType}}</td>
     </tr>
     
     <!-- Content lines -->
-    <tr class="widget-line" ng-show="isDataFound" ng-repeat="entity in widget.content.entities">
+    <tr class="widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities">
       <td>{{entity.name}}</td>
       <td><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></td>
       <td><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></td>

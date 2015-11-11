@@ -24,7 +24,7 @@ angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ["$filter
           s = s.replace('$','')
 
           # when currency is... not a proper currency nor a %, we display an integer value (16.16 => 16)
-          if !currency.match(/[A-Z]{3}/) && currency != '%'
+          if !currency.match(/[A-Z]{3}/) && currency != '%' && currency != '(ratio)'
             s = parseInt(s)
 
       if showName && currency?

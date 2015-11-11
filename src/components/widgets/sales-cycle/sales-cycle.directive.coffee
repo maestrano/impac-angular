@@ -57,6 +57,7 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
       pieOptions = {
         percentageInnerCutout: 50,
         tooltipFontSize: 12,
+        currency: w.content.unit
       }
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
       

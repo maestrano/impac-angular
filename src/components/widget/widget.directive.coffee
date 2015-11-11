@@ -33,6 +33,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
         else if w.initialWidth
           w.width = w.initialWidth
 
+        w.isLoading = false
+
       (errorResponse) ->
         w.isLoading = false
         # TODO: better error management

@@ -55,10 +55,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     $scope.activateTimer = ->
       $scope.isLoading ||= true
-      w = $scope.currentDhb.widgets
-      timer = 250
       # The dashboard will load 100ms per widget before being displayed
-      timer = Math.max(100*w.length, 500) if w?
+      w = $scope.currentDhb.widgets
+      if w? then timer = Math.max(100*w.length, 500) else timer = 500
+      # The timer is only 500ms: to let the time for the dashboard to be loaded
+      # timer = 500
       $timeout ->
         $scope.isLoading=false
       ,timer
@@ -84,7 +85,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
       self.model = { name: '' }
       self.errors = ''
-      self.isLoading = true
+      self.isLoading = false
       self.instance = $modal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
@@ -98,7 +99,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         self.organizations = config.organizations
         self.currentOrganization = config.currentOrganization
         self.selectMode('single')
-        self.isLoading = false
 
     $scope.createDashboardModal.proceed = ->
       self = $scope.createDashboardModal
@@ -118,7 +118,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       return ImpacDashboardsSvc.create(dashboard).then(
         (dashboard) ->
           self.errors = ''
-          self.isLoading = false
           self.instance.close()
         , (errors) ->
           self.isLoading = false

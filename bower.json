@@ -21,7 +21,7 @@
     "globals"
   ],
   "dependencies": {
-    "Chart.js": "~1.0.2",
+    "Chart.js": "2.0.0-beta",
     "angular": "~1.4.0",
     "angular-bootstrap": "~0.13.3",
     "angular-ui-sortable": "~0.13.4",
@@ -37,5 +37,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/maestrano/impac-angular.git"
+  },
+  "resolutions": {
+    "Chart.js": "2.0.0-beta"
   }
 }

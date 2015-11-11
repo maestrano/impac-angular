@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound" class="row" >
+    <div ng-show="(isDataFound==true)" class="row" >
 
       <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" deferred="::paramSelectorDeferred" />
 
@@ -26,7 +26,7 @@
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

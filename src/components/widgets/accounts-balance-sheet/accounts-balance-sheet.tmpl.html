@@ -13,13 +13,13 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div class="no-data-block" ng-hide="isDataFound">
+    <div class="no-data-block" ng-show="(isDataFound==false)">
       No balance sheet can be generated between this {{period.label.toLowerCase()}} and the previous {{period.label.toLowerCase()}}. <br />
       Maybe try selecting a longer period? <br />
       <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorFrontDeferred" />
     </div>
 
-    <div ng-show="isDataFound" class="widget-lines-container">
+    <div ng-show="(isDataFound==true)" class="widget-lines-container">
       <div class="row widget-line header">
         <div class="col-sm-6 text-left">Compare with previous: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorBackDeferred" /></div>
         <div class="col-sm-3 text-right">{{widget.content.dates[0] | date : "d-MMM"}}</div>
