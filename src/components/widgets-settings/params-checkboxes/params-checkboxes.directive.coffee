@@ -12,7 +12,7 @@ module.controller('SettingParamsCheckboxesCtrl', ($scope) ->
 
   setting.toMetadata = ->
     param = {}
-    param[$scope.param] = $scope.options
+    param[$scope.param] = _.map $scope.options, (opt) -> { id: opt.id, value: opt.value }
     return param
 
   w.settings.push(setting)
