@@ -99,6 +99,7 @@ angular
         return if self.locked
 
         self.errors = ''
+        self.isLoading = false
         self.instance = $modal.open(self.config)
       
         self.instance.rendered.then (onRender) ->
@@ -115,7 +116,6 @@ angular
         ImpacDashboardsSvc.delete($scope.currentDhb.id).then(
           () ->
             self.errors = ''
-            self.isLoading = false
             self.instance.close()
           , (errors) ->
             self.errors = ImpacUtilities.processRailsError(errors)
