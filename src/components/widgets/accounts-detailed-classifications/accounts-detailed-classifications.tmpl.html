@@ -12,7 +12,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="isDataFound" class="widget-lines-container">
+    <div ng-show="(isDataFound==true)" class="widget-lines-container">
 
       <div ng-hide="multiEntity" class="row widget-line header">{{widget.content.companies[0].name}} - Accounts classifications</div>
 
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 </div>
 

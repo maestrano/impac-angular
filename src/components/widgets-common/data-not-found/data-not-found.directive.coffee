@@ -6,23 +6,23 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
     scope: {
     	widgetEngine: '='
     },
-    controller: ($scope) ->
-      $scope.bgImage = ''
-      $scope.content = ImpacTheming.get().dataNotFoundConfig
+    link: (scope) ->
+      scope.bgImage = ''
+      scope.content = ImpacTheming.get().dataNotFoundConfig
       baseDir = ImpacAssets.get('dataNotFound')
-      if $scope.widgetEngine and baseDir.length > 0
+      if scope.widgetEngine and baseDir.length > 0
         # checks for trailing slash and corrects.
         dir = baseDir.split('')
         dir = if dir[dir.length - 1] != '/'
         then dir.concat('/').join('')
         else dir.join('')
 
-        assetPath = dir + $scope.widgetEngine + '.png'
+        assetPath = dir + scope.widgetEngine + '.png'
         $http.get(assetPath).then(
           (success) ->
-            $scope.bgImage = assetPath
+            scope.bgImage = assetPath
           (error) ->
-            $log.warn("Missing data-not-found image for #{$scope.widgetEngine}")
+            $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
         )
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),

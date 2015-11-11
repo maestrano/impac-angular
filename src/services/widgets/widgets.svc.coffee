@@ -130,8 +130,6 @@ angular
                 for setting in widget.settings
                   setting.initialize() if angular.isDefined(setting.initialize)
 
-                widget.isLoading = false
-
                 # Formats the chart when necessary
                 widget.format() if angular.isDefined(widget.format)
 

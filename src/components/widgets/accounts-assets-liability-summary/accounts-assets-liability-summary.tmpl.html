@@ -11,7 +11,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="isDataFound" class="chart-container">
+    <div ng-show="(isDataFound==true)" class="chart-container">
       <!-- account classification selectors -->
       <div setting-param-selector parent-widget="widget" param="classification" options="accountsOptions" selected="selectedAccountsOption" class="row param-selector" deferred="::paramSelectorDeferred"/>
       <!---->
@@ -25,6 +25,6 @@
         </span>
       </div>
     </div>
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 </div>

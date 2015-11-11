@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode" class="widget-lines-container">
 
-    <div ng-show="isDataFound" setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
+    <div ng-show="(isDataFound==true)" setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
 
     <!-- Header line -->
     <!-- when large widget -->
@@ -35,13 +35,13 @@
     </div>
 
     <!-- Data not found line -->
-    <div class="row widget-line" ng-hide="isDataFound">
+    <div class="row widget-line" ng-show="(isDataFound==false)">
       <div class="col-xs-11">No {{orderBy}}invoice found for your {{entityType}}</div>
     </div>
 
     <!-- Content lines -->
     <!-- when large widget -->
-    <div ng-if="widget.width > 3" class="row widget-line" ng-show="isDataFound" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-sm-4">{{entity.name}}</div>
       <div class="col-sm-7">
         <div class="col-xs-4"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
@@ -52,7 +52,7 @@
     </div>
 
     <!-- when small widget -->
-    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="isDataFound" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-xs-7">{{entity.name}}</div>
       <div class="col-xs-4" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
       <div class="col-xs-4" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>

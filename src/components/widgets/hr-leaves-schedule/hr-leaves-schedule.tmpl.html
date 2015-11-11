@@ -13,13 +13,13 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound">
+    <div ng-show="(isDataFound==true)">
 
       <div widget-component-calendar ng-model="eventSources"></div>
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="widget.category" />
   </div>
 
 </div>

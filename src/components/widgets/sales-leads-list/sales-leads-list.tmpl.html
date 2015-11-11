@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound">
+    <div ng-show="(isDataFound==true)">
 
       <div class="widget-lines-container">
         <div class="row widget-line total" ng-repeat="lead in widget.content.leads" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-html-unsafe="{{getLeadDescription(lead)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
@@ -29,7 +29,7 @@
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

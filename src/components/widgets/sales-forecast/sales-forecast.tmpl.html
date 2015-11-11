@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound" >
+    <div ng-show="(isDataFound==true)" >
 
       <div class="chart-container">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>
