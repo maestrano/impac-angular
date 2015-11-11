@@ -1057,6 +1057,68 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+.analytics kpis-bar > .kpis {
+
+  // color: @light-black;
+  padding: 10px 0px;
+
+  max-height: 145px;
+  min-height: 145px;
+  overflow: hidden;
+  &.expanded {
+    .scrollable();
+    max-height: 280px;
+  }
+
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 500px;
+    max-height: 115px;
+    box-shadow: 0px 3px 12px -4px;
+
+    .scrollable();
+
+    .available-kpi {
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+      height: 38px;
+
+      span.kpi-name {
+        padding-top: 5px;
+        display: inline-block;
+      }
+
+      .form-control-static, .btn.btn-sm.btn-info {
+        float: right;
+        min-height: 30px;
+        height: 30px;
+        float: right;
+        margin-left: 3px;
+        margin-top: 0px;
+        font-weight: bold;
+      }
+      
+    }
+
+  }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  // color: @light-black;
+  padding: 5px 0px;
+}
 .analytics kpis-bar .kpi {
 
   text-align: center;
@@ -1158,68 +1220,6 @@ body {
   min-height: 80px;
 }
 
-.analytics kpis-bar > .kpis {
-
-  // color: @light-black;
-  padding: 10px 0px;
-
-  max-height: 145px;
-  min-height: 145px;
-  overflow: hidden;
-  &.expanded {
-    .scrollable();
-    max-height: 280px;
-  }
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
-
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
-      
-    }
-
-  }
-
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  // color: @light-black;
-  padding: 5px 0px;
-}
 .widget-item .top-line {
   cursor: move;
   background-color: @impac-widget-title-bg;
@@ -1484,22 +1484,6 @@ body {
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1525,6 +1509,22 @@ body {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+}
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
   }
 }
 .analytics .widget-item .content.hr-leaves-balance{
@@ -1802,37 +1802,6 @@ body {
     margin-bottom: 5px;
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -1878,6 +1847,37 @@ body {
           padding-top: 8px;
         }
       }
+    }
+  }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
     }
   }
 }

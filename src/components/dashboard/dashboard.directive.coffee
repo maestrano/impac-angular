@@ -54,7 +54,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $scope.activateTimer()
 
     $scope.activateTimer = ->
-      # $scope.isLoading ||= true
+      $scope.isLoading ||= true
       # The dashboard will load 100ms per widget before being displayed
       w = $scope.currentDhb.widgets
       timer = Math.max(100*w.length, 500) if w?
