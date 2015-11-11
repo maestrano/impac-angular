@@ -61,7 +61,7 @@ describe('<> ImpacDashboardsSvc', function () {
         setDashboardsDeferred.resolve(true);
         return setDashboardsDeferred.promise;
       });
-      spyOn(svc, 'setCurrentDashboard').and.returnValue(true);
+      spyOn(svc, 'setCurrentDashboard')
     });
 
     it('returns a promise', function() {
@@ -133,20 +133,23 @@ describe('<> ImpacDashboardsSvc', function () {
       spyOn(svc, 'setWidgetsTemplates').and.returnValue(true);
       spyOn(ImpacKpisSvc, 'initialize').and.returnValue(true);
       spyOn(svc, 'initializeActiveTabs').and.returnValue(true);
+      spyOn(svc, 'update').and.callThrough();
     });
 
     // Helpers ---
     function sharedBehaviorForSetDependingAttributes() {
-      it('stores the widgets templates list in the service', function() {
-        expect(svc.setWidgetsTemplates).toHaveBeenCalled();
-      });
+      describe('.setDashboardsDependingAttributes', function() {
+        it('stores the widgets templates list in the service', function() {
+          expect(svc.setWidgetsTemplates).toHaveBeenCalled();
+        });
 
-      it('initializes the kpis service', function() {
-        expect(ImpacKpisSvc.initialize).toHaveBeenCalled();
-      }); 
+        it('initializes the kpis service', function() {
+          expect(ImpacKpisSvc.initialize).toHaveBeenCalled();
+        });
 
-      it('initializes the tabs status', function() {
-        expect(svc.initializeActiveTabs).toHaveBeenCalled();
+        it('initializes the tabs status', function() {
+          expect(svc.initializeActiveTabs).toHaveBeenCalled();
+        });
       });
     };
 
@@ -163,8 +166,12 @@ describe('<> ImpacDashboardsSvc', function () {
 
           it('sets the depending attributes', function() {
             sharedBehaviorForSetDependingAttributes();
-          }); 
-        }); 
+          });
+
+          it('updates the dashboard\'s metadata as selected', function () {
+            expect(svc.update).toHaveBeenCalledWith(svc.config.currentDashboard.id, {metadata: {selected: true}});
+          });
+        });
 
         describe('when there is no dashboard in list', function() {
           it('sets an empty object as the current dashboard', function() {
@@ -180,7 +187,13 @@ describe('<> ImpacDashboardsSvc', function () {
 
     describe('when the dashboard exists in the list', function() {
       beforeEach(function() {
+        svc.config.currentDashboard = {id: 0, name: 'dash0'}
         svc.setCurrentDashboard(2);
+      });
+
+      it('updates dashboard metadata; deselects previous and selects new', function () {
+        expect(svc.update.calls.count()).toEqual(2)
+        expect(svc.update.calls.allArgs()).toEqual([ [0, {metadata:{selected:false}}], [2, {metadata:{selected:true}}] ]);
       });
 
       it('replaces the current dashboard by the fetched dashboard', function() {
@@ -189,17 +202,22 @@ describe('<> ImpacDashboardsSvc', function () {
 
       it('sets the depending attributes', function() {
         sharedBehaviorForSetDependingAttributes();
-      }); 
+      });
     });
 
     describe('when :id is not specified', function() {
-      sharedBehaviorForSetDefaultCurrentDashboard(null);
+      describe('if there is no previously selected dashboard', function () {
+        sharedBehaviorForSetDefaultCurrentDashboard(null);
+      });
+
+      // TODO <-------------------------
+      // .findSelectedDashboard()
+      xdescribe('if there is a previously selected dashboard', function () {});
     });
 
     describe('when the dashboard cannot be found in the list', function() {
       sharedBehaviorForSetDefaultCurrentDashboard(-1);
     });
-
   });
 
   describe('#setDashboards(:array)', function() {

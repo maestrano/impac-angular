@@ -72,15 +72,17 @@ angular
 
       return deferred.promise
 
+    setDashboardsDependingAttributes = (dhb) ->
+      _self.setWidgetsTemplates(dhb.widgets_templates)
+      ImpacKpisSvc.initialize(dhb)
+      _self.initializeActiveTabs()
 
     setDefaultCurrentDashboard = ->
       # default first dashboard
       if _self.config.dashboards? && _self.config.dashboards.length > 0
         $log.info("Impac - DashboardSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
-        _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
-        ImpacKpisSvc.initialize(_self.config.currentDashboard)
-        _self.initializeActiveTabs()
+        setDashboardsDependingAttributes(_self.config.currentDashboard)
         _self.update(_self.config.currentDashboard.id, { metadata: {selected: true} })
         return true
       # no dashboards
@@ -92,9 +94,7 @@ angular
 
     setSelectedDashboard = (dhb) ->
       ImpacMainSvc.override _self.config.currentDashboard, dhb
-      _self.setWidgetsTemplates(dhb.widgets_templates)
-      ImpacKpisSvc.initialize(_self.config.currentDashboard)
-      _self.initializeActiveTabs()
+      setDashboardsDependingAttributes(dhb)
       return true
 
     findSelectedDashboard = ->
@@ -112,7 +112,7 @@ angular
           return setSelectedDashboard(fetchedDhb)
         else
           $log.error("Impac - DashboardSvc: dashboard: #{id} not found in dashboards list")
-          return false
+          return setDefaultCurrentDashboard()
       # ON LOAD
       else
         selected = findSelectedDashboard()
