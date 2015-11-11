@@ -61,7 +61,7 @@ describe('<> ImpacDashboardsSvc', function () {
         setDashboardsDeferred.resolve(true);
         return setDashboardsDeferred.promise;
       });
-      spyOn(svc, 'setCurrentDashboard')
+      spyOn(svc, 'setCurrentDashboard').and.callThrough();
     });
 
     it('returns a promise', function() {
