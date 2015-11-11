@@ -132,7 +132,7 @@ angular
       ticks: {
         beginAtZero: true
         minRotation: 0
-        maxRotation: 0
+        # maxRotation: 0
         fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
       }
       scaleLabel: {
