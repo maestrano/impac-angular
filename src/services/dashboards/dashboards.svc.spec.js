@@ -210,9 +210,22 @@ describe('<> ImpacDashboardsSvc', function () {
         sharedBehaviorForSetDefaultCurrentDashboard(null);
       });
 
-      // TODO <-------------------------
-      // .findSelectedDashboard()
-      xdescribe('if there is a previously selected dashboard', function () {});
+      describe('if there is a previously selected dashboard', function () {
+        describe('.findSelectedDashboard', function () {
+          beforeEach(function () {
+            svc.config.dashboards.push({id: 3, name: 'dash3', metadata: {selected: true}});
+            svc.setCurrentDashboard();
+          });
+
+          it('sets the dashboard as the current dashboard', function () {
+            expect(svc.config.currentDashboard).toEqual({id: 3, name: 'dash3', metadata: {selected: true}});
+          });
+
+          it('sets the depending attributes', function () {
+            sharedBehaviorForSetDependingAttributes();
+          })
+        });
+      });
     });
 
     describe('when the dashboard cannot be found in the list', function() {
