@@ -5,7 +5,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     #====================================
     # Initialization
     #====================================
-    $scope.isLoading = true
+    # $scope.isLoading = true
 
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
@@ -18,10 +18,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
 
-    # dashboard heading
+    # dashboard heading & error messages
     # -------------------------------------
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
+    $scope.dhbErrorsConfig = ImpacTheming.get().dhbErrorsConfig
 
     # kpis
     # -------------------------------------
@@ -48,10 +49,20 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
     # reload the <impac-dashboards> on organization change.
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
+    $scope.isLoading = true
     ImpacDashboardsSvc.load(true).then (success) ->
-      # initialize widget selector
-      $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
-      $scope.isLoading = false
+      $scope.activateTimer()
+
+    $scope.activateTimer = ->
+      $scope.isLoading ||= true
+      # The dashboard will load 100ms per widget before being displayed
+      w = $scope.currentDhb.widgets
+      if w? then timer = Math.max(100*w.length, 500) else timer = 500
+      # The timer is only 500ms: to let the time for the dashboard to be loaded
+      # timer = 500
+      $timeout ->
+        $scope.isLoading=false
+      ,timer
 
 
     # ============================================
@@ -74,9 +85,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
       self.model = { name: '' }
       self.errors = ''
-      self.isLoading = true
+      self.isLoading = false
       self.instance = $modal.open(self.config)
-      
+
       self.instance.rendered.then (onRender) ->
         self.locked = true
       self.instance.result.then (onClose) ->
@@ -88,7 +99,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         self.organizations = config.organizations
         self.currentOrganization = config.currentOrganization
         self.selectMode('single')
-        self.isLoading = false
 
     $scope.createDashboardModal.proceed = ->
       self = $scope.createDashboardModal
@@ -108,9 +118,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       return ImpacDashboardsSvc.create(dashboard).then(
         (dashboard) ->
           self.errors = ''
-          self.isLoading = false
           self.instance.close()
-          $scope.displayWidgetSelector(ImpacDashboardsSvc.isCurrentDashboardEmpty())
         , (errors) ->
           self.isLoading = false
           self.errors = ImpacUtilities.processRailsError(errors)
@@ -171,14 +179,15 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # TODO: put in separate directive
 
     $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
-    $scope.showWidgetSelector = false # just to initialize / will be overriden at first load anyway
+    $scope.forceShowWidgetSelector = false # just to initialize / will be overriden at first load anyway
     $scope.showCloseWidgetSelectorButton = ->
       !ImpacDashboardsSvc.isCurrentDashboardEmpty()
 
-    $scope.displayWidgetSelector = (newValue) ->
-      # the widget selector will never be toggled if there is a customWidgetSelector set in config
-      return if !newValue? || $scope.customWidgetSelector.path
-      $scope.showWidgetSelector = !!newValue
+    $scope.displayWidgetSelector = (value=true) ->
+      $scope.forceShowWidgetSelector = value
+
+    $scope.showWidgetSelector = ->
+      $scope.forceShowWidgetSelector || (ImpacDashboardsSvc.isCurrentDashboardEmpty() && !$scope.customWidgetSelector.path)
 
     # Custom widgets selector
     # --------------------------
@@ -297,7 +306,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         self.userName = user.name
       )
       self.instance = $modal.open(self.config)
-      
+
       self.instance.rendered.then (onRender) ->
         self.locked = true
       self.instance.result.then (onClose) ->

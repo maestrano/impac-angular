@@ -1,48 +1,39 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('impacChart', ($timeout, $log) ->
+  .directive('impacChart', ($log) ->
     return {
       restrict: 'A',
       scope: {
         drawTrigger: '='
         deferred: '='
       },
-      template: '<canvas></canvas>',
       link: (scope,elem,attr) ->
-        options = {
-          bezierCurve: true,
-          pointDotRadius : 3,
-          responsive: true,
-          scaleShowLabels : true,
-          scaleShowLabelBackdrop : true,
-          scaleBeginAtZero: true,
-          scaleShowGridLines: true,
-        }
-
         # Draw a chart in the canvas
         # (ChartJs way of drawing a chart is to create a new Chart() element in the canvas context)
         # ------------------------------------
-        scope.draw = (data) ->
-          # $timeout will wait for the DOM to be rendered before drawing the chart
-          $timeout ->
-            if !_.isEmpty(data.options)
-              angular.extend(options,data.options)
+        scope.draw = (chartData) ->
+          if chartData.options.showXLabels? && !chartData.options.showXLabels
+            angular.merge(chartData.options, {
+              scales: {
+                xAxes: [{
+                  display: false
+                }]
+              }
+            })
 
-            # canvas has to be removed/appended to be redrawned without superposition
-            elem.children().get(0).remove()
-            elem.append('<canvas></canvas>')
-            canvas = elem.children().get(0)
-            ctx = canvas.getContext("2d")
+          # canvas has to be removed/appended to be redrawned without superposition
+          if elem.children().length > 0
+            elem.children().remove(0)
+            # On dashboard load, there will be no animation to avoid the canvas to be only partially drawn
+            # Thus, we set responsiveAnimationDuration only when a chart was already defined before
+            chartData.options.responsiveAnimationDuration = 1000
 
-            switch data.chartType
-              when 'Bar'
-                new Chart(ctx).Bar(data.data,options)
-              when 'Line'
-                new Chart(ctx).Line(data.data,options)
-              when 'Pie'
-                angular.extend(options, {tooltipFixed: true})
-                new Chart(ctx).Pie(data.data,options)
+          elem.append('<canvas></canvas>')
+          canvas = elem.children()[0]
+          ctx = canvas.getContext("2d")
+
+          new Chart(ctx, chartData)
 
 
         # Triggered by widget.format()

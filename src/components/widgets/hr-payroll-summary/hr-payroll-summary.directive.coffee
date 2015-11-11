@@ -198,6 +198,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           showXLabels: true,
           datasetFill: $scope.selectedElements.length == 1,
           pointDot: $scope.selectedElements.length == 1,
+          currency: 'hide'
         }
         chartData = ChartFormatterSvc.lineChart(inputData,options)
 
@@ -212,6 +213,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           showTooltips: true,
           percentageInnerCutout: 50,
           tooltipFontSize: 12,
+          currency: 'hide'
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
       

@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="isDataFound">
+    <div ng-show="(isDataFound==true)">
 
       <div class="selector">
         See: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred1"/> for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2"/>
@@ -41,7 +41,7 @@
 
     </div>
 
-    <div ng-hide="isDataFound" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
 
 </div>

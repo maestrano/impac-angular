@@ -1,5 +1,14 @@
 .analytics {
 
+  &.show-dhb {
+    transition: opacity 1s;
+    opacity: 1;
+  }
+  &.hide-dhb {
+    opacity: 0;
+  }
+
+
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
 
@@ -175,6 +184,7 @@
   // no widgets - empty dashboard.
   #no-widgets-container {
     position: relative;
+    min-height: 150px;
 
     // background image asset
     img.bg {
@@ -193,12 +203,17 @@
 
   }
 
-  #widgets-container {
-    // Quick-fix to avoid screen flockering when tooltips are appended to body:
-    // min-height will force a scrollbar to appear...
-    min-height: 700px;
+  // parent div section for widgets to be housed.
+  #widgets-section {
     padding-left: @impac-widgets-container-side-padding;
     padding-right: @impac-widgets-container-side-padding;
+
+    // container for widgets
+    #widgets-container {
+      // Quick-fix to avoid screen flockering when tooltips are appended to body:
+      // min-height will force a scrollbar to appear...
+      min-height: 700px;
+    }
 
     .placeHolderBox {
       margin: @impac-padding-between-widgets;
@@ -209,6 +224,7 @@
       background: none;
     }
 
+    // individual widget
     .widget-item {
       padding: @impac-padding-between-widgets;
     }

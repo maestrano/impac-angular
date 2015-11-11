@@ -26,8 +26,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.sales_comparison) && !_.isEmpty(w.content.dates)
-
+    $scope.isDataFound = (angular.isDefined(w.content) && !_.isEmpty(w.content.sales_comparison) && !_.isEmpty(w.content.dates))
+    if $scope.isDataFound
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       $scope.filterOptions = [
@@ -171,6 +171,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         datasetFill: false,
         pointDot: false,
       }
+      angular.merge(options, {currency: 'hide'}) if $scope.filter.value=='quantity_sold'
 
       chartData = ChartFormatterSvc.lineChart(inputData,options)
       

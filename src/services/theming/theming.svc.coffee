@@ -48,6 +48,17 @@ angular
         linkMessage: 'Are you missing an app?'
         linkUrl: '/apps'
         linkTarget: '_blank'
+
+      # options for configuring the dhb errors messages.
+      dhbErrorsConfig:
+        firstTimeCreated:
+          first: 'It\'s time to add a reporting dashboard!'
+          second: 'In 2 clicks, you\'ll be able to visualize how your business is performing.'
+          note: 'Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.'
+        empty:
+          first: 'Now it\'s time to select the metrics you want to see!'
+          second: 'Add widgets to your dashboard to help make an Impac!™ to your business.'
+
       # options for the widget selector panel.
       widgetSelectorConfig:
         path: null

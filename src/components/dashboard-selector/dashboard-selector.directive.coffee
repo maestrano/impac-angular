@@ -4,9 +4,10 @@ angular
   return {
     restrict: 'E'
     scope: {
-      onDisplayWidgetSelector: '&'
       onCreateDashboard: '&'
-      isWidgetSelectorShown: '='
+      isWidgetSelectorShown: '&'
+      onDisplayWidgetSelector: '&'
+      onSelectDashboard: '&'
     }
     controller: ($scope) ->
 
@@ -28,15 +29,17 @@ angular
 
       # Use of timeouts for better fluidity (avoid freewing the display)
       $scope.selectDashboard = (dhbId) ->
-        $scope.showDashboardsDropdown = false
         $scope.isLoading = true
-        $timeout (-> $scope.isLoading=false ), 300
+        $scope.showDashboardsDropdown = false
 
+        # make sure the dropdown disappears
         $timeout ->
-          ImpacDashboardsSvc.setCurrentDashboard(dhbId)
-          $scope.onDisplayWidgetSelector({newValue: ImpacDashboardsSvc.isCurrentDashboardEmpty()})
+          $scope.$apply ->
+            ImpacDashboardsSvc.setCurrentDashboard(dhbId)
+            $scope.onSelectDashboard()
+            $scope.isLoading = false
         , 50
-
+        
 
       # ============================================
       # Change dashboard name
@@ -96,6 +99,7 @@ angular
         return if self.locked
 
         self.errors = ''
+        self.isLoading = false
         self.instance = $modal.open(self.config)
       
         self.instance.rendered.then (onRender) ->
@@ -112,9 +116,7 @@ angular
         ImpacDashboardsSvc.delete($scope.currentDhb.id).then(
           () ->
             self.errors = ''
-            self.isLoading = false
             self.instance.close()
-            $scope.onDisplayWidgetSelector({newValue: ImpacDashboardsSvc.isCurrentDashboardEmpty()})
           , (errors) ->
             self.errors = ImpacUtilities.processRailsError(errors)
             self.isLoading = false

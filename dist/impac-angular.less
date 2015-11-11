@@ -614,6 +614,15 @@ body {
 }
 .analytics {
 
+  &.show-dhb {
+    transition: opacity 1s;
+    opacity: 1;
+  }
+  &.hide-dhb {
+    opacity: 0;
+  }
+
+
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
 
@@ -789,6 +798,7 @@ body {
   // no widgets - empty dashboard.
   #no-widgets-container {
     position: relative;
+    min-height: 150px;
 
     // background image asset
     img.bg {
@@ -807,12 +817,17 @@ body {
 
   }
 
-  #widgets-container {
-    // Quick-fix to avoid screen flockering when tooltips are appended to body:
-    // min-height will force a scrollbar to appear...
-    min-height: 700px;
+  // parent div section for widgets to be housed.
+  #widgets-section {
     padding-left: @impac-widgets-container-side-padding;
     padding-right: @impac-widgets-container-side-padding;
+
+    // container for widgets
+    #widgets-container {
+      // Quick-fix to avoid screen flockering when tooltips are appended to body:
+      // min-height will force a scrollbar to appear...
+      min-height: 700px;
+    }
 
     .placeHolderBox {
       margin: @impac-padding-between-widgets;
@@ -823,6 +838,7 @@ body {
       background: none;
     }
 
+    // individual widget
     .widget-item {
       padding: @impac-padding-between-widgets;
     }
@@ -1142,6 +1158,49 @@ body {
   min-height: 80px;
 }
 
+.widget-item .top-line {
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .loader {
+    .loader-centered();
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
+}
+
 .analytics kpis-bar > .kpis {
 
   // color: @light-black;
@@ -1204,49 +1263,6 @@ body {
   // color: @light-black;
   padding: 5px 0px;
 }
-.widget-item .top-line {
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .loader {
-    .loader-centered();
-    i {
-      .loader-style();
-    }
-    p {
-      margin-top: 10px;
-    }
-  }
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1281,6 +1297,16 @@ body {
 }
 
 
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+  
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1290,16 +1316,6 @@ body {
 
   .no-data-block {
     .center-thin();
-  }
-}
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-  
-  .price {
-    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-cash-summary {
@@ -1511,6 +1527,22 @@ body {
     }
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
+  }
+}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -1529,22 +1561,6 @@ body {
   .fc-day-grid,.fc-widget-header {
     font-size: 12px;
     color: @impac-widget-text-color;
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-payroll-summary {
@@ -1845,6 +1861,8 @@ body {
     -o-filter: blur(2px);
     -ms-filter: blur(2px);
     filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
   }
   .message {
     position: absolute;
@@ -2104,6 +2122,15 @@ body {
     }
   }
 }
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -2142,15 +2169,6 @@ body {
         color: white;
       }
     }
-  }
-}
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
   }
 }
 .analytics .widget-item .content .settings.time-range {

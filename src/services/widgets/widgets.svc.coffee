@@ -124,14 +124,15 @@ angular
                 name = success.data.name
                 angular.extend widget, {content: content, originalName: name}
 
+                # Initializes widget's context, and determines if the data has been found
                 widget.initContext() if angular.isDefined(widget.initContext)
-
                 # Initializes each widget's setting
                 for setting in widget.settings
                   setting.initialize() if angular.isDefined(setting.initialize)
 
                 # Formats the chart when necessary
                 widget.format() if angular.isDefined(widget.format)
+
                 deferred.resolve widget
 
               (errorResponse) ->
@@ -140,6 +141,7 @@ angular
                 # If data not found ->
                 # Old widgets always return a content, even if its empty
                 # New widgets return a 404 error
+                widget.initContext() if angular.isDefined(widget.initContext)
                 widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
 
                 deferred.reject(errorResponse)
