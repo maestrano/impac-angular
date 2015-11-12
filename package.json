@@ -33,7 +33,9 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "lazypipe": "^1.0.1",
     "less-plugin-glob": "^1.1.0",
-    "run-sequence": "^1.1.4"
+    "run-sequence": "^1.1.4",
+    "wiredep": "^2.2.2",
+    "wrench": "^1.5.8"
   },
   "engines": {
     "node": ">=0.8.0"

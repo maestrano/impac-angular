@@ -1,3 +1,20 @@
+//TODO: start splitting gulp file
+
+var gulp = require('gulp');
+var wrench = require('wrench');
+
+/**
+ *  This will load all js or coffee files in the gulp directory
+ *  in order to load all gulp tasks
+ */
+wrench.readdirSyncRecursive('./gulp').filter(function(file) {
+  return (/\.(js|coffee)$/i).test(file);
+}).map(function(file) {
+  require('./gulp/' + file);
+});
+
+//TODO: start splitting gulp file
+
 // TODO: Break this out into multiple files and clean up.
 var gulp = require('gulp'),
     // karma for gulp
