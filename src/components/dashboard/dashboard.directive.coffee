@@ -17,7 +17,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.impacTitleLogo = ImpacAssets.get('impacTitleLogo')
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
-
     # dashboard heading & error messages
     # -------------------------------------
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
