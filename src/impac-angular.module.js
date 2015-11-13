@@ -22,6 +22,7 @@ angular.module('impac.components',
   [
     'impac.components.dashboard',
     'impac.components.dashboard-selector',
+    'impac.components.dashboard-settings',
     'impac.components.kpis-bar',
     'impac.components.kpi',
     'impac.components.chart',
@@ -95,6 +96,11 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.params-checkboxes',
     'impac.components.widgets-settings.time-range',
     'impac.components.widgets-settings.width'
+  ]
+);
+angular.module('impac.components.dashboard-settings',
+  [
+    'impac.components.dashboard-settings.currency',
   ]
 );
 angular.module('impac.components.widgets-common',

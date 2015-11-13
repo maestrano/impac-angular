@@ -71,6 +71,8 @@
   <!-- custom widget selector template configured from ImpacThemingProvider -->
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
 
+  <!-- currency selector -->
+  <div dashboard-setting-currency currency="currentDhb.currency" />
 
   <!-- Errors -->
   <div class="alert alert-error" ng-show="errors">
