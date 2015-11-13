@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc) ->
   
 
     #====================================
@@ -21,6 +21,16 @@ angular
     @config.widgetsTemplates = []
     @getWidgetsTemplates = ->
       return _self.config.widgetsTemplates
+
+    #====================================
+    # Callbacks
+    #====================================
+
+    @callbacks = {}
+
+    @callbacks.dashboardChanged = $q.defer()
+    @dashboardChanged = ->
+      return _self.callbacks.dashboardChanged.promise
 
 
     #====================================
@@ -44,33 +54,47 @@ angular
     # Loaders and setters
     #====================================
 
+    @loadLocked=false
     @load = (force=false) ->
-      deferred = $q.defer()
 
-      if needConfigurationLoad() || force
+      # Singleton prevents concurrent calls of _self.load
+      if !_self.loadLocked
+        _self.loadLocked=true
 
-        ImpacMainSvc.loadOrganizations(force).then (success) ->
-          orgId = success.currentOrganization.id
+        deferred = $q.defer()
+        if (needConfigurationLoad() || force)
 
-          $http.get(ImpacRoutes.baseDhbPath(orgId)).then (dashboards) ->
-            _self.setDashboards(dashboards.data).then ->
-              _self.setCurrentDashboard()
-              deferred.resolve(_self.config)
-            (error) ->
+          ImpacMainSvc.loadOrganizations(force).then (success) ->
+            orgId = success.currentOrganization.id
+
+            $http.get(ImpacRoutes.baseDhbPath(orgId)).then (dashboards) ->
+              _self.setDashboards(dashboards.data).then ->
+                _self.setCurrentDashboard()
+                _self.loadLocked=false
+                deferred.resolve(_self.config)
+              (error) ->
+                _self.loadLocked=false
+                deferred.reject(error)
+
+            ,(error) ->
+              $log.error("Impac - DashboardSvc: cannot retrieve dashboards list for org: #{orgId}")
+              _self.loadLocked=false
               deferred.reject(error)
-
+          
           ,(error) ->
-            $log.error("Impac - DashboardSvc: cannot retrieve dashboards list for org: #{orgId}")
+            $log.error("Impac - DashboardSvc: cannot retrieve current organization")
+            _self.loadLocked=false
             deferred.reject(error)
+
+        else
+          _self.loadLocked=false
+          deferred.resolve(_self.config)
         
-        ,(error) ->
-          $log.error("Impac - DashboardSvc: cannot retrieve current organization")
-          deferred.reject(error)
+        return deferred.promise
 
       else
-        deferred.resolve(_self.config)
-
-      return deferred.promise
+        $log.warn "ImpacDashboardsSvc.load locked. Trying again in 1s"
+        $timeout (-> _self.load(force)), 1000
 
 
     setDefaultCurrentDashboard = ->
@@ -80,6 +104,7 @@ angular
         _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
         ImpacKpisSvc.initialize(_self.config.currentDashboard)
         _self.initializeActiveTabs()
+        _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
         return true
       else
         $log.warn("Impac - DashboardSvc: cannot set default current dashboard")
@@ -95,6 +120,7 @@ angular
           _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
           ImpacKpisSvc.initialize(_self.config.currentDashboard)
           _self.initializeActiveTabs()
+          _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
           return true
         else
           $log.error("Impac - DashboardSvc: dashboard: #{id} not found in dashboards list")
