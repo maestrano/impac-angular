@@ -164,18 +164,22 @@ angular
     #====================================
     
     @create = (dashboard) ->
-      deferred = $q.defer()
-      data = { dashboard: dashboard }
-      
-      $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
-        _self.config.dashboards.push(success.data)
-        _self.setCurrentDashboard(success.data.id)
-        deferred.resolve(success.data)
-      ,(error) ->
-        $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{dashboard}")
-        deferred.reject(error)
+      _self.load().then ->
+        deferred = $q.defer()
+        data = { dashboard: dashboard }
 
-      return deferred.promise
+        unless dashboard.currency?
+          dashboard.currency = ImpacMainSvc.config.currentOrganization.currency || 'USD'
+        
+        $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
+          _self.config.dashboards.push(success.data)
+          _self.setCurrentDashboard(success.data.id)
+          deferred.resolve(success.data)
+        ,(error) ->
+          $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{dashboard}")
+          deferred.reject(error)
+
+        return deferred.promise
 
 
     @delete = (id) ->
