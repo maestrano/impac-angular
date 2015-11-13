@@ -166,10 +166,11 @@ angular
     @create = (dashboard) ->
       _self.load().then ->
         deferred = $q.defer()
-        data = { dashboard: dashboard }
-
+        
         unless dashboard.currency?
           dashboard.currency = ImpacMainSvc.config.currentOrganization.currency || 'USD'
+
+        data = { dashboard: dashboard }
         
         $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
           _self.config.dashboards.push(success.data)
