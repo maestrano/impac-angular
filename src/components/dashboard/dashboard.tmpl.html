@@ -1,5 +1,5 @@
 <!-- DASHBOARD -->
-<div class="analytics" ng-hide="isLoading" ng-class="{'hide-dhb': isLoading, 'show-dhb': !isLoading}">
+<div class="analytics" ng-hide="(isLoading || forceLoad)" ng-class="{'hide-dhb': (isLoading || forceLoad), 'show-dhb': !(isLoading || forceLoad)}">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
   <!-- Title and Dashboard selection -->
@@ -149,7 +149,7 @@
   </div>
 </div>
 
-<div class="analytics" ng-show="isLoading">
+<div class="analytics" ng-show="(isLoading || forceLoad)">
   <div class="row">
     <div class="col-md-12 loader-container text-center" style="margin-top: 200px;">
       <i class="fa fa-refresh fa-spin" style="font-size: 250px; opacity: 0.7;"/>
