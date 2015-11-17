@@ -1,7 +1,7 @@
 <div class="row">
   <div class="buttons-bar col-md-8">
     <tabset type="{{selectorType}}">
-      <tab ng-repeat="dhb in dashboardsList" select="selectDashboard(dhb.id)" active="dhb.active">
+      <tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
         <tab-heading>
           {{dhb.full_name}}
           <a href="" class="close-link" ng-if="isDeleteDhbEnabled">
