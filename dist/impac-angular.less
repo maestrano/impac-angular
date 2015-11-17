@@ -1388,6 +1388,24 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+  // single entity selected class title
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+  // .no-data-block {
+  //   .center-thin();
+  // }
+}
+
+
+
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1427,24 +1445,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.accounts-detailed-classifications {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
-  // single entity selected class title
-  .account-class-title {
-    margin-bottom: 8px;
-    margin-left: 11px;
-  }
-  // .no-data-block {
-  //   .center-thin();
-  // }
-}
-
-
-
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
     text-align: left;
@@ -1572,9 +1572,6 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 49px;
@@ -1590,6 +1587,9 @@ body {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -1604,11 +1604,11 @@ body {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();

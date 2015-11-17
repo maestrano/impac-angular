@@ -27,7 +27,7 @@ angular
         else
           $scope.showDashboardsDropdown = false
 
-      # Use of timeouts for better fluidity (avoid freewing the display)
+      # Use of timeouts for better fluidity (avoid freezing the display)
       $scope.selectDashboard = (dhbId) ->
         $scope.isLoading = true
         $scope.showDashboardsDropdown = false
