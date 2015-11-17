@@ -381,6 +381,7 @@ module.directive('impacDashboard', ($templateCache) ->
   return {
       restrict: 'EA',
       scope: {
+        forceLoad: '=load'
       },
       template: $templateCache.get('dashboard/dashboard.tmpl.html'),
       controller: 'ImpacDashboardCtrl'

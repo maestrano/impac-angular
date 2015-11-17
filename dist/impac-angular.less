@@ -1057,68 +1057,6 @@ body {
   ////////
 }
 
-.analytics kpis-bar > .kpis {
-
-  // color: @light-black;
-  padding: 10px 0px;
-
-  max-height: 145px;
-  min-height: 145px;
-  overflow: hidden;
-  &.expanded {
-    .scrollable();
-    max-height: 280px;
-  }
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
-
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
-      
-    }
-
-  }
-
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  // color: @light-black;
-  padding: 5px 0px;
-}
 .analytics kpis-bar .kpi {
 
   text-align: center;
@@ -1220,6 +1158,68 @@ body {
   min-height: 80px;
 }
 
+.analytics kpis-bar > .kpis {
+
+  // color: @light-black;
+  padding: 10px 0px;
+
+  max-height: 145px;
+  min-height: 145px;
+  overflow: hidden;
+  &.expanded {
+    .scrollable();
+    max-height: 280px;
+  }
+
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 500px;
+    max-height: 115px;
+    box-shadow: 0px 3px 12px -4px;
+
+    .scrollable();
+
+    .available-kpi {
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+      height: 38px;
+
+      span.kpi-name {
+        padding-top: 5px;
+        display: inline-block;
+      }
+
+      .form-control-static, .btn.btn-sm.btn-info {
+        float: right;
+        min-height: 30px;
+        height: 30px;
+        float: right;
+        margin-left: 3px;
+        margin-top: 0px;
+        font-weight: bold;
+      }
+      
+    }
+
+  }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  // color: @light-black;
+  padding: 5px 0px;
+}
 .widget-item .top-line {
   cursor: move;
   background-color: @impac-widget-title-bg;
@@ -1701,10 +1701,6 @@ body {
     .selectable();
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -1714,6 +1710,10 @@ body {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2174,6 +2174,9 @@ body {
     }
   }
 }
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -2187,7 +2190,4 @@ body {
       margin-right: -3px;
     }
   }
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
 }
