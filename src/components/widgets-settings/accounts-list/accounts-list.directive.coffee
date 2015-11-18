@@ -61,7 +61,6 @@ module.directive('settingAccountsList', () ->
     scope: {
       parentWidget: '='
       deferred: '='
-      callbacks: '=?'
     },
     controller: 'SettingAccountsListCtrl'
   }

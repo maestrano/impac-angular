@@ -27,7 +27,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
       id: 'compare_accounts',
       label: 'Compare matching accounts across your companies',
       value: false,
-      onChangeCallback: $scope.multiCompanyComparisonOnChange
+      onChangeCallback: $scope.updateSettings
     }]
     # updates model with saved settings
     if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
@@ -37,13 +37,6 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
 
   $scope.isMultiCompanyMode = ->
     _.result( _.find($scope.comparisonModeOptions, 'id', 'compare_accounts'), 'value')
-
-  $scope.multiCompanyComparisonOnChange = (isOnLoad=false) ->
-    $scope.updateSettings()
-
-  # moves all accounts from w.selectedAccounts to w.remainingAccounts
-  $scope.purgeSelectedAccounts = ->
-    w.clearAccounts(w.selectedAccounts, w.remainingAccounts)
 
   $scope.hasAccountsSelected = ->
     return w.selectedAccounts && w.selectedAccounts.length > 0
