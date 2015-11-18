@@ -1,5 +1,5 @@
 <div widget-accounts-comparison>
-  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" callbacks="callbacks"/>
+  <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred"/>
 
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
@@ -8,7 +8,7 @@
 
     <div align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="beforeUpdateSettings()">Save</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 

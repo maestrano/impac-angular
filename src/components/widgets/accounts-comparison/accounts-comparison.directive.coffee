@@ -22,42 +22,21 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
-    # parameters for params-checkboxes.directive
+    # defines the available options for params-checkboxes.directive
     $scope.comparisonModeOptions = [{
       id: 'compare_accounts',
       label: 'Compare matching accounts across your companies',
       value: false,
-      onChangeCallback: $scope.multiCompanyComparisonOnChange
+      onChangeCallback: $scope.updateSettings
     }]
-    if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids.length > 1
+    # updates model with saved settings
+    if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
       angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
+    # is this needed?
     $scope.movedAccount = {}
-
-  # callbacks for settings components
-  $scope.callbacks = {}
-  # applys all comparison mode params
-  $scope.callbacks.runMultiCompanyComparison = (isOnLoad=true) ->
-    _.forEach $scope.comparisonModeOptions, (option) -> option.onChangeCallback(isOnLoad)
 
   $scope.isMultiCompanyMode = ->
     _.result( _.find($scope.comparisonModeOptions, 'id', 'compare_accounts'), 'value')
-
-  $scope.multiCompanyComparisonOnChange = (isOnLoad=false) ->
-    $scope.purgeSelectedAccounts() unless isOnLoad
-    if $scope.isMultiCompanyMode()
-      w.groupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
-    else
-      w.ungroupAccounts(w.remainingAccounts, w.remainingAccounts, 'account_name')
-
-  # moves all accounts from w.selectedAccounts to w.remainingAccounts
-  $scope.purgeSelectedAccounts = ->
-    w.clearAccounts(w.selectedAccounts, w.remainingAccounts)
-
-  # move selected accounts & set all comparisonModeOptions to false before updating settings.
-  $scope.beforeUpdateSettings = ->
-    $scope.purgeSelectedAccounts()
-    _.forEach $scope.comparisonModeOptions, (option) -> option.value = false if option.value
-    $scope.updateSettings()
 
   $scope.hasAccountsSelected = ->
     return w.selectedAccounts && w.selectedAccounts.length > 0
