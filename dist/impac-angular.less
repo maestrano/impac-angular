@@ -869,6 +869,107 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+.analytics kpis-bar .kpi {
+
+  text-align: center;
+  min-height: 125px;
+  white-space: normal;
+  padding: 10px 3px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 4px 12px -7px #17262d;
+
+  &.static {
+    .kpi-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  &.edit {
+    .scrollable();
+
+    input.form-control.input-sm {
+      height: 30px;
+      background-color: white;
+      border: solid 1px @impac-widget-borders-color;
+      margin-top: 5px;
+    }
+    
+    .btn.btn-sm {
+      margin-top: 8px;
+    }
+
+    .param-name {
+      margin-top: 5px;
+    }
+  }
+
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+   
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+    }
+
+    &.static {
+      position: static;
+      margin: 5px 20px;
+    }
+  }
+
+  .kpi-watch {
+    font-size: 11px;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 80px;
+}
+
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -1057,107 +1158,6 @@ body {
   ////////
 }
 
-.analytics kpis-bar .kpi {
-
-  text-align: center;
-  min-height: 125px;
-  white-space: normal;
-  padding: 10px 3px;
-  border-radius: 3px;
-  background-color: white;
-  box-shadow: 0px 4px 12px -7px #17262d;
-
-  &.static {
-    .kpi-value {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-    }
-  }
-
-  &.edit {
-    .scrollable();
-
-    input.form-control.input-sm {
-      height: 30px;
-      background-color: white;
-      border: solid 1px @impac-widget-borders-color;
-      margin-top: 5px;
-    }
-    
-    .btn.btn-sm {
-      margin-top: 8px;
-    }
-
-    .param-name {
-      margin-top: 5px;
-    }
-  }
-
-
-  .kpi-title {
-    .text-uppercase();
-    font-size: 12px;
-    font-weight: 600;
-    color: @impac-widget-text-color-medium;
-    border-bottom-color: @impac-widget-text-color-medium;
-
-    &:hover {
-      color: @impac-widget-text-color;
-      border-bottom-color: @impac-widget-text-color;
-    }
-  }
-
-  .kpi-value {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .kpi-alert {
-    .text-uppercase();
-    font-size: 11px;
-    font-weight: 700;
-    background-color: white;
-    border: 1px solid @brand-danger;
-    border-radius: 4px;
-    color: @brand-danger;
-    padding: 2px 5px;
-
-    position: absolute;
-    bottom: 15px;
-    left: 15%;
-    width: 70%;
-   
-    &.kpi-close {
-      bottom: auto;
-      right: 20px;
-      top: 5px;
-      border-radius: 10px;
-      width: 21px;
-      left: auto;
-    }
-
-    &:hover {
-      color: darken(@brand-danger, 10%);
-      border-color: darken(@brand-danger, 10%);
-    }
-
-    &.static {
-      position: static;
-      margin: 5px 20px;
-    }
-  }
-
-  .kpi-watch {
-    font-size: 11px;
-  }
-}
-
-.analytics kpis-bar > .key-stats .kpi {
-  min-height: 80px;
-}
-
 .analytics kpis-bar > .kpis {
 
   // color: @light-black;
@@ -1307,6 +1307,12 @@ body {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1318,22 +1324,6 @@ body {
     .center-thin();
   }
 }
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-}
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1385,6 +1375,16 @@ body {
 
   .settings.params-checkboxes {
     margin-left: 13px;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -1456,17 +1456,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1481,8 +1470,16 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
+  }
 }
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
@@ -1511,6 +1508,9 @@ body {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+}
 .analytics .widget-item .content.hr-employees-list {
   .legend {
     margin-bottom: 9px;
@@ -1525,22 +1525,6 @@ body {
     .widget-lines-container {
       text-align: left;
     }
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1561,6 +1545,22 @@ body {
   .fc-day-grid,.fc-widget-header {
     font-size: 12px;
     color: @impac-widget-text-color;
+  }
+}
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-payroll-summary {
@@ -1695,12 +1695,6 @@ body {
 .analytics .widget-item .content.sales-cycle {
   .simple-summary-widget();
 }
-.analytics .widget-item .content.sales-forecast {
-  .tall-widget();
-  .widget-lines-container .widget-line.main {
-    .selectable();
-  }
-}
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -1710,16 +1704,16 @@ body {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-forecast {
+  .tall-widget();
+  .widget-lines-container .widget-line.main {
+    .selectable();
+  }
+}
 .analytics .widget-item .content.sales-leads-funnel {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1728,6 +1722,12 @@ body {
   }
   .selector {
     margin-bottom: 4px;
+  }
+}
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
   }
 }
 .analytics .widget-item .content.sales-margin {
@@ -1764,23 +1764,6 @@ body {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
-}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1798,6 +1781,23 @@ body {
       font-size: 11px;
     }
   }
+}
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
 }
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
@@ -1852,136 +1852,6 @@ body {
       }
     }
   }
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    border-bottom: @impac-widget-title-border;
-    white-space: nowrap;
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-    .editable-wrap {
-      height: 20px;
-      width: 75%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-      .editable-controls {
-        width: 100%;
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
-
-  .top-button {
-    float: right;
-    background: transparent;
-    border: none;
-    color: @impac-widget-top-buttons-color;
-    padding: 1px;
-    margin-left: 3px;
-    outline: none;
-
-    &:active, &:focus {
-      -webkit-box-shadow: none;
-    }
-
-    &.btn-edit {
-      font-size: 14px;
-      &:hover, &.edit-mode {
-        color: darken(@mgreen,10%);
-      }
-    }
-    &.btn-close {
-      &:hover {
-        color: @pink
-      }
-    }
-    &.btn-refresh {
-      font-size: 17px;
-      margin-top: -1px;
-      &:hover {
-        color: @mblue;
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-  
 }
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
@@ -2190,4 +2060,134 @@ body {
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    border-bottom: @impac-widget-title-border;
+    white-space: nowrap;
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+    .editable-wrap {
+      height: 20px;
+      width: 75%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+      .editable-controls {
+        width: 100%;
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-top: 3px;
+  }
+
+  .top-button {
+    float: right;
+    background: transparent;
+    border: none;
+    color: @impac-widget-top-buttons-color;
+    padding: 1px;
+    margin-left: 3px;
+    outline: none;
+
+    &:active, &:focus {
+      -webkit-box-shadow: none;
+    }
+
+    &.btn-edit {
+      font-size: 14px;
+      &:hover, &.edit-mode {
+        color: darken(@mgreen,10%);
+      }
+    }
+    &.btn-close {
+      &:hover {
+        color: @pink
+      }
+    }
+    &.btn-refresh {
+      font-size: 17px;
+      margin-top: -1px;
+      &:hover {
+        color: @mblue;
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+  
 }
