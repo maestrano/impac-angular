@@ -9,7 +9,7 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
     link: (scope, elements, attrs) ->
       ImpacMainSvc.load().then(
         (mainConfig) ->
-          ImpacDashboardsSvc.load().then () ->
+          ImpacDashboardsSvc.load().then ->
             # scope initialization
             scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
             scope.currency ||= scope.currentDhb.currency || mainConfig.currentOrganization.currency || 'USD'
