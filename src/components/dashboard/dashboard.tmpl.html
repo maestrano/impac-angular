@@ -20,6 +20,17 @@
     <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()"></dashboard-selector>
   </div>
 
+  <div id="sub-menu">
+    <!-- Displayed to MYOB Essentials Users -->
+    <div id="myob-message" ng-if="hasMyobEssentialsOnly" class="alert alert-warning">
+      <h3>It looks like you are using MYOB Essentials...</h3>
+      <p>...as your unique accounting application.</p>
+      <p>Unfortunately, Impac! has very limited support with this application, due to access restriction to MYOB Essentials API.
+      Consequently, most of the widgets provided by Impac! won't find a valid source of data to display their content.</p>
+      <p>Maybe you should consider adding another accounting app to your dashboard, such as <a href="apps/myob" target="_blank">MYOB AccountRight</a>, <a href="apps/quickbooks" target="_blank">QuickBooks</a>, or <a href="apps/xero" target="_blank">Xero</a>?</p>
+    </div>
+  </div>
+
   <!-- Widgets selection container -->
   <div id="widget-selector" collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">

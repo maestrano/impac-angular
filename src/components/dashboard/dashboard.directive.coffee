@@ -52,6 +52,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.isLoading = true
     ImpacDashboardsSvc.load(true).then (success) ->
       $scope.activateTimer()
+      $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
 
     $scope.activateTimer = ->
       $scope.isLoading ||= true
