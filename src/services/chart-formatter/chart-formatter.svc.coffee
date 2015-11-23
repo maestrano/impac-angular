@@ -1,10 +1,14 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (ImpacTheming, $filter) ->
+  .service('ChartFormatterSvc', (ImpacTheming, $filter, $window, $document) ->
 
     _self = @
 
     COLORS = ImpacTheming.get().chartColors
+
+    # on browser window blur event, remove any lingering chartjs-tooltips from the DOM.
+    $window.onblur = ->
+      angular.element($document[0].getElementById('chartjs-tooltip')).remove()
 
     # Returns the color defined for positive values
     @getPositiveColor = ->
