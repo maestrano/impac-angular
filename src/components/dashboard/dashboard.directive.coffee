@@ -42,6 +42,13 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.openStarWizard = ->
       $scope.starWizardModal.value = true
 
+    # Sub menu (alerts)
+    # -------------------------------------
+    $scope.showSubMenu = false
+    $scope.displaySubMenu = ->
+      $scope.showSubMenu = true
+    $scope.hideSubMenu = ->
+      $scope.showSubMenu = false
 
     # load dashboards with their widgets
     # -------------------------------------
