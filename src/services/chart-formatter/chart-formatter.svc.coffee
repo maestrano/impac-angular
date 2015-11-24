@@ -312,7 +312,7 @@ angular
         data: {
           datasets: [
             {
-              data: _.map inputData, ( (data) -> data.value )
+              data: _.map inputData, ( (data) -> Math.abs(data.value) )
               backgroundColor: colors
             }
           ]
