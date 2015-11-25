@@ -28,7 +28,7 @@
           <div class="row widget-line total">
             <div class="row widget-line" ng-class="isSelected(widget.content.payables) ? 'selected' : null" >
               <div class="col-sm-1" ng-click="toggleCollapsed(widget.content.payables)">
-                <i ng-show="widget.content.payables.suppliers" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                <i ng-show="(widget.content.payables.suppliers && widget.content.payables.suppliers.length)" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
               </div>
               <div class="col-sm-7" ng-click="toggleSelectedElement(widget.content.payables)">
                 <strong>Aged Payables</strong>
@@ -52,7 +52,7 @@
           <div class="row widget-line total">
             <div class="row widget-line" ng-class="isSelected(widget.content.receivables) ? 'selected' : null" >
               <div class="col-sm-1" ng-click="toggleCollapsed(widget.content.receivables)">
-                <i ng-show="widget.content.receivables.customers" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                <i ng-show="(widget.content.receivables.customers && widget.content.receivables.customers.length)" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
               </div>
               <div class="col-sm-7" ng-click="toggleSelectedElement(widget.content.receivables)">
                 <strong>Aged Receivables</strong>
@@ -75,7 +75,7 @@
       </div>
 
       <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
-          
+
         <div ng-show="hasElements()">
 
           <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Aged Payables and Receivables</h4>

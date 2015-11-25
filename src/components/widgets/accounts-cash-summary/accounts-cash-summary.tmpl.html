@@ -27,7 +27,7 @@
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" ng-show="(statement.accounts && statement.accounts.length)"/></div>
               <div class="col-sm-5" ng-click="toggleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
               <div class="col-sm-3 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
               <div class="col-sm-3 text-right" ng-click="toggleSelectedElement(statement)" ng-class="getVarianceClassColor(getLastVariance(statement))"><strong>{{getLastVariance(statement)}}</strong></div>
@@ -53,7 +53,7 @@
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
             <div class="legend">{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Cash Flow</div>
           </div>
-          
+
           <div class="widget-lines-container">
             <div class="row widget-line">
               <span class="text-center" ng-repeat="date in dates track by $index">
@@ -78,5 +78,5 @@
 
     <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
   </div>
-    
+
 </div>

@@ -140,7 +140,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         showXLabels: true,
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
