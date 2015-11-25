@@ -1,7 +1,7 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('impacChart', ($log) ->
+  .directive('impacChart', ($log, $window) ->
     return {
       restrict: 'A',
       scope: {
@@ -44,7 +44,28 @@ angular
           (error) ->
             $log.error(error)
           (chartData) ->
-            scope.draw(chartData)
+            userAgent = $window.navigator.userAgent
+            isSafari = ((userAgent.indexOf('Safari') != -1) && !(userAgent.indexOf('Chrome') != -1))
+
+            # Chart.js
+            if isSafari
+              timeoutUntilVisible = () ->
+                # Use jquery function to detect if the canvas container is visible
+                visible = $(elem).is(':visible')
+                if visible
+                  # Container is visible -> draw the canvas
+                  # console.log 'CHART VISIBLE: draw the canvas'
+                  scope.draw(chartData)
+                else
+                  setTimeout ->
+                    # debugger
+                    # console.log 'CHART NOT VISIBLE: waiting until container is visible'
+                    timeoutUntilVisible()
+                  , 100 # An optimized digest cycle is less than 25ms
+
+              timeoutUntilVisible()
+            else
+              scope.draw(chartData)
         )
 
         # Chart is ready: trigger load content
