@@ -1,10 +1,11 @@
 module = angular.module('impac.components.widgets-common.data-not-found',[])
 
-module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets, ImpacTheming) ->
+module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets, ImpacTheming, ImpacMainSvc) ->
   return {
     restrict: 'A',
     scope: {
-    	widgetEngine: '='
+      widgetEngine: '='
+      onDisplayAlerts: '&'
     },
     link: (scope) ->
       scope.bgImage = ''
@@ -24,6 +25,9 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
           (error) ->
             $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
         )
+
+      hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+      scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
   }

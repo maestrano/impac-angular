@@ -57,9 +57,10 @@ module.directive('impacWidget', ($templateCache) ->
   return {
     restrict: 'A',
     scope: {
-      parentDashboard: '=',
-      widget: '=',
+      parentDashboard: '='
+      widget: '='
       isAccessibility: '='
+      onDisplayAlerts: '&'
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
