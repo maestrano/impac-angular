@@ -26,7 +26,8 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
             $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
         )
 
-      scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+      hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+      scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
   }

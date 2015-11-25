@@ -4,13 +4,12 @@
   <div class="message">
     {{content.mainMessage}}
 
-    <div ng-switch="hasMyobEssentialsOnly">
-      <a ng-switch-when="true" ng-click="onDisplayAlerts()">
-        <i class="fa fa-warning" /> Find out why
-      </a>
-      <a ng-switch-default ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
-        {{content.linkMessage}}
-      </a>
-    </div>
+    <a ng-show="showAlertsTrigger" ng-click="onDisplayAlerts()">
+      <i class="fa fa-warning" /> Find out why
+    </a>
+    <a ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
+      {{content.linkMessage}}
+    </a>
+    
   </div>
 </div>
