@@ -24,7 +24,7 @@
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="statement.employees" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="(statement.employees && statement.employees.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
               <div class="col-sm-7" ng-click="toggleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
               <div class="col-sm-4 text-right" ng-click="toggleSelectedElement(statement)">
                 <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
@@ -44,9 +44,9 @@
       </div>
 
       <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
-        
+
         <div ng-show="hasElements()">
-        
+
           <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Payroll Summary</h4>
           <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()"/>
 
@@ -98,7 +98,7 @@
         <div ng-hide="hasElements()" class="no-element">
           Select one or several employee(s) or category(ies) to display the corresponding summary
         </div>
-      
+
       </div>
 
     </div>

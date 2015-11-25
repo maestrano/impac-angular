@@ -25,7 +25,7 @@
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="statement.accounts" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
+              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="(statement.accounts && statement.accounts.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
               <div class="col-sm-7" ng-click="toggleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
               <div class="col-sm-4 text-right" ng-class="getClassColor(getLastValue(statement))" ng-click="toggleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
             </div>
@@ -79,7 +79,7 @@
 
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
   </div>
 
 </div>

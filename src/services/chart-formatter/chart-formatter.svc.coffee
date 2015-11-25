@@ -1,10 +1,14 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (ImpacTheming, $filter) ->
+  .service('ChartFormatterSvc', (ImpacTheming, $filter, $window, $document) ->
 
     _self = @
 
     COLORS = ImpacTheming.get().chartColors
+
+    # on browser window blur event, remove any lingering chartjs-tooltips from the DOM.
+    $window.onblur = ->
+      angular.element($document[0].getElementById('chartjs-tooltip')).remove()
 
     # Returns the color defined for positive values
     @getPositiveColor = ->
@@ -47,7 +51,7 @@ angular
     @customTooltip = (tooltip) ->
       # Find the tooltip
       tooltipEl = angular.element('#chartjs-tooltip')
-      if (!tooltipEl[0]) 
+      if (!tooltipEl[0])
         angular.element('body').append('<div id="chartjs-tooltip"></div>')
         tooltipEl = angular.element('#chartjs-tooltip')
 
@@ -79,17 +83,17 @@ angular
 
       # Avoid mouse glitches
       canvasEl.bind 'mouseleave', (event) ->
-        tooltipEl.remove() unless event.toElement.id == 'chartjs-tooltip'
+        tooltipEl.remove() unless event.relatedTarget.id == 'chartjs-tooltip'
 
       tooltipEl.bind 'mouseleave', (event) ->
-        tooltipEl.remove() unless event.toElement.tagName == 'CANVAS'
+        tooltipEl.remove() unless event.relatedTarget.tagName == 'CANVAS'
 
 
       # Display, position, and set styles for font
       tooltipEl.css({
         'background-color': '#17262d'
         color: 'white'
-        
+
         opacity: 1
         transition: 'opacity 0.5s, top 0.5s, left 0.5s'
 
@@ -112,7 +116,7 @@ angular
         titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-        
+
         enabled: false
         custom: _self.customTooltip
       }
@@ -231,7 +235,7 @@ angular
     # positivesOnly: if true (default), negative bars will be turned into their opposite
     @barChart = (inputData, opts={}, positivesOnly=true) ->
       _self.setTooltipsTextLayout(opts)
-      
+
       index = 0
       colors = []
       for value in inputData.values
@@ -261,7 +265,7 @@ angular
     # positivesOnly: if true (default), negative bars will be turned into their opposite
     @combinedBarChart = (inputData, opts={}, positivesOnly=true) ->
       _self.setTooltipsTextLayout(opts, true)
-      
+
       index = 0
       result = {
         type: 'bar',
@@ -312,7 +316,7 @@ angular
         data: {
           datasets: [
             {
-              data: _.map inputData, ( (data) -> data.value )
+              data: _.map inputData, ( (data) -> Math.abs(data.value) )
               backgroundColor: colors
             }
           ]

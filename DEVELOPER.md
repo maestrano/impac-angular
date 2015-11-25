@@ -50,26 +50,67 @@ _usage_: Retrieving organizations and current organization id.
 
 #### Example
 
-```
+```javascript
   angular
     .module('yourApp', [])
     .run( (ImpacLinkingProvider, ImpacConfigProvider) ->
-    
-      data = 
+
+      data =
           user: ImpacConfig.getUserData
           organizations: ImpacConfig.getOrganizations
-            
+
       ImpacLinkingProvider.linkData(data)
 
     )
   )
-  
+
 ```
 ### Optional Configurations
 [TODO: Expand on this section]<br>
 
 There are other provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is an assets provider for configuring static assets.
 
+#### ImpacAssetsProvider
+
+The **ImpacAssetsProvider** service is used to configure paths for static assets hosted by the parent application.
+
+**dataNotFound**<br>
+_type_: String<br>
+_default_: `null`<br>
+_usage_: Relative image path to the "data not found" screenshots.
+
+**impacTitleLogo**<br>
+_type_: String<br>
+_default_: `null`<br>
+_usage_: Relative image path to the title logo
+
+**impacDashboardBackground**<br>
+_type_: String<br>
+_default_: `null`<br>
+_usage_: Relative image path to default dashboard background
+
+**noWarning**<br>
+_type_: Boolean<br>
+_default_: `false`<br>
+_usage_: Whether to log a warning message or not if an asset is not found
+
+
+
+##### Example
+
+```javascript
+angular
+  .module('yourApp', [])
+  .config( (ImpacAssetsProvider) ->
+
+    paths =
+      dataNotFound: 'images/impac/data_not_found',
+      noWarning: true
+
+    ImpacAssetsProvider.configure(paths)
+  )
+)
+```
 
 <!--  # notes as reminder of optional config instructions to document.
     - custom dhb selector templates
