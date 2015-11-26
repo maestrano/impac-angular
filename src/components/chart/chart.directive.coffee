@@ -1,7 +1,7 @@
 # chart.js charting attribute directive.
 angular
   .module('impac.components.chart',[])
-  .directive('impacChart', ($log) ->
+  .directive('impacChart', ($log, $window) ->
     return {
       restrict: 'A',
       scope: {

@@ -331,7 +331,7 @@ angular.module('impac.services.assets', []).provider('ImpacAssets', function() {
 }).call(this);
 (function () {
 'use strict';
-angular.module('impac.components.chart', []).directive('impacChart', ["$log", function($log) {
+angular.module('impac.components.chart', []).directive('impacChart', ["$log", "$window", function($log, $window) {
   return {
     restrict: 'A',
     scope: {
@@ -3819,82 +3819,6 @@ module.directive('widgetAccountsExpenseWeight', function() {
 'use strict';
 var module;
 
-module = angular.module('impac.components.widgets.accounts-payable-receivable', []);
-
-module.controller('WidgetAccountsPayableReceivableCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.timeRangeDeferred = $q.defer();
-  $scope.histModeDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.histModeDeferred.promise, $scope.chartDeferred.promise];
-  w.initContext = function() {
-    return $scope.isDataFound = (w.content != null) && (w.content.values != null);
-  };
-  $scope.getCurrentPayable = function() {
-    if ($scope.isDataFound) {
-      return _.last(w.content.values.payables);
-    }
-  };
-  $scope.getCurrentReceivable = function() {
-    if ($scope.isDataFound) {
-      return _.last(w.content.values.receivables);
-    }
-  };
-  $scope.getCurrency = function() {
-    if ($scope.isDataFound) {
-      return w.content.currency;
-    }
-  };
-  $scope.drawTrigger = $q.defer();
-  w.format = function() {
-    var all_values_are_positive, chartData, i, j, len, len1, lineData, lineOptions, ref, ref1, value;
-    if ($scope.isDataFound) {
-      lineData = [
-        {
-          title: "Payable",
-          labels: w.content.dates,
-          values: w.content.values.payables
-        }, {
-          title: "Receivable",
-          labels: w.content.dates,
-          values: w.content.values.receivables
-        }
-      ];
-      all_values_are_positive = true;
-      ref = w.content.values.payables;
-      for (i = 0, len = ref.length; i < len; i++) {
-        value = ref[i];
-        all_values_are_positive && (all_values_are_positive = value >= 0);
-      }
-      ref1 = w.content.values.receivables;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        value = ref1[j];
-        all_values_are_positive && (all_values_are_positive = value >= 0);
-      }
-      lineOptions = {
-        scaleBeginAtZero: all_values_are_positive,
-        showXLabels: false
-      };
-      chartData = ChartFormatterSvc.lineChart(lineData, lineOptions, true);
-      return $scope.drawTrigger.notify(chartData);
-    }
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetAccountsPayableReceivable', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetAccountsPayableReceivableCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
 module = angular.module('impac.components.widgets.accounts-expenses-revenue', []);
 
 module.controller('WidgetAccountsExpensesRevenueCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
@@ -4009,6 +3933,82 @@ module.directive('widgetAccountsExpensesRevenue', function() {
   return {
     restrict: 'A',
     controller: 'WidgetAccountsExpensesRevenueCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets.accounts-payable-receivable', []);
+
+module.controller('WidgetAccountsPayableReceivableCtrl', ["$scope", "$q", "ChartFormatterSvc", function($scope, $q, ChartFormatterSvc) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.timeRangeDeferred = $q.defer();
+  $scope.histModeDeferred = $q.defer();
+  $scope.chartDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.timeRangeDeferred.promise, $scope.histModeDeferred.promise, $scope.chartDeferred.promise];
+  w.initContext = function() {
+    return $scope.isDataFound = (w.content != null) && (w.content.values != null);
+  };
+  $scope.getCurrentPayable = function() {
+    if ($scope.isDataFound) {
+      return _.last(w.content.values.payables);
+    }
+  };
+  $scope.getCurrentReceivable = function() {
+    if ($scope.isDataFound) {
+      return _.last(w.content.values.receivables);
+    }
+  };
+  $scope.getCurrency = function() {
+    if ($scope.isDataFound) {
+      return w.content.currency;
+    }
+  };
+  $scope.drawTrigger = $q.defer();
+  w.format = function() {
+    var all_values_are_positive, chartData, i, j, len, len1, lineData, lineOptions, ref, ref1, value;
+    if ($scope.isDataFound) {
+      lineData = [
+        {
+          title: "Payable",
+          labels: w.content.dates,
+          values: w.content.values.payables
+        }, {
+          title: "Receivable",
+          labels: w.content.dates,
+          values: w.content.values.receivables
+        }
+      ];
+      all_values_are_positive = true;
+      ref = w.content.values.payables;
+      for (i = 0, len = ref.length; i < len; i++) {
+        value = ref[i];
+        all_values_are_positive && (all_values_are_positive = value >= 0);
+      }
+      ref1 = w.content.values.receivables;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        value = ref1[j];
+        all_values_are_positive && (all_values_are_positive = value >= 0);
+      }
+      lineOptions = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false
+      };
+      chartData = ChartFormatterSvc.lineChart(lineData, lineOptions, true);
+      return $scope.drawTrigger.notify(chartData);
+    }
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetAccountsPayableReceivable', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetAccountsPayableReceivableCtrl'
   };
 });
 }).call(this);
@@ -5251,6 +5251,69 @@ module.directive('widgetHrWorkforceSummary', function() {
 'use strict';
 var module;
 
+module = angular.module('impac.components.widgets.invoices-list', []);
+
+module.controller('WidgetInvoicesListCtrl', ["$scope", "$q", "$filter", function($scope, $q, $filter) {
+  var settingsPromises, w;
+  w = $scope.widget;
+  $scope.orgDeferred = $q.defer();
+  $scope.limitEntriesDeferred = $q.defer();
+  settingsPromises = [$scope.orgDeferred.promise, $scope.limitEntriesDeferred.promise];
+  w.initContext = function() {
+    $scope.isDataFound = !_.isEmpty(w.content.entities);
+    if ($scope.isDataFound && $scope.orderBy === 'due ') {
+      if ($scope.entityType === 'suppliers') {
+        $scope.limitEntriesLabel = 'creditors';
+      } else {
+        $scope.limitEntriesLabel = 'debtors';
+      }
+    }
+    if ((w.metadata != null) && (w.metadata.limit_entries != null)) {
+      return $scope.limitEntriesSelected = w.metadata.limit_entries;
+    }
+  };
+  $scope.entityType = w.metadata.entity;
+  $scope.entityTypeCap = _.capitalize(w.metadata.entity);
+  if (w.metadata.order_by === 'name' || w.metadata.order_by === 'total_invoiced') {
+    $scope.orderBy = '';
+  } else {
+    $scope.orderBy = _.last(w.metadata.order_by.split('_')).concat(" ");
+  }
+  $scope.getInvoices = function(entity) {
+    var count, tooltip;
+    tooltip = ["<strong>" + entity.name + "</strong>"];
+    count = 1;
+    angular.forEach(entity.invoices, function(i) {
+      var paid, txn;
+      if (i.transaction_no !== "") {
+        txn = " (" + i.transaction_no + ")";
+      } else {
+        txn = "";
+      }
+      if (i.tooltip_status === "partially paid") {
+        paid = " (" + $filter('mnoCurrency')(i.paid, i.currency, false) + " over " + $filter('mnoCurrency')(i.invoiced, i.currency, false) + ")";
+      } else {
+        paid = " (" + $filter('mnoCurrency')(i.invoiced, i.currency, false) + ")";
+      }
+      tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid);
+      return count++;
+    });
+    return tooltip.join("<br />");
+  };
+  return $scope.widgetDeferred.resolve(settingsPromises);
+}]);
+
+module.directive('widgetInvoicesList', function() {
+  return {
+    restrict: 'A',
+    controller: 'WidgetInvoicesListCtrl'
+  };
+});
+}).call(this);
+(function () {
+'use strict';
+var module;
+
 module = angular.module('impac.components.widgets.invoices-aged-payables-receivables', []);
 
 module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ["$scope", "$q", "$log", "$filter", "ChartFormatterSvc", "ImpacWidgetsSvc", function($scope, $q, $log, $filter, ChartFormatterSvc, ImpacWidgetsSvc) {
@@ -5468,69 +5531,6 @@ module.directive('widgetInvoicesAgedPayablesReceivables', function() {
   return {
     restrict: 'A',
     controller: 'WidgetInvoicesAgedPayablesReceivablesCtrl'
-  };
-});
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets.invoices-list', []);
-
-module.controller('WidgetInvoicesListCtrl', ["$scope", "$q", "$filter", function($scope, $q, $filter) {
-  var settingsPromises, w;
-  w = $scope.widget;
-  $scope.orgDeferred = $q.defer();
-  $scope.limitEntriesDeferred = $q.defer();
-  settingsPromises = [$scope.orgDeferred.promise, $scope.limitEntriesDeferred.promise];
-  w.initContext = function() {
-    $scope.isDataFound = !_.isEmpty(w.content.entities);
-    if ($scope.isDataFound && $scope.orderBy === 'due ') {
-      if ($scope.entityType === 'suppliers') {
-        $scope.limitEntriesLabel = 'creditors';
-      } else {
-        $scope.limitEntriesLabel = 'debtors';
-      }
-    }
-    if ((w.metadata != null) && (w.metadata.limit_entries != null)) {
-      return $scope.limitEntriesSelected = w.metadata.limit_entries;
-    }
-  };
-  $scope.entityType = w.metadata.entity;
-  $scope.entityTypeCap = _.capitalize(w.metadata.entity);
-  if (w.metadata.order_by === 'name' || w.metadata.order_by === 'total_invoiced') {
-    $scope.orderBy = '';
-  } else {
-    $scope.orderBy = _.last(w.metadata.order_by.split('_')).concat(" ");
-  }
-  $scope.getInvoices = function(entity) {
-    var count, tooltip;
-    tooltip = ["<strong>" + entity.name + "</strong>"];
-    count = 1;
-    angular.forEach(entity.invoices, function(i) {
-      var paid, txn;
-      if (i.transaction_no !== "") {
-        txn = " (" + i.transaction_no + ")";
-      } else {
-        txn = "";
-      }
-      if (i.tooltip_status === "partially paid") {
-        paid = " (" + $filter('mnoCurrency')(i.paid, i.currency, false) + " over " + $filter('mnoCurrency')(i.invoiced, i.currency, false) + ")";
-      } else {
-        paid = " (" + $filter('mnoCurrency')(i.invoiced, i.currency, false) + ")";
-      }
-      tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid);
-      return count++;
-    });
-    return tooltip.join("<br />");
-  };
-  return $scope.widgetDeferred.resolve(settingsPromises);
-}]);
-
-module.directive('widgetInvoicesList', function() {
-  return {
-    restrict: 'A',
-    controller: 'WidgetInvoicesListCtrl'
   };
 });
 }).call(this);
