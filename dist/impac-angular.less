@@ -1473,9 +1473,6 @@ body {
     text-align: center;
   }
 }
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1489,6 +1486,9 @@ body {
   .price {
     .center-bold(0px);
   }
+}
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
 }
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
@@ -1517,22 +1517,6 @@ body {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-leaves-balance{
   .selector {
     .center-thin();
@@ -1547,6 +1531,22 @@ body {
   }
   .widget-lines-container {
     margin-top: 15px;
+  }
+}
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1610,11 +1610,11 @@ body {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1673,6 +1673,9 @@ body {
     max-height: 270px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1697,9 +1700,6 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
   }
-}
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
@@ -1766,10 +1766,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
   .right-panel > .widget-lines-container {
@@ -1787,6 +1783,10 @@ body {
   //   margin-bottom: 4px;
   // }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
