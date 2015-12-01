@@ -29,6 +29,10 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
     if w.metadata? && w.metadata.limit_entries?
       $scope.limitEntriesSelected = w.metadata.limit_entries
 
+    $scope.searchData.text = $scope.searchData.text || ''
+    $scope.searchData.original = angular.copy(w.content.entities) if $scope.isDataFound
+    $scope.search()
+
   # No need to put this under initContext because it won't change after a settings update
   $scope.entityType = w.metadata.entity
   $scope.entityTypeCap = _.capitalize(w.metadata.entity)
@@ -59,6 +63,16 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
     )
     return tooltip.join("<br />")
 
+  $scope.showingSearchbar = false
+  $scope.showSearchbarOnClick = -> $scope.showingSearchbar = !$scope.showingSearchbar
+
+  $scope.searchData = { text: '', original: {} }
+  $scope.search = ->
+    search = $scope.searchData.text.toLowerCase()
+    return w.content.entities = $scope.searchData.original unless search.length
+    w.content.entities = _.filter(w.content.entities, (entity) ->
+      entity.name.toLowerCase().indexOf(search) > -1 if entity.name
+    )
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
