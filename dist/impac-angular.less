@@ -889,6 +889,107 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+.analytics kpis-bar .kpi {
+
+  text-align: center;
+  min-height: 125px;
+  white-space: normal;
+  padding: 10px 3px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 4px 12px -7px #17262d;
+
+  &.static {
+    .kpi-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  &.edit {
+    .scrollable();
+
+    input.form-control.input-sm {
+      height: 30px;
+      background-color: white;
+      border: solid 1px @impac-widget-borders-color;
+      margin-top: 5px;
+    }
+    
+    .btn.btn-sm {
+      margin-top: 8px;
+    }
+
+    .param-name {
+      margin-top: 5px;
+    }
+  }
+
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+   
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+    }
+
+    &.static {
+      position: static;
+      margin: 5px 20px;
+    }
+  }
+
+  .kpi-watch {
+    font-size: 11px;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 80px;
+}
+
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -1077,107 +1178,6 @@ body {
   ////////
 }
 
-.analytics kpis-bar .kpi {
-
-  text-align: center;
-  min-height: 125px;
-  white-space: normal;
-  padding: 10px 3px;
-  border-radius: 3px;
-  background-color: white;
-  box-shadow: 0px 4px 12px -7px #17262d;
-
-  &.static {
-    .kpi-value {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-    }
-  }
-
-  &.edit {
-    .scrollable();
-
-    input.form-control.input-sm {
-      height: 30px;
-      background-color: white;
-      border: solid 1px @impac-widget-borders-color;
-      margin-top: 5px;
-    }
-    
-    .btn.btn-sm {
-      margin-top: 8px;
-    }
-
-    .param-name {
-      margin-top: 5px;
-    }
-  }
-
-
-  .kpi-title {
-    .text-uppercase();
-    font-size: 12px;
-    font-weight: 600;
-    color: @impac-widget-text-color-medium;
-    border-bottom-color: @impac-widget-text-color-medium;
-
-    &:hover {
-      color: @impac-widget-text-color;
-      border-bottom-color: @impac-widget-text-color;
-    }
-  }
-
-  .kpi-value {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .kpi-alert {
-    .text-uppercase();
-    font-size: 11px;
-    font-weight: 700;
-    background-color: white;
-    border: 1px solid @brand-danger;
-    border-radius: 4px;
-    color: @brand-danger;
-    padding: 2px 5px;
-
-    position: absolute;
-    bottom: 15px;
-    left: 15%;
-    width: 70%;
-   
-    &.kpi-close {
-      bottom: auto;
-      right: 20px;
-      top: 5px;
-      border-radius: 10px;
-      width: 21px;
-      left: auto;
-    }
-
-    &:hover {
-      color: darken(@brand-danger, 10%);
-      border-color: darken(@brand-danger, 10%);
-    }
-
-    &.static {
-      position: static;
-      margin: 5px 20px;
-    }
-  }
-
-  .kpi-watch {
-    font-size: 11px;
-  }
-}
-
-.analytics kpis-bar > .key-stats .kpi {
-  min-height: 80px;
-}
-
 .analytics kpis-bar > .kpis {
 
   // color: @light-black;
@@ -1276,6 +1276,18 @@ body {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -1291,18 +1303,6 @@ body {
   }
   p {
     font-weight: bold;
-  }
-}
-
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
   }
 }
 
@@ -1332,6 +1332,11 @@ body {
   .drill-down-widget();
   .right-panel > .widget-lines-container {
     max-height: 215px;
+  }
+
+  .row.widget-line.total.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 .analytics .widget-item .content.accounts-class-comparison {
@@ -1403,6 +1408,24 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+  // single entity selected class title
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+  // .no-data-block {
+  //   .center-thin();
+  // }
+}
+
+
+
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1433,24 +1456,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.accounts-detailed-classifications {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
-  // single entity selected class title
-  .account-class-title {
-    margin-bottom: 8px;
-    margin-left: 11px;
-  }
-  // .no-data-block {
-  //   .center-thin();
-  // }
-}
-
-
-
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
     text-align: left;
@@ -1487,9 +1492,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1517,20 +1519,12 @@ body {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-leaves-balance{
-  .selector {
-    .center-thin();
-    font-size: 14px;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .widget-lines-container {
-    margin-top: 15px;
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.widget-line.total.profit {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 .analytics .widget-item .content.hr-employees-list {
@@ -1547,6 +1541,22 @@ body {
     .widget-lines-container {
       text-align: left;
     }
+  }
+}
+.analytics .widget-item .content.hr-leaves-balance{
+  .selector {
+    .center-thin();
+    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .widget-lines-container {
+    margin-top: 15px;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1610,9 +1620,6 @@ body {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 }
@@ -1622,6 +1629,9 @@ body {
   .widget-lines-container {
     max-height: 260px;
   }
+}
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-break-even {
   .price {
@@ -1673,9 +1683,6 @@ body {
     max-height: 270px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1700,6 +1707,9 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
   }
+}
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
@@ -1766,6 +1776,10 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
   .right-panel > .widget-lines-container {
@@ -1783,10 +1797,6 @@ body {
   //   margin-bottom: 4px;
   // }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
