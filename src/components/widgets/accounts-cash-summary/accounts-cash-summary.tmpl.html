@@ -20,23 +20,20 @@
 
         <div class="widget-lines-container">
           <div class="row widget-line header">
-            <div class="col-sm-1" />
-            <div class="col-sm-5"></div>
-            <div class="col-sm-3 text-right">{{getLastDate() | date : "d-MMM"}}</div>
-            <div class="col-sm-3 text-right">Variance</div>
+            <div class="col-sm-12 text-right">Cash flow since last {{getPeriod()}} ({{getPrevDate() | date : 'd MMM yy'}} to {{getLastDate() | date : 'd MMM yy'}})</div>
           </div>
-          <div class="row widget-line total" ng-repeat="statement in widget.content.summary" >
+          <div class="row widget-line total" ng-repeat="statement in widget.content.summary" ng-class="{cash: statement.name.indexOf('cash')>0}" >
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
               <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" ng-show="(statement.accounts && statement.accounts.length)"/></div>
               <div class="col-sm-5" ng-click="toggleSelectedElement(statement)"><strong>{{getName(statement) | titleize}}</strong></div>
-              <div class="col-sm-3 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong></div>
+              <div class="col-sm-3 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getLastValue(statement) | mnoCurrency : statement.currency : false}}</strong></div>
               <div class="col-sm-3 text-right" ng-click="toggleSelectedElement(statement)" ng-class="getVarianceClassColor(getLastVariance(statement))"><strong>{{getLastVariance(statement)}}</strong></div>
             </div>
             <div collapse="isCollapsed(statement)">
               <div class="row widget-line" ng-click="toggleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="isSelected(account) ? 'selected' : null" >
                 <div class="col-sm-1" />
                 <div class="col-sm-5">{{account.name}}</div>
-                <div class="col-sm-3 text-right">{{getLastValue(account) | mnoCurrency : account.currency }}</div>
+                <div class="col-sm-3 text-right">{{getLastValue(account) | mnoCurrency : account.currency : false }}</div>
                 <div class="col-sm-3 text-right" ng-class="getVarianceClassColor(getLastVariance(account))">{{getLastVariance(account)}}</div>
               </div>
             </div>
