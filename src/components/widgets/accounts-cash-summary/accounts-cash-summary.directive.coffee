@@ -62,10 +62,10 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     else
       "-"
 
-  $scope.getVarianceClassColor = (element, aVariance) ->
+  $scope.getVarianceClassColor = (aVariance) ->
     if parseInt(aVariance) > 0
       return 'positive'
-    if parseInt(aVariance) < 0
+    else if parseInt(aVariance) < 0
       return 'negative'
     else
       return null
