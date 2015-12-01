@@ -6,8 +6,11 @@
     #search-button {
       position: absolute;
       margin: 0 7px;
+      cursor: pointer;
       &.active {
         margin-top: 8px;
+        // to match settings-limit-entries on selected.
+        color: @impac-widget-limit-entries-color;
       }
     }
     #entries-limit {}

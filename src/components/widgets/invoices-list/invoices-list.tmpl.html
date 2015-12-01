@@ -14,9 +14,11 @@
   <div ng-hide="widget.isEditMode" class="widget-lines-container">
 
     <div class="filter-options">
-      <div id="search-button" ng-click="showSearchbarOnClick()" ng-class="{'active': showingSearchbar}">
-        <i class="fa fa-search fa-lg"></i>
-      </div>
+      <a href="">
+        <div id="search-button" ng-click="showSearchbarOnClick()" ng-class="{'active': showingSearchbar}">
+          <i class="fa fa-search fa-lg"></i>
+        </div>
+      </a>
       <div ng-hide="showingSearchbar" id="entries-limit" ng-show="(isDataFound==true)" setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
       <input ng-show="showingSearchbar" id="search-bar" type="text" ng-change="search()" ng-model="searchData.text" placeholder="Search by {{entityTypeCap}}...">
     </div>
