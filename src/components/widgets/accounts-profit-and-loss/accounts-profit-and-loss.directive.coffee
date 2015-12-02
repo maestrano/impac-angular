@@ -50,10 +50,20 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     ChartFormatterSvc.getColor(index)
 
   $scope.getLastDate = ->
-    _.last($scope.dates) if $scope.dates?
+    $scope.dates[$scope.dates.length-1] if $scope.dates?
+
+  $scope.getPrevDate = ->
+    $scope.dates[$scope.dates.length-2] if $scope.dates?
 
   $scope.getLastValue = (element) ->
     _.last(element.totals) if element.totals?
+
+  $scope.getPeriod = ->
+    return unless w.metadata? && w.metadata.hist_parameters?
+    period = w.metadata.hist_parameters.period || "MONTHLY"
+    switch period.toUpperCase()
+      when "DAILY" then return "day"
+      else return period.toLowerCase().replace('ly','')
 
   $scope.getClassColor = (aTotal) ->
     if parseInt(aTotal) > 0

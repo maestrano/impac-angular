@@ -20,6 +20,19 @@
     <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()"></dashboard-selector>
   </div>
 
+  <div id="sub-menu" collapse="!showSubMenu">
+    <i class="fa fa-times" ng-click="hideSubMenu()" />
+
+    <!-- Displayed to MYOB Essentials Users -->
+    <div id="myob-message" ng-if="hasMyobEssentialsOnly" class="alert alert-warning">
+      <h3>It looks like you are using MYOB Essentials...</h3>
+      <p>Unfortunately, all the information required by Impac! is not exposed by MYOB Essentials API <strong>yet</strong>.
+      Consequently, most of the accounting widgets provided by Impac! won't find a valid source of data to display their content.</p>
+      <p>Maybe you should consider switching to <a href="http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948" target="_blank">MYOB AccountRight</a>, the other MYOB accounting solution?</p>
+      <p align="right"><a href="apps/myob" target="_blank">>> Check this app on Maestrano marketplace</a></p>
+    </div>
+  </div>
+
   <!-- Widgets selection container -->
   <div id="widget-selector" collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
@@ -82,8 +95,6 @@
     </ul>
   </div>
 
-  <div class='spacer1'></div>
-
   <div id="no-widgets-container" class="row text-center ng-hide" ng-show='(showChooseDhbMsg() || showNoWidgetsMsg())'>
 
     <img ng-src="{{impacDashboardBackground}}" class="bg">
@@ -140,7 +151,7 @@
   <!-- Widgets -->
   <div class='row' id="widgets-section">
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
-      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" />
+      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
       <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
       <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
         <div class="col-md-6 widget-item add-chart">

@@ -36,11 +36,13 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
             $scope.selectedElement ||= _.find(statement.accounts, (account)->
               account.id == w.metadata.selectedElement.id
             ) if statement.accounts?
-
-        )
+          )
 
   $scope.getLastDate = ->
-    _.last($scope.dates) if $scope.dates?
+    $scope.dates[$scope.dates.length-1] if $scope.dates?
+
+  $scope.getPrevDate = ->
+    $scope.dates[$scope.dates.length-2] if $scope.dates?
 
   $scope.getLastValue = (element) ->
     _.last(element.cash_flows) if element.cash_flows?
@@ -52,13 +54,13 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       else
         "#{aVariance} %"
     else
-      "n/a"
+      "-"
 
   $scope.getLastVariance = (element) ->
     if element.variances? && _.last(element.variances)?
       $scope.formatVariance(_.last(element.variances))
     else
-      "n/a"
+      "-"
 
   $scope.getVarianceClassColor = (aVariance) ->
     if parseInt(aVariance) > 0
@@ -69,7 +71,15 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       return null
 
   $scope.getName = (element) ->
-    element.name.replace("_", " ") if element? && element.name?
+    element.name.replace(/_/g, " ") if element? && element.name?
+
+  $scope.getPeriod = ->
+    return unless w.metadata? && w.metadata.hist_parameters?
+    period = w.metadata.hist_parameters.period || "MONTHLY"
+    switch period.toUpperCase()
+      when "DAILY" then return "day"
+      else return period.toLowerCase().replace('ly','')
+
 
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
@@ -120,7 +130,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
   w.format = ->
     if $scope.isDataFound && $scope.selectedElement?
       data = angular.copy($scope.selectedElement)
-      labels = _.map w.content.dates, (date) ->
+      dates = _.map w.content.dates, (date) ->
         if w.metadata.hist_parameters? && w.metadata.hist_parameters.period == "YEARLY"
           $filter('date')(date, 'yyyy')
         else if w.metadata.hist_parameters? && w.metadata.hist_parameters.period == "QUARTERLY"
@@ -129,7 +139,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
           $filter('date')(date, 'dd-MMM')
         else
           $filter('date')(date, 'MMM')
-      inputData = {title: data.name, labels: labels, values: data.cash_flows}
+      inputData = {labels: dates, datasets: [{title: data.name, values: data.cash_flows}]}
       all_values_are_positive = true
       angular.forEach(data.cash_flows, (value) ->
         all_values_are_positive &&= value >= 0
@@ -139,8 +149,8 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: true,
       }
-      chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
+      chartData = ChartFormatterSvc.combinedBarChart(inputData,options)
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

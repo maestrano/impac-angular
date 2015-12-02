@@ -21,7 +21,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
+    $scope.movedAccount = {}
     # defines the available options for params-checkboxes.directive
     $scope.comparisonModeOptions = [{
       id: 'compare_accounts',
@@ -32,17 +32,26 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     # updates model with saved settings
     if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
       angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
-    # is this needed?
-    $scope.movedAccount = {}
 
-  $scope.isMultiCompanyMode = ->
-    _.result( _.find($scope.comparisonModeOptions, 'id', 'compare_accounts'), 'value')
+    $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list) || $scope.isComparisonMode()
+
+    $scope.noComparableAccounts = $scope.isComparisonMode() && w.content? && _.isEmpty(w.content.complete_list)
+
+    $scope.canSelectComparisonMode = scanAccountsForMultiOrgData()
+
+  # scans results from api to determine whether there is data for multiple organizations
+  scanAccountsForMultiOrgData = ->
+    return false unless w.content?
+    _.uniq(_.pluck(w.content.complete_list, 'org_name')).length > 1
+
+  $scope.isComparisonMode = ->
+    _.result( _.find($scope.comparisonModeOptions, 'id', 'compare_accounts'), 'value') || false
 
   $scope.hasAccountsSelected = ->
     return w.selectedAccounts && w.selectedAccounts.length > 0
 
   $scope.getAccountColor = (anAccount) ->
-    if $scope.isMultiCompanyMode()
+    if $scope.isComparisonMode()
       ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts[0].accounts, anAccount))
     else
       ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts, anAccount))
@@ -64,7 +73,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   w.format = ->
     inputData = {labels: [], values: []}
     _.forEach w.selectedAccounts, (account) ->
-      if $scope.isMultiCompanyMode()
+      if $scope.isComparisonMode()
         _.forEach account.accounts, (groupedAccount) ->
           inputData.labels.push groupedAccount.name
           inputData.values.push groupedAccount.current_balance
