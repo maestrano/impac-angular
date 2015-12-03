@@ -15,6 +15,7 @@ module.controller('SettingFormulaCtrl', ($scope, $filter) ->
   setting.initialize = ->
     if w.metadata? && w.metadata.formula?
       w.formula = w.metadata.formula
+      evaluateFormula()
       setting.isInitialized = true
     else
       w.formula = ""
