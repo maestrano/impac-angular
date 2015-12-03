@@ -76,7 +76,7 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
         percentageInnerCutout: 50,
         tooltipFontSize: 12,
       }
-      angular.merge(pieOptions, {currency: 'hide'}) if $scope.filter.value.toLowerCase().indexOf('quantity') >= 0
+      angular.merge(pieOptions, {currency: 'hide'}) if $scope.filter.value.indexOf('quantity') > -1
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
 
       # calls chart.draw()
