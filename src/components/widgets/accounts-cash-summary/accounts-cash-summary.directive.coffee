@@ -74,8 +74,10 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     element.name.replace(/_/g, " ") if element? && element.name?
 
   $scope.getPeriod = ->
-    return unless w.metadata? && w.metadata.hist_parameters?
-    period = w.metadata.hist_parameters.period || "MONTHLY"
+    period = 'MONTHLY'
+    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
+      period = w.metadata.hist_parameters.period
+
     switch period.toUpperCase()
       when "DAILY" then return "day"
       else return period.toLowerCase().replace('ly','')
