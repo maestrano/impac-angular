@@ -188,10 +188,12 @@ body {
   .widget-lines-container {
     .scrollable();
     max-height: @impac-widget-lines-container-max-height;
+
     text-align: left;
     font-size: 12px;
 
     .widget-line {
+      width: 100%;
       margin: 0px;
       padding: 5px;
       color: @mediumblue;
@@ -200,22 +202,11 @@ body {
         .font(12px,500,@impac-widget-text-color-medium);
         text-transform: uppercase;
       }
-      &.small-row {
-        margin: inherit;
-        margin-left: -3px;
-        margin-right: -3px;
-        padding: 2px;
-
-        & > [class*='col-'] {
-          padding-left: 3px;
-          padding-right: 3px;
-        }
-      }
       &.total {
         padding: 0px;
         border-top: solid 1px @lightgray;
       }
-
+    
       .dashed {
         border-bottom: dashed 1px @impac-widget-borders-color;
       }
