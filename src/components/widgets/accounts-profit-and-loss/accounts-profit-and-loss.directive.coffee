@@ -59,8 +59,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     _.last(element.totals) if element.totals?
 
   $scope.getPeriod = ->
-    return unless w.metadata? && w.metadata.hist_parameters?
-    period = w.metadata.hist_parameters.period || "MONTHLY"
+    period = 'MONTHLY'
+    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
+      period = w.metadata.hist_parameters.period
+
     switch period.toUpperCase()
       when "DAILY" then return "day"
       else return period.toLowerCase().replace('ly','')
