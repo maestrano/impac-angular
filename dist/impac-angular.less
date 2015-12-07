@@ -1273,27 +1273,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
-.analytics .widget-item .content.accounts-assets-liability-summary {
-  .param-selector {
-    text-align: center;
-  }
-  .legend {
-    text-align: left;
-    max-height: 97px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-  p {
-    font-weight: bold;
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -1478,6 +1457,14 @@ body {
     text-align: center;
   }
 }
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.widget-line.total.profit {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1490,41 +1477,6 @@ body {
   }
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-
-  .row.widget-line.total.profit {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-.analytics .widget-item .content.hr-employee-details {
-  font-size: 12px;
-  .details-container {
-    padding: 0px;
-    max-height: 200px;
-    .scrollable();
-  }
-  pre {
-    font-size: 12px;
-    padding: 0px;
-    margin: 1px 0px 8px 0px;
-    border: none;
-  }
-  .right-panel {
-    .details-container {
-      max-height: 208px;
-    }
-    .legend {
-      margin-bottom: 5px;
-    }
-  }
-  .title {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 14px;
   }
 }
 .analytics .widget-item .content.hr-employees-list {
@@ -1606,6 +1558,27 @@ body {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+    text-align: center;
+  }
+  .legend {
+    text-align: left;
+    max-height: 97px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+  p {
+    font-weight: bold;
+  }
+}
+
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -1625,6 +1598,39 @@ body {
 }
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 270px;
+  }
+}
+.analytics .widget-item .content.hr-employee-details {
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    max-height: 200px;
+    .scrollable();
+  }
+  pre {
+    font-size: 12px;
+    padding: 0px;
+    margin: 1px 0px 8px 0px;
+    border: none;
+  }
+  .right-panel {
+    .details-container {
+      max-height: 208px;
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1675,12 +1681,6 @@ body {
       border-bottom: solid 1px @lightgray;
       font-weight: 300;
     }
-  }
-}
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 270px;
   }
 }
 .analytics .widget-item .content.sales-customer-details {
@@ -1773,45 +1773,6 @@ body {
         font-weight: 300;
         margin-top: 2px;
       }
-    }
-  }
-}
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
-}
-.analytics .widget-item .content.sales-segmented-turnover {
-  h3.right {
-    margin-top: 55px;
-    text-align: center;
-  }
-  .selector {
-    margin-bottom: 10px;
-  }
-  .analysis {
-    .center-bold(0px);
-  }
-  .widget-lines-container {
-    max-height: 75px;
-    .widget-line {
-      font-size: 11px;
     }
   }
 }
@@ -1934,6 +1895,10 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
@@ -2002,6 +1967,23 @@ body {
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
+}
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -2066,41 +2048,6 @@ body {
     }
   }
 }
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
-}
-
-.analytics .settings.organizations {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
   a {
@@ -2137,6 +2084,25 @@ body {
       background-color: @impac-widget-param-selector-color;
       &:hover {
         background-color: lighten(@impac-widget-param-selector-color,5%);
+      }
+    }
+  }
+}
+.analytics .settings.organizations {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
       }
     }
   }
@@ -2206,4 +2172,37 @@ body {
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item .content.sales-segmented-turnover {
+  h3.right {
+    margin-top: 55px;
+    text-align: center;
+  }
+  .selector {
+    margin-bottom: 10px;
+  }
+  .analysis {
+    .center-bold(0px);
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
+  }
+}
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
 }
