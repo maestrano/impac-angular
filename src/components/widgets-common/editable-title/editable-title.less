@@ -17,17 +17,27 @@
     }
     .editable-wrap {
       height: 20px;
-      width: 75%;
+      min-width: 100%;
       // otherwise, white-space is overriden in mno-enterprise
       white-space: nowrap;
+
       .editable-controls {
-        width: 100%;
+        min-width: 100%;
+
         .editable-input {
           height: 20px;
           font-size: 12px;
           text-transform: @impac-widget-title-text-transform;
-          width: 95%;
+          width: 75%;
           padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+          button {
+            height: 20px;
+            padding: 0px 5px;
+          }
         }
       }
     }
