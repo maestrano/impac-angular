@@ -4,36 +4,42 @@
     margin-top: 3px;
   }
 
-  .top-button {
-    float: right;
-    background: transparent;
-    border: none;
-    color: @impac-widget-top-buttons-color;
-    padding: 1px;
-    margin-left: 3px;
-    outline: none;
+  .top-buttons-wrapper {
+    position: absolute;
+    right: 9px;
+    top: 7px;
 
-    &:active, &:focus {
-      -webkit-box-shadow: none;
-    }
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 1px;
+      margin-left: 3px;
+      outline: none;
 
-    &.btn-edit {
-      font-size: 14px;
-      &:hover, &.edit-mode {
-        color: darken(@mgreen,10%);
+      &:active, &:focus {
+        -webkit-box-shadow: none;
       }
-    }
-    &.btn-close {
-      &:hover {
-        color: @pink
+
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: -1px;
+        &:hover {
+          color: @mblue;
+        }
       }
-    }
-    &.btn-refresh {
-      font-size: 17px;
-      margin-top: -1px;
-      &:hover {
-        color: @mblue;
+      &.btn-edit {
+        font-size: 14px;
+        &:hover, &.edit-mode {
+          color: darken(@mgreen,10%);
+        }
       }
+      &.btn-close {
+        &:hover {
+          color: @pink
+        }
+      }
+
     }
   }
 
@@ -61,5 +67,5 @@
       font-size: 26px;
     }
   }
-  
+
 }
