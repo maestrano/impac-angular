@@ -1,22 +1,19 @@
 <div id="module__top-buttons">
-  <div ng-mouseenter="showCloseActive=true" ng-mouseleave="showCloseActive=false" ng-show="parentWidget.hasDeleteAbility">
-    <button class="btn btn-close top-button" ng-click="showConfirmDelete = !showConfirmDelete">
-      <i class="fa fa-times-circle-o fa-lg"></i>
-      <span class="text-hide">Delete widget</span>
-    </button>
-  </div>
 
-  <div ng-show="parentWidget.hasEditAbility">
-    <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-class="{'edit-mode': parentWidget.isEditMode}">
-      <i class="fa fa-cog fa-lg"></i>
-      <span class="text-hide">Edit widget</span>
-    </button>
-  </div>
-
-  <div class="refresh-widget">
+  <div class="top-buttons-wrapper">
     <button class="btn top-button btn-refresh" ng-click="onRefresh({refreshCache: true})">
       <i class="fa fa-refresh"></i>
       <span class="text-hide">Refresh widget</span>
+    </button>
+
+    <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-show="parentWidget.hasEditAbility" ng-class="{'edit-mode': parentWidget.isEditMode}">
+      <i class="fa fa-cog fa-lg"></i>
+      <span class="text-hide">Edit widget</span>
+    </button>
+
+    <button class="btn top-button btn-close" ng-click="showConfirmDelete = !showConfirmDelete" ng-show="parentWidget.hasDeleteAbility">
+      <i class="fa fa-times-circle-o fa-lg"></i>
+      <span class="text-hide">Delete widget</span>
     </button>
   </div>
 
@@ -34,4 +31,3 @@
     </div>
   </div>
 </div>
-

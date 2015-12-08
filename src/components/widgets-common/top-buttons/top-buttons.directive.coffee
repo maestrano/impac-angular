@@ -3,7 +3,6 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
 
   w = $scope.parentWidget
 
-  $scope.showCloseActive = false
   $scope.showConfirmDelete = false
   $scope.isDeletePopoverLoading = false
 
