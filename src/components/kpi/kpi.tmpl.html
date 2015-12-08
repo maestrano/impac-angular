@@ -9,8 +9,8 @@
 
       <!-- TODO: refactor design to handle multiple targets and ranges -->
       <div class="kpi-alert" ng-repeat="target in kpi.targets track by $index" ng-hide="editMode || kpi.data.results[$index]">
-        <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit : false}}</span>
-        <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit : false}}</span>
+        <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit}}</span>
+        <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
       </div>
 
       <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>

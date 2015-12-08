@@ -10,11 +10,7 @@
       </div>
     </div>
 
-    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPIs Settings</a></div>
-
-    <div ng-click="expandKpis()" ng-hide="showKpisExpanded"><a href=""><i class="fa fa-chevron-down"></i> Expand KPIs</a></div>
-    <div ng-click="collapseKpis()" ng-show="showKpisExpanded"><a href=""><i class="fa fa-chevron-up"></i> Collapse KPIs</a></div>
-
+    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPI Settings</a></div>
   </div>
 
   <impac-kpi class="col-xs-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by $index"></impac-kpi>

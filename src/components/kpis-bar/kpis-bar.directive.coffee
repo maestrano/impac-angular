@@ -8,7 +8,7 @@ angular
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
-      controller: ($scope, $timeout) ->
+      controller: ($scope, $timeout, $log) ->
         $scope.hideAvailableKpis = true
         $scope.showKpisExpanded = false
         $scope.showEditMode = false
