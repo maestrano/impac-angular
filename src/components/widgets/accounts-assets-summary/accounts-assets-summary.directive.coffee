@@ -52,7 +52,6 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
       pieOptions = {
         percentageInnerCutout: 50,
         tooltipFontSize: 12,
-        # tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + ' #{currency}' %>"
       }
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
 

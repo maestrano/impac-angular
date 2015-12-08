@@ -98,6 +98,33 @@ angular
 
       return deferred.promise
 
+    @massAssignAll = (metadata) ->
+      unless _.isEmpty(metadata)
+        _self.load().then ->
+          currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+          promises = []
+
+          if currentDhb? && currentDhb.widgets?
+            if !_.isEmpty(currentDhb.widgets)
+              for widget in currentDhb.widgets
+                promises.push _self.update(widget, {metadata: metadata}).then(
+                  (updatedWidget) -> 
+                    updatedWidget.isLoading=true
+                    _self.show(updatedWidget, true).then( (renderedWidget)-> renderedWidget.isLoading=false )
+                )
+              return $q.all(promises)
+
+            else
+              return $q.resolve([])
+
+          else
+            $log.error "ImpacWidgetsSvc - currentDhb.widgets is null", currentDhb
+            return $q.reject(null)
+
+
+    #====================================
+    # CRUD methods
+    #====================================
 
     @show = (widget, refreshCache=false) ->
       deferred = $q.defer()

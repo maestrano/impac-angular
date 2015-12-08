@@ -43,6 +43,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     # Sub menu (alerts)
     # -------------------------------------
+    $scope.marketplaceMyobLink = ImpacTheming.get().dhbSubMenuConfig.marketplaceMyobLink
     $scope.showSubMenu = false
     $scope.displaySubMenu = ->
       $scope.showSubMenu = true

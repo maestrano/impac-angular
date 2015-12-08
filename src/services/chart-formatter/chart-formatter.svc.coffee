@@ -1,6 +1,6 @@
 angular
   .module('impac.services.chart-formatter', [])
-  .service('ChartFormatterSvc', (ImpacTheming, $filter, $window, $document) ->
+  .service('ChartFormatterSvc', (ImpacTheming, $filter, $window, $document, ImpacDashboardsSvc) ->
 
     _self = @
 
@@ -157,8 +157,9 @@ angular
                 return title.join(' | ')
 
             label: (context, data) ->
-              unless opts.currency? && opts.currency=='hide'
-                return $filter('mnoCurrency')(data.datasets[context.datasetIndex].data[context.index], opts.currency)
+              currency = opts.currency || ImpacDashboardsSvc.getCurrentDashboard().currency
+              unless currency=='hide'
+                return $filter('mnoCurrency')(data.datasets[context.datasetIndex].data[context.index], currency)
               else
                 return data.datasets[context.datasetIndex].data[context.index]
           }

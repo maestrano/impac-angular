@@ -65,7 +65,6 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
       options = {
         showTooltips: false,
         showXLabels: false,
-        # barDatasetSpacing: 9
         barValueSpacing: Math.max(8-w.content.companies.length,1)
       }
       chartData = ChartFormatterSvc.barChart(inputData,options)

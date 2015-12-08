@@ -27,7 +27,8 @@ angular
             elem.children().remove(0)
             # On dashboard load, there will be no animation to avoid the canvas to be only partially drawn
             # Thus, we set responsiveAnimationDuration only when a chart was already defined before
-            chartData.options.responsiveAnimationDuration = 1000
+            # REMOVED / SOMETIMES CHART IS NOT DRAWN COMPLETELY...
+            # chartData.options.responsiveAnimationDuration = 1000
 
           elem.append('<canvas></canvas>')
           canvas = elem.children()[0]

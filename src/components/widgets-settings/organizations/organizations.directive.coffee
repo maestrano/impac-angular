@@ -3,10 +3,6 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
 
   w = $scope.parentWidget
   w.selectedOrganizations = {}
-  ImpacDashboardsSvc.load().then(
-    (config) ->
-      $scope.dashboardOrganizations = config.currentDashboard.data_sources
-  )
 
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
@@ -21,11 +17,14 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
 
   # initialization of selected organizations
   setting.initialize = ->
-    if w.metadata? && w.metadata.organization_ids?
-      angular.forEach(w.metadata.organization_ids, (orgUid) ->
-        w.selectedOrganizations[orgUid] = true
-      )
-      setting.isInitialized = true
+    ImpacDashboardsSvc.load().then(
+      (config) ->
+        $scope.dashboardOrganizations = config.currentDashboard.data_sources
+        if w.metadata? && w.metadata.organization_ids?
+          for org in $scope.dashboardOrganizations
+            w.selectedOrganizations[org.uid] = _.contains(w.metadata.organization_ids, org.uid)
+          setting.isInitialized = true
+    )
 
   setting.toMetadata = ->
     newOrganizations = _.compact(_.map(w.selectedOrganizations, (checked,uid) ->
