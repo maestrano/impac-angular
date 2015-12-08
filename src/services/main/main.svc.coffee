@@ -7,6 +7,7 @@ angular
     @config.organizations = []
     @config.currentOrganization = {}
     @config.userData = {}
+    @config.currencies = ["USD","AUD","CAD","CNY","EUR","GBP","HKD","INR","JPY","NZD","SGD","PHP"]
 
 
     isConfigurationLoaded = ->

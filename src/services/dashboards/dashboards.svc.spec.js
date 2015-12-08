@@ -273,13 +273,19 @@ describe('<> ImpacDashboardsSvc', function () {
   // CRUD methods
   // -------------------------------------------------
   describe('#create(:dashboard)', function() {
-    var newDashboard = {id: 2, name: 'dash2'};
+    var newDashboard = {id: 2, name: 'dash2', currency: 'test'};
 
     beforeEach(function() {
       svc.config = {
         dashboards: [{id: 1, name: 'dash1'}],
         currentDashboard: {}
       }
+      ImpacMainSvc.config = {currentOrganization: {currency: 'test'}};
+
+      // Stub for _self.load()
+      spyOn(svc, "load").and.callFake(function() {
+        return $q.resolve();
+      });
 
       // Stub for $http.post()
       spyOn($http, "post").and.callFake(function(route,data) {
@@ -290,7 +296,7 @@ describe('<> ImpacDashboardsSvc', function () {
 
       spyOn(svc, 'setCurrentDashboard').and.stub();
 
-      subject = svc.create(newDashboard);
+      subject = svc.create({id: 2, name: 'dash2'});
       $rootScope.$apply();
     });
 
