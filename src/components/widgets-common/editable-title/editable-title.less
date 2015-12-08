@@ -4,6 +4,7 @@
     padding: 0px 10px 10px 10px;
     border-bottom: @impac-widget-title-border;
     white-space: nowrap;
+
     .title {
       display: inline;
       text-transform: @impac-widget-title-text-transform;
@@ -15,18 +16,34 @@
         display: none;
       }
     }
+
     .editable-wrap {
+      position: relative;
       height: 20px;
-      width: 75%;
+      min-width: 100%;
       // otherwise, white-space is overriden in mno-enterprise
       white-space: nowrap;
+
       .editable-controls {
-        width: 100%;
+        min-width: 100%;
+
         .editable-input {
           height: 20px;
           font-size: 12px;
           text-transform: @impac-widget-title-text-transform;
-          width: 100%;
+          // 55px is .editable-buttons width
+          width: ~"calc(100% - 55px)";
+          padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+
+          button {
+            margin: 0px 0px 0px 5px;
+            height: 20px;
+            padding: 0px 5px;
+          }
         }
       }
     }
