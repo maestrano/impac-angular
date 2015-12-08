@@ -42,7 +42,7 @@ module.controller('SettingFormulaCtrl', ($scope, $filter) ->
     i=1
     angular.forEach(w.selectedAccounts, (account) ->
       balancePattern = "\\{#{i}\\}"
-      str = str.replace(new RegExp(balancePattern, 'g'), account.current_balance_no_format)
+      str = str.replace(new RegExp(balancePattern, 'g'), " #{account.current_balance_no_format} ")
       legend = legend.replace(new RegExp(balancePattern, 'g'), account.name)
       i++
     )
