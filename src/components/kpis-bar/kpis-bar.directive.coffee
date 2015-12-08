@@ -25,7 +25,6 @@ angular
         #   { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
         # ]
 
-
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
 
@@ -50,12 +49,5 @@ angular
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
-
-        $scope.expandKpis = ->
-          $scope.showKpisExpanded = true
-
-        $scope.collapseKpis = ->
-          $scope.showKpisExpanded = false
-
     }
   )

@@ -1,7 +1,8 @@
-<div class="row kpis" ng-class="{expanded: showKpisExpanded}">
+<div class="row kpis">
   <div class="title-actions col-xs-2">
 
     <div ng-click="toggleAvailableKpis()"><a href=""><i class="fa fa-plus"></i> Attach KPI</a></div>
+
     <div class="available-kpis-container" collapse="hideAvailableKpis">
       <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
         <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
