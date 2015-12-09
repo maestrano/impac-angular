@@ -20,8 +20,6 @@ angular
           { label: 'over', mode: 'min' }
           { label: 'below', mode: 'max' }
         ]
-        # Only used to have an empty name in name edition mode
-        $scope.tmp = { kpiName: '' }
 
         unless $scope.kpi.static
           ImpacKpisSvc.show($scope.kpi).then(
@@ -48,10 +46,8 @@ angular
           $scope.showEditSettings = false
 
         $scope.updateName = ->
-          return if _.isEmpty($scope.tmp.kpiName)
-          $scope.kpi.name = $scope.tmp.kpiName
+          return if _.isEmpty($scope.kpi.name)
           ImpacKpisSvc.update($scope.kpi, { name: $scope.kpi.name })
-            .finally(-> $scope.tmp.kpiName = "")
 
         $scope.updateSettings = ->
           params = {}
