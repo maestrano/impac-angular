@@ -43,9 +43,9 @@ angular
           )
 
         $scope.removeKpi = (kpiId) ->
-          kpisList = angular.copy($scope.kpis)
-          $scope.kpis = _.reject kpisList, (kpi) ->
-            kpi.id == kpiId
+          $scope.kpis = _.remove($scope.kpis, (kpi) ->
+            kpi.id != kpiId
+          )
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode

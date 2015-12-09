@@ -22,13 +22,13 @@
     KPI target:
 
     <!-- TODO: refactor design to handle multiple targets and ranges -->
-    <select class="form-control input-sm" ng-model="limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
+    <select class="form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
     </select>
 
-    <input class="form-control input-sm" type="text" ng-model="limit.value" style="width: 70%; float: left;" />
+    <input class="form-control input-sm" type="text" ng-model="kpi.limit.value" style="width: 70%; float: left;" />
     <span style="margin-top: 10px; display: inline-block;">{{kpi.data.unit}}</span>
 
-    <div ng-repeat="(param, paramValues) in possibleExtraParams track by $index">
+    <div ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
       <div class="param-name">Select {{param | titleize}}:</div>
       <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
       </select>
