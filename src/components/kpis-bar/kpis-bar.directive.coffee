@@ -8,7 +8,7 @@ angular
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
-      controller: ($scope, $timeout, $log) ->
+      controller: ($scope, $timeout) ->
         $scope.hideAvailableKpis = true
         $scope.showKpisExpanded = false
         $scope.showEditMode = false
@@ -24,6 +24,7 @@ angular
         #   { name: 'TAX % based on FY14', data: { value: '29.91', unit: '%' }, static: true},
         #   { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
         # ]
+
 
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
@@ -43,11 +44,18 @@ angular
           )
 
         $scope.removeKpi = (kpiId) ->
-          $scope.kpis = _.remove($scope.kpis, (kpi) ->
-            kpi.id != kpiId
-          )
+          kpisList = angular.copy($scope.kpis)
+          $scope.kpis = _.reject kpisList, (kpi) ->
+            kpi.id == kpiId
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
+
+        $scope.expandKpis = ->
+          $scope.showKpisExpanded = true
+
+        $scope.collapseKpis = ->
+          $scope.showKpisExpanded = false
+
     }
   )

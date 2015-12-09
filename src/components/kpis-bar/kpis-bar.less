@@ -1,8 +1,15 @@
 .analytics kpis-bar > .kpis {
 
+  // color: @light-black;
   padding: 10px 0px;
+
+  max-height: 145px;
   min-height: 145px;
   overflow: hidden;
+  &.expanded {
+    .scrollable();
+    max-height: 280px;
+  }
 
   .available-kpis-container {
     text-align: left;
@@ -35,7 +42,9 @@
         margin-top: 0px;
         font-weight: bold;
       }
+      
     }
+
   }
 
   .title-actions {

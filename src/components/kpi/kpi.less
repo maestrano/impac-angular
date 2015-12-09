@@ -1,7 +1,8 @@
-impac-kpi .kpi {
-  .scrollable();
+.analytics kpis-bar .kpi {
+
   text-align: center;
-  min-height: 135px;
+  min-height: 125px;
+  white-space: normal;
   padding: 10px 3px;
   border-radius: 3px;
   background-color: white;
@@ -15,118 +16,82 @@ impac-kpi .kpi {
     }
   }
 
-  .kpi-show {
-    white-space: normal;
+  &.edit {
+    .scrollable();
 
-    .kpi-title {
-      .text-uppercase();
-      font-size: 12px;
-      font-weight: 600;
-      color: @impac-widget-text-color-medium;
-      border-bottom-color: @impac-widget-text-color-medium;
-
-      &:hover {
-        color: @impac-widget-text-color;
-        border-bottom-color: @impac-widget-text-color;
-      }
-    }
-
-    .editable-wrap .editable-controls {
-      & > input {
-        width: 65%;
-        height: 25px;
-        line-height: 25px;
-      }
-
-      .editable-buttons {
-        button {
-          margin: 0px 0px 0px 1px;
-          height: 25px;
-          padding: 0px 4px;
-        }
-      }
-    }
-
-    .kpi-watch {
-      font-size: 11px;
-    }
-
-    .kpi-value {
-      position: absolute;
-      top: 75px;
-      left: 0;
-      right: 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .kpi-alert {
-      .text-uppercase();
-      font-size: 11px;
-      font-weight: 700;
+    input.form-control.input-sm {
+      height: 30px;
       background-color: white;
-      border: 1px solid @brand-danger;
-      border-radius: 4px;
-      color: @brand-danger;
-      padding: 2px 5px;
+      border: solid 1px @impac-widget-borders-color;
+      margin-top: 5px;
+    }
+    
+    .btn.btn-sm {
+      margin-top: 8px;
+    }
 
-      position: absolute;
-      bottom: 15px;
-      left: 15%;
-      width: 70%;
-
-      &.kpi-close {
-        bottom: auto;
-        right: 20px;
-        top: 5px;
-        border-radius: 10px;
-        width: 21px;
-        left: auto;
-      }
-
-      &:hover {
-        color: darken(@brand-danger, 10%);
-        border-color: darken(@brand-danger, 10%);
-      }
-
-      &.static {
-        position: static;
-        margin: 5px 20px;
-      }
+    .param-name {
+      margin-top: 5px;
     }
   }
 
-  .kpi-edit {
-    .param-name {
-      .small();
+
+  .kpi-title {
+    .text-uppercase();
+    font-size: 12px;
+    font-weight: 600;
+    color: @impac-widget-text-color-medium;
+    border-bottom-color: @impac-widget-text-color-medium;
+
+    &:hover {
+      color: @impac-widget-text-color;
+      border-bottom-color: @impac-widget-text-color;
+    }
+  }
+
+  .kpi-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+   
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
     }
 
-    .edit-limit {
-      .input-limit-value, .select-limit-mode {
-        margin-top: 0;
-        width: 50%;
-
-        .form-control-feedback {
-          color: @impac-widget-text-color-medium;
-          .small();
-          line-height: 24px;
-        }
-      }
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
     }
 
-    .form-control.input-sm {
-      margin-top: 0;
-      height: 24px;
-      line-height: 24px;
+    &.static {
+      position: static;
+      margin: 5px 20px;
     }
+  }
 
-    .form-group {
-      margin-bottom: 0;
-    }
-
-    .btn.btn-xs {
-      margin-top: 4px;
-    }
+  .kpi-watch {
+    font-size: 11px;
   }
 }
 

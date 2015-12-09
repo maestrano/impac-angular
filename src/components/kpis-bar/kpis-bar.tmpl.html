@@ -1,8 +1,7 @@
-<div class="row kpis">
+<div class="row kpis" ng-class="{expanded: showKpisExpanded}">
   <div class="title-actions col-xs-2">
 
     <div ng-click="toggleAvailableKpis()"><a href=""><i class="fa fa-plus"></i> Attach KPI</a></div>
-
     <div class="available-kpis-container" collapse="hideAvailableKpis">
       <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
         <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
@@ -11,7 +10,11 @@
       </div>
     </div>
 
-    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPI Settings</a></div>
+    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPIs Settings</a></div>
+
+    <div ng-click="expandKpis()" ng-hide="showKpisExpanded"><a href=""><i class="fa fa-chevron-down"></i> Expand KPIs</a></div>
+    <div ng-click="collapseKpis()" ng-show="showKpisExpanded"><a href=""><i class="fa fa-chevron-up"></i> Collapse KPIs</a></div>
+
   </div>
 
   <impac-kpi class="col-xs-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by $index"></impac-kpi>
