@@ -48,10 +48,6 @@ describe('<> dashboard-setting-currency', function () {
       expect(subjectScope.currentDhb).toEqual(currentDhb);
     });
 
-    it('defines scope.currency', function() {
-      expect(subjectScope.currency).toEqual('cur2');
-    });
-
     it('defines scope.currencies', function() {
       expect(subjectScope.currencies).toEqual(currencies);
     });
@@ -59,30 +55,6 @@ describe('<> dashboard-setting-currency', function () {
     it('defines scope.massAssignCurrency()', function() {
       expect(subjectScope.massAssignCurrency).toBeDefined();
     });
-
-    it('by default, assigns a currency to the current dashboard and it\'s widgets', function(){
-      expect(subjectScope.massAssignCurrency).toHaveBeenCalled();
-    });
-
-    describe('when the current dashboard already has a currency', function() {
-      beforeEach(function(){
-        // re-compile the directive with different dashboard value...
-        var prevCurDhb = currentDhb;
-        currentDhb = {id: 1, name: 'dhb1', currency: 'cur1'};
-        subjectScope = compile();
-
-        spyOn(subjectScope, 'massAssignCurrency').and.stub();
-        subjectScope.$digest();
-
-        // restore the initial value of currentDhb for next tests
-        currentDhb = prevCurDhb;
-      });
-
-      it('does not assign it a currency', function() {
-        expect(subjectScope.massAssignCurrency).not.toHaveBeenCalled();
-      })
-    });
-  });
 
   describe('#massAssignCurrency()', function() {
     beforeEach(function() {
