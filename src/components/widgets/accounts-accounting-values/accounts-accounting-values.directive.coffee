@@ -49,6 +49,7 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
       options = {
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
+        currency: data.currency
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
       
