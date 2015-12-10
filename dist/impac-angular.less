@@ -1343,6 +1343,7 @@ impac-kpi .kpi {
   }
 }
 
+
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -1353,7 +1354,6 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
-
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1386,36 +1386,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .price {
-    .center-bold(75px);
-  }
-
-  .legend {
-    max-height: 125px;
-  }
-}
-
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    .part {
-      width: 49%;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1475,6 +1445,36 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .price {
+    .center-bold(75px);
+  }
+
+  .legend {
+    max-height: 125px;
+  }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    .part {
+      width: 49%;
+    }
+  }
+}
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1564,22 +1564,6 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-leaves-balance{
   .selector {
     .center-thin();
@@ -1594,6 +1578,22 @@ impac-kpi .kpi {
   }
   .widget-lines-container {
     margin-top: 15px;
+  }
+}
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -1622,11 +1622,11 @@ impac-kpi .kpi {
       max-height: 175px;
   }
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
+}
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
@@ -1657,11 +1657,11 @@ impac-kpi .kpi {
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1906,37 +1906,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item {
   .title-wrapper {
     width: 100%;
@@ -1987,6 +1956,37 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
