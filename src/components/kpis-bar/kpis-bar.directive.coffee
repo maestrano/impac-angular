@@ -12,6 +12,7 @@ angular
         $scope.hideAvailableKpis = true
         $scope.showKpisExpanded = false
         $scope.showEditMode = false
+        $scope.isAddingKPI = false
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
@@ -35,12 +36,13 @@ angular
           return name
 
         $scope.addKpi = (kpi) ->
+          $scope.isAddingKPI = true
           ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched).then(
             (success) ->
               $scope.kpis.push(success)
             (error) ->
               $log.error("Impac Kpis bar can't add a kpi", error)
-          )
+          ).finally(-> $scope.isAddingKPI = false)
 
         $scope.removeKpi = (kpiId) ->
           $scope.kpis = _.remove($scope.kpis, (kpi) ->
