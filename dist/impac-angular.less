@@ -1223,7 +1223,6 @@ impac-kpi .kpi {
 }
 
 .analytics kpis-bar > .kpis {
-
   padding: 10px 0px;
   min-height: 145px;
   overflow: hidden;
@@ -1267,6 +1266,13 @@ impac-kpi .kpi {
       margin-top: 10px;
       font-weight: 700;
     }
+  }
+
+  .kpi-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 135px;
   }
 }
 
@@ -1344,6 +1350,16 @@ impac-kpi .kpi {
 }
 
 
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+  
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1364,16 +1380,6 @@ impac-kpi .kpi {
   .row.widget-line.total.cash {
     border-top: solid 1px;
     border-bottom: double;
-  }
-}
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-  
-  .price {
-    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-class-comparison {
