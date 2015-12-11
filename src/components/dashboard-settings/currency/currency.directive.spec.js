@@ -4,7 +4,7 @@ describe('<> dashboard-setting-currency', function () {
   var subject, subjectScope, $q, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc;
 
   var currencies = ['cur1', 'cur2'];
-  var mainConfig = {currentOrganization: {currency: 'cur2'}, currencies: currencies};
+  var mainConfig = {currencies: currencies};
   var currentDhb = {id: 1, name: 'dhb1'};
 
   // Helper to compile the directive and return its scope
@@ -55,13 +55,18 @@ describe('<> dashboard-setting-currency', function () {
     it('defines scope.massAssignCurrency()', function() {
       expect(subjectScope.massAssignCurrency).toBeDefined();
     });
+  });
 
   describe('#massAssignCurrency()', function() {
     beforeEach(function() {
       spyOn(ImpacDashboardsSvc, 'update').and.stub();
       spyOn(ImpacWidgetsSvc, 'massAssignAll').and.stub();
+      
       subjectScope = compile();
+      subjectScope.currency = 'cur2';
       subjectScope.$digest();
+
+      subjectScope.massAssignCurrency();
     });
 
     it('updates the current dashboard with a currency', function() {
