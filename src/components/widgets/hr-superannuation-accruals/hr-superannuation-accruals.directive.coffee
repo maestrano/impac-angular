@@ -7,12 +7,10 @@ module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, $q) ->
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
     $scope.paramSelectorDeferred.promise
   ]
 
@@ -20,27 +18,28 @@ module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, $q) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.employees) && !_.isEmpty(w.content.dates)
+    if $scope.isDataFound = !_.isEmpty(w.content.employees)
       $scope.employeesOptions = _.map(w.content.employees, (e) ->
         {
-          value: e.id,
+          value: e.uid,
           label: "#{e.lastname} #{e.firstname}",
         }
       )
       $scope.selectedEmployee = {
-        value: $scope.getEmployee().id,
+        value: $scope.getEmployee().uid,
         label: "#{$scope.getEmployee().lastname} #{$scope.getEmployee().firstname}",
       }
 
   $scope.getEmployee = ->
     return false unless $scope.isDataFound
 
+    e = w.content.employees[0]
     if w.metadata && w.metadata.employee_id
-      return _.find(w.content.employees, (e) ->
-        e.id == w.metadata.employee_id
+      e = _.find(w.content.employees, (e) ->
+        e.uid == w.metadata.employee_id
       ) || w.content.employees[0]
-    else
-      return w.content.employees[0]
+
+    return angular.copy(e)
 
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
