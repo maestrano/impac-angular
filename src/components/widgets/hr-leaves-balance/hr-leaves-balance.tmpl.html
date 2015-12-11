@@ -4,7 +4,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred"/>
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
 
     <div align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -16,24 +15,13 @@
 
     <div ng-show="(isDataFound==true)" >
 
-      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="selector" deferred="::paramSelectorDeferred" />
+      <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="employee-name" deferred="::paramSelectorDeferred" />
 
-      <div class="widget-lines-container">
-        <div class="widget-line">
-          <i style="float: right; margin-right: 10px;">{{getEmployee().total_leaves}} h</i>
-          Accrued
-        </div>
-        <div class="widget-line">
-          <i style="float: right; margin-right: 10px;">{{getEmployee().total_timeoff}} h</i>
-          Used
-        </div>
-      </div>
+      <h3>{{getEmployee().leaves[0].name || 'Vacation leaves'}} balance</h3>
+      <div class="balance">{{(getEmployee().leaves[0].units || 0) | mnoCurrency : (getEmployee().leaves[0].type_of_units || 'h')}}</div>
 
-      <h3>Leave Balance</h3>
-      <div class="balance">{{(getEmployee().total_leaves - getEmployee().total_timeoff)}} hours</div>
-      <div class="legend">
-        <span>(from {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}})</span>
-      </div>
+      <h3>{{getEmployee().leaves[1].name || 'Sick leaves'}} balance</h3>
+      <div class="balance">{{(getEmployee().leaves[1].units || 0) | mnoCurrency : (getEmployee().leaves[1].type_of_units || 'h')}}</div>
 
     </div>
 
