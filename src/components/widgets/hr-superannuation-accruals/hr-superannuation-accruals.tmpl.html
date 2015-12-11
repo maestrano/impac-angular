@@ -4,7 +4,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
 
     <div align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -19,10 +18,7 @@
       <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" deferred="::paramSelectorDeferred" />
 
       <h3>Superannuation Balance</h3>
-      <div class="price">{{getEmployee().total_super | mnoCurrency : getEmployee().currency}}</div>
-      <div class="legend">
-        <span>(from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}})</span>
-      </div>
+      <div class="price">{{(getEmployee().total_super || 0) | mnoCurrency : getEmployee().currency}}</div>
 
     </div>
 

@@ -35,12 +35,11 @@ module.controller('WidgetHrLeavesBalanceCtrl', ($scope, $q) ->
   $scope.getEmployee = ->
     return false unless $scope.isDataFound
 
+    e = w.content.employees[0]
     if w.metadata && w.metadata.employee_id
       e = _.find(w.content.employees, (e) ->
         e.uid == w.metadata.employee_id
       ) || w.content.employees[0]
-    else
-      e = w.content.employees[0]
 
     return angular.copy(e)
 
