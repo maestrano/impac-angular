@@ -53,7 +53,9 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
 
   $scope.getTimeSpan = ->
     if $scope.isDataFound
-      return "From #{$filter('date')(_.first(w.content.dates), 'd MMM yy')} to #{$filter('date')(_.last(w.content.dates), 'd MMM yy')}"
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      return "From #{$filter('mnoDate')(_.first(w.content.dates), period)} to #{$filter('mnoDate')(_.last(w.content.dates), period)}"
 
 
   # Chart formating function
@@ -66,7 +68,12 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
       else
         values = w.content.margins.gross
 
-      inputData = {title: "Gross margin", labels: w.content.dates, values: values}
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      inputData = {title: "Gross margin", labels: dates, values: values}
       all_values_are_positive = true
       angular.forEach(values, (value) ->
         all_values_are_positive &&= value >= 0

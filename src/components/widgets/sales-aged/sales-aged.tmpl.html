@@ -21,7 +21,7 @@
       <div class="chart-container">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
-      <div class="legend">From {{widget.content.dates[0]}} to {{getLastDate()}}</div>
+      <div class="legend">From {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
 
       <div class="widget-lines-container">
         <div class="row widget-line">

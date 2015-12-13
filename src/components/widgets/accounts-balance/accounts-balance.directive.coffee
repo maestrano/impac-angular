@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance',[])
 
-module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -49,7 +49,13 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc) -
   w.format = ->
     if $scope.isDataFound && w.selectedAccount?
       data = angular.copy(w.selectedAccount)
-      inputData = {title: data.name, labels: w.content.dates, values: data.balances}
+
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      inputData = {title: data.name, labels: dates, values: data.balances}
       all_values_are_positive = true
       angular.forEach(data.balances, (value) ->
         all_values_are_positive &&= value >= 0

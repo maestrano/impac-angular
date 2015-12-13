@@ -20,7 +20,8 @@
 
         <div class="widget-lines-container">
           <div class="row widget-line header">
-            <div class="col-sm-12 text-right">PnL since last {{getPeriod()}} ({{getPrevDate() | date : 'd MMM yy'}} to {{getLastDate() | date : 'd MMM yy'}})</div>
+            <div class="col-sm-8" />
+            <div class="col-sm-4 text-right">{{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
           </div>
           <div class="row widget-line total" ng-repeat="statement in widget.content.summary" ng-class="{profit: statement.name.indexOf('profit')>0}">
             <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
@@ -55,7 +56,7 @@
                 <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
 
                 <div class="col-sm-2" style="padding: 5px 0px;">
-                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | date : "d-MMM"}}</div></div>
+                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date | mnoDate : widget.metadata.hist_parameters.period}}</div></div>
                   <div class="row widget-line"><div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])" style="padding: 0px;">{{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}</div></div>
                 </div>
               </span>

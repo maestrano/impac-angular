@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-growth',[])
 
-module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -65,7 +65,13 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc) ->
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound && $scope.product && data = $scope.getSelectedProduct()
-      inputData = {title: data.name, labels: w.content.dates, values: data.totals}
+
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      inputData = {title: data.name, labels: dates, values: data.totals}
       all_values_are_positive = true
       angular.forEach(data.totals, (value) ->
         all_values_are_positive &&= value >= 0
