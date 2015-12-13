@@ -111,7 +111,8 @@ angular.module('impac.filters',
   [
     'impac.filters.titleize',
     'impac.filters.truncate',
-    'impac.filters.mno-currency'
+    'impac.filters.mno-currency',
+    'impac.filters.mno-date'
   ]
 );
 /*
