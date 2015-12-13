@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-payable-receivable',[])
 
-module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -39,9 +39,14 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
       lineData = [
-        {title: "Payable", labels: w.content.dates, values: w.content.values.payables },
-        {title: "Receivable", labels: w.content.dates, values: w.content.values.receivables },
+        {title: "Payable", labels: dates, values: w.content.values.payables },
+        {title: "Receivable", labels: dates, values: w.content.values.receivables },
       ]
 
       all_values_are_positive = true

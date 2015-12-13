@@ -145,15 +145,6 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
         $scope.unCollapsed.push(element.name)
       ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-  $scope.getPeriod = ->
-    if $scope.isDataFound && w.content.hist_parameters
-      period_param = w.content.hist_parameters.period || "MONTHLY"
-      period = "day"
-      period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
-      return "last #{period}"
-    else
-      return "last MONTH"
-
   $scope.isCollapsed = (element) ->
     if element? && element.name?
       if _.find($scope.unCollapsed, ((name) -> element.name == name))

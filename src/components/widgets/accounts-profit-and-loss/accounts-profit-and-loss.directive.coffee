@@ -149,17 +149,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)
 
-        labels = _.map w.content.dates, (date) ->
-          if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
-            $filter('date')(date, 'yyyy')
-          else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "QUARTERLY"
-            $filter('date')(date, 'MMM-yy')
-          else if w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
-            $filter('date')(date, 'dd-MMM')
-          else
-            $filter('date')(date, 'MMM')
+        period = null
+        period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+        dates = _.map w.content.dates, (date) ->
+          $filter('mnoDate')(date, period)
 
-        inputData.push({title: data.name, labels: labels, values: data.totals})
+        inputData.push({title: data.name, labels: dates, values: data.totals})
 
         angular.forEach(data.totals, (value) ->
           all_values_are_positive &&= value >= 0

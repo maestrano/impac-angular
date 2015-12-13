@@ -20,7 +20,7 @@
 
         <div class="widget-lines-container">
           <div class="row widget-line header">
-            <div class="col-sm-5">from {{widget.content.dates[0] | date : 'dd-MM-yy'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'dd-MM-yy'}}</div>
+            <div class="col-sm-5">from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}</div>
             <div class="col-sm-3 text-right">Win ratio</div>
             <div class="col-sm-4 text-right">Total won</div>
           </div>

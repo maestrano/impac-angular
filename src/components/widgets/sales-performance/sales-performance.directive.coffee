@@ -49,7 +49,9 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
       if theDate.split(' ').length > 0
         theDate = theDate.split(' ')[0]
 
-      return $filter('date')(theDate, 'dd MMM yyyy')
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      return $filter('mnoDate')(theDate, period)
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -91,13 +93,13 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
   w.format = ->
     if $scope.isDataFound && $scope.selectedElement?
       data = angular.copy($scope.selectedElement)
-      labels = _.map w.content.dates, (date) ->
-        $filter('date')(date, 'MMM-yy')
-      
-      labels[labels.length - 1] = $filter('date')(w.content.dates[w.content.dates.length - 1], 'dd-MM-yy')
-      # _.last(labels) = $filter('date')(_.last(w.content.dates), 'dd-MM-yy')
 
-      inputData = {title: data.name, labels: labels, values: data.totals}
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      inputData = {title: data.name, labels: dates, values: data.totals}
       all_values_are_positive = true
       angular.forEach(data.totals, (value) ->
         all_values_are_positive &&= value >= 0
