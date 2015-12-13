@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-payroll-taxes',[])
 
-module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -43,7 +43,13 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc) ->
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      inputData = {title: "Payroll Taxes", labels: w.content.dates, values: w.content.total_tax}
+
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      inputData = {title: "Payroll Taxes", labels: dates, values: w.content.total_tax}
       all_values_are_positive = true
       angular.forEach(w.content.total_tax, (value) ->
         all_values_are_positive &&= value >= 0

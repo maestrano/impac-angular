@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expenses-revenue',[])
 
-module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -57,9 +57,14 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   w.format = ->
     if $scope.isDataFound
       if w.isHistoryMode
+        period = null
+        period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+        dates = _.map w.content.dates, (date) ->
+          $filter('mnoDate')(date, period)
+
         if $scope.isNetProfitDisplayed
           lineData = [
-            {title: "Net Profit (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.net_profit },
+            {title: "Net Profit (#{$scope.getCurrency()})", labels: dates, values: w.content.values.net_profit },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.net_profit, (value) ->
@@ -68,8 +73,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         else
           lineData = [
-            {title: "Expenses (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.expenses },
-            {title: "Revenue (#{$scope.getCurrency()})", labels: w.content.dates, values: w.content.values.revenue },
+            {title: "Expenses (#{$scope.getCurrency()})", labels: dates, values: w.content.values.expenses },
+            {title: "Revenue (#{$scope.getCurrency()})", labels: dates, values: w.content.values.revenue },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.expenses, (value) ->

@@ -93,7 +93,7 @@
 
                 <div class="col-sm-2" style="padding: 5px 0px;">
                   <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
-                    {{date | date : 'MMM-d'}}
+                    {{date | mnoDate : widget.metadata.hist_parameters.period}}
                   </div></div>
                   <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
                     {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
@@ -106,7 +106,7 @@
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
 
             <div class="widget-line header">
-              Total from {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}
+              Total for period
             </div>
 
             <div class="widget-line" ng-repeat="element in selectedElements">

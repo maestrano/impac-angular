@@ -50,8 +50,10 @@ module.controller('WidgetSalesForecastCtrl', ($scope, $q, ChartFormatterSvc, $fi
     if $scope.isDataFound
       all_values_are_positive = true
 
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       formattedDates = _.map w.content.dates, (aDate) ->
-        $filter('date')(aDate, 'MMM-yy')
+        $filter('mnoDate')(date, period)
 
       inputData = [{
         title: 'Sales Performance',

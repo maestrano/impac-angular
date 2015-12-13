@@ -22,8 +22,8 @@
     <div ng-show="(isDataFound==true)" class="widget-lines-container">
       <div class="row widget-line header">
         <div class="col-sm-6 text-left">Compare with previous: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorBackDeferred" /></div>
-        <div class="col-sm-3 text-right">{{widget.content.dates[0] | date : "d-MMM"}}</div>
-        <div class="col-sm-3 text-right">{{widget.content.dates[1] | date : "d-MMM"}}</div>
+        <div class="col-sm-3 text-right">{{widget.content.dates[0] | mnoDate : widget.metadata.period}}</div>
+        <div class="col-sm-3 text-right">{{widget.content.dates[1] | mnoDate : widget.metadata.period}}</div>
       </div>
      
       <div class="row widget-line total" ng-repeat="category in categories" >

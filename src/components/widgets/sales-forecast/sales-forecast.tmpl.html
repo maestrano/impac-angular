@@ -25,7 +25,7 @@
         </div>
         <div class="row widget-line total" ng-repeat="date in widget.content.dates.slice(6) track by $index" ng-init="collapsed = true" >
           <div class="row widget-line" ng-class="{main: widget.content.opportunities.slice(6)[$index].length > 0}" ng-click="collapsed = !collapsed" >
-            <div class="col-sm-6">{{date | date : 'MMMM yyyy'}}</div>
+            <div class="col-sm-6">{{date | mnoDate : widget.metadata.hist_parameters.period}}</div>
             <div class="col-sm-6 text-right"><strong>{{widget.content.totals.slice(6)[$index] | mnoCurrency : widget.content.currency}}</strong></div>
           </div>
           <div collapse="collapsed">

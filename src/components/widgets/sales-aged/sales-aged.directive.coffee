@@ -60,15 +60,10 @@ module.controller('WidgetSalesAgedCtrl', ($scope, $q, ChartFormatterSvc, $filter
       inputData = []
       values = w.content.aged_sales[$scope.filter.value]
 
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       $scope.formattedDates = _.map w.content.dates, (date) ->
-        if w.metadata && w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
-          $filter('date')(date, 'yyyy')
-        else if w.metadata && w.metadata.hist_parameters && w.metadata.hist_parameters.period == "QUARTERLY"
-          $filter('date')(date, 'MMM-yy')
-        else if w.metadata && w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
-          $filter('date')(date, 'dd-MMM')
-        else
-          $filter('date')(date, 'MMM')
+        $filter('mnoDate')(date, period)
 
       inputData.push({title: $scope.filter.label, labels: $scope.formattedDates, values: values})
 

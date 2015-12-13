@@ -73,15 +73,6 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
   $scope.getName = (element) ->
     element.name.replace(/_/g, " ") if element? && element.name?
 
-  $scope.getPeriod = ->
-    period = 'MONTHLY'
-    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
-      period = w.metadata.hist_parameters.period
-
-    switch period.toUpperCase()
-      when "DAILY" then return "day"
-      else return period.toLowerCase().replace('ly','')
-
 
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
@@ -132,15 +123,12 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
   w.format = ->
     if $scope.isDataFound && $scope.selectedElement?
       data = angular.copy($scope.selectedElement)
+
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
-        if w.metadata.hist_parameters? && w.metadata.hist_parameters.period == "YEARLY"
-          $filter('date')(date, 'yyyy')
-        else if w.metadata.hist_parameters? && w.metadata.hist_parameters.period == "QUARTERLY"
-          $filter('date')(date, 'MMM-yy')
-        else if w.metadata.hist_parameters? && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
-          $filter('date')(date, 'dd-MMM')
-        else
-          $filter('date')(date, 'MMM')
+        $filter('mnoDate')(date, period)
+
       inputData = {labels: dates, datasets: [{title: data.name, values: data.cash_flows}]}
       all_values_are_positive = true
       angular.forEach(data.cash_flows, (value) ->
