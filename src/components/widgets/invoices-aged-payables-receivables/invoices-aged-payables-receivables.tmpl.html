@@ -101,12 +101,15 @@
                 </div>
               </span>
             </div>
+            <div class="astericks-info">
+              <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
+            </div>
           </div>
 
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
 
             <div class="widget-line header">
-              Total for period
+              Totals
             </div>
 
             <div class="widget-line" ng-repeat="element in selectedElements">
@@ -115,6 +118,10 @@
               </i>
               <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
               {{getName(element) | titleize}}
+            </div>
+
+            <div class="astericks-info">
+              <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
             </div>
 
           </div>
