@@ -84,9 +84,15 @@
   <!-- custom widget selector template configured from ImpacThemingProvider -->
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
 
-  <!-- currency selector -->
-  <div id="dashboard-settings">
+  <!-- currency selector & sync apps -->
+  <div id="dashboard-settings" class="row">
     <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+    <div>
+      <span>Last Synced: 12:00am 12/12/12</span>
+      <button class="btn btn-primary" ng-click="syncApps()" tooltip="Sync Apps">
+        <i class="fa fa-refresh" ng-class="{ 'fa-spin': syncingApps }"></i>
+      </button>
+    </div>
   </div>
 
   <!-- Errors -->

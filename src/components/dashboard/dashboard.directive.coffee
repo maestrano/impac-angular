@@ -287,6 +287,23 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
 
     #====================================
+    # Dashboard Settings Panel
+    #====================================
+    $scope.syncingApps = false
+    $scope.syncApps = ->
+      # TODO: move into a service of some sort
+      # return if $scope.syncingApps
+      # $scope.syncingApps = true
+      # $http
+      # .then(
+      #   (success) ->
+      #     $scope.syncingApps = false
+      #   (err) ->
+      #     $log.error 'Unable to sync apps', err
+      #     $scope.syncingApps = false
+      # )
+
+    #====================================
     # Widget suggestion modal
     #====================================
 
