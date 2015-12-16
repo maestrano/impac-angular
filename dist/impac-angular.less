@@ -624,6 +624,194 @@ body {
     }
   }
 }
+#module__dashboard-selector {
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
+
+  // container for dashboard selector 'dropdown' template
+  .buttons-bar {
+    padding: 0;
+    margin-top: 54px;
+    padding-bottom: 5px;
+
+    .btn {
+      float: right;
+      margin: 3px;
+      border-radius: @impac-dashboard-buttons-border-radius;
+    }
+
+    .dropdown-container {
+
+      .dashboard-title {
+        color: @impac-dashboard-title-color;
+        display: inline;
+        cursor: pointer;
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
+        i.fa.fa-pencil {
+          margin-left: 20px;
+          font-size: 14px;
+          &:hover {
+            color: @mgreen;
+          }
+        }
+      }
+
+      .dashboard-select {
+        margin: 5px 0px 10px 30px;
+        height: auto;
+        border-left: 1px solid @impac-dashboard-title-color;
+        border-bottom: 1px solid @impac-dashboard-title-color;
+        width: 300px;
+        background-color: @lightgray;
+        cursor: pointer;
+        .option {
+          color: @impac-dashboard-title-label-color;
+          white-space: nowrap;
+          &:hover {
+            background-color: @impac-widget-background-color;
+          }
+          &.create {
+            background-color: @impac-dashboard-title-color;
+            color: @impac-dashboard-title-label-create-color;
+            height: 30px;
+            padding: 5px 10px 5px 10px;
+            &:hover {
+              background-color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          i.fa.fa-pencil {
+            float: right;
+            padding-top: 7px;
+            text-align: center;
+            width: 15%;
+            height: 30px;
+            &:hover {
+              color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          span.name {
+            width: 85%;
+            height: 30px;
+            display: inline-block;
+            padding: 5px 10px 5px 10px;
+          }
+        }
+      }
+
+      .change-name {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 60%;
+        background-color: rgb(23, 38, 45);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        .box-shadow(0px 0px 25px 4px black);
+        z-index: 50;
+        border: solid 1px @impac-widget-background-color;
+
+        .form-control {
+          height: 25px;
+          margin-bottom: 10px;
+        }
+      }
+
+      .data-source-label {
+        color: @impac-dashboard-source-color;
+        padding-left: 3px;
+        margin: 0px;
+      }
+    }
+
+    .loader-container {
+      padding-left: 10px;
+      .loading-spinner {
+        .loader-style();
+        font-size: 40px;
+      }
+    }
+
+  }
+
+
+  // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
+  .nav.nav-tabs,
+  .nav.nav-pills {
+
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+
+  // TABS
+  .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
+    // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
+    li:last-child.active > a {
+      background-color: @impac-dashboard-selector-tabs-background-color;
+    }
+  }
+
+  // PILLS
+  // TODO: Add less variables for customisation.
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a.close-link {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
+  }
+  ////////
+}
+
 .analytics {
 
   &.show-dhb {
@@ -898,192 +1086,64 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
-#module__dashboard-selector {
-  a {
-    font-weight: normal;
-  }
-  // dashboard selector template wrapper div
-  & > div:first-child {
-    border-bottom: @impac-dashboard-selector-border;
-  }
+.analytics kpis-bar > .kpis {
+  padding: 10px 0px;
+  min-height: 145px;
+  overflow: hidden;
 
-  // container for dashboard selector 'dropdown' template
-  .buttons-bar {
-    padding: 0;
-    margin-top: 54px;
-    padding-bottom: 5px;
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 500px;
+    max-height: 115px;
+    box-shadow: 0px 3px 12px -4px;
 
-    .btn {
-      float: right;
-      margin: 3px;
-      border-radius: @impac-dashboard-buttons-border-radius;
-    }
+    .scrollable();
 
-    .dropdown-container {
+    .available-kpi {
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+      height: 38px;
 
-      .dashboard-title {
-        color: @impac-dashboard-title-color;
-        display: inline;
-        cursor: pointer;
-        &:hover {
-          color: darken(@impac-dashboard-title-color,10%);
-        }
-        i.fa.fa-pencil {
-          margin-left: 20px;
-          font-size: 14px;
-          &:hover {
-            color: @mgreen;
-          }
-        }
+      span.kpi-name {
+        padding-top: 5px;
+        display: inline-block;
       }
 
-      .dashboard-select {
-        margin: 5px 0px 10px 30px;
-        height: auto;
-        border-left: 1px solid @impac-dashboard-title-color;
-        border-bottom: 1px solid @impac-dashboard-title-color;
-        width: 300px;
-        background-color: @lightgray;
-        cursor: pointer;
-        .option {
-          color: @impac-dashboard-title-label-color;
-          white-space: nowrap;
-          &:hover {
-            background-color: @impac-widget-background-color;
-          }
-          &.create {
-            background-color: @impac-dashboard-title-color;
-            color: @impac-dashboard-title-label-create-color;
-            height: 30px;
-            padding: 5px 10px 5px 10px;
-            &:hover {
-              background-color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          i.fa.fa-pencil {
-            float: right;
-            padding-top: 7px;
-            text-align: center;
-            width: 15%;
-            height: 30px;
-            &:hover {
-              color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          span.name {
-            width: 85%;
-            height: 30px;
-            display: inline-block;
-            padding: 5px 10px 5px 10px;
-          }
-        }
-      }
-
-      .change-name {
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        width: 60%;
-        background-color: rgb(23, 38, 45);
-        color: white;
-        padding: 10px;
-        border-radius: 4px;
-        text-align: center;
-        .box-shadow(0px 0px 25px 4px black);
-        z-index: 50;
-        border: solid 1px @impac-widget-background-color;
-
-        .form-control {
-          height: 25px;
-          margin-bottom: 10px;
-        }
-      }
-
-      .data-source-label {
-        color: @impac-dashboard-source-color;
-        padding-left: 3px;
-        margin: 0px;
-      }
-    }
-
-    .loader-container {
-      padding-left: 10px;
-      .loading-spinner {
-        .loader-style();
-        font-size: 40px;
-      }
-    }
-
-  }
-
-
-  // angular bootstrap tabs & pills
-  .nav-tabs {
-    border-bottom: 0;
-  }
-  .nav.nav-tabs,
-  .nav.nav-pills {
-
-    // add new tab
-    li:last-child > a {
-      padding-right: 15px;
-      tab-heading a {
-        position: static;
+      .form-control-static, .btn.btn-sm.btn-info {
+        float: right;
+        min-height: 30px;
+        height: 30px;
+        float: right;
+        margin-left: 3px;
+        margin-top: 0px;
+        font-weight: bold;
       }
     }
   }
 
-  // TABS
-  .nav.nav-tabs {
-    // tab
-    li > a {
-      padding: @impac-dashboard-selector-tabs-padding;
-      margin: @impac-dashboard-selector-tabs-margin;
-      background-color: @impac-dashboard-selector-tabs-background-color;
-      border: @impac-dashboard-selector-border;
-      color: @impac-dashboard-selector-tabs-color;
-    }
-    // active tab
-    li.active > a {
-      background-color: @impac-dashboard-selector-tabs-active-background-color;
-      color: @impac-dashboard-selector-tabs-active-color;
-    }
-    // add new tab
-    li:last-child > a {
-      // padding-left: 5px;
-    }
-    li:last-child.active > a {
-      background-color: @impac-dashboard-selector-tabs-background-color;
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
     }
   }
 
-  // PILLS
-  // TODO: Add less variables for customisation.
-  .nav.nav-pills {
-    // tab
-    li > a {
-      min-width: 0px;
-      padding-right: 8px;
-    }
-    // add a new tab
-    li:last-child tab-heading a {
-      margin-left: 2px;
-    }
-    // add a new tab
-    li:last-child.active > a {
-      background-color: #f4f4f4;
-    }
+  .kpi-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 135px;
   }
-  // tab icons
-  tab-heading a.close-link {
-    border-bottom: 0px solid;
-    margin-left: 12px;
-    position: relative;
-    top: -9px;
-    right: 1px;
-    color: @impac-dashboard-selector-tabs-color;
-  }
-  ////////
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  // color: @light-black;
+  padding: 5px 0px;
 }
 
 impac-kpi .kpi {
@@ -1222,66 +1282,6 @@ impac-kpi .kpi {
   min-height: 80px;
 }
 
-.analytics kpis-bar > .kpis {
-  padding: 10px 0px;
-  min-height: 145px;
-  overflow: hidden;
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
-
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
-
-  .kpi-loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 135px;
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  // color: @light-black;
-  padding: 5px 0px;
-}
-
 .widget-item .top-line {
   position: relative;
   cursor: move;
@@ -1349,7 +1349,6 @@ impac-kpi .kpi {
   }
 }
 
-
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -1360,6 +1359,7 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
+
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1658,7 +1658,13 @@ impac-kpi .kpi {
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
+
+  .astericks-info {
+    text-align: left;
+    padding-left: 15px;
+  }
 }
+
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 }
@@ -1769,6 +1775,12 @@ impac-kpi .kpi {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1777,12 +1789,6 @@ impac-kpi .kpi {
   }
   .selector {
     margin-bottom: 4px;
-  }
-}
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
   }
 }
 .analytics .widget-item .content.sales-margin {
@@ -1819,6 +1825,23 @@ impac-kpi .kpi {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1836,23 +1859,6 @@ impac-kpi .kpi {
       font-size: 11px;
     }
   }
-}
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
 }
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
@@ -1939,6 +1945,56 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    white-space: nowrap;
+
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+
+    .editable-wrap {
+      position: relative;
+      height: 20px;
+      min-width: 100%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+
+      .editable-controls {
+        min-width: 100%;
+
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          // 55px is .editable-buttons width
+          width: ~"calc(100% - 55px)";
+          padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+          button {
+            margin: 0px 0px 0px 5px;
+            height: 20px;
+            padding: 0px 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
@@ -2009,56 +2065,6 @@ impac-kpi .kpi {
     }
   }
 
-}
-
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    white-space: nowrap;
-
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-
-    .editable-wrap {
-      position: relative;
-      height: 20px;
-      min-width: 100%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-
-      .editable-controls {
-        min-width: 100%;
-
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          // 55px is .editable-buttons width
-          width: ~"calc(100% - 55px)";
-          padding: 0px 3px;
-        }
-
-        .editable-buttons {
-          background-color: @impac-widget-title-bg;
-          button {
-            margin: 0px 0px 0px 5px;
-            height: 20px;
-            padding: 0px 5px;
-          }
-        }
-      }
-    }
-  }
 }
 
 .analytics .widget-item .content .settings.select-account {
