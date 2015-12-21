@@ -291,17 +291,19 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     #====================================
     $scope.syncingApps = false
     $scope.syncApps = ->
-      # TODO: move into a service of some sort
-      # return if $scope.syncingApps
-      # $scope.syncingApps = true
-      # $http
-      # .then(
-      #   (success) ->
-      #     $scope.syncingApps = false
-      #   (err) ->
-      #     $log.error 'Unable to sync apps', err
-      #     $scope.syncingApps = false
-      # )
+      # TODO: move feature into a directive component.
+      return if $scope.syncingApps
+      $scope.syncingApps = true
+      orgUID = ImpacMainSvc.config.currentOrganization.uid
+      $http.get(ImpacRoutes.syncAppsPath(orgUID)).then(
+        (success) ->
+          console.log 'success! ', success
+          $http.get("webhook/sync/#{orgUID}/progress")
+          $scope.syncingApps = false
+        (err) ->
+          $log.error 'Unable to sync apps', err
+          $scope.syncingApps = false
+      )
 
     #====================================
     # Widget suggestion modal
