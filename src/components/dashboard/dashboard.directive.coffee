@@ -298,7 +298,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $http.get(ImpacRoutes.syncAppsPath(orgUID)).then(
         (success) ->
           console.log 'success! ', success
+          # TODO: this endpoint needs to be polled at an interval until sync'ing is stated
+          #       as finished from the response.
           $http.get("webhook/sync/#{orgUID}/progress")
+          ####
           $scope.syncingApps = false
         (err) ->
           $log.error 'Unable to sync apps', err
