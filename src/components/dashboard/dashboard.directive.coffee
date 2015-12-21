@@ -300,6 +300,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           console.log 'success! ', success
           # TODO: this endpoint needs to be polled at an interval until sync'ing is stated
           #       as finished from the response.
+          # @cesar: https://github.com/emmaguo/angular-poller
           $http.get("webhook/sync/#{orgUID}/progress")
           ####
           $scope.syncingApps = false
