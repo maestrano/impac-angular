@@ -55,6 +55,8 @@ module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFor
         if _.includes ['ASSET', 'LIABILITY'], sum.classification
           { title: sum.classification, values: sum.totals }
 
+      datasets = _.sortByOrder(datasets, ['title'])
+
       inputData = { labels: w.content.companies, datasets: _.compact datasets }
 
       options = {
