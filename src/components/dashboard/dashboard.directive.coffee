@@ -289,25 +289,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     #====================================
     # Dashboard Settings Panel
     #====================================
-    $scope.syncingApps = false
-    $scope.syncApps = ->
-      # TODO: move feature into a directive component.
-      return if $scope.syncingApps
-      $scope.syncingApps = true
-      orgUID = ImpacMainSvc.config.currentOrganization.uid
-      $http.get(ImpacRoutes.syncAppsPath(orgUID)).then(
-        (success) ->
-          console.log 'success! ', success
-          # TODO: this endpoint needs to be polled at an interval until sync'ing is stated
-          #       as finished from the response.
-          # @cesar: https://github.com/emmaguo/angular-poller
-          $http.get("webhook/sync/#{orgUID}/progress")
-          ####
-          $scope.syncingApps = false
-        (err) ->
-          $log.error 'Unable to sync apps', err
-          $scope.syncingApps = false
-      )
+
+    # - in directives -
+    
 
     #====================================
     # Widget suggestion modal

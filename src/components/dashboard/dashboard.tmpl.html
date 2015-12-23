@@ -85,14 +85,9 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
 
   <!-- currency selector & sync apps -->
-  <div id="dashboard-settings" class="row">
-    <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
-    <div>
-      <span>Last Synced: 12:00am 12/12/12</span>
-      <button class="btn btn-primary" ng-click="syncApps()" tooltip="Sync Apps">
-        <i class="fa fa-refresh" ng-class="{ 'fa-spin': syncingApps }"></i>
-      </button>
-    </div>
+  <div id="dashboard-settings" class="row" ng-if="!showChooseDhbMsg()">
+    <div dashboard-setting-currency currency="currentDhb.currency" />
+    <div dashboard-setting-sync-apps />
   </div>
 
   <!-- Errors -->

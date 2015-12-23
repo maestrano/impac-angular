@@ -826,11 +826,21 @@ body {
 
   #dashboard-settings {
     text-align: right;
-    margin: 0px 2px;
+    margin: 8px 0px;
     min-height: 40px;
-
-    &> * {
+    & > * {
       float: right;
+    }
+    & > div {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
     }
   }
 
@@ -1328,6 +1338,12 @@ impac-kpi .kpi {
 
 .analytics .dashboard-settings.currency {
 }
+.analytics .dashboard-settings.sync-apps {
+  span {
+    margin-right: 5px;
+    color: @impac-widget-text-color-medium;
+  }
+}
 .analytics .widget-item .content .data-not-found {
   text-align: center;
   font-size: 18px;
@@ -1623,15 +1639,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -1670,6 +1677,15 @@ impac-kpi .kpi {
         color: white;
       }
     }
+  }
+}
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
   }
 }
 .analytics .widget-item .content .settings.time-range {
@@ -1765,6 +1781,36 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .price {
+    .center-bold(75px);
+  }
+
+  .legend {
+    max-height: 125px;
+  }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    .part {
+      width: 49%;
+    }
+  }
+}
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1824,36 +1870,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .price {
-    .center-bold(75px);
-  }
-
-  .legend {
-    max-height: 125px;
-  }
-}
-
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    .part {
-      width: 49%;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
