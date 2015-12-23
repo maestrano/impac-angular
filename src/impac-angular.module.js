@@ -12,7 +12,8 @@ angular.module('maestrano.impac',
     'impac.components',
     // EXTERNAL DEPENDENCIES //
     'ui.sortable',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'emguo.poller'
   ]);
 
 /*

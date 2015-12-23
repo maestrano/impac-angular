@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, ImpacMainSvc, ImpacRoutes) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, ImpacMainSvc, ImpacRoutes, poller) ->
   return {
     restrict: 'A',
     scope: {
@@ -18,12 +18,14 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, Impac
             $http.get(ImpacRoutes.syncAppsPath(orgUID)).then(
               (success) ->
                 console.log 'success! ', success
-                # TODO: this endpoint needs to be polled at an interval until sync'ing is stated
-                #       as finished from the response.
-                # @cesar: https://github.com/emmaguo/angular-poller
-                $http.get("webhook/sync/#{orgUID}/progress")
-                ####
-                scope.syncingApps = false
+
+                myPoller = poller.get("webhook/sync/#{orgUID}/progress", {delay: 5000})
+                myPoller.promise.then(null, null,
+                  (object) ->
+                    if (object.syncing == false)
+                      scope.syncingApps = false
+                      myPoller.remove()
+                )
               (err) ->
                 $log.error 'Unable to sync apps', err
                 scope.syncingApps = false
