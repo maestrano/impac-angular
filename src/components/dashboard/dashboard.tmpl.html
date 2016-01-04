@@ -84,9 +84,10 @@
   <!-- custom widget selector template configured from ImpacThemingProvider -->
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
 
-  <!-- currency selector -->
-  <div id="dashboard-settings">
-    <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+  <!-- currency selector & sync apps -->
+  <div id="dashboard-settings" class="row" ng-if="!showChooseDhbMsg()">
+    <div dashboard-setting-currency currency="currentDhb.currency" />
+    <div dashboard-setting-sync-apps />
   </div>
 
   <!-- Errors -->

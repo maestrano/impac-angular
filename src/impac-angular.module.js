@@ -12,7 +12,8 @@ angular.module('maestrano.impac',
     'impac.components',
     // EXTERNAL DEPENDENCIES //
     'ui.sortable',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'emguo.poller'
   ]);
 
 /*
@@ -101,6 +102,7 @@ angular.module('impac.components.widgets-settings',
 angular.module('impac.components.dashboard-settings',
   [
     'impac.components.dashboard-settings.currency',
+    'impac.components.dashboard-settings.sync-apps',
   ]
 );
 angular.module('impac.components.widgets-common',

@@ -1,0 +1,10 @@
+<div class="dashboard-settings sync-apps">
+
+  <span ng-show="syncingApps">Syncing...</span>
+  <span ng-hide="syncingApps">Last Synced: 12:00am 12/12/12</span>
+
+  <button class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="syncingApps">
+    <i class="fa fa-refresh" ng-class="{ 'fa-spin': syncingApps }"></i>
+  </button>
+
+</div>
