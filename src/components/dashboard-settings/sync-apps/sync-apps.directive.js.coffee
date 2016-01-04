@@ -8,28 +8,31 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, Impac
     link: (scope, element, attrs) ->
       scope.syncingApps = false
 
+      ImpacMainSvc.load().then(
+        (config) ->
+          scope.orgUID = config.currentOrganization.uid
+    
+          scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress", {delay: 5000, smart: true})
+          scope.syncingPoller.promise.then(null, null,
+            (object) ->
+              if (object.data.syncing == false)
+                scope.syncingApps = false
+                scope.syncingPoller.stop()
+              else if (object.data.syncing == true)
+                scope.syncingApps = true
+          )
+      )
+
       scope.synchronize = ->
         return if scope.syncingApps
         scope.syncingApps = true
 
-        ImpacMainSvc.load().then(
-          (config) ->
-            orgUID = config.currentOrganization.uid
-            $http.get(ImpacRoutes.syncAppsPath(orgUID)).then(
-              (success) ->
-                console.log 'success! ', success
-
-                myPoller = poller.get("webhook/sync/#{orgUID}/progress", {delay: 5000})
-                myPoller.promise.then(null, null,
-                  (object) ->
-                    if (object.syncing == false)
-                      scope.syncingApps = false
-                      myPoller.remove()
-                )
-              (err) ->
-                $log.error 'Unable to sync apps', err
-                scope.syncingApps = false
-            )
+        $http.get(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
+          (success) ->
+            scope.syncingPoller.start()
+          (err) ->
+            $log.error 'Unable to sync apps', err
+            scope.syncingApps = false
         )
 
     template: $templateCache.get('dashboard-settings/sync-apps.tmpl.html'),
