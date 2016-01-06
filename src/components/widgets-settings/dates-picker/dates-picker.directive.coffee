@@ -20,10 +20,17 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       scope.calendarFrom =
         opened: false
-        value: new Date(new Date().getFullYear(), 1, 1)
+        value: new Date(new Date().getFullYear(), 0, 1)
+        toggle: ->
+          scope.calendarFrom.opened = !scope.calendarFrom.opened
+          scope.calendarTo.opened = false
+
       scope.calendarTo =
         opened: false
         value: new Date()
+        toggle: ->
+          scope.calendarFrom.opened = false
+          scope.calendarTo.opened = !scope.calendarTo.opened
 
       setting.initialize = ->
         scope.changed = false
@@ -31,7 +38,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         if Date.parse(scope.fromDate)
           scope.calendarFrom.value = new Date(Date.parse(scope.fromDate))
         else
-          scope.calendarFrom.value = new Date(new Date().getFullYear(), 1, 1)
+          scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
 
         if Date.parse(scope.toDate) && !scope.keepToday
           scope.calendarTo.value = new Date(Date.parse(scope.toDate))
@@ -52,19 +59,12 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
             keep_today: isToToday()
         }
 
-      scope.toggleCalendarFrom = (event) ->
-        scope.calendarFrom.opened = !scope.calendarFrom.opened
-        scope.calendarTo.opened = false
-
-      scope.toggleCalendarTo = (event) ->
-        scope.calendarFrom.opened = false
-        scope.calendarTo.opened = !scope.calendarTo.opened
-
       scope.showApplyButton = ->
         scope.changed = true
 
       scope.applyChanges = ->
         ImpacWidgetsSvc.updateWidgetSettings(w, true)
+        scope.changed = false
 
 
       w.settings.push(setting)
