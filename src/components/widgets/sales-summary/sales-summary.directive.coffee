@@ -52,9 +52,9 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
     if $scope.isDataFound
       pieData = _.map w.content.summary, (entity) ->
         if entity.company
-          label = "#{entity.code || entity.location || entity.industry || entity.customer} (#{entity.company})"
+          label = "#{entity.code || entity.name || entity.location || entity.industry || entity.customer} (#{entity.company})"
         else
-          label = entity.code || entity.location || entity.industry || entity.customer
+          label = entity.code || entity.name || entity.location || entity.industry || entity.customer
         {
           label: label,
           value: entity.total,
