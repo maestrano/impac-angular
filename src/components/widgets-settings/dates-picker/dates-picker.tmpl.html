@@ -1,9 +1,9 @@
 <span class="settings dates-picker">
-  <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" >
+  <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" max-date="calendarTo.value" >
     {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
   </button>
   to 
-  <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" >
+  <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" >
     {{ calendarTo.value | date : 'yyyy-MM-dd' }}
   </button>
   <button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed" ng-click="applyChanges()" >
