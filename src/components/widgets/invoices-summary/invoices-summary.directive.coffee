@@ -9,12 +9,16 @@ module.controller('WidgetInvoicesSummaryCtrl', ($scope, $q, ChartFormatterSvc) -
   $scope.orgDeferred = $q.defer()
   $scope.chartFiltersDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartFiltersDeferred.promise
     $scope.chartDeferred.promise
+    $scope.datesPickerDeferred.promise
   ]
+
+  $scope.defaultFrom = "#{new Date().getFullYear() - 10}-01-01"
 
 
   # Widget specific methods

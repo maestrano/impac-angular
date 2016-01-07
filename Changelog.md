@@ -1,3 +1,15 @@
+# master | Ongoing development
+
+### Adds
+- Widget setting: dates-picker (can be used in edit mode or on widget's front)
+- Use widget setting dates-picker in invoices list, invoices summary, sales list and sales summary
+
+-------------------------------------------------------------
+# v1.1.1 | Fixes - Package.json and bower.json versions
+
+- Just bumps the packages to proper version
+
+-------------------------------------------------------------
 # v1.1.0 | Features - Multi-currency handling
 
 ### Adds
