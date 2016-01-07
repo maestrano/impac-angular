@@ -52,6 +52,9 @@ describe('<> widget-setting-dates-picker', function () {
       setting = subjectScope.parentWidget.settings[0];
       cFrom = subjectScope.calendarFrom;
       cTo = subjectScope.calendarTo;
+
+      $httpBackend.whenGET(/template\/.*/).respond(200);
+      // subjectScope.$digest();
     });
 
     it('defines the calendars objects', function() {
@@ -122,19 +125,25 @@ describe('<> widget-setting-dates-picker', function () {
     describe('#setting.initialize()', function() {
       it('hides the "apply changes" button', function() {
         setting.initialize();
-        expect(subjectScope.changed).toBe(false);
+        subjectScope.$evalAsync(function(){
+          expect(subjectScope.changed).toBe(false);
+        });
       });
       it('defines the calendars values', function() {
         setting.initialize();
-        expect(cFrom.value).toEqual(new Date(2015,11,14));
-        expect(cTo.value).toEqual(new Date(2016,0,20));
+        subjectScope.$evalAsync(function(){
+          expect(cFrom.value).toEqual(new Date(2015,11,14));
+          expect(cTo.value).toEqual(new Date(2016,0,20));
+        });
       });
 
       describe('when "from" is not defined', function() {
         it('sets the calendarFrom value as the first day of the year', function() {
           subjectScope.fromDate = undefined;
           setting.initialize();
-          expect(cFrom.value).toEqual(new Date(2016,0,1));
+          subjectScope.$evalAsync(function(){
+            expect(cFrom.value).toEqual(new Date(2016,0,1));
+          });
         });
       });
 
@@ -142,7 +151,9 @@ describe('<> widget-setting-dates-picker', function () {
         it('sets the calendarTo value as today\'s date', function() {
           subjectScope.toDate = undefined;
           setting.initialize();
-          expect(cTo.value).toEqual(new Date(2016,0,15));
+          subjectScope.$evalAsync(function(){
+            expect(cTo.value).toEqual(new Date(2016,0,15));
+          });
         });
       });
 
@@ -157,13 +168,17 @@ describe('<> widget-setting-dates-picker', function () {
     describe('#setting.toMetadata()', function() {
       it('returns the "hist_parameters" metadata', function() {
         setting.initialize();
-        expect(setting.toMetadata()).toEqual({hist_parameters: {from: '2015-12-14', to: '2016-01-20', period: 'RANGE', keep_today: false}});
+        subjectScope.$evalAsync(function(){
+          expect(setting.toMetadata()).toEqual({hist_parameters: {from: '2015-12-14', to: '2016-01-20', period: 'RANGE', keep_today: false}});
+        });
       });
       describe('when "to" is today\'s date', function() {
         it('includes "keep_today"=true in the metadata', function() {
           setting.initialize();
-          cTo.value = baseTime;
-          expect(setting.toMetadata()).toEqual({hist_parameters: {from: '2015-12-14', to: '2016-01-15', period: 'RANGE', keep_today: true}});
+          subjectScope.$evalAsync(function(){
+            cTo.value = baseTime;
+            expect(setting.toMetadata()).toEqual({hist_parameters: {from: '2015-12-14', to: '2016-01-15', period: 'RANGE', keep_today: true}});
+          });
         });
       });
     });

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.dates-picker',[])
 
-module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc) ->
+module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout) ->
   return {
     restrict: 'A',
     scope: {
@@ -33,25 +33,27 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
           scope.calendarTo.opened = !scope.calendarTo.opened
 
       setting.initialize = ->
-        scope.changed = false
+        # timeout to make sure that the fromDate and toDate are propagated to the directive if updated in widget.initContext()
+        $timeout ->
+          scope.changed = false
 
-        if Date.parse(scope.fromDate)
-          parsedFrom = scope.fromDate.split('-')
-          y = parsedFrom[0]
-          m = parsedFrom[1] - 1
-          d = parsedFrom[2]
-          scope.calendarFrom.value = new Date(y,m,d)
-        else
-          scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
+          if Date.parse(scope.fromDate)
+            parsedFrom = scope.fromDate.split('-')
+            y = parsedFrom[0]
+            m = parsedFrom[1] - 1
+            d = parsedFrom[2]
+            scope.calendarFrom.value = new Date(y,m,d)
+          else
+            scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
 
-        if Date.parse(scope.toDate) && !scope.keepToday
-          parsedTo = scope.toDate.split('-')
-          y = parsedTo[0]
-          m = parsedTo[1] - 1
-          d = parsedTo[2]
-          scope.calendarTo.value = new Date(y,m,d)
-        else
-          scope.calendarTo.value = new Date()
+          if Date.parse(scope.toDate) && !scope.keepToday
+            parsedTo = scope.toDate.split('-')
+            y = parsedTo[0]
+            m = parsedTo[1] - 1
+            d = parsedTo[2]
+            scope.calendarTo.value = new Date(y,m,d)
+          else
+            scope.calendarTo.value = new Date()
 
       isToToday = ->
         (scope.calendarTo.value.getFullYear() == new Date().getFullYear()) &&
