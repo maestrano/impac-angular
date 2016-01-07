@@ -61,12 +61,14 @@ angular
 
 
     @initWidgetSettings = (w) ->
+      w.isEditMode = false
       return if _.isEmpty(w.settings)
       for setting in w.settings
         setting.initialize()
       return true
 
     @updateWidgetSettings = (widget, needContentReload=true) ->
+      widget.isEditMode = false
       deferred = $q.defer()
 
       if _.isEmpty(widget.settings)
