@@ -8,10 +8,12 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.limitEntriesDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.limitEntriesDeferred.promise
+    $scope.datesPickerDeferred.promise
   ]
 
 
@@ -28,6 +30,24 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
 
     if w.metadata? && w.metadata.limit_entries?
       $scope.limitEntriesSelected = w.metadata.limit_entries
+
+    if $scope.isDataFound
+      maxDate = new Date()
+      minDate = false
+      dates = _.flatten _.map(w.content.entities, ((e) -> _.map(e.invoices, ((i) -> i.invoice_date)) ))
+      for date in dates
+        parsedDate = date.split('-')
+        y = parsedDate[0]
+        m = parsedDate[1]-1
+        d = parsedDate[2]
+        newDate = new Date(y,m,d)
+        minDate ||= newDate
+        minDate = Math.min(minDate, newDate)
+        maxDate = Math.max(maxDate, newDate)
+
+        $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd')
+        $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd')
+
 
   # No need to put this under initContext because it won't change after a settings update
   $scope.entityType = w.metadata.entity
