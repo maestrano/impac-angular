@@ -8,14 +8,14 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.chartFiltersDeferred = $q.defer()
-  $scope.paramSelectorDeferred1 = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
   $scope.datesPickerDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartFiltersDeferred.promise
-    $scope.paramSelectorDeferred1.promise
+    $scope.paramSelectorDeferred.promise
     $scope.datesPickerDeferred.promise
     $scope.chartDeferred.promise
   ]
@@ -41,7 +41,7 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
     ] if w.metadata.criteria == "customer"
 
     $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-      o.value == w.content.filter
+      o.value == w.metadata.filter
     ) || $scope.filterOptions[0])
 
 
