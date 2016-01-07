@@ -1232,40 +1232,6 @@ impac-kpi .kpi {
   min-height: 80px;
 }
 
-.widget-item .top-line {
-  position: relative;
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-}
-
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
-
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
-
-  .edit {
-    .edit-panel-style();
-  }
-
-  &.accessible {
-    height: auto !important;
-    min-height: 250px !important;
-    max-height: auto !important;
-  }
-}
-
 .analytics kpis-bar > .kpis {
   padding: 10px 0px;
   min-height: 145px;
@@ -1324,6 +1290,40 @@ impac-kpi .kpi {
   background-color: white;
   // color: @light-black;
   padding: 5px 0px;
+}
+
+.widget-item .top-line {
+  position: relative;
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 9px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+}
+
+.widget-item .content {
+  padding: 9px;
+  border-radius: @impac-widget-content-border-radius;
+  border: @impac-widget-border;
+  border-top: none;
+  background-color: @impac-widget-background-color;
+
+  vertical-align: top;
+  .box-shadow(0px 1px 8px -4px);
+  .short-widget();
+
+  .edit {
+    .edit-panel-style();
+  }
+
+  &.accessible {
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: auto !important;
+  }
 }
 
 .analytics .dashboard-settings.currency {
@@ -1843,6 +1843,12 @@ impac-kpi .kpi {
     max-height: 260px;
   }
 }
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 270px;
+  }
+}
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -1885,12 +1891,6 @@ impac-kpi .kpi {
       border-bottom: solid 1px @lightgray;
       font-weight: 300;
     }
-  }
-}
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 270px;
   }
 }
 .analytics .widget-item .content.sales-customer-details {
