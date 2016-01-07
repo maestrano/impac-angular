@@ -4,7 +4,7 @@ describe('<> widget-setting-dates-picker', function () {
   var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend;
 
   // Mock today's date as the 15th of Jan.
-  var baseTime = new Date(2016,0,15,0,0,0);
+  var baseTime = new Date(2016,0,15);
   jasmine.clock().mockDate(baseTime);
 
   // Compile the directive and return its scope

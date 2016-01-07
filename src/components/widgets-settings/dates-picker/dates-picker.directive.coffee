@@ -36,12 +36,20 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         scope.changed = false
 
         if Date.parse(scope.fromDate)
-          scope.calendarFrom.value = new Date(Date.parse(scope.fromDate) + Date().getTimezoneOffset() * 60 * 1000)
+          parsedFrom = scope.fromDate.split('-')
+          y = parsedFrom[0]
+          m = parsedFrom[1] - 1
+          d = parsedFrom[2]
+          scope.calendarFrom.value = new Date(y,m,d)
         else
           scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
 
         if Date.parse(scope.toDate) && !scope.keepToday
-          scope.calendarTo.value = new Date(Date.parse(scope.toDate) + new Date().getTimezoneOffset() * 60 * 1000)
+          parsedTo = scope.toDate.split('-')
+          y = parsedTo[0]
+          m = parsedTo[1] - 1
+          d = parsedTo[2]
+          scope.calendarTo.value = new Date(y,m,d)
         else
           scope.calendarTo.value = new Date()
 
