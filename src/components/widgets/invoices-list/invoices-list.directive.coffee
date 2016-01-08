@@ -36,17 +36,20 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
       minDate = false
       dates = _.flatten _.map(w.content.entities, ((e) -> _.map(e.invoices, ((i) -> i.invoice_date)) ))
       for date in dates
-        parsedDate = date.split('-')
-        y = parsedDate[0]
-        m = parsedDate[1]-1
-        d = parsedDate[2]
-        newDate = new Date(y,m,d)
-        minDate ||= newDate
-        minDate = Math.min(minDate, newDate)
-        maxDate = Math.max(maxDate, newDate)
+        unless _.isEmpty(date)
+          parsedDate = date.split('-')
+          y = parsedDate[0]
+          m = parsedDate[1]-1
+          d = parsedDate[2]
+          newDate = new Date(y,m,d)
+          minDate ||= newDate
+          minDate = Math.min(minDate, newDate)
+          maxDate = Math.max(maxDate, newDate)
 
-        $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd')
-        $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd')
+      # Rare case where not a single invoice has an invoice date...
+      minDate ||= new Date(new Date().getFullYear() - 10, 0, 1)
+      $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd')
+      $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd')
 
 
   # No need to put this under initContext because it won't change after a settings update
