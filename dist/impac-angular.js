@@ -759,6 +759,192 @@ angular.module('impac.services.chart-formatter', []).service('ChartFormatterSvc'
 }).call(this);
 (function () {
 'use strict';
+angular.module('impac.components.dashboard-selector', []).directive('dashboardSelector', ["$log", "$compile", "$templateCache", "$http", "$timeout", "$modal", "ImpacTheming", "ImpacDashboardsSvc", "ImpacMainSvc", "ImpacUtilities", function($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) {
+  return {
+    restrict: 'E',
+    scope: {
+      onCreateDashboard: '&',
+      isWidgetSelectorShown: '&',
+      onDisplayWidgetSelector: '&',
+      onSelectDashboard: '&'
+    },
+    controller: ["$scope", function($scope) {
+      $scope.organizationsNames = function() {
+        return _.pluck($scope.currentDhb.data_sources, 'label').join(", ");
+      };
+      $scope.toggleShowDashboardsDropdown = function() {
+        if ($scope.showChangeDashboardNameBox) {
+          return;
+        }
+        if (ImpacDashboardsSvc.areThereSeveralDashboards() || $scope.showCreateDashboardButton) {
+          return $scope.showDashboardsDropdown = !$scope.showDashboardsDropdown;
+        } else {
+          return $scope.showDashboardsDropdown = false;
+        }
+      };
+      $scope.selectDashboard = function(dhbId) {
+        if ($scope.currentDhb.id === dhbId) {
+          return;
+        }
+        $scope.isLoading = true;
+        $scope.showDashboardsDropdown = false;
+        return $timeout(function() {
+          return $scope.$apply(function() {
+            ImpacDashboardsSvc.setCurrentDashboard(dhbId);
+            $scope.onSelectDashboard();
+            return $scope.isLoading = false;
+          });
+        }, 50);
+      };
+      $scope.toggleChangeDashboardNameBox = function(dhb) {
+        var tmpDhbCpy;
+        tmpDhbCpy = angular.copy(dhb);
+        $scope.dashboardToChange = {};
+        $scope.dashboardToChange.id = tmpDhbCpy.id;
+        $scope.dashboardToChange.name = tmpDhbCpy.full_name;
+        $scope.showChangeDashboardNameBox = !$scope.showChangeDashboardNameBox;
+        return $timeout(function() {
+          var elem;
+          elem = $('#changeDhbNameInput');
+          elem.select();
+          return elem.focus();
+        }, 100);
+      };
+      $scope.hideChangeDashboardNameBox = function() {
+        return $scope.showChangeDashboardNameBox = false;
+      };
+      $scope.checkAndUpdateDashboardName = function(event) {
+        if (event.keyCode === 13) {
+          $scope.updateDashboardName();
+        }
+        if (event.keyCode === 27) {
+          return $scope.showChangeDashboardNameBox = false;
+        }
+      };
+      $scope.updateDashboardName = function() {
+        if (($scope.dashboardToChange == null) || _.isEmpty($scope.dashboardToChange.name)) {
+          return;
+        }
+        return ImpacDashboardsSvc.update($scope.dashboardToChange.id, {
+          name: $scope.dashboardToChange.name
+        }).then(function(success) {
+          return $scope.showChangeDashboardNameBox = false;
+        });
+      };
+      $scope.toggleAccessibilityMode = function() {
+        $scope.accessibilityMode = !$scope.accessibilityMode;
+        return angular.forEach($scope.currentDhb.widgets, function(w) {
+          return w.loadContent();
+        });
+      };
+      $scope.deleteDashboardModal = $scope.$new();
+      $scope.deleteDashboardModal.config = {
+        backdrop: 'static',
+        template: $templateCache.get('dashboard-selector/delete.modal.html'),
+        size: 'md',
+        windowClass: 'inverse',
+        scope: $scope.deleteDashboardModal
+      };
+      $scope.deleteDashboardModal.open = function() {
+        var self;
+        self = $scope.deleteDashboardModal;
+        if (self.locked) {
+          return;
+        }
+        self.errors = '';
+        self.isLoading = false;
+        self.instance = $modal.open(self.config);
+        self.instance.rendered.then(function(onRender) {
+          return self.locked = true;
+        });
+        return self.instance.result.then(function(onClose) {
+          return self.locked = false;
+        }, function(onDismiss) {
+          return self.locked = false;
+        });
+      };
+      $scope.deleteDashboardModal.proceed = function() {
+        var self;
+        self = $scope.deleteDashboardModal;
+        self.isLoading = true;
+        return ImpacDashboardsSvc["delete"]($scope.currentDhb.id).then(function() {
+          self.errors = '';
+          return self.instance.close();
+        }, function(errors) {
+          self.errors = ImpacUtilities.processRailsError(errors);
+          return self.isLoading = false;
+        });
+      };
+      return $scope;
+    }],
+    link: function(scope, element, attrs) {
+      var _compile, customUrl, getCustomTemplate, getTemplate, options, selectorTemplate, setTemplate;
+      scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard();
+      scope.dashboardsList = ImpacDashboardsSvc.getDashboards();
+      scope.isThereADashboard = function() {
+        return ImpacDashboardsSvc.isThereADashboard();
+      };
+      options = ImpacTheming.get().dhbSelectorConfig;
+      scope.isAccessibilityEnabled = options.accessibilityEnabled;
+      scope.isAddWidgetEnabled = options.addWidgetEnabled;
+      scope.isAddDhbEnabled = options.addDhbEnabled;
+      scope.isDeleteDhbEnabled = options.deleteDhbEnabled;
+      scope.showCreateDashboardButton = true;
+      scope.showDashboardsDropdown = false;
+      scope.showChangeDashboardNameBox = false;
+      scope.accessibilityMode = false;
+      if (!!options.customTmplPath) {
+        customUrl = options.customTmplPath;
+      } else {
+        scope.selectorType = options.selectorType;
+      }
+      selectorTemplate = null;
+      setTemplate = function(path) {
+        return selectorTemplate = path;
+      };
+      switch (scope.selectorType) {
+        case 'dropdown':
+          setTemplate('dashboard-selector/dropdown.tmpl.html');
+          break;
+        case 'tabs':
+          setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html');
+          break;
+        case 'pills':
+          setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html');
+          break;
+        default:
+          setTemplate(customUrl);
+      }
+      getCustomTemplate = function() {
+        return $http.get(selectorTemplate, {
+          cache: $templateCache
+        }).then(function(tmplContent) {
+          if (!tmplContent || !tmplContent.data || !tmplContent.data.length) {
+            $log.warn('dashboardSelector custom template: no content found');
+          }
+          return _compile(tmplContent.data);
+        }, function(err) {
+          return $log.error('Error retrieving custom template: ', err);
+        });
+      };
+      getTemplate = function() {
+        return _compile($templateCache.get(selectorTemplate));
+      };
+      _compile = function(htmlString) {
+        element.html(htmlString).show();
+        return $compile(element.contents())(scope);
+      };
+      if (customUrl) {
+        return getCustomTemplate();
+      } else {
+        return getTemplate();
+      }
+    }
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
 var module;
 
 module = angular.module('impac.components.dashboard', []);
@@ -1139,192 +1325,6 @@ module.directive('impacDashboard', ["$templateCache", function($templateCache) {
     },
     template: $templateCache.get('dashboard/dashboard.tmpl.html'),
     controller: 'ImpacDashboardCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-angular.module('impac.components.dashboard-selector', []).directive('dashboardSelector', ["$log", "$compile", "$templateCache", "$http", "$timeout", "$modal", "ImpacTheming", "ImpacDashboardsSvc", "ImpacMainSvc", "ImpacUtilities", function($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) {
-  return {
-    restrict: 'E',
-    scope: {
-      onCreateDashboard: '&',
-      isWidgetSelectorShown: '&',
-      onDisplayWidgetSelector: '&',
-      onSelectDashboard: '&'
-    },
-    controller: ["$scope", function($scope) {
-      $scope.organizationsNames = function() {
-        return _.pluck($scope.currentDhb.data_sources, 'label').join(", ");
-      };
-      $scope.toggleShowDashboardsDropdown = function() {
-        if ($scope.showChangeDashboardNameBox) {
-          return;
-        }
-        if (ImpacDashboardsSvc.areThereSeveralDashboards() || $scope.showCreateDashboardButton) {
-          return $scope.showDashboardsDropdown = !$scope.showDashboardsDropdown;
-        } else {
-          return $scope.showDashboardsDropdown = false;
-        }
-      };
-      $scope.selectDashboard = function(dhbId) {
-        if ($scope.currentDhb.id === dhbId) {
-          return;
-        }
-        $scope.isLoading = true;
-        $scope.showDashboardsDropdown = false;
-        return $timeout(function() {
-          return $scope.$apply(function() {
-            ImpacDashboardsSvc.setCurrentDashboard(dhbId);
-            $scope.onSelectDashboard();
-            return $scope.isLoading = false;
-          });
-        }, 50);
-      };
-      $scope.toggleChangeDashboardNameBox = function(dhb) {
-        var tmpDhbCpy;
-        tmpDhbCpy = angular.copy(dhb);
-        $scope.dashboardToChange = {};
-        $scope.dashboardToChange.id = tmpDhbCpy.id;
-        $scope.dashboardToChange.name = tmpDhbCpy.full_name;
-        $scope.showChangeDashboardNameBox = !$scope.showChangeDashboardNameBox;
-        return $timeout(function() {
-          var elem;
-          elem = $('#changeDhbNameInput');
-          elem.select();
-          return elem.focus();
-        }, 100);
-      };
-      $scope.hideChangeDashboardNameBox = function() {
-        return $scope.showChangeDashboardNameBox = false;
-      };
-      $scope.checkAndUpdateDashboardName = function(event) {
-        if (event.keyCode === 13) {
-          $scope.updateDashboardName();
-        }
-        if (event.keyCode === 27) {
-          return $scope.showChangeDashboardNameBox = false;
-        }
-      };
-      $scope.updateDashboardName = function() {
-        if (($scope.dashboardToChange == null) || _.isEmpty($scope.dashboardToChange.name)) {
-          return;
-        }
-        return ImpacDashboardsSvc.update($scope.dashboardToChange.id, {
-          name: $scope.dashboardToChange.name
-        }).then(function(success) {
-          return $scope.showChangeDashboardNameBox = false;
-        });
-      };
-      $scope.toggleAccessibilityMode = function() {
-        $scope.accessibilityMode = !$scope.accessibilityMode;
-        return angular.forEach($scope.currentDhb.widgets, function(w) {
-          return w.loadContent();
-        });
-      };
-      $scope.deleteDashboardModal = $scope.$new();
-      $scope.deleteDashboardModal.config = {
-        backdrop: 'static',
-        template: $templateCache.get('dashboard-selector/delete.modal.html'),
-        size: 'md',
-        windowClass: 'inverse',
-        scope: $scope.deleteDashboardModal
-      };
-      $scope.deleteDashboardModal.open = function() {
-        var self;
-        self = $scope.deleteDashboardModal;
-        if (self.locked) {
-          return;
-        }
-        self.errors = '';
-        self.isLoading = false;
-        self.instance = $modal.open(self.config);
-        self.instance.rendered.then(function(onRender) {
-          return self.locked = true;
-        });
-        return self.instance.result.then(function(onClose) {
-          return self.locked = false;
-        }, function(onDismiss) {
-          return self.locked = false;
-        });
-      };
-      $scope.deleteDashboardModal.proceed = function() {
-        var self;
-        self = $scope.deleteDashboardModal;
-        self.isLoading = true;
-        return ImpacDashboardsSvc["delete"]($scope.currentDhb.id).then(function() {
-          self.errors = '';
-          return self.instance.close();
-        }, function(errors) {
-          self.errors = ImpacUtilities.processRailsError(errors);
-          return self.isLoading = false;
-        });
-      };
-      return $scope;
-    }],
-    link: function(scope, element, attrs) {
-      var _compile, customUrl, getCustomTemplate, getTemplate, options, selectorTemplate, setTemplate;
-      scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard();
-      scope.dashboardsList = ImpacDashboardsSvc.getDashboards();
-      scope.isThereADashboard = function() {
-        return ImpacDashboardsSvc.isThereADashboard();
-      };
-      options = ImpacTheming.get().dhbSelectorConfig;
-      scope.isAccessibilityEnabled = options.accessibilityEnabled;
-      scope.isAddWidgetEnabled = options.addWidgetEnabled;
-      scope.isAddDhbEnabled = options.addDhbEnabled;
-      scope.isDeleteDhbEnabled = options.deleteDhbEnabled;
-      scope.showCreateDashboardButton = true;
-      scope.showDashboardsDropdown = false;
-      scope.showChangeDashboardNameBox = false;
-      scope.accessibilityMode = false;
-      if (!!options.customTmplPath) {
-        customUrl = options.customTmplPath;
-      } else {
-        scope.selectorType = options.selectorType;
-      }
-      selectorTemplate = null;
-      setTemplate = function(path) {
-        return selectorTemplate = path;
-      };
-      switch (scope.selectorType) {
-        case 'dropdown':
-          setTemplate('dashboard-selector/dropdown.tmpl.html');
-          break;
-        case 'tabs':
-          setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html');
-          break;
-        case 'pills':
-          setTemplate('dashboard-selector/bootstrap-tabs.tmpl.html');
-          break;
-        default:
-          setTemplate(customUrl);
-      }
-      getCustomTemplate = function() {
-        return $http.get(selectorTemplate, {
-          cache: $templateCache
-        }).then(function(tmplContent) {
-          if (!tmplContent || !tmplContent.data || !tmplContent.data.length) {
-            $log.warn('dashboardSelector custom template: no content found');
-          }
-          return _compile(tmplContent.data);
-        }, function(err) {
-          return $log.error('Error retrieving custom template: ', err);
-        });
-      };
-      getTemplate = function() {
-        return _compile($templateCache.get(selectorTemplate));
-      };
-      _compile = function(htmlString) {
-        element.html(htmlString).show();
-        return $compile(element.contents())(scope);
-      };
-      if (customUrl) {
-        return getCustomTemplate();
-      } else {
-        return getTemplate();
-      }
-    }
   };
 }]);
 }).call(this);
@@ -2702,6 +2702,125 @@ module.directive('dashboardSettingCurrency', ["$templateCache", "$log", "ImpacMa
       };
     },
     template: $templateCache.get('dashboard-settings/currency.tmpl.html')
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.editable-title', []);
+
+module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
+  var w;
+  w = $scope.parentWidget;
+  return $scope.updateName = function() {
+    var data;
+    if (w.name.length === 0) {
+      w.name = w.originalName;
+      return "Incorrect name";
+    } else {
+      data = {
+        name: w.name
+      };
+      return ImpacWidgetsSvc.update(w, data).then(function(success) {
+        return true;
+      }, function(error) {
+        return w.name = w.originalName;
+      });
+    }
+  };
+}]);
+
+module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '='
+    },
+    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
+    controller: 'CommonEditableTitleCtrl'
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.data-not-found', []);
+
+module.directive('commonDataNotFound', ["$templateCache", "$log", "$http", "ImpacAssets", "ImpacTheming", "ImpacMainSvc", function($templateCache, $log, $http, ImpacAssets, ImpacTheming, ImpacMainSvc) {
+  return {
+    restrict: 'A',
+    scope: {
+      widgetEngine: '=',
+      onDisplayAlerts: '&'
+    },
+    link: function(scope) {
+      var assetPath, baseDir, dir, hasMyobEssentialsOnly;
+      scope.bgImage = '';
+      scope.content = ImpacTheming.get().dataNotFoundConfig;
+      baseDir = ImpacAssets.get('dataNotFound');
+      if (scope.widgetEngine && baseDir.length > 0) {
+        dir = baseDir.split('');
+        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
+        assetPath = dir + scope.widgetEngine + '.png';
+        $http.get(assetPath).then(function(success) {
+          return scope.bgImage = assetPath;
+        }, function(error) {
+          return $log.warn("Missing data-not-found image for " + scope.widgetEngine);
+        });
+      }
+      hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only;
+      return scope.showAlertsTrigger = hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/);
+    },
+    template: $templateCache.get('widgets-common/data-not-found.tmpl.html')
+  };
+}]);
+}).call(this);
+(function () {
+'use strict';
+var module;
+
+module = angular.module('impac.components.widgets-common.top-buttons', []);
+
+module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "ImpacWidgetsSvc", "ImpacAssets", "ImpacUtilities", function($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) {
+  var w;
+  w = $scope.parentWidget;
+  $scope.showConfirmDelete = false;
+  $scope.isDeletePopoverLoading = false;
+  w.isEditMode = false;
+  $scope.deleteWidget = function() {
+    $scope.isDeletePopoverLoading = true;
+    return ImpacWidgetsSvc["delete"](w).then(function(success) {
+      return true;
+    }, function(errors) {
+      return w.errors = ImpacUtilities.processRailsError(errors);
+    })["finally"](function() {
+      return $scope.isDeletePopoverLoading = false;
+    });
+  };
+  return $scope.toggleEditMode = function() {
+    if (!w.isLoading) {
+      if (w.isEditMode) {
+        w.isEditMode = false;
+        return ImpacWidgetsSvc.initWidgetSettings(w);
+      } else {
+        return w.isEditMode = true;
+      }
+    }
+  };
+}]);
+
+module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
+  return {
+    restrict: 'A',
+    scope: {
+      parentWidget: '=',
+      onRefresh: '='
+    },
+    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
+    controller: 'CommonTopButtonsCtrl'
   };
 }]);
 }).call(this);
@@ -5512,7 +5631,7 @@ module.controller('WidgetInvoicesListCtrl', ["$scope", "$q", "$filter", function
   $scope.datesPickerDeferred = $q.defer();
   settingsPromises = [$scope.orgDeferred.promise, $scope.limitEntriesDeferred.promise, $scope.datesPickerDeferred.promise];
   w.initContext = function() {
-    var d, date, dates, j, len, m, maxDate, minDate, newDate, parsedDate, results, y;
+    var d, date, dates, j, len, m, maxDate, minDate, newDate, parsedDate, y;
     $scope.isDataFound = !_.isEmpty(w.content.entities);
     if ($scope.isDataFound && $scope.orderBy === 'due ') {
       if ($scope.entityType === 'suppliers') {
@@ -5532,21 +5651,22 @@ module.controller('WidgetInvoicesListCtrl', ["$scope", "$q", "$filter", function
           return i.invoice_date;
         }));
       })));
-      results = [];
       for (j = 0, len = dates.length; j < len; j++) {
         date = dates[j];
-        parsedDate = date.split('-');
-        y = parsedDate[0];
-        m = parsedDate[1] - 1;
-        d = parsedDate[2];
-        newDate = new Date(y, m, d);
-        minDate || (minDate = newDate);
-        minDate = Math.min(minDate, newDate);
-        maxDate = Math.max(maxDate, newDate);
-        $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd');
-        results.push($scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd'));
+        if (!_.isEmpty(date)) {
+          parsedDate = date.split('-');
+          y = parsedDate[0];
+          m = parsedDate[1] - 1;
+          d = parsedDate[2];
+          newDate = new Date(y, m, d);
+          minDate || (minDate = newDate);
+          minDate = Math.min(minDate, newDate);
+          maxDate = Math.max(maxDate, newDate);
+        }
       }
-      return results;
+      minDate || (minDate = new Date(new Date().getFullYear() - 10, 0, 1));
+      $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd');
+      return $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd');
     }
   };
   $scope.entityType = w.metadata.entity;
@@ -7464,125 +7584,6 @@ module.directive('widgetSalesTopOpportunities', function() {
     controller: 'WidgetSalesTopOpportunitiesCtrl'
   };
 });
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.data-not-found', []);
-
-module.directive('commonDataNotFound', ["$templateCache", "$log", "$http", "ImpacAssets", "ImpacTheming", "ImpacMainSvc", function($templateCache, $log, $http, ImpacAssets, ImpacTheming, ImpacMainSvc) {
-  return {
-    restrict: 'A',
-    scope: {
-      widgetEngine: '=',
-      onDisplayAlerts: '&'
-    },
-    link: function(scope) {
-      var assetPath, baseDir, dir, hasMyobEssentialsOnly;
-      scope.bgImage = '';
-      scope.content = ImpacTheming.get().dataNotFoundConfig;
-      baseDir = ImpacAssets.get('dataNotFound');
-      if (scope.widgetEngine && baseDir.length > 0) {
-        dir = baseDir.split('');
-        dir = dir[dir.length - 1] !== '/' ? dir.concat('/').join('') : dir.join('');
-        assetPath = dir + scope.widgetEngine + '.png';
-        $http.get(assetPath).then(function(success) {
-          return scope.bgImage = assetPath;
-        }, function(error) {
-          return $log.warn("Missing data-not-found image for " + scope.widgetEngine);
-        });
-      }
-      hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only;
-      return scope.showAlertsTrigger = hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/);
-    },
-    template: $templateCache.get('widgets-common/data-not-found.tmpl.html')
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.editable-title', []);
-
-module.controller('CommonEditableTitleCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
-  var w;
-  w = $scope.parentWidget;
-  return $scope.updateName = function() {
-    var data;
-    if (w.name.length === 0) {
-      w.name = w.originalName;
-      return "Incorrect name";
-    } else {
-      data = {
-        name: w.name
-      };
-      return ImpacWidgetsSvc.update(w, data).then(function(success) {
-        return true;
-      }, function(error) {
-        return w.name = w.originalName;
-      });
-    }
-  };
-}]);
-
-module.directive('commonEditableTitle', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '='
-    },
-    template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
-    controller: 'CommonEditableTitleCtrl'
-  };
-}]);
-}).call(this);
-(function () {
-'use strict';
-var module;
-
-module = angular.module('impac.components.widgets-common.top-buttons', []);
-
-module.controller('CommonTopButtonsCtrl', ["$scope", "$rootScope", "$log", "ImpacWidgetsSvc", "ImpacAssets", "ImpacUtilities", function($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) {
-  var w;
-  w = $scope.parentWidget;
-  $scope.showConfirmDelete = false;
-  $scope.isDeletePopoverLoading = false;
-  w.isEditMode = false;
-  $scope.deleteWidget = function() {
-    $scope.isDeletePopoverLoading = true;
-    return ImpacWidgetsSvc["delete"](w).then(function(success) {
-      return true;
-    }, function(errors) {
-      return w.errors = ImpacUtilities.processRailsError(errors);
-    })["finally"](function() {
-      return $scope.isDeletePopoverLoading = false;
-    });
-  };
-  return $scope.toggleEditMode = function() {
-    if (!w.isLoading) {
-      if (w.isEditMode) {
-        w.isEditMode = false;
-        return ImpacWidgetsSvc.initWidgetSettings(w);
-      } else {
-        return w.isEditMode = true;
-      }
-    }
-  };
-}]);
-
-module.directive('commonTopButtons', ["$templateCache", function($templateCache) {
-  return {
-    restrict: 'A',
-    scope: {
-      parentWidget: '=',
-      onRefresh: '='
-    },
-    template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
-    controller: 'CommonTopButtonsCtrl'
-  };
-}]);
 }).call(this);
 (function () {
 'use strict';
