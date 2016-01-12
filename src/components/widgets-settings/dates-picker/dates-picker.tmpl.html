@@ -6,7 +6,7 @@
       {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
     </button>
     to 
-    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" >
+    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" >
       {{ calendarTo.value | date : 'yyyy-MM-dd' }}
     </button>
     <button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" >
