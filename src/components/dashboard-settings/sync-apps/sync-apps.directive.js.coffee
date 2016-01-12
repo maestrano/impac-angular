@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, ImpacMainSvc, ImpacRoutes, poller) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, ImpacMainSvc, ImpacRoutes, poller) ->
   return {
     restrict: 'A',
     scope: {
@@ -11,8 +11,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, Impac
       ImpacMainSvc.load().then(
         (config) ->
           scope.orgUID = config.currentOrganization.uid
-    
-          scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress", {delay: 5000, smart: true})
+
+          scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress?sso_session=#{config.userData.sso_session}", {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (object) ->
               if (object.data.syncing == false)
@@ -20,6 +20,11 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, Impac
                 scope.syncingPoller.stop()
               else if (object.data.syncing == true)
                 scope.syncingApps = true
+
+              scope.lastSynced = if object.data.last_synced then $filter('date')(object.data.last_synced.last_sync, "dd/MM/yyyy 'at' h:mma") else null
+
+              scope.connectors = object.data.connectors
+              scope.errors = object.data.errors
           )
       )
 
