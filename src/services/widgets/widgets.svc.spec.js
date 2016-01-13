@@ -77,13 +77,13 @@ describe('<> ImpacWidgetsSvc', function () {
     });
 
     it('updates all the widgets with the specified metadata', function() {
-      expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {currency: 'EUR'}});
-      expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {currency: 'EUR'}});
+      expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+      expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
     });
 
     it('renders the widgets with clearing the cache', function() {
-      expect(svc.show).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true}, true);
-      expect(svc.show).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true}, true);
+      expect(svc.show).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
+      expect(svc.show).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
     })
 
     it('returns a promise per widget to update', function() {

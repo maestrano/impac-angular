@@ -55,7 +55,7 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
   # No need to put this under initContext because it won't change after a settings update
   $scope.entityType = w.metadata.entity
   $scope.entityTypeCap = _.capitalize(w.metadata.entity)
-  if w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
+  if _.isEmpty(w.metadata.order_by) || w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
     $scope.orderBy = ''
   else
     # returned by Impac!: "total_something"

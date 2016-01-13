@@ -1,7 +1,7 @@
 describe('<> widget-setting-dates-picker', function () {
   'use strict';
 
-  var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend;
+  var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend, $timeout;
 
   // Mock today's date as the 15th of Jan.
   var baseTime = new Date(2016,0,15);
@@ -33,11 +33,12 @@ describe('<> widget-setting-dates-picker', function () {
     subject = angular.element('<div setting-dates-picker parent-widget="widget" deferred="::deferred" from="from" to="to" keep-today="keepToday" />');
 
     // Inject services called by the directive...
-    inject(function (_$templateCache_, _$filter_, _ImpacWidgetsSvc_, _$httpBackend_) {
+    inject(function (_$templateCache_, _$filter_, _ImpacWidgetsSvc_, _$httpBackend_, _$timeout_) {
       ImpacWidgetsSvc = _ImpacWidgetsSvc_;
       $templateCache = _$templateCache_;
       $filter = _$filter_;
       $httpBackend = _$httpBackend_;
+      $timeout = _$timeout_;
     });
 
     // ...and stub their methods
@@ -123,27 +124,28 @@ describe('<> widget-setting-dates-picker', function () {
     });
 
     describe('#setting.initialize()', function() {
+      afterEach( function() {
+        $timeout.verifyNoPendingTasks();
+      });
+
       it('hides the "apply changes" button', function() {
         setting.initialize();
-        subjectScope.$evalAsync(function(){
-          expect(subjectScope.changed).toBe(false);
-        });
+        $timeout.flush();
+        expect(subjectScope.changed).toBe(false);
       });
       it('defines the calendars values', function() {
         setting.initialize();
-        subjectScope.$evalAsync(function(){
-          expect(cFrom.value).toEqual(new Date(2015,11,14));
-          expect(cTo.value).toEqual(new Date(2016,0,20));
-        });
+        $timeout.flush();
+        expect(cFrom.value).toEqual(new Date(2015,11,14));
+        expect(cTo.value).toEqual(new Date(2016,0,20));
       });
 
       describe('when "from" is not defined', function() {
         it('sets the calendarFrom value as the first day of the year', function() {
           subjectScope.fromDate = undefined;
           setting.initialize();
-          subjectScope.$evalAsync(function(){
-            expect(cFrom.value).toEqual(new Date(2016,0,1));
-          });
+          $timeout.flush();
+          expect(cFrom.value).toEqual(new Date(2016,0,1));
         });
       });
 
@@ -151,15 +153,16 @@ describe('<> widget-setting-dates-picker', function () {
         it('sets the calendarTo value as today\'s date', function() {
           subjectScope.toDate = undefined;
           setting.initialize();
-          subjectScope.$evalAsync(function(){
-            expect(cTo.value).toEqual(new Date(2016,0,15));
-          });
+          $timeout.flush();
+          expect(cTo.value).toEqual(new Date(2016,0,15));
         });
       });
 
       describe('when "keep-today" is true and "to" is defined', function() {
         it('does not take "to" into account, but sets the calendarTo value as today\'s date instead', function() {
           subjectScope.keepToday = true;
+          setting.initialize();
+          $timeout.flush();
           expect(cTo.value).toEqual(new Date(2016,0,15));
         });
       });
