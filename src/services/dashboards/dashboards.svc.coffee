@@ -32,6 +32,10 @@ angular
     @dashboardChanged = ->
       return _self.callbacks.dashboardChanged.promise
 
+    @callbacks.widgetAdded = $q.defer()
+    @widgetAdded = ->
+      return _self.callbacks.widgetAdded.promise
+
 
     #====================================
     # Context helpers (return booleans: can be called but can't be bound!)
@@ -109,6 +113,7 @@ angular
       else
         $log.warn("Impac - DashboardSvc: cannot set default current dashboard")
         ImpacMainSvc.override _self.config.currentDashboard, {}
+        _self.callbacks.dashboardChanged.notify(false)
         return false
 
     @setCurrentDashboard = (id=null) ->
@@ -124,6 +129,7 @@ angular
           return true
         else
           $log.error("Impac - DashboardSvc: dashboard: #{id} not found in dashboards list")
+          _self.callbacks.dashboardChanged.notify(false)
           return setDefaultCurrentDashboard()
 
       else
