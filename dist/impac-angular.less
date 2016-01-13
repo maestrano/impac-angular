@@ -1328,37 +1328,6 @@ impac-kpi .kpi {
 
 .analytics .dashboard-settings.currency {
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item {
   .title-wrapper {
     width: 100%;
@@ -1409,6 +1378,37 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
@@ -1525,17 +1525,6 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-balance-sheet {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
-
-  .no-data-block {
-    .center-thin();
-  }
-}
 .analytics .widget-item .content.accounts-cash-summary {
   .drill-down-widget();
   .right-panel > .widget-lines-container {
@@ -1545,6 +1534,17 @@ impac-kpi .kpi {
   .row.widget-line.total.cash {
     border-top: solid 1px;
     border-bottom: double;
+  }
+}
+.analytics .widget-item .content.accounts-balance-sheet {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+
+  .no-data-block {
+    .center-thin();
   }
 }
 .analytics .widget-item .content.accounts-class-comparison {
