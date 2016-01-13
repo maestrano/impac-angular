@@ -108,9 +108,8 @@ angular
           if currentDhb? && currentDhb.widgets?
             if !_.isEmpty(currentDhb.widgets)
               for widget in currentDhb.widgets
-                originalMetadata = angular.copy(widget.metadata)
-                newMetadata = angular.merge(widget.metadata, metadata)
-                unless _.isEqual(originalMetadata, newMetadata)
+                newMetadata = angular.merge({}, widget.metadata, metadata)
+                unless _.isEqual(widget.metadata, newMetadata)
                   # If the metadata has not been changed, we don't push the promise
                   promises.push _self.update(widget, {metadata: newMetadata}).then(
                     (updatedWidget) ->
