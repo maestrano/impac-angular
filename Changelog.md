@@ -5,6 +5,15 @@
 - Use widget setting dates-picker in invoices list, invoices summary, sales list and sales summary
 
 -------------------------------------------------------------
+# v1.1 | UNTAGGED
+
+### Fixes
+- Mass Assign: merges the metadata instead of replacing it + update not pushed if the metadata hasn't changed
+
+### Adds
+- ImpacDashboardsSvc.callbacks.widgetAdded
+
+-------------------------------------------------------------
 # v1.1.1 | Fixes - Package.json and bower.json versions
 
 - Just bumps the packages to proper version
