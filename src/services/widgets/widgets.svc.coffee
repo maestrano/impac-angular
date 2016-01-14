@@ -108,7 +108,7 @@ angular
             if !_.isEmpty(currentDhb.widgets)
               for widget in currentDhb.widgets
                 promises.push _self.update(widget, {metadata: metadata}).then(
-                  (updatedWidget) -> 
+                  (updatedWidget) ->
                     updatedWidget.isLoading=true
                     _self.show(updatedWidget, true).then( (renderedWidget)-> renderedWidget.isLoading=false )
                 )
@@ -121,6 +121,22 @@ angular
             $log.error "ImpacWidgetsSvc - currentDhb.widgets is null", currentDhb
             return $q.reject(null)
 
+    @refreshAll = ->
+      ImpacDashboardsSvc.load().then(
+        (config)->
+          widgets = config.currentDashboard.widgets
+          _.forEach(widgets, (w) ->
+            w.isLoading ||= true
+            _self.show(w).then(
+              (updatedWidget) ->
+                w.isLoading = false
+              (errorResponse) ->
+                w.isLoading = false
+                # TODO: better error management
+                $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
+            )
+          )
+      )
 
     #====================================
     # CRUD methods
