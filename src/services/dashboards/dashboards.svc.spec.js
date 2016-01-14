@@ -37,6 +37,26 @@ describe('<> ImpacDashboardsSvc', function () {
   });
 
 
+  // Callbacks
+  // -------------------------------------------------
+  it('defines some callbacks', function() {
+    expect(Object.keys(svc.callbacks).length).toEqual(2);
+    expect(typeof svc.callbacks.dashboardChanged.$$state).toBeDefined();
+    expect(typeof svc.callbacks.widgetAdded.$$state).toBeDefined();
+  });
+
+  describe('#dashboardChanged', function() {
+    it('returns a promise', function() {
+      expect(svc.dashboardChanged().$$state).toBeDefined();
+    });
+  });
+
+  describe('#widgetAdded', function() {
+    it('returns a promise', function() {
+      expect(svc.widgetAdded().$$state).toBeDefined();
+    });
+  });
+
   // Load
   // -------------------------------------------------
   describe('#load', function() {
@@ -133,6 +153,7 @@ describe('<> ImpacDashboardsSvc', function () {
       spyOn(svc, 'setWidgetsTemplates').and.returnValue(true);
       spyOn(ImpacKpisSvc, 'initialize').and.returnValue(true);
       spyOn(svc, 'initializeActiveTabs').and.returnValue(true);
+      spyOn(svc.callbacks.dashboardChanged, 'notify').and.callThrough();
     });
 
     // Helpers ---
@@ -164,14 +185,25 @@ describe('<> ImpacDashboardsSvc', function () {
           it('sets the depending attributes', function() {
             sharedBehaviorForSetDependingAttributes();
           }); 
+
+          it('notifies the dashboardChanged callback', function() {
+            expect(svc.callbacks.dashboardChanged.notify).toHaveBeenCalledWith(svc.config.currentDashboard);
+          });
         }); 
 
         describe('when there is no dashboard in list', function() {
-          it('sets an empty object as the current dashboard', function() {
+          beforeEach(function() {
             svc.config.currentDashboard = {id: 0, name: 'dash0'};
             svc.config.dashboards = [];
             svc.setCurrentDashboard(id);
+          });
+          
+          it('sets an empty object as the current dashboard', function() {
             expect(svc.config.currentDashboard).toEqual({});
+          });
+
+          it('notifies the dashboardChanged callback with false return value', function() {
+            expect(svc.callbacks.dashboardChanged.notify).toHaveBeenCalledWith(false);
           });
         });
       });
@@ -190,6 +222,10 @@ describe('<> ImpacDashboardsSvc', function () {
       it('sets the depending attributes', function() {
         sharedBehaviorForSetDependingAttributes();
       }); 
+
+      it('notifies the dashboardChanged callback', function() {
+        expect(svc.callbacks.dashboardChanged.notify).toHaveBeenCalledWith(svc.config.currentDashboard);
+      });
     });
 
     describe('when :id is not specified', function() {
