@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, poller) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $q, ImpacMainSvc, ImpacRoutes, poller) ->
   return {
     restrict: 'A',
     scope: {
@@ -17,7 +17,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           appendTo: angular.element(document.getElementsByTagName('impac-dashboard'))
           controller: ($scope, alerts) ->
             $scope.alerts = alerts
-            console.log alerts
             $scope.ok = () ->
               modalInstance.close()
           resolve:
@@ -32,17 +31,24 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress?sso_session=#{config.userData.sso_session}", {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (response) ->
-              console.log 'poller response: ',response
+              console.log 'poller response: ',response.data
+              # syncing status
               if (response.data.syncing == false)
                 scope.syncingApps = false
                 scope.syncingPoller.stop()
               else if (response.data.syncing == true)
                 scope.syncingApps = true
 
-              scope.lastSynced = if response.data.last_synced then $filter('date')(response.data.last_synced.last_sync, "dd/MM/yyyy 'at' h:mma") else null
+              # determining lastSynced display
+              if response.data.last_synced
+                # when a last sync date is available
+                if response.data.last_synced.last_sync
+                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "dd/MM/yyyy 'at' h:mma")} (#{response.data.last_synced.name})"
+                # when no last sync history can be retrieved,
+                else if response.data.last_synced.name
+                  scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
 
               # sync times for all connectors expect lastSynced displayed in a popover
-              # $scope.connectors = []
               scope.connectors = (_.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name) if scope.lastSynced) || []
 
               scope.hasConnectors = if scope.connectors.length then true else false

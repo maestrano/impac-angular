@@ -2,8 +2,8 @@
 
   <span ng-show="syncingApps">Syncing...</span>
   <span ng-hide="syncingApps">
-    <span ng-show="hasConnectors" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">{{lastSynced ? "Last Synced: " + lastSynced : ""}}</span>
-    <span ng-hide="hasConnectors">{{lastSynced ? "Last Synced: " + lastSynced : ""}}</span>
+    <span ng-show="hasConnectors" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">{{lastSynced ? lastSynced : ""}}</span>
+    <span ng-hide="hasConnectors">{{lastSynced ? lastSynced : ""}}</span>
   </span>
 
   <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="syncingApps">
@@ -15,8 +15,10 @@
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
   <div ng-repeat="connector in connectors track by $index">
-    <span>{{connector.last_sync | date: "dd/MM/yyyy 'at' h:mma"}} ({{connector.name}})</span>
+    <span>{{ (connector.last_sync ? ((connector.last_sync | date: "dd/MM/yyyy 'at' h:mma") + ' (' + connector.name + ')') : connector.name) }}</span>
   </div>
+  <div style="border-bottom: 1px solid #ccc; width: 100%; height: 2px; margin: 5px 0;"></div>
+  <p>All other applications are sync'ed in real-time.</p>
 </script>
 
 <!-- ui.bootstrap modal template -->
