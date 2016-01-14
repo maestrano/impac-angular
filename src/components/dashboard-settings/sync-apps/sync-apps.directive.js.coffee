@@ -31,15 +31,16 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress?sso_session=#{config.userData.sso_session}", {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (response) ->
-              console.log 'poller response: ',response.data
-              # syncing status
+              scope.connectors = []
+
+              # syncing status for loader
               if (response.data.syncing == false)
                 scope.syncingApps = false
                 scope.syncingPoller.stop()
               else if (response.data.syncing == true)
                 scope.syncingApps = true
 
-              # determining lastSynced display
+              # last synced app(s)
               if response.data.last_synced
                 # when a last sync date is available
                 if response.data.last_synced.last_sync
@@ -48,13 +49,10 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
                 else if response.data.last_synced.name
                   scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
 
-              # sync times for all connectors expect lastSynced displayed in a popover
-              scope.connectors = (_.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name) if scope.lastSynced) || []
+                scope.connectors = _.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name)
 
               scope.hasConnectors = if scope.connectors.length then true else false
-
               scope.errors = response.data.errors
-
               openSyncAlertsModal() if scope.errors.fatal.length || scope.errors.disconnected.length
           )
       )
