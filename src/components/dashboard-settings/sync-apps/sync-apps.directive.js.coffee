@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $q, ImpacMainSvc, ImpacRoutes, poller) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, poller) ->
   return {
     restrict: 'A',
     scope: {
@@ -9,20 +9,31 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       scope.syncingApps = false
       scope.hasConnectors = false
 
-      openSyncAlertsModal = ()->
-        modalInstance = $modal.open({
-          animation: true
-          size: 'md'
-          templateUrl: 'alerts.tmpl.html'
-          appendTo: angular.element(document.getElementsByTagName('impac-dashboard'))
-          controller: ($scope, alerts) ->
-            $scope.alerts = alerts
-            $scope.ok = () ->
-              modalInstance.close()
-          resolve:
-            alerts: ()->
-              return scope.errors
-        })
+      openSyncAlertsModal =
+        open: null
+        engage: ()->
+          this.open = ()->
+            modalInstance = $modal.open({
+              animation: true
+              size: 'md'
+              templateUrl: 'alerts.tmpl.html'
+              appendTo: angular.element(document.getElementsByTagName('impac-dashboard'))
+              controller: ($scope, alerts) ->
+                $scope.alerts = alerts
+                $scope.ok = () ->
+                  modalInstance.close()
+              resolve:
+                alerts: ()->
+                  return scope.errors
+            })
+            this.open = null
+
+      refreshAllWidgets =
+        run: null
+        engage: ()->
+          this.run = ()->
+            ImpacWidgetsSvc.refreshAll()
+            this.run = null
 
       ImpacMainSvc.load().then(
         (config) ->
@@ -32,13 +43,18 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.syncingPoller.promise.then(null, null,
             (response) ->
               scope.connectors = []
+              scope.errors = response.data.errors
 
               # syncing status for loader
               if (response.data.syncing == false)
                 scope.syncingApps = false
+                refreshAllWidgets.run() if refreshAllWidgets.run
+                openSyncAlertsModal.open() if openSyncAlertsModal.open && (scope.errors.fatal.length || scope.errors.disconnected.length)
                 scope.syncingPoller.stop()
               else if (response.data.syncing == true)
                 scope.syncingApps = true
+                refreshAllWidgets.engage()
+                openSyncAlertsModal.engage()
 
               # last synced app(s)
               if response.data.last_synced
@@ -52,8 +68,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
                 scope.connectors = _.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name)
 
               scope.hasConnectors = if scope.connectors.length then true else false
-              scope.errors = response.data.errors
-              openSyncAlertsModal() if scope.errors.fatal.length || scope.errors.disconnected.length
           )
       )
 
@@ -64,6 +78,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         $http.get(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
           (success) ->
             scope.syncingPoller.start()
+            openSyncAlertsModal.engage()
           (err) ->
             $log.error 'Unable to sync apps', err
             scope.syncingApps = false
