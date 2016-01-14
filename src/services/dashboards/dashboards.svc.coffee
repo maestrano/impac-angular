@@ -129,7 +129,6 @@ angular
           return true
         else
           $log.error("Impac - DashboardSvc: dashboard: #{id} not found in dashboards list")
-          _self.callbacks.dashboardChanged.notify(false)
           return setDefaultCurrentDashboard()
 
       else
