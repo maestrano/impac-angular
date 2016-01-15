@@ -8,10 +8,12 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.limitEntriesDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.limitEntriesDeferred.promise
+    $scope.datesPickerDeferred.promise
   ]
 
 
@@ -29,10 +31,31 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
     if w.metadata? && w.metadata.limit_entries?
       $scope.limitEntriesSelected = w.metadata.limit_entries
 
+    if $scope.isDataFound
+      maxDate = new Date()
+      minDate = false
+      dates = _.flatten _.map(w.content.entities, ((e) -> _.map(e.invoices, ((i) -> i.invoice_date)) ))
+      for date in dates
+        unless _.isEmpty(date)
+          parsedDate = date.split('-')
+          y = parsedDate[0]
+          m = parsedDate[1]-1
+          d = parsedDate[2]
+          newDate = new Date(y,m,d)
+          minDate ||= newDate
+          minDate = Math.min(minDate, newDate)
+          maxDate = Math.max(maxDate, newDate)
+
+      # Rare case where not a single invoice has an invoice date...
+      minDate ||= new Date(new Date().getFullYear() - 10, 0, 1)
+      $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd')
+      $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd')
+
+
   # No need to put this under initContext because it won't change after a settings update
   $scope.entityType = w.metadata.entity
   $scope.entityTypeCap = _.capitalize(w.metadata.entity)
-  if w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
+  if _.isEmpty(w.metadata.order_by) || w.metadata.order_by == 'name' || w.metadata.order_by == 'total_invoiced'
     $scope.orderBy = ''
   else
     # returned by Impac!: "total_something"

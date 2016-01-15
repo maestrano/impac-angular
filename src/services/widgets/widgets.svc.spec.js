@@ -7,7 +7,7 @@ describe('<> ImpacWidgetsSvc', function () {
   var currentDhb = {id: 99, name: 'dhb-99', widgets: [
     {id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}},
     {id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}
-  ]};
+  ], callbacks: {}};
 
   beforeEach(function() {
     module('maestrano.impac');
@@ -20,6 +20,8 @@ describe('<> ImpacWidgetsSvc', function () {
       $http = _$http_;
       $rootScope = _$rootScope_;
     });
+
+    currentDhb.callbacks.widgetAdded = $q.defer();
   });
 
 
@@ -57,7 +59,6 @@ describe('<> ImpacWidgetsSvc', function () {
 
     beforeEach(function(){
       spyOn(svc, 'load').and.returnValue($q.resolve(config));
-      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
       spyOn(svc, 'update').and.callFake(function(w, opts){
         var updatedWidget = angular.copy(w);
         angular.merge(updatedWidget, opts)
@@ -69,34 +70,102 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       subject = svc.massAssignAll(metadata);
-      $rootScope.$apply();
     });
 
-    it('retrieves the current dashboard', function() {
-      expect(ImpacDashboardsSvc.getCurrentDashboard).toHaveBeenCalled();
+    describe('standard conditions', function() {
+      beforeEach(function() {
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
+        $rootScope.$apply();
+      });
+      
+      it('retrieves the current dashboard', function() {
+        expect(ImpacDashboardsSvc.getCurrentDashboard).toHaveBeenCalled();
+      });
+
+      it('updates all the widgets with the specified metadata', function() {
+        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+      });
+
+      it('renders the widgets with clearing the cache', function() {
+        expect(svc.show).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
+        expect(svc.show).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
+      })
+
+      it('returns a promise per widget to update', function() {
+        expect(typeof subject.then).toBe('function');
+        expect(typeof subject.catch).toBe('function');
+        expect(typeof subject.finally).toBe('function');
+        expect(subject.$$state.value.length).toEqual(2);
+        expect(subject.$$state.status).toEqual(1);
+      });
     });
 
-    it('updates all the widgets with the specified metadata', function() {
-      expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {currency: 'EUR'}});
-      expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {currency: 'EUR'}});
+    describe('when the dashboard cannot be retrieved', function() {
+      beforeEach(function() {
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(null);
+        $rootScope.$apply();
+      });
+
+      it('returns a rejected promise', function() {
+        expect(subject.$$state.status).toEqual(2);
+      });
+    });
+    
+    describe('when the dashboard has no widget', function() {
+      beforeEach(function() {
+        var dhb = angular.copy(currentDhb);
+        dhb.widgets = [];
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
+        $rootScope.$apply();
+      });
+      
+      it('resolves an empty array', function() {
+        expect(subject.$$state.value).toEqual([]);
+        expect(subject.$$state.status).toEqual(1);
+      });
     });
 
-    it('renders the widgets with clearing the cache', function() {
-      expect(svc.show).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true}, true);
-      expect(svc.show).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true}, true);
-    })
-
-    it('returns a promise per widget to update', function() {
-      expect(typeof subject.then).toBe('function');
-      expect(typeof subject.catch).toBe('function');
-      expect(typeof subject.finally).toBe('function');
-      expect(subject.$$state.value.length).toEqual(currentDhb.widgets.length);
+    describe('when a widget already has the new metadata', function() {
+      beforeEach(function() {
+        var dhb = angular.copy(currentDhb);
+        dhb.widgets.push({id: 3, name: 'w-3', metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
+        $rootScope.$apply();
+      });
+      
+      it('does not push the corresponding widget to the update list', function() {
+        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).not.toHaveBeenCalledWith({id: 3, name: 'w-3', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(subject.$$state.value.length).toEqual(2);
+        expect(subject.$$state.status).toEqual(1);
+      });
     });
   });
 
 
   // CRUD methods
   // -------------------------------------------------
+  describe('#create(:widget)', function() {
+    var widget = { name: 'test-widget' };
+
+    beforeEach(function() {
+      spyOn(svc, 'load').and.returnValue($q.resolve(config));
+      spyOn($http, 'post').and.returnValue({data: widget});
+      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
+      spyOn(currentDhb.callbacks.widgetAdded, 'notify').and.callThrough();
+
+      svc.create(widget)
+    });
+
+    xit ('notifies the widgetAdded callback', function() {
+      expect(currentDhb.callbacks.widgetAdded.notify).toHaveBeenCalledWith(widget);
+    });
+
+    xit('creates the widget and adds it to the current dashboard');
+  });
+
   describe('#show(:widget, "refreshCache)', function() {
     xit('calls the API and returns the widget content');
   });

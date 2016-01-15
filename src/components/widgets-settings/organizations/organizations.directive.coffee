@@ -30,6 +30,7 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
     newOrganizations = _.compact(_.map(w.selectedOrganizations, (checked,uid) ->
       uid if checked
     ))
+    newOrganizations = [_.first($scope.dashboardOrganizations).uid] if _.isEmpty(newOrganizations)
     return { organization_ids: newOrganizations }
 
   w.settings.push(setting)

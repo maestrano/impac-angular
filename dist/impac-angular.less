@@ -228,20 +228,22 @@
   padding: 2px;
   font-size: 12px;
 
-  .btn {
-    border-radius: 2px;
-    margin-right: 5px;
-    padding: 3px 13px;
-    text-transform: uppercase;
-    font-size: 12px;
+  .bottom-buttons {
+    .btn {
+      border-radius: 2px;
+      margin-right: 5px;
+      padding: 3px 13px;
+      text-transform: uppercase;
+      font-size: 12px;
 
-    &.btn-default {
-      background-color: #c2c4c4;
-      border: solid 1px darken(#c2c4c4,10%);
-      color: white;
-      &:hover {
-        border: solid 1px darken(#c2c4c4,20%);
-        background-color: darken(#c2c4c4,10%);
+      &.btn-default {
+        background-color: #c2c4c4;
+        border: solid 1px darken(#c2c4c4,10%);
+        color: white;
+        &:hover {
+          border: solid 1px darken(#c2c4c4,20%);
+          background-color: darken(#c2c4c4,10%);
+        }
       }
     }
   }
@@ -261,6 +263,7 @@
     border: solid 1px @impac-widget-borders-color;
 
     h5 {
+      display: block;
       margin: 0;
       margin-bottom: 10px;
       padding: 0px 15px;
@@ -1479,6 +1482,7 @@ impac-kpi .kpi {
   }
 }
 
+<<<<<<< HEAD
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1593,6 +1597,13 @@ impac-kpi .kpi {
     }
   }
   .title {
+=======
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+>>>>>>> master
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
@@ -1822,6 +1833,10 @@ impac-kpi .kpi {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1849,27 +1864,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
-}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1887,6 +1881,23 @@ impac-kpi .kpi {
       font-size: 11px;
     }
   }
+}
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
 }
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
@@ -1942,6 +1953,7 @@ impac-kpi .kpi {
     }
   }
 }
+<<<<<<< HEAD
 .analytics .widget-item .content .data-not-found {
   text-align: center;
   font-size: 18px;
@@ -2095,6 +2107,8 @@ impac-kpi .kpi {
 
 }
 
+=======
+>>>>>>> master
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -2117,6 +2131,30 @@ impac-kpi .kpi {
     height: 20px;
   }
 }
+<<<<<<< HEAD
+=======
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  .buttons {
+    margin-left: 5px;
+    button.btn.btn-sm {
+      line-height: 1;
+      &.btn-danger {
+        display: none;
+      }
+      &.btn-info {
+        border-radius: 3px;
+      }
+    }
+  }
+
+  .tooltip-inner {
+    text-transform: none;
+  }
+}
+
+>>>>>>> master
 .analytics .widget-item .content .settings.hist-mode-choser {
   .options {
     width: 150px;

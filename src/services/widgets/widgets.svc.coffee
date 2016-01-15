@@ -39,6 +39,7 @@ angular
             (success) ->
               newWidget = success.data
               dashboard.widgets.push(newWidget)
+              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
               deferred.resolve(newWidget)
 
             (error) ->
@@ -61,12 +62,14 @@ angular
 
 
     @initWidgetSettings = (w) ->
+      w.isEditMode = false
       return if _.isEmpty(w.settings)
       for setting in w.settings
         setting.initialize()
       return true
 
     @updateWidgetSettings = (widget, needContentReload=true) ->
+      widget.isEditMode = false
       deferred = $q.defer()
 
       if _.isEmpty(widget.settings)
@@ -107,11 +110,15 @@ angular
           if currentDhb? && currentDhb.widgets?
             if !_.isEmpty(currentDhb.widgets)
               for widget in currentDhb.widgets
-                promises.push _self.update(widget, {metadata: metadata}).then(
-                  (updatedWidget) ->
-                    updatedWidget.isLoading=true
-                    _self.show(updatedWidget, true).then( (renderedWidget)-> renderedWidget.isLoading=false )
-                )
+                newMetadata = angular.merge({}, widget.metadata, metadata)
+                unless _.isEqual(widget.metadata, newMetadata)
+                  # If the metadata has not been changed, we don't push the promise
+                  promises.push _self.update(widget, {metadata: newMetadata}).then(
+                    (updatedWidget) ->
+                      updatedWidget.isLoading=true
+                      # TODO: should Connec! cache be refreshed on show?
+                      _self.show(updatedWidget).then( (renderedWidget)-> renderedWidget.isLoading=false )
+                  )
               return $q.all(promises)
 
             else
