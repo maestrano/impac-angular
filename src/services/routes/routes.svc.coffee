@@ -53,6 +53,7 @@ angular
       service.deleteKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
       # webhooks
       service.syncAppsPath = (id) -> "#{defaults.syncAppsBasePath}/#{id}/perform"
+      service.syncProgressPath = (orgId, sso) => "#{defaults.syncAppsBasePath}/#{orgId}/progress?sso_session=#{sso}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

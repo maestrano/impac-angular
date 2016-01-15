@@ -38,8 +38,9 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       ImpacMainSvc.load().then(
         (config) ->
           scope.orgUID = config.currentOrganization.uid
+          ssoSession = config.userData.sso_session
 
-          scope.syncingPoller = poller.get("webhook/sync/#{scope.orgUID}/progress?sso_session=#{config.userData.sso_session}", {delay: 5000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.syncProgressPath(scope.orgUID, ssoSession), {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (response) ->
               scope.connectors = []
