@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, poller) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller) ->
   return {
     restrict: 'A',
     scope: {
@@ -8,6 +8,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
     link: (scope, element, attrs) ->
       scope.syncingApps = false
       scope.hasConnectors = false
+
+      scope.showComponent = ImpacTheming.get().syncAppsConfig.show
 
       openSyncAlertsModal =
         open: null
