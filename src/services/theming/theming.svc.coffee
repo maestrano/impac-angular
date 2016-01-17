@@ -76,7 +76,7 @@ angular
 
       # options for sync-apps component
       syncAppsConfig:
-        show: true
+        show: false
 
 
     #=======================================
