@@ -627,6 +627,194 @@ body {
     }
   }
 }
+#module__dashboard-selector {
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
+
+  // container for dashboard selector 'dropdown' template
+  .buttons-bar {
+    padding: 0;
+    margin-top: 54px;
+    padding-bottom: 5px;
+
+    .btn {
+      float: right;
+      margin: 3px;
+      border-radius: @impac-dashboard-buttons-border-radius;
+    }
+
+    .dropdown-container {
+
+      .dashboard-title {
+        color: @impac-dashboard-title-color;
+        display: inline;
+        cursor: pointer;
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
+        i.fa.fa-pencil {
+          margin-left: 20px;
+          font-size: 14px;
+          &:hover {
+            color: @mgreen;
+          }
+        }
+      }
+
+      .dashboard-select {
+        margin: 5px 0px 10px 30px;
+        height: auto;
+        border-left: 1px solid @impac-dashboard-title-color;
+        border-bottom: 1px solid @impac-dashboard-title-color;
+        width: 300px;
+        background-color: @lightgray;
+        cursor: pointer;
+        .option {
+          color: @impac-dashboard-title-label-color;
+          white-space: nowrap;
+          &:hover {
+            background-color: @impac-widget-background-color;
+          }
+          &.create {
+            background-color: @impac-dashboard-title-color;
+            color: @impac-dashboard-title-label-create-color;
+            height: 30px;
+            padding: 5px 10px 5px 10px;
+            &:hover {
+              background-color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          i.fa.fa-pencil {
+            float: right;
+            padding-top: 7px;
+            text-align: center;
+            width: 15%;
+            height: 30px;
+            &:hover {
+              color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          span.name {
+            width: 85%;
+            height: 30px;
+            display: inline-block;
+            padding: 5px 10px 5px 10px;
+          }
+        }
+      }
+
+      .change-name {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 60%;
+        background-color: rgb(23, 38, 45);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        .box-shadow(0px 0px 25px 4px black);
+        z-index: 50;
+        border: solid 1px @impac-widget-background-color;
+
+        .form-control {
+          height: 25px;
+          margin-bottom: 10px;
+        }
+      }
+
+      .data-source-label {
+        color: @impac-dashboard-source-color;
+        padding-left: 3px;
+        margin: 0px;
+      }
+    }
+
+    .loader-container {
+      padding-left: 10px;
+      .loading-spinner {
+        .loader-style();
+        font-size: 40px;
+      }
+    }
+
+  }
+
+
+  // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
+  .nav.nav-tabs,
+  .nav.nav-pills {
+
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+
+  // TABS
+  .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
+    // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
+    li:last-child.active > a {
+      background-color: @impac-dashboard-selector-tabs-background-color;
+    }
+  }
+
+  // PILLS
+  // TODO: Add less variables for customisation.
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a.close-link {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
+  }
+  ////////
+}
+
 .analytics {
 
   &.show-dhb {
@@ -921,194 +1109,6 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
-#module__dashboard-selector {
-  a {
-    font-weight: normal;
-  }
-  // dashboard selector template wrapper div
-  & > div:first-child {
-    border-bottom: @impac-dashboard-selector-border;
-  }
-
-  // container for dashboard selector 'dropdown' template
-  .buttons-bar {
-    padding: 0;
-    margin-top: 54px;
-    padding-bottom: 5px;
-
-    .btn {
-      float: right;
-      margin: 3px;
-      border-radius: @impac-dashboard-buttons-border-radius;
-    }
-
-    .dropdown-container {
-
-      .dashboard-title {
-        color: @impac-dashboard-title-color;
-        display: inline;
-        cursor: pointer;
-        &:hover {
-          color: darken(@impac-dashboard-title-color,10%);
-        }
-        i.fa.fa-pencil {
-          margin-left: 20px;
-          font-size: 14px;
-          &:hover {
-            color: @mgreen;
-          }
-        }
-      }
-
-      .dashboard-select {
-        margin: 5px 0px 10px 30px;
-        height: auto;
-        border-left: 1px solid @impac-dashboard-title-color;
-        border-bottom: 1px solid @impac-dashboard-title-color;
-        width: 300px;
-        background-color: @lightgray;
-        cursor: pointer;
-        .option {
-          color: @impac-dashboard-title-label-color;
-          white-space: nowrap;
-          &:hover {
-            background-color: @impac-widget-background-color;
-          }
-          &.create {
-            background-color: @impac-dashboard-title-color;
-            color: @impac-dashboard-title-label-create-color;
-            height: 30px;
-            padding: 5px 10px 5px 10px;
-            &:hover {
-              background-color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          i.fa.fa-pencil {
-            float: right;
-            padding-top: 7px;
-            text-align: center;
-            width: 15%;
-            height: 30px;
-            &:hover {
-              color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          span.name {
-            width: 85%;
-            height: 30px;
-            display: inline-block;
-            padding: 5px 10px 5px 10px;
-          }
-        }
-      }
-
-      .change-name {
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        width: 60%;
-        background-color: rgb(23, 38, 45);
-        color: white;
-        padding: 10px;
-        border-radius: 4px;
-        text-align: center;
-        .box-shadow(0px 0px 25px 4px black);
-        z-index: 50;
-        border: solid 1px @impac-widget-background-color;
-
-        .form-control {
-          height: 25px;
-          margin-bottom: 10px;
-        }
-      }
-
-      .data-source-label {
-        color: @impac-dashboard-source-color;
-        padding-left: 3px;
-        margin: 0px;
-      }
-    }
-
-    .loader-container {
-      padding-left: 10px;
-      .loading-spinner {
-        .loader-style();
-        font-size: 40px;
-      }
-    }
-
-  }
-
-
-  // angular bootstrap tabs & pills
-  .nav-tabs {
-    border-bottom: 0;
-  }
-  .nav.nav-tabs,
-  .nav.nav-pills {
-
-    // add new tab
-    li:last-child > a {
-      padding-right: 15px;
-      tab-heading a {
-        position: static;
-      }
-    }
-  }
-
-  // TABS
-  .nav.nav-tabs {
-    // tab
-    li > a {
-      padding: @impac-dashboard-selector-tabs-padding;
-      margin: @impac-dashboard-selector-tabs-margin;
-      background-color: @impac-dashboard-selector-tabs-background-color;
-      border: @impac-dashboard-selector-border;
-      color: @impac-dashboard-selector-tabs-color;
-    }
-    // active tab
-    li.active > a {
-      background-color: @impac-dashboard-selector-tabs-active-background-color;
-      color: @impac-dashboard-selector-tabs-active-color;
-    }
-    // add new tab
-    li:last-child > a {
-      // padding-left: 5px;
-    }
-    li:last-child.active > a {
-      background-color: @impac-dashboard-selector-tabs-background-color;
-    }
-  }
-
-  // PILLS
-  // TODO: Add less variables for customisation.
-  .nav.nav-pills {
-    // tab
-    li > a {
-      min-width: 0px;
-      padding-right: 8px;
-    }
-    // add a new tab
-    li:last-child tab-heading a {
-      margin-left: 2px;
-    }
-    // add a new tab
-    li:last-child.active > a {
-      background-color: #f4f4f4;
-    }
-  }
-  // tab icons
-  tab-heading a.close-link {
-    border-bottom: 0px solid;
-    margin-left: 12px;
-    position: relative;
-    top: -9px;
-    right: 1px;
-    color: @impac-dashboard-selector-tabs-color;
-  }
-  ////////
-}
-
 impac-kpi .kpi {
   .scrollable();
   text-align: center;
@@ -1348,6 +1348,159 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    white-space: nowrap;
+
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+
+    .editable-wrap {
+      position: relative;
+      height: 20px;
+      min-width: 100%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+
+      .editable-controls {
+        min-width: 100%;
+
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          // 55px is .editable-buttons width
+          width: ~"calc(100% - 55px)";
+          padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+          button {
+            margin: 0px 0px 0px 5px;
+            height: 20px;
+            padding: 0px 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-top: 3px;
+  }
+
+  .top-buttons-wrapper {
+    position: absolute;
+    right: 9px;
+    top: 7px;
+
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 1px;
+      margin-left: 3px;
+      outline: none;
+
+      &:active, &:focus {
+        -webkit-box-shadow: none;
+      }
+
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: -1px;
+        &:hover {
+          color: @mblue;
+        }
+      }
+      &.btn-edit {
+        font-size: 14px;
+        &:hover, &.edit-mode {
+          color: darken(@mgreen,10%);
+        }
+      }
+      &.btn-close {
+        &:hover {
+          color: @pink
+        }
+      }
+
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+
+}
+
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1382,16 +1535,6 @@ impac-kpi .kpi {
 }
 
 
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-  
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1401,6 +1544,16 @@ impac-kpi .kpi {
 
   .no-data-block {
     .center-thin();
+  }
+}
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+  
+  .price {
+    .center-bold(0px);
   }
 }
 .analytics .widget-item .content.accounts-cash-summary {
@@ -1567,6 +1720,14 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.widget-line.total.profit {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1592,14 +1753,6 @@ impac-kpi .kpi {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
-  }
-}
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-
-  .row.widget-line.total.profit {
-    border-top: solid 1px;
-    border-bottom: double;
   }
 }
 .analytics .widget-item .content.hr-employees-list {
@@ -1662,14 +1815,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.hr-timesheets {
-  .currency {
-    font-size: 14px;
-  }
-  .widget-lines-container {
-    max-height: 210px;
-  }
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -1683,6 +1828,14 @@ impac-kpi .kpi {
   }
   .price {
     .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
   }
 }
 .analytics .widget-item .content.hr-workforce-summary {
@@ -1702,6 +1855,13 @@ impac-kpi .kpi {
 }
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 260px;
+  }
 }
 .analytics .widget-item .content.sales-break-even {
   .price {
@@ -1745,13 +1905,6 @@ impac-kpi .kpi {
       border-bottom: solid 1px @lightgray;
       font-weight: 300;
     }
-  }
-}
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
-
-  .widget-lines-container {
-    max-height: 260px;
   }
 }
 .analytics .widget-item .content.sales-comparison {
@@ -1803,18 +1956,15 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
-}
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
@@ -1825,6 +1975,9 @@ impac-kpi .kpi {
   .selector {
     margin-bottom: 4px;
   }
+}
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
@@ -1898,9 +2051,6 @@ impac-kpi .kpi {
     margin-bottom: 5px;
   }
 }
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
-}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -1948,6 +2098,9 @@ impac-kpi .kpi {
       }
     }
   }
+}
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
 }
 .analytics .widget-item .content .settings.chart-filters {
   .row {
@@ -2174,156 +2327,4 @@ impac-kpi .kpi {
       margin-right: -3px;
     }
   }
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    white-space: nowrap;
-
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-
-    .editable-wrap {
-      position: relative;
-      height: 20px;
-      min-width: 100%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-
-      .editable-controls {
-        min-width: 100%;
-
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          // 55px is .editable-buttons width
-          width: ~"calc(100% - 55px)";
-          padding: 0px 3px;
-        }
-
-        .editable-buttons {
-          background-color: @impac-widget-title-bg;
-          button {
-            margin: 0px 0px 0px 5px;
-            height: 20px;
-            padding: 0px 5px;
-          }
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
-
-  .top-buttons-wrapper {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 1px;
-      margin-left: 3px;
-      outline: none;
-
-      &:active, &:focus {
-        -webkit-box-shadow: none;
-      }
-
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: -1px;
-        &:hover {
-          color: @mblue;
-        }
-      }
-      &.btn-edit {
-        font-size: 14px;
-        &:hover, &.edit-mode {
-          color: darken(@mgreen,10%);
-        }
-      }
-      &.btn-close {
-        &:hover {
-          color: @pink
-        }
-      }
-
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
 }
