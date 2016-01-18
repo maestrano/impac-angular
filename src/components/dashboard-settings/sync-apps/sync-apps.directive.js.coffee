@@ -41,6 +41,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         (config) ->
           scope.orgUID = config.currentOrganization.uid
           ssoSession = config.userData.sso_session
+          return unless scope.orgUID
 
           scope.syncingPoller = poller.get(ImpacRoutes.syncProgressPath(scope.orgUID, ssoSession), {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
@@ -76,6 +77,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
       scope.synchronize = ->
         return if scope.syncingApps
+        return unless scope.orgUID
         scope.syncingApps = true
 
         $http.get(ImpacRoutes.syncPerformPath(scope.orgUID)).then(

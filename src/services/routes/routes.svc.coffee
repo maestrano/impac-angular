@@ -64,7 +64,7 @@ angular
       service.syncProgressPath = (id, sso) ->
         if defaults.syncAppsPath.progressSuffix
           return "#{defaults.syncAppsPath.base}/#{id}/#{defaults.syncAppsPath.progressSuffix}?sso_session=#{sso}"
-        "#{defaults.syncAppsBasePath}/#{orgId}/progress?sso_session=#{sso}"
+        "#{defaults.syncAppsBasePath}/#{id}/progress?sso_session=#{sso}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.
