@@ -74,6 +74,10 @@ angular
       showNoWidgetMsg:
         show: true
 
+      # options for sync-apps component
+      syncAppsConfig:
+        show: false
+
 
     #=======================================
     # Public methods available in config

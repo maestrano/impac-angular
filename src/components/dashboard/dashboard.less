@@ -200,11 +200,21 @@
 
   #dashboard-settings {
     text-align: right;
-    margin: 0px 2px;
+    margin: 8px 0px;
     min-height: 40px;
-
-    &> * {
+    & > * {
       float: right;
+    }
+    & > div {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
     }
   }
 
