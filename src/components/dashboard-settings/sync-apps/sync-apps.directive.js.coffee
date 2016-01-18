@@ -78,7 +78,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         return if scope.syncingApps
         scope.syncingApps = true
 
-        $http.get(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
+        $http.get(ImpacRoutes.syncPerformPath(scope.orgUID)).then(
           (success) ->
             scope.syncingPoller.start()
             openSyncAlertsModal.engage()
