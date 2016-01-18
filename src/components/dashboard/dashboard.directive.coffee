@@ -287,6 +287,13 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
 
     #====================================
+    # Dashboard Settings Panel
+    #====================================
+
+    # - in directives -
+    
+
+    #====================================
     # Widget suggestion modal
     #====================================
 

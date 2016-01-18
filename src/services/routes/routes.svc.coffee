@@ -17,6 +17,12 @@ angular
       impacKpisBasePath: 'http://localhost:4000/api/v2/kpis'
       # retrieve local kpis data
       localKpisBasePath: null
+      # sync app instances & refresh reports
+      syncAppsPath:
+        base: 'http://localhost:3000/webhook/sync'
+        syncSuffix: ''
+        progressSuffix: ''
+
 
     #=======================================
     # Public methods available in config
@@ -50,6 +56,15 @@ angular
       service.createKpiPath = (id) -> "#{defaults.dhbBasePath}/#{id}/kpis"
       service.updateKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
       service.deleteKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
+      # webhooks
+      service.syncPerformPath = (id) ->
+        if defaults.syncAppsPath.syncSuffix
+          return "#{defaults.syncAppsPath.base}/#{id}/#{defaults.syncAppsPath.syncSuffix}"
+        "#{defaults.syncAppsPath.base}/#{id}/perform"
+      service.syncProgressPath = (id, sso) ->
+        if defaults.syncAppsPath.progressSuffix
+          return "#{defaults.syncAppsPath.base}/#{id}/#{defaults.syncAppsPath.progressSuffix}?sso_session=#{sso}"
+        "#{defaults.syncAppsBasePath}/#{id}/progress?sso_session=#{sso}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

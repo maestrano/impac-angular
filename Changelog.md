@@ -3,6 +3,7 @@
 ### Adds
 - Widget setting: dates-picker (can be used in edit mode or on widget's front)
 - Use widget setting dates-picker in invoices list, invoices summary, sales list and sales summary
+- Sync Apps feature with last synced timestamps.
 
 -------------------------------------------------------------
 # v1.1 | UNTAGGED
