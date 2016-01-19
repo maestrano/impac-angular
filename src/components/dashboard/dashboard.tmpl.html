@@ -82,8 +82,12 @@
   </div>
 
   <!-- custom widget selector template configured from ImpacThemingProvider -->
-  <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path"></div>
+  <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
+  <!-- currency selector -->
+  <div id="dashboard-settings" ng-hide="showChooseDhbMsg()">
+    <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+  </div>
 
   <!-- Errors -->
   <div class="alert alert-error" ng-show="errors">
@@ -147,7 +151,7 @@
   </div>
 
   <!-- Widgets -->
-  <div class='row' id="widgets-section">
+  <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
       <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->

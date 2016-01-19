@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="buttons-bar col-md-8">
+  <div class="buttons-bar col-md-8" ng-show="isThereADashboard()">
     <tabset type="{{selectorType}}">
       <tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
         <tab-heading>
