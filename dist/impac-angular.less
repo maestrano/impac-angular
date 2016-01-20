@@ -1791,7 +1791,13 @@ impac-kpi .kpi {
   .right-panel .widget-lines-container {
       max-height: 175px;
   }
+  .no-element p {
+    // corrects alignment issues with the container, which caused text to overflow beyond parents.
+    max-width: 90% !important;
+    margin: auto !important;
+  }
 }
+
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -1962,10 +1968,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1993,6 +1995,27 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -2010,23 +2033,6 @@ impac-kpi .kpi {
       font-size: 11px;
     }
   }
-}
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
 }
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
