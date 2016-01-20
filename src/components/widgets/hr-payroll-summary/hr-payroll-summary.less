@@ -3,4 +3,9 @@
   .right-panel .widget-lines-container {
       max-height: 175px;
   }
+  .no-element p {
+    // corrects alignment issues with the container, which caused text to overflow beyond parents.
+    max-width: 90% !important;
+    margin: auto !important;
+  }
 }
