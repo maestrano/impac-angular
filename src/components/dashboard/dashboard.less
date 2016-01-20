@@ -200,9 +200,16 @@
 
   #dashboard-settings {
     text-align: right;
-    margin: 0px 2px;
+    margin: @dashboard-settings-margin;
+    border-left: @dashboard-settings-border-left;
+    border-top: @dashboard-settings-border-top;
+    border-right: @dashboard-settings-border-right;
+    border-bototm: @dashboard-settings-border-bottom;
+    padding: @dashboard-settings-padding;
+    height: @dashboard-settings-height;
+    background-color: @dashboard-settings-background-color;
+    box-shadow: @dashboard-settings-box-shadow;
     min-height: 40px;
-
     &> * {
       float: right;
     }
