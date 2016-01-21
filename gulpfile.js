@@ -1,3 +1,20 @@
+//TODO: start splitting gulp file
+
+var gulp = require('gulp');
+var wrench = require('wrench');
+
+/**
+ *  This will load all js or coffee files in the gulp directory
+ *  in order to load all gulp tasks
+ */
+wrench.readdirSyncRecursive('./gulp').filter(function(file) {
+  return (/\.(js|coffee)$/i).test(file);
+}).map(function(file) {
+  require('./gulp/' + file);
+});
+
+//TODO: start splitting gulp file
+
 // TODO: Break this out into multiple files and clean up.
 var gulp = require('gulp'),
     // karma for gulp
@@ -94,9 +111,15 @@ gulp.task('templates', function () {
     .pipe(gulp.dest('.'));
 });
 
+var serviceVersion = '1';
+function getServiceModules() {
+  // TODO: add warning if no file is found.
+  return 'src/impac-angular.v' + serviceVersion + '.services.js';
+}
+
 // makes a copy of impac-angular.modules.js and concatinates templates.tmp into it.
-gulp.task('templates-concat', ['templates'], function () {
-  return gulp.src(['src/impac-angular.module.js', 'tmp/templates/templates.tmp'])
+gulp.task('templates-modules-concat', ['templates'], function () {
+  return gulp.src(['src/impac-angular.module.js', getServiceModules(), 'tmp/templates/templates.tmp'])
     .pipe(concat(pkg.name + '.js')) // output filename
     .pipe(gulp.dest('tmp/')); // output destination
 });
@@ -184,7 +207,7 @@ gulp.task('less-concat', function () {
 });
 
 // TODO: figure out a way to emit .on 'finish' with lazypipe() streams, for deleting tmp file, and running tests once build task has completely finished.
-gulp.task('build-lib', ['coffee-compile', 'less-inject', 'less-concat', 'templates-concat'], function () {
+gulp.task('build-lib', ['coffee-compile', 'less-inject', 'less-concat', 'templates-modules-concat'], function () {
   var isProd = (env === 'production');
   // lazy pipeline steps to be run on env=production
   var distChannel = lazypipe()
@@ -212,6 +235,17 @@ gulp.task('build-lib-dist', function () {
   runSequence('build-lib');
 });
 
+gulp.task('build-lib-v2', function () {
+  serviceVersion = '2';
+  runSequence('build-lib');
+});
+
+gulp.task('build-lib-v2-dist', function () {
+  env = 'production';
+  serviceVersion = '2';
+  runSequence('build-lib');
+});
+
 // cleans up tmp file created by 'templates' task.
 gulp.task('clean', function (asyncCallback) {
   del(['tmp'], asyncCallback);
@@ -228,6 +262,10 @@ gulp.task('start:watch', ['watch']);
 // builds
 gulp.task('build', ['build-lib']);
 gulp.task('build:dist', ['build-lib-dist']);
+// versioned builds
+// TODO: maybe a cli command variable instead?
+gulp.task('build:v2', ['build-lib-v2']);
+gulp.task('build:v2:dist', ['build-lib-dist-v2']);
 // tests
 gulp.task('test', ['test-dist-concatenated']);
 gulp.task('test:dist', ['test-dist-minified']);
@@ -236,6 +274,6 @@ gulp.task('less:compile', ['less-compile']);
 gulp.task('less:inject', ['less-inject']);
 gulp.task('less:concat', ['less-concat']);
 gulp.task('coffee:compile', ['coffee-compile']);
-gulp.task('build:templates', ['templates-concat']);
+gulp.task('build:templates', ['templates-modules-concat']);
 
 gulp.task('default', ['build']);
