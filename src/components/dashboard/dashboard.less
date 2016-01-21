@@ -1,5 +1,15 @@
 .analytics {
 
+  // Dashboard Settings
+  .dashboard-settings-panel {
+    position: relative;
+    margin: 0 2px;
+    min-height: 40px;
+    &> * {
+      float: right;
+    }
+  }
+
   &.show-dhb {
     transition: opacity 1s;
     opacity: 1;
@@ -195,16 +205,6 @@
           opacity: 1;
         }
       }
-    }
-  }
-
-  #dashboard-settings {
-    text-align: right;
-    margin: 0px 2px;
-    min-height: 40px;
-
-    &> * {
-      float: right;
     }
   }
 

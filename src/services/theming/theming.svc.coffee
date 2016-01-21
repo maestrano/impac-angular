@@ -73,6 +73,9 @@ angular
       # showing the no widgets / empty dashboard message panel & any configurations that belong.
       showNoWidgetMsg:
         show: true
+      # configuring dashboard settings
+      dhbSettings:
+        inWidgetsContainer: false
 
 
     #=======================================
