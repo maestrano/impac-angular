@@ -7,7 +7,7 @@ angular
     # Private Defaults
     #=======================================
     defaults =
-      syncAppsBasePath: 'http://localhost:3000/webhook/sync'
+      syncAppsBasePath: '/mnoe/jpi/v1/organizations/:uid'
       dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
       widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
       showWidgetPath: 'http://localhost:4000/api/v1/get_widget',
@@ -52,8 +52,8 @@ angular
       service.updateKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
       service.deleteKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
       # webhooks
-      service.syncAppsPath = (id) -> "#{defaults.syncAppsBasePath}/#{id}/perform"
-      service.syncProgressPath = (orgId, sso) => "#{defaults.syncAppsBasePath}/#{orgId}/progress?sso_session=#{sso}"
+      service.syncAppsPath = (uid) -> "#{defaults.syncAppsBasePath.replace(':uid',uid)}/sync_apps"
+      service.syncProgressPath = (uid) => "#{defaults.syncAppsBasePath.replace(':uid',uid)}/sync_apps_progress"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

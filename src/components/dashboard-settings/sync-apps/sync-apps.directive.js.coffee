@@ -37,12 +37,11 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             ImpacWidgetsSvc.refreshAll()
             this.run = null
 
-      ImpacMainSvc.load().then(
+      ImpacMainSvc.load(true).then(
         (config) ->
           scope.orgUID = config.currentOrganization.uid
-          ssoSession = config.userData.sso_session
 
-          scope.syncingPoller = poller.get(ImpacRoutes.syncProgressPath(scope.orgUID, ssoSession), {delay: 5000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.syncProgressPath(scope.orgUID), {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (response) ->
               scope.connectors = []
@@ -63,7 +62,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
               if response.data.last_synced
                 # when a last sync date is available
                 if response.data.last_synced.last_sync
-                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "dd/MM/yyyy 'at' h:mma")} (#{response.data.last_synced.name})"
+                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "yyyy-MM-dd 'at' h:mma")} (#{response.data.last_synced.name})"
                 # when no last sync history can be retrieved,
                 else if response.data.last_synced.name
                   scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
@@ -78,7 +77,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         return if scope.syncingApps
         scope.syncingApps = true
 
-        $http.get(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
+        $http.put(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
           (success) ->
             scope.syncingPoller.start()
             openSyncAlertsModal.engage()

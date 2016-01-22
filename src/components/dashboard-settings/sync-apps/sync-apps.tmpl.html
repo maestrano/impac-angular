@@ -15,7 +15,7 @@
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
   <div ng-repeat="connector in connectors track by $index">
-    <span>{{ (connector.last_sync ? ((connector.last_sync | date: "dd/MM/yyyy 'at' h:mma") + ' (' + connector.name + ')') : connector.name) }}</span>
+    <span>{{ (connector.last_sync ? ( connector.name + ' - ' + (connector.last_sync | date: "yyyy-MM-dd 'at' h:mma") ) : connector.name) }}</span>
   </div>
   <div style="border-bottom: 1px solid #ccc; width: 100%; height: 2px; margin: 5px 0;"></div>
   <p>All other applications are synced in real-time.</p>
