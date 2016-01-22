@@ -9,111 +9,111 @@
 
   .buttons-bar-row {
     margin-top: 54px;
+  }
 
-    // container for dashboard selector 'dropdown' template
-    .buttons-bar {
-      padding: 0;
-      padding-bottom: 5px;
+  // container for dashboard selector 'dropdown' template
+  .buttons-bar {
+    padding: 0;
+    padding-bottom: 5px;
 
-      .btn {
-        float: right;
-        margin: 3px;
-        border-radius: @impac-dashboard-buttons-border-radius;
+    .btn {
+      float: right;
+      margin: 3px;
+      border-radius: @impac-dashboard-buttons-border-radius;
+    }
+
+    .dropdown-container {
+
+      .dashboard-title {
+        color: @impac-dashboard-title-color;
+        display: inline;
+        cursor: pointer;
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
+        i.fa.fa-pencil {
+          margin-left: 20px;
+          font-size: 14px;
+          &:hover {
+            color: @mgreen;
+          }
+        }
       }
 
-      .dropdown-container {
-
-        .dashboard-title {
-          color: @impac-dashboard-title-color;
-          display: inline;
-          cursor: pointer;
+      .dashboard-select {
+        margin: 5px 0px 10px 30px;
+        height: auto;
+        border-left: 1px solid @impac-dashboard-title-color;
+        border-bottom: 1px solid @impac-dashboard-title-color;
+        width: 300px;
+        background-color: @lightgray;
+        cursor: pointer;
+        .option {
+          color: @impac-dashboard-title-label-color;
+          white-space: nowrap;
           &:hover {
-            color: darken(@impac-dashboard-title-color,10%);
+            background-color: @impac-widget-background-color;
+          }
+          &.create {
+            background-color: @impac-dashboard-title-color;
+            color: @impac-dashboard-title-label-create-color;
+            height: 30px;
+            padding: 5px 10px 5px 10px;
+            &:hover {
+              background-color: darken(@impac-dashboard-title-color,10%);
+            }
           }
           i.fa.fa-pencil {
-            margin-left: 20px;
-            font-size: 14px;
+            float: right;
+            padding-top: 7px;
+            text-align: center;
+            width: 15%;
+            height: 30px;
             &:hover {
-              color: @mgreen;
+              color: darken(@impac-dashboard-title-color,10%);
             }
           }
-        }
-
-        .dashboard-select {
-          margin: 5px 0px 10px 30px;
-          height: auto;
-          border-left: 1px solid @impac-dashboard-title-color;
-          border-bottom: 1px solid @impac-dashboard-title-color;
-          width: 300px;
-          background-color: @lightgray;
-          cursor: pointer;
-          .option {
-            color: @impac-dashboard-title-label-color;
-            white-space: nowrap;
-            &:hover {
-              background-color: @impac-widget-background-color;
-            }
-            &.create {
-              background-color: @impac-dashboard-title-color;
-              color: @impac-dashboard-title-label-create-color;
-              height: 30px;
-              padding: 5px 10px 5px 10px;
-              &:hover {
-                background-color: darken(@impac-dashboard-title-color,10%);
-              }
-            }
-            i.fa.fa-pencil {
-              float: right;
-              padding-top: 7px;
-              text-align: center;
-              width: 15%;
-              height: 30px;
-              &:hover {
-                color: darken(@impac-dashboard-title-color,10%);
-              }
-            }
-            span.name {
-              width: 85%;
-              height: 30px;
-              display: inline-block;
-              padding: 5px 10px 5px 10px;
-            }
+          span.name {
+            width: 85%;
+            height: 30px;
+            display: inline-block;
+            padding: 5px 10px 5px 10px;
           }
-        }
-
-        .change-name {
-          position: absolute;
-          top: 30px;
-          left: 20px;
-          width: 60%;
-          background-color: rgb(23, 38, 45);
-          color: white;
-          padding: 10px;
-          border-radius: 4px;
-          text-align: center;
-          .box-shadow(0px 0px 25px 4px black);
-          z-index: 50;
-          border: solid 1px @impac-widget-background-color;
-
-          .form-control {
-            height: 25px;
-            margin-bottom: 10px;
-          }
-        }
-
-        .data-source-label {
-          color: @impac-dashboard-source-color;
-          padding-left: 3px;
-          margin: 0px;
         }
       }
 
-      .loader-container {
-        padding-left: 10px;
-        .loading-spinner {
-          .loader-style();
-          font-size: 40px;
+      .change-name {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 60%;
+        background-color: rgb(23, 38, 45);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        .box-shadow(0px 0px 25px 4px black);
+        z-index: 50;
+        border: solid 1px @impac-widget-background-color;
+
+        .form-control {
+          height: 25px;
+          margin-bottom: 10px;
         }
+      }
+
+      .data-source-label {
+        color: @impac-dashboard-source-color;
+        padding-left: 3px;
+        margin: 0px;
+      }
+    }
+
+    .loader-container {
+      padding-left: 10px;
+      .loading-spinner {
+        .loader-style();
+        font-size: 40px;
       }
     }
   }
