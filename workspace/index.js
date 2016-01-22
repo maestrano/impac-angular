@@ -1,37 +1,52 @@
-angular
-  .module('impacWorkspace', ['maestrano.impac'])
-  // configures the $http service headers to use basic http auth
-  .config(function ($httpProvider) {
-    var api_key = '6002a744e3196eec8402e0c764ed725fe401d2d90c946f0c16e4d656a9303f40',
-        api_secret = 'f10b06a5-8cc6-43c0-a52b-aec93ede3da8';
-    // TODO: base64 coding?
-    // $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + api_key + ':' + api_secret;
-    $httpProvider.defaults.headers.common['Accept'] = 'application/json';
-    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  })
-  .config(function (ImpacRoutesProvider) {
-    // ImpacRoutesProvider.configureRoutes({
-      // dhbBasePath: 'https://uat.maestrano.io/api/v2/impac_dashboards',
-      // widgetBasePath: 'https://uat.maestrano.io/api/v2/impac_widgets'
-      // todo: api v2 kpi extension
-    // });
-  })
-  .run(function (ImpacLinking, $q, $http) {
-    $http.defaults.headers.common.Authorization = 'Basic NjAwMmE3NDRlMzE5NmVlYzg0MDJlMGM3NjRlZDcyNWZlNDAxZDJkOTBjOTQ2ZjBjMTZlNGQ2NTZhOTMwM2Y0MDpmMTBiMDZhNS04Y2M2LTQzYzAtYTUyYi1hZWM5M2VkZTNkYTg=';
-    $http.get('http://localhost:3000/api/v2/impac/dashboards');
-    // var res = $resource('http://localhost:3000/api/v2/impac/dashboards');
-    // res.get();
-    ImpacLinking.linkData({
-      organizations: function () {
-        return $q.when({
-          organizations: ['org-fbp1'],
-          currentOrgId: 405
-        });
-      },
-      user: function () {
-        return $q.when({sso_session: '28effdd74ae35e1e57b47ed24b83272f2071ed4d'});
-      }
-    });
+var module = angular.module('impacWorkspace', ['maestrano.impac']);
+
+// Configuration impac-angular lib on module impacWorkSpace run.
+module.config(function ($httpProvider) {
+  // $httpProvider.defaults.headers.common['Accept'] = 'application/json';
+  // $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+  // $httpProvider.defaults.useXDomain = true;
+  // delete $httpProvider.defaults.headers.common['X-Requested-With'];
+});
+module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes) {
+
+  // TODO: set-up server to enable local $http calls to setting.json
+  var settings = {
+    url: 'http://localhost:3000',
+    api_key: '7149f0c91d7e995c10be79ed4881c035d662632995e852f550313345e0f0b982',
+    api_secret: '4a776ea4-8134-4f38-b632-85cbe951524e'
+  };
+
+  // encodes a base64 string
+  var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
+
+  $http.defaults.headers.common.Authorization = 'Basic ' + credentials;
+
+  ImpacLinking.linkData({
+    organizations: function () {
+      return getOrganizations();
+    },
+    user: function () {
+      return $q.when({});
+    }
   });
+
+  ImpacRoutes.configureRoutes({
+    dhbBasePath: settings.url + '/api/v2/impac_dashboards',
+    widgetBasePath: settings.url + '/api/v2/impac_widgets'
+    // todo: api v2 kpi extension
+  });
+
+  function getOrganizations() {
+    return $http.get(settings.url + '/api/v2/impac/organizations')
+      .then(function (response) {
+        var organizations = (response.data || []);
+        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+      }
+    );
+  }
+
+  function fail(err) {
+    $log.error('workspace/index.js ERROR: ', err);
+  }
+
+});

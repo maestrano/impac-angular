@@ -1,6 +1,6 @@
 /*
 *   VERSION 2 SERVICES
-*   modules injected in build task; run `grunt build:v2`.
+*   modules injected in build task; `gulp build:v2`.
 */
 angular.module('impac.services',
   [
