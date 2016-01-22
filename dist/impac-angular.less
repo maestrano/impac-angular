@@ -789,7 +789,17 @@ body {
           margin: 0px;
           border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
-          &:hover, &.selected {
+          &:hover, &.selected {& > div {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
+    }
             color: @impac-dashboard-widget-selector-text-color;
           }
         }
@@ -827,9 +837,9 @@ body {
     }
   }
 
-  #dashboard-settings {
-    text-align: right;
-    margin: 8px 0px;
+  #dashboard-settings-panel {
+    position: relative;
+    margin: 0 2px;
     min-height: 40px;
     & > * {
       float: right;
@@ -1109,66 +1119,6 @@ body {
   ////////
 }
 
-.analytics kpis-bar > .kpis {
-  padding: 10px 0px;
-  min-height: 145px;
-  overflow: hidden;
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
-
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  }
-
-  .kpi-loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 135px;
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  // color: @light-black;
-  padding: 5px 0px;
-}
-
 impac-kpi .kpi {
   .scrollable();
   text-align: center;
@@ -1305,6 +1255,66 @@ impac-kpi .kpi {
   min-height: 80px;
 }
 
+.analytics kpis-bar > .kpis {
+  padding: 10px 0px;
+  min-height: 145px;
+  overflow: hidden;
+
+  .available-kpis-container {
+    text-align: left;
+    position: absolute;
+    z-index: 15;
+    background-color: @impac-widget-background-color;
+    width: 500px;
+    max-height: 115px;
+    box-shadow: 0px 3px 12px -4px;
+
+    .scrollable();
+
+    .available-kpi {
+      border-bottom: solid 1px #D8DBDB;
+      padding: 4px;
+      padding-left: 8px;
+      height: 38px;
+
+      span.kpi-name {
+        padding-top: 5px;
+        display: inline-block;
+      }
+
+      .form-control-static, .btn.btn-sm.btn-info {
+        float: right;
+        min-height: 30px;
+        height: 30px;
+        float: right;
+        margin-left: 3px;
+        margin-top: 0px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .title-actions {
+    .title {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+  }
+
+  .kpi-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 135px;
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  // color: @light-black;
+  padding: 5px 0px;
+}
+
 .widget-item .top-line {
   position: relative;
   cursor: move;
@@ -1340,13 +1350,19 @@ impac-kpi .kpi {
 }
 
 .analytics .dashboard-settings.currency {
+  text-align: right;
+  select {
+    margin-top: 4px;
+  }
 }
+
 .analytics .dashboard-settings.sync-apps {
   span {
     margin-right: 5px;
     color: @impac-widget-text-color-medium;
   }
 }
+
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1482,7 +1498,6 @@ impac-kpi .kpi {
   }
 }
 
-<<<<<<< HEAD
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -1597,13 +1612,6 @@ impac-kpi .kpi {
     }
   }
   .title {
-=======
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
-.analytics .widget-item .content.accounts-assets-liability-summary {
-  .param-selector {
->>>>>>> master
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
@@ -1662,7 +1670,13 @@ impac-kpi .kpi {
   .right-panel .widget-lines-container {
       max-height: 175px;
   }
+  .no-element p {
+    // corrects alignment issues with the container, which caused text to overflow beyond parents.
+    max-width: 90% !important;
+    margin: auto !important;
+  }
 }
+
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -1833,10 +1847,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1864,6 +1874,27 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel > .widget-lines-container {
+    max-height: 215px;
+  }
+  // .simple-list-widget();
+  // .widget-lines-container {
+  //   .scrollable(scroll);
+  //   max-height: 210px;
+  //   .widget-line.total {
+  //     .selectable();
+  //   }
+  // }
+  // .selector {
+  //   margin-bottom: 4px;
+  // }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -1881,23 +1912,6 @@ impac-kpi .kpi {
       font-size: 11px;
     }
   }
-}
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel > .widget-lines-container {
-    max-height: 215px;
-  }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
 }
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
@@ -1953,7 +1967,6 @@ impac-kpi .kpi {
     }
   }
 }
-<<<<<<< HEAD
 .analytics .widget-item .content .data-not-found {
   text-align: center;
   font-size: 18px;
@@ -2107,8 +2120,6 @@ impac-kpi .kpi {
 
 }
 
-=======
->>>>>>> master
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -2131,8 +2142,6 @@ impac-kpi .kpi {
     height: 20px;
   }
 }
-<<<<<<< HEAD
-=======
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
@@ -2154,7 +2163,6 @@ impac-kpi .kpi {
   }
 }
 
->>>>>>> master
 .analytics .widget-item .content .settings.hist-mode-choser {
   .options {
     width: 150px;

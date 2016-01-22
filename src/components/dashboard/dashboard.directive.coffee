@@ -23,6 +23,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
     $scope.dhbErrorsConfig = ImpacTheming.get().dhbErrorsConfig
 
+    # Dashboard Settings
+    # -------------------------------------
+    $scope.dhbSettingsConfig = ImpacTheming.get().dhbSettings
+
     # kpis
     # -------------------------------------
     $scope.showKpisBar = ImpacTheming.get().dhbKpisConfig.enableKpis
