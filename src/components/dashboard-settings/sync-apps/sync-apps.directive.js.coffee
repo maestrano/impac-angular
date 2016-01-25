@@ -41,7 +41,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         (config) ->
           scope.orgUID = config.currentOrganization.uid
 
-          scope.syncingPoller = poller.get(ImpacRoutes.syncProgressPath(scope.orgUID), {delay: 5000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.appInstancesSyncPath(scope.orgUID), {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null,
             (response) ->
               scope.connectors = []
@@ -77,7 +77,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         return if scope.syncingApps
         scope.syncingApps = true
 
-        $http.put(ImpacRoutes.syncAppsPath(scope.orgUID)).then(
+        $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
           (success) ->
             scope.syncingPoller.start()
             openSyncAlertsModal.engage()
