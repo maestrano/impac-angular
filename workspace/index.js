@@ -31,9 +31,9 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes) {
   });
 
   ImpacRoutes.configureRoutes({
-    dhbBasePath: settings.url + '/api/v2/impac_dashboards',
-    widgetBasePath: settings.url + '/api/v2/impac_widgets'
-    // todo: api v2 kpi extension
+    dhbBasePath: settings.url + '/api/v2/impac/dashboards',
+    widgetBasePath: settings.url + '/api/v2/impac/widgets',
+    // impacKpisBasePath: ''
   });
 
   function getOrganizations() {
