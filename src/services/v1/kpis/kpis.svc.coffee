@@ -64,10 +64,12 @@ angular
         _self.config.currentDashboardId = dashboard.id
 
         orgUids = _.pluck dashboard.data_sources, 'uid'
-        params = {
-          sso_session: _self.config.ssoSessionId
-          metadata: {organization_ids: orgUids}
-        }
+
+        params = { metadata: { organization_ids: orgUids } }
+
+        # if no sso_session is available, mno idm api will look for a Basic Authentication header.
+        # this prevents an empty sso being attached and confusing the mno idm api.
+        angular.extend(params, {sso_session: _self.config.ssoSessionId}) if _self.config.ssoSessionId
 
         promises = {
           impac: index(params)
