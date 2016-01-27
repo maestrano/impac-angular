@@ -76,6 +76,7 @@ angular
       # configuring dashboard settings
       dhbSettings:
         inWidgetsContainer: false
+        showSyncApps: -> true
 
       # options for sync-apps component
       syncAppsConfig:

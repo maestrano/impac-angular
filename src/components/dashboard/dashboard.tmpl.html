@@ -87,7 +87,8 @@
   <!-- Dashboard Settings - DEFAULT POSITION -->
   <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()">
     <div dashboard-setting-currency currency="currentDhb.currency" />
-    <div dashboard-setting-sync-apps />
+    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+
   </div>
 
   <!-- Errors -->
@@ -157,7 +158,7 @@
       <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
       <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()">
         <div dashboard-setting-currency currency="currentDhb.currency" />
-         <div dashboard-setting-sync-apps />
+        <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
       </div>
       <!-- Widget -->
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
