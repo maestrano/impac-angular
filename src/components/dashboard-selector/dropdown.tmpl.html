@@ -1,4 +1,4 @@
-<div class="row buttons-bar">
+<div class="row buttons-bar-row buttons-bar">
 
   <div class="col-md-6 dropdown-container" ng-hide="isLoading">
     <div ng-if="isThereADashboard()">
@@ -47,7 +47,7 @@
     <!-- <button id='data-upload-wizard' ng-click='dhbCtrl.openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
 
     <button ng-if="isDeleteDhbEnabled" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard"><span class='fa fa-trash-o'></span> </button>
-    
+
   </div>
 
 </div>
