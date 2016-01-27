@@ -48,6 +48,7 @@ angular
         linkMessage: 'Are you missing an app?'
         linkUrl: '/apps'
         linkTarget: '_blank'
+        linkUrlCallback: null
 
       # options for configuring the dhb errors messages.
       dhbErrorsConfig:

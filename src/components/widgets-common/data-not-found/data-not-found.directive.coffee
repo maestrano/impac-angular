@@ -28,6 +28,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
       hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
       scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))
+      scope.hasCallbackUrl = scope.content.linkUrlCallback?
 
     template: $templateCache.get('widgets-common/data-not-found.tmpl.html'),
   }
