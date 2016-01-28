@@ -1,23 +1,44 @@
 module = angular.module('impac.components.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ($scope, $log, ImpacWidgetsSvc) ->
+module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWidgetsSvc) ->
 
   w = $scope.parentWidget
+
+  # What will be passed to parentWidget
+  setting = {}
+  setting.key = "width"
+  setting.isInitialized = false
+
+  # Elements to be hidden during resizing
+  for elem in $element.parents()
+    if angular.element(elem).hasClass('content')
+      $scope.contentElements = angular.element(elem).children()
+      break
+
+  # ------------------------------------
+
+  hideOnResize = (elements) ->
+    return unless (elements && elements.length > 0)
+    # Hides elems in content
+    for elem in elements
+      angular.element(elem).animate({opacity: 0}, 0)
+    # Makes them reappear after resizing
+    $timeout ->
+      for elem in elements
+        angular.element(elem).animate({opacity: 1}, 200)
+    , 200
 
   w.toggleExpanded = ->
     $scope.expanded = !$scope.expanded
     # false because we want to resize the widget without waiting for the response from the dashboarding API
     ImpacWidgetsSvc.updateWidgetSettings(w,false)
     
+    hideOnResize($scope.contentElements)
+
     if $scope.expanded
       w.width = parseInt($scope.max)
     else
       w.width = parseInt($scope.min)
-
-  # What will be passed to parentWidget
-  setting = {}
-  setting.key = "width"
-  setting.isInitialized = false
 
   w.isExpanded = ->
     $scope.expanded
