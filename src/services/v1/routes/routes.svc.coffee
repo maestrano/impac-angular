@@ -7,9 +7,13 @@ angular
     # Private Defaults
     #=======================================
     defaults =
+      # manage dashboards in backend
       dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
+      # manage widget in backend
       widgetBasePath: '/mnoe/jpi/v1/impac/widgets',
+      # retrieve impac! widgets data
       showWidgetPath: 'http://localhost:4000/api/v1/get_widget',
+      # path for widget suggestion feature
       sendWidgetSuggestionPath: null
       # manage kpi in backend
       kpiBasePath: '/mnoe/jpi/v1/impac/kpis'
