@@ -1,7 +1,7 @@
 angular
   .module('impac.services.dashboards', [])
   .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc) ->
-  
+
 
     #====================================
     # Initialization and getters
@@ -9,7 +9,7 @@ angular
 
     _self = @
     @config = {}
-    
+
     @config.dashboards = []
     @getDashboards = ->
       return _self.config.dashboards
@@ -84,7 +84,7 @@ angular
               $log.error("Impac - DashboardSvc: cannot retrieve dashboards list for org: #{orgId}")
               _self.loadLocked=false
               deferred.reject(error)
-          
+
           ,(error) ->
             $log.error("Impac - DashboardSvc: cannot retrieve current organization")
             _self.loadLocked=false
@@ -93,7 +93,7 @@ angular
         else
           _self.loadLocked=false
           deferred.resolve(_self.config)
-        
+
         return deferred.promise
 
       else
@@ -148,7 +148,7 @@ angular
         _.remove _self.config.dashboards, (-> true)
         for dhb in dashboardsArray
           if belongsToCurrentOrganization(dhb, curOrg)
-            _self.config.dashboards.push dhb 
+            _self.config.dashboards.push dhb
 
 
     @setWidgetsTemplates = (templatesArray) ->
@@ -167,22 +167,22 @@ angular
     #====================================
     # CRUD methods
     #====================================
-    
+
     @create = (dashboard) ->
       _self.load().then ->
         deferred = $q.defer()
-        
+
         unless dashboard.currency?
           dashboard.currency = ImpacMainSvc.config.currentOrganization.currency || 'USD'
 
         data = { dashboard: dashboard }
-        
+
         $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
           _self.config.dashboards.push(success.data)
           _self.setCurrentDashboard(success.data.id)
           deferred.resolve(success.data)
         ,(error) ->
-          $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{dashboard}")
+          $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{angular.toJson(dashboard)}", error)
           deferred.reject(error)
 
         return deferred.promise
@@ -190,7 +190,7 @@ angular
 
     @delete = (id) ->
       deferred = $q.defer()
-      
+
       $http.delete(ImpacRoutes.deleteDhbPath(id)).then (success) ->
         _.remove _self.config.dashboards, (dhb) ->
           id == dhb.id
@@ -206,7 +206,7 @@ angular
     @update = (id, opts) ->
       deferred = $q.defer()
       data = { dashboard: opts }
-      
+
       $http.put(ImpacRoutes.updateDhbPath(id),data).then (success) ->
         angular.merge( _.find(_self.config.dashboards, (dhb) ->
           id == dhb.id
