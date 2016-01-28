@@ -12,9 +12,9 @@ angular.module('impac.services',
     'impac.services.message-bus',
     'impac.services.utilities',
     'impac.services.main',
+    'impac.services.dashboards',
     // TODO: create v2 services for mno api v2
     'impac.services.kpis-v2',
-    'impac.services.dashboards-v2',
     'impac.services.widgets-v2',
   ]
 );

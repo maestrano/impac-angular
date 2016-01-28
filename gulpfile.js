@@ -265,7 +265,7 @@ gulp.task('build:dist', ['build-lib-dist']);
 // versioned builds
 // TODO: maybe a cli command variable instead?
 gulp.task('build:v2', ['build-lib-v2']);
-gulp.task('build:v2:dist', ['build-lib-dist-v2']);
+gulp.task('build:v2:dist', ['build-lib-v2-dist']);
 // tests
 gulp.task('test', ['test-dist-concatenated']);
 gulp.task('test:dist', ['test-dist-minified']);

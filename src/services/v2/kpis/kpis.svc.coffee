@@ -1,5 +1,5 @@
 angular
-  .module('impac.services.kpis', [])
+  .module('impac.services.kpis-v2', [])
   .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacRoutes, ImpacMainSvc) ->
 
     _self = @
