@@ -9,8 +9,11 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       scope.syncingApps = false
       scope.hasConnectors = false
 
+      # Theming configuration giving the ability to show / hide the sync apps feature.
       scope.showComponent = ImpacTheming.get().syncAppsConfig.show
 
+      # Attaches the open() method to openSyncAlertsModal object when openSyncAlertsModal.engage() is called.
+      # This allows the modal to only run in cases where it has been 'switched on', as once it runs, it will dis-engage (switch itself off), waiting to be re-engaged.
       openSyncAlertsModal =
         open: null
         engage: ()->
@@ -30,6 +33,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             })
             this.open = null
 
+      # Attaches the run() method to refreshAllWidgets object when refreshAllWidget.engage() is called.
+      # This allows the widget refresh to only run in cases where it has been 'switched on', as once it runs, it will dis-engage (switch itself off), waiting to be re-engaged.
       refreshAllWidgets =
         run: null
         engage: ()->
@@ -42,19 +47,24 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.orgUID = config.currentOrganization.uid
 
           scope.syncingPoller = poller.get(ImpacRoutes.appInstancesSyncPath(scope.orgUID), {delay: 5000, smart: true})
+
           scope.syncingPoller.promise.then(null, null,
+            # PROMISE NOTIFY METHOD - runs on each poll until syncPoller.stop() is called.
             (response) ->
               scope.connectors = []
               scope.errors = response.data.errors
 
-              # syncing status for loader
+              # Syncing status
               if (response.data.syncing == false)
                 scope.syncingApps = false
+                # if refresh widgets is engaged, refresh widgets
                 refreshAllWidgets.run() if refreshAllWidgets.run
+                # if modal is engaged, and there are errors, open alerts modal
                 openSyncAlertsModal.open() if openSyncAlertsModal.open && (scope.errors.fatal.length || scope.errors.disconnected.length)
                 scope.syncingPoller.stop()
               else if (response.data.syncing == true)
                 scope.syncingApps = true
+                # engaged refresh & modal functions
                 refreshAllWidgets.engage()
                 openSyncAlertsModal.engage()
 
@@ -67,18 +77,21 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
                 else if response.data.last_synced.name
                   scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
 
+                # connectors are objects containing the sync history of all connector apps.
                 scope.connectors = _.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name)
 
               scope.hasConnectors = if scope.connectors.length then true else false
           )
       )
 
+      # runs on syncronize button click
       scope.synchronize = ->
         return if scope.syncingApps
         scope.syncingApps = true
 
         $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
           (success) ->
+            # start poller - engage alerts modal.
             scope.syncingPoller.start()
             openSyncAlertsModal.engage()
           (err) ->
