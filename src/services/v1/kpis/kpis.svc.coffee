@@ -65,11 +65,10 @@ angular
 
         orgUids = _.pluck dashboard.data_sources, 'uid'
 
-        params = { metadata: { organization_ids: orgUids } }
-
-        # if no sso_session is available, mno idm api will look for a Basic Authentication header.
-        # this prevents an empty sso being attached and confusing the mno idm api.
-        angular.extend(params, {sso_session: _self.config.ssoSessionId}) if _self.config.ssoSessionId
+        params = {
+          sso_session: _self.config.ssoSessionId
+          metadata: {organization_ids: orgUids}
+        }
 
         promises = {
           impac: index(params)
@@ -116,7 +115,7 @@ angular
     # retrieves data for kpi from api
     @show = (kpi) ->
       deferred = $q.defer()
-      
+
       if !isInitialized()
         $log.error 'ImpacKpisSvc - Service not initialized'
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
@@ -151,14 +150,14 @@ angular
             $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
             deferred.reject(err)
         )
-      
+
       return deferred.promise
 
 
     @create = (source, endpoint, elementWatched) ->
     # @create = (source, endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
-      
+
       if !isInitialized()
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
