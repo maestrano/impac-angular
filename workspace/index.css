@@ -1,0 +1,40 @@
+/* WORKSPACE */
+body {
+  background-color: #E6EDEE;
+}
+
+#workspace-header {
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#workspace-header h1 {
+  margin: 0;
+  padding: 15px 40px;
+}
+
+#workspace-dashboard {
+  margin: 0 40px;
+}
+
+footer#workspace-footer {
+  padding: 20px 40px;
+}
+
+footer#workspace-footer p {
+  margin: 0;
+}
+
+/* IMPAC OVERRIDES */
+.analytics {
+  margin: 0;
+}
+/*
+  Reducing max-height of all widget-item legends due to container size differences from Maestrano.com, which causes canvas to scale overflowing the widget legend's.
+  TODO: proper solution for this within impac-angular.
+*/
+.analytics .widget-item .content .legend {
+  max-height: 100px !important;
+}
