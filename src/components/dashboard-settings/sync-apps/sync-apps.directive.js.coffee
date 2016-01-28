@@ -37,6 +37,27 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             ImpacWidgetsSvc.refreshAll()
             this.run = null
 
+
+      scope.getOffset = ->
+        timezone = new Date().getTimezoneOffset()
+        offsetArray = ['+','00','00']
+        offsetArray[0] = '-' unless timezone < 0
+
+        hours = "#{Math.abs(Math.floor(timezone/60))}"
+        if hours.length < 2
+          offsetArray[1] = "0" + hours
+        else
+          offsetArray[1] = hours
+
+        minutes = "#{Math.abs(timezone%60)}"
+        if minutes.length < 2
+          offsetArray[2] = "0" + minutes
+        else
+          offsetArray[2] = minutes
+
+        offset = offsetArray.join('')
+
+
       ImpacMainSvc.load(true).then(
         (config) ->
           scope.orgUID = config.currentOrganization.uid
@@ -62,7 +83,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
               if response.data.last_synced
                 # when a last sync date is available
                 if response.data.last_synced.last_sync
-                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "yyyy-MM-dd 'at' h:mma")} (#{response.data.last_synced.name})"
+                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "yyyy-MM-dd 'at' h:mma", scope.getOffset())} (#{response.data.last_synced.name})"
                 # when no last sync history can be retrieved,
                 else if response.data.last_synced.name
                   scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
