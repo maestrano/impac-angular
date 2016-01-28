@@ -1,7 +1,7 @@
 var module = angular.module('impacWorkspace', ['maestrano.impac']);
 
 // Configuration impac-angular lib on module impacWorkSpace run.
-module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes) {
+module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming) {
 
   // TODO: set-up server to enable local $http calls to setting.json
   var settings = {
@@ -11,12 +11,31 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes) {
     api_secret: '4a776ea4-8134-4f38-b632-85cbe951524e'
   };
 
-  // encodes a base64 string
+  // encodes a base64 string - Basic Authentication.
   var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
   // attaches basic auth onto $http default, which configures all impacWorkspace & maestrano.impac
   // angular modules $http requests.
   $http.defaults.headers.common.Authorization = 'Basic ' + credentials;
 
+  // Configure the ImpacRoutes service options.
+  ImpacRoutes.configureRoutes({
+    // maestrano api paths
+    dhbBasePath: settings.mno_url + '/api/v2/impac/dashboards',
+    widgetBasePath: settings.mno_url + '/api/v2/impac/widgets',
+    kpiBasePath: settings.mno_url + '/api/v2/impac/kpis',
+    // impac api paths
+    showWidgetPath: settings.impac_url + '/api/v1/get_widget',
+    impacKpisBasePath: settings.impac_url + '/api/v2/kpis'
+  });
+
+  // Configure the ImpacTheming service options.
+  ImpacTheming.configure({
+    dhbKpisConfig: {
+      enableKpis: true
+    }
+  });
+
+  // Link core callbacks required for impac-angular lib to run.
   ImpacLinking.linkData({
     organizations: function () {
       return getOrganizations();
@@ -24,16 +43,6 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes) {
     user: function () {
       return $q.when({ name: 'Developer' });
     }
-  });
-
-  ImpacRoutes.configureRoutes({
-    // mno paths
-    dhbBasePath: settings.mno_url + '/api/v2/impac/dashboards',
-    widgetBasePath: settings.mno_url + '/api/v2/impac/widgets',
-    kpiBasePath: settings.mno_url + '/api/v2/impac/kpis',
-    // impac paths
-    showWidgetPath: settings.impac_url + '/api/v1/get_widget',
-    impacKpisBasePath: settings.impac_url + '/api/v2/kpis'
   });
 
   function getOrganizations() {
