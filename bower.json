@@ -32,8 +32,7 @@
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0",
-    "angular-scenario": "~1.4.0",
-    "angular-poller": "~0.4.2"
+    "angular-scenario": "~1.4.0"
   },
   "license": "Copyright 2015 Maestrano Pty Ltd",
   "repository": {
