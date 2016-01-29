@@ -5,45 +5,80 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
     restrict: 'A',
     scope: {
     },
-    link: (scope, element, attrs) ->
-      scope.syncingApps = false
-      scope.hasConnectors = false
+    template: $templateCache.get('dashboard-settings/sync-apps.tmpl.html'),
 
+    link: (scope, element, attrs) ->
+
+      #====================================
+      # Variables initialization
+      #====================================
+      scope.isSyncing = false
+      scope.hasConnectors = false
       # Theming configuration giving the ability to show / hide the sync apps feature.
       scope.showComponent = ImpacTheming.get().syncAppsConfig.show
 
-      # Attaches the open() method to openSyncAlertsModal object when openSyncAlertsModal.engage() is called.
-      # This allows the modal to only run in cases where it has been 'switched on', as once it runs, it will dis-engage (switch itself off), waiting to be re-engaged.
-      openSyncAlertsModal =
-        open: null
-        engage: ()->
-          this.open = ()->
-            modalInstance = $modal.open({
-              animation: true
-              size: 'md'
-              templateUrl: 'alerts.tmpl.html'
-              appendTo: angular.element(document.getElementsByTagName('impac-dashboard'))
-              controller: ($scope, alerts) ->
-                $scope.alerts = alerts
-                $scope.ok = () ->
-                  modalInstance.close()
-              resolve:
-                alerts: ()->
-                  return scope.errors
-            })
-            this.open = null
 
-      # Attaches the run() method to refreshAllWidgets object when refreshAllWidget.engage() is called.
-      # This allows the widget refresh to only run in cases where it has been 'switched on', as once it runs, it will dis-engage (switch itself off), waiting to be re-engaged.
-      refreshAllWidgets =
-        run: null
-        engage: ()->
-          this.run = ()->
-            ImpacWidgetsSvc.refreshAll()
-            this.run = null
+      #====================================
+      # Local methods
+      #====================================
+      # Returns the formatted timezone offset for date display purpose
+      processAppInstancesSync = (responseData) ->
+        scope.isSyncing = responseData.is_syncing
+        scope.hasConnectors = (responseData.connectors && responseData.connectors.length > 0)
 
+        if scope.hasConnectors
+          # The connector that will be displayed on front
+          scope.lastConnector = responseData.connectors[0]
+          # The other connectors that will be displayed in the popover
+          scope.otherConnectors = _.slice(responseData.connectors, 1)
+          
+          # The connectors we will use for error management
+          scope.failedConnectors = []
+          scope.disconnectedConnectors = []
+          for c in responseData.connectors
+            if c.status == "FAILED"
+              scope.failedConnectors.push angular.copy(c)
+            else if c.status == "DISCONNECTED"
+              scope.disconnectedConnectors.push angular.copy(c)
 
-      scope.getOffset = ->
+        # No connector: data is synced in realtime, let's display the current time as "last sync"
+        else
+          scope.lastConnector = 
+            status: 'SUCCESS'
+            last_sync_date: new Date()
+
+        unless scope.isSyncing
+          refreshDashboard()
+
+      # Refreshes the widgets and display the modal if needed
+      refreshDashboard = ->
+        scope.syncingPoller.stop()
+        # Avoid having the refresh triggered when the button has not been clicked
+        return unless scope.isDashboardRefreshAuthorized
+        # Reloads all the widgets contents
+        ImpacWidgetsSvc.refreshAll()
+
+        # Opens the modal if errors are present
+        unless (_.isEmpty(scope.failedConnectors) && _.isEmpty(scope.disconnectedConnectors))
+          modalInstance = $modal.open({
+            animation: true
+            size: 'md'
+            templateUrl: 'alerts.tmpl.html'
+            appendTo: angular.element('impac-dashboard')
+            controller: ($scope, connectors) ->
+              $scope.failedConnectors = connectors.failed
+              $scope.disconnectedConnectors = connectors.disconnected
+              $scope.ok = ->
+                modalInstance.close()
+            resolve:
+              connectors: ->
+                {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors}
+          })
+
+        # Blocks the dashboard refresh until next click on "synchronize"
+        scope.isDashboardRefreshAuthorized = false
+
+      getOffset = ->
         timezone = new Date().getTimezoneOffset()
         offsetArray = ['+','00','00']
         offsetArray[0] = '-' unless timezone < 0
@@ -60,66 +95,72 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         else
           offsetArray[2] = minutes
 
-        offset = offsetArray.join('')
+        return offsetArray.join('')
 
 
+      #====================================
+      # Scope methods
+      #====================================
+      # Runs on syncronize button click
+      scope.synchronize = ->
+        return if scope.isSyncing
+        scope.isSyncing = true
+        scope.isDashboardRefreshAuthorized = true
+
+        $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
+          (success) ->
+            processAppInstancesSync(success.data)
+            scope.syncingPoller.start() if success.data.is_syncing
+          (err) ->
+            $log.error 'Unable to sync apps', err
+            scope.isSyncing = false
+        )
+
+      scope.formatStatus = (connector) ->
+        return unless connector
+        name = connector.name
+        status = ""
+
+        if connector.last_sync_date
+          date = $filter('date')(connector.last_sync_date, "yyyy-MM-dd 'at' h:mma", getOffset())
+        
+          switch connector.status
+            when 'SUCCESS' then status = "Last sync: #{date}"
+            when 'FAILED' then status = "Last sync failed - previous sync was: #{date}"
+            when 'DISCONNECTED' then status = "Disconnected - previous sync was: #{date}"
+            # "RUNNING" case should imply isSyncing==true...
+
+        else
+          switch connector.status
+            when 'FAILED' then status = "Last sync failed - not synced yet"
+            when 'DISCONNECTED' then status = "Disconnected - not synced yet"
+            # Any other case would be buggy...
+
+        status = "#{status} (#{name})" unless _.isEmpty(status) || _.isEmpty(name)
+        return status
+
+
+      #====================================
+      # Directive Load and Destroy
+      #====================================
       ImpacMainSvc.load(true).then(
         (config) ->
           scope.orgUID = config.currentOrganization.uid
 
+          # Returns:
+          # -----------------------------
+          # data:
+          #   connectors[]:
+          #     name (String)
+          #     status ('SUCCESS' | 'RUNNING' | 'FAILED' | 'DISCONNECTED')
+          #     last_sync_date (DateTime)
+          #   is_syncing (Bool)
+          # -----------------------------
           scope.syncingPoller = poller.get(ImpacRoutes.appInstancesSyncPath(scope.orgUID), {delay: 5000, smart: true})
-
-          scope.syncingPoller.promise.then(null, null,
-            # PROMISE NOTIFY METHOD - runs on each poll until syncPoller.stop() is called.
-            (response) ->
-              scope.connectors = []
-              scope.errors = response.data.errors
-
-              # Syncing status
-              if (response.data.syncing == false)
-                scope.syncingApps = false
-                # if refresh widgets is engaged, refresh widgets
-                refreshAllWidgets.run() if refreshAllWidgets.run
-                # if modal is engaged, and there are errors, open alerts modal
-                openSyncAlertsModal.open() if openSyncAlertsModal.open && (scope.errors.fatal.length || scope.errors.disconnected.length)
-                scope.syncingPoller.stop()
-              else if (response.data.syncing == true)
-                scope.syncingApps = true
-                # engaged refresh & modal functions
-                refreshAllWidgets.engage()
-                openSyncAlertsModal.engage()
-
-              # last synced app(s)
-              if response.data.last_synced
-                # when a last sync date is available
-                if response.data.last_synced.last_sync
-                  scope.lastSynced = "Last Synced: #{$filter('date')(response.data.last_synced.last_sync, "yyyy-MM-dd 'at' h:mma", scope.getOffset())} (#{response.data.last_synced.name})"
-                # when no last sync history can be retrieved,
-                else if response.data.last_synced.name
-                  scope.lastSynced = response.data.last_synced.name + ' - Please Retry'
-
-                # connectors are objects containing the sync history of all connector apps.
-                scope.connectors = _.reject(response.data.connectors, (connector) -> connector.name == response.data.last_synced.name)
-
-              scope.hasConnectors = if scope.connectors.length then true else false
-          )
+          scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
       )
 
-      # runs on syncronize button click
-      scope.synchronize = ->
-        return if scope.syncingApps
-        scope.syncingApps = true
-
-        $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
-          (success) ->
-            # start poller - engage alerts modal.
-            scope.syncingPoller.start()
-            openSyncAlertsModal.engage()
-          (err) ->
-            $log.error 'Unable to sync apps', err
-            scope.syncingApps = false
-        )
-
-    template: $templateCache.get('dashboard-settings/sync-apps.tmpl.html'),
+      # Removes the poller when the directive is destroyed (eg: when we switch from the impac dashboard to another js route)
+      scope.$on("$destroy", -> (scope.syncingPoller.stop() && scope.syncingPoller.remove()) if scope.syncingPoller )
   }
 )

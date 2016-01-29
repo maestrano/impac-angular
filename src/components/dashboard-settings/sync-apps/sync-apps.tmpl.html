@@ -1,21 +1,21 @@
-<div class="dashboard-settings sync-apps" ng-show="showComponent">
+<!-- Will be displayed only if specified in configuration and if first response has been processed (lastConnector not null) -->
+<div class="dashboard-settings sync-apps" ng-show="showComponent && lastConnector">
 
-  <span ng-show="syncingApps">Syncing...</span>
-  <span ng-hide="syncingApps">
-    <span ng-show="hasConnectors" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">{{lastSynced ? lastSynced : ""}}</span>
-    <span ng-hide="hasConnectors">{{lastSynced ? lastSynced : ""}}</span>
+  <span ng-show="isSyncing">Syncing...</span>
+  <span ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
+    {{ formatStatus(lastConnector) }}
   </span>
 
-  <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="syncingApps">
-    <i class="fa fa-refresh" ng-class="{ 'fa-spin': syncingApps }"></i>
+  <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
+    <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }"></i>
   </button>
 
 </div>
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div ng-repeat="connector in connectors track by $index">
-    <span>{{ (connector.last_sync ? ( connector.name + ' - ' + (connector.last_sync | date : "yyyy-MM-dd 'at' h:mma" : getOffset()) ) : connector.name) }}</span>
+  <div ng-repeat="connector in otherConnectors track by $index">
+    <span>{{ formatStatus(connector) }}</span>
   </div>
   <div style="border-bottom: 1px solid #ccc; width: 100%; height: 2px; margin: 5px 0;"></div>
   <p>All other applications are synced in real-time.</p>
@@ -27,17 +27,11 @@
     <h4 class="modal-title">Synchronization alerts</h4>
   </div>
   <div class="modal-body">
-    <div ng-show="(alerts.fatal.length > 0)" style="padding-bottom: 15px;">
-      <strong>Failed to sync due to errors</strong>
-      <div ng-repeat="alert in alerts.fatal track by $index">
-        {{alert.app_name}} - {{alert.message}}
-      </div>
+    <div ng-repeat="connector in failedConnectors track by $index">
+      {{connector.name}} - Synchronization failed. Please retry later.
     </div>
-    <div ng-show="(alerts.disconnected.length > 0)" style="padding-bottom: 15px;">
-      <strong>Failed to sync due to disconnection</strong>
-      <div ng-repeat="alert in alerts.disconnected track by $index">
-        {{alert.app_name}} - Reconnect to synchronize.
-      </div>
+    <div ng-repeat="connector in disconnectedConnectors track by $index">
+      {{connector.name}} is disconnected. Please reconnect to synchronize.
     </div>
   </div>
   <div class="modal-footer">
