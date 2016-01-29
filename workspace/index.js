@@ -19,13 +19,8 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
 
   // Configure the ImpacRoutes service options.
   ImpacRoutes.configureRoutes({
-    // maestrano api paths
-    dhbBasePath: settings.mno_url + '/api/v2/impac/dashboards',
-    widgetBasePath: settings.mno_url + '/api/v2/impac/widgets',
-    kpiBasePath: settings.mno_url + '/api/v2/impac/kpis',
-    // impac api paths
-    showWidgetPath: settings.impac_url + '/api/v1/get_widget',
-    impacKpisBasePath: settings.impac_url + '/api/v2/kpis'
+    mnoHub: settings.mno_url + '/api/v2/impac',
+    impacApi: settings.impac_url + '/api'
   });
 
   // Configure the ImpacTheming service options.

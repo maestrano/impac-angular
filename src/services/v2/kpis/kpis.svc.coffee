@@ -81,8 +81,8 @@ angular
         }
 
         # Get local kpis
-        if ImpacRoutes.localKpisBasePath()
-          promises.local = $http.get(ImpacRoutes.localKpisBasePath())
+        if ImpacRoutes.kpis.local()
+          promises.local = $http.get(ImpacRoutes.kpis.local())
 
         $q.all(promises).then(
           (response) ->
@@ -113,7 +113,7 @@ angular
     # Retrieve all the available kpis from Impac!
     # Note: index is a private method that should be called only by _self.initialized
     index = (params) ->
-      host = ImpacRoutes.impacKpisBasePath()
+      host = ImpacRoutes.kpis.index()
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
 
@@ -135,9 +135,9 @@ angular
 
         switch kpi.source
           when 'impac'
-            host = ImpacRoutes.impacKpisBasePath()
+            host = ImpacRoutes.kpis.show(_self.config.currentDashboardId, kpi.id)
           when 'local'
-            host = ImpacRoutes.localKpisBasePath()
+            host = ImpacRoutes.kpis.local()
 
         url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
@@ -177,7 +177,7 @@ angular
         #   params.extra_params ||= []
         #   params.extra_params.push param
 
-        url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
+        url = ImpacRoutes.kpis.create(_self.config.currentDashboardId)
 
         $http.post(url, {kpi: params}).then(
           (success) ->
@@ -198,7 +198,7 @@ angular
       filtered_params.targets = params.targets if params.targets?
       filtered_params.extra_params = params.extra_params if params.extra_params?
 
-      url = ImpacRoutes.updateKpiPath kpi.id
+      url = ImpacRoutes.kpis.update(_self.config.currentDashboardId, kpi.id)
 
       if !_.isEmpty filtered_params
         $http.put(url, {kpi: params}).then (success) ->
@@ -215,7 +215,7 @@ angular
     @delete = (kpi) ->
       deferred = $q.defer()
 
-      url = ImpacRoutes.deleteKpiPath kpi.id
+      url = ImpacRoutes.kpis.delete(_self.config.currentDashboardId, kpi.id)
       $http.delete(url).then (success) ->
         deferred.resolve(success)
       ,(err) ->
