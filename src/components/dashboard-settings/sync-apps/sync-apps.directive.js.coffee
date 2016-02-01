@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $timeout) ->
   return {
     restrict: 'A',
     scope: {
@@ -110,7 +110,11 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
           (success) ->
             processAppInstancesSync(success.data)
-            scope.syncingPoller.start() if success.data.is_syncing
+            if success.data.is_syncing
+              # Use timeout to make sure Connec! has enough time to create the ConnectoSync object
+              $timeout ->
+                scope.syncingPoller.start()
+              , 5000
           (err) ->
             $log.error 'Unable to sync apps', err
             scope.isSyncing = false
