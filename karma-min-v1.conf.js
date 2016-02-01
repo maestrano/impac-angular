@@ -31,8 +31,10 @@ module.exports = function(config) {
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       // impac-angular & test scripts.
-      'dist/impac-angular.js',
-      'src/**/*.spec.js'
+      'dist/impac-angular.v1.min.js',
+      'src/services/v1/**/*.spec.js',
+      'src/components/**/*.spec.js',
+      'src/filters/**/*.spec.js'
     ],
 
 
@@ -50,7 +52,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-      reporters: ['mocha'],
+    reporters: ['mocha'],
 
 
     // web server port

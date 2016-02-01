@@ -23,6 +23,7 @@ coffeelint.json
 
 # Temp files
 tmp/
+.tmp/
 dist/
 scripts/
 

@@ -31,8 +31,10 @@ module.exports = function(config) {
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       // impac-angular & test scripts.
-      'dist/impac-angular.min.js',
-      'src/**/*.spec.js'
+      'dist/impac-angular.v2.js',
+      'src/services/v2/**/*.spec.js',
+      'src/components/**/*.spec.js',
+      'src/filters/**/*.spec.js'
     ],
 
 

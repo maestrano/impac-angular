@@ -1,16 +1,14 @@
-/* ************************************ */
-/* Workspace                            */
-/* ************************************ */
+'use strict';
 
 var gulp = require('gulp'),
-    wiredep = require('wiredep').stream,
-    inject = require('gulp-inject');
+    wiredep = require('wiredep').stream;
 
-gulp.task('inject-bower', ['build-lib-v2-dist'], function () {
+/**
+ *  Builds and injects dependencies into workspace/index.html
+ */
+gulp.task('workspace', ['build'], function () {
   return gulp.src('workspace/index.html')
     .pipe(wiredep({}))
     .pipe(gulp.dest('workspace'));
 });
-
-gulp.task('workspace', ['inject-bower']);
 

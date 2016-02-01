@@ -93,6 +93,7 @@ angular
             "#{service.dashboards.show(dashboard_id)}/widgets/#{id}"
         # TODO: to be added once merged into v1
         # suggestions: -> "#{defaults.widgets.suggestions}"
+      service.sendWidgetSuggestion = -> null # TODO: to be removed
       service.kpis =
         index: (dashboard_id) ->
           if defaults.kpis.index
@@ -120,7 +121,6 @@ angular
           else
             "#{service.dashboards.show(dashboard_id)}/kpis/#{id}"
         local: -> defaults.kpis.local
-      service.sendWidgetSuggestion = -> null # TODO: to be removed
 
       return service
     # inject service dependencies here, and declare in _$get function args.

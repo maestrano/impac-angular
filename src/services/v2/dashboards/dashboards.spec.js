@@ -1,4 +1,4 @@
-describe('<> ImpacDashboardsSvc', function () {
+describe('<> ImpacDashboardsSvc-v2', function () {
   'use strict';
 
   var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, $q, $http, $rootScope;
