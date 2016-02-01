@@ -85,8 +85,9 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div class="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer">
-    <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
+    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+    <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
 
   <!-- Errors -->
@@ -154,8 +155,9 @@
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
-      <div class="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer">
-        <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+      <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
+        <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+        <div dashboard-setting-currency currency="currentDhb.currency" />
       </div>
       <!-- Widget -->
       <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />

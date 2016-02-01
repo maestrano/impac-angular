@@ -128,6 +128,22 @@ angular
             $log.error "ImpacWidgetsSvc - currentDhb.widgets is null", currentDhb
             return $q.reject(null)
 
+    @refreshAll = ->
+      ImpacDashboardsSvc.load().then(
+        (config)->
+          widgets = config.currentDashboard.widgets
+          _.forEach(widgets, (w) ->
+            w.isLoading ||= true
+            _self.show(w, true).then(
+              (updatedWidget) ->
+                w.isLoading = false
+              (errorResponse) ->
+                w.isLoading = false
+                # TODO: better error management
+                $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
+            )
+          )
+      )
 
     #====================================
     # CRUD methods
