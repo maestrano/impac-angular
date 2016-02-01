@@ -155,7 +155,7 @@
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
     <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
       <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
-      <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
+      <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
         <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
         <div dashboard-setting-currency currency="currentDhb.currency" />
       </div>
