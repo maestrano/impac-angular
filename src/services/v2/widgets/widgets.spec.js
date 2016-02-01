@@ -1,4 +1,4 @@
-describe('<> ImpacWidgetsSvc', function () {
+describe('<> ImpacWidgetsSvc-v2', function () {
   'use strict';
 
   var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, $q, $http, $rootScope;
@@ -77,7 +77,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
         $rootScope.$apply();
       });
-      
+
       it('retrieves the current dashboard', function() {
         expect(ImpacDashboardsSvc.getCurrentDashboard).toHaveBeenCalled();
       });
@@ -111,7 +111,7 @@ describe('<> ImpacWidgetsSvc', function () {
         expect(subject.$$state.status).toEqual(2);
       });
     });
-    
+
     describe('when the dashboard has no widget', function() {
       beforeEach(function() {
         var dhb = angular.copy(currentDhb);
@@ -119,7 +119,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
         $rootScope.$apply();
       });
-      
+
       it('resolves an empty array', function() {
         expect(subject.$$state.value).toEqual([]);
         expect(subject.$$state.status).toEqual(1);
@@ -133,7 +133,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
         $rootScope.$apply();
       });
-      
+
       it('does not push the corresponding widget to the update list', function() {
         expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
         expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
