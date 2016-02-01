@@ -126,7 +126,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         
           switch connector.status
             when 'SUCCESS' then status = "Last sync: #{date}"
-            when 'FAILED' then status = "Last sync failed - previous sync was: #{date}"
+            when 'FAILED' then status = "Last sync failed: #{date}"
             when 'DISCONNECTED' then status = "Disconnected - previous sync was: #{date}"
             # "RUNNING" case should imply isSyncing==true...
 
@@ -134,6 +134,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           switch connector.status
             when 'FAILED' then status = "Sync failed"
             when 'DISCONNECTED' then status = "Sync failed - Disconnected"
+            when 'NOT SYNCED' then status = "Not synced yet"
             # Any other case would be buggy...
 
         status = "#{status} (#{name})" unless _.isEmpty(status) || _.isEmpty(name)

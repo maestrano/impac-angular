@@ -2,7 +2,10 @@
 <div class="dashboard-settings sync-apps" ng-show="showComponent && lastConnector">
 
   <span ng-show="isSyncing">Syncing...</span>
-  <span ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
+  <span ng-if="otherConnectors.length == 0" ng-hide="isSyncing">
+    {{ formatStatus(lastConnector) }}
+  </span>
+  <span ng-if="otherConnectors.length > 0" ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
     {{ formatStatus(lastConnector) }}
   </span>
 
