@@ -9,7 +9,7 @@ module.controller('SettingChartFiltersCtrl', ($scope) ->
   setting.isInitialized = false
 
   setting.initialize = ->
-    if w.content.chart_filter? && $scope.filterCriteria = w.content.chart_filter.criteria
+    if w.content? && w.content.chart_filter? && $scope.filterCriteria = w.content.chart_filter.criteria
       $scope.maxEntities = w.content.chart_filter.max
       $scope.entityType = w.content.chart_filter.entity_type
       $scope.filterLabel = w.content.chart_filter.filter_label.replace(/_/g," ")
