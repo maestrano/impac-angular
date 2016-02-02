@@ -80,11 +80,6 @@ gulp.task('build-lib-dist', function () {
   runSequence('build-lib');
 });
 
-// cleans up tmp file created by 'templates' task.
-gulp.task('clean', function (asyncCallback) {
-  del(['tmp'], asyncCallback);
-});
-
 gulp.task('watch', function () {
   gulp.watch('src/**/*', ['build-lib']);
 });
