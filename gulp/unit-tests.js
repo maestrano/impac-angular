@@ -27,3 +27,6 @@ gulp.task('test-dist-minified', function (done) {
     singleRun: true
   }, done);
 });
+
+gulp.task('test', ['test-dist-concatenated']);
+gulp.task('test:dist', ['test-dist-minified']);
