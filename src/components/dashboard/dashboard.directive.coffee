@@ -57,9 +57,13 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # reload the <impac-dashboards> on organization change.
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
     $scope.isLoading = true
-    ImpacDashboardsSvc.load(true).then (success) ->
-      $scope.activateTimer()
-      $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+    ImpacDashboardsSvc.load(true).then(
+      (success) ->
+        $scope.activateTimer()
+        $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+      (error) ->
+        $scope.isLoading=false
+    )
 
     $scope.activateTimer = ->
       $scope.isLoading ||= true

@@ -147,7 +147,7 @@ angular
                 deferred.reject(errorResponse)
             )
 
-        (errors) ->
+        (error) ->
           $log.error("ImpacWidgetsSvc: error while trying to load the service")
           deferred.reject(error)
       )
