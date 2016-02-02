@@ -37,8 +37,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
 
       (errorResponse) ->
         w.isLoading = false
-        # TODO: better error management
-        $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
     ) 
 
   $scope.initSettings = ->
