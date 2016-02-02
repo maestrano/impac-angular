@@ -7,8 +7,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       widgetEngine: '='
       onDisplayAlerts: '&'
     },
-    link: (scope) ->
-      scope.bgImage = ''
+    link: (scope, element) ->
       scope.content = ImpacTheming.get().dataNotFoundConfig
       baseDir = ImpacAssets.get('dataNotFound')
       if scope.widgetEngine and baseDir.length > 0
@@ -18,13 +17,14 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
         then dir.concat('/').join('')
         else dir.join('')
 
-        assetPath = dir + scope.widgetEngine + '.png'
-        $http.get(assetPath).then(
-          (success) ->
-            scope.bgImage = assetPath
-          (error) ->
-            $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
-        )
+        image = _.find element.children().first().children(), (elem) ->
+          elem.id == 'not-found-bg'
+
+        image.onerror = ->
+          $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
+          image.remove()
+
+        image.src = dir + scope.widgetEngine + '.png'
 
       hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
       scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))
