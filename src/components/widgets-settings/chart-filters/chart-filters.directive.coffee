@@ -23,7 +23,7 @@ module.controller('SettingChartFiltersCtrl', ($scope) ->
       setting.isInitialized = true
 
   setting.toMetadata = ->
-    if w.content.chart_filter?
+    if w.content? && w.content.chart_filter?
       if $scope.filterCriteria == "percentage"
         filterValue = $scope.filterValuePercentage
       else
