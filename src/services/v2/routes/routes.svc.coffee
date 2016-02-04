@@ -17,6 +17,8 @@ angular
         create: null
         update: null
         del: null
+        # path for sync apps feature
+        syncApps: null
       widgets:
         index: null
         show: null
@@ -65,6 +67,9 @@ angular
             defaults.dashboards.del.replace(':id', id)
           else
             "#{defaults.mnoHub}/dashboards/#{id}"
+        # TODO: to be added once merge into v1
+        # syncApps: (org_uid) -> "#{defaults.syncApps.replace(':uid', org_uid)}"
+      service.appInstancesSyncPath = (org_uid) -> null # TODO: to be removed
       service.widgets =
         index: (dashboard_id) ->
           if defaults.widgets.index
