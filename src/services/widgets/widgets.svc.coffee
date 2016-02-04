@@ -186,18 +186,17 @@ angular
                 deferred.resolve widget
 
               (errorResponse) ->
-                $log.error("ImpacWidgetsSvc: cannot retrieve widget (#{widget.id}) content from API")
-
-                # If data not found ->
-                # Old widgets always return a content, even if its empty
-                # New widgets return a 404 error
+                # We still initialize the widget with the last saved settings (should be saved in metadata)
                 widget.initContext() if angular.isDefined(widget.initContext)
-                widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
+                for setting in widget.settings
+                  setting.initialize() if angular.isDefined(setting.initialize)
 
+                # We process the error
+                widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
                 deferred.reject(errorResponse)
             )
 
-        (errors) ->
+        (error) ->
           $log.error("ImpacWidgetsSvc: error while trying to load the service")
           deferred.reject(error)
       )

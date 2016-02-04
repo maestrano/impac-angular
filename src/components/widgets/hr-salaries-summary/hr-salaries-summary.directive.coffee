@@ -24,7 +24,7 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc)
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = w.content.summary? && !_.isEmpty(w.content.summary.data)
+    if $scope.isDataFound = !_.isEmpty(w.content) && w.content.summary? && !_.isEmpty(w.content.summary.data)
 
       $scope.periodOptions = [
         {label: 'Yearly', value: 'yearly'},

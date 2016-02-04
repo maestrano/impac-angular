@@ -22,7 +22,7 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.employees)
+    if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.employees)
 
       $scope.periodOptions = [
         {label: 'Yearly', value: 'yearly'},
