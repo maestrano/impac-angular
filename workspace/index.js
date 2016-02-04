@@ -5,10 +5,10 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
 
   // TODO: set-up server to enable local $http calls to setting.json
   var settings = {
-    mno_url: 'http://localhost:3000',
-    impac_url: 'http://localhost:4000',
-    api_key: '7149f0c91d7e995c10be79ed4881c035d662632995e852f550313345e0f0b982',
-    api_secret: '4a776ea4-8134-4f38-b632-85cbe951524e'
+    mno_url: 'uat.maestrano.io',
+    impac_url: 'api-impac-uat.maestrano.io',
+    api_key: '',
+    api_secret: ''
   };
 
   // encodes a base64 string - Basic Authentication.
