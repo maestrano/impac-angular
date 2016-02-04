@@ -7,6 +7,7 @@ angular
     # Private Defaults
     #=======================================
     defaults =
+      syncAppsBasePath: '/mnoe/jpi/v1/organizations/:uid/app_instances_sync'
       # manage dashboards in backend
       dhbBasePath: '/mnoe/jpi/v1/impac/dashboards',
       # manage widget in backend
@@ -54,6 +55,8 @@ angular
       service.createKpiPath = (id) -> "#{defaults.dhbBasePath}/#{id}/kpis"
       service.updateKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
       service.deleteKpiPath = (id) -> "#{defaults.kpiBasePath}/#{id}"
+      # webhooks
+      service.appInstancesSyncPath = (uid) -> "#{defaults.syncAppsBasePath.replace(':uid',uid)}"
 
       return service
     # inject service dependencies here, and declare in _$get function args.

@@ -28,7 +28,8 @@
     "angular-xeditable": "~0.1.9",
     "bootstrap": "~3.3.5",
     "lodash": "~3.10.1",
-    "components-font-awesome": "~4.5.0"
+    "components-font-awesome": "~4.5.0",
+    "angular-poller": "~0.4.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0",

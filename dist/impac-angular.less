@@ -629,16 +629,6 @@ body {
 }
 .analytics {
 
-  // Dashboard Settings
-  .dashboard-settings-panel {
-    position: relative;
-    margin: 0 2px;
-    min-height: 40px;
-    &> * {
-      float: right;
-    }
-  }
-
   &.show-dhb {
     transition: opacity 1s;
     opacity: 1;
@@ -799,7 +789,17 @@ body {
           margin: 0px;
           border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
-          &:hover, &.selected {
+          &:hover, &.selected {& > div {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
+    }
             color: @impac-dashboard-widget-selector-text-color;
           }
         }
@@ -834,6 +834,25 @@ body {
           opacity: 1;
         }
       }
+    }
+  }
+
+  #dashboard-settings-panel {
+    position: relative;
+    margin: 0px 2px;
+    & > * {
+    }
+    & > div {
+      display: inline-block;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
     }
   }
 
@@ -1338,157 +1357,11 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    white-space: nowrap;
-
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-
-    .editable-wrap {
-      position: relative;
-      height: 20px;
-      min-width: 100%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-
-      .editable-controls {
-        min-width: 100%;
-
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          // 55px is .editable-buttons width
-          width: ~"calc(100% - 55px)";
-          padding: 0px 3px;
-        }
-
-        .editable-buttons {
-          background-color: @impac-widget-title-bg;
-          button {
-            margin: 0px 0px 0px 5px;
-            height: 20px;
-            padding: 0px 5px;
-          }
-        }
-      }
-    }
+.analytics .dashboard-settings.sync-apps {
+  span {
+    margin-right: 5px;
+    color: @impac-widget-text-color-medium;
   }
-}
-
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
-
-  .top-buttons-wrapper {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 1px;
-      margin-left: 3px;
-      outline: none;
-
-      &:active, &:focus {
-        -webkit-box-shadow: none;
-      }
-
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: -1px;
-        &:hover {
-          color: @mblue;
-        }
-      }
-      &.btn-edit {
-        font-size: 14px;
-        &:hover, &.edit-mode {
-          color: darken(@mgreen,10%);
-        }
-      }
-      &.btn-close {
-        &:hover {
-          color: @pink
-        }
-      }
-
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -1525,6 +1398,16 @@ impac-kpi .kpi {
 }
 
 
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+  
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1547,16 +1430,16 @@ impac-kpi .kpi {
     border-bottom: double;
   }
 }
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
     text-align: center;
   }
-  
-  .price {
-    .center-bold(0px);
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
+
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1646,16 +1529,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1674,17 +1547,6 @@ impac-kpi .kpi {
 
 
 
-.analytics .widget-item .content.accounts-expense-weight {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -1694,6 +1556,17 @@ impac-kpi .kpi {
     margin-left: 0px;
     margin-top: 15px;
     text-align: center;
+  }
+}
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
   }
 }
 .analytics .widget-item .content.accounts-payable-receivable {
@@ -2095,6 +1968,159 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    white-space: nowrap;
+
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+
+    .editable-wrap {
+      position: relative;
+      height: 20px;
+      min-width: 100%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+
+      .editable-controls {
+        min-width: 100%;
+
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          // 55px is .editable-buttons width
+          width: ~"calc(100% - 55px)";
+          padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+          button {
+            margin: 0px 0px 0px 5px;
+            height: 20px;
+            padding: 0px 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .top-line #module__top-buttons {
+
+  i.fa {
+    margin-top: 3px;
+  }
+
+  .top-buttons-wrapper {
+    position: absolute;
+    right: 9px;
+    top: 7px;
+
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 1px;
+      margin-left: 3px;
+      outline: none;
+
+      &:active, &:focus {
+        -webkit-box-shadow: none;
+      }
+
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: -1px;
+        &:hover {
+          color: @mblue;
+        }
+      }
+      &.btn-edit {
+        font-size: 14px;
+        &:hover, &.edit-mode {
+          color: darken(@mgreen,10%);
+        }
+      }
+      &.btn-close {
+        &:hover {
+          color: @pink
+        }
+      }
+
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }

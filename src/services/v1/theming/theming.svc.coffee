@@ -48,6 +48,7 @@ angular
         linkMessage: 'Are you missing an app?'
         linkUrl: '/apps'
         linkTarget: '_blank'
+        linkUrlCallback: null
 
       # options for configuring the dhb errors messages.
       dhbErrorsConfig:
@@ -76,6 +77,11 @@ angular
       # configuring dashboard settings
       dhbSettings:
         inWidgetsContainer: false
+        showSyncApps: -> true
+
+      # options for sync-apps component
+      syncAppsConfig:
+        show: true
 
 
     #=======================================

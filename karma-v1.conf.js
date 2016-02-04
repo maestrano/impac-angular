@@ -30,6 +30,7 @@ module.exports = function(config) {
       // `maestrano.impac` module external dependencies.
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-bootstrap/ui-bootstrap.js',
+      'bower_components/angular-poller/angular-poller.js',
       // impac-angular & test scripts.
       'dist/impac-angular.v1.js',
       'src/services/v1/**/*.spec.js',

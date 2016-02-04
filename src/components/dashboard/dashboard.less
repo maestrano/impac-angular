@@ -1,15 +1,5 @@
 .analytics {
 
-  // Dashboard Settings
-  .dashboard-settings-panel {
-    position: relative;
-    margin: 0 2px;
-    min-height: 40px;
-    &> * {
-      float: right;
-    }
-  }
-
   &.show-dhb {
     transition: opacity 1s;
     opacity: 1;
@@ -170,7 +160,17 @@
           margin: 0px;
           border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
-          &:hover, &.selected {
+          &:hover, &.selected {& > div {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
+    }
             color: @impac-dashboard-widget-selector-text-color;
           }
         }
@@ -205,6 +205,25 @@
           opacity: 1;
         }
       }
+    }
+  }
+
+  #dashboard-settings-panel {
+    position: relative;
+    margin: 0px 2px;
+    & > * {
+    }
+    & > div {
+      display: inline-block;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+    select {
+      margin: 0;
+    }
+    .btn {
+      height: 32px;
+      padding-top: 5px;
     }
   }
 

@@ -7,9 +7,12 @@
     <a ng-show="showAlertsTrigger" ng-click="onDisplayAlerts()">
       <i class="fa fa-warning" /> Find out why
     </a>
-    <a ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
+    <a ng-if="hasCallbackUrl" ng-hide="showAlertsTrigger" ng-click="content.linkUrlCallback()">
       {{content.linkMessage}}
     </a>
-    
+    <a ng-if="!hasCallbackUrl" ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
+      {{content.linkMessage}}
+    </a>
+
   </div>
 </div>
