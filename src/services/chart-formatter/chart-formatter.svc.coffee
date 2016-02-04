@@ -182,8 +182,14 @@ angular
       index = 0
       isFilled = inputDataArray.length == 1
 
-      # Defaut when several datasets: straight lines without point dot
-      if inputDataArray.length > 1 || (opts.pointDot? && !opts.pointDot)
+      singleValue = false
+      if inputDataArray[0].labels.length < 2
+        # if the values array have only one entry, we double it to avoid the display of a single point on the chart
+        singleValue = true
+        inputDataArray[0].labels.push inputDataArray[0].labels[0]
+
+      # Defaut when several datasets or single dataset but with only one value: straight lines without point dot
+      if inputDataArray.length > 1 || (opts.pointDot? && !opts.pointDot) || singleValue
         angular.merge(opts, {
           elements: {
             point: {
@@ -201,6 +207,9 @@ angular
         data: {
           labels: inputDataArray[0].labels,
           datasets: _.map inputDataArray, (inputData) ->
+            if singleValue
+              inputData.values.push inputData.values[0]
+
             if versusMode
               if index == 0
                 color = _self.getNegativeColor()

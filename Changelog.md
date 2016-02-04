@@ -31,6 +31,14 @@
 
 ### Fixes
 - Widget invoices list: guarding against metadata.order_by not specified
+- Dashboard loading forever when DashboardsSvc was failing
+- Guarding across all widgets agains $scope.content not being defined (in w.initContext())
+- Organizations not being initialized if WidgetsSvc.show fails
+- Broken sales forecast and top opportunities (since 1.0.5)
+
+### Adds
+- Line charts with only one value won't display only one point but an horizontal line
+- Configuration parameters for MYOB Essentials custom message
 
 -------------------------------------------------------------
 # v1.0.5 | Fixes - Accounting reports / KPIs display / HR figures

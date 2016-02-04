@@ -18,7 +18,7 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
+    if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
       $scope.periodOptions = [
         {label: 'Yearly', value: 'yearly'},
         {label: 'Monthly', value: 'monthly'},
