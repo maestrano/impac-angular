@@ -79,10 +79,6 @@ angular
         inWidgetsContainer: false
         showSyncApps: -> true
 
-      # options for sync-apps component
-      syncAppsConfig:
-        show: true
-
 
     #=======================================
     # Public methods available in config
