@@ -16,7 +16,8 @@ body {
 }
 
 #workspace-dashboard {
-  margin: 0 40px;
+  /*margin: 0 40px;*/
+  margin: 0 auto;
 }
 
 footer#workspace-footer {

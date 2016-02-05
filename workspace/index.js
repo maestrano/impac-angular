@@ -5,8 +5,8 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
 
   // TODO: set-up server to enable local $http calls to setting.json
   var settings = {
-    mno_url: 'uat.maestrano.io',
-    impac_url: 'api-impac-uat.maestrano.io',
+    mno_url: 'https://uat.maestrano.io',
+    impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: ''
   };
@@ -27,6 +27,9 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
   ImpacTheming.configure({
     dhbKpisConfig: {
       enableKpis: true
+    },
+    dhbSettings: {
+      showSyncApps: function() { return false; }
     }
   });
 
@@ -46,12 +49,13 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
         var organizations = (response.data || []);
         return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
       },
-      fail
-    );
+        fail
+      );
   }
 
   function fail(err) {
     $log.error('workspace/index.js ERROR: ', err);
+    return {};
   }
 
 });
