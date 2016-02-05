@@ -1,5 +1,5 @@
 <!-- Will be displayed only if specified in configuration and if first response has been processed (lastConnector not null) -->
-<div class="dashboard-settings sync-apps" ng-show="showComponent && lastConnector">
+<div class="dashboard-settings sync-apps" ng-show="lastConnector">
 
   <span ng-show="isSyncing">Syncing...</span>
   <span ng-if="otherConnectors.length == 0" ng-hide="isSyncing">
