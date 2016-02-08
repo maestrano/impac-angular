@@ -83,6 +83,8 @@ angular
       dhbSettings:
         inWidgetsContainer: false
         showSyncApps: -> true
+        currency:
+          locked: false
 
       # options for sync-apps component
       syncAppsConfig:
