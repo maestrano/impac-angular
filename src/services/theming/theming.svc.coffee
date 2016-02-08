@@ -81,6 +81,8 @@ angular
       # configuring dashboard settings
       dhbSettings:
         inWidgetsContainer: false
+        currency:
+          locked: false
 
 
     #=======================================
