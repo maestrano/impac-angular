@@ -11,6 +11,10 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
     api_secret: ''
   };
 
+  if (!settings.api_key || !settings.api_secret) {
+    fail('missing authentication credentials!');
+  }
+
   // encodes a base64 string - Basic Authentication.
   var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
   // attaches basic auth onto $http default, which configures all impacWorkspace & maestrano.impac
