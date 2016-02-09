@@ -197,7 +197,7 @@ describe('<> ImpacDashboardsSvc', function () {
             svc.config.dashboards = [];
             svc.setCurrentDashboard(id);
           });
-          
+
           it('sets an empty object as the current dashboard', function() {
             expect(svc.config.currentDashboard).toEqual({});
           });
