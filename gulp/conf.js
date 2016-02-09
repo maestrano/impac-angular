@@ -26,11 +26,6 @@ exports.paths = {
   tmp: '.tmp',
 };
 
-
-// exports.injectVersion = function(path) {
-//   return path.replace(':version', ('v' + exports.version));
-// };
-
 /**
  *  Common implementation for an error handler of a Gulp plugin
  */
