@@ -71,7 +71,7 @@ angular
           ImpacMainSvc.loadOrganizations(force).then (success) ->
             orgId = success.currentOrganization.id
 
-            $http.get(ImpacRoutes.baseDhbPath(orgId)).then (dashboards) ->
+            $http.get(ImpacRoutes.dashboards.index()).then (dashboards) ->
               _self.setDashboards(dashboards.data).then ->
                 _self.setCurrentDashboard()
                 _self.loadLocked=false
@@ -177,7 +177,7 @@ angular
 
         data = { dashboard: dashboard }
 
-        $http.post(ImpacRoutes.createDhbPath(), data).then (success) ->
+        $http.post(ImpacRoutes.dashboards.create(), data).then (success) ->
           _self.config.dashboards.push(success.data)
           _self.setCurrentDashboard(success.data.id)
           deferred.resolve(success.data)
@@ -191,7 +191,7 @@ angular
     @delete = (id) ->
       deferred = $q.defer()
 
-      $http.delete(ImpacRoutes.deleteDhbPath(id)).then (success) ->
+      $http.delete(ImpacRoutes.dashboards.delete(id)).then (success) ->
         _.remove _self.config.dashboards, (dhb) ->
           id == dhb.id
         _self.setCurrentDashboard()
@@ -207,7 +207,7 @@ angular
       deferred = $q.defer()
       data = { dashboard: opts }
 
-      $http.put(ImpacRoutes.updateDhbPath(id),data).then (success) ->
+      $http.put(ImpacRoutes.dashboards.update(id), data).then (success) ->
         angular.merge( _.find(_self.config.dashboards, (dhb) ->
           id == dhb.id
         ), success.data)
