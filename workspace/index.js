@@ -23,7 +23,8 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
 
   // Configure the ImpacRoutes service options.
   ImpacRoutes.configureRoutes({
-    mnoHub: settings.mno_url + '/api/v2/impac',
+    mnoHub: settings.mno_url + '/api/v2',
+    impacPrefix: '/impac',
     impacApi: settings.impac_url + '/api'
   });
 
