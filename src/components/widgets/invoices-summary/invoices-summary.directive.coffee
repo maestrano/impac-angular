@@ -24,7 +24,7 @@ module.controller('WidgetInvoicesSummaryCtrl', ($scope, $q, ChartFormatterSvc) -
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = !_.isEmpty(w.content.summary)
+    $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.summary)
 
 
   # Chart formating function

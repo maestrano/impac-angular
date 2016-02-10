@@ -102,7 +102,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
   selectedStatusSetting.initialized = false
 
   selectedStatusSetting.initialize = ->
-    $scope.selectedStatus = w.metadata.selected_status if angular.isDefined(w.content.leads_per_status[w.metadata.selected_status])
+    $scope.selectedStatus = w.metadata.selected_status if !_.isEmpty(w.content) && angular.isDefined(w.content.leads_per_status[w.metadata.selected_status])
     selectedStatusSetting.initialized = true
 
   selectedStatusSetting.toMetadata = ->

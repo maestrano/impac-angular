@@ -1,12 +1,14 @@
 module = angular.module('impac.components.dashboard-settings.currency',[])
 
-module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
       currency: '='
     },
     link: (scope, element, attrs) ->
+      scope.locked = ImpacTheming.get().dhbSettings.currency.locked
+
       ImpacMainSvc.load().then(
         (mainConfig) ->
           ImpacDashboardsSvc.load().then ->

@@ -1,7 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc) ->
-
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming) ->
 
     #====================================
     # Initialization and getters
@@ -52,6 +51,9 @@ angular
 
     @isCurrentDashboardEmpty = ->
       _self.isThereADashboard() && _.isEmpty(_self.config.currentDashboard.widgets)
+
+    @areKpisEnabled = ->
+      ImpacTheming.get().dhbKpisConfig.enableKpis
 
 
     #====================================
@@ -106,7 +108,7 @@ angular
         $log.info("Impac - DashboardSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
         _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
-        ImpacKpisSvc.initialize(_self.config.currentDashboard)
+        ImpacKpisSvc.initialize(_self.config.currentDashboard) if _self.areKpisEnabled()
         _self.initializeActiveTabs()
         _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
         return true
@@ -123,7 +125,7 @@ angular
         if !_.isEmpty(fetchedDhb)
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
           _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
-          ImpacKpisSvc.initialize(_self.config.currentDashboard)
+          ImpacKpisSvc.initialize(_self.config.currentDashboard) if _self.areKpisEnabled()
           _self.initializeActiveTabs()
           _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
           return true
@@ -142,13 +144,17 @@ angular
 
 
     @setDashboards = (dashboardsArray=[]) ->
-      ImpacMainSvc.loadOrganizations().then (config) ->
-        curOrg = config.currentOrganization
-        # Clear array
-        _.remove _self.config.dashboards, (-> true)
-        for dhb in dashboardsArray
-          if belongsToCurrentOrganization(dhb, curOrg)
-            _self.config.dashboards.push dhb
+      ImpacMainSvc.loadOrganizations().then(
+        (config) ->
+          curOrg = config.currentOrganization
+          # Clear array
+          _.remove _self.config.dashboards, (-> true)
+          for dhb in dashboardsArray
+            if belongsToCurrentOrganization(dhb, curOrg)
+              _self.config.dashboards.push dhb
+        (error) ->
+          $log.error("Impac - DashboardSvc: Cannot load user's organizations")
+      )
 
 
     @setWidgetsTemplates = (templatesArray) ->

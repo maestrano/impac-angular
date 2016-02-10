@@ -20,7 +20,7 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = !_.isEmpty(w.content.entities)
+    $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.entities)
     
     if $scope.isDataFound && $scope.orderBy=='due '
       if $scope.entityType=='suppliers'

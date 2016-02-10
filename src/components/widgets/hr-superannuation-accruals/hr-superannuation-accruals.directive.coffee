@@ -18,7 +18,7 @@ module.controller('WidgetHrSuperannuationAccrualsCtrl', ($scope, $q) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.employees)
+    if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.employees)
       $scope.employeesOptions = _.map(w.content.employees, (e) ->
         {
           value: e.uid,
