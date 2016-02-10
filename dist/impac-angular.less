@@ -1367,19 +1367,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
-
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -1397,6 +1384,19 @@ impac-kpi .kpi {
     font-weight: bold;
   }
 }
+
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1529,17 +1529,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.accounts-expense-weight {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1558,6 +1547,17 @@ impac-kpi .kpi {
 
 
 
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -1681,9 +1681,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -1699,7 +1696,7 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.hr-workforce-summary {
+.analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
@@ -1710,6 +1707,9 @@ impac-kpi .kpi {
     max-height: 210px;
   }
 }
+.analytics .widget-item .content.hr-workforce-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
@@ -1719,11 +1719,11 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
+}
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -1782,6 +1782,9 @@ impac-kpi .kpi {
     max-height: 270px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1807,9 +1810,6 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container .widget-line.main {
@@ -1829,15 +1829,6 @@ impac-kpi .kpi {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1847,6 +1838,15 @@ impac-kpi .kpi {
   .selector {
     margin-bottom: 4px;
   }
+}
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
@@ -1920,6 +1920,37 @@ impac-kpi .kpi {
     margin-bottom: 5px;
   }
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -1965,37 +1996,6 @@ impac-kpi .kpi {
           padding-top: 8px;
         }
       }
-    }
-  }
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
     }
   }
 }

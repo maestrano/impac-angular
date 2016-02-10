@@ -1,7 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
   .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming) ->
-
     #====================================
     # Initialization and getters
     #====================================

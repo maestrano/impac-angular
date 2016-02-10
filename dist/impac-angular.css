@@ -7618,14 +7618,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   margin-right: 5px;
   color: #9ba6a7;
 }
-.analytics .widget-item .content.accounts-assets-summary .legend {
-  text-align: left;
-  max-height: 115px;
-}
-.analytics .widget-item .content.accounts-assets-summary .legend .title {
-  text-align: center;
-  border-bottom: dashed 1px #dfe2e2;
-}
 .analytics .widget-item .content.accounts-assets-liability-summary .param-selector {
   text-align: center;
 }
@@ -7639,6 +7631,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.accounts-assets-liability-summary p {
   font-weight: bold;
+}
+.analytics .widget-item .content.accounts-assets-summary .legend {
+  text-align: left;
+  max-height: 115px;
+}
+.analytics .widget-item .content.accounts-assets-summary .legend .title {
+  text-align: center;
+  border-bottom: dashed 1px #dfe2e2;
 }
 .analytics .widget-item .content.accounts-balance h3 {
   font-weight: 300;
@@ -7901,14 +7901,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics.modal-custom-calculation .modal-body .edit .part {
   width: 49%;
 }
-.analytics .widget-item .content.accounts-expense-weight .legend {
-  text-align: left;
-  max-height: 115px;
-}
-.analytics .widget-item .content.accounts-expense-weight .legend .title {
-  text-align: center;
-  border-bottom: dashed 1px #dfe2e2;
-}
 .analytics .widget-item .content.accounts-detailed-classifications {
   min-height: 565px;
 }
@@ -7937,6 +7929,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.accounts-detailed-classifications .account-class-title {
   margin-bottom: 8px;
   margin-left: 11px;
+}
+.analytics .widget-item .content.accounts-expense-weight .legend {
+  text-align: left;
+  max-height: 115px;
+}
+.analytics .widget-item .content.accounts-expense-weight .legend .title {
+  text-align: center;
+  border-bottom: dashed 1px #dfe2e2;
 }
 .analytics .widget-item .content.accounts-expenses-revenue .legend {
   font-weight: bold;
@@ -8143,23 +8143,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   max-width: 90% !important;
   margin: auto !important;
 }
-.analytics .widget-item .content.hr-salaries-summary h3.left {
-  margin-top: 69px;
-  text-align: center;
-}
-.analytics .widget-item .content.hr-salaries-summary h3.right {
-  margin-bottom: 10px;
-  text-align: center;
-}
-.analytics .widget-item .content.hr-salaries-summary .price {
-  margin-top: 0;
-}
-.analytics .widget-item .content.hr-salaries-summary .widget-lines-container {
-  max-height: 75px;
-}
-.analytics .widget-item .content.hr-salaries-summary .widget-lines-container .widget-line {
-  font-size: 11px;
-}
 .analytics .widget-item .content.hr-superannuation-accruals h3 {
   margin-top: 63px;
   text-align: center;
@@ -8177,6 +8160,29 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
   margin-top: 0px;
 }
+.analytics .widget-item .content.hr-salaries-summary h3.left {
+  margin-top: 69px;
+  text-align: center;
+}
+.analytics .widget-item .content.hr-salaries-summary h3.right {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.analytics .widget-item .content.hr-salaries-summary .price {
+  margin-top: 0;
+}
+.analytics .widget-item .content.hr-salaries-summary .widget-lines-container {
+  max-height: 75px;
+}
+.analytics .widget-item .content.hr-salaries-summary .widget-lines-container .widget-line {
+  font-size: 11px;
+}
+.analytics .widget-item .content.hr-timesheets .currency {
+  font-size: 14px;
+}
+.analytics .widget-item .content.hr-timesheets .widget-lines-container {
+  max-height: 210px;
+}
 .analytics .widget-item .content.hr-workforce-summary h3.left {
   margin-top: 69px;
   text-align: center;
@@ -8193,12 +8199,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.hr-workforce-summary .widget-lines-container .widget-line {
   font-size: 11px;
-}
-.analytics .widget-item .content.hr-timesheets .currency {
-  font-size: 14px;
-}
-.analytics .widget-item .content.hr-timesheets .widget-lines-container {
-  max-height: 210px;
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   min-height: 565px;
@@ -8252,12 +8252,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: left;
   padding-left: 15px;
 }
-.analytics .widget-item .content.invoices-summary .chart-container {
-  max-width: 410px;
-}
-.analytics .widget-item .content.invoices-summary .legend {
-  max-height: 28px;
-}
 .analytics .widget-item .content.invoices-list .widget-lines-container {
   max-height: 230px;
 }
@@ -8269,6 +8263,12 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.invoices-list .widget-lines-container .widget-line.header {
   background-color: white;
+}
+.analytics .widget-item .content.invoices-summary .chart-container {
+  max-width: 410px;
+}
+.analytics .widget-item .content.invoices-summary .legend {
+  max-height: 28px;
 }
 .analytics .widget-item .content.sales-aged {
   min-height: 565px;
@@ -8392,6 +8392,12 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-comparison .right-panel .widget-lines-container {
   max-height: 270px;
 }
+.analytics .widget-item .content.sales-cycle .chart-container {
+  max-width: 410px;
+}
+.analytics .widget-item .content.sales-cycle .legend {
+  max-height: 28px;
+}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
 }
@@ -8414,12 +8420,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
   margin-bottom: 10px;
   font-size: 14px;
-}
-.analytics .widget-item .content.sales-cycle .chart-container {
-  max-width: 410px;
-}
-.analytics .widget-item .content.sales-cycle .legend {
-  max-height: 28px;
 }
 .analytics .widget-item .content.sales-forecast {
   min-height: 565px;
@@ -8498,22 +8498,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-leads-funnel .right-panel .widget-lines-container .widget-line {
   cursor: default;
 }
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  max-height: 230px;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
 .analytics .widget-item .content.sales-list .widget-lines-container {
   max-height: 230px;
 }
@@ -8533,6 +8517,22 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-list .selector {
   margin-bottom: 4px;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  max-height: 230px;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-number-of-leads .stats {
   margin-top: 35px;
@@ -8674,6 +8674,36 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5B6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  max-width: 100%;
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
+}
 .analytics .widget-item .content.sales-top-opportunities .opps-container {
   max-height: 195px;
   margin-top: 10px;
@@ -8720,36 +8750,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5B6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-  max-width: 100%;
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
 }
 .analytics .widget-item .title-wrapper {
   width: 100%;
