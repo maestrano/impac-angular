@@ -24,12 +24,12 @@
     <i class="fa fa-times" ng-click="hideSubMenu()" />
 
     <!-- Displayed to MYOB Essentials Users -->
-    <div id="myob-message" ng-if="hasMyobEssentialsOnly && myobMessageConfig.show" class="alert alert-warning">
+    <div id="myob-message" ng-if="hasMyobEssentialsOnly" class="alert alert-warning">
       <h3>It looks like you are using MYOB Essentials...</h3>
       <p>Unfortunately, all the information required by Impac! is not exposed by MYOB Essentials API <strong>yet</strong>.
       Consequently, most of the accounting widgets provided by Impac! won't find a valid source of data to display their content.</p>
       <p>Maybe you should consider switching to <a href="http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948" target="_blank">MYOB AccountRight</a>, the other MYOB accounting solution?</p>
-      <p align="right" ng-if="myobMessageConfig.appLink.show"><a ng-href="{{myobMessageConfig.appLink.url}}" target="_blank">{{myobMessageConfig.appLink.text}}</a></p>
+      <p align="right" ng-if="marketplaceMyobLink"><a ng-href="{{marketplaceMyobLink}}" target="_blank">>> Check this app on the marketplace</a></p>
     </div>
   </div>
 
@@ -85,8 +85,8 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div class="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer">
-    <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
+    <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
 
   <!-- Errors -->
@@ -152,17 +152,19 @@
 
   <!-- Widgets -->
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
-    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
-      <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
-      <div class="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer">
-        <div ng-hide="showChooseDhbMsg()" dashboard-setting-currency currency="currentDhb.currency" />
-      </div>
-      <!-- Widget -->
-      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
-      <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
-      <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
-        <div class="col-md-6 widget-item add-chart">
-          <div class="a-content">+ chart</div>
+    <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
+    <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right col-md-12 in-widgets-container">
+      <div dashboard-setting-currency currency="currentDhb.currency" />
+    </div>
+    <div class="col-md-12">
+      <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">
+        <!-- Widgets -->
+        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
+        <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
+        <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
+          <div class="col-md-6 widget-item add-chart">
+            <div class="a-content">+ chart</div>
+          </div>
         </div>
       </div>
     </div>

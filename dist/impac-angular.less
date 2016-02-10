@@ -625,14 +625,21 @@ body {
   }
 }
 .analytics {
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
 
   // Dashboard Settings
-  .dashboard-settings-panel {
+  #dashboard-settings-panel {
     position: relative;
     margin: 0 2px;
-    min-height: 40px;
+    // min-height: 40px;
     &> * {
       float: right;
+    }
+    &.in-widgets-container {
+      margin: 0;
+      padding: 0 @impac-padding-between-widgets;
+      min-height: 0px;
     }
   }
 
@@ -643,10 +650,6 @@ body {
   &.hide-dhb {
     opacity: 0;
   }
-
-
-  padding-top: @impac-dashboard-padding-top;
-  margin-left: @impac-dashboard-margin-left;
 
   #head-title {
     // contains customisable impac logo, and heading text.
@@ -858,9 +861,6 @@ body {
 
   // parent div section for widgets to be housed.
   #widgets-section {
-    padding-left: @impac-widgets-container-side-padding;
-    padding-right: @impac-widgets-container-side-padding;
-
     // container for widgets
     #widgets-container {
       // Quick-fix to avoid screen flockering when tooltips are appended to body:
@@ -923,7 +923,7 @@ body {
 
   // container for dashboard selector 'dropdown' template
   .buttons-bar {
-    padding: 0;
+    // padding: 0;
     padding-bottom: 5px;
 
     .btn {
@@ -1488,6 +1488,9 @@ impac-kpi .kpi {
 
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -1506,9 +1509,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -1742,6 +1742,18 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
+    text-align: center;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.hr-employees-list {
   .legend {
     margin-bottom: 9px;
@@ -1756,18 +1768,6 @@ impac-kpi .kpi {
     .widget-lines-container {
       text-align: left;
     }
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .employee-name {
-    text-align: center;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 33px;
-    text-align: center;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{

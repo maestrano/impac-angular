@@ -1,12 +1,19 @@
 .analytics {
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
 
   // Dashboard Settings
-  .dashboard-settings-panel {
+  #dashboard-settings-panel {
     position: relative;
     margin: 0 2px;
-    min-height: 40px;
+    // min-height: 40px;
     &> * {
       float: right;
+    }
+    &.in-widgets-container {
+      margin: 0;
+      padding: 0 @impac-padding-between-widgets;
+      min-height: 0px;
     }
   }
 
@@ -17,10 +24,6 @@
   &.hide-dhb {
     opacity: 0;
   }
-
-
-  padding-top: @impac-dashboard-padding-top;
-  margin-left: @impac-dashboard-margin-left;
 
   #head-title {
     // contains customisable impac logo, and heading text.
@@ -232,9 +235,6 @@
 
   // parent div section for widgets to be housed.
   #widgets-section {
-    padding-left: @impac-widgets-container-side-padding;
-    padding-right: @impac-widgets-container-side-padding;
-
     // container for widgets
     #widgets-container {
       // Quick-fix to avoid screen flockering when tooltips are appended to body:
