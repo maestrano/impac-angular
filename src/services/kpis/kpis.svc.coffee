@@ -35,6 +35,11 @@ angular
     isInitialized = ->
       !(_.isEmpty _self.config.ssoSessionId or _.isEmpty _self.config.kpisTemplates or _.isEmpty _self.config.currentDashboardId)
 
+    # impac developer toolkit basic authentication is present.
+    isDeveloper = ->
+      basicAuth = $http.defaults.headers.common.Authorization
+      return basicAuth && typeof basicAuth == 'string' && basicAuth.length
+
 
     #====================================
     # Load and initialize
@@ -65,18 +70,19 @@ angular
 
         orgUids = _.pluck dashboard.data_sources, 'uid'
 
-        params = {
-          sso_session: _self.config.ssoSessionId
-          metadata: {organization_ids: orgUids}
+        params = {}
+        params.metadata = {
+          organization_ids: orgUids
         }
+        params.metadata.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
 
         promises = {
           impac: index(params)
         }
 
         # Get local kpis
-        if ImpacRoutes.localKpisBasePath()
-          promises.local = $http.get(ImpacRoutes.localKpisBasePath())
+        if ImpacRoutes.kpis.local()
+          promises.local = $http.get(ImpacRoutes.kpis.local())
 
         $q.all(promises).then(
           (response) ->
@@ -107,7 +113,7 @@ angular
     # Retrieve all the available kpis from Impac!
     # Note: index is a private method that should be called only by _self.initialized
     index = (params) ->
-      host = ImpacRoutes.impacKpisBasePath()
+      host = ImpacRoutes.kpis.index()
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
 
@@ -116,22 +122,22 @@ angular
     @show = (kpi) ->
       deferred = $q.defer()
 
-      if !isInitialized()
+      unless isInitialized() || isDeveloper()
         $log.error 'ImpacKpisSvc - Service not initialized'
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
       else
         params = {}
-        params.sso_session = _self.config.ssoSessionId
+        params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
         params.targets = kpi.targets if kpi.targets?
         params.metadata = kpi.settings if kpi.settings?
         params.extra_params = kpi.extra_params if kpi.extra_params?
 
         switch kpi.source
           when 'impac'
-            host = ImpacRoutes.impacKpisBasePath()
+            host = ImpacRoutes.kpis.show(_self.config.currentDashboardId, kpi.id)
           when 'local'
-            host = ImpacRoutes.localKpisBasePath()
+            host = ImpacRoutes.kpis.local()
 
         url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
@@ -158,7 +164,7 @@ angular
     # @create = (source, endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
 
-      if !isInitialized()
+      unless isInitialized() || isDeveloper()
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
       else
@@ -171,7 +177,7 @@ angular
         #   params.extra_params ||= []
         #   params.extra_params.push param
 
-        url = ImpacRoutes.createKpiPath _self.config.currentDashboardId
+        url = ImpacRoutes.kpis.create(_self.config.currentDashboardId)
 
         $http.post(url, {kpi: params}).then(
           (success) ->
@@ -192,7 +198,7 @@ angular
       filtered_params.targets = params.targets if params.targets?
       filtered_params.extra_params = params.extra_params if params.extra_params?
 
-      url = ImpacRoutes.updateKpiPath kpi.id
+      url = ImpacRoutes.kpis.update(_self.config.currentDashboardId, kpi.id)
 
       if !_.isEmpty filtered_params
         $http.put(url, {kpi: params}).then (success) ->
@@ -209,7 +215,7 @@ angular
     @delete = (kpi) ->
       deferred = $q.defer()
 
-      url = ImpacRoutes.deleteKpiPath kpi.id
+      url = ImpacRoutes.kpis.delete(_self.config.currentDashboardId, kpi.id)
       $http.delete(url).then (success) ->
         deferred.resolve(success)
       ,(err) ->

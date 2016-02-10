@@ -48,7 +48,7 @@ gulp.task('templates', function () {
 gulp.task('templates-modules-concat', ['templates'], function () {
   return gulp.src([
       path.join(conf.paths.src, '/impac-angular.module.js'),
-      conf.injectVersion(path.join(conf.paths.src, '/impac-angular.:version.services.js')),
+      path.join(conf.paths.src, '/impac-angular.services.js'),
       path.join(conf.paths.tmp, '/templates/templates.tmp')
     ])
     .pipe(concat(pkg.name + '.js')) // output filename
@@ -130,13 +130,11 @@ gulp.task('build', ['coffee-compile', 'less-inject', 'less-concat', 'templates-m
       path.join(conf.paths.tmp, '/scripts/**/*.js'),
       'lib/*.js'
     ])
-    .pipe(concat(conf.injectVersion('impac-angular.:version.js')))
+    .pipe(concat('impac-angular.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest(conf.paths.dist))
     .pipe(uglify())
     .pipe(strip())
-    .pipe(rename(conf.injectVersion('impac-angular.:version.min.js')))
+    .pipe(rename('impac-angular.min.js'))
     .pipe(gulp.dest(conf.paths.dist));
-
-  gutil.log(gutil.colors.green('[ ' + 'FINISHED BUILDING VERSION: ' + conf.version + ' ]'));
 });

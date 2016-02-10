@@ -1,6 +1,6 @@
 # provider for configuring http endpoints.
 angular
-  .module('impac.services.routes-v2', [])
+  .module('impac.services.routes', [])
   .provider('ImpacRoutes', () ->
     provider = @
     #=======================================
@@ -8,17 +8,17 @@ angular
     #=======================================
     defaults =
       # base paths
-      mnoHub: '/api/v2/impac'
+      mnoHub: '/api/v2'
+      impacPrefix: '/impac'
       impacApi: 'http://localhost:4000/api'
-      # define specific paths
+      
       dashboards:
         index: null
         show: null
         create: null
         update: null
         del: null
-        # path for sync apps feature
-        syncApps: null
+
       widgets:
         index: null
         show: null
@@ -26,7 +26,8 @@ angular
         update: null
         del: null
         # path for widget suggestion feature
-        suggestions: null
+        suggest: null
+
       kpis:
         index: null
         show: null
@@ -35,6 +36,9 @@ angular
         del: null
         # retrieve local kpis data
         local: null
+
+      organizations:
+        appInstancesSync: null
 
     #=======================================
     # Public methods available in config
@@ -49,27 +53,25 @@ angular
       # Public methods available as service
       #=======================================
       service.dashboards =
-        index: -> (defaults.dashboards.index || "#{defaults.mnoHub}/dashboards")
+        index: -> (defaults.dashboards.index || "#{defaults.mnoHub}#{defaults.impacPrefix}/dashboards")
         show: (id) ->
           if defaults.dashboards.show
             defaults.dashboards.show.replace(':id', id)
           else
-            "#{defaults.mnoHub}/dashboards/#{id}"
+            "#{service.dashboards.index()}/#{id}"
 
-        create: -> (defaults.dashboards.create || "#{defaults.mnoHub}/dashboards")
+        create: -> (defaults.dashboards.create || service.dashboards.index())
         update: (id) ->
           if defaults.dashboards.update
             defaults.dashboards.update.replace(':id', id)
           else
-            "#{defaults.mnoHub}/dashboards/#{id}"
+            "#{service.dashboards.index()}/#{id}"
         delete: (id) ->
           if defaults.dashboards.del
             defaults.dashboards.del.replace(':id', id)
           else
-            "#{defaults.mnoHub}/dashboards/#{id}"
-        # TODO: to be added once merge into v1
-        # syncApps: (org_uid) -> "#{defaults.syncApps.replace(':uid', org_uid)}"
-      service.appInstancesSyncPath = (org_uid) -> null # TODO: to be removed
+            "#{service.dashboards.index()}/#{id}"
+
       service.widgets =
         index: (dashboard_id) ->
           if defaults.widgets.index
@@ -85,20 +87,19 @@ angular
           if defaults.widgets.create
             defaults.widgets.create.replace(':dashboard_id', dashboard_id)
           else
-            "#{service.dashboards.show(dashboard_id)}/widgets"
+            service.widgets.index(dashboard_id)
         update: (dashboard_id, id) ->
           if defaults.widgets.update
             defaults.widgets.update.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{service.dashboards.show(dashboard_id)}/widgets/#{id}"
+            "#{service.widgets.index(dashboard_id)}/#{id}"
         delete: (dashboard_id, id) ->
           if defaults.widgets.del
             defaults.widgets.del.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{service.dashboards.show(dashboard_id)}/widgets/#{id}"
-        # TODO: to be added once merged into v1
-        # suggestions: -> "#{defaults.widgets.suggestions}"
-      service.sendWidgetSuggestion = -> null # TODO: to be removed
+            "#{service.widgets.index(dashboard_id)}/#{id}"
+        suggest: -> defaults.widgets.suggest
+
       service.kpis =
         index: (dashboard_id) ->
           if defaults.kpis.index
@@ -119,13 +120,20 @@ angular
           if defaults.kpis.update
             defaults.kpis.update.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{service.dashboards.show(dashboard_id)}/kpis/#{id}"
+            "#{service.kpis.create(dashboard_id)}/#{id}"
         delete: (dashboard_id, id) ->
           if defaults.kpis.del
             defaults.kpis.del.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{service.dashboards.show(dashboard_id)}/kpis/#{id}"
+            "#{service.kpis.create(dashboard_id)}/#{id}"
         local: -> defaults.kpis.local
+
+      service.organizations =
+        appInstancesSync: (uid) ->
+          if defaults.organizations.appInstancesSync
+            defaults.organizations.appInstancesSync.replace(':uid', uid)
+          else
+            "#{defaults.mnoHub}/organizations/#{uid}/app_instances_sync"
 
       return service
     # inject service dependencies here, and declare in _$get function args.
