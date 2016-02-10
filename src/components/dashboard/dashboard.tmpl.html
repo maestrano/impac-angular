@@ -85,7 +85,7 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right">
     <div dashboard-setting-currency currency="currentDhb.currency" />
     <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
   </div>
