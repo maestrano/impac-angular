@@ -32,10 +32,8 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       'bower_components/angular-poller/angular-poller.js',
       // impac-angular & test scripts.
-      'dist/impac-angular.v2.js',
-      'src/services/v2/**/*.spec.js',
-      'src/components/**/*.spec.js',
-      'src/filters/**/*.spec.js'
+      'dist/impac-angular.js',
+      'src/**/*.spec.js'
     ],
 
 

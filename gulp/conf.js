@@ -8,14 +8,7 @@
  */
 
 var gutil = require('gulp-util'),
-    workspaceSettings = require('../workspace/settings.json'),
     notify = require('gulp-notify');
-
-/**
- *  Set impac-angular version here; selects versioned services and dist files.
- *  Node environment variable can be set by running `NODE_ENV=value` before any task.
- */
-exports.version = process.env.NODE_ENV || workspaceSettings.version || '2';
 
 /**
  *  The main paths of your project handle these with care

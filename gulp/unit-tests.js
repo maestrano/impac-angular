@@ -7,27 +7,23 @@ var gulp = require('gulp'),
     runSeq = require('run-sequence'),
     karma = require('karma').server;
 
-gulp.task('test-v1', function (done) {
+gulp.task('unit-tests', function (done) {
   karma.start({
-    configFile: path.join(__dirname, '/../karma-v1.conf.js'),
+    configFile: path.join(__dirname, '/../karma.conf.js'),
     singleRun: true
   }, done);
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 1 UNIT TESTS ]'));
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 1 UNIT TESTS ]'));
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 1 UNIT TESTS ]'));
+  gutil.log(gutil.colors.yellow('[ STARTING UNIT TESTS ]'));
 });
 
-gulp.task('test-v2', function (done) {
+gulp.task('unit-tests-min', function (done) {
   karma.start({
-    configFile: path.join(__dirname, '/../karma-v2.conf.js'),
+    configFile: path.join(__dirname, '/../karma-min.conf.js'),
     singleRun: true
   }, done);
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 2 UNIT TESTS ]'));
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 2 UNIT TESTS ]'));
-  gutil.log(gutil.colors.yellow('[ STARTING VERSION 2 UNIT TESTS ]'));
+  gutil.log(gutil.colors.yellow('[ STARTING UNIT TESTS ON MINIFIED FILES ]'));
 });
 
 
 gulp.task('test', function (cb) {
-  runSeq('test-v1', ['test-v2'], cb);
+  runSeq('unit-tests', ['unit-tests-min'], cb);
 });
