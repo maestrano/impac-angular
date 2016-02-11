@@ -48,7 +48,6 @@ gulp.task('templates', function () {
 gulp.task('templates-modules-concat', ['templates'], function () {
   return gulp.src([
       path.join(conf.paths.src, '/impac-angular.module.js'),
-      path.join(conf.paths.src, '/impac-angular.services.js'),
       path.join(conf.paths.tmp, '/templates/templates.tmp')
     ])
     .pipe(concat(pkg.name + '.js')) // output filename
