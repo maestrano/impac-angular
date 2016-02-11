@@ -88,6 +88,7 @@ gulp.task('less-inject', function() {
     .pipe(gulp.dest(path.join(conf.paths.src, '/')));
 });
 
+// compiles less into css, with minified version.
 gulp.task('less-compile', ['less-inject'], function () {
   return gulp.src(path.join(conf.paths.src, '/impac-angular.less'))
     .pipe(less({
@@ -105,6 +106,7 @@ gulp.task('less-compile', ['less-inject'], function () {
     .pipe(gulp.dest(conf.paths.dist));
 });
 
+// creates impac-angular.less file by concatinating all.
 gulp.task('less-concat', function () {
   return gulp.src([
       path.join(conf.paths.src, '/stylesheets/variables.less'),
@@ -114,7 +116,7 @@ gulp.task('less-concat', function () {
       path.join(conf.paths.src, '/components/**/*.less')
     ])
     .pipe(concat('impac-angular.less'))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest(conf.paths.dist));
 });
 
 gulp.task('clean', function (asyncCallback) {
