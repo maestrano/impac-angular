@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
 
     #====================================
     # Initialization
@@ -10,7 +10,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-    $scope.widgetsList = ImpacDashboardsSvc.getWidgetsTemplates()
+    # developers can add widgets via the ImpacDeveloper service without modifying the API
+    if ImpacDeveloper.getStatus()
+      $scope.widgetsList = ImpacDeveloper.getWidgetsTemplates()
+    else
+      $scope.widgetsList = ImpacDashboards.getWidgetsTemplates()
 
     # assets
     # -------------------------------------
@@ -301,7 +305,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     #====================================
 
     # - in directives -
-    
+
 
     #====================================
     # Widget suggestion modal
