@@ -1,4 +1,6 @@
 .analytics {
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
 
   &.show-dhb {
     transition: opacity 1s;
@@ -7,10 +9,6 @@
   &.hide-dhb {
     opacity: 0;
   }
-
-
-  padding-top: @impac-dashboard-padding-top;
-  margin-left: @impac-dashboard-margin-left;
 
   #head-title {
     // contains customisable impac logo, and heading text.
@@ -211,7 +209,12 @@
   #dashboard-settings-panel {
     position: relative;
     margin: 0px 2px;
-    & > * {
+    &> * {
+      float: right;
+    }
+    &.in-widgets-container {
+      margin: 0;
+      padding: 0 @impac-padding-between-widgets;
     }
     & > div {
       display: inline-block;
@@ -251,9 +254,6 @@
 
   // parent div section for widgets to be housed.
   #widgets-section {
-    padding-left: @impac-widgets-container-side-padding;
-    padding-right: @impac-widgets-container-side-padding;
-
     // container for widgets
     #widgets-container {
       // Quick-fix to avoid screen flockering when tooltips are appended to body:

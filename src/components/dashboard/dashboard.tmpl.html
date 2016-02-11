@@ -85,9 +85,9 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
-    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right">
     <div dashboard-setting-currency currency="currentDhb.currency" />
+    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
   </div>
 
   <!-- Errors -->
@@ -153,18 +153,20 @@
 
   <!-- Widgets -->
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
-    <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets">
-      <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
-      <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right">
-        <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
-        <div dashboard-setting-currency currency="currentDhb.currency" />
-      </div>
-      <!-- Widget -->
-      <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
-      <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
-      <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
-        <div class="col-md-6 widget-item add-chart">
-          <div class="a-content">+ chart</div>
+    <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
+    <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right col-md-12 in-widgets-container">
+      <div dashboard-setting-currency currency="currentDhb.currency" />
+      <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+    </div>
+    <div class="col-md-12">
+      <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">
+        <!-- Widgets -->
+        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
+        <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
+        <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
+          <div class="col-md-6 widget-item add-chart">
+            <div class="a-content">+ chart</div>
+          </div>
         </div>
       </div>
     </div>

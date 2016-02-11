@@ -628,6 +628,8 @@ body {
   }
 }
 .analytics {
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
 
   &.show-dhb {
     transition: opacity 1s;
@@ -636,10 +638,6 @@ body {
   &.hide-dhb {
     opacity: 0;
   }
-
-
-  padding-top: @impac-dashboard-padding-top;
-  margin-left: @impac-dashboard-margin-left;
 
   #head-title {
     // contains customisable impac logo, and heading text.
@@ -840,7 +838,12 @@ body {
   #dashboard-settings-panel {
     position: relative;
     margin: 0px 2px;
-    & > * {
+    &> * {
+      float: right;
+    }
+    &.in-widgets-container {
+      margin: 0;
+      padding: 0 @impac-padding-between-widgets;
     }
     & > div {
       display: inline-block;
@@ -880,9 +883,6 @@ body {
 
   // parent div section for widgets to be housed.
   #widgets-section {
-    padding-left: @impac-widgets-container-side-padding;
-    padding-right: @impac-widgets-container-side-padding;
-
     // container for widgets
     #widgets-container {
       // Quick-fix to avoid screen flockering when tooltips are appended to body:
@@ -945,7 +945,7 @@ body {
 
   // container for dashboard selector 'dropdown' template
   .buttons-bar {
-    padding: 0;
+    // padding: 0;
     padding-bottom: 5px;
 
     .btn {
@@ -1558,17 +1558,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1581,6 +1570,17 @@ impac-kpi .kpi {
   }
   .price {
     .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
@@ -1681,6 +1681,9 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -1695,9 +1698,6 @@ impac-kpi .kpi {
   .price {
     .center-bold(0px);
   }
-}
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {
@@ -1782,9 +1782,6 @@ impac-kpi .kpi {
     max-height: 270px;
   }
 }
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1810,6 +1807,9 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container .widget-line.main {
@@ -1829,6 +1829,15 @@ impac-kpi .kpi {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -1838,15 +1847,6 @@ impac-kpi .kpi {
   .selector {
     margin-bottom: 4px;
   }
-}
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
@@ -1920,37 +1920,6 @@ impac-kpi .kpi {
     margin-bottom: 5px;
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -1996,6 +1965,37 @@ impac-kpi .kpi {
           padding-top: 8px;
         }
       }
+    }
+  }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
     }
   }
 }
@@ -2209,22 +2209,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
-}
-
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -2244,6 +2228,22 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
+}
+
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
   a {

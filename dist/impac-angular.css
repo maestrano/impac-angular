@@ -7141,6 +7141,13 @@ body {
   position: relative;
   margin: 0px 2px;
 }
+.analytics #dashboard-settings-panel > * {
+  float: right;
+}
+.analytics #dashboard-settings-panel.in-widgets-container {
+  margin: 0;
+  padding: 0 12px;
+}
 .analytics #dashboard-settings-panel > div {
   display: inline-block;
   margin-left: 5px;
@@ -7167,10 +7174,6 @@ body {
   position: absolute;
   top: 0;
   width: 100%;
-}
-.analytics #widgets-section {
-  padding-left: 0px;
-  padding-right: 0px;
 }
 .analytics #widgets-section #widgets-container {
   min-height: 700px;
@@ -7213,7 +7216,6 @@ body {
   margin-top: 54px;
 }
 #module__dashboard-selector .buttons-bar {
-  padding: 0;
   padding-bottom: 5px;
 }
 #module__dashboard-selector .buttons-bar .btn {
@@ -7938,14 +7940,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
   border-bottom: dashed 1px #dfe2e2;
 }
-.analytics .widget-item .content.accounts-expenses-revenue .legend {
-  font-weight: bold;
-}
-.analytics .widget-item .content.accounts-expenses-revenue .settings.params-checkboxes {
-  margin-left: 0px;
-  margin-top: 15px;
-  text-align: center;
-}
 .analytics .widget-item .content.accounts-payable-receivable h3 {
   text-align: center;
 }
@@ -7961,6 +7955,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
   margin-top: 0px;
+}
+.analytics .widget-item .content.accounts-expenses-revenue .legend {
+  font-weight: bold;
+}
+.analytics .widget-item .content.accounts-expenses-revenue .settings.params-checkboxes {
+  margin-left: 0px;
+  margin-top: 15px;
+  text-align: center;
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
   min-height: 565px;
@@ -8143,23 +8145,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   max-width: 90% !important;
   margin: auto !important;
 }
-.analytics .widget-item .content.hr-superannuation-accruals h3 {
-  margin-top: 63px;
-  text-align: center;
-}
-.analytics .widget-item .content.hr-superannuation-accruals .legend {
-  margin-top: 23px;
-}
-.analytics .widget-item .content.hr-superannuation-accruals .currency {
-  font-size: 14px;
-}
-.analytics .widget-item .content.hr-superannuation-accruals .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5B6667;
-  text-align: center;
-  margin-top: 0px;
-}
 .analytics .widget-item .content.hr-salaries-summary h3.left {
   margin-top: 69px;
   text-align: center;
@@ -8176,6 +8161,23 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.hr-salaries-summary .widget-lines-container .widget-line {
   font-size: 11px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals h3 {
+  margin-top: 63px;
+  text-align: center;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .legend {
+  margin-top: 23px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .currency {
+  font-size: 14px;
+}
+.analytics .widget-item .content.hr-superannuation-accruals .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5B6667;
+  text-align: center;
+  margin-top: 0px;
 }
 .analytics .widget-item .content.hr-timesheets .currency {
   font-size: 14px;
@@ -8392,12 +8394,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-comparison .right-panel .widget-lines-container {
   max-height: 270px;
 }
-.analytics .widget-item .content.sales-cycle .chart-container {
-  max-width: 410px;
-}
-.analytics .widget-item .content.sales-cycle .legend {
-  max-height: 28px;
-}
 .analytics .widget-item .content.sales-customer-details {
   font-size: 12px;
 }
@@ -8420,6 +8416,12 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
   margin-bottom: 10px;
   font-size: 14px;
+}
+.analytics .widget-item .content.sales-cycle .chart-container {
+  max-width: 410px;
+}
+.analytics .widget-item .content.sales-cycle .legend {
+  max-height: 28px;
 }
 .analytics .widget-item .content.sales-forecast {
   min-height: 565px;
@@ -8498,6 +8500,22 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-leads-funnel .right-panel .widget-lines-container .widget-line {
   cursor: default;
 }
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  max-height: 230px;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
+  background-color: #e6e6e6;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
+  background-color: white;
+}
+.analytics .widget-item .content.sales-leads-list .widget-lines-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 .analytics .widget-item .content.sales-list .widget-lines-container {
   max-height: 230px;
 }
@@ -8517,22 +8535,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-list .selector {
   margin-bottom: 4px;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  max-height: 230px;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(even) {
-  background-color: #e6e6e6;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line:nth-child(odd) {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container .widget-line.header {
-  background-color: white;
-}
-.analytics .widget-item .content.sales-leads-list .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-number-of-leads .stats {
   margin-top: 35px;
@@ -8674,36 +8676,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5B6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-  max-width: 100%;
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
-}
 .analytics .widget-item .content.sales-top-opportunities .opps-container {
   max-height: 195px;
   margin-top: 10px;
@@ -8750,6 +8722,36 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5B6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  max-width: 100%;
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
 }
 .analytics .widget-item .title-wrapper {
   width: 100%;
@@ -8937,17 +8939,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   width: 0px;
   height: 0px;
 }
-.analytics .settings.limit-entries {
-  color: #1E303B;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-}
-.analytics .settings.limit-entries a.option.badge {
-  color: white;
-  background-color: #1E303B;
-}
 .analytics .settings.organizations .widget-lines-container .widget-line {
   padding: 5px 10px 5px 18px;
 }
@@ -8967,6 +8958,17 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .settings.organizations .widget-lines-container .widget-line .fa.fa-toggle-off {
   color: #9ba6a7;
+}
+.analytics .settings.limit-entries {
+  color: #1E303B;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+}
+.analytics .settings.limit-entries a.option.badge {
+  color: white;
+  background-color: #1E303B;
 }
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
