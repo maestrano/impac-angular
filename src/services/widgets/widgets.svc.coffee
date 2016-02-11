@@ -35,7 +35,7 @@ angular
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           data = { widget: opts }
 
-          $http.post(ImpacRoutes.createWidgetPath(dashboard.id), data).then(
+          $http.post(ImpacRoutes.widgets.create(dashboard.id), data).then(
             (success) ->
               newWidget = success.data
               dashboard.widgets.push(newWidget)
@@ -167,7 +167,9 @@ angular
             }
             angular.extend(data, {refresh_cache: true}) if refreshCache
 
-            $http.post(ImpacRoutes.showWidgetPath(widget.id), data).then(
+            dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+
+            $http.post(ImpacRoutes.widgets.show(dashboard.id, widget.id), data).then(
               (success) ->
                 # Pushes new content to widget
                 content = success.data.content || {}
@@ -216,7 +218,9 @@ angular
 
         else
           data = { widget: opts }
-          $http.put(ImpacRoutes.updateWidgetPath(widget.id), data).then(
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+
+          $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data).then(
             (success) ->
               updatedWidget = success.data
               angular.extend widget, updatedWidget
@@ -239,9 +243,9 @@ angular
 
       _self.load().then(
         (config) ->
-
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-          $http.delete(ImpacRoutes.deleteWidgetPath(widgetToDelete.id)).then(
+
+          $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id)).then(
             (success) ->
               _.remove dashboard.widgets, (widget) ->
                 widget.id == widgetToDelete.id

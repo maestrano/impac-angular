@@ -319,8 +319,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       template: $templateCache.get('dashboard/widget-suggestion.modal.html'),
       size: 'md',
       windowClass: 'inverse impac-widget-suggestion',
-      scope: $scope.widgetSuggestionModal
-      apiPath: ImpacRoutes.sendWidgetSuggestion()
+      scope: $scope.widgetSuggestionModal,
+      apiPath: ImpacRoutes.widgets.suggest()
     }
 
     $scope.widgetSuggestionModal.open = ->

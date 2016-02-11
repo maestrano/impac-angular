@@ -14,8 +14,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       #====================================
       scope.isSyncing = false
       scope.hasConnectors = false
-      # Theming configuration giving the ability to show / hide the sync apps feature.
-      scope.showComponent = ImpacTheming.get().syncAppsConfig.show
 
 
       #====================================
@@ -107,7 +105,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         scope.isSyncing = true
         scope.isDashboardRefreshAuthorized = true
 
-        $http.post(ImpacRoutes.appInstancesSyncPath(scope.orgUID)).then(
+        $http.post(ImpacRoutes.organizations.appInstancesSync(scope.orgUID)).then(
           (success) ->
             processAppInstancesSync(success.data)
             if success.data.is_syncing
@@ -161,7 +159,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           #     last_sync_date (DateTime)
           #   is_syncing (Bool)
           # -----------------------------
-          scope.syncingPoller = poller.get(ImpacRoutes.appInstancesSyncPath(scope.orgUID), {delay: 5000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 5000, smart: true})
           scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
       )
 

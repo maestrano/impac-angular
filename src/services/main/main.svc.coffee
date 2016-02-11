@@ -1,6 +1,6 @@
 angular
   .module('impac.services.main', [])
-  .service 'ImpacMainSvc', ($q, $log, ImpacLinking, ImpacRoutes) ->
+  .service 'ImpacMainSvc', ($q, $log, ImpacLinking) ->
 
     _self = @
     @config = {}

@@ -114,17 +114,6 @@ angular.module('impac.components.widgets-common',
   ]
 );
 /*
-** FILTERS
-*/
-angular.module('impac.filters',
-  [
-    'impac.filters.titleize',
-    'impac.filters.truncate',
-    'impac.filters.mno-currency',
-    'impac.filters.mno-date'
-  ]
-);
-/*
 ** SERVICES
 */
 angular.module('impac.services',
@@ -140,6 +129,17 @@ angular.module('impac.services',
     'impac.services.kpis',
     'impac.services.dashboards',
     'impac.services.widgets',
+  ]
+);
+/*
+** FILTERS
+*/
+angular.module('impac.filters',
+  [
+    'impac.filters.titleize',
+    'impac.filters.truncate',
+    'impac.filters.mno-currency',
+    'impac.filters.mno-date'
   ]
 );
 /*

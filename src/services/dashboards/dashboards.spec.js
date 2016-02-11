@@ -101,7 +101,7 @@ describe('<> ImpacDashboardsSvc', function () {
       });
 
       it('retrieves the dashboards from mnoe API', function() {
-        expect($http.get).toHaveBeenCalledWith(ImpacRoutes.baseDhbPath(1));
+        expect($http.get).toHaveBeenCalledWith(ImpacRoutes.dashboards.index());
       });
 
       it('stores the dashboards in the service', function() {
@@ -164,7 +164,7 @@ describe('<> ImpacDashboardsSvc', function () {
 
       it('initializes the kpis service', function() {
         expect(ImpacKpisSvc.initialize).toHaveBeenCalled();
-      }); 
+      });
 
       it('initializes the tabs status', function() {
         expect(svc.initializeActiveTabs).toHaveBeenCalled();
@@ -184,12 +184,12 @@ describe('<> ImpacDashboardsSvc', function () {
 
           it('sets the depending attributes', function() {
             sharedBehaviorForSetDependingAttributes();
-          }); 
+          });
 
           it('notifies the dashboardChanged callback', function() {
             expect(svc.callbacks.dashboardChanged.notify).toHaveBeenCalledWith(svc.config.currentDashboard);
           });
-        }); 
+        });
 
         describe('when there is no dashboard in list', function() {
           beforeEach(function() {
@@ -197,7 +197,7 @@ describe('<> ImpacDashboardsSvc', function () {
             svc.config.dashboards = [];
             svc.setCurrentDashboard(id);
           });
-          
+
           it('sets an empty object as the current dashboard', function() {
             expect(svc.config.currentDashboard).toEqual({});
           });
@@ -221,7 +221,7 @@ describe('<> ImpacDashboardsSvc', function () {
 
       it('sets the depending attributes', function() {
         sharedBehaviorForSetDependingAttributes();
-      }); 
+      });
 
       it('notifies the dashboardChanged callback', function() {
         expect(svc.callbacks.dashboardChanged.notify).toHaveBeenCalledWith(svc.config.currentDashboard);
@@ -343,7 +343,7 @@ describe('<> ImpacDashboardsSvc', function () {
     });
 
     it('posts the dashboard to the mnoe API', function() {
-      expect($http.post).toHaveBeenCalledWith(ImpacRoutes.createDhbPath(), {dashboard: newDashboard});
+      expect($http.post).toHaveBeenCalledWith(ImpacRoutes.dashboards.create(), {dashboard: newDashboard});
     });
 
     it('pushes the returned dashboard to the dashboards list', function() {
@@ -386,7 +386,7 @@ describe('<> ImpacDashboardsSvc', function () {
     });
 
     it('deletes the dashboard by requesting the mnoe API', function() {
-      expect($http.delete).toHaveBeenCalledWith(ImpacRoutes.deleteDhbPath(1));
+      expect($http.delete).toHaveBeenCalledWith(ImpacRoutes.dashboards.delete(1));
     });
 
     it('removes the dashboard from the dashboards list', function() {
@@ -437,7 +437,7 @@ describe('<> ImpacDashboardsSvc', function () {
 
     it('updates the dashboard by requesting the mnoe API', function() {
       apply();
-      expect($http.put).toHaveBeenCalledWith(ImpacRoutes.updateDhbPath(dashboard.id), {dashboard: opts});
+      expect($http.put).toHaveBeenCalledWith(ImpacRoutes.dashboards.update(dashboard.id), {dashboard: opts});
     });
 
     it('updates the dashboard in the dashboards list', function() {
