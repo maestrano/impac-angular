@@ -1,10 +1,26 @@
 # master | Ongoing development
 
 ### Adds
+> Nothing
+
+-------------------------------------------------------------
+# v1.2 | UNTAGGED
+
+### Fixes
+> Nothing
+
+### Adds
+> Nothing
+
+-------------------------------------------------------------
+# v1.2.0 | Features - Developer toolkit
+
+### Adds
 - Widget setting: dates-picker (can be used in edit mode or on widget's front)
 - Use widget setting dates-picker in invoices list, invoices summary, sales list and sales summary
 - Allow to use a callback on the dataNotFound link
 - Sync Apps feature with last synced timestamps.
+- Developer toolkit now available in /workspace
 
 -------------------------------------------------------------
 # v1.1 | UNTAGGED
