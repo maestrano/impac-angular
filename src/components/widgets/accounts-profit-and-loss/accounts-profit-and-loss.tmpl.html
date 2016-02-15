@@ -114,10 +114,16 @@
           </div>
 
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
-            <div class="widget-line" ng-repeat="element in selectedElements">
-              <i style="float: right; margin-right: 10px;" ng-class="getClassColor(getLastValue(element))">{{getLastValue(element) | mnoCurrency : element.currency}}</i>
-              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
-              {{getName(element) | titleize}}
+            <div class="row widget-line" ng-repeat="element in selectedElements">
+              <div class="col-xs-7 text-left">
+                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+                {{getName(element) | titleize}}
+              </div>
+              <div class="col-xs-5 text-right">
+                <i ng-class="getClassColor(getLastValue(element))">
+                  {{getLastValue(element) | mnoCurrency : element.currency}}
+                </i>
+              </div>
             </div>
           </div>
         </div>
