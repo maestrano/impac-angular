@@ -1,6 +1,7 @@
 angular
   .module('impac.services.dashboards', [])
   .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming) ->
+
     #====================================
     # Initialization and getters
     #====================================
@@ -58,9 +59,19 @@ angular
     #====================================
     # Loaders and setters
     #====================================
+    @stubbedDashboard = null
+    @stubWith = (dashboard) ->
+      @stubbedDashboard = dashboard
 
     @loadLocked=false
     @load = (force=false) ->
+      if @stubbedDashboard
+        _.remove _self.config.dashboards, (-> true)
+        _self.config.dashboards.push @stubbedDashboard
+        _self.setCurrentDashboard()
+        q = $q.defer()
+        q.resolve(_self.config)
+        return q.promise
 
       # Singleton prevents concurrent calls of _self.load
       if !_self.loadLocked

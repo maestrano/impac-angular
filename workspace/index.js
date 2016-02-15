@@ -1,8 +1,14 @@
 var module = angular.module('impacWorkspace', ['maestrano.impac']);
 
 // Configuration impac-angular lib on module impacWorkSpace run.
-module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming) {
+module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDashboardsSvc) {
 
+  //--------------------------------------------------------
+  // Start editing
+  //--------------------------------------------------------
+
+  // Credentials and endpoints
+  //------------------------------------------------
   // TODO: set-up server to enable local $http calls to setting.json
   var settings = {
     mno_url: 'https://uat.maestrano.io',
@@ -11,6 +17,46 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
     api_secret: ''
   };
 
+  // Stub dashboard content
+  //------------------------------------------------
+  // Uncomment to stub your workspace dashboard.
+  // This proves useful when you want to add new widgets that are not
+  // yet registered on maestrano.
+  // Because data will still be retrieved from Impac! the
+  // organization id (org-xxx) needs to be valid.
+  // --
+  // ImpacDashboardsSvc.stubWith({
+  //   id: 0,
+  //   name: "My Dashboard",
+  //   full_name: "My Dashboard",
+  //   currency: "AUD",
+  //   data_sources: [
+  //      {
+  //         id:0,
+  //         uid: "org-fbti",
+  //         label:"Stubbed Corp"
+  //      }
+  //   ],
+  //   widgets: [
+  //      {
+  //         id:0,
+  //         name: "Net Sales",
+  //         category: "sales/net_sales",
+  //         width: 6,
+  //         metadata:{
+  //            organization_ids: ["org-fbti"]
+  //         }
+  //      }
+  //   ]
+  // });
+
+  //--------------------------------------------------------
+  // That's all!
+  // Do not edit below unless you know what you're
+  // doing
+  //--------------------------------------------------------
+
+  // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
     fail('missing authentication credentials!');
   }
