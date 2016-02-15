@@ -1,0 +1,51 @@
+<div widget-sales-net-sales>
+
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <!-- <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" /> -->
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+    <div ng-show="(isDataFound==true)">
+
+      <span setting-param-selector parent-widget="widget" param="displayType" options="displayOptions" selected="displayType" no-reload="true" deferred="::paramSelectorDeferred" />
+      <span setting-param-selector parent-widget="widget" param="periodSpan" options="periodSpanOptions" selected="periodSpan" deferred="::paramSelectorDeferred" />
+
+      <div class="values-container">
+        <div class="value-container">
+          <div class="title">Sales</div>
+          <div class="value-box">
+            {{ getValue('sales') }}
+          </div>
+        </div>
+        <div class="operator">
+          <span>{{ sign('minus') }}</span>
+        </div>
+        <div class="value-container">
+          <div class="title">Returns</div>
+          <div class="value-box">
+            {{ getValue('returns') }}
+          </div>
+        </div>
+        <div class="operator">
+          <span>{{ sign('equal') }}</span>
+        </div>
+        <div class="value-container">
+          <div class="title">Net Result</div>
+          <div class="value-box">
+            {{ getValue('net_result') }}
+          </div>
+        </div>
+      </div>
+
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+  </div>
+
+</div>

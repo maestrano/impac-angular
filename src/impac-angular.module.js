@@ -75,6 +75,7 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-leads-list',
     'impac.components.widgets.sales-list',
     'impac.components.widgets.sales-margin',
+    'impac.components.widgets.sales-net-sales',
     'impac.components.widgets.sales-number-of-leads',
     'impac.components.widgets.sales-opportunities-funnel',
     'impac.components.widgets.sales-performance',
@@ -151,5 +152,3 @@ angular.module('impac.config', []).config(['$httpProvider',
     $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
   }
 ]);
-
-
