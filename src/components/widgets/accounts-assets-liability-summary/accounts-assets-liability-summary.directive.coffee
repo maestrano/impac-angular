@@ -35,10 +35,11 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
         value: w.metadata.classification || 'ASSET'
       }))
 
-    if w.metadata.organization_ids.length > 1
-      $scope.dataSource = w.content.repartition
-    else
-      $scope.dataSource = w.content.summary
+    if $scope.isDataFound
+      if w.metadata.organization_ids.length > 1
+        $scope.dataSource = w.content.repartition
+      else
+        $scope.dataSource = w.content.summary
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound

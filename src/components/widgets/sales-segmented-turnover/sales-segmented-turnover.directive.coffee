@@ -24,7 +24,7 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)
+    if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)
 
       $scope.filterOptions = [
         {label: 'Gross revenue (incl. taxes)', value: 'gross'},

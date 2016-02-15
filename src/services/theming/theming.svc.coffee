@@ -59,6 +59,14 @@ angular
           first: 'Now it\'s time to select the metrics you want to see!'
           second: 'Add widgets to your dashboard to help make an Impac!™ to your business.'
 
+      dhbSubMenuConfig:
+        myobMessage:
+          show: true
+          appLink:
+            show: true
+            url: '#/marketplace'
+            text: '>> Check this app on our marketplace'
+
       # options for the widget selector panel.
       widgetSelectorConfig:
         path: null

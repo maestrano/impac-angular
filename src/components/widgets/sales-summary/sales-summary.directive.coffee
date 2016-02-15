@@ -24,7 +24,7 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = !_.isEmpty(w.content.hist_parameters)
+    if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.hist_parameters)
 
       $scope.incorrectPeriod = _.isEmpty(w.content.summary)
 

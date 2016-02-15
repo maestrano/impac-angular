@@ -19,10 +19,11 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
     
-    if w.metadata.organization_ids.length > 1
-      $scope.dataSource = w.content.repartition
-    else
-      $scope.dataSource = w.content.summary
+    if $scope.isDataFound
+      if w.metadata.organization_ids.length > 1
+        $scope.dataSource = w.content.repartition
+      else
+        $scope.dataSource = w.content.summary
 
     #TODO: No .pluralize() in angular?
     switch (w.metadata.classification || 'assets').toLowerCase()
