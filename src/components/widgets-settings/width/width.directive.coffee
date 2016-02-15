@@ -26,7 +26,7 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
     $timeout ->
       for elem in elements
         angular.element(elem).animate({opacity: 1}, 200)
-    , 200
+    , 300
 
   w.toggleExpanded = ->
     $scope.expanded = !$scope.expanded
