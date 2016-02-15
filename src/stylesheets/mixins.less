@@ -62,10 +62,11 @@
 
 .selectable () {
   cursor: pointer;
-  :hover, &:hover {
+  border: solid 1px @impac-widget-background-color;
+  &:hover {
     color: @impac-widget-selectable-color;
   }
-  .selected {
+  &.selected {
     border: solid 1px @impac-widget-selectable-color;
     background-color: lighten(@impac-widget-selectable-color, 22%)
   }
