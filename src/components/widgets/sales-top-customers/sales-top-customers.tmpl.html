@@ -21,14 +21,15 @@
 
     <!-- Header line -->
     <div class="row widget-line header">
-      <div class="col-sm-1">#</div>
-      <div class="col-sm-2">Name</div>
-      <div class="col-sm-9">
+      <div class="col-sm-1 col-xs-1">#</div>
+      <div class="col-sm-2 col-xs-2">Name</div>
+      <div class="col-sm-3 col-xs-3">Total Sales</div>
+      <div class="col-sm-6 col-xs-6">
         <div class="row">
-          <div class="col-xs-3">Total Sales</div>
-          <div class="col-xs-3">#Transact</div>
-          <div class="col-xs-3">Avg</div>
-          <div class="col-xs-2">Last</div>
+          <p>Transactions</p>
+          <div class="col-sm-1 col-xs-1">#</div>
+          <div class="col-sm-5 col-xs-3">Avg</div>
+          <div class="col-sm-5 col-xs-3">Last</div>
         </div>
       </div>
     </div>
@@ -39,14 +40,14 @@
     </div>
 
     <div class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo: limitEntriesSelected.value">
-      <div class="col-sm-1">{{$index + 1}}</div>
-      <div class="col-sm-2">{{entity.name}}</div>
-      <div class="col-sm-9">
+      <div class="col-sm-1 col-xs-1">{{$index + 1}}</div>
+      <div class="col-sm-2 col-xs-2">{{entity.name}}</div>
+      <div class="col-sm-3 col-xs-3"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
+      <div class="col-sm-6 col-xs-6">
         <div class="row">
-          <div class="col-xs-3"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
-          <div class="col-xs-3"><i>{{entity.invoices.length}}</i></div>
-          <div class="col-xs-3"><i>{{(entity.total_invoiced / entity.invoices.length) | mnoCurrency : entity.currency}}</i></div>
-          <div class="col-xs-2"><i>{{entity.invoices[entity.invoices.length - 1].invoiced | mnoCurrency : entity.currency}}</i></div>
+          <div class="col-sm-1 col-xs-1"><i>{{entity.invoices.length}}</i></div>
+          <div class="col-sm-5 col-xs-3"><i>{{(entity.total_invoiced / entity.invoices.length) | mnoCurrency : entity.currency}}</i></div>
+          <div class="col-sm-5 col-xs-3"><i>{{entity.invoices[entity.invoices.length - 1].invoiced | mnoCurrency : entity.currency}}</i></div>
         </div>
       </div>
     </div>
