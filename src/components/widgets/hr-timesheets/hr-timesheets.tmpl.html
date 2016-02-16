@@ -19,39 +19,75 @@
       <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="currency" deferred="::paramSelectorDeferred" />
 
       <div class="widget-lines-container">
+
+        <!-- Tab header -->
         <div class="row widget-line header">
-          <div class="col-sm-12">From {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}</div>
-        </div>
-        <div class="row widget-line total" >
-          <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toggleCollapsed('total_time_worked')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-            <div class="col-sm-7"><strong>Total Time Worked</strong></div>
-            <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeWorked()}} h</strong></div>
-          </div>
-          <div collapse="isCollapsed('total_time_worked')">
-            <div class="row widget-line">
-              <div class="col-sm-1" />
-              <div class="col-sm-11"><i>Activities detail not found</i></div>
-            </div>
+          <div class="col-sm-12">
+            From {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}
           </div>
         </div>
 
-        <div class="row widget-line total" >
-          <div class="row widget-line" >
-            <div class="col-sm-1" ng-click="toggleCollapsed('total_time_of')" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-            <div class="col-sm-7"><strong>Total Time Off</strong></div>
-            <div class="col-sm-4 text-right"><strong>{{getEmployeeTimeOff()}} h</strong></div>
-          </div>
-          <div collapse="isCollapsed('total_time_of')">
-            <div class="row widget-line">
-              <div class="col-sm-1" />
-              <div class="col-sm-7">PTO</div>
-              <div class="col-sm-4 text-right">0 h</div>
+        <!-- Time worked activities -->
+        <div class="row lines-group" >
+          <div class="col-xs-12">
+          
+            <!-- Time worked -->
+            <div class="row widget-line" >
+              <div class="col-xs-1" ng-click="toggleCollapsed('total_time_worked')" style="cursor: pointer;">
+                <i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+              </div>
+              <div class="col-xs-7">
+                <strong>Total Time Worked</strong>
+              </div>
+              <div class="col-xs-4 text-right">
+                <strong>{{getEmployeeTimeWorked()}} h</strong>
+              </div>
             </div>
-            <div class="row widget-line">
-              <div class="col-sm-1" />
-              <div class="col-sm-7">Vacation</div>
-              <div class="col-sm-4 text-right">0 h</div>
+          
+            <!-- Activities lines / TODO -->
+            <div class="row" collapse="isCollapsed('total_time_worked')">
+              <div class="col-xs-12">
+                <div class="row widget-line">
+                  <div class="col-xs-11 col-xs-offset-1">
+                    <i>Activities detail not found</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+
+        <!-- Time off activities -->
+        <div class="row lines-group" >
+          <div class="col-xs-12">
+          
+            <!-- Time off -->
+            <div class="row widget-line" >
+              <div class="col-xs-1" ng-click="toggleCollapsed('total_time_of')" style="cursor: pointer;">
+                <i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+              </div>
+              <div class="col-xs-7">
+                <strong>Total Time Off</strong>
+              </div>
+              <div class="col-xs-4 text-right">
+                <strong>{{getEmployeeTimeOff()}} h</strong>
+              </div>
+            </div>
+
+
+            <!-- PTO and Vacation lines / TODO -->
+            <div class="row" collapse="isCollapsed('total_time_of')">
+              <div class="col-xs-12">
+                <div class="row widget-line">
+                  <div class="col-xs-7 col-xs-offset-1">PTO</div>
+                  <div class="col-xs-4 text-right">0 h</div>
+                </div>
+                <div class="row widget-line">
+                  <div class="col-xs-7 col-xs-offset-1">Vacation</div>
+                  <div class="col-xs-4 text-right">0 h</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

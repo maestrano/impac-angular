@@ -19,22 +19,32 @@
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
         <div class="widget-lines-container">
+
           <div class="row widget-line header">
-            <div class="col-sm-5">from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}</div>
-            <div class="col-sm-3 text-right">Win ratio</div>
-            <div class="col-sm-4 text-right">Total won</div>
+            <div class="col-xs-5">
+              from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}
+            </div>
+            <div class="col-xs-3 text-right">
+              Win ratio
+            </div>
+            <div class="col-xs-4 text-right">
+              Total won
+            </div>
           </div>
-          <div class="row widget-line total" ng-repeat="assignee in widget.content.assignees" >
-            <div class="row widget-line" ng-class="{'selected': isSelected(assignee)}" ng-click="toggleSelectedElement(assignee)" >
-              <div class="col-sm-5"><strong>{{assignee.name | titleize}}</strong></div>
-              <div class="col-sm-3 text-right"><strong>{{assignee.win_ratio | mnoCurrency : '%'}}</strong></div>
-              <div class="col-sm-4 text-right"><strong>{{assignee.total_won | mnoCurrency}}</strong></div>
+        
+          <div class="row lines-group" ng-repeat="assignee in widget.content.assignees" ng-click="toggleSelectedElement(assignee)" >
+            <div class="col-xs-12">
+              <div class="row widget-line" ng-class="{'selected': isSelected(assignee)}">
+                <div class="col-xs-5">{{assignee.name | titleize}}</div>
+                <div class="col-xs-3 text-right">{{assignee.win_ratio | mnoCurrency : '%'}}</div>
+                <div class="col-xs-4 text-right">{{assignee.total_won | mnoCurrency}}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
 
         <div ng-show="selectedElement">
           <h4>{{selectedElement.name | titleize}}</h4>
@@ -45,31 +55,54 @@
           </div>
           
           <div class="widget-lines-container">
-            <div class="row widget-line total" ng-init="collapsedWon=false">
-              <div class="row widget-line" style="cursor: pointer;" ng-click="collapsedWon=!collapsedWon">
-                <div class="col-sm-10"><strong>Closed Won</strong></div>
-                <div class="col-sm-2 text-right"><strong>{{getWonOpportunities(selectedElement).length}}</strong></div>
-              </div>
-              <div collapse="collapsedWon">
-                <div class="row widget-line" ng-repeat="opp in getWonOpportunities(selectedElement)">
-                  <div class="col-sm-6">{{opp.name}}</div>
-                  <div class="col-sm-3 text-right">{{getCloseDate(opp)}}</div>
-                  <div class="col-sm-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+
+            <div class="row lines-group" ng-init="collapsedWon=false">
+              <div class="col-xs-12">
+                
+                <div class="row widget-line" ng-click="collapsedWon=!collapsedWon">
+                  <div class="col-xs-10">
+                    <strong>Closed Won</strong>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <strong>{{getWonOpportunities(selectedElement).length}}</strong>
+                  </div>
                 </div>
+
+                <div class="row" collapse="collapsedWon">
+                  <div class="col-xs-12">
+                    <div class="row widget-line no-select" ng-repeat="opp in getWonOpportunities(selectedElement)">
+                      <div class="col-xs-6">{{opp.name}}</div>
+                      <div class="col-xs-3 text-right">{{getCloseDate(opp)}}</div>
+                      <div class="col-xs-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            <div class="row widget-line total" ng-init="collapsedLost=false">
-              <div class="row widget-line" style="cursor: pointer;" ng-click="collapsedLost=!collapsedLost">
-                <div class="col-sm-10"><strong>Closed Lost</strong></div>
-                <div class="col-sm-2 text-right"><strong>{{getLostOpportunities(selectedElement).length}}</strong></div>
-              </div>
-              <div collapse="collapsedLost">
-                <div class="row widget-line" ng-repeat="opp in getLostOpportunities(selectedElement)" >
-                  <div class="col-sm-6">{{opp.name}}</div>
-                  <div class="col-sm-3 text-right">{{getCloseDate(opp)}}</div>
-                  <div class="col-sm-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+            <div class="row lines-group" ng-init="collapsedLost=false">
+              <div class="col-xs-12">
+                
+                <div class="row widget-line" ng-click="collapsedLost=!collapsedLost">
+                  <div class="col-xs-10">
+                    <strong>Closed Lost</strong>
+                  </div>
+                  <div class="col-xs-2 text-right">
+                    <strong>{{getLostOpportunities(selectedElement).length}}</strong>
+                  </div>
                 </div>
+
+                <div class="row" collapse="collapsedLost">
+                  <div class="col-xs-12">
+                    <div class="row widget-line no-select" ng-repeat="opp in getLostOpportunities(selectedElement)" >
+                      <div class="col-xs-6">{{opp.name}}</div>
+                      <div class="col-xs-3 text-right">{{getCloseDate(opp)}}</div>
+                      <div class="col-xs-3 text-right">{{opp.amount.amount | mnoCurrency}}</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

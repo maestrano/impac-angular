@@ -40,7 +40,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
     ).totals
 
   $scope.getAmount = (index) ->
-    amount = $scope.getTotals[index]
+    amount = $scope.getTotals()[index]
     return $filter('mnoCurrency')(amount, w.content.currency)
 
   $scope.getAccountColor = (anEntity) ->

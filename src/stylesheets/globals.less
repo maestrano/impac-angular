@@ -190,9 +190,9 @@ body {
     max-height: @impac-widget-lines-container-max-height;
     text-align: left;
     font-size: 12px;
+    padding: 0px 15px;
 
-    .widget-line {
-      margin: 0px;
+    .row.widget-line {
       padding: 5px;
       color: @mediumblue;
 
@@ -200,7 +200,7 @@ body {
         .font(12px,500,@impac-widget-text-color-medium);
         text-transform: uppercase;
       }
-      &.small-row {
+      @media (max-width: @screen-xs-max) {
         margin: inherit;
         margin-left: -3px;
         margin-right: -3px;
@@ -211,14 +211,21 @@ body {
           padding-right: 3px;
         }
       }
-      &.total {
-        padding: 0px;
-        border-top: solid 1px @lightgray;
-      }
 
-      .dashed {
-        border-bottom: dashed 1px @impac-widget-borders-color;
+      i.fa {
+        min-width: 12px;
+        min-height: 12px;
       }
+    }
+
+    .row .dashed {
+      border-bottom: dashed 1px @impac-widget-borders-color;
+      padding-bottom: 3px;
+      margin-bottom: 3px;
+    }
+
+    .row.lines-group {
+      border-top: solid 1px @lightgray;
     }
   }
 }

@@ -24,30 +24,54 @@
           See: <div setting-param-selector parent-widget="widget" style="display: inline;" param="filter" options="filterOptions" selected="filter" truncate-no="30" on-select="widget.format()" no-reload deferred="::paramSelectorDeferred2" />
         </div>
 
-        <div class="widget-lines-container" style="max-height: 530px;">
+        <div class="widget-lines-container">
+
           <div class="row widget-line header">
-            <div class="col-sm-12">Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
-          </div>
-          <div class="row widget-line total" ng-repeat="statement in widget.content.sales_comparison" >
-            <div class="row widget-line" ng-class="isSelected(statement) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(statement)"><i ng-show="(statement.sales && statement.sales.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-              <div class="col-sm-7" ng-click="toggleSelectedElement(statement)"><strong>{{statement.name | titleize}}</strong></div>
-              <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement)}}</strong></div>
-              <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right" ng-click="toggleSelectedElement(statement)"><strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong></div>
+            <div class="col-xs-12">
+              Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
             </div>
-            <div collapse="isCollapsed(statement)">
-              <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="isSelected(sale) ? 'selected' : null" >
-                <div class="col-sm-1" />
-                <div class="col-sm-7">{{sale.name}}</div>
-                <div ng-show="filter.value == 'quantity_sold'" class="col-sm-4 text-right">{{getTotalForPeriod(sale)}}</div>
-                <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-4 text-right">{{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}</div>
+          </div>
+        
+          <div class="row lines-group" ng-repeat="statement in widget.content.sales_comparison" >
+            <div class="col-xs-12">
+
+              <div class="row widget-line" ng-class="{selected: isSelected(statement)}" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
+                  <i ng-show="(statement.sales && statement.sales.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{statement.name | titleize}}</strong>
+                </div>
+                <div ng-show="filter.value == 'quantity_sold'" class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getTotalForPeriod(statement)}}</strong>
+                </div>
+                <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong>
+                </div>
               </div>
+
+              <div class="row" collapse="isCollapsed(statement)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="{selected: isSelected(sale)}" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{sale.name}}
+                    </div>
+                    <div ng-show="filter.value == 'quantity_sold'" class="col-xs-4 text-right">
+                      {{getTotalForPeriod(sale)}}
+                    </div>
+                    <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-4 text-right">
+                      {{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
             </div>
           </div>
         </div>
       </div>
 
-      <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
 
         <div ng-show="hasElements()">
           <div class="chart-container">
@@ -55,14 +79,24 @@
           </div>
 
           <div class="widget-lines-container">
+
             <div class="row widget-line header">
-              <div class="col-sm-12">Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
+              <div class="col-xs-12">
+                Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              </div>
             </div>
-            <div class="widget-line" ng-repeat="element in selectedElements">
-              <i ng-show="filter.value == 'quantity_sold'" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element)}}</i>
-              <i ng-hide="filter.value == 'quantity_sold'" style="float: right; margin-right: 10px;">{{getTotalForPeriod(element) | mnoCurrency : element.currency}}</i>
-              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
-              {{element.name | titleize}}
+
+            <div class="row widget-line" ng-repeat="element in selectedElements">
+              <div class="col-xs-1">
+                <i class="fa fa-circle" style="color: {{getElementChartColor($index)}}" />
+              </div>
+              <div class="col-xs-7">
+                {{element.name | titleize}}
+              </div>
+              <div class="col-xs-4 text-right">
+                <i ng-show="filter.value == 'quantity_sold'">{{getTotalForPeriod(element)}}</i>
+                <i ng-hide="filter.value == 'quantity_sold'">{{getTotalForPeriod(element) | mnoCurrency : element.currency}}</i>
+              </div>
             </div>
           </div>
         </div>

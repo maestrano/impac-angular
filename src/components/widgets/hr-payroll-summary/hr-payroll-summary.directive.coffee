@@ -67,7 +67,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
       return element.name.replace(/_/g, " ")
 
   $scope.getTrackedField = ->
-    if $scope.selectedElements? && !_.isEmpty($scope.selectedElements) && $scope.selectedElements[0].id?
+    if !_.isEmpty($scope.selectedElements) && $scope.selectedElements[0].id?
       field = $scope.selectedElements[0].id.split('-')[0]
       allFieldsEquals = true
       angular.forEach($scope.selectedElements, (element)->
