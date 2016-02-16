@@ -22,16 +22,26 @@
         <div class="chart-container">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
+
         <div class="widget-lines-container">
-          <div class="widget-line">
-            Average price range
+
+          <div class="row widget-line header">
+            <div class="col-xs-12">Average price range</div>
           </div>
-          <div class="widget-line" ng-repeat="range in widget.content.ranges">
-            <i style="float: right; margin-right: 10px;">{{range.percentage}}%</i>
-            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
-            {{getRangeLabel(range.label)}}
+          
+          <div class="row widget-line" ng-repeat="range in widget.content.ranges">
+            <div class="col-xs-2">
+              <i class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
+            </div>
+            <div class="col-xs-6">
+              {{getRangeLabel(range.label)}}
+            </div>
+            <div class="col-xs-4 text-right">
+              <i>{{range.percentage}}%</i>
+            </div>
           </div>
         </div>
+
       </div>
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">

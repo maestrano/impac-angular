@@ -72,7 +72,7 @@ angular
           ImpacMainSvc.loadOrganizations(force).then (success) ->
             orgId = success.currentOrganization.id
 
-            $http.get(ImpacRoutes.dashboards.index()).then (dashboards) ->
+            $http.get(ImpacRoutes.dashboards.index(orgId)).then (dashboards) ->
               _self.setDashboards(dashboards.data).then ->
                 _self.setCurrentDashboard()
                 _self.loadLocked=false
@@ -177,12 +177,14 @@ angular
       _self.load().then ->
         deferred = $q.defer()
 
+        org = ImpacMainSvc.config.currentOrganization
+
         unless dashboard.currency?
-          dashboard.currency = ImpacMainSvc.config.currentOrganization.currency || 'USD'
+          dashboard.currency = org.currency || 'USD'
 
         data = { dashboard: dashboard }
 
-        $http.post(ImpacRoutes.dashboards.create(), data).then (success) ->
+        $http.post(ImpacRoutes.dashboards.create(org.id), data).then (success) ->
           _self.config.dashboards.push(success.data)
           _self.setCurrentDashboard(success.data.id)
           deferred.resolve(success.data)

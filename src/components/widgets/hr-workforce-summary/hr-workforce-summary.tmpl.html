@@ -33,10 +33,16 @@
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
         <div class="widget-lines-container">
-          <div class="widget-line" ng-repeat="data in widget.content.summary.data">
-            <i style="float: right; margin-right: 10px;"><b>{{((data.value / widget.content.total.amount)*100).toFixed()}}%</b></i>
-            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
-            {{widget.content.summary.filter == "salary_range" ? formatSalaryRange(data) : data.label}}
+          <div class="row widget-line" ng-repeat="data in widget.content.summary.data">
+            <div class="col-xs-2">
+              <i class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
+            </div>
+            <div class="col-xs-7">
+              {{widget.content.summary.filter == "salary_range" ? formatSalaryRange(data) : data.label}}
+            </div>
+            <div class="col-xs-3 text-right">
+              <i>{{((data.value / widget.content.total.amount)*100).toFixed()}}%</i>
+            </div>
           </div>
         </div>
       </div>

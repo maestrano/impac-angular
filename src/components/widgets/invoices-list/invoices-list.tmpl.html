@@ -16,9 +16,11 @@
 
     <div ng-show="(isDataFound==true)" setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
 
+
+    <!-- LARGE WIDGET -->
+
     <!-- Header line -->
-    <!-- when large widget -->
-    <div class="row widget-line header" ng-show="widget.width > 3">
+    <div ng-if="widget.width > 3" class="row widget-line header">
       <div class="col-sm-4">{{entityTypeCap}}</div>
       <div class="col-sm-7">
         <div class="row">
@@ -29,23 +31,9 @@
       </div>
     </div>
 
-    <!-- when small widget -->
-    <div class="row small-row widget-line header" ng-hide="widget.width > 3">
-      <div class="col-xs-6">{{entityTypeCap}}</div>
-      <div class="col-xs-5" ng-show="orderBy == 'paid '">Paid</div>
-      <div class="col-xs-5" ng-show="orderBy == 'due '">Due</div>
-      <div class="col-xs-5" ng-hide="orderBy == 'paid ' || orderBy == 'due '">Invoiced</div>
-    </div>
-
-    <!-- Data not found line -->
-    <div class="row widget-line" ng-show="(isDataFound==false)">
-      <div class="col-xs-11">No {{orderBy}}invoice found for your {{entityType}}</div>
-    </div>
-
     <!-- Content lines -->
-    <!-- when large widget -->
     <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
-      <div class="col-sm-4">{{entity.name}}</div>
+      <div class="col-sm-4"><b>{{entity.name}}</b></div>
       <div class="col-sm-7">
         <div class="row">
           <div class="col-xs-4"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
@@ -56,13 +44,29 @@
       <div class="col-sm-1 text-right"><i class="fa fa-info-circle" /></div>
     </div>
 
-    <!-- when small widget -->
-    <div ng-if="widget.width <= 3" class="row small-row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
-      <div class="col-xs-6">{{entity.name}}</div>
-      <div class="col-xs-5" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
-      <div class="col-xs-5" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
-      <div class="col-xs-5" ng-hide="orderBy == 'paid ' || orderBy == 'due '"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
-      <div class="col-sm-1 text-right"><i class="fa fa-info-circle" /></div>
+
+    <!-- SMALL WIDGET -->
+
+    <!-- Header line -->
+    <div ng-if="widget.width <= 3" class="row widget-line header">
+      <div class="col-xs-12" ng-show="orderBy == 'paid '">{{entityTypeCap}} - Total paid</div>
+      <div class="col-xs-12" ng-show="orderBy == 'due '">{{entityTypeCap}} - Total due</div>
+      <div class="col-xs-12" ng-hide="orderBy == 'paid ' || orderBy == 'due '">{{entityTypeCap}} - Total invoiced</div>
+    </div>
+
+    <!-- Content lines -->
+    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" tooltip-html-unsafe="{{getInvoices(entity)}}" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+      <div class="col-xs-12"><b>{{entity.name}}</b></div>
+      <div class="col-xs-8" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
+      <div class="col-xs-8" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
+      <div class="col-xs-8" ng-hide="orderBy == 'paid ' || orderBy == 'due '"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
+      <div class="col-xs-4 text-right"><i class="fa fa-info-circle" /></div>
+    </div>
+
+
+    <!-- Data not found line -->
+    <div class="row widget-line" ng-show="(isDataFound==false)">
+      <div class="col-xs-12">No {{orderBy}}invoice found for your {{entityType}}</div>
     </div>
 
   </div>

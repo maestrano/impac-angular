@@ -36,13 +36,12 @@
         </div>
 
         <div ng-show="selectedStatus" class="widget-lines-container">
-          <div class="row widget-line total" ng-repeat="opp in getSelectedOpportunities()">
-            <div class="row widget-line" >
-              <div class="col-sm-6">
-                {{opp.name | titleize}}
-              </div>
-              <div class="col-sm-6 text-right"><strong>{{getOppDetails(opp)}}</strong></div>
+
+          <div class="row lines-group widget-line" ng-repeat="opp in getSelectedOpportunities()">
+            <div class="col-xs-6">
+              {{opp.name | titleize}}
             </div>
+            <div class="col-xs-6 text-right"><strong>{{getOppDetails(opp)}}</strong></div>
           </div>
         </div>
       </div>

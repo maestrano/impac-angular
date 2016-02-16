@@ -19,19 +19,38 @@
     </div>
 
     <div class="widget-lines-container" ng-show="(isDataFound==true)">
-      <div class="row widget-line total" ng-repeat="company in widget.content.summary" >
-        <div class="row widget-line" >
-          <div class="col-sm-1" ng-click="toggleCollapsed(company.name)" style="cursor: pointer;"><i class="fa" ng-class="isCollapsed(company.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" /></div>
-          <div class="col-sm-7"><strong>{{company.name | titleize}}</strong></div>
-          <div class="col-sm-4 text-right" ng-show="{{filter.value.match('quantity')}}"><strong>{{company.total}}</strong></div>
-          <div class="col-sm-4 text-right" ng-hide="{{filter.value.match('quantity')}}"><strong>{{company.total | mnoCurrency : company.currency}}</strong></div>
-        </div>
-        <div collapse="isCollapsed(company.name)">
-          <div class="row widget-line" ng-repeat="product in company.products" >
-            <div class="col-sm-1" />
-            <div class="col-sm-7">{{product.name | titleize}}</div>
-            <div class="col-sm-4 text-right" ng-show="{{filter.value.match('quantity')}}"><strong>{{product.total}}</strong></div>
-            <div class="col-sm-4 text-right" ng-hide="{{filter.value.match('quantity')}}"><strong>{{product.total | mnoCurrency : product.currency}}</strong></div>
+
+      <div class="row lines-group" ng-repeat="company in widget.content.summary" >
+        <div class="col-xs-12">
+
+          <div class="row widget-line" >
+            <div class="col-xs-1" ng-click="toggleCollapsed(company.name)" style="cursor: pointer;">
+              <i class="fa" ng-class="isCollapsed(company.name) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+            </div>
+            <div class="col-xs-7">
+              <strong>{{company.name | titleize}}</strong>
+            </div>
+            <div class="col-xs-4 text-right" ng-show="{{filter.value.match('quantity')}}">
+              <strong>{{company.total}}</strong>
+            </div>
+            <div class="col-xs-4 text-right" ng-hide="{{filter.value.match('quantity')}}">
+              <strong>{{company.total | mnoCurrency : company.currency}}</strong>
+            </div>
+          </div>
+
+        <div class="row" collapse="isCollapsed(company.name)">
+          <div class="col-xs-12">
+            <div class="row widget-line" ng-repeat="product in company.products" >
+              <div class="col-xs-7 col-xs-offset-1">
+                {{product.name | titleize}}
+              </div>
+              <div class="col-xs-4 text-right" ng-show="{{filter.value.match('quantity')}}">
+                <strong>{{product.total}}</strong>
+              </div>
+              <div class="col-xs-4 text-right" ng-hide="{{filter.value.match('quantity')}}">
+                <strong>{{product.total | mnoCurrency : product.currency}}</strong>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -40,7 +59,7 @@
     <div class="data-not-found" ng-show="(isDataFound==false)">
       <div class="message">No data found for this time range<br/> Please select another one</div>
     </div>
-    <!-- <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" /> -->
+
   </div>
 
 </div>
