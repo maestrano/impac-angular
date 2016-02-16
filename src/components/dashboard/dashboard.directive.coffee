@@ -270,7 +270,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     $scope.getWidgetsForSelectedCategory = ->
       if $scope.selectedCategory? && $scope.widgetsList?
         return _.select $scope.widgetsList, (aWidgetTemplate) ->
-          aWidgetTemplate.path.split('/')[0] == $scope.selectedCategory
+          if aWidgetTemplate.metadata && aWidgetTemplate.metadata.template
+            widgetCategory = aWidgetTemplate.metadata.template.split('/')[0]
+          else
+            widgetCategory = aWidgetTemplate.path.split('/')[0]
+          widgetCategory == $scope.selectedCategory
       else
         return []
 
