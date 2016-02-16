@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-list',[])
 
-module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
+module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities) ->
 
   w = $scope.widget
 
@@ -16,12 +16,11 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
     $scope.datesPickerDeferred.promise
   ]
 
-
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.entities)
-    
+
     if $scope.isDataFound && $scope.orderBy=='due '
       if $scope.entityType=='suppliers'
         $scope.limitEntriesLabel = 'creditors'
@@ -32,24 +31,10 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
       $scope.limitEntriesSelected = w.metadata.limit_entries
 
     if $scope.isDataFound
-      maxDate = new Date()
-      minDate = false
       dates = _.flatten _.map(w.content.entities, ((e) -> _.map(e.invoices, ((i) -> i.invoice_date)) ))
-      for date in dates
-        unless _.isEmpty(date)
-          parsedDate = date.split('-')
-          y = parsedDate[0]
-          m = parsedDate[1]-1
-          d = parsedDate[2]
-          newDate = new Date(y,m,d)
-          minDate ||= newDate
-          minDate = Math.min(minDate, newDate)
-          maxDate = Math.max(maxDate, newDate)
-
-      # Rare case where not a single invoice has an invoice date...
-      minDate ||= new Date(new Date().getFullYear() - 10, 0, 1)
-      $scope.defaultFrom = $filter('date')(minDate, 'yyyy-MM-dd')
-      $scope.defaultTo = $filter('date')(maxDate, 'yyyy-MM-dd')
+      datesRange = ImpacUtilities.getDatesRange(dates)
+      $scope.defaultFrom = $filter('date')(datesRange[0], 'yyyy-MM-dd')
+      $scope.defaultTo = $filter('date')(datesRange[1], 'yyyy-MM-dd')
 
 
   # No need to put this under initContext because it won't change after a settings update
@@ -83,7 +68,7 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter) ->
     return tooltip.join("<br />")
 
 
-  # Widget is ready: can trigger the "wait for settigns to be ready"
+  # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
 )
