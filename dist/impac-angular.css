@@ -6936,34 +6936,41 @@ body {
   max-height: 200px;
   text-align: left;
   font-size: 12px;
+  padding: 0px 15px;
 }
-.analytics .widget-lines-container .widget-line {
-  margin: 0px;
+.analytics .widget-lines-container .row.widget-line {
   padding: 5px;
   color: #626d6d;
 }
-.analytics .widget-lines-container .widget-line.header {
+.analytics .widget-lines-container .row.widget-line.header {
   font-weight: 500;
   font-size: 12px;
   color: #9ba6a7;
   text-transform: uppercase;
 }
-.analytics .widget-lines-container .widget-line.small-row {
-  margin: inherit;
-  margin-left: -3px;
-  margin-right: -3px;
-  padding: 2px;
+@media (max-width: 767px) {
+  .analytics .widget-lines-container .row.widget-line {
+    margin: inherit;
+    margin-left: -3px;
+    margin-right: -3px;
+    padding: 2px;
+  }
+  .analytics .widget-lines-container .row.widget-line > [class*='col-'] {
+    padding-left: 3px;
+    padding-right: 3px;
+  }
 }
-.analytics .widget-lines-container .widget-line.small-row > [class*='col-'] {
-  padding-left: 3px;
-  padding-right: 3px;
+.analytics .widget-lines-container .row.widget-line i.fa {
+  min-width: 12px;
+  min-height: 12px;
 }
-.analytics .widget-lines-container .widget-line.total {
-  padding: 0px;
-  border-top: solid 1px #e6edee;
-}
-.analytics .widget-lines-container .widget-line .dashed {
+.analytics .widget-lines-container .row .dashed {
   border-bottom: dashed 1px #dfe2e2;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+.analytics .widget-lines-container .row.lines-group {
+  border-top: solid 1px #e6edee;
 }
 .vertical-scroll {
   overflow-y: scroll;
@@ -7089,7 +7096,7 @@ body {
   color: #977bf0;
   float: right;
   position: absolute;
-  top: -1px;
+  top: 0px;
   right: 0px;
 }
 .analytics #widget-selector .top-container .widgets {
@@ -7647,6 +7654,9 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   min-height: 250px !important;
   max-height: auto !important;
 }
+.widget-item {
+  transition: width 0.3s;
+}
 .analytics .dashboard-settings.currency {
   text-align: right;
 }
@@ -7788,6 +7798,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover .loader i.fa.fa-spinner {
   font-size: 26px;
 }
+.analytics .widget-item .content.accounts-assets-summary .legend {
+  text-align: left;
+  max-height: 115px;
+}
+.analytics .widget-item .content.accounts-assets-summary .legend .title {
+  text-align: center;
+  border-bottom: dashed 1px #dfe2e2;
+}
 .analytics .widget-item .content.accounts-assets-liability-summary .param-selector {
   text-align: center;
 }
@@ -7801,14 +7819,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.accounts-assets-liability-summary p {
   font-weight: bold;
-}
-.analytics .widget-item .content.accounts-assets-summary .legend {
-  text-align: left;
-  max-height: 115px;
-}
-.analytics .widget-item .content.accounts-assets-summary .legend .title {
-  text-align: center;
-  border-bottom: dashed 1px #dfe2e2;
 }
 .analytics .widget-item .content.accounts-balance h3 {
   font-weight: 300;
@@ -7850,6 +7860,15 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
   max-height: 540px;
 }
+@media (max-width: 767px) {
+  .analytics .widget-item .content.accounts-balance-sheet .widget-lines-container .row.widget-line {
+    border-top: dashed 1px #dfe2e2;
+  }
+  .analytics .widget-item .content.accounts-balance-sheet .widget-lines-container .row.widget-line.header,
+  .analytics .widget-item .content.accounts-balance-sheet .widget-lines-container .row.widget-line.total {
+    border-top: none;
+  }
+}
 .analytics .widget-item .content.accounts-balance-sheet .no-data-block {
   font-weight: 300;
   font-size: 16px;
@@ -7877,21 +7896,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.accounts-cash-summary .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.accounts-cash-summary .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.accounts-cash-summary .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -7904,10 +7926,10 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
 }
-.analytics .widget-item .content.accounts-cash-summary .right-panel > .widget-lines-container {
+.analytics .widget-item .content.accounts-cash-summary .right-panel .widget-lines-container {
   max-height: 215px;
 }
-.analytics .widget-item .content.accounts-cash-summary .row.widget-line.total.cash {
+.analytics .widget-item .content.accounts-cash-summary .row.lines-group.cash {
   border-top: solid 1px;
   border-bottom: double;
 }
@@ -8108,14 +8130,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
   border-bottom: dashed 1px #dfe2e2;
 }
-.analytics .widget-item .content.accounts-expenses-revenue .legend {
-  font-weight: bold;
-}
-.analytics .widget-item .content.accounts-expenses-revenue .settings.params-checkboxes {
-  margin-left: 0px;
-  margin-top: 15px;
-  text-align: center;
-}
 .analytics .widget-item .content.accounts-payable-receivable h3 {
   text-align: center;
 }
@@ -8131,6 +8145,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
   margin-top: 0px;
+}
+.analytics .widget-item .content.accounts-expenses-revenue .legend {
+  font-weight: bold;
+}
+.analytics .widget-item .content.accounts-expenses-revenue .settings.params-checkboxes {
+  margin-left: 0px;
+  margin-top: 15px;
+  text-align: center;
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
   min-height: 565px;
@@ -8153,21 +8175,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.accounts-profit-and-loss .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.accounts-profit-and-loss .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -8180,7 +8205,7 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
 }
-.analytics .widget-item .content.accounts-profit-and-loss .row.widget-line.total.profit {
+.analytics .widget-item .content.accounts-profit-and-loss .row.lines-group.profit {
   border-top: solid 1px;
   border-bottom: double;
 }
@@ -8279,21 +8304,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.hr-payroll-summary .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.hr-payroll-summary .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.hr-payroll-summary .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -8307,11 +8335,7 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   text-align: center;
 }
 .analytics .widget-item .content.hr-payroll-summary .right-panel .widget-lines-container {
-  max-height: 175px;
-}
-.analytics .widget-item .content.hr-payroll-summary .no-element p {
-  max-width: 90% !important;
-  margin: auto !important;
+  max-height: 165px;
 }
 .analytics .widget-item .content.hr-salaries-summary h3.left {
   margin-top: 69px;
@@ -8391,21 +8415,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.invoices-aged-payables-receivables .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -8418,9 +8445,11 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
 }
-.analytics .widget-item .content.invoices-aged-payables-receivables .astericks-info {
-  text-align: left;
-  padding-left: 15px;
+.analytics .widget-item .content.invoices-aged-payables-receivables .right-panel .widget-lines-container {
+  max-height: 215px;
+}
+.analytics .widget-item .content.invoices-aged-payables-receivables .row.astericks-info {
+  margin-top: 15px;
 }
 .analytics .widget-item .content.invoices-list .widget-lines-container {
   max-height: 230px;
@@ -8461,7 +8490,7 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-aged .widget-lines-container {
-  max-height: 260px;
+  max-height: 238px;
 }
 .analytics .widget-item .content.sales-break-even .price {
   font-weight: 900;
@@ -8532,21 +8561,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-comparison .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.sales-comparison .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.sales-comparison .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.sales-comparison .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.sales-comparison .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.sales-comparison .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.sales-comparison .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.sales-comparison .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.sales-comparison .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.sales-comparison .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.sales-comparison .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -8558,6 +8590,9 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   font-size: 16px;
   color: #5B6667;
   text-align: center;
+}
+.analytics .widget-item .content.sales-comparison .widget-lines-container {
+  max-height: 530px;
 }
 .analytics .widget-item .content.sales-comparison .right-panel .widget-lines-container {
   max-height: 270px;
@@ -8611,16 +8646,25 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+.analytics .widget-item .content.sales-forecast .widget-lines-container {
+  max-height: 340px;
+}
 .analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main :hover,
 .analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main .selected {
+.analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.sales-forecast .widget-lines-container .widget-line.main.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.sales-growth .price {
   font-weight: 900;
@@ -8785,21 +8829,24 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   overflow-x: hidden;
 }
 .analytics .widget-item .content.sales-performance .widget-lines-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
   max-height: 540px;
-  margin-right: 10px;
 }
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total {
+.analytics .widget-item .content.sales-performance .widget-lines-container .lines-group .widget-line {
   cursor: pointer;
+  border: solid 1px white;
 }
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total :hover,
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total:hover {
+.analytics .widget-item .content.sales-performance .widget-lines-container .lines-group .widget-line:hover {
   color: #977bf0;
 }
-.analytics .widget-item .content.sales-performance .widget-lines-container .widget-line.total .selected {
+.analytics .widget-item .content.sales-performance .widget-lines-container .lines-group .widget-line.selected {
   border: solid 1px #977bf0;
   background-color: #e6e0fb;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .lines-group .widget-line.no-select {
+  cursor: auto;
+}
+.analytics .widget-item .content.sales-performance .widget-lines-container .lines-group .widget-line.no-select:hover {
+  color: #626d6d;
 }
 .analytics .widget-item .content.sales-performance .right-panel .widget-lines-container {
   overflow-y: auto;
@@ -8812,7 +8859,7 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   color: #5B6667;
   text-align: center;
 }
-.analytics .widget-item .content.sales-performance .right-panel > .widget-lines-container {
+.analytics .widget-item .content.sales-performance .right-panel .widget-lines-container {
   max-height: 215px;
 }
 .analytics .widget-item .content.sales-segmented-turnover h3.right {
