@@ -37,13 +37,20 @@
         </div>
 
         <div ng-show="selectedStatus" class="widget-lines-container">
-          <div class="row widget-line total" ng-repeat="lead in getSelectedLeads()" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-html-unsafe="{{getLeadDescription(lead)}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
-            <div class="row widget-line" >
-              <div class="col-sm-7">
-                {{lead.first_name | titleize}} {{lead.last_name | titleize}}
-                <span ng-show="lead.organization">({{lead.organization}})</span>
+
+          <div class="row lines-group" ng-repeat="lead in getSelectedLeads()" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-html-unsafe="{{getLeadDescription(lead)}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+            <div class="col-xs-12">
+
+              <div class="row widget-line" >
+                <div class="col-sm-7">
+                  {{lead.first_name | titleize}} {{lead.last_name | titleize}}
+                  <span ng-show="lead.organization">({{lead.organization}})</span>
+                </div>
+                <div class="col-sm-5 text-right">
+                  <strong>{{lead.lead_status | titleize}}</strong>
+                </div>
               </div>
-              <div class="col-sm-5 text-right"><strong>{{lead.lead_status | titleize}}</strong></div>
+            
             </div>
           </div>
         </div>
