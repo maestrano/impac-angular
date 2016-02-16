@@ -34,11 +34,13 @@
         </div>
         <div class="widget-lines-container">
           <div class="row widget-line" ng-repeat="data in widget.content.summary.data">
-            <div class="col-xs-6">
-              <i ng-hide="widget.content.summary.filter=='age_range'" class="fa fa-circle" style="margin: 0px 8px; color: {{getColorByIndex($index)}}" />
+            <div class="col-xs-2">
+              <i ng-hide="widget.content.summary.filter=='age_range'" class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
+            </div>
+            <div class="col-xs-5">
               {{data.label}}
             </div>
-            <div class="col-xs-6 text-right">
+            <div class="col-xs-5 text-right">
               <i>{{data.value | mnoCurrency : widget.content.total.currency}} (av.)</i>
             </div>
           </div>
