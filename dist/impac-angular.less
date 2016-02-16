@@ -1860,9 +1860,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-workforce-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
@@ -1872,6 +1869,9 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
+}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
@@ -1926,6 +1926,12 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 270px;
+  }
+}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1951,12 +1957,6 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 270px;
-  }
-}
 .analytics .widget-item .content.sales-cycle {
   .simple-summary-widget();
 }
@@ -1975,16 +1975,16 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {

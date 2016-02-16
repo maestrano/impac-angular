@@ -72,7 +72,7 @@ angular
           ImpacMainSvc.loadOrganizations(force).then (success) ->
             orgId = success.currentOrganization.id
 
-            $http.get(ImpacRoutes.dashboards.index()).then (dashboards) ->
+            $http.get(ImpacRoutes.dashboards.index(orgId)).then (dashboards) ->
               _self.setDashboards(dashboards.data).then ->
                 _self.setCurrentDashboard()
                 _self.loadLocked=false
