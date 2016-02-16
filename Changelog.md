@@ -7,7 +7,7 @@
 # v1.2 | UNTAGGED
 
 ### Fixes
-> Nothing
+- Deep routing to dashboards#index when an organization id is specified
 
 ### Adds
 - Better layout for all widgets using the widget-lines-container (+ adapted to xsmall screens)
