@@ -26,16 +26,16 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
       $scope.defaultTo = $filter('date')(datesRange[1], 'yyyy-MM-dd')
 
       $scope.limitEntriesOptions = [
-        { label: 'TOP - 5', value: '5' }
-        { label: 'TOP - 10', value: '10' }
-        { label: 'TOP - 25', value: '25' }
-        { label: 'TOP - 50', value: '50' }
-        { label: 'TOP - 100', value: '100' }
+        { label: 'TOP - 5', value: 5 }
+        { label: 'TOP - 10', value: 10 }
+        { label: 'TOP - 25', value: 25 }
+        { label: 'TOP - 50', value: 50 }
+        { label: 'TOP - 100', value: 100 }
       ]
 
-      unless $scope.selectedEntriesLimit
-        $scope.selectedEntriesLimit = angular.copy(_.find($scope.limitEntriesOptions, {
-          value: w.metadata.entries_limit || '50'
+      unless $scope.limitEntriesSelected
+        $scope.limitEntriesSelected = angular.copy(_.find($scope.limitEntriesOptions, {
+          value: w.metadata.limit_entries || 50
         }))
 
   # Widget is ready: can trigger the "wait for settings to be ready"
