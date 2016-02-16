@@ -65,24 +65,28 @@ angular
         # Mnoe: /api/mnoe/jpi/v1/impac/dashboards
         # Maestrano: /api/js_api/v1/analytics/dashboards
         # Dev. Toolkit: /api/v2/impac/dashboards
-        create: -> (defaults.dashboards.create || "#{defaults.mnoHub}#{defaults.impacPrefix}/dashboards")
+        create: (orgId=null) ->
+          if defaults.dashboards.create
+            defaults.dashboards.create.replace(':organization_id', orgId)
+          else
+            service.dashboards.index(orgId)
 
         show: (id) ->
           if defaults.dashboards.show
             defaults.dashboards.show.replace(':id', id)
           else
-            "#{service.dashboards.create()}/#{id}"
+            "#{defaults.mnoHub}#{defaults.impacPrefix}/dashboards/#{id}"
 
         update: (id) ->
           if defaults.dashboards.update
             defaults.dashboards.update.replace(':id', id)
           else
-            "#{service.dashboards.create()}/#{id}"
+            service.dashboards.show(id)
         delete: (id) ->
           if defaults.dashboards.del
             defaults.dashboards.del.replace(':id', id)
           else
-            "#{service.dashboards.create()}/#{id}"
+            service.dashboards.show(id)
 
       service.widgets =
         index: (dashboard_id) ->
