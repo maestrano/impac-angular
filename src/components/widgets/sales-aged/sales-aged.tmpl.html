@@ -24,28 +24,53 @@
       <div class="legend">From {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
 
       <div class="widget-lines-container">
-        <div class="row widget-line">
-          <span class="text-center" ng-repeat="date in formattedDates track by $index">
-            <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
 
-            <div class="col-sm-2" style="padding: 5px 0px;">
-              <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">{{date}}</div></div>
-            
+        <!-- Not mobile -->
+        <div class="row">
+          <span ng-repeat="date in formattedDates track by $index" class="hidden-xs">
+            <!-- Separator every 4 items -->
+            <div ng-if="$index % 4 == 0 && $index > 0" class="clearfix dashed"></div>
+
+            <div class="col-sm-3 text-center">
+              <!-- Date -->
               <div class="row widget-line">
-                <div ng-hide="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
-                  {{getTotal($index) | mnoCurrency : widget.content.currency : false}}
-                  <br />
-                  {{widget.content.currency}}
+                <div class="col-xs-12">
+                  {{date}}
                 </div>
-                <div ng-show="filter.value == 'quantity_sold'" class="col-sm-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" style="padding: 0px;">
+              </div>
+              <!-- Amount (+ currency) -->
+              <div class="row widget-line">
+                <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" >
+                  {{getTotal($index) | mnoCurrency : widget.content.currency}}
+                </div>
+                <div ng-show="filter.value == 'quantity_sold'" class="col-xs-12" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" >
                   {{getTotal($index)}}
+                </div>
               </div>
             </div>
+          </span>
+        </div>
+
+        <!-- Mobile -->
+        <div ng-repeat="date in formattedDates track by $index" class="row widget-line visible-xs">
+          <!-- Date -->
+          <div class="col-xs-6">
+            {{date}}
+          </div>
+          <!-- Amount (+ currency) -->
+          <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-6 text-right" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" >
+            {{getTotal($index) | mnoCurrency : widget.content.currency}}
+          </div>
+          <div ng-show="filter.value == 'quantity_sold'" class="col-xs-6 text-right" ng-class="getClassColor(getTotal($index - 1),getTotal($index))" >
+            {{getTotal($index)}}
           </div>
         </div>
+
       </div>
       
     </div>
+    
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
   </div>
-  <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+
 </div>

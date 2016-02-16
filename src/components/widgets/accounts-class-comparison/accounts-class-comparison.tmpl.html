@@ -23,12 +23,14 @@
       </div>
       <div class="row">
         <div class="col-md-12 widget-lines-container">
-          <div ng-repeat="entity in widget.content.companies track by $index">
-            <i style="float: right; margin-right: 10px;">
-              {{getAmount($index)}}
-            </i>
-            <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(entity)}}" />
-            {{entity}}
+          <div class="row" ng-repeat="entity in widget.content.companies track by $index">
+            <div class="col-xs-6 text-left">
+              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(entity)}}" />
+              {{entity}}
+            </div>
+            <div class="col-xs-6 text-right">
+              <i>{{getAmount($index)}}</i>
+            </div>
           </div>
         </div>
       </div>

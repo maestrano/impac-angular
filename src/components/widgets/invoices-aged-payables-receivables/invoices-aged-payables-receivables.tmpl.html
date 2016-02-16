@@ -19,60 +19,78 @@
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
         <div class="widget-lines-container">
+
           <div class="row widget-line header">
-            <div class="col-sm-8">Aged Payables & Receivables</div>
-            <div class="col-sm-4 text-right">Total</div>
+            <div class="col-xs-8">Aged Payables & Receivables</div>
+            <div class="col-xs-4 text-right">Total</div>
           </div>
 
           <!-- Payables -->
-          <div class="row widget-line total">
-            <div class="row widget-line" ng-class="isSelected(widget.content.payables) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(widget.content.payables)">
-                <i ng-show="(widget.content.payables.suppliers && widget.content.payables.suppliers.length)" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
-              </div>
-              <div class="col-sm-7" ng-click="toggleSelectedElement(widget.content.payables)">
-                <strong>Aged Payables</strong>
-              </div>
-              <div class="col-sm-4 text-right" ng-click="toggleSelectedElement(widget.content.payables)">
-                <strong>{{getTotalSum(widget.content.payables) | mnoCurrency : widget.content.payables.currency}}</strong>
-              </div>
-            </div>
-            <div ng-hide="isCollapsed(widget.content.payables)">
-              <div class="row widget-line" ng-click="toggleSelectedElement(supplier)" ng-repeat="supplier in widget.content.payables.suppliers" ng-class="isSelected(supplier) ? 'selected' : null" >
-                <div class="col-sm-1" />
-                <div class="col-sm-7">{{supplier.name}}</div>
-                <div class="col-sm-4 text-right">
-                  <span>{{getTotalSum(supplier) | mnoCurrency : supplier.currency}}</span>
+          <div class="row lines-group">
+            <div class="col-xs-12">
+
+              <div class="row widget-line" ng-class="{selected: isSelected(widget.content.payables)}" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(widget.content.payables)">
+                  <i ng-show="(widget.content.payables.suppliers && widget.content.payables.suppliers.length)" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(widget.content.payables)">
+                  <strong>Aged Payables</strong>
+                </div>
+                <div class="col-xs-4 text-right" ng-click="toggleSelectedElement(widget.content.payables)">
+                  <strong>{{getTotalSum(widget.content.payables) | mnoCurrency : widget.content.payables.currency}}</strong>
                 </div>
               </div>
+
+              <div class="row" ng-hide="isCollapsed(widget.content.payables)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(supplier)" ng-repeat="supplier in widget.content.payables.suppliers" ng-class="isSelected(supplier) ? 'selected' : null" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{supplier.name}}
+                    </div>
+                    <div class="col-xs-4 text-right">
+                      {{getTotalSum(supplier) | mnoCurrency : supplier.currency}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
             </div>
           </div>
 
           <!-- Receivables -->
-          <div class="row widget-line total">
-            <div class="row widget-line" ng-class="isSelected(widget.content.receivables) ? 'selected' : null" >
-              <div class="col-sm-1" ng-click="toggleCollapsed(widget.content.receivables)">
-                <i ng-show="(widget.content.receivables.customers && widget.content.receivables.customers.length)" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
-              </div>
-              <div class="col-sm-7" ng-click="toggleSelectedElement(widget.content.receivables)">
-                <strong>Aged Receivables</strong>
-              </div>
-              <div class="col-sm-4 text-right" ng-click="toggleSelectedElement(widget.content.receivables)">
-                <strong>{{getTotalSum(widget.content.receivables) | mnoCurrency : widget.content.receivables.currency}}</strong>
-              </div>
-            </div>
-            <div ng-hide="isCollapsed(widget.content.receivables)">
-              <div class="row widget-line" ng-click="toggleSelectedElement(customer)" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? 'selected' : null" >
-                <div class="col-sm-1" />
-                <div class="col-sm-7">{{customer.name}}</div>
-                <div class="col-sm-4 text-right">
-                  <span>{{getTotalSum(customer) | mnoCurrency : customer.currency}}</span>
+          <div class="row lines-group">
+            <div class="col-xs-12">
+
+              <div class="row widget-line" ng-class="{selected: isSelected(widget.content.receivables)}" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(widget.content.receivables)">
+                  <i ng-show="(widget.content.receivables.customers && widget.content.receivables.customers.length)" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(widget.content.receivables)">
+                  <strong>Aged Receivables</strong>
+                </div>
+                <div class="col-xs-4 text-right" ng-click="toggleSelectedElement(widget.content.receivables)">
+                  <strong>{{getTotalSum(widget.content.receivables) | mnoCurrency : widget.content.receivables.currency}}</strong>
                 </div>
               </div>
+
+              <div class="row" ng-hide="isCollapsed(widget.content.receivables)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(customer)" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? 'selected' : null" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{customer.name}}
+                    </div>
+                    <div class="col-xs-4 text-right">
+                      <span>{{getTotalSum(customer) | mnoCurrency : customer.currency}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
+
 
       <div class="right-panel text-center" ng-class="{'col-md-6': widget.isExpanded(), 'col-md-12 invisible': !widget.isExpanded()}">
 
@@ -87,43 +105,72 @@
           </div>
 
           <div ng-show="selectedElements.length < 2" class="widget-lines-container">
-            <div class="row widget-line">
-              <span class="text-center" ng-repeat="date in widget.content.dates track by $index">
-                <div ng-if="$index % 6 == 0 && $index > 0" class="clearfix dashed hidden-xs"></div>
 
-                <div class="col-sm-2" style="padding: 5px 0px;">
-                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
-                    {{date | mnoDate : widget.metadata.hist_parameters.period}}
-                  </div></div>
-                  <div class="row widget-line"><div class="col-sm-12" style="padding: 0px;">
-                    {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
-                  </div></div>
+            <!-- Not mobile -->
+            <div class="row">
+              <span ng-repeat="date in widget.content.dates track by $index" class="hidden-xs">
+                <!-- Separator every 4 items -->
+                <div ng-if="$index % 4 == 0 && $index > 0" class="clearfix dashed"></div>
+
+                <div class="col-sm-3 text-center">
+                  <!-- Date -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12">
+                      {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                    </div>
+                  </div>
+                  <!-- Amount + currency -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                      {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+                    </div>
+                  </div>
                 </div>
               </span>
             </div>
-            <div class="astericks-info">
-              <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
+
+            <!-- Mobile -->
+            <div ng-repeat="date in widget.content.dates track by $index" class="row widget-line visible-xs">
+              <!-- Date -->
+              <div class="col-xs-6">
+                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+              </div>
+              <!-- Amount + currency -->
+              <div class="col-xs-6 text-right" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+              </div>
+            </div>
+
+            <div class="row astericks-info">
+              <div class="col-xs-12">
+                <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
+              </div>
             </div>
           </div>
 
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
 
-            <div class="widget-line header">
-              Totals
+            <div class="row widget-line header">
+              <div class="col-xs-4 col-xs-offset-8 text-right">Totals</div>
             </div>
 
-            <div class="widget-line" ng-repeat="element in selectedElements">
-              <i style="float: right; margin-right: 10px;">
-                <span>{{getTotalSum(element) | mnoCurrency : element.currency}}</span>
-              </i>
-              <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
-              {{getName(element) | titleize}}
+            <div class="row widget-line" ng-repeat="element in selectedElements">
+              <div class="col-xs-2">
+                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+              </div>
+              <div class="col-xs-6">
+                {{getName(element) | titleize}}
+              </div>
+              <div class="col-xs-4 text-right">
+                <i>{{getTotalSum(element) | mnoCurrency : element.currency}}</i>
+              </div>
             </div>
 
-            <div class="astericks-info">
-              <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
+            <div class="row astericks-info">
+              <div class="col-xs-12">
+                <p><i>* Your opening-balance of receivables and/or payables for this period.</i></p>
+              </div>
             </div>
-
           </div>
 
         </div>

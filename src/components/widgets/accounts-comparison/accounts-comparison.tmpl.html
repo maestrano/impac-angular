@@ -21,7 +21,9 @@
       </div>
       <!-- end -->
       <div ng-hide="hasAccountsSelected() || noComparableAccounts" class="row">
-        <h5>Select the accounts you wish to compare.</h5>
+        <div class="col-xs-12">
+          <h5>Select the accounts you wish to compare.</h5>
+        </div>
         <div class="col-md-6">
           <div class="input-group">
             <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
@@ -30,49 +32,61 @@
       </div>
       <!-- error: when there are no comparable accounts matched -->
       <div ng-show="isComparisonMode() && noComparableAccounts" class="row comparable-error">
-        <h5>No comparable accounts found.</h5>
+        <div class="col-xs-12"><h5>No comparable accounts found.</h5></div>
       </div>
 
-      <div ng-show="hasAccountsSelected()">
-        <div class="row">
-          <div class="col-md-12 chart-container">
-            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-          </div>
+      <div class="row" ng-show="hasAccountsSelected()">
+        <div class="col-xs-12 chart-container">
+          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="widget-lines-container">
-              <div class="widget-line" ng-repeat="account in widget.selectedAccounts track by $index">
-                <div ng-if="isComparisonMode()" ng-repeat="groupedAccount in account.accounts track by $index">
-                  <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
-                    x
-                  </button>
-                  <i style="float: right; margin-right: 10px;">{{formatAmount(groupedAccount)}}</i>
-                  <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(groupedAccount)}}" />
+      <div class="row" ng-show="hasAccountsSelected()">
+        <div class="col-xs-12 widget-lines-container">
+
+          <div class="row" ng-class="{'lines-group': isComparisonMode(), 'widget-line': !isComparisonMode()}" ng-repeat="account in widget.selectedAccounts track by $index">
+            
+            <!-- Comparison between several conpanies -->
+            <div class="col-xs-12" ng-if="isComparisonMode()">
+              <div class="row widget-line" ng-repeat="groupedAccount in account.accounts track by $index">
+                <div class="col-xs-1">
+                  <i class="fa fa-circle" style="color: {{getAccountColor(groupedAccount)}}" />
+                </div>
+                <div class="col-xs-6">
                   {{groupedAccount.name}}
                 </div>
-                <div ng-if="!isComparisonMode()">
-                  <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">
-                    x
-                  </button>
-                  <i style="float: right; margin-right: 10px;">{{formatAmount(account)}}</i>
-                  <i class="fa fa-circle" style="margin: 0px 8px; color: {{getAccountColor(account)}}" />
-                  {{account.name}}
+                <div class="col-xs-4 text-right">
+                  <i>{{formatAmount(groupedAccount)}}</i>
+                </div>
+                <div class="col-xs-1 text-right">
+                  <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">x</button>
                 </div>
               </div>
             </div>
+
+            <!-- Simple comparison between accounts -->
+            <div ng-if="!isComparisonMode()" class="col-xs-1">
+              <i class="fa fa-circle" style="color: {{getAccountColor(account)}}" />
+            </div>
+            <div ng-if="!isComparisonMode()" class="col-xs-6">
+              {{account.name}}
+            </div>
+            <div ng-if="!isComparisonMode()" class="col-xs-4 text-right">
+              <i>{{formatAmount(account)}}</i>
+            </div>
+            <div ng-if="!isComparisonMode()" class="col-xs-1 text-right">
+              <button class="close" ng-click="removeAccount(account)" ng-show="widget.hasDeleteAbility">x</button>
+            </div>
+
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="add-account">
-            <div class="input-group">
-              <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
-                <option value="" disabled selected>+ ADD ACCOUNT</option>
-              </select>
-            </div>
-          </div>
+      <div class="row" ng-show="hasAccountsSelected()">
+        <div class="col-xs-12 input-group add-account">
+          <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
+            <option value="" disabled selected>+ ADD ACCOUNT</option>
+          </select>
         </div>
       </div>
     </div>

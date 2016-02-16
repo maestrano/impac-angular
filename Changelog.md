@@ -10,7 +10,7 @@
 > Nothing
 
 ### Adds
-> Nothing
+- Better layout for all widgets using the widget-lines-container (+ adapted to xsmall screens)
 
 -------------------------------------------------------------
 # v1.2.0 | Features - Developer toolkit
