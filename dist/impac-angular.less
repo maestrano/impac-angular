@@ -204,12 +204,17 @@
 
 .selectable () {
   cursor: pointer;
-  :hover, &:hover {
+  border: solid 1px @impac-widget-background-color;
+  &:hover {
     color: @impac-widget-selectable-color;
   }
-  .selected {
+  &.selected {
     border: solid 1px @impac-widget-selectable-color;
     background-color: lighten(@impac-widget-selectable-color, 22%)
+  }
+  &.no-select {
+    cursor: auto;
+    &:hover { color: @mediumblue; }
   }
 }
 
@@ -482,9 +487,9 @@ body {
     max-height: @impac-widget-lines-container-max-height;
     text-align: left;
     font-size: 12px;
+    padding: 0px 15px;
 
-    .widget-line {
-      margin: 0px;
+    .row.widget-line {
       padding: 5px;
       color: @mediumblue;
 
@@ -492,7 +497,7 @@ body {
         .font(12px,500,@impac-widget-text-color-medium);
         text-transform: uppercase;
       }
-      &.small-row {
+      @media (max-width: @screen-xs-max) {
         margin: inherit;
         margin-left: -3px;
         margin-right: -3px;
@@ -503,14 +508,21 @@ body {
           padding-right: 3px;
         }
       }
-      &.total {
-        padding: 0px;
-        border-top: solid 1px @lightgray;
-      }
 
-      .dashed {
-        border-bottom: dashed 1px @impac-widget-borders-color;
+      i.fa {
+        min-width: 12px;
+        min-height: 12px;
       }
+    }
+
+    .row .dashed {
+      border-bottom: dashed 1px @impac-widget-borders-color;
+      padding-bottom: 3px;
+      margin-bottom: 3px;
+    }
+
+    .row.lines-group {
+      border-top: solid 1px @lightgray;
     }
   }
 }
@@ -541,11 +553,8 @@ body {
   .tall-widget();
 
   .widget-lines-container {
-    .scrollable(scroll);
     max-height: 540px;
-    margin-right: 10px;
-
-    .widget-line.total {
+    .lines-group .widget-line {
       .selectable();
     }
   }
@@ -627,6 +636,7 @@ body {
     }
   }
 }
+
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
@@ -742,7 +752,7 @@ body {
             color: @impac-widget-link-color;
             float: right;
             position: absolute;
-            top: -1px;
+            top: 0px;
             right: 0px;
           }
         }
@@ -1347,6 +1357,10 @@ impac-kpi .kpi {
   }
 }
 
+.widget-item {
+  transition: width 0.3s;
+}
+
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
@@ -1517,6 +1531,18 @@ impac-kpi .kpi {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -1532,18 +1558,6 @@ impac-kpi .kpi {
   }
   p {
     font-weight: bold;
-  }
-}
-
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
   }
 }
 
@@ -1563,23 +1577,31 @@ impac-kpi .kpi {
   .widget-lines-container {
     .scrollable(scroll);
     max-height: 540px;
+    @media (max-width: @screen-xs-max) {
+      .row.widget-line {
+        border-top: dashed 1px @impac-widget-borders-color;
+        &.header, &.total { border-top: none; }
+      }
+    }
   }
 
   .no-data-block {
     .center-thin();
   }
 }
+
 .analytics .widget-item .content.accounts-cash-summary {
   .drill-down-widget();
-  .right-panel > .widget-lines-container {
+  .right-panel .widget-lines-container {
     max-height: 215px;
   }
 
-  .row.widget-line.total.cash {
+  .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
   }
 }
+
 .analytics .widget-item .content.accounts-class-comparison {
   .param-selector {
     text-align: center;
@@ -1708,17 +1730,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1733,14 +1744,26 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
-  .row.widget-line.total.profit {
+  .row.lines-group.profit {
     border-top: solid 1px;
     border-bottom: double;
   }
 }
+
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1819,12 +1842,7 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
-      max-height: 175px;
-  }
-  .no-element p {
-    // corrects alignment issues with the container, which caused text to overflow beyond parents.
-    max-width: 90% !important;
-    margin: auto !important;
+      max-height: 165px;
   }
 }
 
@@ -1860,18 +1878,21 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-workforce-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
-  .astericks-info {
-    text-align: left;
-    padding-left: 15px;
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.astericks-info {
+    margin-top: 15px;
   }
 }
 
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
+}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
@@ -1879,9 +1900,10 @@ impac-kpi .kpi {
   .tall-widget();
 
   .widget-lines-container {
-    max-height: 260px;
+    max-height: 238px;
   }
 }
+
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -1926,6 +1948,16 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 270px;
+  }
+}
+
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1951,21 +1983,19 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 270px;
-  }
-}
 .analytics .widget-item .content.sales-cycle {
   .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
-  .widget-lines-container .widget-line.main {
-    .selectable();
+  .widget-lines-container {
+    max-height: 340px;
+    .widget-line.main {
+      .selectable();
+    }
   }
 }
+
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -1975,16 +2005,16 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2031,21 +2061,11 @@ impac-kpi .kpi {
 
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
-  .right-panel > .widget-lines-container {
+  .right-panel .widget-lines-container {
     max-height: 215px;
   }
-  // .simple-list-widget();
-  // .widget-lines-container {
-  //   .scrollable(scroll);
-  //   max-height: 210px;
-  //   .widget-line.total {
-  //     .selectable();
-  //   }
-  // }
-  // .selector {
-  //   margin-bottom: 4px;
-  // }
 }
+
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
