@@ -11,7 +11,7 @@ describe('<> ImpacUtilities', function () {
     });
     // lodash
     _lodash = $window._;
-    moment = $window.moment
+    moment = $window.moment;
   });
 
   it('is defined', function () {
