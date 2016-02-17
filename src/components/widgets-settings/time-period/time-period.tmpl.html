@@ -1,0 +1,36 @@
+<h5>Time period</h5>
+<div class="settings time-period">
+
+  <div class="row">
+    <div class="col-xs-11">
+      Period:
+    </div>
+    <div class="col-xs-7">
+      <select ng-model="period" ng-options="titleize(p) for p in periods" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-2 text-center" style="padding-top: 20px;">
+      <b>O</b>
+    </div>
+    <div class="col-xs-10" ng-if="timePeriodSetting">
+      <div setting-time-slider parent-widget="timePeriodSetting" deferred="::timeSliderDeferred" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-2 text-center" style="padding-top: 3px;">
+      <b>O</b>
+    </div>
+    <div class="col-xs-10" ng-if="timePeriodSetting">
+      <div setting-dates-picker parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <select ng-model="preset" ng-options="p for p in presets"/>
+    </div>
+  </div>
+</div>
