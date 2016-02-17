@@ -15,7 +15,7 @@
 
     <div class="row settings-bar" ng-show="(isDataFound==true)">
       <div class="col-xs-12 text-right">
-        <a href="#" ng-click="toggleTransactions()">{{transactionsCollapsed ? 'Show' : 'Hide'}} transactions</a> |
+        <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'Show' : 'Hide'}} transactions</a> |
         <div setting-param-selector parent-widget="widget" param="limit_entries" options="limitEntriesOptions" selected="limitEntriesSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload/>
       </div>
     </div>
