@@ -1,0 +1,74 @@
+<div widget-sales-top-customers>
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-dates-picker parent-widget="widget" class="part" from="(widget.metadata.hist_parameters.from || defaultFrom)" to="(widget.metadata.hist_parameters.to || defaultTo)" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode" class="widget-lines-container">
+
+    <div class="row settings-bar" ng-show="(isDataFound==true)">
+      <div class="col-xs-12 text-right">
+        <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'Show' : 'Hide'}} transactions</a> |
+        <div setting-param-selector parent-widget="widget" param="limit_entries" options="limitEntriesOptions" selected="limitEntriesSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload/>
+      </div>
+    </div>
+
+    <!-- Header line -->
+    <div class="row widget-line header">
+      <div class="col-xs-1">
+        #
+      </div>
+      <div class="col-xs-7">
+        Customer name
+      </div>
+      <div class="col-xs-4 text-right">
+        Total sales
+      </div>
+    </div>
+
+    <!-- Content lines -->
+    <div class="row lines-group" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo: limitEntriesSelected.value">
+      <div class="col-xs-12">
+
+        <div class="row widget-line">
+          <div class="col-xs-1">
+            {{$index + 1}}
+          </div>
+          <div class="col-xs-7">
+            <b>{{entity.name}}</b>
+          </div>
+          <div class="col-xs-4 text-right">
+            <b>{{entity.total_invoiced | mnoCurrency : entity.currency}}</b>
+          </div>
+        </div>
+
+        <div class="row widget-line text-right" collapse="transactionsCollapsed">
+          <div class="col-xs-4">
+            <i>{{entity.invoices.length}} transaction{{entity.invoices.length > 1 ? 's' : ''}}:</i>
+          </div>
+          <div class="col-xs-4">
+            avg: <i>{{(entity.total_invoiced / entity.invoices.length) | mnoCurrency : entity.currency}}</i>
+          </div>
+          <div class="col-xs-4">
+            last: <i>{{entity.invoices[entity.invoices.length - 1].invoiced | mnoCurrency : entity.currency}}</i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Data not found line -->
+    <div class="row widget-line" ng-show="(isDataFound==false)">
+      <div class="col-xs-12">No sales data found for your customers</div>
+    </div>
+
+  </div>
+
+</div>

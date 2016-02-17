@@ -71,7 +71,7 @@ module.directive('impacWidget', ($templateCache) ->
       #=======================================
       scope.widgetContentTemplate = ->
         # impac-angular component template name
-        if scope.widget.metadata.template
+        if scope.widget.metadata && scope.widget.metadata.template
           scope.templateName = scope.widget.metadata.template.replace(/\/|_/g, '-')
 
         # backward compatibility for old widgets

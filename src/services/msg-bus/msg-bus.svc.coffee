@@ -2,6 +2,8 @@
 # ---
 # Please register below any object that should be shared so we
 # we can ensure that there is no name conflict
+# ---
+# TODO: do we need this service in impac-angular?
 angular
   .module('impac.services.message-bus', [])
   .service('MsgBus', () ->

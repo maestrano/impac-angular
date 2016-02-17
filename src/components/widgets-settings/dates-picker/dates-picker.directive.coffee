@@ -36,7 +36,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         # timeout to make sure that the fromDate and toDate are propagated to the directive if updated in widget.initContext()
         $timeout ->
           scope.changed = false
-
+          # TODO: widget directives parse dates into strings (with $filter('date')), pass it into this directive, then it gets parsed into a date for display. Maybe it could accept a date directly? Maybe we could use moment.js in this component for neater parsing to avoid syntax like below?
           if Date.parse(scope.fromDate)
             parsedFrom = scope.fromDate.split('-')
             y = parsedFrom[0]
