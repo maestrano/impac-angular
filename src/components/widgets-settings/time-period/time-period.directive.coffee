@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log) ->
   return {
     restrict: 'A',
     scope: {
@@ -20,10 +20,12 @@ module.directive('settingTimePeriod', ($templateCache, $q) ->
       # --------------------------------------
       scope.timeSliderDeferred = $q.defer()
       scope.datesPickerDeferred = $q.defer()
+      scope.timePresetsDeferred = $q.defer()
 
       settingsPromises = [
         scope.timeSliderDeferred.promise
         scope.datesPickerDeferred.promise
+        scope.timePresetsDeferred.promise
       ]
 
       scope.periods = [
@@ -49,13 +51,13 @@ module.directive('settingTimePeriod', ($templateCache, $q) ->
       scope.timePeriodSetting.toMetadata = ->
         metadata = 
           hist_parameters: {}
-        for set in scope.timePeriodSetting.settings
-          metadata.merge(set.toMetadata())
-        return metadata
 
 
       scope.titleize = (word) ->
         return "#{word.slice(0,1).toUpperCase()}#{word.slice(1).toLowerCase()}"
+
+      scope.test = (metadata) ->
+        $log.info(metadata)
 
 
       w.settings.push(scope.timePeriodSetting)
