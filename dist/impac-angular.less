@@ -1531,18 +1531,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -1558,6 +1546,18 @@ impac-kpi .kpi {
   }
   p {
     font-weight: bold;
+  }
+}
+
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
   }
 }
 
@@ -1730,6 +1730,17 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -1742,17 +1753,6 @@ impac-kpi .kpi {
   }
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-profit-and-loss {
@@ -1807,18 +1807,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.hr-leaves-balance{
-  .employee-name {
-    text-align: center;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 33px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -1851,6 +1839,18 @@ impac-kpi .kpi {
 }
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
+}
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
+    text-align: center;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
+  }
 }
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
