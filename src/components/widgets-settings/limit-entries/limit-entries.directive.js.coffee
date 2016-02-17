@@ -20,14 +20,14 @@ module.directive('settingLimitEntries', ($templateCache, ImpacWidgetsSvc) ->
     scope: {
       parentWidget: '='
       deferred: '='
-      options: '='
       selected: '='
-      max: '='
-      entriesLabel: '='
+      max: '=?'
+      options: '=?'
+      entriesLabel: '=?'
     }
 
     link: (scope, elements, attrs) ->
-      scope.options = [5, 15, 50] unless (attrs.options? && scope.options.length > 0)
+      scope.options = [5, 15, 50] unless (scope.options? && scope.options.length > 0)
 
       scope.selectOption = (anOption) ->
         scope.selected = anOption
