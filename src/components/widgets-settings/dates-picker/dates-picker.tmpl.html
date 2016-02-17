@@ -1,5 +1,5 @@
 <span class="settings dates-picker">
-  <h5>Time range</h5>
+  <h5 ng-if="showTitle()">Time range</h5>
 
   <span class="buttons">
     <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" max-date="calendarTo.value" >
