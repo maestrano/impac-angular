@@ -38,8 +38,8 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
 
       initNumberOfPeriods = ->
         tr = scope.timeRange
-        scope.numberOfPeriods = 6
-        return 6 unless tr?
+        scope.numberOfPeriods = moment().month()
+        return scope.numberOfPeriods unless tr?
           
         nPattern = /^-?([0-9]{1,2})[a-z]?$/
         n = nPattern.exec(tr)
