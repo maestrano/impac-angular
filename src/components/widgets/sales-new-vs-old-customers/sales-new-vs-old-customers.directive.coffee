@@ -53,7 +53,7 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
   $scope.shouldDisplayCurrency = () ->
     $scope.displayType.value.indexOf('count') < 0 if $scope.isDataFound
 
-  calculatePercentage = (sliceType) ->
+  $scope.calculatePercentage = (sliceType) ->
     Math.round(
       w.content.summary[$scope.displayType.value][sliceType] / w.content.summary[$scope.displayType.value].total * 100
     )
@@ -65,11 +65,11 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
     if $scope.isDataFound
       pieData = [
         {
-          label: "NEW #{calculatePercentage('new')}%"
+          label: "NEW #{$scope.calculatePercentage('new')}%"
           value: w.content.summary[$scope.displayType.value].new
         },
         {
-          label: "EXISTING #{calculatePercentage('old')}%"
+          label: "EXISTING #{$scope.calculatePercentage('old')}%"
           value: w.content.summary[$scope.displayType.value].old
         }
       ]
