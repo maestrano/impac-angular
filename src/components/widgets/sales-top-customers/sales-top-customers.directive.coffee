@@ -47,5 +47,10 @@ module.directive('widgetSalesTopCustomers', ->
   return {
     restrict: 'A',
     controller: 'WidgetSalesTopCustomersCtrl'
+    link: (scope) ->
+      # Hide/show transactions
+      scope.transactionsCollapsed = false
+      scope.toggleTransactions = ->
+        scope.transactionsCollapsed = !scope.transactionsCollapsed
   }
 )
