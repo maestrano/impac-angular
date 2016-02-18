@@ -1,12 +1,13 @@
 module = angular.module('impac.components.widgets-settings.time-slider',[])
 
-module.directive('settingTimeSlider', ($templateCache) ->
+module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
       deferred: '='
-      timeRange: '@?'
+      timeRange: '=?'
+      onUse: '&?'
     },
     template: $templateCache.get('widgets-settings/time-slider.tmpl.html'),
     
@@ -16,27 +17,31 @@ module.directive('settingTimeSlider', ($templateCache) ->
       setting = {}
       setting.key = "time-slider"
 
-      PERIODS = ['d','w','m','q','y']
+      PERIODS = ['d','w','m','q','y','f']
 
       setting.initialize = ->
-        initNumberOfPeriods()
-        initPeriod()
-        return true
+        # Make sure scope.timeRange has been propagated
+        $timeout ->
+          initNumberOfPeriods()
+          initPeriod()
+          initFinancialYearEndMonth()
+          return true
 
       setting.toMetadata = ->
-        return {
-          hist_parameters: 
-            to: moment().format('YYYY-MM-DD')
-            time_range: getTimeRange()
-        }
+        histParams =
+          to: scope.toDate().format('YYYY-MM-DD')
+          time_range: getTimeRange()
 
+        histParams.from = scope.fromDate().format('YYYY-MM-DD') if getPeriod() == 'f'
+
+        return { hist_parameters: histParams }
 
       initNumberOfPeriods = ->
         tr = scope.timeRange
         scope.numberOfPeriods = 6
         return 6 unless tr?
           
-        nPattern = /^-?([0-9]{1,2})[a-z]$/
+        nPattern = /^-?([0-9]{1,2})[a-z]?$/
         n = nPattern.exec(tr)
         scope.numberOfPeriods = parseInt(n[1]) if (n? && n[1] && parseInt(n[1]))
         
@@ -47,12 +52,19 @@ module.directive('settingTimeSlider', ($templateCache) ->
         scope.period = "m"
         return "m" unless tr?
           
-        pPattern = /^-?[0-9]{1,2}([a-z])$/
+        pPattern = /^-?[0-9]{0,2}([a-z])$/
         p = pPattern.exec(tr)
         period = _.find(PERIODS, (authPeriod) -> (p? && (p[1] == authPeriod)) )
         scope.period = period if period?
 
         return scope.period
+
+      initFinancialYearEndMonth = ->
+        scope.financialYearEndMonth = 6
+        ImpacMainSvc.load().then( (config) ->
+          if config? && config.currentOrganization? && parseInt(config.currentOrganization.financial_year_end_month)
+            scope.financialYearEndMonth = parseInt(config.currentOrganization.financial_year_end_month)
+        )
 
       getPeriod = ->
         if scope.period?
@@ -68,6 +80,7 @@ module.directive('settingTimeSlider', ($templateCache) ->
           when "m" then return "month"
           when "q" then return "quarter"
           when "y" then return "year"
+          when "f" then return "financial year"
 
       getNumberOfPeriods = ->
         if scope.numberOfPeriods?
@@ -92,13 +105,22 @@ module.directive('settingTimeSlider', ($templateCache) ->
 
         return [number,word].join(' ')
 
+      scope.formatDate = (aDate) ->
+        return aDate.format('Do MMM YYYY')
+
       scope.fromDate = ->
         n = getNumberOfPeriods()
         word = getPeriodWord()
-        return moment().subtract(n, word).startOf(word).format('Do MMM YYYY')
+        unless word.slice(0,1) == "f"
+          return moment().subtract(n, word).startOf(word)
+        else
+          financialYearStartYear = moment().year() - 1
+          financialYearStartYear = moment().year() if moment().month() >= 6
+          financialYearStartYear = financialYearStartYear - n
+          return moment("#{financialYearStartYear}-#{scope.financialYearEndMonth + 1}-01", "YYYY-M-DD")
 
       scope.toDate = ->
-        return moment().format('Do MMM YYYY')
+        return moment()
 
 
       w.settings.push(setting)
