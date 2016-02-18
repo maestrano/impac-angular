@@ -9,6 +9,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       fromDate: '=from'
       toDate: '=to'
       keepToday: '='
+      onUse: '&?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
     
