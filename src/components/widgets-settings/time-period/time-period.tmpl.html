@@ -1,36 +1,26 @@
-<h5>Time period</h5>
+<h5>Time period selection</h5>
 <div class="settings time-period" ng-if="timePeriodSetting">
 
   <div class="row">
-    <div class="col-xs-11">
+    <div class="col-xs-6">
       Period:
+      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="updateTimeRangePeriod()" />
     </div>
-    <div class="col-xs-7">
-      <select ng-model="period" ng-options="titleize(p) for p in periods" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-2 text-center" style="padding-top: 20px;">
-      <b>O</b>
-    </div>
-    <div class="col-xs-10" ng-if="timePeriodSetting">
-      <div setting-time-slider parent-widget="timePeriodSetting" deferred="::timeSliderDeferred" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-2 text-center" style="padding-top: 3px;">
-      <b>O</b>
-    </div>
-    <div class="col-xs-10">
-      <div setting-dates-picker parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" />
+    <div class="col-xs-6">
+      Preset:
+      <div setting-time-presets parent-widget="timePeriodSetting" deferred="::timePresetsDeferred" on-select="initUsedSetting(histParams)" />
     </div>
   </div>
 
   <div class="row">
     <div class="col-xs-12">
-      <div setting-time-presets parent-widget="timePeriodSetting" deferred="::timePresetsDeferred" on-select="test(metadata)" />
+      <div setting-time-slider class="sub-setting" ng-class="{used: isTimeSliderUsed(), unused: isDatesPickerUsed()}" parent-widget="timePeriodSetting" deferred="::timeSliderDeferred" time-range="timePeriodSetting.timeRange" on-use="useTimeSlider()" />
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <div setting-dates-picker class="sub-setting" ng-class="{used: isDatesPickerUsed(), unused: isTimeSliderUsed()}" parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="histParams.keep_today" on-use="useDatesPicker()" />
     </div>
   </div>
 </div>

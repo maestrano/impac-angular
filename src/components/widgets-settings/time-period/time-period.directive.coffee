@@ -1,11 +1,12 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q, $log) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
   return {
     restrict: 'A',
     scope: {
       parentWidget: '='
       deferred: '='
+      histParams: '=?'
     },
     template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
     
@@ -15,6 +16,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log) ->
       scope.timePeriodSetting =
         key: "time-period"
         settings: []
+        isEditMode: true
 
       # Define children settings
       # --------------------------------------
@@ -34,30 +36,115 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log) ->
         "MONTHLY"
         "QUARTERLY"
         "YEARLY"
-      ]
-      scope.presets = [
-        "Financial year to date"
-        "Calendar year to date"
-        "Last 6 months"
-        "Last 4 quarters"
-        "Last 4 weeks"
+        "FYEARLY"
       ]
 
 
       scope.timePeriodSetting.initialize = ->
-        for set in scope.timePeriodSetting.settings
-          set.initialize()
+        # Make sure scope.histParams have been propagated
+        $timeout ->
+          # for set in scope.timePeriodSetting.settings
+          #   set.initialize()
+          initPeriod()
+          getSetting('time-presets').initialize()
+          scope.initUsedSetting()
 
       scope.timePeriodSetting.toMetadata = ->
+        sourceSetting = getSetting(getUsedSettingKey())
+        histParams = sourceSetting.toMetadata().hist_parameters if sourceSetting?
+        histParams.period = getPeriod()
+        histParams.mode = scope.histParams.mode if scope.histParams? && scope.histParams.mode?
         metadata = 
-          hist_parameters: {}
+          hist_parameters: histParams
+
+        return metadata
 
 
       scope.titleize = (word) ->
-        return "#{word.slice(0,1).toUpperCase()}#{word.slice(1).toLowerCase()}"
+        unless word == "FYEARLY"
+          return "#{word.slice(0,1).toUpperCase()}#{word.slice(1).toLowerCase()}"
+        else
+          return "Yearly (financial)"
 
-      scope.test = (metadata) ->
-        $log.info(metadata)
+
+      getPeriod = ->
+        if scope.timePeriodSetting.period? then return scope.timePeriodSetting.period else return initPeriod()
+
+      scope.isTimeSliderUsed = ->
+        return getUsedSettingKey() == 'time-slider'
+
+      scope.isDatesPickerUsed = ->
+        return getUsedSettingKey() == 'dates-picker'
+
+      getUsedSettingKey = ->
+        if scope.usedSetting? then return scope.usedSetting else return scope.initUsedSetting()
+
+      getSetting = (key) ->
+        return _.find(scope.timePeriodSetting.settings, (set) ->
+          set.key == key
+        )
+
+      initPeriod = ->
+        if scope.histParams? && scope.histParams.period? && _.contains(scope.periods, scope.histParams.period)
+          scope.timePeriodSetting.period = angular.copy(scope.histParams.period)
+        else
+          scope.timePeriodSetting.period = "MONTHLY"
+
+        return scope.timePeriodSetting.period
+
+      scope.initUsedSetting = (histParams=null) ->
+        histParams = scope.histParams unless histParams?
+        if histParams? && histParams.from?
+          # Force use of setting dates-picker
+          scope.usedSetting = 'dates-picker'
+          # Update dates
+          scope.fromDate = histParams.from
+          scope.toDate = histParams.to
+          # Initialize dates-picker
+          getSetting('dates-picker').initialize()
+
+        else
+          # Force use of setting time-slider
+          scope.usedSetting = 'time-slider'
+          if histParams? && histParams.time_range?
+            tr = histParams.time_range
+            # Force period to match time range
+            pattern = /([a-z])/
+            newLetter = pattern.exec(tr)[1]
+            scope.timePeriodSetting.period = angular.copy(_.find(scope.periods, (p) ->
+              p.slice(0,1).toLowerCase() == newLetter
+            ))
+            # Update time-range
+            scope.timePeriodSetting.timeRange = tr
+
+          # Initialize time-slider
+          getSetting('time-slider').initialize()
+
+        return scope.usedSetting
+
+      scope.updateTimeRangePeriod = ->
+        if scope.isTimeSliderUsed()
+          # Force time-range to match period
+          set = getSetting('time-slider')
+          tr = set.toMetadata().hist_parameters.time_range
+          periodLetter = getPeriod().slice(0,1).toLowerCase()
+          scope.timePeriodSetting.timeRange = tr.replace(/[a-z]/, periodLetter)
+          # Re-initialize time-slider
+          set.initialize()
+
+          return scope.timePeriodSetting.timeRange
+
+        else
+          return false
+
+      scope.useTimeSlider = ->
+        scope.usedSetting = 'time-slider'
+        # Force time-range to match period
+        scope.updateTimeRangePeriod()
+        return scope.usedSetting
+
+      scope.useDatesPicker = ->
+        return scope.usedSetting = 'dates-picker'
 
 
       w.settings.push(scope.timePeriodSetting)
