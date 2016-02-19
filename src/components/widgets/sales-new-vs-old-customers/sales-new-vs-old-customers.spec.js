@@ -118,26 +118,26 @@ describe('<> sales-new-vs-old-customers widget', function () {
 
         it('defines scope.timeRangeOptions', function () {
           expect(scope.timeRangeOptions).toEqual([
-            {label: 'Last 24h', value: '1d'},
-            {label: 'Last 5 days', value: '5d'},
-            {label: 'Last 7 days', value: '7d'},
-            {label: 'Last 30 days', value: '30d'},
-            {label: 'Last 45 days', value: '45d'},
-            {label: 'Last 60 days', value: '60d'},
-            {label: 'Last 90 days', value: '90d'},
+            {label: 'Last 24h', value: '-1d'},
+            {label: 'Last 5 days', value: '-5d'},
+            {label: 'Last 7 days', value: '-7d'},
+            {label: 'Last 30 days', value: '-30d'},
+            {label: 'Last 45 days', value: '-45d'},
+            {label: 'Last 60 days', value: '-60d'},
+            {label: 'Last 90 days', value: '-90d'},
           ]);
         });
 
         describe('widget.metadata.time_range attribute', function () {
           beforeEach(function () {
-            widget = { content: { summary: {} }, metadata: { time_range: '60d' } };
+            widget = { content: { summary: {} }, metadata: { time_range: '-60d' } };
             inject(buildScope);
             inject(compileDirective);
             scope.widget.initContext();
           });
 
           it('sets scope.timeRange to the saved value', function () {
-            expect(scope.timeRange).toEqual({label: 'Last 60 days', value: '60d'});
+            expect(scope.timeRange).toEqual({label: 'Last 60 days', value: '-60d'});
           });
         });
       });
