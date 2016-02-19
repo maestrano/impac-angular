@@ -1395,6 +1395,7 @@ impac-kpi .kpi {
   }
 }
 
+
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -1406,7 +1407,6 @@ impac-kpi .kpi {
     }
   }
 }
-
 
 .analytics .widget-item .content.accounts-balance {
   h3 {
@@ -1874,6 +1874,27 @@ impac-kpi .kpi {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.sales-new-vs-old-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 10px;
+    font-weight: bold;
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1936,6 +1957,18 @@ impac-kpi .kpi {
     margin-bottom: 5px;
   }
 }
+.analytics .widget-item .content.sales-top-customers {
+  .settings-bar {
+    border-bottom: dashed 1px #E6E6E6;
+    padding-bottom: 3px;
+    a { font-weight: normal; }
+    .param-selector { display: inline-block; }
+  }
+  .widget-lines-container {
+    max-height: 235px;
+  }
+}
+
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -2309,6 +2342,9 @@ impac-kpi .kpi {
     margin-left: 5px;
   }
 }
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -2348,9 +2384,6 @@ impac-kpi .kpi {
       }
     }
   }
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
 }
 .analytics .widget-item .content .settings.width {
   float: right;

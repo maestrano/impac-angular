@@ -8577,6 +8577,21 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-list .selector {
   margin-bottom: 4px;
 }
+.analytics .widget-item .content.sales-new-vs-old-customers .selector .selector-wrap {
+  display: inline-block;
+  margin: 0 5px;
+}
+.analytics .widget-item .content.sales-new-vs-old-customers .chart-container {
+  margin-top: 15px;
+}
+.analytics .widget-item .content.sales-new-vs-old-customers .legend {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.analytics .widget-item .content.sales-new-vs-old-customers .legend .total {
+  color: #5B6667;
+  font-size: 14px;
+}
 .analytics .widget-item .content.sales-number-of-leads .stats {
   margin-top: 35px;
   font-size: 18px;
@@ -8719,6 +8734,19 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
+}
+.analytics .widget-item .content.sales-top-customers .settings-bar {
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 3px;
+}
+.analytics .widget-item .content.sales-top-customers .settings-bar a {
+  font-weight: normal;
+}
+.analytics .widget-item .content.sales-top-customers .settings-bar .param-selector {
+  display: inline-block;
+}
+.analytics .widget-item .content.sales-top-customers .widget-lines-container {
+  max-height: 235px;
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container {
   max-height: 195px;
@@ -9061,6 +9089,9 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .settings.params-checkboxes span {
   margin-left: 5px;
 }
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
+}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
 }
@@ -9099,9 +9130,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content .settings.params-picker .parameter.unchecked .badge {
   background-color: #c2c4c4;
   color: white;
-}
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
 }
 .analytics .widget-item .content .settings.width {
   float: right;
