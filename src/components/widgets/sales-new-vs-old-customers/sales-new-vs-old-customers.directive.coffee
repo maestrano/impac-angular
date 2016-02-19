@@ -33,13 +33,13 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
       ) || $scope.displayOptions[0])
 
       $scope.timeRangeOptions = [
-        {label: 'Last 24h', value: '1d'},
-        {label: 'Last 5 days', value: '5d'},
-        {label: 'Last 7 days', value: '7d'},
-        {label: 'Last 30 days', value: '30d'},
-        {label: 'Last 45 days', value: '45d'},
-        {label: 'Last 60 days', value: '60d'},
-        {label: 'Last 90 days', value: '90d'},
+        {label: 'Last 24h', value: '-1d'},
+        {label: 'Last 5 days', value: '-5d'},
+        {label: 'Last 7 days', value: '-7d'},
+        {label: 'Last 30 days', value: '-30d'},
+        {label: 'Last 45 days', value: '-45d'},
+        {label: 'Last 60 days', value: '-60d'},
+        {label: 'Last 90 days', value: '-90d'},
       ]
       $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
         o.value == w.metadata.time_range
