@@ -1,0 +1,41 @@
+<div widget-sales-new-vs-old-customers>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div align="center" ng-hide="widget.isEditMode">
+
+    <div class="selector">
+      <div class="selector-wrap">
+        <span setting-param-selector parent-widget="widget" param="display_type" options="displayOptions" selected="displayType" on-select="displayTypeOnClick()" no-reload="true" deferred="::displayTypeParamSelectorDeferred" />
+      </div>
+      <div class="selector-wrap">
+        <span setting-param-selector parent-widget="widget" param="time_range" options="timeRangeOptions" selected="timeRange" deferred="::timeRangeParamSelectorDeferred" />
+      </div>
+    </div>
+
+    <div class="chart-container" ng-show="(isDataFound==true)">
+      <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+    </div>
+
+    <div class="legend">
+      <div class="positive2">New Customers: {{widget.content.summary[displayType.value].new | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
+      <div class="negative2">Existing Customers: {{widget.content.summary[displayType.value].old | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
+      <div class="total">Total: {{widget.content.summary[displayType.value].total | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
+    </div>
+
+    <div class="data-not-found" ng-show="(isDataFound==false)">
+      <div class="message">No data found for this time range<br/> Please select another one</div>
+    </div>
+
+  </div>
+
+</div>

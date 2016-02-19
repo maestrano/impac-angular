@@ -81,7 +81,8 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-segmented-turnover',
     'impac.components.widgets.sales-summary',
     'impac.components.widgets.sales-top-opportunities',
-    'impac.components.widgets.sales-top-customers'
+    'impac.components.widgets.sales-top-customers',
+    'impac.components.widgets.sales-new-vs-old-customers'
   ]
 );
 angular.module('impac.components.widgets-settings',
