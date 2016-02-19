@@ -51,8 +51,7 @@ describe('<> sales-new-vs-old-customers widget', function () {
     });
 
     it('defines a drawTrigger deferred', function () {
-      // TODO: should check is a promise, not just defined
-      expect(scope.drawTrigger).toBeDefined();
+      expect(scope.drawTrigger && scope.drawTrigger.notify).toBeDefined();
     });
 
     it('widgetDeferred resolve get called with settingsPromises', function() {
@@ -148,16 +147,16 @@ describe('<> sales-new-vs-old-customers widget', function () {
       beforeEach(function () {
         inject(buildScope);
         scope.updateSettings = function () {};
-        spyOn(scope, 'updateSettings');
         inject(compileDirective);
-        scope.displayTypeOnClick();
       });
 
       it('should update the settings and redraw the pie chart (graph)', function () {
+        spyOn(scope, 'updateSettings');
+        spyOn(scope.widget, 'format');
+        scope.displayTypeOnClick();
         expect(scope.updateSettings).toHaveBeenCalledTimes(1);
         expect(scope.updateSettings).toHaveBeenCalledWith(false);
-        // TODO: work out why I can't spyOn scope.widget.format!!!!!
-        // expect(scope.widget.format).toHaveBeenCalled();
+        expect(scope.widget.format).toHaveBeenCalled();
       });
     });
 
@@ -203,7 +202,6 @@ describe('<> sales-new-vs-old-customers widget', function () {
       });
     });
 
-    // TODO: complete speccing w.format and clean up beforeEach.
     describe('w.format', function () {
 
       it('is defined as a function', function () {
@@ -217,19 +215,19 @@ describe('<> sales-new-vs-old-customers widget', function () {
         beforeEach(function () {
           widget = { content: { summary: aFullSummary() }, metadata: {} };
           inject(buildScope);
-          spyOn(ChartFormatterSvc, 'pieChart');
-          // spyOn(scope.drawTrigger, 'notify')
           scope.isDataFound = true
           scope.displayType = {label: 'Customers', value: 'customers_count'};
           scope.shouldDisplayCurrency = function () { return false };
           inject(compileDirective);
-          scope.widget.format();
         });
 
         it('notifys drawTrigger with the correct chartData', function () {
+          spyOn(ChartFormatterSvc, 'pieChart');
+          spyOn(scope.drawTrigger, 'notify');
+          scope.widget.format();
           expect(ChartFormatterSvc.pieChart).toHaveBeenCalledWith(pieData, pieOptions, true);
-          // TODO: complete this.
-          // expect(scope.drawTrigger.notify).toHaveBeenCalled();
+          // TODO: test for .toHaveBeenCalledWith(chartData).
+          expect(scope.drawTrigger.notify).toHaveBeenCalled();
         });
       });
     });
