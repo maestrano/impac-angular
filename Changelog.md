@@ -28,6 +28,7 @@
 
 ### Fixes
 - Mass Assign: merges the metadata instead of replacing it + update not pushed if the metadata hasn't changed
+- mno-currency filter: adds dollar symbol for all dollar currencies, improved formatting for euro, and syntax for applying the showName argument.
 
 ### Adds
 - ImpacDashboardsSvc.callbacks.widgetAdded
