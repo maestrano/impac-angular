@@ -111,13 +111,17 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
       scope.fromDate = ->
         n = getNumberOfPeriods()
         word = getPeriodWord()
-        unless word.slice(0,1) == "f"
-          return moment().subtract(n, word).startOf(word)
-        else
+        if word.slice(0,1) == "f"
           financialYearStartYear = moment().year() - 1
           financialYearStartYear = moment().year() if moment().month() >= 6
           financialYearStartYear = financialYearStartYear - n
           return moment("#{financialYearStartYear}-#{scope.financialYearEndMonth + 1}-01", "YYYY-M-DD")
+
+        else if word.slice(0,1) == "w"
+          return moment().subtract(n, word).startOf('isoweek')
+
+        else
+          return moment().subtract(n, word).startOf(word)
 
       scope.toDate = ->
         return moment()
