@@ -90,6 +90,32 @@ describe('<> ImpacDashboardsSvc', function () {
       expect(typeof svc.load().finally).toBe('function');
     });
 
+    describe('with stubbed dashboard', function() {
+      var stub = { some: 'dashboard'};
+
+      beforeEach(function(){
+        svc.stubWith(stub);
+        subject = svc.load();
+        $rootScope.$apply();
+      });
+
+      it('inserts the stubbed dashboard in the list of dashboards', function() {
+        expect(svc.config.dashboards[0]).toBe(stub);
+      });
+
+      it('does not load the organizations', function() {
+        expect(ImpacMainSvc.loadOrganizations).not.toHaveBeenCalled();
+      });
+
+      it('does not retrieve the dashboards from mnoe API', function() {
+        expect($http.get).not.toHaveBeenCalledWith(ImpacRoutes.dashboards.index());
+      });
+
+      it('resolves the config object', function() {
+        expect(subject.$$state.value).toBe(svc.config)
+      });
+    });
+
     describe('when the service is not configured yet', function() {
       beforeEach(function() {
         subject = svc.load();
@@ -143,6 +169,19 @@ describe('<> ImpacDashboardsSvc', function () {
 
   // Setters
   // -------------------------------------------------
+  describe('stubWith',function() {
+    var stub = { some: 'dashboard' };
+    
+    beforeEach(function() {
+      subject = svc;
+      subject.stubWith(stub);
+    });
+
+    it('configures a stubbed dashboard', function() {
+      expect(subject.stubbedDashboard).toBe(stub);
+    });
+  });
+
   describe('#setCurrentDashboard(:id)', function() {
     beforeEach(function() {
       svc.config = {
