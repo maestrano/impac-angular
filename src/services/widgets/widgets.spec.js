@@ -171,7 +171,62 @@ describe('<> ImpacWidgetsSvc', function () {
   });
 
   describe('#update(:widget, :opts)', function() {
-    xit('updates attributes on the widget');
+    var opts = { some: 'opts' };
+    var widget = { id: 1, name: 'test-widget' };
+
+    beforeEach(function() {
+      spyOn(svc, 'load').and.returnValue($q.resolve(config));
+      //spyOn($http, 'put').and.returnValue({data: widget});
+      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
+      //spyOn(currentDhb.callbacks.widgetAdded, 'notify').and.callThrough();
+    });
+
+    describe('on http success', function() {
+      beforeEach(function() {
+        spyOn($http, "put").and.callFake(function() {
+          var httpDeferred = $q.defer();
+          httpDeferred.resolve({data: opts});
+          return httpDeferred.promise;
+        });
+
+        subject = svc.update(widget,opts);
+        $rootScope.$apply();
+      });
+
+      it('remotely saves the widget', function() {
+        expect($http.put).toHaveBeenCalledWith(ImpacRoutes.widgets.update(currentDhb.id, widget.id), {widget: opts});
+      });
+
+      it('updates attributes on the widget', function() {
+        console.log(widget);
+        expect(widget.some).toBe(opts.some);
+      });
+
+      it('resolves the promise', function() {
+        expect(subject.$$state.value).toBe(widget);
+      });
+    });
+
+    describe('on http error', function() {
+      beforeEach(function() {
+        spyOn($http, "put").and.callFake(function() {
+          var httpDeferred = $q.defer();
+          httpDeferred.reject("bla");
+          return httpDeferred.promise;
+        });
+
+        subject = svc.update(widget,opts);
+        $rootScope.$apply();
+      });
+
+      it('updates attributes on the widget', function() {
+        expect(widget.some).toBe(opts.some);
+      });
+
+      it('resolves the promise', function() {
+        expect(subject.$$state.value).toBe(widget);
+      });
+    });
   });
 
   describe('#delete(:widget)', function() {
