@@ -8577,6 +8577,31 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-list .selector {
   margin-bottom: 4px;
 }
+.analytics .widget-item .content.sales-net-sales .value-container,
+.analytics .widget-item .content.sales-net-sales .operator {
+  line-height: 85px;
+}
+.analytics .widget-item .content.sales-net-sales .value-container .title {
+  line-height: 20px;
+  font-size: 1.2em;
+  padding: 10px 0px;
+}
+.analytics .widget-item .content.sales-net-sales .value-container .value-box {
+  font-size: 1.3em;
+  border-radius: 10px;
+  border-top: solid 1px #C4CACA;
+  border-bottom: solid 1px #C4CACA;
+  white-space: nowrap;
+}
+.analytics .widget-item .content.sales-net-sales .operator {
+  padding-top: 38px;
+  font-size: 1.3em;
+}
+@media (min-width: 992px) {
+  .analytics .widget-item .content.sales-net-sales .values {
+    margin-top: 25px;
+  }
+}
 .analytics .widget-item .content.sales-new-vs-old-customers .selector .selector-wrap {
   display: inline-block;
   margin: 0 5px;
@@ -8585,8 +8610,15 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   margin-top: 15px;
 }
 .analytics .widget-item .content.sales-new-vs-old-customers .legend {
-  margin-top: 10px;
+  margin-top: 5px;
   font-weight: bold;
+  max-height: 77px !important;
+}
+.analytics .widget-item .content.sales-new-vs-old-customers .legend .row {
+  margin: 0px -5px;
+}
+.analytics .widget-item .content.sales-new-vs-old-customers .legend .row > div {
+  padding: 0px 5px;
 }
 .analytics .widget-item .content.sales-new-vs-old-customers .legend .total {
   color: #5B6667;
@@ -8735,14 +8767,14 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content.sales-summary .selector {
   margin-bottom: 5px;
 }
-.analytics .widget-item .content.sales-top-customers .settings-bar {
+.analytics .widget-item .content.sales-top-customers .selector {
   border-bottom: dashed 1px #E6E6E6;
   padding-bottom: 3px;
 }
-.analytics .widget-item .content.sales-top-customers .settings-bar a {
+.analytics .widget-item .content.sales-top-customers .selector a {
   font-weight: normal;
 }
-.analytics .widget-item .content.sales-top-customers .settings-bar .param-selector {
+.analytics .widget-item .content.sales-top-customers .selector .param-selector {
   display: inline-block;
 }
 .analytics .widget-item .content.sales-top-customers .widget-lines-container {
@@ -9089,9 +9121,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .settings.params-checkboxes span {
   margin-left: 5px;
 }
-.analytics .widget-item .content .settings.time-range {
-  padding: 0px 5px;
-}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
 }
@@ -9130,6 +9159,9 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 .analytics .widget-item .content .settings.params-picker .parameter.unchecked .badge {
   background-color: #c2c4c4;
   color: white;
+}
+.analytics .widget-item .content .settings.time-range {
+  padding: 0px 5px;
 }
 .analytics .widget-item .content .settings.width {
   float: right;
