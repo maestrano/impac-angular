@@ -10,12 +10,7 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc) ->
         return "Incorrect name"
       else
         data = { name: w.name }
-        ImpacWidgetsSvc.update(w,data).then(
-          (success)->
-            return true
-          (error) ->
-            w.name = w.originalName
-        )
+        ImpacWidgetsSvc.update(w,data)
 )
 
 module.directive('commonEditableTitle', ($templateCache) ->

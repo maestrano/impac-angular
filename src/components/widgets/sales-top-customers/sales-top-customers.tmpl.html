@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode" class="widget-lines-container">
 
-    <div class="row settings-bar" ng-show="(isDataFound==true)">
+    <div class="row selector" ng-show="(isDataFound==true)">
       <div class="col-xs-12 text-right">
         <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'Show' : 'Hide'}} transactions</a> |
         <div setting-param-selector parent-widget="widget" param="limit_entries" options="limitEntriesOptions" selected="limitEntriesSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload/>

@@ -81,7 +81,13 @@ describe('<> sales-new-vs-old-customers widget', function () {
 
       describe('when data is returned from API', function () {
         beforeEach(function () {
-          widget = { content: { summary: {} }, metadata: {} };
+          widget = {metadata: {}, 
+                    content: { summary: {
+                      customers_count: { total:14, new:9, old:5 },
+                      total_sales: { total: 11089.92, new:9084.56, old:2005.36 },
+                      transactions_count: { total:14, new:9, old: 5 }
+                      }}
+                    };
           inject(buildScope);
           inject(compileDirective);
           scope.widget.initContext();
@@ -209,7 +215,7 @@ describe('<> sales-new-vs-old-customers widget', function () {
       });
 
       describe('when data is returned from the API', function () {
-        var pieData = [{ label: 'NEW 30%', value: 3 }, { label: 'EXISTING 70%', value: 7 }];
+        var pieData = [{ label: 'EXISTING 70%', value: 7 }, { label: 'NEW 30%', value: 3 }];
         var pieOptions = { percentageInnerCutout: 50, tooltipFontSize: 12, currency: 'hide' };
 
         beforeEach(function () {
