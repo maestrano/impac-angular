@@ -5,7 +5,7 @@
     "name": "Cesar Tonnoir",
     "email": "it@maestrano.com"
   },
-  "main": "src/impac-angular/impac-angular.js",
+  "main": "dist/impac-angular.js",
   "devDependencies": {
     "bower": "^1.6.5",
     "del": "^1.2.1",
@@ -41,6 +41,6 @@
     "wrench": "^1.5.8"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": "~5.6.0"
   }
 }
