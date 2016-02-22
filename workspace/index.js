@@ -3,17 +3,53 @@ var module = angular.module('impacWorkspace', ['maestrano.impac']);
 // Configuration impac-angular lib on module impacWorkSpace run.
 module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper) {
 
-  // TODO: set-up server to enable local $http calls to setting.json
+  //--------------------------------------------------------
+  // Start editing
+  //--------------------------------------------------------
+  // PLEASE DO NOT COMMIT CHANGES TO THIS FILE.
+  // You can use `git add -p ./` to selectively add files to your git index.
+  // -------------------------------------------------------
+
+  // Credentials and endpoints
+  //------------------------------------------------
   var settings = {
-    mno_url: 'http://localhost:3000',
-    impac_url: 'http://localhost:4000',
-    api_key: '7149f0c91d7e995c10be79ed4881c035d662632995e852f550313345e0f0b982',
-    api_secret: '4a776ea4-8134-4f38-b632-85cbe951524e'
+    mno_url: 'https://uat.maestrano.io',
+    impac_url: 'https://api-impac-uat.maestrano.io',
+    api_key: '',
+    api_secret: ''
   };
 
+  // Stub widget templates - add new widgets!
+  //------------------------------------------------
+  // Widget templates are stored on Maestrano API, stub your
+  // new widget templates here, and contact us for permenant additions or
+  // changes to existing widget templates.
+  var widgetsTemplates = [
+    // Example widget template, please see documentation "How-To: Create a Widget" for available
+    // options, and importantly, note how the path & metadata.template attributes work.
+    // --
+    // {
+    //   path: 'accounts/assets_summary',
+    //   name: 'Assets / Liabilities summary',
+    //   metadata: { template: 'accounts/assets_liability_summary' },
+    //   desc: 'Compare Assets and Liabilities accounts',
+    //   icon: 'pie-chart',
+    //   width: 3
+    // },
+  ];
+  // --
+
+
+  //--------------------------------------------------------
+  // Do not edit below unless you know what you're doing.
+  //--------------------------------------------------------
+  // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
     fail('missing authentication credentials!');
   }
+
+  // Impac-angular configurations.
+  // -------------------------------------------------------
 
   // encodes a base64 string - Basic Authentication.
   var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
@@ -40,7 +76,8 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
 
   // Configure the ImpacDeveloper service options.
   ImpacDeveloper.configure({
-    status: true
+    status: true,
+    widgetsTemplates: widgetsTemplates || []
   });
 
   // Link core callbacks required for impac-angular lib to run.

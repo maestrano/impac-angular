@@ -58,8 +58,7 @@ angular
     #====================================
     # Loaders and setters
     #====================================
-
-    @loadLocked=false
+    @loadLocked = false
     @load = (force=false) ->
 
       # Singleton prevents concurrent calls of _self.load

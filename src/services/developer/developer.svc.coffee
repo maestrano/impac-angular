@@ -12,7 +12,7 @@ angular
     #=======================================
     developer = {
       # enables this service across impac-angular.
-      status: true
+      status: false
       # ability to add stubbed widget templates to api response for developer widget creation.
       widgetsTemplates: []
     }
@@ -32,8 +32,8 @@ angular
       service.getStatus = () -> developer.status
 
       # Stubbing the mechanism of supplying widgets_templates to the dashboard.
-      service.widgetsTemplates = angular.copy(developer.widgetsTemplates)
-      service.getWidgetsTemplates = () -> service.widgetsTemplates
+      service.stubWidgetsTemplates = () ->
+        service.widgetsTemplates = angular.copy developer.widgetsTemplates
 
       return service
 

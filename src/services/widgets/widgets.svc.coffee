@@ -86,12 +86,10 @@ angular
             if needContentReload
               _self.show(updatedSettingsWidget).then(
                 (updatedContentWidget) ->
-                  updatedContentWidget.isLoading = false
                   deferred.resolve(updatedContentWidget)
                 (error) ->
-                  updatedSettingsWidget.isLoading = false
                   deferred.reject(error)
-              )
+              ).finally(-> updatedSettingsWidget.isLoading = false)
             else
               deferred.resolve(updatedSettingsWidget)
 
@@ -222,8 +220,7 @@ angular
 
           $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data).then(
             (success) ->
-              updatedWidget = success.data
-              angular.extend widget, updatedWidget
+              angular.extend widget, success.data
               deferred.resolve(widget)
             (error) ->
               $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
