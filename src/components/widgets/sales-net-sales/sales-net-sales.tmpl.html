@@ -14,9 +14,9 @@
   <div ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)">
 
-      <div class="row settings-bar">
-        <div class="col-xs-12">
-          <span setting-param-selector parent-widget="widget" param="displayType" options="displayOptions" selected="displayType" no-reload="true" deferred="::paramSelector1Deferred" />
+      <div class="row selector">
+        <div class="col-xs-12 text-right">
+          <span setting-param-selector parent-widget="widget" param="displayType" options="displayOptions" selected="displayType" no-reload="true" deferred="::paramSelector1Deferred" /> |
           <span setting-param-selector parent-widget="widget" param="timeRange" options="timeRangeOptions" selected="timeRange" deferred="::paramSelector2Deferred" />
         </div>
       </div>
