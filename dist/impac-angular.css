@@ -7627,6 +7627,137 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
   margin-right: 5px;
   color: #9ba6a7;
 }
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: #5B6667;
+}
+.analytics .widget-item .content .data-not-found img {
+  opacity: 0.8;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  max-width: 100%;
+}
+.analytics .widget-item .content .data-not-found .message {
+  position: absolute;
+  top: 90px;
+  width: 70%;
+  left: 15%;
+  background-color: #f4f8f9;
+  padding: 10px 0px;
+  border-radius: 4px;
+  border: solid 1px #dfe2e2;
+}
+.analytics .widget-item .content .data-not-found .message a {
+  color: #977bf0;
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
+}
+.analytics .widget-item .title-wrapper {
+  width: 100%;
+  padding: 0px 10px 10px 10px;
+  white-space: nowrap;
+}
+.analytics .widget-item .title-wrapper .title {
+  display: inline;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  color: #4f5959;
+  text-align: left;
+  cursor: text;
+}
+.analytics .widget-item .title-wrapper .title.editable-hide {
+  display: none;
+}
+.analytics .widget-item .title-wrapper .editable-wrap {
+  position: relative;
+  height: 20px;
+  min-width: 100%;
+  white-space: nowrap;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls {
+  min-width: 100%;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-input {
+  height: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  width: calc(100% - 55px);
+  padding: 0px 3px;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-buttons {
+  background-color: white;
+}
+.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-buttons button {
+  margin: 0px 0px 0px 5px;
+  height: 20px;
+  padding: 0px 5px;
+}
+.analytics .widget-item .top-line #module__top-buttons i.fa {
+  margin-top: 3px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper {
+  position: absolute;
+  right: 9px;
+  top: 7px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button {
+  background: transparent;
+  border: none;
+  color: #c4caca;
+  padding: 1px;
+  margin-left: 3px;
+  outline: none;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button:active,
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button:focus {
+  -webkit-box-shadow: none;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-refresh {
+  font-size: 17px;
+  margin-top: -1px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-refresh:hover {
+  color: #358fdc;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit {
+  font-size: 14px;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit:hover,
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit.edit-mode {
+  color: #cfd849;
+}
+.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-close:hover {
+  color: #ed1e79;
+}
+.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover {
+  position: absolute;
+  top: 90px;
+  left: 15%;
+  width: 70%;
+  background-color: #17262d;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 50;
+  color: white;
+  text-align: center;
+  cursor: default;
+  -webkit-box-shadow: 0px 0px 25px 4px black;
+  box-shadow: 0px 0px 25px 4px black;
+  border: solid 1px white;
+}
+.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover h4 {
+  color: #c4caca;
+  font-weight: bold;
+}
+.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover .loader i.fa.fa-spinner {
+  font-size: 26px;
+}
 .analytics .widget-item .content.accounts-assets-liability-summary .param-selector {
   text-align: center;
 }
@@ -8766,137 +8897,6 @@ impac-kpi .kpi .kpi-edit .btn.btn-xs {
 }
 .analytics .widget-item .content.sales-top-opportunities .opps-container .tile.second .main-text {
   padding-top: 8px;
-}
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: #5B6667;
-}
-.analytics .widget-item .content .data-not-found img {
-  opacity: 0.8;
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-  max-width: 100%;
-}
-.analytics .widget-item .content .data-not-found .message {
-  position: absolute;
-  top: 90px;
-  width: 70%;
-  left: 15%;
-  background-color: #f4f8f9;
-  padding: 10px 0px;
-  border-radius: 4px;
-  border: solid 1px #dfe2e2;
-}
-.analytics .widget-item .content .data-not-found .message a {
-  color: #977bf0;
-  display: block;
-  font-size: 16px;
-  font-weight: normal;
-}
-.analytics .widget-item .title-wrapper {
-  width: 100%;
-  padding: 0px 10px 10px 10px;
-  white-space: nowrap;
-}
-.analytics .widget-item .title-wrapper .title {
-  display: inline;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 12px;
-  color: #4f5959;
-  text-align: left;
-  cursor: text;
-}
-.analytics .widget-item .title-wrapper .title.editable-hide {
-  display: none;
-}
-.analytics .widget-item .title-wrapper .editable-wrap {
-  position: relative;
-  height: 20px;
-  min-width: 100%;
-  white-space: nowrap;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls {
-  min-width: 100%;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-input {
-  height: 20px;
-  font-size: 12px;
-  text-transform: uppercase;
-  width: calc(100% - 55px);
-  padding: 0px 3px;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-buttons {
-  background-color: white;
-}
-.analytics .widget-item .title-wrapper .editable-wrap .editable-controls .editable-buttons button {
-  margin: 0px 0px 0px 5px;
-  height: 20px;
-  padding: 0px 5px;
-}
-.analytics .widget-item .top-line #module__top-buttons i.fa {
-  margin-top: 3px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper {
-  position: absolute;
-  right: 9px;
-  top: 7px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button {
-  background: transparent;
-  border: none;
-  color: #c4caca;
-  padding: 1px;
-  margin-left: 3px;
-  outline: none;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button:active,
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button:focus {
-  -webkit-box-shadow: none;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-refresh {
-  font-size: 17px;
-  margin-top: -1px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-refresh:hover {
-  color: #358fdc;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit {
-  font-size: 14px;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit:hover,
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-edit.edit-mode {
-  color: #cfd849;
-}
-.analytics .widget-item .top-line #module__top-buttons .top-buttons-wrapper .top-button.btn-close:hover {
-  color: #ed1e79;
-}
-.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover {
-  position: absolute;
-  top: 90px;
-  left: 15%;
-  width: 70%;
-  background-color: #17262d;
-  padding: 10px;
-  border-radius: 4px;
-  z-index: 50;
-  color: white;
-  text-align: center;
-  cursor: default;
-  -webkit-box-shadow: 0px 0px 25px 4px black;
-  box-shadow: 0px 0px 25px 4px black;
-  border: solid 1px white;
-}
-.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover h4 {
-  color: #c4caca;
-  font-weight: bold;
-}
-.analytics .widget-item .top-line #module__top-buttons .confirm-delete-popover .loader i.fa.fa-spinner {
-  font-size: 26px;
 }
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
