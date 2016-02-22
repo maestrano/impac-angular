@@ -1,7 +1,7 @@
 'use strict';
 
-var gulp = require('gulp'),
-    wiredep = require('wiredep').stream;
+var gulp = require('gulp');
+var wiredep = require('wiredep').stream;
 
 /**
  *  Builds and injects dependencies into workspace/index.html
