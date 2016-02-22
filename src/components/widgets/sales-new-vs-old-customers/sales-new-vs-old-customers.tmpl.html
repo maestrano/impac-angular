@@ -26,10 +26,19 @@
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
     </div>
 
-    <div class="legend">
-      <div class="positive2">New Customers: {{widget.content.summary[displayType.value].new | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
-      <div class="negative2">Existing Customers: {{widget.content.summary[displayType.value].old | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
-      <div class="total">Total: {{widget.content.summary[displayType.value].total | mnoCurrency : (shouldDisplayCurrency() ? widget.metadata.currency : '')}}</div>
+    <div class="legend" ng-show="(isDataFound==true)">
+      <div class="row positive2">
+        <div class="col-xs-7 text-left">New Customers:</div>
+        <div class="col-xs-5 text-right">{{getValue('new')}}</div>
+      </div>
+      <div class="row negative2">
+        <div class="col-xs-7 text-left">Existing Customers:</div>
+        <div class="col-xs-5 text-right">{{getValue('old')}}</div>
+      </div>
+      <div class="row total">
+        <div class="col-xs-7 text-left">Total:</div>
+        <div class="col-xs-5 text-right">{{getValue('total')}}</div>
+      </div>
     </div>
 
     <div class="data-not-found" ng-show="(isDataFound==false)">
