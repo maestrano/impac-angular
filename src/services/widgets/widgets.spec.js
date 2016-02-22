@@ -77,7 +77,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
         $rootScope.$apply();
       });
-      
+
       it('retrieves the current dashboard', function() {
         expect(ImpacDashboardsSvc.getCurrentDashboard).toHaveBeenCalled();
       });
@@ -111,7 +111,7 @@ describe('<> ImpacWidgetsSvc', function () {
         expect(subject.$$state.status).toEqual(2);
       });
     });
-    
+
     describe('when the dashboard has no widget', function() {
       beforeEach(function() {
         var dhb = angular.copy(currentDhb);
@@ -119,7 +119,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
         $rootScope.$apply();
       });
-      
+
       it('resolves an empty array', function() {
         expect(subject.$$state.value).toEqual([]);
         expect(subject.$$state.status).toEqual(1);
@@ -133,7 +133,7 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dhb);
         $rootScope.$apply();
       });
-      
+
       it('does not push the corresponding widget to the update list', function() {
         expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
         expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
@@ -171,7 +171,61 @@ describe('<> ImpacWidgetsSvc', function () {
   });
 
   describe('#update(:widget, :opts)', function() {
-    xit('updates attributes on the widget');
+    var opts = { some: 'opts' };
+    var widget = { id: 1, name: 'test-widget' };
+
+    beforeEach(function() {
+      spyOn(svc, 'load').and.returnValue($q.resolve(config));
+      //spyOn($http, 'put').and.returnValue({data: widget});
+      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
+      //spyOn(currentDhb.callbacks.widgetAdded, 'notify').and.callThrough();
+    });
+
+    describe('on http success', function() {
+      beforeEach(function() {
+        spyOn($http, "put").and.callFake(function() {
+          var httpDeferred = $q.defer();
+          httpDeferred.resolve({data: opts});
+          return httpDeferred.promise;
+        });
+
+        subject = svc.update(widget,opts);
+        $rootScope.$apply();
+      });
+
+      it('remotely saves the widget', function() {
+        expect($http.put).toHaveBeenCalledWith(ImpacRoutes.widgets.update(currentDhb.id, widget.id), {widget: opts});
+      });
+
+      it('updates attributes on the widget', function() {
+        expect(widget.some).toBe(opts.some);
+      });
+
+      it('resolves the promise', function() {
+        expect(subject.$$state.value).toBe(widget);
+      });
+    });
+
+    describe('on http error', function() {
+      beforeEach(function() {
+        spyOn($http, "put").and.callFake(function() {
+          var httpDeferred = $q.defer();
+          httpDeferred.reject("an error response");
+          return httpDeferred.promise;
+        });
+
+        subject = svc.update(widget,opts);
+        $rootScope.$apply();
+      });
+
+      it('updates attributes on the widget', function() {
+        expect(widget.some).toBe(opts.some);
+      });
+
+      it('rejects the promise', function() {
+        expect(subject.$$state.value).toBe("an error response");
+      });
+    });
   });
 
   describe('#delete(:widget)', function() {
