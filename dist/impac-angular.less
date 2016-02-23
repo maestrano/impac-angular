@@ -2015,6 +2015,56 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item {
+  .title-wrapper {
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+    white-space: nowrap;
+
+    .title {
+      display: inline;
+      text-transform: @impac-widget-title-text-transform;
+      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+      text-align: left;
+      cursor: text;
+
+      &.editable-hide {
+        display: none;
+      }
+    }
+
+    .editable-wrap {
+      position: relative;
+      height: 20px;
+      min-width: 100%;
+      // otherwise, white-space is overriden in mno-enterprise
+      white-space: nowrap;
+
+      .editable-controls {
+        min-width: 100%;
+
+        .editable-input {
+          height: 20px;
+          font-size: 12px;
+          text-transform: @impac-widget-title-text-transform;
+          // 55px is .editable-buttons width
+          width: ~"calc(100% - 55px)";
+          padding: 0px 3px;
+        }
+
+        .editable-buttons {
+          background-color: @impac-widget-title-bg;
+          button {
+            margin: 0px 0px 0px 5px;
+            height: 20px;
+            padding: 0px 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .analytics .widget-item .top-line #module__top-buttons {
 
   i.fa {
@@ -2087,58 +2137,27 @@ impac-kpi .kpi {
 
 }
 
-.analytics .widget-item {
-  .title-wrapper {
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-    white-space: nowrap;
-
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
-
-      &.editable-hide {
-        display: none;
-      }
-    }
-
-    .editable-wrap {
-      position: relative;
-      height: 20px;
-      min-width: 100%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
-
-      .editable-controls {
-        min-width: 100%;
-
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          // 55px is .editable-buttons width
-          width: ~"calc(100% - 55px)";
-          padding: 0px 3px;
-        }
-
-        .editable-buttons {
-          background-color: @impac-widget-title-bg;
-          button {
-            margin: 0px 0px 0px 5px;
-            height: 20px;
-            padding: 0px 5px;
-          }
-        }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
+}
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: 20px;
+  }
 }
 .analytics .settings.dates-picker {
   h5 { display: none; }
@@ -2161,25 +2180,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: 20px;
-  }
-}
 .analytics .widget-item .content .settings.hist-mode-choser {
   .options {
     width: 150px;
