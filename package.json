@@ -8,6 +8,8 @@
   "main": "dist/impac-angular.js",
   "devDependencies": {
     "bower": "^1.6.5",
+    "browser-sync": "^2.11.1",
+    "browser-sync-spa": "^1.0.3",
     "del": "^1.2.1",
     "gulp": "^3.8.7",
     "gulp-angular-templatecache": "^1.7.0",

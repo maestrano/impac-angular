@@ -1,10 +1,14 @@
 'use strict';
 
-var path = require('path'),
-    gulp = require('gulp'),
-    conf = require('./conf');
+var path = require('path');
+var gulp = require('gulp');
+var conf = require('./conf');
 
-// TODO: make this watch task actually work.
+var browserSync = require('browser-sync');
+
 gulp.task('watch', function () {
-  gulp.watch('src/**/*', ['build']);
+  gulp.watch('src/**/*', ['build', browserSync.reload]);
+  gulp.watch('workspace/**/*', function (event) {
+    browserSync.reload(event.path);
+  });
 });
