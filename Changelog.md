@@ -10,6 +10,7 @@
 - Deep routing to dashboards#index when an organization id is specified
 
 ### Adds
+- Gulp refactor - the gulp tasks are splitted in several files in the gulp directory.
 - Better layout for all widgets using the widget-lines-container (+ adapted to xsmall screens)
 
 -------------------------------------------------------------

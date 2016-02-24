@@ -1,29 +1,29 @@
 'use strict';
 
-var gulp = require('gulp'),
-    conf = require('./conf'),
-    path = require('path'),
-    gutil = require('gulp-util'),
-    runSeq = require('run-sequence'),
-    karma = require('karma').server;
+var path = require('path');
+var gulp = require('gulp');
+
+var $ = require('gulp-load-plugins')({
+  pattern: ['gulp-*', 'karma', 'run-sequence']
+});
 
 gulp.task('unit-tests', function (done) {
-  karma.start({
+  $.karma.server.start({
     configFile: path.join(__dirname, '/../karma.conf.js'),
     singleRun: true
   }, done);
-  gutil.log(gutil.colors.yellow('[ STARTING UNIT TESTS ]'));
+  $.util.log($.util.colors.yellow('[ STARTING UNIT TESTS ]'));
 });
 
 gulp.task('unit-tests-min', function (done) {
-  karma.start({
+  $.karma.server.start({
     configFile: path.join(__dirname, '/../karma-min.conf.js'),
     singleRun: true
   }, done);
-  gutil.log(gutil.colors.yellow('[ STARTING UNIT TESTS ON MINIFIED FILES ]'));
+  $.util.log($.util.colors.yellow('[ STARTING UNIT TESTS ON MINIFIED FILES ]'));
 });
 
 
 gulp.task('test', function (cb) {
-  runSeq('unit-tests', ['unit-tests-min'], cb);
+  $.runSequence('unit-tests', ['unit-tests-min'], cb);
 });
