@@ -1,6 +1,6 @@
-module = angular.module('impac.components.widgets.sales-new-vs-old-customers',[])
+module = angular.module('impac.components.widgets.sales-new-vs-existing-customers',[])
 
-module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -22,9 +22,9 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && w.content.summary? && w.content.summary.customers_count? && 
+    $scope.isDataFound = w.content? && w.content.summary? && w.content.summary.customers_count? &&
     w.content.summary.customers_count.total? && w.content.summary.customers_count.total > 0
-    
+
     $scope.displayOptions = [
       {label: 'Customers', value: 'customers_count'},
       {label: 'Total Sales', value: 'total_sales'},
@@ -78,8 +78,8 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
     if $scope.isDataFound
       pieData = [
         {
-          label: "EXISTING #{$scope.calculatePercentage('old')}%"
-          value: w.content.summary[$scope.displayType.value].old
+          label: "EXISTING #{$scope.calculatePercentage('existing')}%"
+          value: w.content.summary[$scope.displayType.value].existing
         },
         {
           label: "NEW #{$scope.calculatePercentage('new')}%"
@@ -103,9 +103,9 @@ module.controller('WidgetSalesNewVsOldCustomersCtrl', ($scope, $q, ChartFormatte
   $scope.widgetDeferred.resolve(settingsPromises)
 )
 
-module.directive('widgetSalesNewVsOldCustomers', ->
+module.directive('widgetSalesNewVsExistingCustomers', ->
   return {
     restrict: 'A',
-    controller: 'WidgetSalesNewVsOldCustomersCtrl'
+    controller: 'WidgetSalesNewVsExistingCustomersCtrl'
   }
 )
