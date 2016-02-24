@@ -174,8 +174,8 @@ describe('<> sales-new-vs-existing-customers widget', function () {
         beforeEach(function () {
           inject(buildScope);
           scope.isDataFound = true;
-          scope.displayType = {label: 'Total Sales', value: 'total_sales'};
           inject(compileDirective);
+          scope.displayType = {label: 'Total Sales', value: 'total_sales'};
         });
 
         it('returns the correct results based on scope.displayType', function () {
