@@ -23,9 +23,9 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
     { label: 'TOP - 50', value: 50 }
     { label: 'TOP - 100', value: 100 }
   ]
-  $scope.limitEntriesSelected = angular.copy(_.find($scope.limitEntriesOptions, {
-    value: w.metadata.limit_entries || 50
-  }))
+  $scope.limitEntriesSelected = angular.copy(_.find($scope.limitEntriesOptions, (o) ->
+    w.metadata? && (o.value == w.metadata.limit_entries)
+  ) || $scope.limitEntriesOptions[3] )
 
   $scope.headerOptions = [
     { label: 'Total sales', value: 'total_sales', minified: 'total' }
@@ -33,9 +33,9 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
     { label: 'Avg sales', value: 'avg_sales', minified: 'avg' }
     { label: 'Last sale', value: 'last_sale', minified: 'last' }
   ]
-  $scope.headerSelected = angular.copy(_.find($scope.headerOptions, {
-    value: w.metadata.header || 'total_sales'
-  }))
+  $scope.headerSelected = angular.copy(_.find($scope.headerOptions, (o) ->
+    w.metadata? && (w.metadata.header == o.value)
+  ) || $scope.headerOptions[0] )
   
   # Widget specific methods
   # --------------------------------------

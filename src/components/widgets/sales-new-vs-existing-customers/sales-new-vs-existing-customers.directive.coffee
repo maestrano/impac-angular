@@ -64,7 +64,7 @@ module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFor
 
   # checks whether front-end should display currency or integer values by displayType options.
   $scope.shouldDisplayCurrency = () ->
-    $scope.displayType.value.indexOf('count') < 0 if $scope.isDataFound
+    $scope.isDataFound && $scope.displayType.value.indexOf('count') < 0
 
   $scope.calculatePercentage = (sliceType) ->
     Math.round(
