@@ -3,50 +3,49 @@ describe('<> ImpacDeveloper Provider', function () {
 
   var ImpacDeveloper, options;
 
-  beforeEach(function() {
-    options = {
-      status: true
-    }
+  function configureProvider(options) {
+    options = options;
+    module('maestrano.impac', function (ImpacDeveloperProvider) {
+      ImpacDeveloperProvider.configure(options);
+    });
+    inject(function (_ImpacDeveloper_) {
+      ImpacDeveloper = _ImpacDeveloper_;
+    });
+  }
+
+  describe('service.getStatus', function () {
+    describe('default', function () {
+      beforeEach(configureProvider())
+
+      it('status is false', function () {
+        expect(ImpacDeveloper.getStatus()).toEqual(false);
+      });
+    });
+    describe('configured as status true', function () {
+      beforeEach(configureProvider({status: true}))
+
+      it('service.getStatus returns true', function () {
+        expect(ImpacDeveloper.getStatus()).toEqual(true);
+      });
+    });
   });
 
-  describe('when the service is enabled via developer.status', function () {
-    beforeEach(function () {
-      module('maestrano.impac', function (ImpacDeveloperProvider) {
-        ImpacDeveloperProvider.configure(options);
-      });
-      inject(function (_ImpacDeveloper_) {
-        ImpacDeveloper = _ImpacDeveloper_;
+  describe('service.stubWidgetsTemplates', function () {
+    describe('default', function () {
+      beforeEach(configureProvider());
+
+      it('saves an empty array to service.widgetsTemplates', function () {
+        expect(ImpacDeveloper.stubWidgetsTemplates()).toEqual([]);
+        expect(ImpacDeveloper.widgetsTemplates).toBeDefined();
       });
     });
+    describe('configured with widget templates', function () {
+      beforeEach(configureProvider({widgetsTemplates: [{name: 'Foobar'}]}));
 
-    it('service.getStatus returns true', function () {
-      expect(ImpacDeveloper.getStatus()).toEqual(true);
-    });
-
-    describe('service.stubWidgetsTemplates', function () {
-      beforeEach(function () {
-        options.widgetsTemplates = [{name: 'Foobar'}];
-        module('maestrano.impac', function (ImpacDeveloperProvider) {
-          ImpacDeveloperProvider.configure(options);
-        });
-      });
-
-      it('assigns the configured templates to service.widgetsTemplate', function () {
+      it('saves the configured templates to service.widgetsTemplate', function () {
         expect(ImpacDeveloper.stubWidgetsTemplates()).toEqual(options.widgetsTemplates);
-      });
-    });
-  });
-
-  describe('when the service is disabled via developer.status', function () {
-    beforeEach(function () {
-      module('maestrano.impac');
-      inject(function (_ImpacDeveloper_) {
-        ImpacDeveloper = _ImpacDeveloper_;
-      });
-    });
-
-    it('service.getStatus returns false', function () {
-      expect(ImpacDeveloper.getStatus()).toEqual(false);
+        expect(ImpacDeveloper.widgetsTemplates).toEqual(options.widgetsTemplates);
+      })
     });
   });
 });
