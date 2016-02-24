@@ -42,7 +42,7 @@ describe('<> ImpacDeveloper Provider', function () {
     describe('configured with widget templates', function () {
       beforeEach(configureProvider({widgetsTemplates: [{name: 'Foobar'}]}));
 
-      it('saves the configured templates to service.widgetsTemplate', function () {
+      it('saves the configured templates to service.widgetsTemplates', function () {
         expect(ImpacDeveloper.stubWidgetsTemplates()).toEqual(options.widgetsTemplates);
         expect(ImpacDeveloper.widgetsTemplates).toEqual(options.widgetsTemplates);
       })

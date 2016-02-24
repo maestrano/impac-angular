@@ -155,13 +155,18 @@ angular
       )
 
 
+    # Will be filled only once
     @setWidgetsTemplates = (templatesArray) ->
-      # Will be filled only once
       return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
+
+      # DEVELOPER MODE: saves widgets templates received from API to the ImpacDeveloper
+      # service, combining stubbed templates with real templates.
+      developerMode = ImpacDeveloper.getStatus()
+
+      widgetsTemplates = if developerMode then ImpacDeveloper.widgetsTemplates else _self.config.widgetsTemplates
+
       for template in templatesArray
-        _self.config.widgetsTemplates.push template
-        # DEVELOPER MODE - set widgets templates from API to developer stubbed data.
-        ImpacDeveloper.widgetsTemplates.push template if ImpacDeveloper.getStatus()
+        widgetsTemplates.push template
 
       return true
 
