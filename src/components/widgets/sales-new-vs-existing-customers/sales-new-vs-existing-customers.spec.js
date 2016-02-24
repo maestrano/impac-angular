@@ -1,9 +1,9 @@
-describe('<> sales-new-vs-old-customers widget', function () {
+describe('<> sales-new-vs-existing-customers widget', function () {
   'use strict';
 
   var scope, widget, $q, ChartFormatterSvc;
 
-  var template = angular.element('<div widget-sales-new-vs-old-customers />');
+  var template = angular.element('<div widget-sales-new-vs-existing-customers />');
 
   // Injects services needed by the directive & this spec
   beforeEach(function () {
@@ -31,9 +31,9 @@ describe('<> sales-new-vs-old-customers widget', function () {
 
   function aFullSummary() {
     return {
-      customers_count: { total: 10, new: 3, old: 7 },
-      total_sales: { total: 3000, new: 2000, old: 1000 },
-      transactions_count: { total: 40, new: 25, old: 15 }
+      customers_count: { total: 10, new: 3, existing: 7 },
+      total_sales: { total: 3000, new: 2000, existing: 1000 },
+      transactions_count: { total: 40, new: 25, existing: 15 }
     }
   }
 
@@ -81,13 +81,16 @@ describe('<> sales-new-vs-old-customers widget', function () {
 
       describe('when data is returned from API', function () {
         beforeEach(function () {
-          widget = {metadata: {}, 
-                    content: { summary: {
-                      customers_count: { total:14, new:9, old:5 },
-                      total_sales: { total: 11089.92, new:9084.56, old:2005.36 },
-                      transactions_count: { total:14, new:9, old: 5 }
-                      }}
-                    };
+          widget = {
+            metadata: {},
+            content: {
+              summary: {
+                customers_count: { total:14, new:9, existing:5 },
+                total_sales: { total: 11089.92, new:9084.56, existing:2005.36 },
+                transactions_count: { total:14, new:9, existing: 5 }
+              }
+            }
+          };
           inject(buildScope);
           inject(compileDirective);
           scope.widget.initContext();
@@ -180,7 +183,7 @@ describe('<> sales-new-vs-old-customers widget', function () {
         });
       });
 
-      describe('when scope.displayType valie is an amount', function () {
+      describe('when scope.displayType value is an amount', function () {
         beforeEach(function () {
           inject(buildScope);
           scope.isDataFound = true;
@@ -204,7 +207,7 @@ describe('<> sales-new-vs-old-customers widget', function () {
 
       it('should correctly calculate a percentage and return as integer value', function () {
         expect(scope.calculatePercentage('new')).toEqual(30)
-        expect(scope.calculatePercentage('old')).toEqual(70)
+        expect(scope.calculatePercentage('existing')).toEqual(70)
       });
     });
 
@@ -228,12 +231,13 @@ describe('<> sales-new-vs-old-customers widget', function () {
         });
 
         it('notifys drawTrigger with the correct chartData', function () {
-          spyOn(ChartFormatterSvc, 'pieChart');
+          spyOn(ChartFormatterSvc, 'pieChart').and.callFake(function () {
+            return {pieChart: 'response'};
+          });
           spyOn(scope.drawTrigger, 'notify');
           scope.widget.format();
           expect(ChartFormatterSvc.pieChart).toHaveBeenCalledWith(pieData, pieOptions, true);
-          // TODO: test for .toHaveBeenCalledWith(chartData).
-          expect(scope.drawTrigger.notify).toHaveBeenCalled();
+          expect(scope.drawTrigger.notify).toHaveBeenCalledWith({pieChart: 'response'});
         });
       });
     });
