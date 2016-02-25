@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+> [new widget] "Net Sales"
 > [new widget] "New vs Existing Customers widget"
 > [new widget] "Top Customers by Sales".
 > Add getDateRange from array of Dates or date-strings method in ImpacUtilities service.
