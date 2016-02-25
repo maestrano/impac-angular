@@ -65,6 +65,7 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     .pipe(jsFilter)
     .pipe($.sourcemaps.init())
     .pipe($.concat('impac-angular.js'))
+    .pipe($.ngAnnotate())
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(conf.paths.dist)) // Output impac-angular.js
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }))

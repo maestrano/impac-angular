@@ -22,7 +22,7 @@ module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $fi
     {label: 'Volume', value: 'trans_count'},
   ]
   $scope.displayType = angular.copy(_.find($scope.displayOptions, (o) ->
-    o.value == w.metadata.displayType
+    w.metadata && o.value == w.metadata.display_type
   ) || $scope.displayOptions[0])
 
   $scope.timeRangeOptions = [
@@ -35,13 +35,13 @@ module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $fi
     {label: 'Last 90 days', value: '-90d'},
   ]
   $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
-    o.value == w.metadata.timeRange
-  ) || $scope.timeRangeOptions[0])
+    w.metadata && o.value == w.metadata.time_range
+  ) || $scope.timeRangeOptions[6])
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && w.content.sales?
+    $scope.isDataFound = w.content? && w.content.sales? && w.content.sales.length > 0 && w.content.sales[0].total?
 
   $scope.getCurrency = ->
     if $scope.isDataFound
@@ -63,6 +63,8 @@ module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $fi
   $scope.sign = (type)->
     if $scope.displayType.value == 'average'
       { minus: '~', equal: '=>' }[type]
+    else if $scope.displayType.value == 'trans_count'
+      { minus: '+', equal: '=' }[type]
     else
       { minus: '-', equal: '=' }[type]
 

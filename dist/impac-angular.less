@@ -130,7 +130,7 @@
 @impac-widget-selectable-color:                @impac-widget-link-color;
 
 // Edit settings
-@impac-widget-sub-bg-color:                    darken(@impac-widget-background-color,10%);
+@impac-widget-sub-bg-color:                    darken(@impac-widget-background-color,6%);
 @impac-widget-sub-bg-color-light:              lighten(@impac-widget-sub-bg-color,5%); //f3f4f4
 
 // Accounts Comparison
@@ -1913,7 +1913,7 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.sales-new-vs-old-customers {
+.analytics .widget-item .content.sales-new-vs-existing-customers {
 
   .selector .selector-wrap {
     display: inline-block;
@@ -2008,6 +2008,8 @@ impac-kpi .kpi {
   }
   .widget-lines-container {
     max-height: 235px;
+
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
   }
 }
 
@@ -2343,7 +2345,7 @@ impac-kpi .kpi {
     white-space: nowrap;
   }
   .options-container {
-    position: absolute;
+    position: fixed;
     background-color: white;
     text-align: left;
     min-width: 150px;
@@ -2375,6 +2377,7 @@ impac-kpi .kpi {
     }
   }
 }
+
 .analytics .settings.params-checkboxes {
   padding: 2px 0px;
   input {
