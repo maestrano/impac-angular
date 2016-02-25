@@ -40,11 +40,12 @@ $.browserSync.use($.browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));
 
-gulp.task('serve', ['build', 'watch'], function () {
+gulp.task('serve', ['workspace', 'watch'], function () {
   browserSyncInit(conf.paths.workspace);
 });
 
-// no live reload for when re-building on save is too consuming on your PC.
-gulp.task('serve:noreload', ['build'], function () {
+// If rebuilding the library on every change is using too much cpu,
+// or you want to manually build.
+gulp.task('serve:noreload', ['workspace'], function () {
   browserSyncInit(conf.paths.workspace);
 });
