@@ -77,7 +77,8 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
     // engine called in Impac! API
     path: 'accounts/balance',
   
-    // optional - name of the template to use for your widget. In this case, 'accounts-balance.tmpl.html' will be used. If no metadata['template'] is defined, the path is used to determine the template name
+    // optional - name of the template to use for your widget. In this case, 'accounts-balance.tmpl.html' will be used. 
+    // If no metadata['template'] is defined, the path is used to determine the template name.
     metadata: {
       template: 'accounts/balance'
     },
