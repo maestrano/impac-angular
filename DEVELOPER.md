@@ -103,9 +103,16 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
     
     var widgetsTemplates = [
       {
-        path: 'invoices/your-awesome-engine',
-        name: 'Awesome Widget',
+        path: 'invoices/awesome-existing-engine',
+        name: 'Awesome Sales Widget',
         metadata: { template: 'sales/your-awesome-component' },
+        desc: 'compares awesome things to more awesome things',
+        icon: 'pie-chart',
+        width: 3
+      },
+      {
+        path: 'accounting/your-engine-and-component-name',
+        name: 'Awesome Accounting Widget',
         desc: 'compares awesome things to more awesome things',
         icon: 'pie-chart',
         width: 3
