@@ -67,9 +67,9 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 
 ##### Process
 
-1. <u>Defining the Widgets Template.</u>
-*Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget. *
-*It is important to take not of the `path` vs `path` & `metadata.template` attributes. Defining a `metadata.template` enables you to use an existing Impac API engine, and point the front-end to a different template*
+1. <u>Defining the Widgets Template.</u><br>
+  *Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget. *
+  *It is important to take not of the `path` vs `path` & `metadata.template` attributes. Defining a `metadata.template` enables you to use an existing Impac API engine, and point the front-end to a different template*
   ```javascript
   // Example of a widget template
   // -----
@@ -95,25 +95,25 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
     width: 3
   }
   ```
-**Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service. **
+  **Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service. **
 
- ```javascript
+  ```javascript
  
-  // workspace/index.js
-  
-  var widgetsTemplates = [
-    {
-      path: 'invoices/your-awesome-engine',
-      name: 'Awesome Widget',
-      metadata: { template: 'sales/your-awesome-component' },
-      desc: 'compares awesome things to more awesome things',
-      icon: 'pie-chart',
-      width: 3
-    }
-  ];
- ```
+    // workspace/index.js
+    
+    var widgetsTemplates = [
+      {
+        path: 'invoices/your-awesome-engine',
+        name: 'Awesome Widget',
+        metadata: { template: 'sales/your-awesome-component' },
+        desc: 'compares awesome things to more awesome things',
+        icon: 'pie-chart',
+        width: 3
+      }
+    ];
+  ```
  
-*This will inject your stubbed templates into the angular apps model,  displaying available templates from API and your stubbed templates.*
+  *This will inject your stubbed templates into the angular apps model,  displaying available templates from API and your stubbed templates.*
   
 2. Create the widget's files:
   - in `/src/components/widgets/`, add a folder `category-widget-name` (e.g: `accounts-my-new-widget`).
