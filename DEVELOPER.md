@@ -22,14 +22,7 @@ Now you should an api key, api secret, and an organization associated to your Us
   bower install
   ```
   
-2. Terminal commands to build your workspace
-  - This will run a dist build and inject all dependencies into workspace/index.js - to view this task see gulp/workspace.js
-  ```
-  gulp workspace
-  ```
-  
-  
-3. Configuring with credentials & launching workspace
+2. Configuring with credentials & launching workspace
   - Add your api_key & api_secret to the settings object in the workspace/index.js file
   ```
   var settings = {
@@ -40,7 +33,11 @@ Now you should an api key, api secret, and an organization associated to your Us
   };
   ```
   
-4. Launch the workspace/index.html file in a browser, and your Impac Developer Workspace should load!
+3. There a few ways to prepare & launch the Impac Developer Workspace..
+  1. Run `gulp serve`, this will inject dependencies, serve impac-angular, and **live reload** on change.
+  2. Run `gulp serve:noreload`, if rebuilding the library on every change is using too much cpu - **you will need to run `gulp workspace` and refresh the page after every change**
+  2. Run `gulp workspace` to build and inject dependencies, the open the `workspace/index.html` file in a browser - **you will need to run `gulp workspace` and refresh the page after every change**
+
 
 ##### Architecture
 
@@ -284,9 +281,13 @@ Example:
 To run tests, first build impac-angular with `gulp build`. Then run `gulp test`.
 
 
-#### Build tasks
+#### Gulp tasks
 
-Running `gulp build` will build all /dist files.
+- `gulp serve` will spin up a server, wiredep `workspace/index.html`, run a `gulp build`, and start a watch that will trigger build when any  `workspace/` or `src/` files change.
+- `gulp serve:noreload` do the same as above, but without the watch task.
+- `gulp build` will build all `/dist` files.
+- `gulp workspace` will inject all dependencies with wiredep, and run a `gulp build`.
+- `gulp test` will run unit-tests on `dist/impac-angular.js` and `dist/impac-angular.min.js`
 
 ### Licence 
 Copyright 2015 Maestrano Pty Ltd

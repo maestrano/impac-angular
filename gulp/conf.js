@@ -6,8 +6,8 @@
  *  of the tasks
  */
 
-var gutil = require('gulp-util'),
-    notify = require('gulp-notify');
+var gutil = require('gulp-util');
+var notify = require('gulp-notify');
 
 /**
  *  The main paths of your project handle these with care
@@ -15,6 +15,7 @@ var gutil = require('gulp-util'),
 exports.paths = {
   dist: 'dist',
   src: 'src',
+  workspace: 'workspace',
   tmp: '.tmp',
   lib: 'lib'
 };

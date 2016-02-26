@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+- Gulp Server with live reload for Developer Workspace!
 - [new widget] "Net Sales"
 - [new widget] "New vs Existing Customers widget"
 - [new widget] "Top Customers by Sales".
