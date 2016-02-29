@@ -305,16 +305,18 @@ describe('<> ImpacDashboardsSvc', function () {
     });
 
     describe('when ImpacDeveloper is enabled', function () {
+      var stubbedWidgetTemplate = ['template 3']
       beforeEach(function () {
-        ImpacDeveloper.widgetsTemplates = ['template3'];
-        spyOn(ImpacDeveloper, 'getStatus').and.callFake(function () {
+        spyOn(ImpacDeveloper, 'isEnabled').and.callFake(function () {
           return true
         });
+        spyOn(ImpacDeveloper, 'stubWidgetsTemplates').and.returnValue(array.concat(stubbedWidgetTemplate));
       })
 
-      it('saves the templates array in the developer service stub', function () {
+      it('retrieves and applies stubbed widgets templates', function () {
         svc.setWidgetsTemplates(array);
-        expect(ImpacDeveloper.widgetsTemplates).toEqual(['template3'].concat(array));
+        expect(ImpacDeveloper.stubWidgetsTemplates).toHaveBeenCalledWith(array);
+        expect(svc.config.widgetsTemplates).toEqual(array.concat(stubbedWidgetTemplate));
       });
     });
   });

@@ -1,10 +1,11 @@
 describe('<> ImpacDeveloper Provider', function () {
   'use strict';
 
-  var ImpacDeveloper, options;
+
+  var ImpacDeveloper, provider = {};
 
   function configureProvider(options) {
-    options = options;
+    provider.options = options
     module('maestrano.impac', function (ImpacDeveloperProvider) {
       ImpacDeveloperProvider.configure(options);
     });
@@ -13,38 +14,50 @@ describe('<> ImpacDeveloper Provider', function () {
     });
   }
 
-  describe('service.getStatus', function () {
-    describe('default', function () {
-      beforeEach(configureProvider())
+  describe('service.isEnabled', function () {
+    describe('by default', function () {
+      beforeEach(function () {
+        configureProvider();
+      });
 
       it('status is false', function () {
-        expect(ImpacDeveloper.getStatus()).toEqual(false);
+        expect(ImpacDeveloper.isEnabled()).toEqual(false);
       });
-    });
+    })
     describe('configured as status true', function () {
-      beforeEach(configureProvider({status: true}))
+      beforeEach(function () {
+        configureProvider({status: true});
+      });
 
-      it('service.getStatus returns true', function () {
-        expect(ImpacDeveloper.getStatus()).toEqual(true);
+      it('service.isEnabled returns true', function () {
+
+        expect(ImpacDeveloper.isEnabled()).toEqual(provider.options.status);
       });
     });
   });
 
   describe('service.stubWidgetsTemplates', function () {
-    describe('default', function () {
-      beforeEach(configureProvider());
+    var templatesFromAPI = [{name: 'API Template 1'}, {name: 'API Template 2'}];
 
-      it('saves an empty array to service.widgetsTemplates', function () {
-        expect(ImpacDeveloper.stubWidgetsTemplates()).toEqual([]);
-        expect(ImpacDeveloper.widgetsTemplates).toBeDefined();
+    describe('with stubbed templates provided', function () {
+      beforeEach(function () {
+        configureProvider({widgetsTemplates: [{name: 'My Awesome Stubbed Widget Template'}]});
       });
-    });
-    describe('configured with widget templates', function () {
-      beforeEach(configureProvider({widgetsTemplates: [{name: 'Foobar'}]}));
 
-      it('saves the configured templates to service.widgetsTemplates', function () {
-        expect(ImpacDeveloper.stubWidgetsTemplates()).toEqual(options.widgetsTemplates);
-        expect(ImpacDeveloper.widgetsTemplates).toEqual(options.widgetsTemplates);
+      it('returns an array of stubbed templates, and api templates', function () {
+        expect(ImpacDeveloper.stubWidgetsTemplates(templatesFromAPI)).toEqual(
+          templatesFromAPI.concat(provider.options.widgetsTemplates)
+        );
+      })
+    });
+
+    describe('with no stubbed templates provided', function () {
+      beforeEach(function () {
+        configureProvider();
+      });
+
+      it('returns an array of api templates', function () {
+        expect(ImpacDeveloper.stubWidgetsTemplates(templatesFromAPI)).toEqual(templatesFromAPI);
       })
     });
   });

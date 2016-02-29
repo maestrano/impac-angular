@@ -58,7 +58,8 @@ angular
     #====================================
     # Loaders and setters
     #====================================
-    @loadLocked = false
+
+    @loadLocked=false
     @load = (force=false) ->
 
       # Singleton prevents concurrent calls of _self.load
@@ -155,18 +156,14 @@ angular
       )
 
 
-    # Will be filled only once
     @setWidgetsTemplates = (templatesArray) ->
+      # Will be filled only once
       return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
 
-      # DEVELOPER MODE: saves widgets templates received from API to the ImpacDeveloper
-      # service, combining stubbed templates with real templates.
-      developerMode = ImpacDeveloper.getStatus()
-
-      widgetsTemplates = if developerMode then ImpacDeveloper.widgetsTemplates else _self.config.widgetsTemplates
+      templatesArray = ImpacDeveloper.stubWidgetsTemplates(templatesArray) if ImpacDeveloper.isEnabled()
 
       for template in templatesArray
-        widgetsTemplates.push template
+        _self.config.widgetsTemplates.push template
 
       return true
 

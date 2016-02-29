@@ -10,11 +10,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-    # developers can add widgets via the ImpacDeveloper service without modifying the API
-    if ImpacDeveloper.getStatus()
-      $scope.widgetsList = ImpacDeveloper.stubWidgetsTemplates()
-    else
-      $scope.widgetsList = ImpacDashboards.getWidgetsTemplates()
+    $scope.widgetsList = ImpacDashboardsSvc.getWidgetsTemplates()
 
     # assets
     # -------------------------------------
