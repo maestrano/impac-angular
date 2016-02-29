@@ -75,13 +75,15 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-leads-list',
     'impac.components.widgets.sales-list',
     'impac.components.widgets.sales-margin',
+    'impac.components.widgets.sales-net-sales',
     'impac.components.widgets.sales-number-of-leads',
     'impac.components.widgets.sales-opportunities-funnel',
     'impac.components.widgets.sales-performance',
     'impac.components.widgets.sales-segmented-turnover',
     'impac.components.widgets.sales-summary',
     'impac.components.widgets.sales-top-opportunities',
-    'impac.components.widgets.sales-top-customers'
+    'impac.components.widgets.sales-top-customers',
+    'impac.components.widgets.sales-new-vs-existing-customers'
   ]
 );
 angular.module('impac.components.widgets-settings',

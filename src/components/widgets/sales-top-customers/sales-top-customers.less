@@ -1,5 +1,5 @@
 .analytics .widget-item .content.sales-top-customers {
-  .settings-bar {
+  .selector {
     border-bottom: dashed 1px #E6E6E6;
     padding-bottom: 3px;
     a { font-weight: normal; }
@@ -7,5 +7,9 @@
   }
   .widget-lines-container {
     max-height: 235px;
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
+
+    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
+    .row > [class*='col-'] { position: static; }
   }
 }

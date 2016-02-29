@@ -1,0 +1,58 @@
+<div widget-sales-net-sales>
+
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+
+    <div class="row selector">
+      <div class="col-xs-12 text-right">
+        <span setting-param-selector parent-widget="widget" param="display_type" options="displayOptions" selected="displayType" no-reload="true" deferred="::paramSelector1Deferred" /> |
+        <span setting-param-selector parent-widget="widget" param="time_range" options="timeRangeOptions" selected="timeRange" deferred="::paramSelector2Deferred" />
+      </div>
+    </div>
+
+    <div ng-show="(isDataFound==true)">
+
+      <div class="row text-center values">
+        <div class="value-container col-md-3 col-md-offset-0 col-xs-10 col-xs-offset-2">
+          <div class="title">Sales</div>
+          <div class="value-box">
+            {{ getValue('sales') }}
+          </div>
+        </div>
+        <div class="operator col-md-1 col-xs-2">
+          <span>{{ sign('minus') }}</span>
+        </div>
+        <div class="value-container col-md-3 col-xs-10">
+          <div class="title">Returns</div>
+          <div class="value-box">
+            {{ getValue('returns') }}
+          </div>
+        </div>
+        <div class="operator col-md-1 col-xs-2">
+          <span>{{ sign('equal') }}</span>
+        </div>
+        <div class="value-container col-md-4 col-xs-10">
+          <div class="title">Net Result</div>
+          <div class="value-box">
+            {{ getValue('net_result') }}
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+  <div class="data-not-found" ng-show="(isDataFound==false)">
+    <div class="message">No transaction found for this time range<br/> Please select another one</div>
+  </div>
+
+</div>

@@ -1,9 +1,13 @@
 # master | Ongoing development
 
 ### Adds
-> [new widget] "Top Customers by Sales".
-> Add getDateRange from array of Dates or date-strings method in ImpacUtilities service.
-> Widget `metadata.template` now dictates which category the widgets appears in.
+- Gulp Server with live reload for Developer Workspace!
+- [new widget] "Net Sales"
+- [new widget] "New vs Existing Customers widget"
+- [new widget] "Top Customers by Sales".
+- Add getDateRange from array of Dates or date-strings method in ImpacUtilities service.
+- Widget `metadata.template` now dictates which category the widgets appears in.
+
 -------------------------------------------------------------
 # v1.2 | UNTAGGED
 
@@ -11,6 +15,7 @@
 - Deep routing to dashboards#index when an organization id is specified
 
 ### Adds
+- Gulp refactor - the gulp tasks are splitted in several files in the gulp directory.
 - Better layout for all widgets using the widget-lines-container (+ adapted to xsmall screens)
 
 -------------------------------------------------------------
@@ -28,6 +33,7 @@
 
 ### Fixes
 - Mass Assign: merges the metadata instead of replacing it + update not pushed if the metadata hasn't changed
+- mno-currency filter: adds dollar symbol for all dollar currencies, improved formatting for euro, and syntax for applying the showName argument.
 
 ### Adds
 - ImpacDashboardsSvc.callbacks.widgetAdded

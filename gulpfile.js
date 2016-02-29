@@ -1,12 +1,13 @@
 /**
+ *  Welcome to your gulpfile!
  *  The gulp tasks are splitted in several files in the gulp directory
  *  because putting all here was really too long
  */
 'use strict';
 
-var gulp = require('gulp'),
-    wrench = require('wrench'),
-    run = require('run-sequence');
+var gulp = require('gulp');
+var wrench = require('wrench');
+var run = require('run-sequence');
 
 /**
  *  This will load all js or coffee files in the gulp directory
@@ -18,11 +19,11 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
   require('./gulp/' + file);
 });
 
+/**
+ *  Default task clean temporaries directories and launch the
+ *  main optimization build task
+ */
 gulp.task('default', ['clean'], function (callback) {
-  /*
-   * Magic gulp async, allows for clean to fully finish deleting files
-   * before starting the 'build' task.
-   */
   run(['build'], function () {
     callback();
   });

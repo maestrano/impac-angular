@@ -70,36 +70,19 @@ angular
 
     @updateWidgetSettings = (widget, needContentReload=true) ->
       widget.isEditMode = false
-      deferred = $q.defer()
 
       if _.isEmpty(widget.settings)
-        deferred.reject('no setting to update')
+        $log.warn("ImpacWidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
+        return false
 
-      else
-        widget.isLoading = true if needContentReload
-        meta = {}
-        for setting in widget.settings
-          angular.merge meta, setting.toMetadata()
-
-        _self.update(widget, { metadata: meta }).then(
-          (updatedSettingsWidget) ->
-            if needContentReload
-              _self.show(updatedSettingsWidget).then(
-                (updatedContentWidget) ->
-                  updatedContentWidget.isLoading = false
-                  deferred.resolve(updatedContentWidget)
-                (error) ->
-                  updatedSettingsWidget.isLoading = false
-                  deferred.reject(error)
-              )
-            else
-              deferred.resolve(updatedSettingsWidget)
-
-          (error) ->
-            deferred.reject(error)
-        )
-
-      return deferred.promise
+      widget.isLoading = true if needContentReload
+      meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
+      
+      return _self.update(widget, { metadata: meta }).then(
+        (updatedWidget) ->
+          if needContentReload
+            _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+      )
 
     @massAssignAll = (metadata) ->
       unless _.isEmpty(metadata)
@@ -222,13 +205,14 @@ angular
 
           $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data).then(
             (success) ->
-              updatedWidget = success.data
-              angular.extend widget, updatedWidget
-              deferred.resolve(widget)
+              # TODO: why not merge? Do we really need to update the widget with the MNO-Hub response?
+              angular.extend(widget, success.data)
+
             (error) ->
-              $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
-              deferred.reject(error)
-          )
+              angular.merge(widget, opts)
+              $log.warn("ImpacWidgetsSvc: unable to remotely save widget state (id: #{widget.id})")
+
+          ).finally( -> deferred.resolve(widget))
 
         (error) ->
           $log.error("ImpacWidgetsSvc: error while trying to load the service")

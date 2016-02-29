@@ -58,9 +58,9 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities
         txn = ""
 
       if (i.tooltip_status == "partially paid")
-        paid = " (" + $filter('mnoCurrency')(i.paid,i.currency,false) + " over " + $filter('mnoCurrency')(i.invoiced,i.currency,false) + ")"
+        paid = " (" + $filter('mnoCurrency')(i.paid,i.currency,true) + " over " + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
       else
-        paid = " (" + $filter('mnoCurrency')(i.invoiced,i.currency,false) + ")"
+        paid = " (" + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
 
       tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid)
       count++
