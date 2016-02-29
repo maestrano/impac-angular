@@ -40,7 +40,7 @@ Now you should an api key, api secret, and an organization associated to your Us
   };
   ```
   
-4. Launch the workspace/index.html file in a browser, and your Impac Developer Workspace should load!
+4. Launch the workspace/index.html file in a browser, and your Impac Developer Workspace should load! **NOTE: you need to run `gulp workspace` everytime you make a change.**
 
 ##### Architecture
 
@@ -67,7 +67,7 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 
 ##### Process
 
-1. Define the widget's template. The base widgets templates list is retrieved from the MNO API, within each dashboard object. Each widget template will have a structure similar to the following:
+1. The base widgets templates list is retrieved from the MNO API, within each dashboard object. Each widget template will have a structure similar to the following:
   ```javascript
   {
     // engine called in Impac! API
@@ -98,34 +98,132 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
   }
   ```
   
-2. Create the widget's files:
+2. **<u>Create the widget's files:</u>**
   - in `/src/components/widgets/`, add a folder `category-widget-name` (e.g: `accounts-my-new-widget`).
   - in this new folder, add three files:
     - `accounts-my-new-widget.directive.coffee` containing the angular directive and controller defining your widget's behaviour.
     - `accounts-my-new-widget.tmpl.html` containing the template of your widget.
     - `accounts-my-new-widget.less` containing the stylesheet of your widget.
+    - `accounts-my-new-widget.spec.js` containing unit-tests for your widget.
 
-3. Define the widget's directive. According to `widget.directive.coffee`, it will define at least these parameters:
+3. **<u>Building the directive:</u>** 
+
+  *Widget directives get loaded through `widget.directive.coffee`'s template by `ngInclude`, which means it inherits scope.*
+  
+  Below are some key variables and methods available through the `ImpacWidget` scope:
   - `$scope.parentDashboard`, which is the dashboard object that contains the widget object in its *widgets* list.
   - `$scope.widget`, which is the widget object.
+  - `$scope.widgetDeferred` a `$q` promise object, see step 5.
+  - `$scope.updateSettings()`, updates all `widget-settings` directives registered on the widget.
 
-4. Start implementing the widget's controller. It must contain at least the following elements:
-  - `settingsPromises`, which is an array of promises, contains a promise for each custom sub-directive that you add to your widget (e.g: a setting, a chart...).
-  *It is essential that you pass a deferred object (initialized by $q.defer()) to each setting or chart that you want to add to your widget: it will be used to make sure the setting is properly initialized before the widget can call its functions.*
-  - `$scope.widget.initContext()` is the function that will be called just after the widget has retrieved its content from the API. It should be implemented, and used to determine if the widget can be displayed properly, and to initialize potential specific variables.
-  - `$scope.widget.format()` is the function that will be called when the widget is ready to draw its chart. It should use the ChartFormatterSvc functions to format the data properly. Once the chart data is ready, it can be passed to the chart directive through a notify() called on its deferred object. E.g:
+  *The examples below are the basic widget component set-up that is pretty much generic across all other widgets. Make sure you stick to this convention.*
+
   ```coffeescript
-  $scope.drawTrigger = $q.defer()
-  w.format = ->
-    [...]
-    # formats the widget content in data that will be readable by Chartjs
-    chartData = ChartFormatterSvc.lineChart([inputData],options)
-    # passes chartData to the chart directive, and calls chart.draw()
-    $scope.drawTrigger.notify(chartData)
+  # Basic components directive structure
+  module = angular.module('impac.components.widgets.your-widget',[])
+  
+  module.controller('YourWidgetCtrl', ($scope) ->
+  
+    w = $scope.widget
+    
+  )
+  module.directive('yourWidget', ->
+    return {
+       # avoid restricting by element ('E') please.
+       restrict: 'A', 
+       controller: 'YourWidgetCtrl'
+    }
+  )
+  ```
+
+  ```html
+  <!-- Basic component template structure -->
+  
+  <div your-widget>
+    <!-- edit widget view -->
+    <div ng-show="widget.isEditMode" class="edit">
+      <h4>Widget settings</h4>
+      
+      <!-- settings directive for managing organizations (widget data come from multiple companies) -->
+      <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+      
+      <!-- actions -->
+      <div class="bottom-buttons" align="right">
+        <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+        <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      </div>
+    </div>
+    <!-- widget view -->
+    <div ng-hide="widget.isEditMode">
+      <!-- controller bound boolean for switching between widget and 'data not found' message -->
+      <div ng-show="(isDataFound==true)">
+  
+        <!-- widget content -->
+
+      </div>
+      <!-- data not found -->
+      <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+    </div>
+  </div>
+  ```
+
+4. **<u>Start implementing the widget's controller</u>**. 
+
+  It must contain at least the following elements for a widget without a chart:
+    - `settingsPromises`, which is an array of promises, contains a promise for each custom sub-directive that you add to your widget (e.g: a setting, a chart...).
+    *It is essential that you pass a deferred object (initialized by $q.defer()) to each setting or chart that you want to add to your widget: it will be used to make sure the setting is properly initialized before the widget can call its functions.*
+    - `$scope.widget.initContext()` is the function that will be called just after the widget has retrieved its content from the API. It should be implemented, and used to determine if the widget can be displayed properly, and to initialize potential specific variables.
+  
+  ```coffeescript
+     w = $scope.widget
+    
+     # Define settings
+     # --------------------------------------
+     $scope.orgDeferred = $q.defer()
+    
+     settingsPromises = [
+       $scope.orgDeferred.promise
+     ]
+    
+     # Widget specific methods
+     # --------------------------------------
+     w.initContext = ->
+       $scope.isDataFound = w.content? 
+  ```
+  - If your widget is using a chart:
+    - `w.format()` will be required to build the chart. It will be triggered by the `ImpacWidgets` service `show` method, after the data has been successfully retrieved from Impac!. 
+
+  ```coffeescript
+    $scope.drawTrigger = $q.defer()
+    
+    ...
+    
+    w.format = ->
+      
+      ...
+      
+      # formats the widget content in data that will be readable by Chartjs
+      # See other widgets directives for examples of different chart types, 
+      # arguments needed etc. Also take a look at the ChartFormatterSvc methods.
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
+      # passes chartData to the chart directive, and calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
+  ```
+
+  ```html
+    <div your-widget>
+      ...
+      
+      <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      ...
+    </div>
+      
   ```
 
 5. Notify the widget's main directive that the widget's specific context has been loaded and is ready. To do that, we use a deferred object that is initialized in the main directive (`widget.directive.coffee`), and resolved at the end of the specific directive (`accounts-my-new-widget.directive.coffee`):
   ```coffeescript
+  ...
+  
   $scope.widgetDeferred.resolve(settingsPromises)
   ```
 
