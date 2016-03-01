@@ -77,7 +77,7 @@ describe('<> ImpacDeveloper Provider', function () {
 
     it('returns the correct templates', function () {
       expect(ImpacDeveloper.findTemplate({ path: 'foo/engine' })).toEqual(stubbedTemplates[0]);
-      expect(ImpacDeveloper.findTemplate({ path: 'foo/engine', metadata: { template: 'awesome/template' } })).toEqual(stubbedTemplates[1]);
+      expect(ImpacDeveloper.findTemplate({ path: 'foo/engine', metadata: { template: 'awesome/template', some: 'opts' } })).toEqual(stubbedTemplates[1]);
       expect(ImpacDeveloper.findTemplate({ name: 'widget template 1', path: 'foo/engine'}, ['path'])).toEqual(stubbedTemplates[0]);
     });
   });
@@ -92,10 +92,7 @@ describe('<> ImpacDeveloper Provider', function () {
 
     it('returns the correct boolean value', function () {
       expect(ImpacDeveloper.isWidgetStubbed(widget)).toEqual(true);
-      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith({ name: 'widget 1', path: 'foo/engine', width: 3 });
-      widget.metadata = { template: 'awesome/template' };
-      expect(ImpacDeveloper.isWidgetStubbed(widget)).toEqual(true);
-      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith({ name: 'widget 1', path: 'foo/engine', metadata: { template: 'awesome/template' }, width: 3 });
+      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith(widget);
     });
   });
 
@@ -113,7 +110,7 @@ describe('<> ImpacDeveloper Provider', function () {
         response = res;
       });
       $rootScope.$apply();
-      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith({ path: 'foo/engine', metadata: { template: 'awesome/template' } });
+      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith(widget);
       expect(response.data.name).toEqual(stubbedTemplates[1].name);
       expect(response.data.category).toEqual(stubbedTemplates[1].path);
       expect(response.data.metadata).toEqual({
@@ -138,7 +135,7 @@ describe('<> ImpacDeveloper Provider', function () {
         response = res;
       });
       $rootScope.$apply();
-      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith({ name: 'widget template 2', path: 'foo/engine', metadata: { template: 'awesome/template' } });
+      expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith(widget);
       expect(response.data.name).toEqual(dataToUpdate.name)
       expect(response.data.metadata).toEqual({
         template: widget.metadata.template,

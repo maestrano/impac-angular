@@ -34,7 +34,6 @@ angular
       WIDGET = {
         widget_category: 'path'
         category: 'path'
-        # metadata: (attrs) -> { template: attrs.template } if _.get(attrs, 'attrs.template')
       }
       #=======================================
       # Public methods available as service
@@ -48,18 +47,20 @@ angular
       service.stubWidgetsTemplates = (templates) -> templates.concat developer.widgetsTemplates
 
       # Find widgets template by match object
-      service.findTemplate = (obj, keys=['path', 'metadata']) ->
-        _.find developer.widgetsTemplates, (t) -> _.isEqual(_.pick(obj, keys), _.pick(t, keys))
-
-      # Find widgets template by matching object and return bool
-      service.isWidgetStubbed = (widget) ->
+      # TODO: refactor this method.
+      service.findTemplate = (widget, keys=['path', 'metadata'], metadataKeys=['template']) ->
         match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
-        !_.isEmpty service.findTemplate(match)
+        match.metadata = _.pick(match.metadata, metadataKeys) if match.metadata
+        _.find developer.widgetsTemplates, (t) -> _.isEqual(_.pick(match, keys), _.pick(t, keys))
+
+      # Returns bool if widget matches a develop widget template
+      service.isWidgetStubbed = (widget) ->
+        !_.isEmpty service.findTemplate(widget)
 
       # CRUD method stubs
+      # TODO: replace with $httpBackend?
       service.createWidgetStub = (widget, currentDhb) ->
-        match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
-        template = angular.copy service.findTemplate(match)
+        template = angular.copy service.findTemplate(widget)
         $q.resolve({
           data: {
             id: Math.random().toString(36).substr(2, 9);
@@ -74,8 +75,7 @@ angular
         })
 
       service.updateWidgetStub = (widget, data) ->
-        match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
-        template = angular.copy service.findTemplate(match)
+        template = angular.copy service.findTemplate(widget)
         angular.merge data.metadata, template.metadata
         $q.resolve({data: data});
 

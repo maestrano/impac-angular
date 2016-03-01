@@ -146,7 +146,6 @@ describe('<> ImpacWidgetsSvc', function () {
     });
   });
 
-
   // CRUD methods
   // -------------------------------------------------
   describe('#create(:widget)', function() {
@@ -171,13 +170,15 @@ describe('<> ImpacWidgetsSvc', function () {
 
       describe('on $http error', function () {
         beforeEach(function () {
-          spyOn($http, "post").and.returnValue($q.reject('error'));
+          spyOn($http, "post").and.returnValue($q.reject('an error response'));
+          spyOn($log, 'error').and.callThrough();
           subject = svc.create(widget)
           $rootScope.$apply();
         });
 
-        it('rejects with an error', function () {
-          expect(subject.$$state.value).toEqual('error');
+        it('logs & rejects with an error', function () {
+          expect($log.error).toHaveBeenCalled();
+          expect(subject.$$state.value).toEqual('an error response');
         });
       });
 
@@ -217,7 +218,7 @@ describe('<> ImpacWidgetsSvc', function () {
         $rootScope.$apply();
       });
 
-      it('rejects with an error', function () {
+      it('logs & rejects with an error', function () {
         expect($log.error).toHaveBeenCalled();
         expect(subject.$$state.value).toEqual('error');
       });
@@ -233,67 +234,151 @@ describe('<> ImpacWidgetsSvc', function () {
     var opts = { name: 'new name', metadata: { some: 'opts' } };
     var widget = { id: 1, name: 'test-widget' };
 
-    beforeEach(function() {
-      spyOn(svc, 'load').and.returnValue($q.resolve(config));
-      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
-    });
-
-    describe('on http success', function() {
+    describe('on _self.load success', function () {
       beforeEach(function() {
-        spyOn($http, "put").and.returnValue($q.resolve({data: opts}));
-
-        subject = svc.update(widget,opts);
-        $rootScope.$apply();
+        spyOn(svc, 'load').and.returnValue($q.resolve(config));
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
       });
 
-      it('remotely saves the widget', function() {
-        expect($http.put).toHaveBeenCalledWith(ImpacRoutes.widgets.update(currentDhb.id, widget.id), {widget: opts});
+      describe('on http success', function() {
+        beforeEach(function() {
+          spyOn($http, "put").and.returnValue($q.resolve({data: opts}));
+
+          subject = svc.update(widget,opts);
+          $rootScope.$apply();
+        });
+
+        it('remotely saves the widget', function() {
+          expect($http.put).toHaveBeenCalledWith(ImpacRoutes.widgets.update(currentDhb.id, widget.id), {widget: opts});
+        });
+
+        sharedSuccessExamples();
       });
 
-      sharedSuccessExamples();
+      describe('on stubbed widget response success', function () {
+        beforeEach(function () {
+          spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
+          spyOn(ImpacDeveloper, 'updateWidgetStub').and.returnValue($q.resolve({
+            data: opts
+          }));
+        });
+
+        sharedSuccessExamples();
+      });
+
+      function sharedSuccessExamples() {
+        it('updates attributes on the widget', function() {
+          expect(widget.metadata.some).toEqual(opts.metadata.some);
+          expect(widget.name).toEqual(opts.name)
+        });
+
+        it('resolves the promise', function() {
+          expect(subject.$$state.value).toEqual(widget);
+        });
+      }
+
+      describe('on http error', function() {
+        beforeEach(function() {
+          spyOn($http, "put").and.returnValue($q.reject("an error response"));
+          spyOn($log, 'error').and.callThrough();
+          subject = svc.update(widget,opts);
+          $rootScope.$apply();
+        });
+
+        it('does not update the attributes on the widget', function() {
+          expect(widget).toEqual(widget);
+        });
+
+        it('logs & rejects with an error', function () {
+          expect($log.error).toHaveBeenCalled();
+          expect(subject.$$state.value).toEqual('an error response');
+        });
+      });
     });
 
-    describe('on stubbed widget response success', function () {
+    describe('on _self.load failure', function () {
       beforeEach(function () {
-        spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
-        spyOn(ImpacDeveloper, 'updateWidgetStub').and.returnValue($q.resolve({
-          data: opts
-        }));
-      });
-
-      sharedSuccessExamples();
-    });
-
-    function sharedSuccessExamples() {
-      it('updates attributes on the widget', function() {
-        expect(widget.metadata.some).toEqual(opts.metadata.some);
-        expect(widget.name).toEqual(opts.name)
-      });
-
-      it('resolves the promise', function() {
-        expect(subject.$$state.value).toEqual(widget);
-      });
-    }
-
-    describe('on http error', function() {
-      beforeEach(function() {
-        spyOn($http, "put").and.returnValue($q.reject("an error response"));
-
-        subject = svc.update(widget,opts);
+        spyOn(svc, 'load').and.returnValue($q.reject('error'));
+        spyOn($log, 'error').and.callThrough();
+        subject = svc.create(widget);
         $rootScope.$apply();
       });
 
-      it('updates attributes on the widget', function() {
-        expect(widget.some).toBe(opts.some);
-      });
-
-      it('rejects the promise', function() {
-        expect(subject.$$state.value).toBe("an error response");
+      it('logs & rejects with an error', function () {
+        expect($log.error).toHaveBeenCalled();
+        expect(subject.$$state.value).toEqual('error');
       });
     });
   });
 
   describe('#delete(:widget)', function() {
-    xit('deletes the widget and removes it from the current dashboard');
+    var widgetToDelete = { id: 333, name: 'test-widget' };
+
+    describe('on _self.load success', function () {
+      beforeEach(function() {
+        spyOn(svc, 'load').and.returnValue($q.resolve(config));
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb.widgets.concat([widgetToDelete]));
+      });
+
+      describe('on http success', function() {
+        beforeEach(function() {
+          spyOn($http, "delete").and.returnValue($q.resolve({data: {success: true}}));
+
+          subject = svc.delete(widgetToDelete);
+          $rootScope.$apply();
+        });
+
+        sharedSuccessExamples();
+      });
+
+      describe('on stubbed widget response success', function () {
+        beforeEach(function () {
+          spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
+          spyOn(ImpacDeveloper, 'updateWidgetStub').and.returnValue($q.resolve({
+            data: { success: true }
+          }));
+        });
+
+        sharedSuccessExamples();
+      });
+
+      function sharedSuccessExamples() {
+        it('removes the widget from the dashboard', function () {
+          expect(currentDhb.widgets).not.toContain(widgetToDelete);
+        });
+
+        it('resolves the promise', function() {
+          expect(subject.$$state.value).toEqual({data: { success: true }});
+        });
+      }
+
+      describe('on http error', function() {
+        beforeEach(function() {
+          spyOn($http, "delete").and.returnValue($q.reject("an error response"));
+          spyOn($log, 'error').and.callThrough();
+          subject = svc.delete(widgetToDelete);
+          $rootScope.$apply();
+        });
+
+        it('logs & rejects with an error', function () {
+          expect($log.error).toHaveBeenCalled();
+          expect(subject.$$state.value).toEqual('an error response');
+        });
+      });
+    });
+
+    describe('on _self.load failure', function () {
+      beforeEach(function () {
+        spyOn(svc, 'load').and.returnValue($q.reject('an error response'));
+        spyOn($log, 'error').and.callThrough();
+        subject = svc.delete(widgetToDelete);
+        $rootScope.$apply();
+      });
+
+      it('logs & rejects with an error', function () {
+        expect($log.error).toHaveBeenCalled();
+        expect(subject.$$state.value).toEqual('an error response');
+      });
+    });
   });
 });
