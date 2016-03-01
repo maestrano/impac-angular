@@ -1,7 +1,7 @@
 describe('<> ImpacWidgetsSvc', function () {
   'use strict';
 
-  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, $q, $http, $rootScope;
+  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacDeveloper, $q, $http, $rootScope, $log;
 
   var config = {ssoSessionId: 'id-1'};
   var currentDhb = {id: 99, name: 'dhb-99', widgets: [
@@ -11,14 +11,16 @@ describe('<> ImpacWidgetsSvc', function () {
 
   beforeEach(function() {
     module('maestrano.impac');
-    inject(function (_ImpacWidgetsSvc_, _ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _$q_, _$http_, _$rootScope_) {
+    inject(function (_ImpacWidgetsSvc_, _ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _ImpacDeveloper_, _$q_, _$http_, _$rootScope_, _$log_) {
       svc = _ImpacWidgetsSvc_;
       ImpacDashboardsSvc = _ImpacDashboardsSvc_;
       ImpacMainSvc = _ImpacMainSvc_;
       ImpacRoutes = _ImpacRoutes_;
+      ImpacDeveloper = _ImpacDeveloper_;
       $q = _$q_;
       $http = _$http_;
       $rootScope = _$rootScope_;
+      $log = _$log_;
     });
 
     currentDhb.callbacks.widgetAdded = $q.defer();
@@ -150,20 +152,69 @@ describe('<> ImpacWidgetsSvc', function () {
   describe('#create(:widget)', function() {
     var widget = { name: 'test-widget' };
 
-    beforeEach(function() {
-      spyOn(svc, 'load').and.returnValue($q.resolve(config));
-      spyOn($http, 'post').and.returnValue({data: widget});
-      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
-      spyOn(currentDhb.callbacks.widgetAdded, 'notify').and.callThrough();
+    describe('on _self.load success', function () {
+      beforeEach(function() {
+        spyOn(svc, 'load').and.returnValue($q.resolve(config));
+        spyOn(ImpacDashboardsSvc.callbacks.widgetAdded, 'notify');
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
+      });
 
-      svc.create(widget)
+      describe('on $http success', function () {
+        beforeEach(function () {
+          spyOn($http, "post").and.callFake(function() {
+            var httpDeferred = $q.defer();
+            httpDeferred.resolve({data: widget});
+            return httpDeferred.promise;
+          });
+          subject = svc.create(widget)
+          $rootScope.$apply();
+        });
+
+        sharedSuccessExamples();
+      });
+
+      describe('when widget to be created is a stubbed widget', function () {
+        beforeEach(function () {
+          spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
+          spyOn(ImpacDeveloper, 'createWidgetStub').and.returnValue($q.resolve({
+            data: widget
+          }))
+          subject = svc.create(widget);
+          $rootScope.$apply();
+        });
+
+        sharedSuccessExamples();
+      });
+
+      function sharedSuccessExamples() {
+        it('creates the widget and adds it to the current dashboard', function () {
+          expect(currentDhb.widgets).toContain(widget);
+        });
+
+        it ('notifies the widgetAdded callback', function() {
+          expect(ImpacDashboardsSvc.callbacks.widgetAdded.notify).toHaveBeenCalledWith(widget);
+        });
+
+        it('resolves the promise', function() {
+          expect(subject.$$state.value).toEqual(widget);
+        });
+      }
     });
 
-    xit ('notifies the widgetAdded callback', function() {
-      expect(currentDhb.callbacks.widgetAdded.notify).toHaveBeenCalledWith(widget);
+    describe('on _self.load failure', function () {
+      beforeEach(function () {
+        spyOn(svc, 'load').and.returnValue($q.reject('error'));
+        spyOn($log, 'error').and.callThrough();
+        subject = svc.create(widget);
+        $rootScope.$apply();
+      });
+
+      it('rejects with an error', function () {
+        expect($log.error).toHaveBeenCalled();
+        expect(subject.$$state.value).toEqual('error');
+      });
     });
 
-    xit('creates the widget and adds it to the current dashboard');
   });
 
   describe('#show(:widget, "refreshCache)', function() {
