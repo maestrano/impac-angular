@@ -161,11 +161,7 @@ describe('<> ImpacWidgetsSvc', function () {
 
       describe('on $http success', function () {
         beforeEach(function () {
-          spyOn($http, "post").and.callFake(function() {
-            var httpDeferred = $q.defer();
-            httpDeferred.resolve({data: widget});
-            return httpDeferred.promise;
-          });
+          spyOn($http, "post").and.returnValue($q.resolve({data: widget}));
           subject = svc.create(widget)
           $rootScope.$apply();
         });
@@ -173,7 +169,19 @@ describe('<> ImpacWidgetsSvc', function () {
         sharedSuccessExamples();
       });
 
-      describe('when widget to be created is a stubbed widget', function () {
+      describe('on $http error', function () {
+        beforeEach(function () {
+          spyOn($http, "post").and.returnValue($q.reject('error'));
+          subject = svc.create(widget)
+          $rootScope.$apply();
+        });
+
+        it('rejects with an error', function () {
+          expect(subject.$$state.value).toEqual('error');
+        });
+      });
+
+      describe('on stubbed widget response success', function () {
         beforeEach(function () {
           spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
           spyOn(ImpacDeveloper, 'createWidgetStub').and.returnValue($q.resolve({
@@ -234,11 +242,7 @@ describe('<> ImpacWidgetsSvc', function () {
 
     describe('on http success', function() {
       beforeEach(function() {
-        spyOn($http, "put").and.callFake(function() {
-          var httpDeferred = $q.defer();
-          httpDeferred.resolve({data: opts});
-          return httpDeferred.promise;
-        });
+        spyOn($http, "put").and.returnValue($q.resolve({data: opts}));
 
         subject = svc.update(widget,opts);
         $rootScope.$apply();
@@ -259,11 +263,7 @@ describe('<> ImpacWidgetsSvc', function () {
 
     describe('on http error', function() {
       beforeEach(function() {
-        spyOn($http, "put").and.callFake(function() {
-          var httpDeferred = $q.defer();
-          httpDeferred.reject("an error response");
-          return httpDeferred.promise;
-        });
+        spyOn($http, "put").and.returnValue($q.reject("an error response"));
 
         subject = svc.update(widget,opts);
         $rootScope.$apply();
