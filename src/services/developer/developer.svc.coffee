@@ -34,10 +34,10 @@ angular
       WIDGET = {
         widget_category: 'path'
       }
-      service = @
       #=======================================
       # Public methods available as service
       #=======================================
+      service = @
       service.isEnabled = () -> developer.status
 
       # WIDGETS
