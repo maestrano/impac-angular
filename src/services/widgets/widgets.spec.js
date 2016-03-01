@@ -230,14 +230,12 @@ describe('<> ImpacWidgetsSvc', function () {
   });
 
   describe('#update(:widget, :opts)', function() {
-    var opts = { some: 'opts' };
+    var opts = { name: 'new name', metadata: { some: 'opts' } };
     var widget = { id: 1, name: 'test-widget' };
 
     beforeEach(function() {
       spyOn(svc, 'load').and.returnValue($q.resolve(config));
-      //spyOn($http, 'put').and.returnValue({data: widget});
       spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(currentDhb);
-      //spyOn(currentDhb.callbacks.widgetAdded, 'notify').and.callThrough();
     });
 
     describe('on http success', function() {
@@ -252,14 +250,30 @@ describe('<> ImpacWidgetsSvc', function () {
         expect($http.put).toHaveBeenCalledWith(ImpacRoutes.widgets.update(currentDhb.id, widget.id), {widget: opts});
       });
 
+      sharedSuccessExamples();
+    });
+
+    describe('on stubbed widget response success', function () {
+      beforeEach(function () {
+        spyOn(ImpacDeveloper, 'isWidgetStubbed').and.returnValue(true);
+        spyOn(ImpacDeveloper, 'updateWidgetStub').and.returnValue($q.resolve({
+          data: opts
+        }));
+      });
+
+      sharedSuccessExamples();
+    });
+
+    function sharedSuccessExamples() {
       it('updates attributes on the widget', function() {
-        expect(widget.some).toBe(opts.some);
+        expect(widget.metadata.some).toEqual(opts.metadata.some);
+        expect(widget.name).toEqual(opts.name)
       });
 
       it('resolves the promise', function() {
-        expect(subject.$$state.value).toBe(widget);
+        expect(subject.$$state.value).toEqual(widget);
       });
-    });
+    }
 
     describe('on http error', function() {
       beforeEach(function() {

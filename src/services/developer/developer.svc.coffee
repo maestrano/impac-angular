@@ -33,6 +33,8 @@ angular
       #       `widget.category`. This should be more consistant.
       WIDGET = {
         widget_category: 'path'
+        category: 'path'
+        # metadata: (attrs) -> { template: attrs.template } if _.get(attrs, 'attrs.template')
       }
       #=======================================
       # Public methods available as service
@@ -46,19 +48,19 @@ angular
       service.stubWidgetsTemplates = (templates) -> templates.concat developer.widgetsTemplates
 
       # Find widgets template by match object
-      service.findTemplate = (match) ->
-        _.find developer.widgetsTemplates, (t) -> _.isEqual match, _.pick(t, ['path', 'metadata'])
+      service.findTemplate = (obj, keys=['path', 'metadata']) ->
+        _.find developer.widgetsTemplates, (t) -> _.isEqual(_.pick(obj, keys), _.pick(t, keys))
 
       # Find widgets template by matching object and return bool
       service.isWidgetStubbed = (widget) ->
         match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
-        !_.isEmpty service.findTemplate(_.pick(match, ['path', 'metadata']))
+        !_.isEmpty service.findTemplate(match)
 
       # CRUD method stubs
       service.createWidgetStub = (widget, currentDhb) ->
         match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
-        template = service.findTemplate(match)
-        $q.when({
+        template = angular.copy service.findTemplate(match)
+        $q.resolve({
           data: {
             id: Math.random().toString(36).substr(2, 9);
             name: template.name
@@ -70,6 +72,15 @@ angular
             })
           }
         })
+
+      service.updateWidgetStub = (widget, data) ->
+        match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
+        template = angular.copy service.findTemplate(match)
+        angular.merge data.metadata, template.metadata
+        $q.resolve({data: data});
+
+      service.deleteWidgetStub = () ->
+        $q.resolve({ success: true })
 
       return service
 

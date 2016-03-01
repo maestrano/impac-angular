@@ -221,10 +221,17 @@ angular
           deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
 
         else
+          opts.name = 'foobar'
           data = { widget: opts }
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
-          $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(widget)
+            request = ImpacDeveloper.updateWidgetStub(widget, data.widget)
+          else
+            request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
+
+          request.then(
             (success) ->
               angular.extend widget, success.data
               deferred.resolve(widget)
@@ -248,7 +255,13 @@ angular
         (config) ->
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
-          $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id)).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(widgetToDelete)
+            request = ImpacDeveloper.deleteWidgetStub(widgetToDelete)
+          else
+            request = $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id))
+
+          request.then(
             (success) ->
               _.remove dashboard.widgets, (widget) ->
                 widget.id == widgetToDelete.id
