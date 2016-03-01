@@ -156,6 +156,18 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 
   **IMPORTANT**: The settingsPromises array defined in 1/ has to be passed back to the main directive to make sure it will wait for all the settings to be initialized before calling the widget's #show function.
 
+6. Add the new components angular module to the `src/impac-angular.module.js` module declarations.
+
+  ```javascript
+    angular.module('impac.components.widgets',
+      [
+        'impac.components.widgets.your-widget'
+      ]
+    );
+  ```
+
+7. Rebuild via `gulp serve` or `gulp workspace`, and then you should be able to add your new widget to a dashboard!
+
 #### How-to: Create a setting
 ---
 
