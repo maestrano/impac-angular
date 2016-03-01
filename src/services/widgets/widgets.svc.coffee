@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
 
     _self = @
     @config = {}
@@ -35,7 +35,13 @@ angular
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           data = { widget: opts }
 
-          $http.post(ImpacRoutes.widgets.create(dashboard.id), data).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(data.widget)
+            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
+          else
+            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
+
+          request.then(
             (success) ->
               newWidget = success.data
               dashboard.widgets.push(newWidget)
