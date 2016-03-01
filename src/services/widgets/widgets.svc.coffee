@@ -221,7 +221,6 @@ angular
           deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
 
         else
-          opts.name = 'foobar'
           data = { widget: opts }
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
