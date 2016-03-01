@@ -68,7 +68,7 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 ##### Process
 
 1. **Defining the Widgets Template.**<br>
-  *Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget. *
+  *Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget.*<br>
   *It is important to take note of the `path` vs `path` & `metadata.template` attributes. Defining a `metadata.template` enables you to use an existing Impac API engine, and points the front-end to a different template*
   ```javascript
   // Example of a widget template
@@ -96,7 +96,7 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
     width: 3
   }
   ```
-  **Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service. **
+  **Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service.**
 
   ```javascript
  
