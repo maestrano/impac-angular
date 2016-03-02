@@ -39,6 +39,11 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
         "FYEARLY"
       ]
 
+      # Put at "undefined" to cancel the preset and make it disappear from the dropdown
+      resetPreset = ->
+        scope.timePeriodSetting.selectedPreset = undefined
+        return true
+      resetPreset()
 
       scope.timePeriodSetting.initialize = ->
         # Make sure scope.histParams have been propagated
@@ -124,6 +129,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
 
       scope.updateTimeRangePeriod = ->
         if scope.isTimeSliderUsed()
+          resetPreset()
           # Force time-range to match period
           set = getSetting('time-slider')
           tr = set.toMetadata().hist_parameters.time_range
@@ -138,12 +144,14 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           return false
 
       scope.useTimeSlider = ->
+        resetPreset()
         scope.usedSetting = 'time-slider'
         # Force time-range to match period
         scope.updateTimeRangePeriod()
         return scope.usedSetting
 
       scope.useDatesPicker = ->
+        resetPreset()
         return scope.usedSetting = 'dates-picker'
 
 

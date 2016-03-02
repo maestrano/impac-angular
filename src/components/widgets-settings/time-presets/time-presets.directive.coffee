@@ -8,6 +8,7 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
       deferred: '='
       presets: '=?'
       onSelect: '&?'
+      selectedPreset: '=?selected'
     },
     template: $templateCache.get('widgets-settings/time-presets.tmpl.html'),
 
