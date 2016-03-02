@@ -7,14 +7,14 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.paramSelectorDeferred1 = $q.defer()
   $scope.paramSelectorDeferred2 = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.paramSelectorDeferred1.promise
     $scope.paramSelectorDeferred2.promise
     $scope.chartDeferred.promise

@@ -7,11 +7,11 @@ module.controller('WidgetSalesBreakEvenCtrl', ($scope, $q, ChartFormatterSvc, $f
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
 
