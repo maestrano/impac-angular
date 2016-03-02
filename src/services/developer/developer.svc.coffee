@@ -54,8 +54,7 @@ angular
         _.find developer.widgetsTemplates, (t) -> _.isEqual(_.pick(match, keys), _.pick(t, keys))
 
       # Returns bool if widget matches a develop widget template
-      service.isWidgetStubbed = (widget) ->
-        !_.isEmpty service.findTemplate(widget)
+      service.isWidgetStubbed = (widget) -> !_.isEmpty service.findTemplate(widget)
 
       # CRUD method stubs
       # TODO: replace with $httpBackend?
@@ -63,7 +62,7 @@ angular
         template = angular.copy service.findTemplate(widget)
         $q.resolve({
           data: {
-            id: Math.random().toString(36).substr(2, 9);
+            id: Math.random().toString(36).substr(2, 9) + '-stubbed';
             name: template.name
             category: template.path
             width: template.width
