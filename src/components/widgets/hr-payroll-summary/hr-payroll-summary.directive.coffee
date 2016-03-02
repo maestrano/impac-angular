@@ -7,14 +7,14 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
