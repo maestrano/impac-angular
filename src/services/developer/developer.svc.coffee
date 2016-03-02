@@ -57,7 +57,11 @@ angular
       service.isWidgetStubbed = (widget) -> !_.isEmpty service.findTemplate(widget)
 
       # CRUD method stubs
+      # ---------------
       # TODO: replace with $httpBackend?
+      # http://michalostruszka.pl/blog/2013/05/27/easy-stubbing-out-http-in-angularjs-for-backend-less-frontend-development/
+      # http://jsfiddle.net/joshdmiller/egmpe/
+      # ---------------
       service.createWidgetStub = (widget, currentDhb) ->
         template = angular.copy service.findTemplate(widget)
         $q.resolve({
