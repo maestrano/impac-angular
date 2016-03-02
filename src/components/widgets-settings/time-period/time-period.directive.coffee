@@ -36,7 +36,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
         "MONTHLY"
         "QUARTERLY"
         "YEARLY"
-        "FYEARLY"
+        # "FYEARLY"
       ]
 
       # Put at "undefined" to cancel the preset and make it disappear from the dropdown
