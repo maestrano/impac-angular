@@ -7,7 +7,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.paramSelectorDeferred1 = $q.defer()
   $scope.paramSelectorDeferred2 = $q.defer()
@@ -15,7 +15,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.paramSelectorDeferred1
     $scope.paramSelectorDeferred2
