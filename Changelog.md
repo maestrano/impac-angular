@@ -1,11 +1,13 @@
 # master | Ongoing development
 
 ### Adds
-> [new widget] "Net Sales"
-> [new widget] "New vs Existing Customers widget"
-> [new widget] "Top Customers by Sales".
-> Add getDateRange from array of Dates or date-strings method in ImpacUtilities service.
-> Widget `metadata.template` now dictates which category the widgets appears in.
+- Gulp Server with live reload for Developer Workspace!
+- [new widget] "Net Sales"
+- [new widget] "New vs Existing Customers widget"
+- [new widget] "Top Customers by Sales".
+- Add getDateRange from array of Dates or date-strings method in ImpacUtilities service.
+- Widget `metadata.template` now dictates which category the widgets appears in.
+
 -------------------------------------------------------------
 # v1.2 | UNTAGGED
 
