@@ -13,6 +13,7 @@
 
 ### Fixes
 - Deep routing to dashboards#index when an organization id is specified
+- Apps sync: keeps syncing if the sync is just enqueued (and not performed straight away)
 
 ### Adds
 - Gulp refactor - the gulp tasks are splitted in several files in the gulp directory.
