@@ -1,15 +1,16 @@
 describe('<> ImpacDashboardsSvc', function () {
   'use strict';
 
-  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, $q, $http, $rootScope;
+  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacDeveloper, $q, $http, $rootScope;
 
   beforeEach(function() {
     module('maestrano.impac');
-    inject(function (_ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _ImpacKpisSvc_, _$q_, _$http_, _$rootScope_) {
+    inject(function (_ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _ImpacKpisSvc_, _ImpacDeveloper_, _$q_, _$http_, _$rootScope_) {
       svc = ImpacDashboardsSvc = _ImpacDashboardsSvc_;
       ImpacMainSvc = _ImpacMainSvc_;
       ImpacRoutes = _ImpacRoutes_;
       ImpacKpisSvc = _ImpacKpisSvc_;
+      ImpacDeveloper = _ImpacDeveloper_;
       $q = _$q_;
       $http = _$http_;
       $rootScope = _$rootScope_;
@@ -303,6 +304,21 @@ describe('<> ImpacDashboardsSvc', function () {
       sharedBehaviorForKeepOriginal();
     });
 
+    describe('when ImpacDeveloper is enabled', function () {
+      var stubbedWidgetTemplate = ['template 3']
+      beforeEach(function () {
+        spyOn(ImpacDeveloper, 'isEnabled').and.callFake(function () {
+          return true
+        });
+        spyOn(ImpacDeveloper, 'stubWidgetsTemplates').and.returnValue(array.concat(stubbedWidgetTemplate));
+      })
+
+      it('retrieves and applies stubbed widgets templates', function () {
+        svc.setWidgetsTemplates(array);
+        expect(ImpacDeveloper.stubWidgetsTemplates).toHaveBeenCalledWith(array);
+        expect(svc.config.widgetsTemplates).toEqual(array.concat(stubbedWidgetTemplate));
+      });
+    });
   });
 
 

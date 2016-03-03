@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
 
     _self = @
     @config = {}
@@ -35,7 +35,13 @@ angular
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           data = { widget: opts }
 
-          $http.post(ImpacRoutes.widgets.create(dashboard.id), data).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(data.widget)
+            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
+          else
+            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
+
+          request.then(
             (success) ->
               newWidget = success.data
               dashboard.widgets.push(newWidget)
@@ -86,12 +92,10 @@ angular
             if needContentReload
               _self.show(updatedSettingsWidget).then(
                 (updatedContentWidget) ->
-                  updatedContentWidget.isLoading = false
                   deferred.resolve(updatedContentWidget)
                 (error) ->
-                  updatedSettingsWidget.isLoading = false
                   deferred.reject(error)
-              )
+              ).finally(-> updatedSettingsWidget.isLoading = false)
             else
               deferred.resolve(updatedSettingsWidget)
 
@@ -220,10 +224,15 @@ angular
           data = { widget: opts }
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
-          $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(widget)
+            request = ImpacDeveloper.updateWidgetStub(widget, data.widget)
+          else
+            request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
+
+          request.then(
             (success) ->
-              updatedWidget = success.data
-              angular.extend widget, updatedWidget
+              angular.extend widget, success.data
               deferred.resolve(widget)
             (error) ->
               $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
@@ -245,7 +254,13 @@ angular
         (config) ->
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
-          $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id)).then(
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(widgetToDelete)
+            request = ImpacDeveloper.deleteWidgetStub(widgetToDelete)
+          else
+            request = $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id))
+
+          request.then(
             (success) ->
               _.remove dashboard.widgets, (widget) ->
                 widget.id == widgetToDelete.id
