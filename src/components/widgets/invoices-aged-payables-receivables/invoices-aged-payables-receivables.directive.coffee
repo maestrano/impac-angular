@@ -61,8 +61,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return element.name.replace(/_/g, " ")
 
   $scope.getPeriod = ->
-    if $scope.isDataFound && w.content.hist_parameters
-      period_param = w.content.hist_parameters.period || "MONTHLY"
+    if $scope.isDataFound && w.metadata && w.metadata.hist_parameters
+      period_param = w.metadata.hist_parameters.period || "MONTHLY"
       period = "day"
       period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
       return "current #{period}"

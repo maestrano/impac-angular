@@ -80,8 +80,8 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
         return null
 
   $scope.formatDate = (date) ->
-    if w.content.hist_parameters?
-      switch w.content.hist_parameters.period
+    if w.metadata? && w.metadata.hist_parameters?
+      switch w.metadata.hist_parameters.period
         when 'DAILY'
           return $filter('date')(date, 'dd-MMM')
         when 'WEEKLY'

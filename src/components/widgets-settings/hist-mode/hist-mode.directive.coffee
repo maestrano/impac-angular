@@ -19,7 +19,7 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    if w.content? && w.content.hist_parameters? && mode = w.content.hist_parameters.mode
+    if w.metadata? && w.metadata.hist_parameters? && mode = w.metadata.hist_parameters.mode
       if mode == 'history'
         w.isHistoryMode = true
       else
