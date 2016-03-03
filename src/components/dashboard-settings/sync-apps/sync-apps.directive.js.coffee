@@ -46,7 +46,14 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             last_sync_date: new Date()
 
         unless scope.isSyncing
-          refreshDashboard()
+          # If the last successful connector retrieved is the same as the previous one, that means that we retrieved the result of the previous sync.
+          # This is possible if the sync asked has just been enqueued and is not running yet.
+          # In this case, we keep polling until we receive another connector ('RUNNING', then 'SUCCESS' with different date)
+          unless (_.isEqual(scope.previousConnector, scope.lastConnector) && scope.lastConnector.status == 'SUCCESS')
+            scope.previousConnector = angular.copy(scope.lastConnector)
+            refreshDashboard()
+          else
+            scope.isSyncing = true
 
       # Refreshes the widgets and display the modal if needed
       refreshDashboard = ->
