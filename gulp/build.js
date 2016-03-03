@@ -63,10 +63,11 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
 
   return gulp.src(buildSourceFiles)
     .pipe(jsFilter)
-    .pipe($.sourcemaps.init())
+    // TODO: make source maps actually work.
+    // .pipe($.sourcemaps.init())
+    // .pipe($.sourcemaps.write())
     .pipe($.concat('impac-angular.js'))
     .pipe($.ngAnnotate())
-    .pipe($.sourcemaps.write())
     .pipe(gulp.dest(conf.paths.dist)) // Output impac-angular.js
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }))
     .pipe($.ngAnnotate())
