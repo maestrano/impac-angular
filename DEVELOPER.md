@@ -64,36 +64,61 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 
 ##### Process
 
-1. The base widgets templates list is retrieved from the MNO API, within each dashboard object. Each widget template will have a structure similar to the following:
+1. **Defining the Widgets Template.**<br>
+  *Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget.*<br>
+  *It is important to take note of the `path` vs `path` & `metadata.template` attributes. Defining a `metadata.template` enables you to use an existing Impac API engine, and points the front-end to a different template*
   ```javascript
+  // Example of a widget template
+  // -----
   {
     // engine called in Impac! API
-    // -----
     path: 'accounts/balance',
-    
-    // optional - name of the template to use for your widget. In this case, 'accounts-balance.tmpl.html' will be used. If no metadata['template'] is defined, the path is used to determine the template name
-    // -----
+  
+    // optional - name of the template to use for your widget. In this case, 'accounts-balance.tmpl.html' will be used. 
+    // If no metadata['template'] is defined, the path is used to determine the template name.
     metadata: {
       template: 'accounts/balance'
     },
-    
+  
     // name to be displayed in the widgets selector
-    // -----
     name: 'Account balance', 
     
     // description tooltip to be displayed in the widgets selector
-    // -----
     desc: "Display the current value of a given account",
     
     // font awesome icon to be displayed in the widgets selector
-    // -----
-    icon: "university",
+    icon: "pie-chart",
     
     // number of bootstrap columns of the widget (value can be 3 or 6)
-    // -----
     width: 3
   }
   ```
+  **Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service.**
+
+  ```javascript
+ 
+    // workspace/index.js
+    
+    var widgetsTemplates = [
+      {
+        path: 'invoices/awesome-existing-engine',
+        name: 'Awesome Sales Widget',
+        metadata: { template: 'sales/your-awesome-component' },
+        desc: 'compares awesome things to more awesome things',
+        icon: 'pie-chart',
+        width: 3
+      },
+      {
+        path: 'accounting/your-engine-and-component-name',
+        name: 'Awesome Accounting Widget',
+        desc: 'compares awesome things to more awesome things',
+        icon: 'pie-chart',
+        width: 3
+      }
+    ];
+  ```
+ 
+  *This will inject your stubbed templates into the angular apps model,  displaying available templates from API and your stubbed templates.*
   
 2. **<u>Create the widget's files:</u>**
   - in `/src/components/widgets/`, add a folder `category-widget-name` (e.g: `accounts-my-new-widget`).
@@ -225,6 +250,18 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
   ```
 
   **IMPORTANT**: The settingsPromises array defined in 1/ has to be passed back to the main directive to make sure it will wait for all the settings to be initialized before calling the widget's #show function.
+
+6. Add the new components angular module to the `src/impac-angular.module.js` module declarations.
+
+  ```javascript
+    angular.module('impac.components.widgets',
+      [
+        'impac.components.widgets.your-widget'
+      ]
+    );
+  ```
+
+7. Rebuild via `gulp serve` or `gulp workspace`, and then you should be able to add your new widget to a dashboard!
 
 #### How-to: Create a setting
 ---

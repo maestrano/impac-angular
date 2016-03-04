@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming, ImpacDeveloper) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -159,6 +159,9 @@ angular
     @setWidgetsTemplates = (templatesArray) ->
       # Will be filled only once
       return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
+
+      templatesArray = ImpacDeveloper.stubWidgetsTemplates(templatesArray) if ImpacDeveloper.isEnabled()
+
       for template in templatesArray
         _self.config.widgetsTemplates.push template
 
