@@ -38,6 +38,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
         "YEARLY"
         # "FYEARLY"
       ]
+      scope.maxNumberOfPeriods = 20
 
       # Put at "undefined" to cancel the preset and make it disappear from the dropdown
       resetPreset = ->
@@ -103,8 +104,13 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           # Force use of setting dates-picker
           scope.usedSetting = 'dates-picker'
           # Update dates
-          scope.fromDate = histParams.from
           scope.toDate = histParams.to
+          minDate = scope.getMinDate(scope.toDate)
+          if moment(histParams.from).isBefore(minDate)
+            scope.fromDate = minDate
+          else
+            scope.fromDate = histParams.from
+
           # Initialize dates-picker
           getSetting('dates-picker').initialize()
 
@@ -127,9 +133,13 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
 
         return scope.usedSetting
 
-      scope.updateTimeRangePeriod = ->
+      scope.usePeriod = ->
+        resetPreset()
+        updateTimeRangePeriod()
+        updateFromDate()
+
+      updateTimeRangePeriod = ->
         if scope.isTimeSliderUsed()
-          resetPreset()
           # Force time-range to match period
           set = getSetting('time-slider')
           tr = set.toMetadata().hist_parameters.time_range
@@ -138,21 +148,44 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           # Re-initialize time-slider
           set.initialize()
 
-          return scope.timePeriodSetting.timeRange
+        return scope.timePeriodSetting.timeRange
 
-        else
-          return false
+      updateFromDate = ->
+        if scope.isDatesPickerUsed()
+          set = getSetting('dates-picker')
+          fromDate = set.toMetadata().hist_parameters.from
+          toDate = set.toMetadata().hist_parameters.to
+          minDate = scope.getMinDate()
+          if moment(fromDate).isBefore(minDate)
+            scope.toDate = toDate
+            scope.fromDate = minDate
+            set.initialize()
+
+        return scope.fromDate
 
       scope.useTimeSlider = ->
         resetPreset()
-        scope.usedSetting = 'time-slider'
-        # Force time-range to match period
-        scope.updateTimeRangePeriod()
-        return scope.usedSetting
+        updateTimeRangePeriod()
+        return scope.usedSetting = 'time-slider'
 
       scope.useDatesPicker = ->
         resetPreset()
+        updateFromDate()
         return scope.usedSetting = 'dates-picker'
+
+      scope.getMinDate = (toDate=undefined) ->
+        to = moment()
+        if toDate?
+          to = moment(toDate)
+        # Make sure the settings are initialized before trying to retrieve toMetadata()
+        else if scope.usedSetting? && scope.isDatesPickerUsed()
+          sourceSetting = getSetting('dates-picker')
+          to = moment(sourceSetting.toMetadata().hist_parameters.to)
+
+        periodWord = getPeriod().toLowerCase().replace('ly','') + 's'
+        periodWord = 'days' if getPeriod() == 'DAILY'
+
+        return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
 
 
       w.settings.push(scope.timePeriodSetting)
