@@ -134,6 +134,7 @@ angular.module('impac.services',
     'impac.services.kpis',
     'impac.services.dashboards',
     'impac.services.widgets',
+    'impac.services.developer',
   ]
 );
 /*
