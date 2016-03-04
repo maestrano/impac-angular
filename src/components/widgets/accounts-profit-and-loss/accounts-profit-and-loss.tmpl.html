@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -23,7 +23,8 @@
           <!-- Tab header -->
           <div class="row widget-line header">
             <div class="col-xs-4 col-xs-offset-8 text-right">
-              {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              <span setting-param-selector parent-widget="widget" param="amount_displayed" options="amountDisplayedOptions" selected="amountDisplayed" deferred="::paramSelectorDeferred" no-reload />
+              <!-- {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}} -->
             </div>
           </div>
 
@@ -39,8 +40,8 @@
                 <div class="col-xs-7" ng-click="toggleSelectedElement(statement)">
                   <strong>{{getName(statement) | titleize}}</strong>
                 </div>
-                <div class="col-xs-4 text-right" ng-class="getClassColor(getLastValue(statement))" ng-click="toggleSelectedElement(statement)">
-                  <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
+                <div class="col-xs-4 text-right" ng-class="getClassColor(getAmount(statement))" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getAmount(statement) | mnoCurrency : statement.currency}}</strong>
                 </div>
               </div>
 
@@ -51,8 +52,8 @@
                     <div class="col-xs-7 col-xs-offset-1">
                       {{account.name}}
                     </div>
-                    <div class="col-xs-4 text-right" ng-class="getClassColor(getLastValue(account))">
-                      {{getLastValue(account) | mnoCurrency : account.currency}}
+                    <div class="col-xs-4 text-right" ng-class="getClassColor(getAmount(account))">
+                      {{getAmount(account) | mnoCurrency : account.currency}}
                     </div>
                   </div>
                 </div>
@@ -120,8 +121,8 @@
                 {{getName(element) | titleize}}
               </div>
               <div class="col-xs-5 text-right">
-                <i ng-class="getClassColor(getLastValue(element))">
-                  {{getLastValue(element) | mnoCurrency : element.currency}}
+                <i ng-class="getClassColor(getAmount(element))">
+                  {{getAmount(element) | mnoCurrency : element.currency}}
                 </i>
               </div>
             </div>

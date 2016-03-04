@@ -7,13 +7,13 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
   ]
@@ -61,8 +61,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return element.name.replace(/_/g, " ")
 
   $scope.getPeriod = ->
-    if $scope.isDataFound && w.content.hist_parameters
-      period_param = w.content.hist_parameters.period || "MONTHLY"
+    if $scope.isDataFound && w.metadata && w.metadata.hist_parameters
+      period_param = w.metadata.hist_parameters.period || "MONTHLY"
       period = "day"
       period = period_param.substr(0,period_param.length-2).toLowerCase() if period_param != "DAILY"
       return "current #{period}"

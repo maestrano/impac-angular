@@ -8,13 +8,13 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.paramsPickerDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.paramsPickerDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.chartDeferred.promise
   ]
 
