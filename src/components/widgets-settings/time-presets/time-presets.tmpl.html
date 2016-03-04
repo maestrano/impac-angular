@@ -1,3 +1,3 @@
 <div class="settings time-presets">
-  <select ng-model="selectedPreset" ng-options="p.label for p in presets" ng-click="onSelect({histParams: setting.toMetadata().hist_parameters})"/>
+  <select ng-model="selectedPreset" ng-options="p.label for p in presets" ng-change="onSelect({histParams: setting.toMetadata().hist_parameters})"/>
 </div>
