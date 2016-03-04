@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-xs-6">
       Period:
-      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="updateTimeRangePeriod()" />
+      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="usePeriod()" />
     </div>
     <div class="col-xs-6">
       Preset:
@@ -20,7 +20,13 @@
 
   <div class="row text-center">
     <div class="col-xs-12">
-      <div setting-dates-picker class="sub-setting" ng-class="{used: isDatesPickerUsed(), unused: isTimeSliderUsed()}" parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="histParams.keep_today" on-use="useDatesPicker()" />
+      <div setting-dates-picker class="sub-setting" ng-class="{used: isDatesPickerUsed(), unused: isTimeSliderUsed()}" parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" min-date="getMinDate()" from="fromDate" to="toDate" keep-today="histParams.keep_today" on-use="useDatesPicker()" />
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <i>Note: Chart is limited to {{ maxNumberOfPeriods }} periods</i>
     </div>
   </div>
 </div>
