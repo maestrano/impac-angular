@@ -9,10 +9,11 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       fromDate: '=from'
       toDate: '=to'
       keepToday: '='
+      onUse: '&?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
     
-    link: (scope) ->
+    link: (scope, element) ->
       w = scope.parentWidget
 
       setting = {}
@@ -75,6 +76,9 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       scope.applyChanges = ->
         ImpacWidgetsSvc.updateWidgetSettings(w, true)
         scope.changed = false
+
+      scope.showTitle = ->
+        element.hasClass('part')
 
 
       w.settings.push(setting)

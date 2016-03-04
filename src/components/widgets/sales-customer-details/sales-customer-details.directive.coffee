@@ -7,13 +7,13 @@ module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, $q) ->
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.paramSelectorDeferred.promise
   ]

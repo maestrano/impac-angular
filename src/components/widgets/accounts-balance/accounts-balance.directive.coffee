@@ -9,7 +9,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.orgDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
@@ -17,7 +17,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.orgDeferred.promise
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
   ]

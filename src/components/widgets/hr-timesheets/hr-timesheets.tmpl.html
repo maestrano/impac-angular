@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -23,7 +23,7 @@
         <!-- Tab header -->
         <div class="row widget-line header">
           <div class="col-sm-12">
-            From {{widget.content.dates[0] | date : 'MMM-d'}} to {{widget.content.dates[widget.content.dates.length - 1] | date : 'MMM-d'}}
+            From {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}
           </div>
         </div>
 
