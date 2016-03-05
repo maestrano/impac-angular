@@ -49,7 +49,7 @@ angular
           deferred.resolve(_self.config)
 
         ,(error) ->
-          $log.error("ImpacMainSvc: cannot set organization: #{id} as currentOrganization")
+          $log.error("ImpacMainSvc: cannot load organizations")
           deferred.reject(error)
 
       else
@@ -66,7 +66,7 @@ angular
       else
         _self.config.currentOrganization = {}
         $log.error("ImpacMainSvc: cannot set default current organization")
-        return {error: {code: 400, message: "cannot set default current organization"}} 
+        return {error: {code: 400, message: "cannot set default current organization"}}
 
     @setCurrentOrganization = (id=null) ->
       if id?

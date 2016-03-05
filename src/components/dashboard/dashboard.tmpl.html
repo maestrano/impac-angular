@@ -1,5 +1,5 @@
 <!-- DASHBOARD -->
-<div class="analytics" ng-hide="(isLoading || forceLoad)" ng-class="{'hide-dhb': (isLoading || forceLoad), 'show-dhb': !(isLoading || forceLoad)}">
+<div class="analytics" ng-hide="(isLoading || forceLoad || failedDashboardLoad)" ng-class="{'hide-dhb': (isLoading || forceLoad), 'show-dhb': !(isLoading || forceLoad)}">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
   <!-- Title and Dashboard selection -->
@@ -177,6 +177,14 @@
   <div class="row">
     <div class="col-md-12 loader-container text-center" style="margin-top: 200px;">
       <i class="fa fa-refresh fa-spin" style="font-size: 250px; opacity: 0.7;"/>
+    </div>
+  </div>
+</div>
+
+<div class="analytics load-failed" ng-show="failedDashboardLoad">
+  <div class="row">
+    <div class="col-md-12 text-center" style="margin-top: 200px;">
+      <p>Oops, failed to load Impac Angular...</p>
     </div>
   </div>
 </div>
