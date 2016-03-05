@@ -1,7 +1,7 @@
-var module = angular.module('impacWorkspace', ['maestrano.impac']);
+var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 
 // Configuration impac-angular lib on module impacWorkSpace run.
-module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper) {
+module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, toastr) {
 
   //--------------------------------------------------------
   // Start editing
@@ -45,7 +45,7 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
   //--------------------------------------------------------
   // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
-    fail('missing authentication credentials!');
+    fail('Missing authentication credentials!');
   }
 
   // Impac-angular configurations.
@@ -95,14 +95,16 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
       .then(function (response) {
         var organizations = (response.data || []);
         return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
-      },
-        fail
-      );
+      }, function () {
+        var msg = 'Unable to retrieve Organizations';
+        fail(msg);
+        return $q.reject(msg);
+      });
   }
 
-  function fail(err) {
-    $log.error('workspace/index.js ERROR: ', err);
-    return {};
+  function fail(msg) {
+    $log.error('workspace/index.js Error: ' + msg);
+    toastr.error(msg, 'Error');
   }
 
 });

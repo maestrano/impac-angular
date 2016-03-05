@@ -29,7 +29,8 @@
     "Chart.js": "2.0.0-beta",
     "lodash": "~3.10.1",
     "components-font-awesome": "~4.5.0",
-    "angular-poller": "~0.4.2"
+    "angular-poller": "~0.4.2",
+    "angular-toastr": "^1.7.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0",
