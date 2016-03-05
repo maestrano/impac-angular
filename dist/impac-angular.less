@@ -913,6 +913,11 @@ body {
   }
 }
 
+// dashboard failed to load message.
+.analytics.load-failed p {
+  font-size: 22px;
+}
+
 // Tooltips are append to body
 .tooltip.impac-widget-selector-tooltip .tooltip-inner.ng-binding {
   font-size: 14px;
@@ -936,6 +941,7 @@ body {
 .modal-footer .loader {
   .loader-style(@impac-dashboard-loading-spinner)
 }
+
 
 #module__dashboard-selector {
   a {
@@ -1739,9 +1745,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 }
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
 
@@ -1750,6 +1753,9 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
