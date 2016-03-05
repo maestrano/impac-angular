@@ -63,11 +63,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # reload the <impac-dashboards> on organization change.
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
     $scope.isLoading = true
+    $scope.failedDashboardLoad = false
     ImpacDashboardsSvc.load(true).then(
       (success) ->
         $scope.activateTimer()
         $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
       (error) ->
+        # on dashboard failed first load, user should not be able to access dashboard controls.
+        $scope.failedDashboardLoad = true
         $scope.isLoading=false
     )
 
