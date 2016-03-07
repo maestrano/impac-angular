@@ -13,8 +13,10 @@
 
 ### Fixes
 - Deep routing to dashboards#index when an organization id is specified
+- Apps sync: keeps syncing if the sync is just enqueued (and not performed straight away)
 
 ### Adds
+- Developer Provider Service - ability to stub widgets templates, and further configure the developer workspace.
 - Gulp refactor - the gulp tasks are splitted in several files in the gulp directory.
 - Better layout for all widgets using the widget-lines-container (+ adapted to xsmall screens)
 
