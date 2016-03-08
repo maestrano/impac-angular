@@ -70,11 +70,11 @@ angular
 
         orgUids = _.pluck dashboard.data_sources, 'uid'
 
-        params = {}
-        params.metadata = {
-          organization_ids: orgUids
-        }
-        params.metadata.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+        params =
+          metadata:
+            organization_ids: orgUids
+
+        params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
 
         promises = {
           impac: index(params)
