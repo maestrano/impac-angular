@@ -51,21 +51,24 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
   # accounts or accounts into groups when switching between comparison mode.
   gatherSavedAccounts = () ->
     isComparisonMode = _.result( _.find(w.metadata.comparison_mode, 'id', 'compare_accounts'), 'value') || false
-    savedAccountsUids = w.metadata.accounts_list
-    areGrouped = savedAccountsUids[0].indexOf(':') >= 0
-    # Decontruct saved account group uids into account uids
+    savedUids = w.metadata.accounts_list
+    areGrouped = savedUids[0].indexOf(':') >= 0
+    # when group uids have been saved, and comparison mode is switched off
     if !isComparisonMode && areGrouped
-      _.flatten _.map(savedAccountsUids, (a) -> a.split(':'))
+      # deconstruct group uids into account uids
+      _.flatten _.map(savedUids, (a) -> a.split(':'))
+    # when comparison mode is switch on
     else if isComparisonMode
-      # Find first matching group by account uid.
+      # when account uids have been saved, find first matching group by account uid
       unless areGrouped
-        for uid in savedAccountsUids
+        for uid in savedUids
           group = _.find(w.remainingAccounts, (group) -> group.uid.indexOf(uid) >= 0)
           return [group.uid] if group
+      # when group uids have been saved, deconstruct group uids into account uids
       else
-        _.flatten _.map(savedAccountsUids, (a) -> a.split(':'))
+        _.flatten _.map(savedUids, (a) -> a.split(':'))
     else
-      savedAccountsUids
+      savedUids
 
   w.settings.push(setting)
 
