@@ -33,20 +33,36 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
 
     if w.content? && !_.isEmpty(w.content.complete_list)
       w.remainingAccounts = angular.copy(w.content.complete_list)
-      # Impac! returns the list of all the accounts, and we want that:
-      # completeList + savedList = list of all accounts
+      # pre-fills saved accounts (or saved grouped accounts) into w.selectedAccounts
       if !_.isEmpty(w.metadata.accounts_list)
-        angular.forEach(w.metadata.accounts_list, (accUid) ->
+        for accUid in savedAccounts()
           acc = _.find(w.content.complete_list, (acc) ->
             acc.uid == accUid
           )
-          w.moveAccountToAnotherList(acc,w.remainingAccounts,w.selectedAccounts,false)
-        )
-      stashedAccounts = angular.copy(w.remainingAccounts)
+          w.moveAccountToAnotherList(acc, w.remainingAccounts, w.selectedAccounts, false)
       setting.isInitialized = true
 
   setting.toMetadata = ->
     return { accounts_list: _.map(w.selectedAccounts, ((acc) -> acc.uid)) } if setting.isInitialized
+
+  # Returns uids of saved accounts or groups, also converting saved groups into
+  # accounts or accounts into groups when switching between comparison mode.
+  savedAccounts = () ->
+    isComparisonMode = _.result( _.find(w.metadata.comparison_mode, 'id', 'compare_accounts'), 'value') || false
+    # Decontruct group uids into account uids
+    if !isComparisonMode && w.metadata.accounts_list[0].indexOf(':') >= 0
+      _.flatten _.map(w.metadata.accounts_list, (a) -> a.split(':'))
+    # Find first group uid matchable by account uids.
+    else if isComparisonMode
+      if w.metadata.accounts_list[0].indexOf(':') < 0
+        for savedAccount in w.metadata.accounts_list
+          account = _.find(w.remainingAccounts, (acc) -> acc.uid.indexOf(savedAccount) >= 0)
+          return [account.uid] if account
+      else
+        _.flatten _.map(w.metadata.accounts_list, (a) -> a.split(':'))
+    # Saved accounts
+    else
+      w.metadata.accounts_list
 
   w.settings.push(setting)
 
