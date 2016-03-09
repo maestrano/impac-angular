@@ -42,6 +42,10 @@ angular
       dhbKpisConfig:
         enableKpis: false
         parentElementId: ''
+        kpisBar:
+          customTmplPath: null
+        kpi:
+          customTmplPath: null
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
         mainMessage: 'Data not found'
