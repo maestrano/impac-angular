@@ -12,7 +12,7 @@
       <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
     </div>
 
-    <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
+    <div class="kpi-alert kpi-edit-btn" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
     <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
   </div>
 
