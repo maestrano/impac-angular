@@ -1571,17 +1571,6 @@ impac-kpi .kpi {
 
 
 
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
     text-align: left;
@@ -1591,6 +1580,17 @@ impac-kpi .kpi {
       text-align: center;
       border-bottom: dashed 1px @impac-widget-borders-color;
     }
+  }
+}
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-payable-receivable {
@@ -1943,6 +1943,10 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -1970,10 +1974,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
   .right-panel .widget-lines-container {
