@@ -1,13 +1,11 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, ImpacKpisSvc) ->
+  .directive('kpisBar', ($log, $http, $compile, $templateCache, ImpacKpisSvc, ImpacTheming) ->
     return {
       restrict: 'E'
       scope: {
         kpis: '='
       }
-      template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
-
       controller: ($scope, $timeout, $log) ->
         $scope.hideAvailableKpis = true
         $scope.showKpisExpanded = false
@@ -51,5 +49,33 @@ angular
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
+      link: (scope, element, attrs)->
+        options = ImpacTheming.get().dhbKpisConfig.kpisBar
+        customUrl = options.customTmplPath
+        originUrl = 'kpis-bar/kpis-bar.tmpl.html'
+
+        # gets custom template from local path, returns as string.
+        getCustomTemplate = (templateUrl)->
+          $http.get(templateUrl, {cache: $templateCache}).then(
+            (tmplContent) ->
+              if !tmplContent or !tmplContent.data or !tmplContent.data.length
+                $log.warn 'custom template: no content found'
+              _compile(tmplContent.data)
+            (err) ->
+              $log.error 'Error retrieving custom template: ', err
+          )
+
+        # gets template string from templateCache
+        getTemplate = (templateUrl)->
+          _compile($templateCache.get(templateUrl))
+
+        # compiles html string to element
+        _compile = (htmlString) ->
+          element.html(htmlString).show()
+          $compile(element.contents())(scope)
+
+        if customUrl then getCustomTemplate(customUrl) else getTemplate(originUrl)
+
+        return null
     }
   )

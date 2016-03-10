@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, ImpacKpisSvc) ->
+  .directive('impacKpi', ($log, $http, $compile, $templateCache, ImpacKpisSvc, ImpacTheming) ->
     return {
       restrict: 'EA'
       scope: {
@@ -8,8 +8,6 @@ angular
         kpi: '='
         editMode: '='
       }
-      templateUrl: 'kpi/kpi.tmpl.html'
-
       controller: ($scope) ->
         $scope.showEditSettings = false
 
@@ -64,5 +62,35 @@ angular
         $scope.deleteKpi = ->
           return if $scope.kpi.static
           ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
+
+      link: (scope, element, attrs)->
+        options = ImpacTheming.get().dhbKpisConfig.kpi
+        customUrl = options.customTmplPath
+        originUrl = 'kpi/kpi.tmpl.html'
+
+        # gets custom template from local path, returns as string.
+        getCustomTemplate = (templateUrl)->
+          $http.get(templateUrl, {cache: $templateCache}).then(
+            (tmplContent) ->
+              if !tmplContent or !tmplContent.data or !tmplContent.data.length
+                $log.warn 'custom template: no content found'
+              _compile(tmplContent.data)
+            (err) ->
+              $log.error 'Error retrieving custom template: ', err
+          )
+
+        # gets template string from templateCache
+        getTemplate = (templateUrl)->
+          _compile($templateCache.get(templateUrl))
+
+        # compiles html string to element
+        _compile = (htmlString) ->
+          element.html(htmlString).show()
+          $compile(element.contents())(scope)
+
+        if customUrl then getCustomTemplate(customUrl) else getTemplate(originUrl)
+
+        return null
+
     }
   )
