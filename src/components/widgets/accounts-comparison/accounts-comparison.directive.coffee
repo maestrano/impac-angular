@@ -33,6 +33,8 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
       angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
 
+    $scope.savedAccountsList = gatherSavedAccounts()
+
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list) || $scope.isComparisonMode()
 
     $scope.noComparableAccounts = $scope.isComparisonMode() && w.content? && _.isEmpty(w.content.complete_list)
@@ -66,6 +68,32 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
 
   $scope.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency)
+
+  # Returns uids of saved accounts or groups, also converting saved groups into
+  # accounts or accounts into groups when switching between comparison mode.
+  gatherSavedAccounts = () ->
+    savedUids = w.metadata.accounts_list
+    return [] if _.isEmpty savedUids
+    isComparisonMode = $scope.isComparisonMode()
+    areGrouped = savedUids[0].indexOf(':') >= 0
+    # when group uids have been saved, and comparison mode is switched off
+    if !isComparisonMode && areGrouped
+      # deconstruct group uids into account uids
+      _.flatten _.map(savedUids, (a) -> a.split(':'))
+    # when comparison mode is switch on
+    else if isComparisonMode
+      # when account uids have been saved, find first matching group by account uid
+      unless areGrouped
+        for uid in savedUids
+          group = _.find(w.content.complete_list, (group) -> group.uid.indexOf(uid) >= 0)
+          return [group.uid] if group
+      # when group uids have been saved, deconstruct group uids into account uids
+      else
+        savedUids
+        # _.flatten _.map(savedUids, (a) -> a.split(':'))
+    else
+      savedUids
+
 
   # Chart formating function
   # --------------------------------------
