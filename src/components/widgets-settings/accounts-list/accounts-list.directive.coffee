@@ -2,7 +2,7 @@ module = angular.module('impac.components.widgets-settings.accounts-list', [])
 
 # There is no template associated to this setting, and though it won't appear in the 'settings' panel
 # However, as its metadata has to be initialized from, and saved to Impac!, we build ListAccounts as a setting
-module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
+module.controller('SettingAccountsListCtrl', ($scope, $timeout, ImpacWidgetsSvc) ->
 
   # ---------------------------------------------------------
   # ### Populate the widget
@@ -33,20 +33,21 @@ module.controller('SettingAccountsListCtrl', ($scope, ImpacWidgetsSvc) ->
 
     if w.content? && !_.isEmpty(w.content.complete_list)
       w.remainingAccounts = angular.copy(w.content.complete_list)
-      # Impac! returns the list of all the accounts, and we want that:
-      # completeList + savedList = list of all accounts
-      if !_.isEmpty(w.metadata.accounts_list)
-        angular.forEach(w.metadata.accounts_list, (accUid) ->
-          acc = _.find(w.content.complete_list, (acc) ->
-            acc.uid == accUid
-          )
-          w.moveAccountToAnotherList(acc,w.remainingAccounts,w.selectedAccounts,false)
-        )
-      stashedAccounts = angular.copy(w.remainingAccounts)
-      setting.isInitialized = true
+      $timeout () ->
+        restoreSavedAccounts()
+        setting.isInitialized = true
 
   setting.toMetadata = ->
     return { accounts_list: _.map(w.selectedAccounts, ((acc) -> acc.uid)) } if setting.isInitialized
+
+  restoreSavedAccounts = () ->
+    return if _.isEmpty(w.metadata.accounts_list) && _.isEmpty($scope.accountsList)
+    accountsList = if _.isEmpty($scope.accountsList) then w.metadata.accounts_list else $scope.accountsList
+    for accUid in accountsList
+      acc = _.find(w.content.complete_list, (acc) ->
+        acc.uid == accUid
+      )
+      w.moveAccountToAnotherList(acc, w.remainingAccounts, w.selectedAccounts, false)
 
   w.settings.push(setting)
 
@@ -61,6 +62,7 @@ module.directive('settingAccountsList', () ->
     scope: {
       parentWidget: '='
       deferred: '='
+      accountsList: '=?'
     },
     controller: 'SettingAccountsListCtrl'
   }

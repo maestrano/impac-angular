@@ -83,7 +83,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     # remove the initial organizations setting...
     _.remove w.settings, ((set) -> set.key == "organizations")
     self.instance = $modal.open(self.config)
-    
+
     # ...it will be replaced by a new one when the modal DOM is loaded
     self.modalOrgDeferred.promise.then(
       (success) ->

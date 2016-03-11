@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ($scope, $filter) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
 
   w = $scope.parentWidget
   w.formula = ""
@@ -15,8 +15,9 @@ module.controller('SettingFormulaCtrl', ($scope, $filter) ->
   setting.initialize = ->
     if w.metadata? && w.metadata.formula?
       w.formula = w.metadata.formula
-      evaluateFormula()
-      setting.isInitialized = true
+      $timeout () ->
+        evaluateFormula()
+        setting.isInitialized = true
     else
       w.formula = ""
 

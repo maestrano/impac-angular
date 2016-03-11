@@ -32,7 +32,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
           w.width = 12
         else if w.initialWidth
           w.width = w.initialWidth
-    ).finally( -> w.isLoading = false ) 
+    ).finally( -> w.isLoading = false )
 
   $scope.initSettings = ->
     ImpacWidgetsSvc.initWidgetSettings(w)
