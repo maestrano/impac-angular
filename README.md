@@ -22,7 +22,7 @@ You can post issues, and submit pull requests directly to the #develop branch of
 
 Impac!™ frontend library can be included in any project based on the Maestrano platform, just fork this repository, read below for information and guidelines on using this library!
 
-**For Developers looking to create Widgets, and modify the library, have a look at DEVELOPER.md, and start developing!**
+**For Developers looking to create Widgets, and modify the library, have a look at [DEVELOPER.md](./DEVELOPER.md), and start developing!**
 
 <br>
 
@@ -56,24 +56,25 @@ Embed angular-impac's wrapper directive `'impacDashboard'`. You can use either E
   <div impac-dashboard></div>
 ```
 
-### Angular Providers Configurations
+### Impac Angular Providers & Services
 ---
-impac-angular requires that you configure it's **ImpacLinkingProvider service** with some core data.
 
-#### API
+Note: This section is a work-in-progress, not all services and providers that can be used to configure impac-angular are documented. 
 
-##### linkData(options)
-_type_: Object<br>
-_usage_: Linking core User data into impac-angular to meet the requirements of the library, and keeping concerns seperate.
+---
+
+#### Impac Linking Provider (linking.svc.coffee)
+
+Provides impac-angular with core data that it needs to run. This providers configuration is **required** and an error with be thrown if the below configurations have not been given.
 
 **user**<br>
 _type_: Function<br>
-_return_: Promise -> {sso_session: ssoSession, ... }<br>
+_return_: Promise -> { sso_session: ssoSession, ... }<br>
 _usage_: Retrieving user details & sso_session key for authenticating querys to Impac! API, and displaying user data e.g name.
 
 **organizations**<br>
 _type_: Function<br>
-_return_: Promise -> {organizations: [ userOrgs, ... ], currentOrgId: currentOrgId}<br>
+_return_: Promise -> { organizations: [ userOrgs, ... ], currentOrgId: currentOrgId }<br>
 _usage_: Retrieving organizations and current organization id.
 
 #### Example
@@ -82,7 +83,10 @@ _usage_: Retrieving organizations and current organization id.
   angular
     .module('yourApp', [])
     .run( (ImpacLinkingProvider, ImpacConfigProvider) ->
-
+    
+    # ImpacConfig service could be a service your app 
+    # provides to retrieve user data and organizations 
+    # from MNO HUB API.
       data =
           user: ImpacConfig.getUserData
           organizations: ImpacConfig.getOrganizations
@@ -93,14 +97,10 @@ _usage_: Retrieving organizations and current organization id.
   )
 
 ```
-### Optional Configurations
-[TODO: Expand on this section]<br>
 
-There are other provider services for dynamically configuring impac-angular on an app by app basis. For example, there is a routes provider for configuring api end-points and such. There is a theming provider for configuring chart colour themes and soon more. There is an assets provider for configuring static assets.
+#### Impac Assets Provider (assets.svc.coffee)
 
-#### ImpacAssetsProvider
-
-The **ImpacAssetsProvider** service is used to configure paths for static assets hosted by the parent application.
+Provides impac-angular with paths for static assets hosted by the parent application.
 
 **dataNotFound**<br>
 _type_: String<br>
