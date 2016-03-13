@@ -39,13 +39,13 @@ Now you should an api key, api secret, and an organization associated to your Us
   2. Run `gulp workspace` to build and inject dependencies, the open the `workspace/index.html` file in a browser - **you will need to run `gulp workspace` and refresh the page after every change**
 
 
-##### Architecture
+##### Workspace Architecture
 
 The workspace environment works by loading a parent angular module, which depends on impac-angular ( 'impacWorkspace' ). This allows us to configure impac-angular's services as required. 
 
 Take a look at the `workspace/index.js` file and you'll see default configurations of impac-angular's provider services to enable the workspace to run. 
 
-For more information on the configurations available on impac-angular's provider services see README.md **Angular Providers Configurations** section.
+For more information on the configurations available on impac-angular's provider services see [README.md](./README.md) **Impac Angular Providers & Services** section.
 
 ```javascript
 angular.module('impacWorkspace', ['maestrano.impac']);
@@ -58,6 +58,21 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 <script src="../dist/impac-angular.js"></script>
 ```
 
+#### Impac Ecosystem Architecture 
+
+The high-level diagram below outlines the ecosystem which powers Impac! Angular's reporting abilities.
+
+![Impac Ecosystem Overview](https://maestrano.atlassian.net/wiki/download/attachments/20742254/Impac%20Ecosystem%20Overview.png?version=1&modificationDate=1457910746989&api=v2)
+
+###### First Load Flow
+1. The hosting front-end retrieves data for User and Organizations which are then provided to Impac! Angular via an Angular Provider Service.
+2. Impac! Angular retrieves the Dashboards, Widgets & KPIs configurations from Hub API.​
+3. Impac! Angular queries Impac! Engine to retrieve data.
+4. Impac! Engine authenticates the user using IDM API.
+5. Impac! Engine queries Connec! to retrieve raw data based on the widget configuration.
+6. Connec! authenticates the user using IDM API and returns raw data to Impac! Engine.
+7. Impac! Engine computes this raw data into a meaningful summary and sends it back to Impac! Angular.
+8. Impac! Angular display the summary using a pre-defined template (line chart, pie chart, figure, list...)
 
 #### How-to: Create a widget
 ---
