@@ -48,7 +48,7 @@ The workspace environment works by loading a parent angular module, which depend
 
 Take a look at the `workspace/index.js` file and you'll see default configurations of impac-angular's provider services to enable the workspace to run. 
 
-For more information on the configurations available on impac-angular's provider services see README.md **Impac Angular Providers & Services** section.
+For more information on the configurations available on impac-angular's provider services see [README.md](./README.md) **Impac Angular Providers & Services** section.
 
 ```javascript
 angular.module('impacWorkspace', ['maestrano.impac']);
@@ -61,7 +61,7 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 <script src="../dist/impac-angular.js"></script>
 ```
 
-##### Impac Ecosystem Architecture 
+#### Impac Ecosystem Architecture 
 
 The high-level diagram below outlines the ecosystem which powers Impac! Angular's reporting abilities.
 
