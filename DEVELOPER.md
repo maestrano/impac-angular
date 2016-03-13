@@ -65,7 +65,7 @@ The `workspace/index.js` file is then loaded into `workspace/index.html` via `<s
 
 The high-level diagram below outlines the ecosystem which powers Impac! Angular's reporting abilities.
 
-![Impac Ecosystem Overview](./impac-ecosystem-overview.png)
+![Impac Ecosystem Overview](https://maestrano.atlassian.net/wiki/download/attachments/20742254/Impac%20Ecosystem%20Overview.png?version=1&modificationDate=1457910746989&api=v2)
 
 ###### First Load Flow
 1. The hosting front-end retrieves data for User and Organizations which are then provided to Impac! Angular via an Angular Provider Service.
