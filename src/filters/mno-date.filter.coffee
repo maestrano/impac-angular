@@ -1,4 +1,4 @@
-angular.module('impac.filters.mno-date', []).filter('mnoDate', ["$filter", ($filter) ->
+angular.module('impac.filters.mno-date', []).filter('mnoDate', ($filter) ->
   (date_string, period) ->
 
     PERIODS = ['DAILY', 'WEEKLY', 'MONTHLY', 'QUARTERLY', 'YEARLY']
@@ -21,4 +21,4 @@ angular.module('impac.filters.mno-date', []).filter('mnoDate', ["$filter", ($fil
     else
       return ""
 
-])
+)
