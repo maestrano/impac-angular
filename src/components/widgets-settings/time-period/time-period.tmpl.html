@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-xs-6">
       Period:
-      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="usePeriod()" />
+      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="updateSettings()" />
     </div>
     <div class="col-xs-6">
       Preset:

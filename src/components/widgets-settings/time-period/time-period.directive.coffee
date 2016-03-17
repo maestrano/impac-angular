@@ -133,7 +133,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
 
         return scope.usedSetting
 
-      scope.usePeriod = ->
+      scope.updateSettings = ->
         resetPreset()
         updateTimeRangePeriod()
         updateFromDate()
@@ -164,14 +164,12 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
         return scope.fromDate
 
       scope.useTimeSlider = ->
-        resetPreset()
-        updateTimeRangePeriod()
-        return scope.usedSetting = 'time-slider'
+        scope.usedSetting = 'time-slider'
+        scope.updateSettings()
 
       scope.useDatesPicker = ->
-        resetPreset()
-        updateFromDate()
-        return scope.usedSetting = 'dates-picker'
+        scope.usedSetting = 'dates-picker'
+        scope.updateSettings()
 
       scope.getMinDate = (toDate=undefined) ->
         to = moment()
