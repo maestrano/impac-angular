@@ -26,7 +26,7 @@
     "angular-ui-sortable": "~0.13.4",
     "angular-xeditable": "~0.1.9",
     "bootstrap": "~3.3.5",
-    "Chart.js": "2.0.0-beta",
+    "Chart.js": "2.0.0-beta2",
     "lodash": "~3.10.1",
     "components-font-awesome": "~4.5.0",
     "angular-poller": "~0.4.2",
