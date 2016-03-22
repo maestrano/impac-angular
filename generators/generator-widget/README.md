@@ -1,23 +1,52 @@
 # generator-widget
----
 
 Generator for building impac-angular widget components.
 
-### Todo
+#### Features
 ---
 
-- read how all widget directives are formed and put together generic scenearios
-- prompt chart types
-  - generate different chart formatter functions
-  - generate different chart html templates
-- generate standard widget specific methods based on prompted chart type
-- prompt controls for widget specific alterations, e.g:
-  - expandable-list with 2 column comparison or single column.
-- prompt selection of widgets-settings
+TODO: list features
 
-### Notes
+#### Usage
 ---
 
-##### generating chart formatter functions and widget specific methods
-Can I inject javascript from different file into widget-component.directive? 
-Would be cool to be able to build files structures based on widget chart types, and then based on the widget prompt selected & a few other prompts, build out all generic methods and variable settings in the directive controller.
+For when new generator versions are published to the repo.
+```
+npm update
+```
+
+TODO: next steps.
+
+
+#### Development
+---
+
+Symbolic linking the local module to your node_modules for live development. 
+```
+cd generators/generator-widget
+npm link
+cd ../..
+npm link generator-widget
+```
+
+To unlink simply run the commands below from the impac-angular directory.
+```
+npm unlink generator-widget
+npm install
+```
+
+#### Todo
+---
+
+- w.format function from chart selection
+- selection of widgets-settings
+
+#### Notes
+---
+
+*generator module versioning*
+`npm update` will only update the generator from local when the package.json version changes unless in `npm link` mode. How should this me managed? With just a changelog?
+
+*impac-angular module declarations*
+I think we will have to refactor how components modules are structured to avoid having to specifically inject each one.
+

@@ -1,5 +1,5 @@
-module = angular.module('impac.components.widgets.accounts-class-balance-details', [])
-module.controller('WidgetAccountsClassBalanceDetailsCtrl', ($scope, $q, ChartFormatterSvc) ->
+module = angular.module('impac.components.widgets.<%= data.componentNames.mod %>', [])
+module.controller('Widget<%= data.componentNames.ctrl %>Ctrl', ($scope, $q) ->
 
   w = $scope.widget
 
@@ -27,9 +27,9 @@ module.controller('WidgetAccountsClassBalanceDetailsCtrl', ($scope, $q, ChartFor
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
 )
-module.directive('widgetAccountsClassBalanceDetails', ->
+module.directive('widget<%= data.componentNames.drct %>', ->
   return {
     restrict: 'A',
-    controller: 'WidgetAccountsClassBalanceDetailsCtrl'
+    controller: 'Widget<%= data.componentNames.ctrl %>Ctrl'
   }
 )

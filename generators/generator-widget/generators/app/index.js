@@ -7,6 +7,7 @@ var inquirer = require('inquirer');
 var ejs = require('ejs');
 var beautify = require('js-beautify');
 var fs = require('fs');
+var fsHelpers = require('./src/fs-helpers.js');
 
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
@@ -21,11 +22,29 @@ module.exports = yeoman.generators.Base.extend({
     this.chartAddOns = [
       { value: 'legend', name: 'Legend', checked: false }
     ];
-    this.buildOptionPath = function (options) {
-      var templatePath = this.templatePath();
-      return _.map(options, function (option) {
-        return templatePath + '/widget-component/partials/_' + option + '.html';
-      });
+    this.buildPartialsPaths = function (options) {
+      var templatePath = this.templatePath(), path;
+      return _.compact(_.map(options, function (option) {
+        path = templatePath + '/widget-component/partials/_' + option + '.html';
+        // TODO: existsSync is depreciated - use fs.statSync.
+        if (fs.existsSync(path)) {
+          return path;
+        }
+        return null;
+      }));
+    };
+    this.buildDestinationPath = function (ext) {
+      // TODO:
+      // - file system configurations. E.g defining a `src` for 'src/components/widgets', etc.
+      // - path building helper to reduce long concats?
+      return 'src/components/widgets/' + this.componentNames.mod + '/' + this.componentNames.mod + ext;
+    };
+    this.buildComponentNames = function () {
+      return {
+        ctrl: _.upperFirst(_.camelCase(this.props.widgetName)),
+        drct: _.camelCase(this.props.widgetName),
+        mod: _.kebabCase(this.props.widgetName)
+      };
     };
   },
   prompting: function () {
@@ -39,6 +58,11 @@ module.exports = yeoman.generators.Base.extend({
     var chartAddOns = this.chartAddOns;
     var prompts = [
       {
+        type: 'input',
+        name: 'widgetName',
+        message: 'What is the name of your Widget? (e.g accounts-awesome-widget)'
+      },
+      {
         type: 'list',
         name: 'chartName',
         message: 'Select which chart/content type you would like to build.',
@@ -50,7 +74,7 @@ module.exports = yeoman.generators.Base.extend({
         },
         type: 'checkbox',
         name: 'chartAddOns',
-        message: 'Which chart add-ons would you like to include',
+        message: 'Which chart add-ons would you like to include?',
         choices: chartAddOns
       }
     ];
@@ -59,6 +83,7 @@ module.exports = yeoman.generators.Base.extend({
       // Array of selections made after prompting.
       this.props = props;
       this.chartType = _.find(charts, { value: props.chartName }).type;
+      this.componentNames = this.buildComponentNames();
 
       done();
     }.bind(this));
@@ -67,11 +92,12 @@ module.exports = yeoman.generators.Base.extend({
   writing: {
     // Write task for generating the new widgets html template file.
     widgetTemplate: function () {
-      var data, html, template;
+      var data, html, template, path;
 
       data = {
         chartContainerClass: '',
-        options: this.buildOptionPath(_.flatten(_.map(this.props, function (prop) {
+        componentNames: this.componentNames,
+        partials: this.buildPartialsPaths(_.flatten(_.map(this.props, function (prop) {
           return prop;
         })))
       };
@@ -79,49 +105,35 @@ module.exports = yeoman.generators.Base.extend({
         data.chartContainerClass = 'chart-container';
       }
 
+      path = this.destinationPath(this.buildDestinationPath('.tmpl.html')),
+
       html = this.fs.read(this.templatePath('widget-component/widget-component.tmpl.html'));
 
       template = ejs.render(html, data, {filename: this.templatePath('widget-component')});
 
       template = beautify.html(template, { indent_size: 2 });
 
-      this.fs.write(
-        this.destinationPath('components/widgets/widget-component.tmpl.html'),
-        template
-      );
+      this.fs.write(path, template);
     },
     // Write task for generating the new widgets directive component file.
     widgetDirective: function () {
-      var html, template, data, buffer, path, settingsPromises;
+      var html, template, data, settingsPromises, path;
 
       settingsPromises = [];
-      if (this.chartType === 'graph') {
-        settingsPromises.push('chart');
-      }
+      if (this.chartType === 'graph') settingsPromises.push('chart');
+
       data = {
+        componentNames: this.componentNames,
         settingsPromises: settingsPromises
       };
 
+      path = this.destinationPath(this.buildDestinationPath('.directive.coffee'));
+
       html = this.fs.read(this.templatePath('widget-component/widget-component.directive.coffee'));
+
       template = ejs.render(html, {data: data}, {filename: this.templatePath('widget-component')});
 
-      // TODO: move to method.
-      // - warning when before overwriting.
-      // - nice logs
-      // - doc the purpose of not using this.fs for I/O.
-      buffer = new Buffer(template);
-      path = this.destinationPath('components/widgets/widget-component.directive.coffee');
-      fs.open(path, 'w', function(err, fd) {
-        if (err) throw 'error opening file: ' + err;
-
-        fs.write(fd, buffer, 0, buffer.length, null, function(err) {
-          if (err) throw 'error writing file: ' + err;
-
-          fs.close(fd, function() {
-            console.log('file written');
-          });
-        });
-      });
+      this.fs.write(path, template);
     }
   },
 
