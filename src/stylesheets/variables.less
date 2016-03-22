@@ -49,6 +49,7 @@
 //--------------------------------------
 @impac-dashboard-padding-top:                   50px;
 @impac-dashboard-margin-left:                   100px;
+@impac-dashboard-borders-color:                 @lightblue;
 
 // Title
 @impac-dashboard-title-color:                   @purple;
@@ -59,7 +60,7 @@
 
 // Dashboard Selector
   // Tabs
-@impac-dashboard-selector-border:               1px solid @lightblue;
+@impac-dashboard-selector-border:               1px solid @impac-dashboard-borders-color;
 @impac-dashboard-selector-tabs-margin:          0 2px 0 0;
 @impac-dashboard-selector-tabs-padding:         10px 8px 10px 15px;
 @impac-dashboard-selector-tabs-background-color: transparent;
@@ -72,7 +73,7 @@
 @impac-dashboard-widget-selector-text-color:    white;
 
 // Widgets container
-@impac-placeholder-border:                      2px dashed @lightblue;
+@impac-placeholder-border:                      2px dashed @impac-dashboard-borders-color;
 @impac-widgets-container-side-padding:          0px;
 @impac-padding-between-widgets:                 12px;
 @impac-minimum-widget-size:                     250px;
@@ -99,6 +100,7 @@
 @impac-widget-borders-color:                   lighten(@impac-widget-text-color-light,10%); //#f3f4f4
 @impac-widget-scrollbar-color:                 #233845;
 @impac-widget-loading-spinner:                 #67BBE9;
+@impac-widget-reverse-color:                   #1E303B;
 
 // Title
 @impac-widget-title-text-color:                darken(@impac-widget-text-color,5%);
@@ -121,10 +123,10 @@
 @impac-widget-hist-text-size:                  12px;
 @impac-widget-hist-text-color:                 @impac-widget-text-color-light;
 // Params picker
-@impac-widget-params-picker-bg:                #1E303B;
+@impac-widget-params-picker-bg:                @impac-widget-reverse-color;
 @impac-widget-params-picker-unchecked-bg:      #c2c4c4;
-// Limit emtries
-@impac-widget-limit-entries-color:             #1E303B;
+// Limit entries
+@impac-widget-limit-entries-color:             @impac-widget-reverse-color;
 
 // Globals and Mixins
 @impac-widget-selectable-color:                @impac-widget-link-color;
