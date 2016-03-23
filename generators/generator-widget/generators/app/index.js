@@ -13,10 +13,10 @@ module.exports = yeoman.generators.Base.extend({
     // TODO: refactor value / type keys, chart partials are all the same. Keep in mind different charting lib support that may occur in the future.
     this.charts = [
       new inquirer.Separator(),
-      { name: 'Pie Chart', value: 'pie', type: 'graph', defaultInputData: [] },
-      { name: 'Line Chart', value: 'line', type: 'graph', defaultInputData: [] },
-      { name: 'Bar Chart', value: 'bar', type: 'graph', defaultInputData: {} },
-      { name: 'Combined Bar Chart', value: 'combined-bar', type: 'graph', defaultInputData: {} },
+      { name: 'Pie Chart', value: 'pie', type: 'graph', defaultInputData: '[]' },
+      { name: 'Line Chart', value: 'line', type: 'graph', defaultInputData: '[]' },
+      { name: 'Bar Chart', value: 'bar', type: 'graph', defaultInputData: '{}' },
+      { name: 'Combined Bar Chart', value: 'combined-bar', type: 'graph', defaultInputData: '{}' },
       new inquirer.Separator(),
       { name: 'Blank - content only / custom', value: 'blank' },
       new inquirer.Separator(),
@@ -24,7 +24,9 @@ module.exports = yeoman.generators.Base.extend({
     this.chartAddOns = [
       { name: 'Legend', value: 'legend', checked: false }
     ];
-    // TODO: add filtering capability.
+    this.widgetsSettings = [
+      { name: 'Organizations', value: 'org', checked: true }
+    ];
     this.buildPartialsPaths = function (options) {
       var templatePath = this.templatePath(), path;
       return _.compact(_.map(options, function (option) {
@@ -59,6 +61,7 @@ module.exports = yeoman.generators.Base.extend({
 
     var charts = this.charts;
     var chartAddOns = this.chartAddOns;
+    var widgetsSettings = this.widgetsSettings;
     var prompts = [
       {
         type: 'input',
@@ -79,6 +82,12 @@ module.exports = yeoman.generators.Base.extend({
         name: 'chartAddOns',
         message: 'Which chart add-ons would you like to include?',
         choices: chartAddOns
+      },
+      {
+        type: 'checkbox',
+        name: 'widgetSettings',
+        message: 'Which widgets settings directives would you like to include?',
+        choices: widgetsSettings
       }
     ];
 
@@ -103,9 +112,12 @@ module.exports = yeoman.generators.Base.extend({
       data = {
         chartContainerClass: '',
         componentNames: this.componentNames,
-        partials: this.buildPartialsPaths(_.flatten(_.map(this.props, function (prop) {
-          return prop;
-        })))
+        chartPartials: this.buildPartialsPaths(_.flatten(_.map(
+          _.flatten([this.selectedChart.value, this.props.chartAddOns]), function (prop) {
+            return prop;
+          }
+        ))),
+        settingsPartials: this.buildPartialsPaths(this.props.widgetSettings)
       };
 
       if (this.hasChart) data.chartContainerClass = 'chart-container';
@@ -125,7 +137,7 @@ module.exports = yeoman.generators.Base.extend({
       var html, template, data, deps, settingsPromises, path;
 
       deps = ['$scope', '$q'];
-      settingsPromises = [];
+      settingsPromises = _.cloneDeep(this.props.widgetSettings) || [];
 
       if (this.hasChart) settingsPromises.push('chart'); deps.push('ChartFormatterSvc');
 

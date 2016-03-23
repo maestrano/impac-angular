@@ -5,10 +5,9 @@
   <!-- Settings Panel -->
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
-
-    <!-- inject:widgets-settings -->
-    <!-- endinject -->
-
+    <%_ settingsPartials.forEach(function(partial){ _%>
+      <%- include(partial); %>
+    <%_ }); _%>
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -20,7 +19,7 @@
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
     <div ng-show="(isDataFound==true)" class="<%= chartContainerClass %>">
-    <%_ partials.forEach(function(partial){ _%>
+    <%_ chartPartials.forEach(function(partial){ _%>
       <%- include(partial); %>
     <%_ }); _%>
     </div>

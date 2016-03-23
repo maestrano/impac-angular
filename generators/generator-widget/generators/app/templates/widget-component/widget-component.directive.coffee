@@ -31,7 +31,7 @@ module.controller('Widget<%= data.componentNames.ctrl %>Ctrl', (<%= data.deps %>
   w.format = ->
     if $scope.isDataFound
       # Data displayed in the chart.
-      inputData = <%= data.defaultInputData %>
+      inputData = <%= data.defaultInputData -%>
       <% if (data.chartName === 'bar') { %>
       # maximum capacity for chartjs bar-chart
       inputData.labels.length = 15 if inputData.labels.length > 15
