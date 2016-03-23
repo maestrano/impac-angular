@@ -5,7 +5,10 @@ Generator for generating Impac! Angular widget components.
 #### Features
 ---
 
-TODO: list features
+- Create a new widget component directory with a html template and angular directive with all boilerplate code written.
+- Chart selection and basic configurations for the selected chart written to the template and directive.
+- Chart add-ons selection, dependant on chart selection, offers additional 'add-ons' for chart displays.
+- Widgets Settings selection and basic configurations for the selected Widgets Settings written to the template and directive.
 
 #### Usage
 ---
@@ -43,7 +46,7 @@ npm install
 
 - completion message (e.g "dont forget to add impac-angular module declaration")
 - define default data values & options for charts so upon generation, charts are displayable!
-- static config & options moved into .json config files to clean-up index.js.
+- static config & options moved into .json config files to clean-up index.js
 - add more widget-settings
 - specs
 
