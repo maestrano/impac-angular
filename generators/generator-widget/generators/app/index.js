@@ -10,7 +10,7 @@ var fs = require('fs');
 
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
-    // TODO: refactor value / type keys, chart partials are all the same. Keep in mind different charting lib support that may occur in the future.
+    // TODO: redesign value / type keys, chart partials are all the same. Keep in mind different charting lib support that may occur in the future.
     this.charts = [
       new inquirer.Separator(),
       { name: 'Pie Chart', value: 'pie', type: 'graph', defaultInputData: '[]' },
@@ -42,7 +42,9 @@ module.exports = yeoman.generators.Base.extend({
       // TODO:
       // - file system configurations. E.g defining a `src` for 'src/components/widgets', etc.
       // - path building helper to reduce long concats?
-      return 'src/components/widgets/' + this.componentNames.mod + '/' + this.componentNames.mod + ext;
+      return this.destinationPath(
+        'src/components/widgets/' + this.componentNames.mod + '/' + this.componentNames.mod + ext
+      );
     };
     this.buildComponentNames = function () {
       return {
@@ -122,7 +124,7 @@ module.exports = yeoman.generators.Base.extend({
 
       if (this.hasChart) data.chartContainerClass = 'chart-container';
 
-      path = this.destinationPath(this.buildDestinationPath('.tmpl.html')),
+      path = this.buildDestinationPath('.tmpl.html'),
 
       html = this.fs.read(this.templatePath('widget-component/widget-component.tmpl.html'));
 
@@ -134,7 +136,7 @@ module.exports = yeoman.generators.Base.extend({
     },
     // Write task for generating the new widgets directive component file.
     widgetDirective: function () {
-      var html, template, data, deps, settingsPromises, path;
+      var coffee, data, deps, settingsPromises, path;
 
       deps = ['$scope', '$q'];
       settingsPromises = _.cloneDeep(this.props.widgetSettings) || [];
@@ -150,13 +152,26 @@ module.exports = yeoman.generators.Base.extend({
         defaultInputData: this.selectedChart.defaultInputData
       };
 
-      path = this.destinationPath(this.buildDestinationPath('.directive.coffee'));
+      path = this.buildDestinationPath('.directive.coffee');
 
-      html = this.fs.read(this.templatePath('widget-component/widget-component.directive.coffee'));
+      coffee = this.fs.read(this.templatePath('widget-component/widget-component.directive.coffee'));
 
-      template = ejs.render(html, {data: data}, {filename: this.templatePath('widget-component')});
+      coffee = ejs.render(coffee, {data: data}, {filename: this.templatePath('widget-component')});
 
-      this.fs.write(path, template);
+      this.fs.write(path, coffee);
+    },
+    widgetStyles: function () {
+      var less, data, path;
+
+      data = { chartName: this.componentNames.mod };
+
+      path = this.buildDestinationPath('.less');
+
+      less = this.fs.read(this.templatePath('widget-component/widget-component.less'));
+
+      less = ejs.render(less, data, {filename: this.templatePath('widget-component')});
+
+      this.fs.write(path, less);
     }
   },
 
