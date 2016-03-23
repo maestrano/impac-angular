@@ -1,20 +1,14 @@
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
+.analytics .widget-item .top-line .top-buttons {
+  width: 100px;
+  text-align: right;
+  margin-top: -1px;
 
   .top-buttons-wrapper {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-
     .top-button {
       background: transparent;
       border: none;
       color: @impac-widget-top-buttons-color;
-      padding: 1px;
-      margin-left: 3px;
+      padding: 0;
       outline: none;
 
       &:active, &:focus {
@@ -23,7 +17,7 @@
 
       &.btn-refresh {
         font-size: 17px;
-        margin-top: -1px;
+        margin-top: 1px;
         &:hover {
           color: @mblue;
         }
@@ -39,7 +33,6 @@
           color: @pink
         }
       }
-
     }
   }
 

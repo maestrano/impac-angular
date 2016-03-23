@@ -96,7 +96,14 @@ module.directive('impacWidget', ($templateCache) ->
         scope.showInfoPanel
 
       scope.toggleInfoPanel = ->
-        scope.showInfoPanel = !scope.showInfoPanel        
+        scope.showInfoPanel = !scope.showInfoPanel
+
+      scope.editTitle = false
+      scope.isTitleEdited = ->
+        scope.editTitle
+
+      scope.toggleEditTitle = ->
+        scope.editTitle = !scope.editTitle 
 
 
     ,template: $templateCache.get('widget/widget.tmpl.html')

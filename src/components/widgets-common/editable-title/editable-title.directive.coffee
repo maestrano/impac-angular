@@ -18,6 +18,7 @@ module.directive('commonEditableTitle', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      onToggle: '&'
     },
     template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
     controller: 'CommonEditableTitleCtrl'
