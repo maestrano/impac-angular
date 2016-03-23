@@ -53,6 +53,13 @@ module.exports = yeoman.generators.Base.extend({
         mod: _.kebabCase(this.props.widgetName)
       };
     };
+
+    // The generator has finished it's magic, do any final jobs and say goodbye.
+    this.on('end', function () {
+      this.log(yosay(
+        chalk.green('All done! ') + chalk.yellow('Don\'t forget to add your new component to your App\'s module dependancies!!')
+      ));
+    });
   },
   prompting: function () {
     var done = this.async();

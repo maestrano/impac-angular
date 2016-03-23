@@ -44,7 +44,6 @@ npm install
 #### Todo
 ---
 
-- completion message (e.g "dont forget to add impac-angular module declaration")
 - define default data values & options for charts so upon generation, charts are displayable!
 - static config & options moved into .json config files to clean-up index.js
 - add more widget-settings
