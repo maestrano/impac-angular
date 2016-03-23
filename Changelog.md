@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+- Widget Generator: generator widget components from the CLI.
 - Gulp Server with live reload for Developer Workspace!
 - [new widget] "Net Sales"
 - [new widget] "New vs Existing Customers widget"
