@@ -38,8 +38,11 @@ npm install
 #### Todo
 ---
 
-- w.format function from chart selection
 - selection of widgets-settings
+- completion message 
+  - "dont forget to add impac-angular module declaration"
+- define default data values & options for charts so upon generation, charts are displayable!
+- specs
 
 #### Notes
 ---

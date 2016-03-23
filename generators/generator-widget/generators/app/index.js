@@ -7,21 +7,24 @@ var inquirer = require('inquirer');
 var ejs = require('ejs');
 var beautify = require('js-beautify');
 var fs = require('fs');
-var fsHelpers = require('./src/fs-helpers.js');
 
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
+    // TODO: refactor value / type keys, chart partials are all the same. Keep in mind different charting lib support that may occur in the future.
     this.charts = [
       new inquirer.Separator(),
-      { id: 1, name: 'Pie Chart', value: 'pie', type: 'graph' },
-      { id: 2, name: 'Line Chart', value: 'line', type: 'graph' },
+      { name: 'Pie Chart', value: 'pie', type: 'graph', defaultInputData: [] },
+      { name: 'Line Chart', value: 'line', type: 'graph', defaultInputData: [] },
+      { name: 'Bar Chart', value: 'bar', type: 'graph', defaultInputData: {} },
+      { name: 'Combined Bar Chart', value: 'combined-bar', type: 'graph', defaultInputData: {} },
       new inquirer.Separator(),
-      { id: 3, name: 'Blank - content only / custom', value: 'blank' },
+      { name: 'Blank - content only / custom', value: 'blank' },
       new inquirer.Separator(),
     ];
     this.chartAddOns = [
-      { value: 'legend', name: 'Legend', checked: false }
+      { name: 'Legend', value: 'legend', checked: false }
     ];
+    // TODO: add filtering capability.
     this.buildPartialsPaths = function (options) {
       var templatePath = this.templatePath(), path;
       return _.compact(_.map(options, function (option) {
@@ -82,8 +85,11 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt(prompts, function (props) {
       // Array of selections made after prompting.
       this.props = props;
-      this.chartType = _.find(charts, { value: props.chartName }).type;
+
+      this.selectedChart = _.find(charts, { value: props.chartName });
+      this.chartType = this.selectedChart.type;
       this.componentNames = this.buildComponentNames();
+      this.hasChart = this.chartType === 'graph';
 
       done();
     }.bind(this));
@@ -101,9 +107,8 @@ module.exports = yeoman.generators.Base.extend({
           return prop;
         })))
       };
-      if (this.chartType === 'graph') {
-        data.chartContainerClass = 'chart-container';
-      }
+
+      if (this.hasChart) data.chartContainerClass = 'chart-container';
 
       path = this.destinationPath(this.buildDestinationPath('.tmpl.html')),
 
@@ -117,14 +122,20 @@ module.exports = yeoman.generators.Base.extend({
     },
     // Write task for generating the new widgets directive component file.
     widgetDirective: function () {
-      var html, template, data, settingsPromises, path;
+      var html, template, data, deps, settingsPromises, path;
 
+      deps = ['$scope', '$q'];
       settingsPromises = [];
-      if (this.chartType === 'graph') settingsPromises.push('chart');
+
+      if (this.hasChart) settingsPromises.push('chart'); deps.push('ChartFormatterSvc');
 
       data = {
         componentNames: this.componentNames,
-        settingsPromises: settingsPromises
+        deps: deps,
+        settingsPromises: settingsPromises,
+        hasChart: this.hasChart,
+        chartName: _.camelCase(this.selectedChart.value),
+        defaultInputData: this.selectedChart.defaultInputData
       };
 
       path = this.destinationPath(this.buildDestinationPath('.directive.coffee'));
