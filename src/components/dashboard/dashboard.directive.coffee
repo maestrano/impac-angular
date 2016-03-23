@@ -403,7 +403,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       cursor: "move"
       revert: 250
       # items with the class 'unsortable', are infact, unsortable.
-      cancel: ".unsortable"
+      cancel: ".unsortable,.editable-input"
       # only the top-line with title will provide the handle to drag/drop widgets
       handle: ".top-line"
     }
