@@ -86,7 +86,7 @@ We have built a **Yoeman generator** to generate the boilerplate and some extras
 
 ** Please read the Full Process below, as it will provide more details on getting your widget up and running & help with understanding the basics.**
 
-You want to make the generator better? Of course. See the (README)[./generators/generator-widget/README.md] and take a look at `generators/generator-widget`. 
+You want to make the generator better? Of course. See the [README](./generators/generator-widget/README.md) and take a look at `generators/generator-widget`. 
 
 ##### Full Process
 
