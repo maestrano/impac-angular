@@ -41,6 +41,8 @@ npm unlink generator-widget
 npm install
 ```
 
+Don't forget to bump the `package.json` version and update the `Changelog.md` with changes / features for each submitted pull request into impac-angular.
+
 #### Todo
 ---
 
