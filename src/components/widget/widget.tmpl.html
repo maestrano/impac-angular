@@ -1,6 +1,6 @@
 <div class="top-line">
-  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" />
-  <div common-editable-title parent-widget="widget" />
+  <div common-editable-title parent-widget="widget" class="editable-title" on-toggle="toggleEditTitle()" />
+  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited()" on-toggle-info-panel="toggleInfoPanel()"/>
 </div>
 
 <div class="content" ng-class="templateName">
@@ -13,3 +13,5 @@
 
   <div ng-hide="widget.isLoading" ng-include="widgetContentTemplate()" />
 </div>
+
+<div common-info-panel parent-widget="widget" on-close="toggleInfoPanel()" ng-show="isInfoPanelDisplayed()" />

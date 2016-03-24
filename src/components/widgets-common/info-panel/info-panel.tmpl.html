@@ -1,0 +1,23 @@
+<div class="info-panel">
+
+  <div class="i-header text-center">
+    <i class="fa fa-info-circle" />
+    <i class="fa fa-times-circle" ng-click="toggleInfoPanel()" />
+    Information on widget <b>{{ getWidgetTemplateName() | titleize }}</b>
+  </div>
+
+  <div class="i-content text-left">
+    <div class="row text-left" ng-repeat="i in parentWidget.content.info">
+
+      <div class="col-md-3 key">
+        {{i.key}}
+      </div>
+
+      <div class="col-md-9 value">
+        {{i.value}}
+      </div>
+
+    </div>
+  </div>
+
+</div>

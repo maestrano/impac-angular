@@ -29,6 +29,9 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
       else
         # Otherwise, we pass in edit mode
         w.isEditMode = true
+
+  $scope.hasInfo = ->
+    w && w.content? && w.content.info? && w.content.info.length > 0
 )
 
 module.directive('commonTopButtons', ($templateCache) ->
@@ -37,6 +40,7 @@ module.directive('commonTopButtons', ($templateCache) ->
     scope: {
       parentWidget: '='
       onRefresh: '='
+      onToggleInfoPanel: '&'
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'

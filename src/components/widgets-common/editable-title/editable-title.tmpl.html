@@ -1,46 +1,12 @@
-<div class="visible-lg title-wrapper" ng-if="parentWidget.width >= 3 && parentWidget.width < 6">
-  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" onaftersave="updateName()">
-  	{{parentWidget.name | truncate:19:"."}}
-  </div>
-
-  <div ng-hide="parentWidget.hasEditAbility" class="title">
-  	{{parentWidget.name | truncate:19:"."}}
-  </div>
+<div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" tooltip="{{ parentWidget.name }} (click to edit name)" tooltip-placement="top-left">
+  {{ parentWidget.name }}
 </div>
 
-<div class="visible-lg title-wrapper" ng-if="parentWidget.width >= 6">
-  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" onaftersave="updateName()">
-  	{{parentWidget.name | truncate:80:"."}}
-  </div>
-
-  <div ng-hide="parentWidget.hasEditAbility" class="title">
-  	{{parentWidget.name | truncate:80:"."}}
-  </div>
+<div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" tooltip="{{ parentWidget.name }}" tooltip-placement="top-left">
+  {{ parentWidget.name }}
 </div>
 
-<div class="visible-md visible-sm title-wrapper" ng-if="parentWidget.width == 3 && parentWidget.width < 6">
-  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" onaftersave="updateName()">
-  	{{parentWidget.name | truncate:13:"."}}
-  </div>
-
-  <div ng-hide="parentWidget.hasEditAbility" class="title">
-  	{{parentWidget.name | truncate:13:"."}}
-  </div>
-</div>
-
-<div class="visible-md visible-sm title-wrapper" ng-if="parentWidget.width >= 6">
-  <div ng-show="parentWidget.hasEditAbility" class="title" editable-text="parentWidget.name" onaftersave="updateName()">
-  	{{parentWidget.name | truncate:60:"."}}
-  </div>
-
-  <div ng-hide="parentWidget.hasEditAbility" class="title">
-  	{{parentWidget.name | truncate:60:"."}}
-  </div>
-</div>
-
-<div class="visible-xs title-wrapper">
-  <!-- Title edition no designed for mobile -->
-  <div class="title">
-  	{{parentWidget.name | truncate:25:"."}}
-  </div>
+<!-- Title edition no designed for mobile -->
+<div class="visible-xs visible-sm title">
+  {{ parentWidget.name }}
 </div>

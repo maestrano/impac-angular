@@ -1,45 +1,38 @@
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
 
   .top-buttons-wrapper {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-
     .top-button {
       background: transparent;
       border: none;
       color: @impac-widget-top-buttons-color;
-      padding: 1px;
-      margin-left: 3px;
+      padding: 0;
       outline: none;
+      width: 17px;
 
-      &:active, &:focus {
-        -webkit-box-shadow: none;
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
       }
-
       &.btn-refresh {
         font-size: 17px;
-        margin-top: -1px;
-        &:hover {
-          color: @mblue;
-        }
+        margin-top: 1px;
+        &:hover { color: @mblue; }
       }
       &.btn-edit {
-        font-size: 14px;
-        &:hover, &.edit-mode {
-          color: darken(@mgreen,10%);
-        }
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
       }
       &.btn-close {
-        &:hover {
-          color: @pink
-        }
+        font-size: 13px;
+        &:hover { color: @pink; }
       }
-
     }
   }
 

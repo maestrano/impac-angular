@@ -1,6 +1,11 @@
-<div id="module__top-buttons">
-
+<div class="top-buttons">
   <div class="top-buttons-wrapper">
+
+    <button class="btn top-button btn-info" ng-if="hasInfo()" ng-click="onToggleInfoPanel()">
+      <i class="fa fa-info-circle"></i>
+      <span class="text-hide">Widget info</span>
+    </button>
+
     <button class="btn top-button btn-refresh" ng-click="onRefresh({refreshCache: true})">
       <i class="fa fa-refresh"></i>
       <span class="text-hide">Refresh widget</span>
