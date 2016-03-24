@@ -11,6 +11,9 @@
 - Add info panel for widgets
 - Better display for widgets' top-line and action buttons
 
+### Fixes
+- Better UI for widget name edit (tooltips + can now fully use the mouse without dragging the widget)
+
 -------------------------------------------------------------
 # v1.2 | UNTAGGED
 
