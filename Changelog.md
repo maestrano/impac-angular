@@ -9,6 +9,7 @@
 - Widget `metadata.template` now dictates which category the widgets appears in.
 - Bump Chart.js from version 2.0.0-beta2
 - Add info panel for widgets
+- Better display for widgets' top-line and action buttons
 
 -------------------------------------------------------------
 # v1.2 | UNTAGGED
