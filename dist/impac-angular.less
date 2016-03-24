@@ -49,6 +49,7 @@
 //--------------------------------------
 @impac-dashboard-padding-top:                   50px;
 @impac-dashboard-margin-left:                   100px;
+@impac-dashboard-borders-color:                 @lightblue;
 
 // Title
 @impac-dashboard-title-color:                   @purple;
@@ -59,7 +60,7 @@
 
 // Dashboard Selector
   // Tabs
-@impac-dashboard-selector-border:               1px solid @lightblue;
+@impac-dashboard-selector-border:               1px solid @impac-dashboard-borders-color;
 @impac-dashboard-selector-tabs-margin:          0 2px 0 0;
 @impac-dashboard-selector-tabs-padding:         10px 8px 10px 15px;
 @impac-dashboard-selector-tabs-background-color: transparent;
@@ -72,7 +73,7 @@
 @impac-dashboard-widget-selector-text-color:    white;
 
 // Widgets container
-@impac-placeholder-border:                      2px dashed @lightblue;
+@impac-placeholder-border:                      2px dashed @impac-dashboard-borders-color;
 @impac-widgets-container-side-padding:          0px;
 @impac-padding-between-widgets:                 12px;
 @impac-minimum-widget-size:                     250px;
@@ -99,6 +100,7 @@
 @impac-widget-borders-color:                   lighten(@impac-widget-text-color-light,10%); //#f3f4f4
 @impac-widget-scrollbar-color:                 #233845;
 @impac-widget-loading-spinner:                 #67BBE9;
+@impac-widget-reverse-color:                   #1E303B;
 
 // Title
 @impac-widget-title-text-color:                darken(@impac-widget-text-color,5%);
@@ -121,10 +123,10 @@
 @impac-widget-hist-text-size:                  12px;
 @impac-widget-hist-text-color:                 @impac-widget-text-color-light;
 // Params picker
-@impac-widget-params-picker-bg:                #1E303B;
+@impac-widget-params-picker-bg:                @impac-widget-reverse-color;
 @impac-widget-params-picker-unchecked-bg:      #c2c4c4;
-// Limit emtries
-@impac-widget-limit-entries-color:             #1E303B;
+// Limit entries
+@impac-widget-limit-entries-color:             @impac-widget-reverse-color;
 
 // Globals and Mixins
 @impac-widget-selectable-color:                @impac-widget-link-color;
@@ -1332,12 +1334,15 @@ impac-kpi .kpi {
   position: relative;
   cursor: move;
   background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 9px;
+  padding: 9px 9px 0px 12px;
   border-radius: @impac-widget-title-border-radius;
   border: @impac-widget-border;
   border-bottom: none;
   min-height: 41px;
   .box-shadow(0px 1px 8px -4px);
+
+  display: flex;
+  flex-direction: row;
 }
 
 .widget-item .content {
@@ -1607,6 +1612,15 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.lines-group.profit {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1634,15 +1648,6 @@ impac-kpi .kpi {
     font-size: 14px;
   }
 }
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-
-  .row.lines-group.profit {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
 .analytics .widget-item .content.hr-employees-list {
   .legend {
     margin-bottom: 9px;
@@ -2101,97 +2106,149 @@ impac-kpi .kpi {
   }
 }
 .analytics .widget-item {
-  .title-wrapper {
+  .editable-title {
     width: 100%;
-    padding: 0px 10px 10px 10px;
+    flex: 1;
+    overflow: hidden;
+    height: 22px;
+  }
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
     white-space: nowrap;
 
-    .title {
-      display: inline;
-      text-transform: @impac-widget-title-text-transform;
-      .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-      text-align: left;
-      cursor: text;
+    .editable-controls {
+      min-width: 100%;
 
-      &.editable-hide {
-        display: none;
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
       }
     }
+  }
+  // }
+}
 
-    .editable-wrap {
-      position: relative;
-      height: 20px;
-      min-width: 100%;
-      // otherwise, white-space is overriden in mno-enterprise
-      white-space: nowrap;
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 65px;
+  left: 24px;
+  width: ~"calc(100% - 48px)";
+  max-height: ~"calc(100% - 90px)";
+  height: 100%;
 
-      .editable-controls {
-        min-width: 100%;
+  background-color: white;
+  opacity: .85;
+  border: dotted 1px #B7CDCE;
 
-        .editable-input {
-          height: 20px;
-          font-size: 12px;
-          text-transform: @impac-widget-title-text-transform;
-          // 55px is .editable-buttons width
-          width: ~"calc(100% - 55px)";
-          padding: 0px 3px;
-        }
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
 
-        .editable-buttons {
-          background-color: @impac-widget-title-bg;
-          button {
-            margin: 0px 0px 0px 5px;
-            height: 20px;
-            padding: 0px 5px;
-          }
-        }
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
       }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
     }
   }
 }
 
-.analytics .widget-item .top-line #module__top-buttons {
-
-  i.fa {
-    margin-top: 3px;
-  }
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
 
   .top-buttons-wrapper {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-
     .top-button {
       background: transparent;
       border: none;
       color: @impac-widget-top-buttons-color;
-      padding: 1px;
-      margin-left: 3px;
+      padding: 0;
       outline: none;
+      width: 17px;
 
-      &:active, &:focus {
-        -webkit-box-shadow: none;
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
       }
-
       &.btn-refresh {
         font-size: 17px;
-        margin-top: -1px;
-        &:hover {
-          color: @mblue;
-        }
+        margin-top: 1px;
+        &:hover { color: @mblue; }
       }
       &.btn-edit {
-        font-size: 14px;
-        &:hover, &.edit-mode {
-          color: darken(@mgreen,10%);
-        }
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
       }
       &.btn-close {
-        &:hover {
-          color: @pink
-        }
+        font-size: 13px;
+        &:hover { color: @pink; }
       }
-
     }
   }
 
