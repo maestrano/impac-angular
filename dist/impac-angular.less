@@ -2266,6 +2266,7 @@ impac-kpi .kpi {
     cursor: default;
     .box-shadow(0px 0px 25px 4px black);
     border: solid 1px @impac-widget-background-color;
+    white-space: normal;
 
     h4 {
       color: @impac-widget-top-buttons-color;
@@ -2443,15 +2444,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -2490,6 +2482,15 @@ impac-kpi .kpi {
         color: white;
       }
     }
+  }
+}
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
   }
 }
 .analytics .widget-item .content .settings.time-range {
