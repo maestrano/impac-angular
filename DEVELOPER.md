@@ -77,7 +77,18 @@ The high-level diagram below outlines the ecosystem which powers Impac! Angular'
 #### How-to: Create a widget
 ---
 
-##### Process
+#### Shortcut! 
+
+We have built a **Yoeman generator** to generate the boilerplate and some extras to help get you going!
+
+1. Run `npm update` to make sure you have all the latest npm packages.
+2. Simply run, `yo widget`, and follow the prompts to generate your new Widget Component!
+
+** Please read the Full Process below, as it will provide more details on getting your widget up and running & help with understanding the basics.**
+
+You want to make the generator better? Of course. See the [README](./generators/generator-widget/README.md) and take a look at `generators/generator-widget`. 
+
+##### Full Process
 
 1. **Defining the Widgets Template.**<br>
   *Widgets templates are currently kept in the maestrano api. They declare defining attributes for each widget.*<br>
