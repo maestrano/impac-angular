@@ -6,7 +6,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
     scope: {
     },
     template: $templateCache.get('dashboard-settings/sync-apps.tmpl.html'),
-
     link: (scope, element, attrs) ->
 
       #====================================
@@ -14,7 +13,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       #====================================
       scope.isSyncing = false
       scope.hasConnectors = false
-
 
       #====================================
       # Local methods
@@ -29,19 +27,22 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.lastConnector = responseData.connectors[0]
           # The other connectors that will be displayed in the popover
           scope.otherConnectors = _.slice(responseData.connectors, 1)
-          
+
           # The connectors we will use for error management
           scope.failedConnectors = []
           scope.disconnectedConnectors = []
+          scope.successfulConnectors = []
           for c in responseData.connectors
             if c.status == "FAILED"
               scope.failedConnectors.push angular.copy(c)
             else if c.status == "DISCONNECTED"
               scope.disconnectedConnectors.push angular.copy(c)
+            else if c.status == "SUCCESS"
+              scope.successfulConnectors.push angular.copy(c)
 
         # No connector: data is synced in realtime, let's display the current time as "last sync"
         else
-          scope.lastConnector = 
+          scope.lastConnector =
             status: 'SUCCESS'
             last_sync_date: new Date()
 
@@ -71,13 +72,20 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             templateUrl: 'alerts.tmpl.html'
             appendTo: angular.element('impac-dashboard')
             controller: ($scope, connectors) ->
+              errorMessage = -1
               $scope.failedConnectors = connectors.failed
               $scope.disconnectedConnectors = connectors.disconnected
+              $scope.successfulConnectors = connectors.successful
+              $scope.selectErrorOnClick = (connector, index) ->
+                return unless connector.message
+                return errorMessage = -1 if index == errorMessage
+                errorMessage = index
+              $scope.isErrorSelected = (index) -> errorMessage == index
               $scope.ok = ->
                 modalInstance.close()
             resolve:
               connectors: ->
-                {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors}
+                {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors, successful: scope.successfulConnectors}
           })
 
         # Blocks the dashboard refresh until next click on "synchronize"
@@ -132,7 +140,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
         if connector.last_sync_date
           date = $filter('date')(connector.last_sync_date, "yyyy-MM-dd 'at' h:mma", getOffset())
-        
+
           switch connector.status
             when 'SUCCESS' then status = "Last sync: #{date}"
             when 'FAILED' then status = "Last sync failed: #{date}"
@@ -148,7 +156,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
         status = "#{status} (#{name})" unless _.isEmpty(status) || _.isEmpty(name)
         return status
-
 
       #====================================
       # Directive Load and Destroy

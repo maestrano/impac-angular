@@ -26,18 +26,26 @@
 
 <!-- ui.bootstrap modal template -->
 <script type="text/ng-template" id="alerts.tmpl.html">
-  <div class="modal-header">
-    <h4 class="modal-title">Synchronization alerts</h4>
-  </div>
-  <div class="modal-body">
-    <div ng-repeat="connector in failedConnectors track by $index">
-      {{connector.name}} - Synchronization failed. Please retry later.
+  <div id="sync-apps-modal">
+    <div class="modal-header">
+      <h4 class="modal-title">Synchronization alerts</h4>
     </div>
-    <div ng-repeat="connector in disconnectedConnectors track by $index">
-      {{connector.name}} is disconnected. Please reconnect to synchronize.
+    <div class="modal-list">
+      <div class="modal-list-item clickable" ng-repeat="connector in failedConnectors track by $index" ng-click="selectErrorOnClick(connector, $index)">
+        <i class="fa fa-times error"></i>{{connector.name}} - Synchronization failed. Please retry later.
+        <div class="error-message" ng-class="{ 'ng-hide': !isErrorSelected($index) }">
+          <p>{{connector.message}}</p>
+        </div>
+      </div>
+      <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index">
+        <i class="fa fa-minus warn"></i>{{connector.name}} is disconnected. Please reconnect to synchronize.
+      </div>
+      <div class="modal-list-item" ng-repeat="connector in successfulConnectors track by $index">
+        <i class="fa fa-check success"></i>{{connector.name}} successfully synchronized!
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    </div>
   </div>
 </script>

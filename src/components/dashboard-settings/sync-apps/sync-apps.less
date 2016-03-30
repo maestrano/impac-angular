@@ -4,3 +4,39 @@
     color: @impac-widget-text-color-medium;
   }
 }
+
+#sync-apps-modal {
+  .modal-header {
+    text-align: center;
+    border: 0;
+    box-shadow: 0px 2px 3px 0px #ccc;
+  }
+  .modal-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .modal-list-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+
+    &:hover {
+      background-color: #ccc;
+    }
+    &.clickable { cursor: pointer; }
+  }
+  .modal-footer {
+    border: 0;
+  }
+  .error-message {
+    p { margin: 0 }
+    padding: 3px;
+    background-color: rgba(255, 0, 0, 0.08);
+    border-radius: 2px;
+    margin-left: 31px;
+    margin-top: 9px;
+  }
+  .fa { padding: 0px 10px; }
+  .fa.error { color: @red; }
+  .fa.warn { color: @fluroorange; }
+  .fa.success { color: @flurogreen; }
+}
