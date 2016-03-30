@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+- Improved sync-apps alerts modal: redesigned, displays successful connector syncs & error messages for failed connector syncs.
 - Widget Generator: generator widget components from the CLI.
 - Gulp Server with live reload for Developer Workspace!
 - [new widget] "Net Sales"
