@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $timeout) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $timeout) ->
   return {
     restrict: 'A',
     scope: {
@@ -66,27 +66,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
         # Opens the modal if errors are present
         unless (_.isEmpty(scope.failedConnectors) && _.isEmpty(scope.disconnectedConnectors))
-          modalInstance = $modal.open({
-            animation: true
-            size: 'md'
-            templateUrl: 'alerts.tmpl.html'
-            appendTo: angular.element('impac-dashboard')
-            controller: ($scope, connectors) ->
-              errorMessage = -1
-              $scope.failedConnectors = connectors.failed
-              $scope.disconnectedConnectors = connectors.disconnected
-              $scope.successfulConnectors = connectors.successful
-              $scope.selectErrorOnClick = (connector, index) ->
-                return unless connector.message
-                return errorMessage = -1 if index == errorMessage
-                errorMessage = index
-              $scope.isErrorSelected = (index) -> errorMessage == index
-              $scope.ok = ->
-                modalInstance.close()
-            resolve:
-              connectors: ->
-                {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors, successful: scope.successfulConnectors}
-          })
+          scope.triggerSyncAlertsModal()
 
         # Blocks the dashboard refresh until next click on "synchronize"
         scope.isDashboardRefreshAuthorized = false
@@ -143,7 +123,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
           switch connector.status
             when 'SUCCESS' then status = "Last sync: #{date}"
-            when 'FAILED' then status = "Last sync failed: #{date}"
+            when 'FAILED' then status = "Failed - previous sync was: #{date}"
             when 'DISCONNECTED' then status = "Disconnected - previous sync was: #{date}"
             # "RUNNING" case should imply isSyncing==true...
 
@@ -156,6 +136,35 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
         status = "#{status} (#{name})" unless _.isEmpty(status) || _.isEmpty(name)
         return status
+
+      scope.triggerSyncAlertsModal = ->
+        modalInstance = $modal.open({
+          animation: true
+          size: 'md'
+          templateUrl: 'alerts.tmpl.html'
+          appendTo: angular.element('impac-dashboard')
+          controller: ($scope, connectors, methods) ->
+            $scope.failedConnectors = connectors.failed
+            $scope.disconnectedConnectors = connectors.disconnected
+            $scope.successfulConnectors = connectors.successful
+            $scope.formatStatus = methods.formatStatus
+            $scope.expandListItemOnClick = (e) ->
+              list = $document.find('#sync-apps-modal .modal-list')
+              listItem = angular.element(e.target)
+              # Showing only one listItem message at a time.
+              list.find('.message').addClass('ng-hide')
+              listItem.find('.message').removeClass('ng-hide')
+              # Calculates the top offset of the listItem relative to the list.
+              list.animate({ scrollTop: listItem.offset().top - list.offset().top }, 500)
+              return
+            $scope.ok = ->
+              modalInstance.close()
+          resolve:
+            connectors: ->
+              {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors, successful: scope.successfulConnectors}
+            methods: ->
+              {formatStatus: scope.formatStatus}
+        })
 
       #====================================
       # Directive Load and Destroy

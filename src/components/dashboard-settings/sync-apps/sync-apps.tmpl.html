@@ -5,9 +5,14 @@
   <span ng-if="otherConnectors.length == 0" ng-hide="isSyncing">
     {{ formatStatus(lastConnector) }}
   </span>
+
   <span ng-if="otherConnectors.length > 0" ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
     {{ formatStatus(lastConnector) }}
   </span>
+
+  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="(failedConnectors.length || disconnectedConnectors.length)">
+    <i class="fa fa-exclamation-triangle"></i>
+  </div>
 
   <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
     <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }"></i>
@@ -31,17 +36,23 @@
       <h4 class="modal-title">Synchronization alerts</h4>
     </div>
     <div class="modal-list">
-      <div class="modal-list-item clickable" ng-repeat="connector in failedConnectors track by $index" ng-click="selectErrorOnClick(connector, $index)">
-        <i class="fa fa-times error"></i>{{connector.name}} - Synchronization failed. Please retry later.
-        <div class="error-message" ng-class="{ 'ng-hide': !isErrorSelected($index) }">
-          <p>{{connector.message}}</p>
+      <div class="modal-list-item" ng-repeat="connector in failedConnectors track by $index"  ng-click="expandListItemOnClick($event, $first)">
+        <i class="fa fa-times error"></i><strong>{{connector.name}}</strong> sync failed.
+        <div class="message error ng-hide">
+          <p>{{ (connector.message || formatStatus(connector)) }}</p>
         </div>
       </div>
-      <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index">
-        <i class="fa fa-minus warn"></i>{{connector.name}} is disconnected. Please reconnect to synchronize.
+      <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index"  ng-click="expandListItemOnClick($event)">
+        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is disconnected. Please reconnect to sync.
+        <div class="message warn ng-hide">
+          <p>{{formatStatus(connector)}}</p>
+        </div>
       </div>
-      <div class="modal-list-item" ng-repeat="connector in successfulConnectors track by $index">
-        <i class="fa fa-check success"></i>{{connector.name}} successfully synchronized!
+      <div class="modal-list-item" ng-repeat="connector in successfulConnectors track by $index"  ng-click="expandListItemOnClick($event)">
+        <i class="fa fa-check success"></i><strong>{{connector.name}}</strong> is synced!
+        <div class="message success ng-hide">
+          <p>{{formatStatus(connector)}}</p>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
