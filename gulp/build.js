@@ -28,8 +28,9 @@ gulp.task('partials', function () {
       // cleaner includes.
       transformUrl: function (url) {
         // e.g widgets/accounts-balance/accounts-balance.tmpl.html
-        var parentFolderName  = url.split('/').slice(0, 1);
-        var fileName          = url.split('/').slice(-1);
+        var separator = ~url.indexOf('\\') ? '\\' : '/';
+        var parentFolderName  = url.split(separator).slice(0, 1);
+        var fileName          = url.split(separator).slice(-1);
         // if html file is a modal, return full path for semantic purposes.
         if (fileName[0].indexOf('.modal.') >= 0) {
           return url;
