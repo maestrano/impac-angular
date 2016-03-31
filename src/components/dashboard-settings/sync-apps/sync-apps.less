@@ -3,6 +3,12 @@
     margin-right: 5px;
     color: @impac-widget-text-color-medium;
   }
+  .caution-btn {
+    i { color: @fluroorange; font-size: 16px; }
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 7px 5px 0px;
+  }
 }
 
 #sync-apps-modal {
@@ -18,22 +24,24 @@
   .modal-list-item {
     border-bottom: 1px solid #ccc;
     padding: 10px;
+    cursor: pointer;
 
     &:hover {
       background-color: #ccc;
     }
-    &.clickable { cursor: pointer; }
   }
   .modal-footer {
     border: 0;
   }
-  .error-message {
+  .message {
     p { margin: 0 }
     padding: 3px;
-    background-color: rgba(255, 0, 0, 0.08);
     border-radius: 2px;
     margin-left: 31px;
     margin-top: 9px;
+    &.error { background-color: rgba(255, 0, 0, 0.08); }
+    &.warn { background-color: rgba(255, 118, 0, 0.08); }
+    &.success { background-color: rgba(0, 255, 55, 0.08); }
   }
   .fa { padding: 0px 10px; }
   .fa.error { color: @red; }
