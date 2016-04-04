@@ -86,7 +86,7 @@
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
   <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right">
-    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
     <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
 
@@ -155,7 +155,7 @@
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
     <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
     <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right col-md-12 in-widgets-container">
-      <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.showSyncApps()"/>
+      <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
       <div dashboard-setting-currency currency="currentDhb.currency" />
     </div>
     <div class="col-md-12">

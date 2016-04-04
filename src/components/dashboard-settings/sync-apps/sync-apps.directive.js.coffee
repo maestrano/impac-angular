@@ -13,6 +13,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       #====================================
       scope.isSyncing = false
       scope.realtimeSyncing = false
+      syncAppsThemingConfig = ImpacTheming.get().dhbSettings.syncApps
 
       #====================================
       # Local methods
@@ -86,14 +87,15 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
         return offsetArray.join('')
 
+      # Builds the sync status to be displayed on the dashboard settings panel.
       determineSyncStatus = (force=false)->
-        # Builds the sync status to be displayed on the dashboard settings panel.
+        descriptor = syncAppsThemingConfig.productDescriptor
         if _.every(scope.connectors, {'status': 'SUCCESS'}) || force
-          scope.syncStatus = "Impac! is synced!"
+          scope.syncStatus = "#{descriptor} is synced!"
         else if _.some(scope.connectors, {'status': 'SUCCESS'})
-          scope.syncStatus = "Impac! is partially synced."
+          scope.syncStatus = "#{descriptor} is partially synced."
         else
-          scope.syncStatus = "Impac! is not synced."
+          scope.syncStatus = "#{descriptor} is not synced."
 
       #====================================
       # Scope methods

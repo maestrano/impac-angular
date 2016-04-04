@@ -82,7 +82,9 @@ angular
       # configuring dashboard settings
       dhbSettings:
         inWidgetsContainer: false
-        showSyncApps: -> true
+        syncApps:
+          show: -> true
+          productDescriptor: 'Impac!'
         currency:
           locked: false
 

@@ -70,7 +70,9 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
       enableKpis: true
     },
     dhbSettings: {
-      showSyncApps: function() { return false; }
+      syncApps: {
+        show: function() { return false; }
+      }
     }
   });
 
