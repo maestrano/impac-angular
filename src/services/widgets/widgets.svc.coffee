@@ -76,19 +76,51 @@ angular
 
     @updateWidgetSettings = (widget, needContentReload=true) ->
       widget.isEditMode = false
-
       if _.isEmpty(widget.settings)
         $log.warn("ImpacWidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
         return false
 
+      paramPicker = _.find(widget.settings, {'key': 'params-picker', 'reach': 'dashboard'})
+
+      if (paramPicker)
+        paramPicker.reach = null;
+        return @updateAllSameWidgets(widget, 'params-picker', paramPicker)
+
       widget.isLoading = true if needContentReload
       meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
-      
-      return _self.update(widget, { metadata: meta }).then(
+
+      widget.metadata = meta;
+
+      _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
           if needContentReload
             _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
       )
+
+    @updateAllSameWidgets = (widget, settingName, settingsPrototype) ->
+      sameWidgets = _.filter ImpacDashboardsSvc.getCurrentDashboard().widgets, (wgt) -> wgt.name == widget.name
+
+      _.each(sameWidgets, (wgt) ->
+        setting = _.find wgt.settings, {'key': settingName}
+        setting.setOptions settingsPrototype.getOptions()
+        _self.updateWidgetSettings wgt, true
+      )
+
+      dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+
+      defaultWidget = _self.getDefaultWidget widget.name
+
+      newMeta = _.cloneDeep widget.metadata
+
+      if (defaultWidget)
+        defaultWidget.metadata = newMeta
+      else
+        dashboard.status_selection.push({'name': widget.name, 'metadata': newMeta})
+
+      ImpacDashboardsSvc.update dashboard.id, {'status_selection': dashboard.status_selection}
+
+    @getDefaultWidget = (widgetName)->
+      return _.find(ImpacDashboardsSvc.getCurrentDashboard().status_selection, {'name': widgetName})
 
     @massAssignAll = (metadata) ->
       unless _.isEmpty(metadata)

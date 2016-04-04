@@ -14,15 +14,25 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
       'ui-floating': true,
       tolerance: 'pointer'
     }
+    $scope.applyForDashboard = false;
+    $scope.applyForAll = ->
+      setting.reach = $scope.applyForDashboard;
+
     setting.isInitialized = true if _.isEmpty($scope.options)
 
-
-  setting.toMetadata = ->
+  setting.toMetadata = ()->
     param = {}
     param[$scope.param] = _.compact(_.map $scope.options, (statusOption) ->
       statusOption.label if statusOption.selected
     )
+    param.reach = $scope.applyForDashboard = false;
     return param
+
+  setting.getOptions = ->
+    return $scope.options
+
+  setting.setOptions = (options)->
+    _.assign $scope.options, options
 
   w.settings.push(setting)
 
