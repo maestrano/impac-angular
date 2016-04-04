@@ -34,13 +34,17 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opps_per_sales_stage) && hasOneOpportunity(w.content.opps_per_sales_stage)
 
-      $scope.statusOptions = _.compact _.map w.metadata.sales_stage_selection, (status) ->
+      defaultWidget = ImpacWidgetsSvc.getDefaultWidget(w.name);
+
+      meta = if w.metadata.sales_stage_selection or not defaultWidget or not defaultWidget.metadata.sales_stage_selection then w.metadata else defaultWidget.metadata
+
+      $scope.statusOptions = _.compact _.map meta.sales_stage_selection, (status) ->
         {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status])
 
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
-        if w.metadata.sales_stage_selection && !(status in w.metadata.sales_stage_selection)
+        if meta.sales_stage_selection && !(status in meta.sales_stage_selection)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(w.metadata.sales_stage_selection)
+        else if _.isEmpty(meta.sales_stage_selection)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
@@ -78,7 +82,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
 
     return oppDetails.join(' / ')
 
-
   selectedStatusSetting = {}
   selectedStatusSetting.initialized = false
 
@@ -90,7 +93,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     {selected_status: $scope.selectedStatus}
 
   w.settings.push(selectedStatusSetting)
-
 
   # Funnel formating function
   # --------------------------------------
