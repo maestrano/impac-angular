@@ -9,6 +9,26 @@
     cursor: pointer;
     padding: 5px 7px 5px 0px;
   }
+
+  .popover {
+    max-width: 500px;
+    .connector {
+      padding: 4px 13px;
+      &.add-seperator { border-bottom: 1px solid #ccc; }
+    }
+    .popover-content {
+      padding: 0;
+    }
+    .popover-footer {
+      border-top: 1px solid #ccc;
+      padding: 4px 13px;
+      p {
+        font-weight: bold;
+        margin: 0;
+      }
+      &.remove-seperator { border: 0; }
+    }
+  }
 }
 
 #sync-apps-modal {
@@ -42,6 +62,7 @@
     &.error { background-color: rgba(255, 0, 0, 0.08); }
     &.warn { background-color: rgba(255, 118, 0, 0.08); }
     &.success { background-color: rgba(0, 255, 55, 0.08); }
+    &.reduced-margin-top { margin-top: 2px }
   }
   .fa { padding: 0px 10px; }
   .fa.error { color: @red; }
