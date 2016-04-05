@@ -6,7 +6,7 @@
     {{syncStatus}}
   </span>
 
-  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="(failedConnectors.length || disconnectedConnectors.length)">
+  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="(failedConnectors.length || disconnectedConnectors.length) && !isSyncing">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
