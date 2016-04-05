@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+- Workspace Http Interceptor: applys basic auth intelligently to requests to Maestrano's ecosystem.
 - Widget Generator: generator widget components from the CLI.
 - Gulp Server with live reload for Developer Workspace!
 - [new widget] "Net Sales"
