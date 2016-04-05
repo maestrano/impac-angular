@@ -1,13 +1,14 @@
-<!-- Will be displayed only if specified in configuration and if first response has been processed (lastConnector not null) -->
-<div class="dashboard-settings sync-apps" ng-show="lastConnector">
+<!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
+<div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
   <span ng-show="isSyncing">Syncing...</span>
-  <span ng-if="otherConnectors.length == 0" ng-hide="isSyncing">
-    {{ formatStatus(lastConnector) }}
+  <span ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
+    {{syncStatus}}
   </span>
-  <span ng-if="otherConnectors.length > 0" ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
-    {{ formatStatus(lastConnector) }}
-  </span>
+
+  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="(failedConnectors.length || disconnectedConnectors.length)">
+    <i class="fa fa-exclamation-triangle"></i>
+  </div>
 
   <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
     <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }"></i>
@@ -17,27 +18,45 @@
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div ng-repeat="connector in otherConnectors track by $index">
-    <span>{{ formatStatus(connector) }}</span>
+  <div class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ 'add-seperator': !$last }">
+    <span ng-bind-html="formatStatus(connector)"></span>
   </div>
-  <div style="border-bottom: 1px solid #ccc; width: 100%; height: 2px; margin: 5px 0;"></div>
-  <p>All other applications are synced in real-time.</p>
+  <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
+    <p>All {{realtimeSyncing ? '' : 'other'}} applications are synced in real-time.</p>
+  </div>
 </script>
 
 <!-- ui.bootstrap modal template -->
 <script type="text/ng-template" id="alerts.tmpl.html">
-  <div class="modal-header">
-    <h4 class="modal-title">Synchronization alerts</h4>
-  </div>
-  <div class="modal-body">
-    <div ng-repeat="connector in failedConnectors track by $index">
-      {{connector.name}} - Synchronization failed. Please retry later.
+  <div id="sync-apps-modal">
+    <div class="modal-header">
+      <h4 class="modal-title">Synchronization alerts</h4>
     </div>
-    <div ng-repeat="connector in disconnectedConnectors track by $index">
-      {{connector.name}} is disconnected. Please reconnect to synchronize.
+    <div class="modal-list">
+      <div class="modal-list-item" ng-repeat="connector in failedConnectors track by $index"  ng-click="expandListItemOnClick($event, $first)">
+        <i class="fa fa-times error"></i><strong>{{connector.name}}</strong> sync failed.
+        <div class="message error ng-hide" ng-if="connector.message">
+          <p>{{connector.message}}</p>
+        </div>
+        <div class="message error ng-hide reduced-margin-top">
+          <p>{{formatStatus(connector, true)}}</p>
+        </div>
+      </div>
+      <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index"  ng-click="expandListItemOnClick($event)">
+        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is not connected. Please connect to sync.
+        <div class="message warn ng-hide">
+          <p>{{formatStatus(connector, true)}}</p>
+        </div>
+      </div>
+      <div class="modal-list-item" ng-repeat="connector in successfulConnectors track by $index"  ng-click="expandListItemOnClick($event)">
+        <i class="fa fa-check success"></i><strong>{{connector.name}}</strong> is synced!
+        <div class="message success ng-hide">
+          <p>{{formatStatus(connector, true)}}</p>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    </div>
   </div>
 </script>

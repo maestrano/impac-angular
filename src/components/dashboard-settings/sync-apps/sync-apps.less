@@ -3,4 +3,69 @@
     margin-right: 5px;
     color: @impac-widget-text-color-medium;
   }
+  .caution-btn {
+    i { color: @fluroorange; font-size: 16px; }
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 7px 5px 0px;
+  }
+
+  .popover {
+    max-width: 500px;
+    .connector {
+      padding: 4px 13px;
+      &.add-seperator { border-bottom: 1px solid #ccc; }
+    }
+    .popover-content {
+      padding: 0;
+    }
+    .popover-footer {
+      border-top: 1px solid #ccc;
+      padding: 4px 13px;
+      p {
+        font-weight: bold;
+        margin: 0;
+      }
+      &.remove-seperator { border: 0; }
+    }
+  }
+}
+
+#sync-apps-modal {
+  .modal-header {
+    text-align: center;
+    border: 0;
+    box-shadow: 0px 2px 3px 0px #ccc;
+  }
+  .modal-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .modal-list-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+  .modal-footer {
+    border: 0;
+  }
+  .message {
+    p { margin: 0 }
+    padding: 3px;
+    border-radius: 2px;
+    margin-left: 31px;
+    margin-top: 9px;
+    &.error { background-color: rgba(255, 0, 0, 0.08); }
+    &.warn { background-color: rgba(255, 118, 0, 0.08); }
+    &.success { background-color: rgba(0, 255, 55, 0.08); }
+    &.reduced-margin-top { margin-top: 2px }
+  }
+  .fa { padding: 0px 10px; }
+  .fa.error { color: @red; }
+  .fa.warn { color: @fluroorange; }
+  .fa.success { color: @flurogreen; }
 }
