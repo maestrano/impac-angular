@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-cycle',[])
 
-module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -23,15 +23,20 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
   # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.status_average_durations)
+
+      meta = if w.metadata.status_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_selection else w.metadata.status_selection
+
+      $scope.hasReach = true
+
       $scope.unit = (w.metadata.unit || w.content.unit || "days").toLowerCase()
 
-      $scope.statusOptions = _.compact _.map w.metadata.status_selection, (status) ->
+      $scope.statusOptions = _.compact _.map meta.values, (status) ->
         {label: status, selected: true} if angular.isDefined(w.content.status_average_durations[status])
 
       angular.forEach w.content.status_average_durations, (value, status) ->
-        if w.metadata.status_selection && !(status in w.metadata.status_selection)
+        if meta.values && !(status in meta.values)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(w.metadata.status_selection)
+        else if _.isEmpty(meta.values)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
@@ -60,7 +65,7 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
         currency: w.content.unit
       }
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

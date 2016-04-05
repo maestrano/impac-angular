@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -34,13 +34,17 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.leads_per_status) && hasOneLead(w.content.leads_per_status)
 
-      $scope.statusOptions = _.compact _.map w.metadata.status_selection, (status) ->
-        {label: status, selected: true} if angular.isDefined(w.content.leads_per_status[status])
+      meta = if w.metadata.status_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_selection else w.metadata.status_selection
+
+      $scope.hasReach = true
+
+      $scope.statusOptions = _.compact _.map(meta.values, (status) ->
+        {label: status, selected: true} if angular.isDefined(w.content.leads_per_status[status]))
 
       angular.forEach w.content.leads_per_status, (value, status) ->
-        if w.metadata.status_selection && !(status in w.metadata.status_selection)
+        if meta.values && !(status in meta.values)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(w.metadata.status_selection)
+        else if _.isEmpty(meta.values)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
@@ -62,7 +66,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
       # will trigger updateSettings(false)
       w.toggleExpanded()
     else
-      ImpacWidgetsSvc.updateWidgetSettings(w,false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
 
   $scope.isSelected = (aStatus) ->
     return $scope.selectedStatus && aStatus == $scope.selectedStatus
