@@ -1,61 +1,77 @@
+// IMPAC! WORKSPACE
+//--------------------------------------------------------
+// PLEASE DO NOT COMMIT CHANGES TO THIS FILE.
+// You can use `git add -p ./` to selectively add files to your git index.
+// -------------------------------------------------------
 var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 
-// Configuration impac-angular lib on module impacWorkSpace run.
-module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, toastr) {
-
-  //--------------------------------------------------------
-  // Start editing
-  //--------------------------------------------------------
-  // PLEASE DO NOT COMMIT CHANGES TO THIS FILE.
-  // You can use `git add -p ./` to selectively add files to your git index.
-  // -------------------------------------------------------
-
-  // Credentials and endpoints
-  //------------------------------------------------
-  var settings = {
+// -------------------------------------------------------
+// Impac Workspace Settings
+// -------------------------------------------------------
+// Provide important configurations for the impacWorkspace.
+module.factory('settings', function () {
+  return {
+    // Credentials and endpoints
     mno_url: 'https://uat.maestrano.io',
     impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
-    api_secret: ''
-  };
+    api_secret: '',
 
-  // Stub widget templates - add new widgets!
-  //------------------------------------------------
-  // Widget templates are stored on Maestrano API, stub your
-  // new widget templates here, and contact us for permenant additions or
-  // changes to existing widget templates.
-  var widgetsTemplates = [
-    // Example widget template, please see documentation "How-To: Create a Widget" for available
-    // options, and importantly, note how the path & metadata.template attributes work.
+    // Stub widget templates - add new widgets!
+    //------------------------------------------------
+    // Widget templates are stored on Maestrano API, stub your
+    // new widget templates here, and contact us for permenant additions or
+    // changes to existing widget templates.
+    widgetsTemplates: [
+      // Example widget template, please see documentation "How-To: Create a Widget" for available
+      // options, and importantly, note how the path & metadata.template attributes work.
+      // --
+      // {
+      //   path: 'accounts/assets_summary',
+      //   name: 'Assets / Liabilities summary',
+      //   metadata: { template: 'accounts/assets_liability_summary' },
+      //   desc: 'Compare Assets and Liabilities accounts',
+      //   icon: 'pie-chart',
+      //   width: 3
+      // },
+    ]
     // --
-    // {
-    //   path: 'accounts/assets_summary',
-    //   name: 'Assets / Liabilities summary',
-    //   metadata: { template: 'accounts/assets_liability_summary' },
-    //   desc: 'Compare Assets and Liabilities accounts',
-    //   icon: 'pie-chart',
-    //   width: 3
-    // },
-  ];
-  // --
+  };
+});
 
+//--------------------------------------------------------
+// Do not edit below unless you know what you're doing.
+//--------------------------------------------------------
 
-  //--------------------------------------------------------
-  // Do not edit below unless you know what you're doing.
-  //--------------------------------------------------------
+// HTTP Interceptor
+//--------------------------------------------------------
+// Applies headers / configurations to certain requests.
+module.factory('domainSpecificAuthorization', function($window, settings){
+  return {
+    request: function(config) {
+      // encodes a base64 string - Basic Authentication.
+      var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
+      var url = config.url;
+      // merges basic auth with headers if url is to Maestrano's ecosystem.
+      if (url.indexOf(settings.mno_url) >= 0 || url.indexOf(settings.impac_url) >= 0) {
+        angular.extend(config.headers, { Authorization: 'Basic ' + credentials });
+      }
+      return config;
+    }
+  };
+});
+module.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('domainSpecificAuthorization');
+});
+// --
+// Impac! Angular Provider configurations
+// -------------------------------------------------------
+module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, settings, toastr) {
+
   // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
     fail('Missing authentication credentials!');
   }
-
-  // Impac-angular configurations.
-  // -------------------------------------------------------
-
-  // encodes a base64 string - Basic Authentication.
-  var credentials = $window.btoa(settings.api_key + ':' + settings.api_secret);
-  // attaches basic auth onto $http default, which configures all impacWorkspace & maestrano.impac
-  // angular modules $http requests.
-  $http.defaults.headers.common.Authorization = 'Basic ' + credentials;
 
   // Configure the ImpacRoutes service options.
   ImpacRoutes.configureRoutes({
@@ -77,7 +93,7 @@ module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacT
   // Configure the ImpacDeveloper service options.
   ImpacDeveloper.configure({
     status: true,
-    widgetsTemplates: widgetsTemplates || []
+    widgetsTemplates: settings.widgetsTemplates || []
   });
 
   // Link core callbacks required for impac-angular lib to run.
