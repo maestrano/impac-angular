@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacRoutes, ImpacMainSvc) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacRoutes, ImpacMainSvc, ImpacDeveloper) ->
 
     _self = @
 
@@ -34,12 +34,6 @@ angular
 
     isInitialized = ->
       !(_.isEmpty _self.config.ssoSessionId or _.isEmpty _self.config.kpisTemplates or _.isEmpty _self.config.currentDashboardId)
-
-    # impac developer toolkit basic authentication is present.
-    isDeveloper = ->
-      basicAuth = $http.defaults.headers.common.Authorization
-      return basicAuth && typeof basicAuth == 'string' && basicAuth.length
-
 
     #====================================
     # Load and initialize
@@ -122,7 +116,7 @@ angular
     @show = (kpi) ->
       deferred = $q.defer()
 
-      unless isInitialized() || isDeveloper()
+      unless isInitialized() || ImpacDeveloper.isEnabled()
         $log.error 'ImpacKpisSvc - Service not initialized'
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
@@ -164,7 +158,7 @@ angular
     # @create = (source, endpoint, elementWatched, extraParams=[]) ->
       deferred = $q.defer()
 
-      unless isInitialized() || isDeveloper()
+      unless isInitialized() || ImpacDeveloper.isEnabled()
         deferred.reject({error: {message: 'ImpacKpisSvc is not initialized'}})
 
       else
