@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-params-picker options="statusOptions" param="sales_stage_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
+    <div setting-params-picker options="statusOptions" has-reach="hasReach" param="status_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>

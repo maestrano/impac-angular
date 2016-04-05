@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets.sales-opportunities-funnel',[])
 
-module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -17,7 +17,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     $scope.paramsPickerDeferred.promise
     $scope.widthDeferred.promise
   ]
-
 
   # Widget specific methods
   # --------------------------------------
@@ -34,17 +33,17 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opps_per_sales_stage) && hasOneOpportunity(w.content.opps_per_sales_stage)
 
-      defaultWidget = ImpacWidgetsSvc.getDefaultWidget(w.name);
+      meta = if w.metadata.status_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_selection else w.metadata.status_selection
 
-      meta = if w.metadata.sales_stage_selection or not defaultWidget or not defaultWidget.metadata.sales_stage_selection then w.metadata else defaultWidget.metadata
+      $scope.hasReach = true;
 
-      $scope.statusOptions = _.compact _.map meta.sales_stage_selection, (status) ->
-        {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status])
+      $scope.statusOptions = _.compact _.map(meta.values, (status) ->
+        {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status]))
 
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
-        if meta.sales_stage_selection && !(status in meta.sales_stage_selection)
+        if meta.values && !(status in meta.values)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(meta.sales_stage_selection)
+        else if _.isEmpty(meta.values)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
@@ -66,7 +65,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       # will trigger updateSettings(false)
       w.toggleExpanded()
     else
-      ImpacWidgetsSvc.updateWidgetSettings(w,false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
 
   $scope.isSelected = (aStatus) ->
     return $scope.selectedStatus && aStatus == $scope.selectedStatus

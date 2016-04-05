@@ -74,22 +74,19 @@ angular
         setting.initialize()
       return true
 
-    @updateWidgetSettings = (widget, needContentReload=true) ->
+    @updateWidgetSettings = (widget, needContentReload=true, ignoreReach=false) ->
       widget.isEditMode = false
       if _.isEmpty(widget.settings)
         $log.warn("ImpacWidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
         return false
 
-      paramPicker = _.find(widget.settings, {'key': 'params-picker', 'reach': 'dashboard'})
+      changedGlobalSetting = _.find widget.settings, (setting)-> setting.reach == 'dashboard'
 
-      if (paramPicker)
-        paramPicker.reach = null;
-        return @updateAllSameWidgets(widget, 'params-picker', paramPicker)
+      if (changedGlobalSetting && !ignoreReach)
+        return _self.updateAllSameWidgets(widget, ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
       widget.isLoading = true if needContentReload
       meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
-
-      widget.metadata = meta;
 
       _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
@@ -97,30 +94,18 @@ angular
             _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
       )
 
-    @updateAllSameWidgets = (widget, settingName, settingsPrototype) ->
-      sameWidgets = _.filter ImpacDashboardsSvc.getCurrentDashboard().widgets, (wgt) -> wgt.name == widget.name
+    @updateAllSameWidgets = (widget, dashboard, settings) ->
+      sameWidgets = _.filter dashboard.widgets, (wgt)-> wgt.name == widget.name
 
-      _.each(sameWidgets, (wgt) ->
-        setting = _.find wgt.settings, {'key': settingName}
-        setting.setOptions settingsPrototype.getOptions()
-        _self.updateWidgetSettings wgt, true
-      )
-
-      dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-
-      defaultWidget = _self.getDefaultWidget widget.name
-
-      newMeta = _.cloneDeep widget.metadata
-
-      if (defaultWidget)
-        defaultWidget.metadata = newMeta
-      else
-        dashboard.status_selection.push({'name': widget.name, 'metadata': newMeta})
-
-      ImpacDashboardsSvc.update dashboard.id, {'status_selection': dashboard.status_selection}
-
-    @getDefaultWidget = (widgetName)->
-      return _.find(ImpacDashboardsSvc.getCurrentDashboard().status_selection, {'name': widgetName})
+      ImpacDashboardsSvc.update(dashboard.id, settings.toMetadata()).then (updatedDashboard)->
+        dashboard[settings.paramName] = updatedDashboard[settings.paramName]
+        _.each sameWidgets, (wgt)->
+          wgt.metadata[settings.paramName] = _.cloneDeep settings.toMetadata()[settings.paramName]
+          wgt.isLoading = true;
+          _self.update(wgt, { metadata: wgt.metadata }).then(
+            (updatedWidget) ->
+              _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+          )
 
     @massAssignAll = (metadata) ->
       unless _.isEmpty(metadata)
