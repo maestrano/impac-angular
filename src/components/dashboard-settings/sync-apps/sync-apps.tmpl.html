@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index"  ng-click="expandListItemOnClick($event)">
-        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is disconnected. Please reconnect to sync.
+        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is not connected. Please connect to sync.
         <div class="message warn ng-hide">
           <p>{{formatStatus(connector, true)}}</p>
         </div>

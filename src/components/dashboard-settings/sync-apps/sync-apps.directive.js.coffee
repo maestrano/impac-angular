@@ -133,15 +133,17 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             when 'FAILED'
               status = if modalDisplay then "Previous sync #{date}" else "is not synced - previous sync #{date}"
             when 'DISCONNECTED'
-              status = if modalDisplay then "Previous sync #{date}" else "is disconnected - previous sync #{date}"
+              status = if modalDisplay then "Previous sync #{date}" else "is not connected - previous sync #{date}"
             # "RUNNING" case should imply isSyncing==true...
 
         else
           switch connector.status
-            when 'FAILED', 'NOT SYNCED'
+            when 'FAILED'
+              status = if modalDisplay then "Sync failed" else "is not synced - sync failed"
+            when 'NOT SYNCED'
               status = if modalDisplay then "Never synced" else "is not synced - never synced"
             when 'DISCONNECTED'
-              status = if modalDisplay then "Never synced" else "is disconnected - never synced"
+              status = if modalDisplay then "Not connected" else "is not synced - not connected"
             # Any other case would be buggy...
 
         status = if modalDisplay then "#{status}" else "<strong>#{name}</strong> #{status}"
