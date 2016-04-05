@@ -2,6 +2,7 @@
 
 ### Adds
 - Reworked sync-apps UI, statuses & error management: new design & last sync statuses, last sync statuses customizable via ImpacTheming, alerts modal displays successful connector syncs, details & proper error messages for each alert, and a new caution button which opens the alerts modal.
+- Workspace Http Interceptor: applys basic auth intelligently to requests to Maestrano's ecosystem.
 - Widget Generator: generator widget components from the CLI.
 - Gulp Server with live reload for Developer Workspace!
 - [new widget] "Net Sales"
