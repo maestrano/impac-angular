@@ -7,12 +7,14 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
+    $scope.timePeriodDeferred
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
     $scope.chartDeferred.promise
