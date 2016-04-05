@@ -66,7 +66,7 @@ module.config(function ($httpProvider) {
 // --
 // Impac! Angular Provider configurations
 // -------------------------------------------------------
-module.run(function ($log, $window, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, settings, toastr) {
+module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, settings, toastr) {
 
   // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
