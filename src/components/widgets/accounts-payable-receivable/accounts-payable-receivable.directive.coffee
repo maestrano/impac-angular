@@ -22,13 +22,13 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && w.content.values?
+    $scope.isDataFound = w.content? && w.content.values? && w.content.live_values?
 
   $scope.getCurrentPayable = ->
-    _.last(w.content.values.payables) if $scope.isDataFound
+    if $scope.isDataFound then w.content.live_values.payable else 0.0
 
   $scope.getCurrentReceivable = ->
-    _.last(w.content.values.receivables) if $scope.isDataFound
+    if $scope.isDataFound then w.content.live_values.receivable else 0.0
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
