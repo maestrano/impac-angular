@@ -23,7 +23,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
       w.metadata && o.value == w.metadata.amount_displayed
-    ) || $scope.amountDisplayedOptions[0])
+    ) || $scope.amountDisplayedOptions[1])
 
   $scope.amountDisplayedOptions = [
     {label: 'Last period', value: 'last'},
@@ -86,7 +86,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     _.sum(element.totals) if element.totals?
 
   $scope.getAmount = (element) ->
-    switch w.metadata.amount_displayed
+    switch $scope.amountDisplayed.value
       when 'total'
         getTotalAmount(element)
       else
