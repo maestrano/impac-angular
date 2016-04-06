@@ -92,7 +92,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         descriptor = syncAppsThemingConfig.productDescriptor
         if _.every(scope.connectors, {'status': 'SUCCESS'}) || force
           scope.syncStatus = "#{descriptor} is synced!"
-        else if _.some(scope.connectors, {'status': 'SUCCESS'})
+        else if _.some(scope.connectors, 'last_sync_date')
           scope.syncStatus = "#{descriptor} is partially synced."
         else
           scope.syncStatus = "#{descriptor} is not synced."
