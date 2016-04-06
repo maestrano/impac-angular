@@ -23,14 +23,19 @@ Now you should an api key, api secret, and an organization associated to your Us
   ```
   
 2. Configuring with credentials & launching workspace
-  - Add your api_key & api_secret to the settings object in the workspace/index.js file
-  ```
-  var settings = {
+  - Add your api_key & api_secret to the settings factory in the `workspace/index.js` file
+
+  ```javascript
+  module.factory('settings', function () {
+    return {
+      // Credentials and endpoints
       mno_url: 'https://uat.maestrano.io',
       impac_url: 'https://api-impac-uat.maestrano.io',
       api_key: 'YOUR_KEY',
-      api_secret: 'YOUR_SECRET'
-  };
+      api_secret: 'YOUR_SECRET',
+      ...
+    }
+  });
   ```
   
 3. There a few ways to prepare & launch the Impac Developer Workspace..
@@ -122,26 +127,30 @@ You want to make the generator better? Of course. See the [README](./generators/
   **Widgets templates can be stubbed in the `workspace/index.js` file, via the `ImpacDeveloper` service.**
 
   ```javascript
- 
-    // workspace/index.js
-    
-    var widgetsTemplates = [
-      {
-        path: 'invoices/awesome-existing-engine',
-        name: 'Awesome Sales Widget',
-        metadata: { template: 'sales/your-awesome-component' },
-        desc: 'compares awesome things to more awesome things',
-        icon: 'pie-chart',
-        width: 3
-      },
-      {
-        path: 'accounting/your-engine-and-component-name',
-        name: 'Awesome Accounting Widget',
-        desc: 'compares awesome things to more awesome things',
-        icon: 'pie-chart',
-        width: 3
+    module.factory('settings', function () {
+      return {
+      
+        ...
+        
+        widgetsTemplates: [
+              {
+                path: 'invoices/awesome-existing-engine',
+                name: 'Awesome Sales Widget',
+                metadata: { template: 'sales/your-awesome-component' },
+                desc: 'compares awesome things to more awesome things',
+                icon: 'pie-chart',
+                width: 3
+              },
+              {
+                path: 'accounting/your-engine-and-component-name',
+                name: 'Awesome Accounting Widget',
+                desc: 'compares awesome things to more awesome things',
+                icon: 'pie-chart',
+                width: 3
+              }
+        ]
       }
-    ];
+    });
   ```
  
   *This will inject your stubbed templates into the angular apps model,  displaying available templates from API and your stubbed templates.*

@@ -59,7 +59,11 @@ Embed angular-impac's wrapper directive `'impacDashboard'`. You can use either E
 ### Impac Angular Providers & Services
 ---
 
-Note: This section is a work-in-progress, not all services and providers that can be used to configure impac-angular are documented. 
+*Note: This section is a work-in-progress, not all services and providers that can be used to configure impac-angular are documented.*
+
+Docs on an Angular Provider Service: https://docs.angularjs.org/guide/providers
+
+The Provider Service allows the parent app to pass data to impac-angular by  using Angular module `.config()` and `.run()` methods, while also allowing impac-angular to define defaults for these customisable options.
 
 ---
 
@@ -67,6 +71,7 @@ Note: This section is a work-in-progress, not all services and providers that ca
 
 Provides impac-angular with core data that it needs to run. This providers configuration is **required** and an error with be thrown if the below configurations have not been given.
 
+##### options
 **user**<br>
 _type_: Function<br>
 _return_: Promise -> { sso_session: ssoSession, ... }<br>
@@ -79,14 +84,14 @@ _usage_: Retrieving organizations and current organization id.
 
 #### Example
 
-```javascript
+```coffeescript
   angular
     .module('yourApp', [])
     .run( (ImpacLinkingProvider, ImpacConfigProvider) ->
     
-    # ImpacConfig service could be a service your app 
-    # provides to retrieve user data and organizations 
-    # from MNO HUB API.
+      # ImpacConfig service (an example service) could 
+      # be a service your app provides to retrieve user 
+      # data and organizations from MNO HUB API.
       data =
           user: ImpacConfig.getUserData
           organizations: ImpacConfig.getOrganizations
@@ -102,10 +107,11 @@ _usage_: Retrieving organizations and current organization id.
 
 Provides impac-angular with paths for static assets hosted by the parent application.
 
+##### options
 **dataNotFound**<br>
 _type_: String<br>
 _default_: `null`<br>
-_usage_: Relative image path to the "data not found" screenshots.
+_usage_: Relative path to a directive containing screenshots that are displayed as a background-image for widgets when the "data not found" case is met. The files in this directory need to be organised & named to match the widget engine path. See [Impac! API docs](http://maestrano.github.io/impac/), go to a widget and look at the **engine** value (e.g `accounts/accounting_values/turnover`).
 
 **impacTitleLogo**<br>
 _type_: String<br>
@@ -126,7 +132,7 @@ _usage_: Whether to log a warning message or not if an asset is not found
 
 ##### Example
 
-```javascript
+```coffeescript
 angular
   .module('yourApp', [])
   .config( (ImpacAssetsProvider) ->
@@ -136,6 +142,35 @@ angular
       noWarning: true
 
     ImpacAssetsProvider.configure(paths)
+  )
+)
+```
+
+#### Impac Theming Provider (assets.svc.coffee)
+
+Provides impac-angular with options for customising its colour theme, layout, labels, descriptions, and even enabling(showing/hiding) features.
+
+##### options
+
+View the `theming.svc.coffee` (within impac-angular) source file `options` object for available options.
+
+*TODO: add docs for these options.*
+
+##### Example
+
+```coffeescript
+angular
+  .module('yourApp', [])
+  .config( (ImpacThemingProvider) ->
+
+    options =
+      dhbConfig:
+        showDhbHeading: true
+        dhbHeadingText: 'Epic Reports'
+      dataNotFoundConfig: 
+        linkUrl: '/marketplace'
+
+    ImpacThemingProvider.configure(options)
   )
 )
 ```
