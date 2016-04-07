@@ -9,6 +9,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.orgDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
+  $scope.accountingBehaviourDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
@@ -17,6 +18,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.orgDeferred.promise
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
+    $scope.accountingBehaviourDeferred
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
@@ -33,7 +35,13 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     w.selectedAccount.name if w.selectedAccount?
 
   $scope.getCurrentBalance = ->
-    w.selectedAccount.current_balance if w.selectedAccount?
+    if w.selectedAccount?
+      if w.metadata.accounting_behaviour == 'pnl'
+        _.sum w.selectedAccount.balances
+      else
+        w.selectedAccount.current_balance
+    else
+      0.0
 
   $scope.getCurrency = ->
     w.selectedAccount.currency if w.selectedAccount?
