@@ -2352,6 +2352,16 @@ impac-kpi .kpi {
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
+.analytics .settings.accounting-behaviour {
+
+  .btn.btn-primary {
+    background-color: lighten(@impac-widget-link-color, 10%);
+    border: solid 1px @impac-widget-link-color;
+    &.focus, &.active { background-color: @impac-widget-link-color; }
+  }
+
+}
+
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -2414,7 +2424,7 @@ impac-kpi .kpi {
     top: -14px;
     margin: auto;
     &.right {
-      left: 30px;
+      left: 46px;
     }
     &.left {
       left: -30px;
@@ -2437,6 +2447,7 @@ impac-kpi .kpi {
     }
   }
 }
+
 .analytics .settings.limit-entries {
   color: @impac-widget-limit-entries-color;
   text-transform: uppercase;
