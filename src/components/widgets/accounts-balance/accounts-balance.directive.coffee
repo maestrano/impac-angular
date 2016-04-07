@@ -63,7 +63,12 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      inputData = {title: data.name, labels: dates, values: data.balances}
+      lineData = {title: data.name, labels: dates, values: data.balances}
+      barData = {
+        labels: dates
+        datasets: [ { title: data.name, values: data.balances } ]
+      }
+
       all_values_are_positive = true
       angular.forEach(data.balances, (value) ->
         all_values_are_positive &&= value >= 0
@@ -73,7 +78,10 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
-      chartData = ChartFormatterSvc.lineChart([inputData],options)
+
+      chartData = ChartFormatterSvc.lineChart([lineData],options)
+      if w.metadata.accounting_behaviour == 'pnl'
+        chartData = ChartFormatterSvc.combinedBarChart(barData,options,false)
       
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
