@@ -106,7 +106,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           # Update dates
           scope.toDate = histParams.to
           minDate = scope.getMinDate(scope.toDate)
-          if moment(histParams.from).isBefore(minDate)
+          if moment(histParams.from, "YYYY-MM-DD").isBefore(minDate)
             scope.fromDate = minDate
           else
             scope.fromDate = histParams.from
@@ -156,7 +156,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           fromDate = set.toMetadata().hist_parameters.from
           toDate = set.toMetadata().hist_parameters.to
           minDate = scope.getMinDate()
-          if moment(fromDate).isBefore(minDate)
+          if moment(fromDate, "YYYY-MM-DD").isBefore(minDate)
             scope.toDate = toDate
             scope.fromDate = minDate
             set.initialize()
@@ -174,11 +174,11 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
       scope.getMinDate = (toDate=undefined) ->
         to = moment()
         if toDate?
-          to = moment(toDate)
+          to = moment(toDate, "YYYY-MM-DD")
         # Make sure the settings are initialized before trying to retrieve toMetadata()
         else if scope.usedSetting? && scope.isDatesPickerUsed()
           sourceSetting = getSetting('dates-picker')
-          to = moment(sourceSetting.toMetadata().hist_parameters.to)
+          to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
 
         periodWord = getPeriod().toLowerCase().replace('ly','') + 's'
         periodWord = 'days' if getPeriod() == 'DAILY'

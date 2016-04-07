@@ -33,8 +33,8 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming)
       mode = 'current'
     return {hist_parameters: {mode: mode}}
 
+  labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
   $scope.getCurrentLabel = ->
-    labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
     if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
       return labels[$scope.accountingBehaviour]
     else

@@ -28,15 +28,17 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   # Widget specific methods
   # --------------------------------------
   $scope.isDataFound=true
+  $scope.accountingBehaviour = 'bls'
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
+    $scope.accountingBehaviour = w.metadata.accounting_behaviour if w.metadata.accounting_behaviour?
 
   $scope.getName = ->
     w.selectedAccount.name if w.selectedAccount?
 
   $scope.getCurrentBalance = ->
     if w.selectedAccount?
-      if w.metadata.accounting_behaviour == 'pnl'
+      if $scope.accountingBehaviour == 'pnl'
         _.sum w.selectedAccount.balances
       else
         w.selectedAccount.current_balance
@@ -80,7 +82,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       }
 
       chartData = ChartFormatterSvc.lineChart([lineData],options)
-      if w.metadata.accounting_behaviour == 'pnl'
+      if $scope.accountingBehaviour == 'pnl'
         chartData = ChartFormatterSvc.combinedBarChart(barData,options,false)
       
       # calls chart.draw()
