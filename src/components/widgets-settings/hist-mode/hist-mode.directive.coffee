@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
+module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming) ->
 
   w = $scope.parentWidget
   w.isHistoryMode = false
@@ -33,6 +33,14 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
       mode = 'current'
     return {hist_parameters: {mode: mode}}
 
+  $scope.getCurrentLabel = ->
+    labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
+    if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
+      return labels[$scope.accountingBehaviour]
+    else
+      return labels.default
+
+
   w.settings.push(setting)
 
   # Setting is ready: trigger load content
@@ -47,6 +55,7 @@ module.directive('settingHistMode', ($templateCache) ->
       parentWidget: '='
       deferred: '='
       onToggle: '&'
+      accountingBehaviour: '@?'
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'

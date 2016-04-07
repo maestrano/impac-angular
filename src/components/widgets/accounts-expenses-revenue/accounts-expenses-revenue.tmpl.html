@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)">
-      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" />
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" accounting-behaviour="pnl" />
 
       <div class="chart-container">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>

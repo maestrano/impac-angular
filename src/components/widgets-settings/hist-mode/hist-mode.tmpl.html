@@ -1,6 +1,6 @@
 <div class="settings hist-mode-choser">
   <div align="center" class="options">
-    <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">current</a> |
+    <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">{{ getCurrentLabel() }} </a> |
     <a ng-click="toggleHistMode('history')" ng-class="parentWidget.isHistoryMode ? 'active' : 'inactive'">history</a>
   </div>
   <div class="{{parentWidget.isHistoryMode ? 'arrow-container right' : 'arrow-container left'}}">
