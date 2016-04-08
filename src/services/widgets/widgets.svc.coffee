@@ -80,8 +80,10 @@ angular
         $log.warn("ImpacWidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
         return false
 
+      # Check if widget settings should be written to all same widgets and use as a default
       changedGlobalSetting = _.find widget.settings, (setting)-> setting.reach == 'dashboard'
 
+      # Update all same widgets and dashboard settings if needed
       if (changedGlobalSetting && !ignoreReach)
         return _self.updateAllSameWidgets(widget, ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
@@ -94,14 +96,25 @@ angular
             _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
       )
 
+    # TODO: move logic in ImpacDashboardsSvc
+    # Sets setting for all widgets with same name
     @updateAllSameWidgets = (widget, dashboard, settings) ->
+      # Find name of parameter
+      paramName = _.keys(settings.toMetadata())[0];
+
+      # Find widgets with same name
       sameWidgets = _.filter dashboard.widgets, (wgt)-> wgt.name == widget.name
 
+      # Write new settings metadata to current dashboard
       ImpacDashboardsSvc.update(dashboard.id, settings.toMetadata()).then (updatedDashboard)->
-        dashboard[settings.paramName] = updatedDashboard[settings.paramName]
+
+        # Update new setting on current dashboard
+        dashboard[paramName] = updatedDashboard[paramName]
+
+        # Set new setting to the same widgets and update them
         _.each sameWidgets, (wgt)->
-          wgt.metadata[settings.paramName] = _.cloneDeep settings.toMetadata()[settings.paramName]
-          wgt.isLoading = true;
+          wgt.metadata[paramName] = _.cloneDeep settings.toMetadata()[paramName]
+          wgt.isLoading = true
           _self.update(wgt, { metadata: wgt.metadata }).then(
             (updatedWidget) ->
               _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
