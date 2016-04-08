@@ -8,7 +8,6 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
   setting = {}
   setting.key = "params-picker"
   setting.isInitialized = false
-  setting.paramName = $scope.param
 
   setting.initialize = ->
     $scope.sortableOptions = {
@@ -16,8 +15,9 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
       tolerance: 'pointer'
     }
 
-    $scope.applyToDashboard = w.metadata[$scope.param].reach == 'dashboard'
+    $scope.applyToDashboard = w.metadata[$scope.param] && w.metadata[$scope.param].reach == 'dashboard'
 
+    # Method sets where widget should take and save settings; it's dashboard or widget
     $scope.toggleReach = ->
       setting.reach = if $scope.applyToDashboard then 'dashboard' else 'widget'
 

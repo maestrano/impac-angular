@@ -33,17 +33,20 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opps_per_sales_stage) && hasOneOpportunity(w.content.opps_per_sales_stage)
 
-      meta = if w.metadata.status_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_selection else w.metadata.status_selection
+      # Takes metadata from dashboard or from widget according to 'reach' parameter
+      opps_per_sales_stage = if w.metadata.opps_per_sales_stage && w.metadata.opps_per_sales_stage.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().opps_per_sales_stage else w.metadata.opps_per_sales_stage
+      opps_per_sales_stage = opps_per_sales_stage || {values:[]}
 
+      # Parameter which define showing 'Apply to all similar widgets' checkbox
       $scope.hasReach = true;
 
-      $scope.statusOptions = _.compact _.map(meta.values, (status) ->
+      $scope.statusOptions = _.compact _.map(opps_per_sales_stage.values, (status) ->
         {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status]))
 
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
-        if meta.values && !(status in meta.values)
+        if opps_per_sales_stage.values && !(status in opps_per_sales_stage.values)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(meta.values)
+        else if _.isEmpty(opps_per_sales_stage.values)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?

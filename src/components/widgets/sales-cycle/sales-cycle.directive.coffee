@@ -24,19 +24,22 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.status_average_durations)
 
-      meta = if w.metadata.status_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_selection else w.metadata.status_selection
+      # Takes metadata from dashboard or from widget according to 'reach' parameter
+      status_average_durations = if w.metadata.status_average_durations && w.metadata.status_average_durations.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().status_average_durations else w.metadata.status_average_durations
+      status_average_durations = status_average_durations || {values:[]}
 
+      # Parameter which define showing "Apply to all similar widgets" checkbox
       $scope.hasReach = true
 
       $scope.unit = (w.metadata.unit || w.content.unit || "days").toLowerCase()
 
-      $scope.statusOptions = _.compact _.map meta.values, (status) ->
+      $scope.statusOptions = _.compact _.map status_average_durations.values, (status) ->
         {label: status, selected: true} if angular.isDefined(w.content.status_average_durations[status])
 
       angular.forEach w.content.status_average_durations, (value, status) ->
-        if meta.values && !(status in meta.values)
+        if status_average_durations.values && !(status in status_average_durations.values)
           $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(meta.values)
+        else if _.isEmpty(status_average_durations.values)
           $scope.statusOptions.push({label: status, selected: true})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
