@@ -85,7 +85,7 @@ angular
 
       # Update all same widgets and dashboard settings if needed
       if (changedGlobalSetting && !ignoreReach)
-        return _self.updateAllSameWidgets(widget, ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
+        return _self.updateAllSameWidgets(ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
       widget.isLoading = true if needContentReload
       meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
@@ -98,27 +98,30 @@ angular
 
     # TODO: move logic in ImpacDashboardsSvc
     # Sets setting for all widgets with same name
-    @updateAllSameWidgets = (widget, dashboard, settings) ->
+    @updateAllSameWidgets = (dashboard, settings) ->
       # Find name of parameter
       paramName = _.keys(settings.toMetadata())[0];
-
-      # Find widgets with same name
-      sameWidgets = _.filter dashboard.widgets, (wgt)-> wgt.name == widget.name
 
       # Write new settings metadata to current dashboard
       ImpacDashboardsSvc.update(dashboard.id, settings.toMetadata()).then (updatedDashboard)->
 
         # Update new setting on current dashboard
         dashboard[paramName] = updatedDashboard[paramName]
+        _.each dashboard.widgets, (wgt) ->
+          # Retrieve the name of parameters attached to the widget
+          # TODO: export to a helper function in WidgetsSvc
+          wgtSettingsKeys = _.uniq( _.map( wgt.settings, (st) ->
+            _.keys(st.toMetadata())[0]
+          ))
 
-        # Set new setting to the same widgets and update them
-        _.each sameWidgets, (wgt)->
-          wgt.metadata[paramName] = _.cloneDeep settings.toMetadata()[paramName]
-          wgt.isLoading = true
-          _self.update(wgt, { metadata: wgt.metadata }).then(
-            (updatedWidget) ->
-              _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
-          )
+          # The widget's metadata are updated only if the correct setting is attached to the widget
+          if _.includes(wgtSettingsKeys, paramName)
+            wgt.metadata[paramName] = _.cloneDeep settings.toMetadata()[paramName]
+            wgt.isLoading = true
+            _self.update(wgt, { metadata: wgt.metadata }).then(
+              (updatedWidget) ->
+                _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+            )
 
     @massAssignAll = (metadata) ->
       unless _.isEmpty(metadata)
