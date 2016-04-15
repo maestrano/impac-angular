@@ -13,7 +13,7 @@
     <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPI Settings</a></div>
   </div>
 
-  <impac-kpi class="col-xs-4 col-sm-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by $index"></impac-kpi>
+  <impac-kpi class="col-xs-4 col-sm-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by kpi.id"></impac-kpi>
 
   <div ng-show="isAddingKPI" class="col-xs-2 kpi-loader">
     <i class="fa fa-2x fa-spin fa-refresh"></i>

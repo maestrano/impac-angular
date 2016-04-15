@@ -44,10 +44,7 @@ angular
               $log.error("Impac Kpis bar can't add a kpi", error)
           ).finally(-> $scope.isAddingKPI = false)
 
-        $scope.removeKpi = (kpiId) ->
-          $scope.kpis = _.remove($scope.kpis, (kpi) ->
-            kpi.id != kpiId
-          )
+        $scope.removeKpi = (kpiId) -> _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
 
         $scope.toggleEditMode = ->
           $scope.showEditMode = !$scope.showEditMode
