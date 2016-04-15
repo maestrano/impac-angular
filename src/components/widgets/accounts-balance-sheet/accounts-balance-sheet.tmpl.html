@@ -30,8 +30,9 @@
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="category in categories" >
         <div class="col-xs-12">
+
           <!-- Statements lines -->
-          <div class="row widget-line total" >
+          <div class="row widget-line" >
             <div class="col-xs-1" ng-click="toggleCollapsed(category)" style="cursor: pointer;">
               <i class="fa" ng-class="isCollapsed(category) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
             </div>
@@ -50,7 +51,7 @@
           <div class="row" collapse="isCollapsed(category)">
             <div class="col-xs-12">
               <div class="row widget-line" ng-repeat="account in widget.content.summary[category].accounts" >
-                <div class="col-sm-6 col-xs-12 text-left">
+                <div class="col-sm-5 col-xs-11 col-xs-offset-1 text-left">
                   {{account.name | titleize}}
                 </div>
                 <div class="col-sm-3 col-xs-6 text-right">
