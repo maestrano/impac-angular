@@ -15,6 +15,7 @@
 - Better display for widgets' top-line and action buttons
 
 ### Fixes
+- KPIs display correctly on dashboard change, remove kpi working properly, initializes properly before loading kpis.
 - Better UI for widget name edit (tooltips + can now fully use the mouse without dragging the widget)
 
 -------------------------------------------------------------
