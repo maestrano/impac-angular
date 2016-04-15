@@ -1,6 +1,5 @@
 <div class="tile kpi" ng-class="{ 'static': kpi.static }">
-
-  <div class="kpi-show" ng-hide="showEditSettings">
+  <div class="kpi-show">
     <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
     <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="yes" onaftersave="updateName()">{{kpi.name}}</small>
     <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
@@ -12,11 +11,11 @@
       <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
     </div>
 
-    <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
+    <div class="kpi-alert" ng-show="editMode" ng-click="toggleEditMode(true)">Edit</div>
     <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
   </div>
 
-  <div class="kpi-edit" ng-show="showEditSettings">
+  <div class="kpi-edit">
     <span class="param-name">KPI target:</span>
 
     <!-- TODO: refactor design to handle multiple targets and ranges -->
@@ -25,10 +24,12 @@
       </select>
 
       <div class="pull-right input-limit-value form-group has-feedback">
-        <input type="text" class="form-control input-sm" ng-model="kpi.limit.value">
+        <input type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
         <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
       </div>
     </div>
+    <!-- TODO: when refactoring design for multiple targets, add proper front-end validation -->
+    <p id="target-error" style="color:red;font-size:11px;margin:0;">Target is required</p>
 
     <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
       <span class="param-name">Select {{param | titleize}}:</span>
@@ -36,7 +37,7 @@
       </select>
     </div>
 
-    <button class="btn btn-xs btn-default" ng-click="hideEditSettings()">Cancel</button>
+    <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
     <button class="btn btn-xs btn-success" ng-click="updateSettings()">Save</button>
   </div>
 
