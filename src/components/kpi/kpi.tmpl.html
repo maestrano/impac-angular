@@ -20,23 +20,25 @@
       <span class="param-name">KPI target:</span>
 
       <!-- TODO: refactor design to handle multiple targets and ranges -->
-      <div class="clearfix edit-limit align">
-        <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
-        </select>
-
-        <div class="pull-right input-limit-value form-group has-feedback">
-          <input type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-          <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+      <form name="kpi{{kpi.id}}SettingsForm">
+        <div class="clearfix edit-limit align">
+          <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
+          </select>
+          <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
+            <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
+            <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+            <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
+              <span ng-message="required">KPI target is required</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <!-- TODO: when refactoring design for multiple targets, add proper front-end validation -->
-      <p id="target-error" style="color:red;font-size:11px;margin:0;">Target is required</p>
 
-      <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
-        <span class="param-name">Select {{param | titleize}}:</span>
-        <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
-        </select>
-      </div>
+        <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
+          <span class="param-name">Select {{param | titleize}}:</span>
+          <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
+          </select>
+        </div>
+      </form>
 
       <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
       <button class="btn btn-xs btn-success" ng-click="updateSettings()">Save</button>

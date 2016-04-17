@@ -17,7 +17,6 @@ angular
         scope.toggleEditMode = (editing)->
           element.find('.kpi-show')[if editing then 'hide' else 'show']()
           element.find('.kpi-edit')[if editing then 'show' else 'hide']()
-          element.find('.target-error').show() unless !editing && scope.hasValidTarget()
           return
 
         scope.toggleLoader = (isLoading)->
