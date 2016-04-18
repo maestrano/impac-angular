@@ -273,7 +273,7 @@ angular
     #       {title: 'LIABILITY', values: [67868,686]}
     #     ]
     # positivesOnly: if true (default), negative bars will be turned into their opposite
-    @combinedBarChart = (inputData, opts={}, positivesOnly=true) ->
+    @combinedBarChart = (inputData, opts={}, positivesOnly=true, versusMode=false) ->
       _self.setTooltipsTextLayout(opts, true)
 
       index = 0
@@ -283,7 +283,13 @@ angular
         data: {
           labels: inputData.labels
           datasets: _.map inputData.datasets, (dataset) ->
+
             color = _self.getColor(index)
+            if versusMode
+              if index == 0
+                color = _self.getNegativeColor()
+              else
+                color = _self.getPositiveColor()
             index++
 
             if positivesOnly

@@ -1,0 +1,13 @@
+<div class="settings time-slider">
+  <div class="row">
+    <div class="col-xs-11 col-xs-offset-1" ng-click="onUse()">
+      Show last {{formatPeriod()}}
+    </div>
+    <div class="col-xs-11 col-xs-offset-1" ng-click="onUse()">
+      <i>{{formatDate(fromDate())}} - {{formatDate(toDate())}}</i>
+    </div>
+    <div class="col-xs-12">
+      <input type="range" ng-model="numberOfPeriods" min="1" max="12" step="1" ng-focus="onUse()">
+    </div>
+  </div>
+</div>

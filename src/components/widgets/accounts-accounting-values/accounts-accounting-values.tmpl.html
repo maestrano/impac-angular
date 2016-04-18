@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)">
-      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" />
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
 
       <div ng-hide="widget.isHistoryMode" class="current">
         <div class="price">

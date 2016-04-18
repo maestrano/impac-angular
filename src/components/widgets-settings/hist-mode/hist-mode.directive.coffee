@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
+module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming) ->
 
   w = $scope.parentWidget
   w.isHistoryMode = false
@@ -19,7 +19,7 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    if w.content? && w.content.hist_parameters? && mode = w.content.hist_parameters.mode
+    if w.metadata? && w.metadata.hist_parameters? && mode = w.metadata.hist_parameters.mode
       if mode == 'history'
         w.isHistoryMode = true
       else
@@ -32,6 +32,14 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc) ->
     else
       mode = 'current'
     return {hist_parameters: {mode: mode}}
+
+  labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
+  $scope.getCurrentLabel = ->
+    if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
+      return labels[$scope.accountingBehaviour]
+    else
+      return labels.default
+
 
   w.settings.push(setting)
 
@@ -47,6 +55,7 @@ module.directive('settingHistMode', ($templateCache) ->
       parentWidget: '='
       deferred: '='
       onToggle: '&'
+      accountingBehaviour: '@?'
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'

@@ -30,8 +30,13 @@ Impac!™ frontend library can be included in any project based on the Maestrano
 ---
 ### Installation
 
-Make sure you have nodejs installed, and then:
+Install nodejs:
+```
+  curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+  sudo apt-get install -y nodejs npm
+```
 
+Install the project's dependencies:
 ```
   npm install
 ```

@@ -5,7 +5,8 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-account parent-widget="widget" class="part" deferred="::accountBackDeferred" />
-    <div setting-time-range parent-widget="widget" class="part" deferred="::timeRangeDeferred" />
+    <div setting-accounting-behaviour parent-widget="widget" class="part" deferred="::accountingBehaviourDeferred" default-behaviour="widget.metadata.accounting_behaviour" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -20,7 +21,7 @@
 
       <!-- All the below divs will remain hidden until an account is selected -->
       <div ng-show="widget.selectedAccount">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" />
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ accountingBehaviour }}" />
 
         <div ng-hide="widget.isHistoryMode">
           <h3>{{getName()}}</h3>

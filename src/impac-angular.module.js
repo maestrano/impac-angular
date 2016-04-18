@@ -90,6 +90,7 @@ angular.module('impac.components.widgets-settings',
   [
     'impac.components.widgets-settings.account',
     'impac.components.widgets-settings.accounts-list',
+    'impac.components.widgets-settings.accounting-behaviour',
     'impac.components.widgets-settings.chart-filters',
     'impac.components.widgets-settings.dates-picker',
     'impac.components.widgets-settings.formula',
@@ -99,7 +100,9 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.param-selector',
     'impac.components.widgets-settings.params-picker',
     'impac.components.widgets-settings.params-checkboxes',
-    'impac.components.widgets-settings.time-range',
+    'impac.components.widgets-settings.time-period',
+    'impac.components.widgets-settings.time-presets',
+    'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width'
   ]
 );

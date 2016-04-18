@@ -2,10 +2,7 @@ describe('<> widget-setting-dates-picker', function () {
   'use strict';
 
   var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend, $timeout;
-
-  // Mock today's date as the 15th of Jan.
   var baseTime = new Date(2016,0,15);
-  jasmine.clock().mockDate(baseTime);
 
   // Compile the directive and return its scope
   var compile = function() {
@@ -43,6 +40,9 @@ describe('<> widget-setting-dates-picker', function () {
 
     // ...and stub their methods
     spyOn(ImpacWidgetsSvc, 'updateWidgetSettings').and.stub();
+
+    // Mock today's date as the 15th of Jan.
+    jasmine.clock().mockDate(baseTime);
   });
 
   describe('.link', function(){

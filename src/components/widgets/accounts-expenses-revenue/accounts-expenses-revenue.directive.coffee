@@ -7,14 +7,14 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramsCheckboxesDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramsCheckboxesDeferred.promise
@@ -37,10 +37,10 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
     $scope.isNetProfitDisplayed = !!$scope.displayOptions[0].value
 
   $scope.getCurrentRevenue = ->
-    _.last(w.content.values.revenue) if $scope.isDataFound
+    _.sum(w.content.values.revenue) if $scope.isDataFound
 
   $scope.getCurrentExpenses = ->
-    _.last(w.content.values.expenses) if $scope.isDataFound
+    _.sum(w.content.values.expenses) if $scope.isDataFound
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound
@@ -63,8 +63,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
           $filter('mnoDate')(date, period)
 
         if $scope.isNetProfitDisplayed
-          lineData = [
-            {title: "Net Profit (#{$scope.getCurrency()})", labels: dates, values: w.content.values.net_profit },
+          datasets = [
+            {title: "Net Profit (#{$scope.getCurrency()})", values: w.content.values.net_profit },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.net_profit, (value) ->
@@ -72,9 +72,9 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
           )
 
         else
-          lineData = [
-            {title: "Expenses (#{$scope.getCurrency()})", labels: dates, values: w.content.values.expenses },
-            {title: "Revenue (#{$scope.getCurrency()})", labels: dates, values: w.content.values.revenue },
+          datasets = [
+            {title: "Expenses (#{$scope.getCurrency()})", values: w.content.values.expenses },
+            {title: "Revenue (#{$scope.getCurrency()})", values: w.content.values.revenue },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.expenses, (value) ->
@@ -84,11 +84,16 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
             all_values_are_positive &&= value >= 0
           )
 
+        lineData =
+          labels: dates
+          datasets: datasets 
+
         lineOptions = {
           scaleBeginAtZero: all_values_are_positive,
           showXLabels: false,
         }
-        chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
+        # chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
+        chartData = ChartFormatterSvc.combinedBarChart(lineData,lineOptions, false, true)
 
       else
         pieData = [

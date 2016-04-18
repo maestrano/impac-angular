@@ -88,6 +88,13 @@ angular
         currency:
           locked: false
 
+      widgetSettings:
+        histModeChoser:
+          currentLabels:
+            pnl: "Total period"
+            bls: "Live balance"
+            default: "Current"
+
 
     #=======================================
     # Public methods available in config

@@ -13,6 +13,8 @@
 - Bump Chart.js from version 2.0.0-beta2
 - Add info panel for widgets
 - Better display for widgets' top-line and action buttons
+- Better time period selection setting (using presets, slider, and dates pickers / financial year handling)
+- P&L and Balance sheet behaviours for some accounting widgets
 
 ### Fixes
 - KPIs display correctly on dashboard change, remove kpi working properly, initializes properly before loading kpis.

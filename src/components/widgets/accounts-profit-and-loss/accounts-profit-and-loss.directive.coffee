@@ -7,17 +7,29 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.timeRangeDeferred.promise
+    $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
+    $scope.paramSelectorDeferred.promise
   ]
 
+  setAmountDisplayed = ->
+    $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
+      w.metadata && o.value == w.metadata.amount_displayed
+    ) || $scope.amountDisplayedOptions[1])
+
+  $scope.amountDisplayedOptions = [
+    {label: 'Last period', value: 'last'},
+    {label: 'Total for period', value: 'total'},
+  ]
+  setAmountDisplayed()
 
   # Widget specific methods
   # --------------------------------------
@@ -26,6 +38,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
+      
+      firstDate = $filter('mnoDate')($scope.dates[0], getPeriod())
+      lastDate = $filter('mnoDate')($scope.getLastDate(), getPeriod())
+      $scope.amountDisplayedOptions[0].label = lastDate
+      $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
+      setAmountDisplayed()
 
       if w.metadata.selectedElements
         $scope.selectedElements = []
@@ -55,17 +73,24 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.getPrevDate = ->
     $scope.dates[$scope.dates.length-2] if $scope.dates?
 
-  $scope.getLastValue = (element) ->
+  getPeriod = ->
+    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
+      w.metadata.hist_parameters.period 
+    else
+      'MONTHLY'
+ 
+  getLastAmount = (element) ->
     _.last(element.totals) if element.totals?
 
-  $scope.getPeriod = ->
-    period = 'MONTHLY'
-    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
-      period = w.metadata.hist_parameters.period
+  getTotalAmount = (element) ->
+    _.sum(element.totals) if element.totals?
 
-    switch period.toUpperCase()
-      when "DAILY" then return "day"
-      else return period.toLowerCase().replace('ly','')
+  $scope.getAmount = (element) ->
+    switch $scope.amountDisplayed.value
+      when 'total'
+        getTotalAmount(element)
+      else
+        getLastAmount(element)
 
   $scope.getClassColor = (aTotal) ->
     if parseInt(aTotal) > 0

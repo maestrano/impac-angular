@@ -9,7 +9,8 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.orgDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
-  $scope.timeRangeDeferred = $q.defer()
+  $scope.accountingBehaviourDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
@@ -17,7 +18,8 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.orgDeferred.promise
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
-    $scope.timeRangeDeferred.promise
+    $scope.accountingBehaviourDeferred
+    $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
   ]
@@ -26,14 +28,22 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   # Widget specific methods
   # --------------------------------------
   $scope.isDataFound=true
+  $scope.accountingBehaviour = 'bls'
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
+    $scope.accountingBehaviour = w.metadata.accounting_behaviour if w.metadata.accounting_behaviour?
 
   $scope.getName = ->
     w.selectedAccount.name if w.selectedAccount?
 
   $scope.getCurrentBalance = ->
-    w.selectedAccount.current_balance if w.selectedAccount?
+    if w.selectedAccount?
+      if $scope.accountingBehaviour == 'pnl'
+        _.sum w.selectedAccount.balances
+      else
+        w.selectedAccount.current_balance
+    else
+      0.0
 
   $scope.getCurrency = ->
     w.selectedAccount.currency if w.selectedAccount?
@@ -55,7 +65,12 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      inputData = {title: data.name, labels: dates, values: data.balances}
+      lineData = {title: data.name, labels: dates, values: data.balances}
+      barData = {
+        labels: dates
+        datasets: [ { title: data.name, values: data.balances } ]
+      }
+
       all_values_are_positive = true
       angular.forEach(data.balances, (value) ->
         all_values_are_positive &&= value >= 0
@@ -65,7 +80,10 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
-      chartData = ChartFormatterSvc.lineChart([inputData],options)
+
+      chartData = ChartFormatterSvc.lineChart([lineData],options)
+      if $scope.accountingBehaviour == 'pnl'
+        chartData = ChartFormatterSvc.combinedBarChart(barData,options,false)
       
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)

@@ -1,16 +1,16 @@
 <span class="settings dates-picker">
-  <h5>Time range</h5>
+  <h5 ng-if="showTitle()">Time range</h5>
 
-  <span class="buttons">
-    <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" max-date="calendarTo.value" >
+  <span class="buttons" ng-click="onUse()">
+    <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()">
       {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
     </button>
     to 
-    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" >
+    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" ng-focus="onUse()">
       {{ calendarTo.value | date : 'yyyy-MM-dd' }}
     </button>
-    <button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" >
-      <i class="fa fa-check" />
+    <button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
+      <i class="fa fa-check"/>
     </button>
   </span>
 </span>

@@ -22,7 +22,7 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
     return { account_uid: w.selectedAccount.uid } if w.selectedAccount?
 
   formatAmount = (anAccount) ->
-    balance = anAccount.current_balance || anAccount.balance
+    balance = anAccount.current_balance || anAccount.balance || 0.0
     return $filter('mnoCurrency')(balance,anAccount.currency)
 
   $scope.formatLabel = (anAccount) ->
