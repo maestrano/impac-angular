@@ -1451,6 +1451,37 @@ impac-kpi .kpi {
   .fa.success { color: @flurogreen; }
 }
 
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
 .analytics .widget-item {
   .editable-title {
     width: 100%;
@@ -1501,37 +1532,6 @@ impac-kpi .kpi {
   // }
 }
 
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 65px;
@@ -1971,9 +1971,6 @@ impac-kpi .kpi {
     color: @impac-widget-text-color;
   }
 }
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -1981,6 +1978,9 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
@@ -1999,9 +1999,6 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.hr-workforce-summary {
-  .expandable-filterable-widget();
-}
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -2009,6 +2006,9 @@ impac-kpi .kpi {
   .widget-lines-container {
     max-height: 210px;
   }
+}
+.analytics .widget-item .content.hr-workforce-summary {
+  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
