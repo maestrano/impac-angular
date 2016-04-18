@@ -10,7 +10,11 @@ angular.module('maestrano.impac',
     'impac.services',
     'impac.filters',
     'impac.components',
-    // EXTERNAL DEPENDENCIES //
+    /*
+     * EXTERNAL DEPENDENCIES *
+     * note: for unit-tests these dependancies need to be manually added into the
+     * karma/karma-min.conf config files.
+    */
     'ngMessages',
     'ui.sortable',
     'ui.bootstrap',
