@@ -30,7 +30,7 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
             ).finally( ->
 
               financialYearStartYear = moment().year() - 1
-              financialYearStartYear = moment().year() if moment().month() >= 6
+              financialYearStartYear = moment().year() if moment().month() >= financialYearEndMonth
               scope.financialYearStartDate = "#{financialYearStartYear}-#{financialYearEndMonth + 1}-01"
 
               toDate = moment().format('YYYY-MM-DD')
