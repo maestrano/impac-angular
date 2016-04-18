@@ -154,7 +154,7 @@ describe('<> widget-setting-time-slider', function () {
         //   $timeout.verifyNoPendingTasks();
         // });
         
-        it('returns the "hist_parameters" metadata which includes a :from element', function() {
+        xit('returns the "hist_parameters" metadata which includes a :from element', function() {
           initialize();
 
           console.log('period: ', customScope.period);
