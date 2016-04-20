@@ -7,6 +7,9 @@
 -------------------------------------------------------------
 # v1.1 | UNTAGGED
 
+-------------------------------------------------------------
+# v1.1.2 | Callbacks, Mass-assignment fix, Currency filter fix
+
 ### Fixes
 - Mass Assign: merges the metadata instead of replacing it + update not pushed if the metadata hasn't changed
 - mno-currency filter: official symbols for 12/14 supported currencies, 'showName' filter argument changed to 'ISOmode', for switching between suffixed ISO code and prefixed currency symbol display.
