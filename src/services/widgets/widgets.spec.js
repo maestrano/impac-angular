@@ -56,6 +56,97 @@ describe('<> ImpacWidgetsSvc', function () {
     xit('updates the widget\'s settings and eventually reload the widget');
   });
 
+  describe('#updateAllSameWidgets(:dashboard, :settings)', function () {
+    var dashboard, settings, paramName, updatedDashboard, anotherSettings;
+    beforeEach(function () {
+      spyOn(svc, 'load').and.returnValue($q.resolve(config));
+      dashboard = angular.copy(currentDhb);
+      settings = {
+        toMetadata: function () {
+          return {
+            status_selection: {
+              values: [],
+              reach: "dashboard"
+            }
+          }
+        }
+      };
+      anotherSettings = {
+        toMetadata: function () {
+          return {
+            another_status_selection: {
+              values: [],
+              reach: "dashboard"
+            }
+          }
+        }
+      };
+
+      dashboard.widgets[0].settings = [angular.copy(settings)];
+      dashboard.widgets[1].settings = [angular.copy(anotherSettings)];
+
+      paramName = _.keys(settings.toMetadata())[0];
+
+      dashboard[paramName] = {
+        values:["a", "b"],
+        reach: "dashboard"
+      };
+
+      var keys = _.keys(dashboard.widgets[1].settings[0].toMetadata())[0];
+
+      spyOn(ImpacDashboardsSvc, 'update').and.callFake(function (id, settings) {
+        updatedDashboard = angular.copy(dashboard);
+        updatedDashboard[paramName] = settings[paramName];
+        return $q.resolve(updatedDashboard);
+      });
+
+      spyOn(svc, 'update').and.callFake(function (wgt, metadata) {
+        wgt.metadata[paramName] = _.cloneDeep(metadata[paramName]);
+        wgt.isLoading = true;
+        return $q.resolve(wgt);
+      });
+
+      spyOn(svc, 'show').and.callFake(function (updatedWidget) {
+        return $q.resolve(updatedWidget);
+      });
+      svc.updateAllSameWidgets(dashboard, settings);
+
+    });
+
+    describe('on _self.load success', function () {
+      beforeEach(function() {
+        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dashboard);
+        $rootScope.$apply();
+      });
+
+      it('parameters is defined', function () {
+        expect(dashboard).toBeDefined();
+        expect(settings).toBeDefined();
+      });
+
+      it('expect the param name to be equal "status_selection"', function () {
+        expect(paramName).toBe("status_selection");
+      });
+
+      it('expect dashboard have been updated', function () {
+        expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(dashboard.id, settings.toMetadata());
+      });
+
+      it('expect dashboard setting "reach" will be "dashboard"', function () {
+        expect(updatedDashboard[paramName].reach).toBe("dashboard");
+      });
+
+      it('expect update have been called with correct widgets and they metadata', function () {
+        expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[0], {metadata: dashboard.widgets[0].metadata});
+        expect(svc.update).not.toHaveBeenCalledWith(dashboard.widgets[1], {metadata: dashboard.widgets[1].metadata});
+      });
+
+      it('expect show have been called', function () {
+        expect(svc.show).toHaveBeenCalled();
+      });
+    })
+  });
+
   describe('#massAssignAll(:metadata)', function() {
     var metadata = {currency: 'EUR'};
 
@@ -63,7 +154,7 @@ describe('<> ImpacWidgetsSvc', function () {
       spyOn(svc, 'load').and.returnValue($q.resolve(config));
       spyOn(svc, 'update').and.callFake(function(w, opts){
         var updatedWidget = angular.copy(w);
-        angular.merge(updatedWidget, opts)
+        angular.merge(updatedWidget, opts);
         return $q.resolve(updatedWidget);
       });
       spyOn(svc, 'show').and.callFake(function(w){
