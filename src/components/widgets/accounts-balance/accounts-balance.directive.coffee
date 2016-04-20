@@ -9,7 +9,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.orgDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
-  $scope.accountingBehaviourDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
@@ -18,7 +17,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.orgDeferred.promise
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
-    $scope.accountingBehaviourDeferred
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
@@ -28,17 +26,18 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   # Widget specific methods
   # --------------------------------------
   $scope.isDataFound=true
-  $scope.accountingBehaviour = 'bls'
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
-    $scope.accountingBehaviour = w.metadata.accounting_behaviour if w.metadata.accounting_behaviour?
 
   $scope.getName = ->
     w.selectedAccount.name if w.selectedAccount?
 
+  $scope.getBehaviour = ->
+    w.selectedAccount? && w.selectedAccount.accounting_behaviour
+
   $scope.getCurrentBalance = ->
     if w.selectedAccount?
-      if $scope.accountingBehaviour == 'pnl'
+      if $scope.getBehaviour() == 'pnl'
         _.sum w.selectedAccount.balances
       else
         w.selectedAccount.current_balance
@@ -59,10 +58,11 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   w.format = ->
     if $scope.isDataFound && w.selectedAccount?
       data = angular.copy(w.selectedAccount)
+      datesSource = data.dates || w.content.dates # w.content.dates should not be used. Placed here in case of frontend hitting old API
 
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-      dates = _.map w.content.dates, (date) ->
+      dates = _.map datesSource, (date) ->
         $filter('mnoDate')(date, period)
 
       lineData = {title: data.name, labels: dates, values: data.balances}
@@ -82,7 +82,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       }
 
       chartData = ChartFormatterSvc.lineChart([lineData],options)
-      if $scope.accountingBehaviour == 'pnl'
+      if $scope.getBehaviour() == 'pnl'
         chartData = ChartFormatterSvc.combinedBarChart(barData,options,false)
       
       # calls chart.draw()
