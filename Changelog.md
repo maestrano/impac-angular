@@ -6,6 +6,9 @@
 -------------------------------------------------------------
 # v1.2 | UNTAGGED
 
+-------------------------------------------------------------
+# v1.2.1 | Developer provider, Gulp refactor, layout fixes, routing fixes, sync fix
+
 ### Fixes
 - Deep routing to dashboards#index when an organization id is specified
 - Apps sync: keeps syncing if the sync is just enqueued (and not performed straight away)
@@ -27,6 +30,9 @@
 
 -------------------------------------------------------------
 # v1.1 | UNTAGGED
+
+-------------------------------------------------------------
+# v1.1.2 | Callbacks, Mass-assignment fix, Currency filter fix
 
 ### Fixes
 - Mass Assign: merges the metadata instead of replacing it + update not pushed if the metadata hasn't changed
