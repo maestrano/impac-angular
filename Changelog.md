@@ -20,6 +20,9 @@
 -------------------------------------------------------------
 # v1.0 | UNTAGGED
 
+-------------------------------------------------------------
+# v1.0.6 | Dashboard sync fix, line chart layout fix, MYOB custom message
+
 ### Fixes
 - Widget invoices list: guarding against metadata.order_by not specified
 - Dashboard loading forever when DashboardsSvc was failing
