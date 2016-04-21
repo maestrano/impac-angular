@@ -99,6 +99,7 @@ angular
     # TODO: move logic in ImpacDashboardsSvc
     # Sets setting for all widgets with same name
     @updateAllSameWidgets = (dashboard, settings) ->
+      # Hack for tests correct working
       _self.load().then ->
         # Find name of parameter
         paramName = _.keys(settings.toMetadata())[0];

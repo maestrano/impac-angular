@@ -84,15 +84,9 @@ describe('<> ImpacWidgetsSvc', function () {
 
       dashboard.widgets[0].settings = [angular.copy(settings)];
       dashboard.widgets[1].settings = [angular.copy(anotherSettings)];
+      dashboard.widgets[2] = angular.copy(dashboard.widgets[0]);
 
       paramName = _.keys(settings.toMetadata())[0];
-
-      dashboard[paramName] = {
-        values:["a", "b"],
-        reach: "dashboard"
-      };
-
-      var keys = _.keys(dashboard.widgets[1].settings[0].toMetadata())[0];
 
       spyOn(ImpacDashboardsSvc, 'update').and.callFake(function (id, settings) {
         updatedDashboard = angular.copy(dashboard);
@@ -110,7 +104,6 @@ describe('<> ImpacWidgetsSvc', function () {
         return $q.resolve(updatedWidget);
       });
       svc.updateAllSameWidgets(dashboard, settings);
-
     });
 
     describe('on _self.load success', function () {
@@ -119,30 +112,21 @@ describe('<> ImpacWidgetsSvc', function () {
         $rootScope.$apply();
       });
 
-      it('parameters is defined', function () {
-        expect(dashboard).toBeDefined();
-        expect(settings).toBeDefined();
-      });
-
-      it('expect the param name to be equal "status_selection"', function () {
-        expect(paramName).toBe("status_selection");
-      });
-
-      it('expect dashboard have been updated', function () {
-        expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(dashboard.id, settings.toMetadata());
-      });
-
       it('expect dashboard setting "reach" will be "dashboard"', function () {
         expect(updatedDashboard[paramName].reach).toBe("dashboard");
       });
 
-      it('expect update have been called with correct widgets and they metadata', function () {
+      it('updates all the similar widgets', function () {
         expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[0], {metadata: dashboard.widgets[0].metadata});
+        expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[2], {metadata: dashboard.widgets[2].metadata});
+      });
+
+      it('does not update the other widgets', function () {
         expect(svc.update).not.toHaveBeenCalledWith(dashboard.widgets[1], {metadata: dashboard.widgets[1].metadata});
       });
 
-      it('expect show have been called', function () {
-        expect(svc.show).toHaveBeenCalled();
+      it('expect show have been called two times', function () {
+        expect(svc.show).toHaveBeenCalledTimes(2);
       });
     })
   });
