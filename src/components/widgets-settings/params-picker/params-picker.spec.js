@@ -42,6 +42,7 @@ describe('<> widget-setting-params-picker', function () {
     beforeEach(function() {
       subjectScope = compile();
       $scope = subjectScope;
+      $scope.options = [{label:"test", selected: true}, {label:"test2", selected: false}, {label:"test3", selected: true}];
       setting = subjectScope.parentWidget.settings[0];
       w = subjectScope.parentWidget;
       w.metadata = setting.toMetadata();
@@ -63,6 +64,17 @@ describe('<> widget-setting-params-picker', function () {
 
       it('default reach is widget', function () {
         expect(setting.reach).toBe("widget");
+      });
+    });
+
+    describe('#setting.toMetadata()', function () {
+      beforeEach(function () {
+        setting.initialize();
+      });
+      
+      it('expect metadata have been correct', function () {
+        expect(setting.toMetadata()).toEqual({status_selection:{values:["test", "test3"], reach: "widget"}});
+        expect(setting.toMetadata()).toEqual({status_selection:{values:["test", "test3"], reach: "widget"}});
       });
     });
   });
