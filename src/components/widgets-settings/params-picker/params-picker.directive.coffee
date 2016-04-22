@@ -14,14 +14,23 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
       'ui-floating': true,
       tolerance: 'pointer'
     }
+
+    $scope.applyToDashboard = w.metadata[$scope.param] && w.metadata[$scope.param].reach == 'dashboard'
+
+    # Method sets where widget should take and save settings; it's dashboard or widget
+    $scope.toggleReach = ->
+      setting.reach = if $scope.applyToDashboard then 'dashboard' else 'widget'
+
+    $scope.toggleReach()
+
     setting.isInitialized = true if _.isEmpty($scope.options)
 
-
-  setting.toMetadata = ->
+  setting.toMetadata = ()->
     param = {}
-    param[$scope.param] = _.compact(_.map $scope.options, (statusOption) ->
-      statusOption.label if statusOption.selected
-    )
+    param[$scope.param] = {
+      values:_.compact _.map $scope.options, (statusOption) -> statusOption.label if statusOption.selected
+      reach: setting.reach
+    }
     return param
 
   w.settings.push(setting)
@@ -39,6 +48,7 @@ module.directive('settingParamsPicker', ($templateCache) ->
       deferred: '='
       param: '@',
       options: '=',
+      hasReach: '='
     },
     link: (scope, elements, attrs) ->
       scope.formattedParam = scope.param.replace('_',' ')

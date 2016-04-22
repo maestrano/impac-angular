@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-params-picker options="statusOptions" param="status_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
+    <div setting-params-picker options="statusOptions" param="status_selection" has-reach="hasReach" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
@@ -15,7 +15,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)" class="row" >
+    <div ng-show="(isDataFound==true)" class="row">
 
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />

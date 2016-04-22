@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets.sales-opportunities-funnel',[])
 
-module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -18,7 +18,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     $scope.widthDeferred.promise
   ]
 
-
   # Widget specific methods
   # --------------------------------------
   hasOneOpportunity = (oppsPerSalesStage) ->
@@ -32,16 +31,22 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     return total? && total > 0
 
   w.initContext = ->
+    dhb = ImpacDashboardsSvc.getCurrentDashboard()
+    sales_stage_selection = w.metadata.sales_stage_selection || dhb.metadata.sales_stage_selection || { values: [] }
+    
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opps_per_sales_stage) && hasOneOpportunity(w.content.opps_per_sales_stage)
+      # Remove statuses absent from statuses list returned by the widget engine
+      _.remove sales_stage_selection.values, (status) ->
+        status not in _.keys w.content.opps_per_sales_stage
 
-      $scope.statusOptions = _.compact _.map w.metadata.sales_stage_selection, (status) ->
-        {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status])
+      # Parameter which define showing 'Apply to all similar widgets' checkbox
+      $scope.hasReach = true;
 
+      $scope.statusOptions = []
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
-        if w.metadata.sales_stage_selection && !(status in w.metadata.sales_stage_selection)
-          $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(w.metadata.sales_stage_selection)
-          $scope.statusOptions.push({label: status, selected: true})
+        # Sales stage will be ticked if has been selected before OR if no status is selected at all
+        isSelected = _.isEmpty(sales_stage_selection.values) || ( status in sales_stage_selection.values )
+        $scope.statusOptions.push({label: status, selected: isSelected})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
   w.processError = (error) ->
@@ -62,7 +67,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       # will trigger updateSettings(false)
       w.toggleExpanded()
     else
-      ImpacWidgetsSvc.updateWidgetSettings(w,false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
 
   $scope.isSelected = (aStatus) ->
     return $scope.selectedStatus && aStatus == $scope.selectedStatus
@@ -78,7 +83,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
 
     return oppDetails.join(' / ')
 
-
   selectedStatusSetting = {}
   selectedStatusSetting.initialized = false
 
@@ -90,7 +94,6 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     {selected_status: $scope.selectedStatus}
 
   w.settings.push(selectedStatusSetting)
-
 
   # Funnel formating function
   # --------------------------------------

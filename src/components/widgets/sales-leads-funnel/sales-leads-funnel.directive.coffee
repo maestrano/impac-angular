@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -32,16 +32,22 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
     return total? && total > 0
 
   w.initContext = ->
+    dhb = ImpacDashboardsSvc.getCurrentDashboard()
+    status_selection = w.metadata.status_selection || dhb.metadata.status_selection || { values: [] }
+
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.leads_per_status) && hasOneLead(w.content.leads_per_status)
+      # Remove statuses absent from statuses list returned by the widget engine
+      _.remove status_selection.values, (status) ->
+        status not in _.keys w.content.leads_per_status
 
-      $scope.statusOptions = _.compact _.map w.metadata.status_selection, (status) ->
-        {label: status, selected: true} if angular.isDefined(w.content.leads_per_status[status])
+      # Parameter which define showing 'Apply to all similar widgets' checkbox
+      $scope.hasReach = true
 
+      $scope.statusOptions = []
       angular.forEach w.content.leads_per_status, (value, status) ->
-        if w.metadata.status_selection && !(status in w.metadata.status_selection)
-          $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(w.metadata.status_selection)
-          $scope.statusOptions.push({label: status, selected: true})
+        # Status will be ticked if has been selected before OR if no status is selected at all
+        isSelected = _.isEmpty(status_selection.values) || ( status in status_selection.values )
+        $scope.statusOptions.push({label: status, selected: isSelected})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
   w.processError = (error) ->
@@ -62,7 +68,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
       # will trigger updateSettings(false)
       w.toggleExpanded()
     else
-      ImpacWidgetsSvc.updateWidgetSettings(w,false)
+      ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
 
   $scope.isSelected = (aStatus) ->
     return $scope.selectedStatus && aStatus == $scope.selectedStatus
