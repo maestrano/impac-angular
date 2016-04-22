@@ -4,7 +4,7 @@ describe('<> ImpacWidgetsSvc', function () {
   var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacDeveloper, $q, $http, $rootScope, $log;
 
   var config = {ssoSessionId: 'id-1'};
-  var currentDhb = {id: 99, name: 'dhb-99', widgets: [
+  var currentDhb = {id: 99, name: 'dhb-99', metadata: {}, widgets: [
     {id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}},
     {id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}
   ], callbacks: {}};
@@ -56,12 +56,11 @@ describe('<> ImpacWidgetsSvc', function () {
     xit('updates the widget\'s settings and eventually reload the widget');
   });
 
-  describe('#updateAllSameWidgets(:dashboard, :settings)', function () {
-    var dashboard, settings, paramName, updatedDashboard, anotherSettings;
+  describe('#updateAllSimilarWidgets(:dashboard, :setting)', function () {
+    var dashboard, aSetting, anotherSetting, settingKey, updatedDashboard;
     beforeEach(function () {
-      spyOn(svc, 'load').and.returnValue($q.resolve(config));
       dashboard = angular.copy(currentDhb);
-      settings = {
+      aSetting = {
         toMetadata: function () {
           return {
             status_selection: {
@@ -71,7 +70,7 @@ describe('<> ImpacWidgetsSvc', function () {
           }
         }
       };
-      anotherSettings = {
+      anotherSetting = {
         toMetadata: function () {
           return {
             another_status_selection: {
@@ -82,53 +81,50 @@ describe('<> ImpacWidgetsSvc', function () {
         }
       };
 
-      dashboard.widgets[0].settings = [angular.copy(settings)];
-      dashboard.widgets[1].settings = [angular.copy(anotherSettings)];
-      dashboard.widgets[2] = angular.copy(dashboard.widgets[0]);
+      dashboard.widgets[0].settings = [angular.copy(aSetting)];
+      dashboard.widgets[1].settings = [angular.copy(anotherSetting)];
+      dashboard.widgets.push({id: 3, name: 'w-3', metadata: {organization_ids: ['org-1']}})
+      dashboard.widgets[2].settings = angular.copy(dashboard.widgets[0].settings);
 
-      paramName = _.keys(settings.toMetadata())[0];
+      settingKey = _.keys(aSetting.toMetadata())[0];
 
-      spyOn(ImpacDashboardsSvc, 'update').and.callFake(function (id, settings) {
+      spyOn(ImpacDashboardsSvc, 'update').and.callFake(function (id, data) {
         updatedDashboard = angular.copy(dashboard);
-        updatedDashboard[paramName] = settings[paramName];
+        updatedDashboard.metadata[settingKey] = data.metadata[settingKey];
         return $q.resolve(updatedDashboard);
       });
 
-      spyOn(svc, 'update').and.callFake(function (wgt, metadata) {
-        wgt.metadata[paramName] = _.cloneDeep(metadata[paramName]);
-        wgt.isLoading = true;
-        return $q.resolve(wgt);
+      spyOn(svc, 'update').and.callFake(function (wgt, data) {
+        return $q.resolve(wgt.id);
       });
 
       spyOn(svc, 'show').and.callFake(function (updatedWidget) {
         return $q.resolve(updatedWidget);
       });
-      svc.updateAllSameWidgets(dashboard, settings);
+
+      spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dashboard);
+
+      svc.updateAllSimilarWidgets(dashboard, aSetting);
+      $rootScope.$apply();
     });
 
-    describe('on _self.load success', function () {
-      beforeEach(function() {
-        spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(dashboard);
-        $rootScope.$apply();
-      });
+    it('updates the dashboard\'s metadata', function () { 
+      expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(dashboard.id, {metadata: aSetting.toMetadata()}); 
+    });
 
-      it('expect dashboard setting "reach" will be "dashboard"', function () {
-        expect(updatedDashboard[paramName].reach).toBe("dashboard");
-      });
+    it('updates all the similar widgets\' metadata', function () {
+      expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[0], {metadata: dashboard.widgets[0].metadata});
+      expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[2], {metadata: dashboard.widgets[2].metadata});
+    });
 
-      it('updates all the similar widgets', function () {
-        expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[0], {metadata: dashboard.widgets[0].metadata});
-        expect(svc.update).toHaveBeenCalledWith(dashboard.widgets[2], {metadata: dashboard.widgets[2].metadata});
-      });
+    it('does not update the other widgets', function () {
+      expect(svc.update).not.toHaveBeenCalledWith(dashboard.widgets[1], {metadata: dashboard.widgets[1].metadata});
+    });
 
-      it('does not update the other widgets', function () {
-        expect(svc.update).not.toHaveBeenCalledWith(dashboard.widgets[1], {metadata: dashboard.widgets[1].metadata});
-      });
-
-      it('expect show have been called two times', function () {
-        expect(svc.show).toHaveBeenCalledTimes(2);
-      });
-    })
+    it('renders the updated widgets', function () {
+      expect(svc.show).toHaveBeenCalledWith(1);
+      expect(svc.show).toHaveBeenCalledWith(3);
+    });
   });
 
   describe('#massAssignAll(:metadata)', function() {

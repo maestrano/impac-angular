@@ -31,23 +31,22 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     return total? && total > 0
 
   w.initContext = ->
+    dhb = ImpacDashboardsSvc.getCurrentDashboard()
+    sales_stage_selection = w.metadata.sales_stage_selection || dhb.metadata.sales_stage_selection || { values: [] }
+    
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opps_per_sales_stage) && hasOneOpportunity(w.content.opps_per_sales_stage)
-
-      # Takes metadata from dashboard or from widget according to 'reach' parameter
-      sales_stage_selection = if w.metadata.sales_stage_selection && w.metadata.sales_stage_selection.reach == 'dashboard' then ImpacDashboardsSvc.getCurrentDashboard().sales_stage_selection else w.metadata.sales_stage_selection
-      sales_stage_selection = sales_stage_selection || {values:[]}
+      # Remove statuses absent from statuses list returned by the widget engine
+      _.remove sales_stage_selection.values, (status) ->
+        status not in _.keys w.content.opps_per_sales_stage
 
       # Parameter which define showing 'Apply to all similar widgets' checkbox
       $scope.hasReach = true;
 
-      $scope.statusOptions = _.compact _.map(sales_stage_selection.values, (status) ->
-        {label: status, selected: true} if angular.isDefined(w.content.opps_per_sales_stage[status]))
-
+      $scope.statusOptions = []
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
-        if sales_stage_selection.values && !(status in sales_stage_selection.values)
-          $scope.statusOptions.push({label: status, selected: false})
-        else if _.isEmpty(sales_stage_selection.values)
-          $scope.statusOptions.push({label: status, selected: true})
+        # Sales stage will be ticked if has been selected before OR if no status is selected at all
+        isSelected = _.isEmpty(sales_stage_selection.values) || ( status in sales_stage_selection.values )
+        $scope.statusOptions.push({label: status, selected: isSelected})
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
   w.processError = (error) ->
