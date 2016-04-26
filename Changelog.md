@@ -3,6 +3,9 @@
 -------------------------------------------------------------
 # v1.3 | UNTAGGED
 
+### Adds
+- Params-picker setting selection applicable to all similar widgets
+
 -------------------------------------------------------------
 # v1.3.0 | Better time period selection, accounting behaviours, widgets generator, better dashboard sync...
 

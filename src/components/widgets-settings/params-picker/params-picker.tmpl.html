@@ -10,4 +10,7 @@
       <input type="checkbox" ng-model="parameter.selected" />
     </span>
   </div>
+  <div ng-show="hasReach">
+    <label><strong>Apply to all similar widgets</strong> <input type="checkbox" ng-change="toggleReach()" ng-model="applyToDashboard"></label>
+  </div>
 </div>

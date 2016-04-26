@@ -74,21 +74,50 @@ angular
         setting.initialize()
       return true
 
-    @updateWidgetSettings = (widget, needContentReload=true) ->
+    @updateWidgetSettings = (widget, needContentReload=true, ignoreReach=false) ->
       widget.isEditMode = false
-
       if _.isEmpty(widget.settings)
         $log.warn("ImpacWidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
         return false
 
+      # Check if widget settings should be written to all same widgets and use as a default
+      changedGlobalSetting = _.find widget.settings, (setting)-> setting.reach == 'dashboard'
+
+      # Update all same widgets and dashboard settings if needed
+      if (changedGlobalSetting && !ignoreReach)
+        return _self.updateAllSimilarWidgets(ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
+
       widget.isLoading = true if needContentReload
       meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
-      
-      return _self.update(widget, { metadata: meta }).then(
+
+      _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
           if needContentReload
             _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
       )
+
+    # TODO: move logic in ImpacDashboardsSvc
+    # Sets setting for all widgets with same name
+    @updateAllSimilarWidgets = (dashboard, setting) ->
+      # Find setting key
+      settingKey = _.keys(setting.toMetadata())[0]
+
+      angular.extend dashboard.metadata, setting.toMetadata()
+      # Write new setting metadata to current dashboard
+      ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then (updatedDashboard)->
+        for wgt in dashboard.widgets
+          # Retrieve the name of parameters attached to the widget
+          # TODO: export to a helper function in WidgetsSvc
+          wgtSettingsKeys = _.uniq( _.map( wgt.settings, (st) ->
+            _.keys(st.toMetadata())[0]
+          ))
+
+          # The widget's metadata are updated only if the correct setting is attached to the widget
+          if settingKey in wgtSettingsKeys
+            angular.extend wgt.metadata, setting.toMetadata()
+            wgt.isLoading = true
+            _self.update(wgt, { metadata: wgt.metadata }).then (updatedWidget) ->
+              _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
 
     @massAssignAll = (metadata) ->
       unless _.isEmpty(metadata)
