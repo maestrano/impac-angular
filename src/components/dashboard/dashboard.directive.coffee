@@ -406,7 +406,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       cancel: ".unsortable,.editable-input"
       # only the top-line with title will provide the handle to drag/drop widgets
       handle: ".top-line"
-      helper: 'clone'
     }
 
 )
