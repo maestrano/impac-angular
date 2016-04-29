@@ -3,8 +3,14 @@
 -------------------------------------------------------------
 # v1.3 | UNTAGGED
 
+-------------------------------------------------------------
+# v1.3.1 | Week 17: Params picker improvement
+
 ### Adds
 - Params-picker setting selection applicable to all similar widgets
+
+### Fixes
+- dates-pickers' calendars are no longer hidden after widget drag/drop
 
 -------------------------------------------------------------
 # v1.3.0 | Better time period selection, accounting behaviours, widgets generator, better dashboard sync...
