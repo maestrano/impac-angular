@@ -91,10 +91,10 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     )
 
   # Reload the accounts lists on organizations list change
-  $scope.$watch (-> w.selectedOrganizations), (result) ->
-    if !_.isEmpty(result)
+  $scope.reloadAccountsLists = (orgs) ->
+    # Refresh the settings only if some orgs are selected
+    if orgs? && _.some(_.values(orgs))
       ImpacWidgetsSvc.updateWidgetSettings(w)
-  ,true
 
   $scope.formulaModal.cancel = ->
     $scope.initSettings()

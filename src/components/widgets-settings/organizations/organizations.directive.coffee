@@ -9,6 +9,7 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
 
   $scope.toggleSelectOrganization = (orgUid) ->
     w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
+    $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
 
   # What will be passed to parentWidget
   setting = {}
@@ -46,6 +47,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     scope: {
       parentWidget: '='
       deferred: '='
+      onSelect: '&?'
     },
     template: $templateCache.get('widgets-settings/organizations.tmpl.html'),
     controller: 'SettingOrganizationsCtrl'
