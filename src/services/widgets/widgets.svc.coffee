@@ -242,13 +242,13 @@ angular
             else
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
-            # No need to wait for the server's response to update the widget in the frontend
-            angular.extend widget, opts
-            deferred.resolve(widget)
-
             request.then(
-              null
-              (error) -> $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
+              (success) -> 
+                angular.extend widget, success.data
+                deferred.resolve(widget)
+              (error) ->
+                $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
+                deferred.reject(error)
             )
 
         (error) ->
