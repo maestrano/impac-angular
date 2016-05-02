@@ -88,7 +88,11 @@ angular
         return _self.updateAllSimilarWidgets(ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
       widget.isLoading = true if needContentReload
-      meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
+      meta = _.reduce(
+        _.map( widget.settings, (set) -> set.toMetadata() ), 
+        (result={}, setMeta) -> 
+          angular.merge(result, setMeta)
+      )
 
       _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
