@@ -137,10 +137,7 @@ describe('<> ImpacWidgetsSvc', function () {
         angular.merge(updatedWidget, opts);
         return $q.resolve(updatedWidget);
       });
-      spyOn(svc, 'show').and.callFake(function(w){
-        var renderedWidget = angular.copy(w);
-        return $q.resolve(renderedWidget);
-      });
+      spyOn(svc, 'refreshAll').and.returnValue('refreshed');
 
       subject = svc.massAssignAll(metadata);
     });
@@ -156,21 +153,29 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       it('updates all the widgets with the specified metadata', function() {
-        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
-        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
       });
 
-      it('renders the widgets with clearing the cache', function() {
-        expect(svc.show).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
-        expect(svc.show).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1'], currency: 'EUR'}, isLoading: true});
-      })
+      it('calls svc.refreshAll, without clearing the cache', function(){
+        expect(svc.refreshAll).toHaveBeenCalledWith(false);
+      });
 
-      it('returns a promise per widget to update', function() {
+      it('returns a promise', function() {
         expect(typeof subject.then).toBe('function');
         expect(typeof subject.catch).toBe('function');
         expect(typeof subject.finally).toBe('function');
-        expect(subject.$$state.value.length).toEqual(2);
-        expect(subject.$$state.status).toEqual(1);
+      });
+
+      describe('when the cache has to be cleared', function(){
+        beforeEach(function(){
+          subject = svc.massAssignAll(metadata, true);
+          $rootScope.$apply();
+        });
+
+        it('calls svc.refreshAll, clearing the cache', function(){
+          expect(svc.refreshAll).toHaveBeenCalledWith(true);
+        });
       });
     });
 
@@ -208,11 +213,9 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       it('does not push the corresponding widget to the update list', function() {
-        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
-        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
         expect(svc.update).not.toHaveBeenCalledWith({id: 3, name: 'w-3', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
-        expect(subject.$$state.value.length).toEqual(2);
-        expect(subject.$$state.status).toEqual(1);
       });
     });
   });

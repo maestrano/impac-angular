@@ -124,7 +124,7 @@ angular
               (updatedWidget) -> _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
             )
 
-    @massAssignAll = (metadata) ->
+    @massAssignAll = (metadata, refreshCache=false) ->
       unless _.isEmpty(metadata)
         _self.load().then( ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -136,10 +136,11 @@ angular
                 newMetadata = angular.merge({}, widget.metadata, metadata)
                 # If the metadata has not been changed, we don't push the promise
                 unless _.isEqual(widget.metadata, newMetadata)
+                  widget.isLoading = true
                   promises.push _self.update(widget, {metadata: newMetadata})
 
               return $q.all(promises).then(
-                (results) -> _self.refreshAll()
+                (results) -> _self.refreshAll(refreshCache)
               )
 
             else
