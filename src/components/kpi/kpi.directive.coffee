@@ -74,10 +74,10 @@ angular
         alertsSettingsModalScope.kpi = $scope.kpi
         alertsSettingsModalScope.alerts = {
           inapp:
-            active: true
+            service: 'inapp'
             label: "With in-app notifications"
           email:
-            active: false
+            service: 'email'
             label: "By sending me an email"
         }
         
@@ -86,7 +86,8 @@ angular
         )
 
         alertsSettingsModalScope.save = (alerts) ->
-          alertsSettingsModalScope.modal.dismiss()
+          ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
+          alertsSettingsModalScope.modal.close()
 
         alertsSettingsModalScope.toggleAlert = (alert) ->
           alert.active = !alert.active
@@ -96,13 +97,13 @@ angular
           result = []
 
           if kpi.targets[0].max?
-            result.push("over",kpi.targets[0].max)
+            result.push("over", kpi.targets[0].max)
           else if kpi.targets[0].min
-            result.push("below",kpi.targets[0].min)
+            result.push("below", kpi.targets[0].min)
           
           result.push(kpi.data.unit) if kpi.data?
 
-          return result.join(' ') 
+          return result.join(' ')
         
         alertsSettingsModal = {
           options:
@@ -112,9 +113,13 @@ angular
         }
 
         $scope.showAlertsSettings = ->
+          # All the alerts that are already in kpi.alerts must appear as "active"
+          for alert in $scope.kpi.alerts
+            alertsSettingsModalScope.alerts[alert.service].active = true
+
           alertsSettingsModalScope.modal = $modal.open(alertsSettingsModal.options)
 
         # --------------------------------------------------------------------------
-          
+
     }
   )

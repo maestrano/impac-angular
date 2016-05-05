@@ -104,6 +104,46 @@ angular
       )
       return _self.initialized.promise
 
+
+    @saveAlerts = (kpi, alerts) ->
+      # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
+      alertsToCreate = _.filter(alerts, (alert) -> 
+        alert.active && !_.includes(
+          _.map(kpi.alerts, (a) -> a.service),
+          alert.service
+        )
+      )
+
+      # Remove alerts that are not ticked in the modal and are part of kpi.alerts
+      alertsToDelete = _.filter(kpi.alerts, (alert) ->
+        !alerts[alert.service].active
+      )
+
+      promises = []
+
+      createUrl = ImpacRoutes.kpis.alerts.create(kpi.id)
+      for alert in alertsToCreate
+        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service'])})
+
+      for alert in alertsToDelete
+        deleteUrl = ImpacRoutes.kpis.alerts.delete(alert.id)
+        promises.push $http.delete(deleteUrl)
+
+      return $q.all(promises).then(
+        (success) ->
+          kpi.alerts ||= {}
+          for resp in success
+            # if "deleted" is received, remove the alert from the kpi.alerts array
+            if resp.data.deleted
+              _.remove(kpi.alerts, (alert) ->
+                alert.service == resp.data.deleted.service
+              )
+            # else: push the added alert to the kpi.alerts array
+            else
+              kpi.alerts.push resp.data
+      )
+
+
     #====================================
     # CRUD methods
     #====================================
