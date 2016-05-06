@@ -3,6 +3,11 @@
 -------------------------------------------------------------
 # v1.3 | UNTAGGED
 
+### Fixes
+- Custom calculation formula wasn't saved properly (settings where updated upon widget load)
+- Widgets setting update function error case
+- Widgets reload after currency change or dashboard sync (WidgetsSvc.refreshAll)
+
 -------------------------------------------------------------
 # v1.3.1 | Week 17: Params picker improvement
 

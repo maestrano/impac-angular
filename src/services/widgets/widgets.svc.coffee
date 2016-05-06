@@ -88,7 +88,11 @@ angular
         return _self.updateAllSimilarWidgets(ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
       widget.isLoading = true if needContentReload
-      meta = _.reduce(_.map(widget.settings, (set) -> set.toMetadata() ), (result, setMeta) -> angular.merge(result, setMeta))
+      meta = _.reduce(
+        _.map( widget.settings, (set) -> set.toMetadata() ), 
+        (result={}, setMeta) -> 
+          angular.merge(result, setMeta)
+      )
 
       _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
@@ -116,12 +120,13 @@ angular
           if settingKey in wgtSettingsKeys
             angular.extend wgt.metadata, setting.toMetadata()
             wgt.isLoading = true
-            _self.update(wgt, { metadata: wgt.metadata }).then (updatedWidget) ->
-              _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+            _self.update(wgt, { metadata: wgt.metadata }).then(
+              (updatedWidget) -> _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+            )
 
-    @massAssignAll = (metadata) ->
+    @massAssignAll = (metadata, refreshCache=false) ->
       unless _.isEmpty(metadata)
-        _self.load().then ->
+        _self.load().then( ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
           promises = []
 
@@ -129,15 +134,14 @@ angular
             if !_.isEmpty(currentDhb.widgets)
               for widget in currentDhb.widgets
                 newMetadata = angular.merge({}, widget.metadata, metadata)
+                # If the metadata has not been changed, we don't push the promise
                 unless _.isEqual(widget.metadata, newMetadata)
-                  # If the metadata has not been changed, we don't push the promise
-                  promises.push _self.update(widget, {metadata: newMetadata}).then(
-                    (updatedWidget) ->
-                      updatedWidget.isLoading=true
-                      # TODO: should Connec! cache be refreshed on show?
-                      _self.show(updatedWidget).then( (renderedWidget)-> renderedWidget.isLoading=false )
-                  )
-              return $q.all(promises)
+                  widget.isLoading = true
+                  promises.push _self.update(widget, {metadata: newMetadata})
+
+              return $q.all(promises).then(
+                (results) -> _self.refreshAll(refreshCache)
+              )
 
             else
               return $q.resolve([])
@@ -145,21 +149,17 @@ angular
           else
             $log.error "ImpacWidgetsSvc - currentDhb.widgets is null", currentDhb
             return $q.reject(null)
+        )
 
-    @refreshAll = ->
-      ImpacDashboardsSvc.load().then(
-        (config)->
-          widgets = config.currentDashboard.widgets
-          _.forEach(widgets, (w) ->
-            w.isLoading ||= true
-            _self.show(w, true).then(
-              (updatedWidget) ->
-                w.isLoading = false
-              (errorResponse) ->
-                w.isLoading = false
-                # TODO: better error management
-                $log.error(errorResponse.data.error) if errorResponse.data? && errorResponse.data.error
-            )
+    @refreshAll = (refreshCache=false) ->
+      _self.load().then( ->
+        currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+        for w in currentDhb.widgets
+          w.isLoading = true
+          _self.show(w, refreshCache).then(
+            (renderedWidget) -> renderedWidget.isLoading = false
+            # TODO: better error management
+            (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
           )
       )
 
@@ -229,29 +229,28 @@ angular
 
       _self.load().then(
         (config) ->
+          unless isWidgetInCurrentDashboard(widget.id)
+            $log.info("ImpacWidgetsSvc: trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
+            deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
 
-        unless isWidgetInCurrentDashboard(widget.id)
-          $log.info("ImpacWidgetsSvc: trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
-          deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
-
-        else
-          data = { widget: opts }
-          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-
-          # form a http request or a stubbed request which returns a promise.
-          if ImpacDeveloper.isWidgetStubbed(widget)
-            request = ImpacDeveloper.updateWidgetStub(widget, data.widget)
           else
-            request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
+            data = { widget: opts }
+            dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
-          request.then(
-            (success) ->
-              angular.extend widget, success.data
-              deferred.resolve(widget)
-            (error) ->
-              $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
-              deferred.reject(error)
-          )
+            # form a http request or a stubbed request which returns a promise.
+            if ImpacDeveloper.isWidgetStubbed(widget)
+              request = ImpacDeveloper.updateWidgetStub(widget, data.widget)
+            else
+              request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
+
+            request.then(
+              (success) -> 
+                angular.extend widget, success.data
+                deferred.resolve(widget)
+              (error) ->
+                $log.error("ImpacWidgetsSvc: cannot update widget: #{widget.id}")
+                deferred.reject(error)
+            )
 
         (error) ->
           $log.error("ImpacWidgetsSvc: error while trying to load the service")

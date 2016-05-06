@@ -59,7 +59,7 @@ describe('<> dashboard-setting-currency', function () {
 
   describe('#massAssignCurrency()', function() {
     beforeEach(function() {
-      spyOn(ImpacDashboardsSvc, 'update').and.stub();
+      spyOn(ImpacDashboardsSvc, 'update').and.returnValue($q.resolve());
       spyOn(ImpacWidgetsSvc, 'massAssignAll').and.stub();
       
       subjectScope = compile();
@@ -67,6 +67,7 @@ describe('<> dashboard-setting-currency', function () {
       subjectScope.$digest();
 
       subjectScope.massAssignCurrency();
+      subjectScope.$digest();
     });
 
     it('updates the current dashboard with a currency', function() {
