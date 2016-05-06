@@ -1532,6 +1532,65 @@ impac-kpi .kpi {
   // }
 }
 
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 65px;
+  left: 24px;
+  width: ~"calc(100% - 48px)";
+  max-height: ~"calc(100% - 90px)";
+  height: 100%;
+
+  background-color: white;
+  opacity: .85;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -1596,65 +1655,6 @@ impac-kpi .kpi {
     }
   }
 
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 65px;
-  left: 24px;
-  width: ~"calc(100% - 48px)";
-  max-height: ~"calc(100% - 90px)";
-  height: 100%;
-
-  background-color: white;
-  opacity: .85;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -1732,16 +1732,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -1801,23 +1791,15 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-detailed-classifications {
-  .tall-widget();
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
   .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
+    max-height: 94px;
+    color: #626d6d;
   }
-  // single entity selected class title
-  .account-class-title {
-    margin-bottom: 8px;
-    margin-left: 11px;
-  }
-  // .no-data-block {
-  //   .center-thin();
-  // }
 }
-
-
 
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
@@ -1849,6 +1831,24 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+  // single entity selected class title
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+  // .no-data-block {
+  //   .center-thin();
+  // }
+}
+
+
+
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
     text-align: left;
@@ -1858,17 +1858,6 @@ impac-kpi .kpi {
       text-align: center;
       border-bottom: dashed 1px @impac-widget-borders-color;
     }
-  }
-}
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    margin-left: 0px;
-    margin-top: 15px;
-    text-align: center;
   }
 }
 .analytics .widget-item .content.accounts-payable-receivable {
@@ -1885,6 +1874,17 @@ impac-kpi .kpi {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 0px;
+    margin-top: 15px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -1896,6 +1896,22 @@ impac-kpi .kpi {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1921,22 +1937,6 @@ impac-kpi .kpi {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
-  }
-}
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
   }
 }
 .analytics .widget-item .content.hr-leaves-balance{
@@ -1971,9 +1971,6 @@ impac-kpi .kpi {
     color: @impac-widget-text-color;
   }
 }
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -1981,8 +1978,19 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
+}
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
+  }
 }
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
@@ -1997,14 +2005,6 @@ impac-kpi .kpi {
   }
   .price {
     .center-bold(0px);
-  }
-}
-.analytics .widget-item .content.hr-timesheets {
-  .currency {
-    font-size: 14px;
-  }
-  .widget-lines-container {
-    max-height: 210px;
   }
 }
 .analytics .widget-item .content.hr-workforce-summary {
@@ -2160,30 +2160,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -2223,6 +2199,30 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -2254,6 +2254,19 @@ impac-kpi .kpi {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+}
+
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -2270,19 +2283,6 @@ impac-kpi .kpi {
     .widget-line {
       font-size: 11px;
     }
-  }
-}
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-}
-
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
   }
 }
 .analytics .widget-item .content.sales-top-customers {

@@ -19,8 +19,9 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
 
       scope.massAssignCurrency = ->
         data = {currency: scope.currency}
-        ImpacDashboardsSvc.update(scope.currentDhb.id, data)
-        ImpacWidgetsSvc.massAssignAll(data)
+        ImpacDashboardsSvc.update(scope.currentDhb.id, data).then( ->
+          ImpacWidgetsSvc.massAssignAll(data)
+        )
 
 
     template: $templateCache.get('dashboard-settings/currency.tmpl.html'),

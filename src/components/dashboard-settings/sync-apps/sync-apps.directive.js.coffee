@@ -59,7 +59,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         # Avoid having the refresh triggered when the button has not been clicked
         return unless scope.isDashboardRefreshAuthorized
         # Reloads all the widgets contents
-        ImpacWidgetsSvc.refreshAll()
+        ImpacWidgetsSvc.refreshAll(true)
 
         # Opens the modal if errors are present
         unless (_.isEmpty(scope.failedConnectors) && _.isEmpty(scope.disconnectedConnectors))
