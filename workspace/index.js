@@ -104,15 +104,35 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
       return getOrganizations();
     },
     user: function () {
-      return $q.when({ name: 'Developer' });
+      return getUser();
     }
   });
 
   function getOrganizations() {
-    return $http.get(settings.mno_url + '/api/v2/impac/organizations')
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      var orgs = (user.organizations || []);
+      deferred.resolve({ organizations: orgs, currentOrgId: (orgs[0].id || null) });
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUser() {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      deferred.resolve(user);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUserData() {
+    return $http.get(settings.mno_url + '/api/v2/impac/users')
       .then(function (response) {
-        var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+        return response.data;
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);
