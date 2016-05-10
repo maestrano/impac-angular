@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper, Pusher) ->
 
     #====================================
     # Initialization
@@ -30,6 +30,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # kpis
     # -------------------------------------
     $scope.showKpisBar = ImpacTheming.get().dhbKpisConfig.enableKpis
+
+    # Pusher Web Sockets
+    # -------------------------------------
+    Pusher.initialize()
 
     # messages
     # -------------------------------------

@@ -137,6 +137,7 @@ angular.module('impac.services',
     'impac.services.dashboards',
     'impac.services.widgets',
     'impac.services.developer',
+    'impac.services.pusher'
   ]
 );
 /*
@@ -159,5 +160,3 @@ angular.module('impac.config', []).config(['$httpProvider',
     $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
   }
 ]);
-
-
