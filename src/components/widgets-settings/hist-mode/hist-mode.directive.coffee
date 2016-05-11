@@ -1,9 +1,14 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming) ->
+module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming, ImpacUtilities) ->
 
   w = $scope.parentWidget
   w.isHistoryMode = false
+
+  $scope.forwardParams = {
+    accountingBehaviour: ->
+      $scope.accountingBehaviour
+  }
 
   $scope.toggleHistMode = (mode) ->
     return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
@@ -25,6 +30,9 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming)
       else
         w.isHistoryMode = false
       setting.isInitialized = true
+
+    $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters
+    return $scope
 
   setting.toMetadata = ->
     if w.isHistoryMode

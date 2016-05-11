@@ -51,12 +51,6 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
     if $scope.isDataFound
       return w.content.currency || "USD"
 
-  $scope.getTimeSpan = ->
-    if $scope.isDataFound
-      period = null
-      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-      return "From #{$filter('mnoDate')(_.first(w.content.dates), period)} to #{$filter('mnoDate')(_.last(w.content.dates), period)}"
-
 
   # Chart formating function
   # --------------------------------------

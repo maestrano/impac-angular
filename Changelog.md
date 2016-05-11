@@ -4,6 +4,13 @@
 # v1.3 | UNTAGGED
 
 -------------------------------------------------------------
+# v1.3.3 | Week 19: Accounting behaviours improvements
+
+### Adds
+- Common directive "time-period-info" to display selected time period
+- time-period-info added to hist-mode choser and accounts/weight widgets
+
+-------------------------------------------------------------
 # v1.3.2 | Week 18: Fix widgets reload, custom calculation
 
 ### Fixes
