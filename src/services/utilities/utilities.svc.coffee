@@ -58,6 +58,20 @@ angular
 
       return resultHash
 
+    @financialYearDates = (fYearEndMonth) ->
+      startYear = moment().year() - 1
+      startYear = moment().year() if moment().month() >= fYearEndMonth
+      
+      start = moment("#{startYear}-#{fYearEndMonth + 1}-01", 'YYYY-MM-DD')
+      end = angular.copy(start).add(1, 'year').subtract(1, 'day')
+      
+      resultHash = {
+        start: start.format('YYYY-MM-DD')
+        end: end.format('YYYY-MM-DD')
+      }
+
+      return resultHash
+
     # Parse a Rails model error and return an array of messages
     # ready to be displayed
     # ---
