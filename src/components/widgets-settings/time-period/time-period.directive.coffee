@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
@@ -40,11 +40,20 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
       ]
       scope.maxNumberOfPeriods = 20
 
+      # If the app has defined custom presets, will be passed to presets directive
+      if ImpacTheming.get().widgetSettings? && ImpacTheming.get().widgetSettings.timePeriod? && !_.isEmpty(ImpacTheming.get().widgetSettings.timePeriod.presets)
+        scope.presets = ImpacTheming.get().widgetSettings.timePeriod.presets
+
       # Put at "undefined" to cancel the preset and make it disappear from the dropdown
       resetPreset = ->
         scope.timePeriodSetting.selectedPreset = undefined
         return true
       resetPreset()
+
+      # Will be called upon selection of a preset
+      scope.applyPreset = (histParams) ->
+        initPeriod(histParams)
+        initUsedSetting(histParams)
 
       scope.timePeriodSetting.initialize = ->
         # Make sure scope.histParams have been propagated
@@ -53,7 +62,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
           #   set.initialize()
           initPeriod()
           getSetting('time-presets').initialize()
-          scope.initUsedSetting()
+          initUsedSetting()
 
       scope.timePeriodSetting.toMetadata = ->
         sourceSetting = getSetting(getUsedSettingKey())
@@ -83,22 +92,23 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
         return getUsedSettingKey() == 'dates-picker'
 
       getUsedSettingKey = ->
-        if scope.usedSetting? then return scope.usedSetting else return scope.initUsedSetting()
+        if scope.usedSetting? then return scope.usedSetting else return initUsedSetting()
 
       getSetting = (key) ->
         return _.find(scope.timePeriodSetting.settings, (set) ->
           set.key == key
         )
 
-      initPeriod = ->
-        if scope.histParams? && scope.histParams.period? && _.contains(scope.periods, scope.histParams.period)
-          scope.timePeriodSetting.period = angular.copy(scope.histParams.period)
+      initPeriod = (histParams=null)->
+        histParams = scope.histParams unless histParams?
+        if histParams? && histParams.period? && _.contains(scope.periods, histParams.period)
+          scope.timePeriodSetting.period = angular.copy(histParams.period)
         else
           scope.timePeriodSetting.period = "MONTHLY"
 
         return scope.timePeriodSetting.period
 
-      scope.initUsedSetting = (histParams=null) ->
+      initUsedSetting = (histParams=null) ->
         histParams = scope.histParams unless histParams?
         if histParams? && histParams.from?
           # Force use of setting dates-picker
@@ -110,6 +120,8 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout) ->
             scope.fromDate = minDate
           else
             scope.fromDate = histParams.from
+
+          scope.keepToday = histParams.keep_today
 
           # Initialize dates-picker
           getSetting('dates-picker').initialize()
