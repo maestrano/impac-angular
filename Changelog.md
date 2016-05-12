@@ -11,6 +11,25 @@
 - time-period-info added to hist-mode choser and accounts/weight widgets
 - time-presets can now be defined in ThemingSvc
 
+### Config changes
+- Time presets customization in ImpacTheming:
+
+```coffeescript
+   widgetSettings:
+    timePeriod:
+      presets: [
+        {
+          label: 'Year to date'
+          value:
+            // each "value" can be a string or a function that returns a string
+            from: (fyEndMonth) ->
+              ImpacUtilitiesProvider.$get().financialYearDates(fyEndMonth).start
+            to: moment().format('YYYY-MM-DD')
+            period: 'MONTHLY'
+        }
+      ]
+```
+
 -------------------------------------------------------------
 # v1.3.2 | Week 18: Fix widgets reload, custom calculation
 
