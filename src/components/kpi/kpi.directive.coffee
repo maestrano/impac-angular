@@ -80,7 +80,7 @@ angular
             service: 'email'
             label: "By sending me an email"
         }
-        
+
         ImpacMainSvc.load().then(
           (config) -> alertsSettingsModalScope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
         )
@@ -100,11 +100,11 @@ angular
             result.push("over", kpi.targets[0].max)
           else if kpi.targets[0].min
             result.push("below", kpi.targets[0].min)
-          
+
           result.push(kpi.data.unit) if kpi.data?
 
           return result.join(' ')
-        
+
         alertsSettingsModal = {
           options:
             backdrop: 'static'

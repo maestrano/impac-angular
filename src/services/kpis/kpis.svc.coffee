@@ -9,10 +9,17 @@ angular
     #====================================
 
     @config = {}
+    @config.userData = {}
 
-    @config.ssoSessionId = ""
     @getSsoSessionId = ->
-      return _self.config.ssoSessionId
+      return _self.config.userData.ssoSessionId
+
+    # @return [Hash] containing user ids important to the kpis & kpis alerting features.
+    #   userId [Integer]
+    #   orgUids [Array]
+    #   ssoSessionId [String]
+    @getUserIds = ->
+      return _self.config.userData
 
     @config.kpisTemplates = []
     @getKpisTemplates = ->
@@ -42,10 +49,12 @@ angular
     @load = (force=false) ->
       deferred = $q.defer()
 
-      if _.isEmpty(_self.config.ssoSessionId) || force
+      if _.isEmpty(_self.getSsoSessionId()) || force
         ImpacMainSvc.loadUserData(force).then(
           (mainConfig) ->
-            _self.config.ssoSessionId = mainConfig.sso_session
+            _self.config.userData.id = mainConfig.id
+            _self.config.userData.orgUids = _.map(mainConfig.organizations, (o)-> o.uid)
+            _self.config.userData.ssoSessionId = mainConfig.sso_session
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)
@@ -70,7 +79,7 @@ angular
           metadata:
             organization_ids: orgUids
 
-        params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+        params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
 
         promises = {
           impac: index(params)
@@ -107,7 +116,7 @@ angular
 
     @saveAlerts = (kpi, alerts) ->
       # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
-      alertsToCreate = _.filter(alerts, (alert) -> 
+      alertsToCreate = _.filter(alerts, (alert) ->
         alert.active && !_.includes(
           _.map(kpi.alerts, (a) -> a.service),
           alert.service
@@ -122,8 +131,18 @@ angular
       promises = []
 
       createUrl = ImpacRoutes.kpis.alerts.create(kpi.id)
+
+
       for alert in alertsToCreate
-        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service'])})
+        # Configure alert for inapp websockets with Pusher.
+        if alert.service == 'inapp'
+          alert.metadata = {
+            pusher: {
+              channel: "channel_#{_self.getUserIds().id}",
+              event: "impac_alert"
+            }
+          }
+        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service', 'metadata'])})
 
       for alert in alertsToDelete
         deleteUrl = ImpacRoutes.kpis.alerts.delete(alert.id)
@@ -141,6 +160,15 @@ angular
             # else: push the added alert to the kpi.alerts array
             else
               kpi.alerts.push resp.data
+      )
+
+    @refreshAll = (currentDhb, refreshCache=false) ->
+      _self.load().then(->
+        for k in currentDhb.kpis
+          _self.show(k, refreshCache).then(
+            (renderedKpi)-> # success
+            (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
+          )
       )
 
 
@@ -161,7 +189,7 @@ angular
       _self.initialized.promise.then(
         ()->
           params = {}
-          params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+          params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?

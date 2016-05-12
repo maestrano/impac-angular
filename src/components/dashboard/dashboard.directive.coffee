@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper, Pusher) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacKpisSvc, ImpacDeveloper, Pusher, toastr) ->
 
     #====================================
     # Initialization
@@ -31,10 +31,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # -------------------------------------
     $scope.showKpisBar = ImpacTheming.get().dhbKpisConfig.enableKpis
 
-    # Pusher Web Sockets
-    # -------------------------------------
-    Pusher.initialize()
-
     # messages
     # -------------------------------------
     $scope.showChooseDhbMsg = ->
@@ -60,7 +56,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     $scope.myobMessageConfig = ImpacTheming.get().dhbSubMenuConfig.myobMessage
 
-    # load dashboards with their widgets
+    # Load dashboards with their widgets
     # -------------------------------------
     # 'true' forces the reload: will cause the service to update the organization id and other core data that Impac! needs
     # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
@@ -88,6 +84,26 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $timeout ->
         $scope.isLoading=false
       ,timer
+
+    # Pusher Web Sockets
+    # -------------------------------------
+    # TODO: Needs to be decoupled from the linking.svc user method and moved from this directive.
+    #       - AlertsController#index action.
+    #       - Move into a ImpacNotifications service.
+    #       - Add currentDhbId to notification response in Impac API ChannelNotificationWorker.
+    ImpacMainSvc.loadUserData().then((user) ->
+      # Select 'inapp' notifications with Pusher metadata and extract channels
+      alerts = _.select(user.alerts, (alert)-> _.has(alert.metadata, 'pusher'))
+      channels = _.map(alerts, (alert)-> alert.metadata.pusher.channel)
+
+      # Initialize the Pusher client and bind the 'impac_alert' event to all channels.
+      Pusher.init(channels).bindAll('impac_alert', (notification)->
+        # notifications @params=> {alert, recipient, currentDhbId}
+        toastr.warning(notification.data.alert.subject)
+        ImpacWidgetsSvc.refreshAll(true)
+        ImpacKpisSvc.refreshAll($scope.currentDhb, true)
+      )
+    )
 
 
     # ============================================

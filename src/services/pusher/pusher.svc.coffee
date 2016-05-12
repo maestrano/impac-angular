@@ -4,38 +4,43 @@
 
 angular
   .module('impac.services.pusher', [])
-  .service('Pusher', ($window, ImpacLinking) ->
+  .service('Pusher', ($window) ->
 
     _self = @
 
     @config =
       key: 'e98dfd8e4a359a7faf48'
-      channels: [
-        {
-          keyPrefix: 'user-recipient-'
-          name: 'user_channel'
-        },
-        # .. Extend channels the user is listening to, e.g 'organization_channel',
-        # for listening to organization wide websocket events ..
-      ]
       pusherOpts:
         encrypted: true
 
-    @initialize = ->
+    @channels = []
+
+    # Initializes an instance of Pusher, and subscribes to all given channels.
+    #
+    # @param channels [Array of Strings] Subscribe pusher client to channels
+    # @return [Pusher] Chain onto class methods, e.g the `@bind` method.
+    @init = (channels=[]) ->
       _self.pusher = new $window.Pusher(_self.config.key, _self.config.pusherOpts)
-      ImpacLinking.getUserData().then((user) ->
-        _.forEach _self.config.channels, (channel) ->
-          _self[channel.name] = _self.pusher.subscribe(channel.keyPrefix + user.id)
-      )
+      for channel in channels
+        _self.channels.push(_self[channel] = _self.pusher.subscribe(channel))
       return _self
 
-    # Bind a callback to an event on a channel
+    # Bind an event callback onto a new or existing channel.
     #
     # @param channel [String]
     # @param event [String]
     # @param callback [Function]
     @bind = (channel, event, callback) ->
+      _self[channel] = _self.pusher.subscribe(channel) unless _self[channel]
       _self[channel].bind(event, callback)
+      return
+
+    # Bind an event callback to all available channels.
+    #
+    # @param event [String]
+    # @param callback [Function]
+    @bindAll = (event, callback) ->
+      _.forEach(_self.channels, (chan) -> chan.bind(event, callback))
       return
 
     return _self
