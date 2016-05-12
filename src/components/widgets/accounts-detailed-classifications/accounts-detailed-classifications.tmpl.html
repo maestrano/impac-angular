@@ -16,8 +16,12 @@
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
-        <div class="col-md-11 col-md-offset-1 text-left">
+        <div class="col-md-8 text-left">
           {{widget.content.companies[0].name}} - Accounts classifications
+        </div>
+        
+        <div class="col-md-4 text-right">
+          <div common-time-period-info context="forwardParams" />
         </div>
       </div>
 

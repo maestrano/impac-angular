@@ -8,7 +8,7 @@
 
 ### Adds
 - Common directive "time-period-info" to display selected time period
-- time-period-info added to hist-mode choser and accounts/weight widgets
+- time-period-info added to hist-mode choser and some widgets
 - time-presets can now be defined in ThemingSvc
 
 ### Config changes
@@ -29,6 +29,9 @@
         }
       ]
 ```
+
+### Dependencies
+- Impac API v1.3.3
 
 -------------------------------------------------------------
 # v1.3.2 | Week 18: Fix widgets reload, custom calculation

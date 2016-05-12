@@ -15,6 +15,10 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
     $scope.paramSelectorDeferred.promise
   ]
 
+  $scope.forwardParams = {
+    accountingBehaviour: 'bls'
+  }
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
