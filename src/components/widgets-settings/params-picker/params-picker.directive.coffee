@@ -34,7 +34,6 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
     return param
 
   w.settings.push(setting)
-
   # Setting is ready: trigger load content
   # ------------------------------------
   $scope.deferred.resolve($scope.parentWidget)
@@ -49,9 +48,11 @@ module.directive('settingParamsPicker', ($templateCache) ->
       param: '@',
       options: '=',
       hasReach: '='
+      description: '@'
     },
     link: (scope, elements, attrs) ->
-      scope.formattedParam = scope.param.replace('_',' ')
+      scope.formattedParam = scope.param.replace(/_/g,' ')
+      scope.description = "The selected criteria will be displayed in this order (drag/drop to modify):" unless scope.description?
     template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
     controller: 'SettingParamsPickerCtrl'
   }

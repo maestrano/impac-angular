@@ -4,6 +4,37 @@
 # v1.3 | UNTAGGED
 
 -------------------------------------------------------------
+# v1.3.3 | Week 19: Accounting behaviours improvements
+
+### Adds
+- Common directive "time-period-info" to display selected time period
+- time-period-info added to hist-mode choser and some widgets
+- time-presets can now be defined in ThemingSvc
+- Better UI for widget Team performance
+
+### Config changes
+- Time presets customization in ImpacTheming:
+
+```coffeescript
+   widgetSettings:
+    timePeriod:
+      presets: [
+        {
+          label: 'Year to date'
+          value:
+            // each "value" can be a string or a function that returns a string
+            from: (fyEndMonth) ->
+              ImpacUtilitiesProvider.$get().financialYearDates(fyEndMonth).start
+            to: moment().format('YYYY-MM-DD')
+            period: 'MONTHLY'
+        }
+      ]
+```
+
+### Dependencies
+- Impac API v1.3.3
+
+-------------------------------------------------------------
 # v1.3.2 | Week 18: Fix widgets reload, custom calculation
 
 ### Fixes
