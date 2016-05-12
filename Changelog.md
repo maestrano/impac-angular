@@ -10,6 +10,7 @@
 - Common directive "time-period-info" to display selected time period
 - time-period-info added to hist-mode choser and some widgets
 - time-presets can now be defined in ThemingSvc
+- Better UI for widget Team performance
 
 ### Config changes
 - Time presets customization in ImpacTheming:
