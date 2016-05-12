@@ -12,10 +12,14 @@ var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 module.factory('settings', function () {
   return {
     // Credentials and endpoints
-    mno_url: 'https://uat.maestrano.io',
-    impac_url: 'https://api-impac-uat.maestrano.io',
-    api_key: '',
-    api_secret: '',
+    mno_url: 'http://localhost:3000',
+    impac_url: 'http://localhost:4000',
+    api_key: '6f03feda34a570c3b1d0833c54c9277f0a63200a674577d343dfeb04ae9af588',
+    api_secret: '161e1d3a-ae85-45f6-bd6f-0ac2c42b4bf9',
+    // mno_url: 'https://uat.maestrano.io',
+    // impac_url: 'http://api-impac-uat.maestrano.io',
+    // api_key: 'b12a4b03c37daa32f2cc191dd5ff24a7b6063d7e0b42c2c464cdaad5f467b2a6',
+    // api_secret: 'f41ac496-8d4d-4070-a3a5-f625c466746a',
 
     // Stub widget templates - add new widgets!
     //------------------------------------------------
@@ -104,7 +108,10 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
       return getOrganizations();
     },
     user: function () {
-      return $q.when({ name: 'Developer' });
+      return $q.when({
+        name: 'Developer',
+        email: 'developer@maestrano.com'
+      });
     }
   });
 
@@ -112,7 +119,7 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
     return $http.get(settings.mno_url + '/api/v2/impac/organizations')
       .then(function (response) {
         var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+        return { organizations: organizations, currentOrgId: (organizations[2].id || null) };
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);

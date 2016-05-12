@@ -11,6 +11,8 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       keepToday: '='
       onUse: '&?'
       minDate: '=?'
+      updateOnPick: '=?'
+      bootstrapMode: '=?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
     
@@ -72,7 +74,10 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         }
 
       scope.showApplyButton = ->
-        scope.changed = true
+        if scope.updateOnPick
+          scope.applyChanges()
+        else
+          scope.changed = true
 
       scope.applyChanges = ->
         ImpacWidgetsSvc.updateWidgetSettings(w, true)

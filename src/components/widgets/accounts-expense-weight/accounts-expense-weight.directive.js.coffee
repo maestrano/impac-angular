@@ -20,11 +20,15 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
     $scope.chartDeferred.promise
   ]
 
+  $scope.forwardParams = {
+    accountingBehaviour: 'pnl'
+  }
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
+    $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters
 
   $scope.getName = ->
     w.selectedAccount.name if w.selectedAccount?
