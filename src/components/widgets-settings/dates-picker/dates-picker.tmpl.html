@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-xs-6 text-right">
-      <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" ng-focus="onUse()">
+      <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()">
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
       </button>
     </div>
@@ -22,7 +22,7 @@
 
     to 
 
-    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" ng-focus="onUse()">
+    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()">
       {{ calendarTo.value | date : 'yyyy-MM-dd' }}
     </button>
 

@@ -4,6 +4,12 @@
 # v1.3 | UNTAGGED
 
 -------------------------------------------------------------
+# v1.3.4 | Week 20: 
+
+### Fixes
+- dates-picker autofocus + remove outline
+
+-------------------------------------------------------------
 # v1.3.3 | Week 19: Accounting behaviours improvements
 
 ### Adds
