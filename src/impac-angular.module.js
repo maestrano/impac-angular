@@ -137,7 +137,10 @@ angular.module('impac.services',
     'impac.services.dashboards',
     'impac.services.widgets',
     'impac.services.developer',
-    'impac.services.pusher'
+    'impac.services.pusher',
+    'impac.services.alerts',
+    'impac.services.notifications',
+    'impac.services.events',
   ]
 );
 /*

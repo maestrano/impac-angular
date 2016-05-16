@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacRoutes, ImpacMainSvc, ImpacDeveloper) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacEvents, ImpacRoutes, ImpacMainSvc, ImpacDeveloper, IMPAC_EVENTS) ->
 
     _self = @
 
@@ -25,10 +25,17 @@ angular
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
-    @config.currentDashboardId = ""
-    @getCurrentDashboardId = ->
-      return _self.config.currentDashboardId
+    @config.currentDhb = {}
+    @getCurrentDashboard = ->
+      return _self.config.currentDhb
 
+
+    #====================================
+    # Register Listeners
+    #====================================
+    ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
+      _self.refreshAll(true)
+    )
 
     #====================================
     # Context helpers
@@ -54,7 +61,7 @@ angular
           (mainConfig) ->
             _self.config.userData.id = mainConfig.id
             _self.config.userData.orgUids = _.map(mainConfig.organizations, (o)-> o.uid)
-            _self.config.userData.ssoSessionId = mainConfig.sso_session
+            _self.config.userData.ssoSessionId = mainConfig.sso_session if mainConfig.sso_session
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)
@@ -71,7 +78,7 @@ angular
       # Re-assign a new initialization promise, if the previous has been resolved or rejected.
       _self.initialized = $q.defer() if _self.initialized.promise.$$state > 0
       _self.load().then( ->
-        _self.config.currentDashboardId = dashboard.id
+        _self.config.currentDhb = dashboard
 
         orgUids = _.pluck dashboard.data_sources, 'uid'
 
@@ -139,7 +146,7 @@ angular
           alert.metadata = {
             pusher: {
               channel: "channel_#{_self.getUserIds().id}",
-              event: "impac_alert"
+              event: "kpi_target_alert"
             }
           }
         promises.push $http.post(createUrl, {alert: _.pick(alert, ['service', 'metadata'])})
@@ -162,11 +169,11 @@ angular
               kpi.alerts.push resp.data
       )
 
-    @refreshAll = (currentDhb, refreshCache=false) ->
+    @refreshAll = (refreshCache=false) ->
       _self.load().then(->
-        for k in currentDhb.kpis
+        for k in _self.getCurrentDashboard().kpis
           _self.show(k, refreshCache).then(
-            (renderedKpi)-> # success
+            (renderedKpi)-> $log.debug('ImpacKpisSvc: Successfully refreshed Kpis.')
             (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
           )
       )
@@ -196,7 +203,7 @@ angular
 
           switch kpi.source
             when 'impac'
-              host = ImpacRoutes.kpis.show(_self.config.currentDashboardId, kpi.id)
+              host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
             when 'local'
               host = ImpacRoutes.kpis.local()
 
@@ -234,7 +241,7 @@ angular
           #   params.extra_params ||= []
           #   params.extra_params.push param
 
-          url = ImpacRoutes.kpis.create(_self.config.currentDashboardId)
+          url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
           $http.post(url, {kpi: params}).then(
             (success) -> success.data
@@ -253,7 +260,7 @@ angular
       filtered_params.targets = params.targets if params.targets?
       filtered_params.extra_params = params.extra_params if params.extra_params?
 
-      url = ImpacRoutes.kpis.update(_self.config.currentDashboardId, kpi.id)
+      url = ImpacRoutes.kpis.update(_self.getCurrentDashboard().id, kpi.id)
 
       if !_.isEmpty filtered_params
         $http.put(url, {kpi: params}).then (success) ->
@@ -270,7 +277,7 @@ angular
     @delete = (kpi) ->
       deferred = $q.defer()
 
-      url = ImpacRoutes.kpis.delete(_self.config.currentDashboardId, kpi.id)
+      url = ImpacRoutes.kpis.delete(_self.getCurrentDashboard().id, kpi.id)
       $http.delete(url).then (success) ->
         deferred.resolve(success)
       ,(err) ->

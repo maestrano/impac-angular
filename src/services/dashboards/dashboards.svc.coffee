@@ -69,7 +69,7 @@ angular
         deferred = $q.defer()
         if (needConfigurationLoad() || force)
 
-          ImpacMainSvc.loadOrganizations(force).then (success) ->
+          ImpacMainSvc.load(force).then (success) ->
             orgId = success.currentOrganization.id
 
             $http.get(ImpacRoutes.dashboards.index(orgId)).then (dashboards) ->

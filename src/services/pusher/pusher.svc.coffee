@@ -20,9 +20,9 @@ angular
     # @param channels [Array of Strings] Subscribe pusher client to channels
     # @return [Pusher] Chain onto class methods, e.g the `@bind` method.
     @init = (channels=[]) ->
-      _self.pusher = new $window.Pusher(_self.config.key, _self.config.pusherOpts)
+      _self.instance = new $window.Pusher(_self.config.key, _self.config.pusherOpts)
       for channel in channels
-        _self.channels.push(_self[channel] = _self.pusher.subscribe(channel))
+        _self.channels.push(_self[channel] = _self.instance.subscribe(channel))
       return _self
 
     # Bind an event callback onto a new or existing channel.
@@ -31,9 +31,8 @@ angular
     # @param event [String]
     # @param callback [Function]
     @bind = (channel, event, callback) ->
-      _self[channel] = _self.pusher.subscribe(channel) unless _self[channel]
+      _self[channel] = _self.instance.subscribe(channel) unless _self[channel]
       _self[channel].bind(event, callback)
-      return
 
     # Bind an event callback to all available channels.
     #
@@ -41,7 +40,6 @@ angular
     # @param callback [Function]
     @bindAll = (event, callback) ->
       _.forEach(_self.channels, (chan) -> chan.bind(event, callback))
-      return
 
     return _self
   )

@@ -1,6 +1,6 @@
 angular
   .module('impac.services.main', [])
-  .service 'ImpacMainSvc', ($q, $log, ImpacLinking) ->
+  .service 'ImpacMainSvc', ($q, $log, ImpacLinking, ImpacNotifications) ->
 
     _self = @
     @config = {}
@@ -18,13 +18,14 @@ angular
       deferred = $q.defer()
 
       if !isConfigurationLoaded() || force
-
-        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
-          deferred.resolve(_self.config)
-        ,(error) ->
-          $log.error("ImpacMainSvc: failed to load configuration")
-          deferred.reject(error)
-
+        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then(
+          (results) ->
+            ImpacNotifications.load()
+            deferred.resolve(_self.config)
+          (error) ->
+            $log.error("ImpacMainSvc: failed to load configuration")
+            deferred.reject(error)
+        )
       else
         deferred.resolve(_self.config)
 

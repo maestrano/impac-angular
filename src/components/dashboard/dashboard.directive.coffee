@@ -85,27 +85,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         $scope.isLoading=false
       ,timer
 
-    # Pusher Web Sockets
-    # -------------------------------------
-    # TODO: Needs to be decoupled from the linking.svc user method and moved from this directive.
-    #       - AlertsController#index action.
-    #       - Move into a ImpacNotifications service.
-    #       - Add currentDhbId to notification response in Impac API ChannelNotificationWorker.
-    ImpacMainSvc.loadUserData().then((user) ->
-      # Select 'inapp' notifications with Pusher metadata and extract channels
-      alerts = _.select(user.alerts, (alert)-> _.has(alert.metadata, 'pusher'))
-      channels = _.map(alerts, (alert)-> alert.metadata.pusher.channel)
-
-      # Initialize the Pusher client and bind the 'impac_alert' event to all channels.
-      Pusher.init(channels).bindAll('impac_alert', (notification)->
-        # notifications @params=> {alert, recipient, currentDhbId}
-        toastr.warning(notification.data.alert.subject)
-        ImpacWidgetsSvc.refreshAll(true)
-        ImpacKpisSvc.refreshAll($scope.currentDhb, true)
-      )
-    )
-
-
     # ============================================
     # Create dashboard modal
     # ============================================

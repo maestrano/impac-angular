@@ -1,11 +1,25 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacEvents, ImpacDeveloper, IMPAC_EVENTS) ->
 
     _self = @
+
+    #====================================
+    # Getters
+    #====================================
     @config = {}
     @config.ssoSessionId = ""
 
+    #====================================
+    # Register Listeners
+    #====================================
+    ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
+      _self.refreshAll(notification.dashboardId, true)
+    )
+
+    #====================================
+    # Load and initialize
+    #====================================
 
     @load = (force=false) ->
       deferred = $q.defer()
@@ -14,7 +28,7 @@ angular
 
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
           (results) ->
-            _self.config.ssoSessionId = results[0].sso_session
+            _self.config.ssoSessionId = results[0].sso_session if results[0].sso_session
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)
@@ -22,41 +36,6 @@ angular
 
       else
          deferred.resolve(_self.config)
-
-      return deferred.promise
-
-
-    @create = (opts) ->
-      deferred = $q.defer()
-
-      _self.load().then(
-        (config) ->
-
-          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-          data = { widget: opts }
-
-          # form a http request or a stubbed request which returns a promise.
-          if ImpacDeveloper.isWidgetStubbed(data.widget)
-            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
-          else
-            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
-
-          request.then(
-            (success) ->
-              newWidget = success.data
-              dashboard.widgets.push(newWidget)
-              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
-              deferred.resolve(newWidget)
-
-            (error) ->
-              $log.error("ImpacWidgetsSvc: cannot create widget on dashboard #{dashboard.id}")
-              deferred.reject(error)
-          )
-
-        (error) ->
-          $log.error("ImpacWidgetsSvc: error while trying to load the service")
-          deferred.reject(error)
-      )
 
       return deferred.promise
 
@@ -89,8 +68,8 @@ angular
 
       widget.isLoading = true if needContentReload
       meta = _.reduce(
-        _.map( widget.settings, (set) -> set.toMetadata() ), 
-        (result={}, setMeta) -> 
+        _.map( widget.settings, (set) -> set.toMetadata() ),
+        (result={}, setMeta) ->
           angular.merge(result, setMeta)
       )
 
@@ -224,6 +203,41 @@ angular
       return deferred.promise
 
 
+    @create = (opts) ->
+      deferred = $q.defer()
+
+      _self.load().then(
+        (config) ->
+
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          data = { widget: opts }
+
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(data.widget)
+            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
+          else
+            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
+
+          request.then(
+            (success) ->
+              newWidget = success.data
+              dashboard.widgets.push(newWidget)
+              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
+              deferred.resolve(newWidget)
+
+            (error) ->
+              $log.error("ImpacWidgetsSvc: cannot create widget on dashboard #{dashboard.id}")
+              deferred.reject(error)
+          )
+
+        (error) ->
+          $log.error("ImpacWidgetsSvc: error while trying to load the service")
+          deferred.reject(error)
+      )
+
+      return deferred.promise
+
+
     @update = (widget, opts) ->
       deferred = $q.defer()
 
@@ -244,7 +258,7 @@ angular
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
             request.then(
-              (success) -> 
+              (success) ->
                 angular.extend widget, success.data
                 deferred.resolve(widget)
               (error) ->
