@@ -33,6 +33,7 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       'bower_components/angular-poller/angular-poller.js',
       'bower_components/moment/moment.js',
+      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       // impac-angular & test scripts.
       'dist/impac-angular.min.js',
       'src/**/*.spec.js'
