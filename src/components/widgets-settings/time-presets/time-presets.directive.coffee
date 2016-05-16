@@ -18,55 +18,67 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
       scope.setting = {}
       scope.setting.key = "time-presets"
 
+      scope.financialYearEndMonth = 6
+      fyEndMonth = scope.financialYearEndMonth
+
+      ImpacMainSvc.load().then( (config) ->
+
+        if config? && config.currentOrganization? && parseInt(config.currentOrganization.financial_year_end_month)
+          fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month)
+
+      ).finally( ->
+
+        financialYearStartYear = moment().year() - 1
+        financialYearStartYear = moment().year() if moment().month() >= fyEndMonth
+        scope.financialYearStartDate = "#{financialYearStartYear}-#{fyEndMonth + 1}-01"
+
+        # Default presets
+        toDate = moment().format('YYYY-MM-DD')
+        scope.presets ||= [
+          { label: 'Calendar year to date', value:
+              from: moment().startOf('year').format('YYYY-MM-DD')
+              to: toDate,
+              period: 'MONTHLY'
+          }
+          {
+            label: 'Financial year to date', value:
+              from: scope.financialYearStartDate
+              to: toDate,
+              period: 'MONTHLY'
+          }
+          {
+            label: 'Last 6 months', value:
+              time_range: '-6m'
+              to: toDate
+          }
+          {
+            label: 'Last 4 quarters', value:
+              time_range: '-4q'
+              to: toDate
+          }
+          {
+            label: 'Last 4 weeks', value:
+              time_range: '-4w'
+              to: toDate
+          }
+        ]
+      )
+
+
       scope.setting.initialize = ->
-        $timeout ->
-          unless scope.presets
-            financialYearEndMonth = 6
-            ImpacMainSvc.load().then( (config) ->
-
-              if config? && config.currentOrganization? && parseInt(config.currentOrganization.financial_year_end_month)
-                financialYearEndMonth = parseInt(config.currentOrganization.financial_year_end_month)
-
-            ).finally( ->
-
-              financialYearStartYear = moment().year() - 1
-              financialYearStartYear = moment().year() if moment().month() >= financialYearEndMonth
-              scope.financialYearStartDate = "#{financialYearStartYear}-#{financialYearEndMonth + 1}-01"
-
-              toDate = moment().format('YYYY-MM-DD')
-              scope.presets = [
-                { label: 'Calendar year to date', value:
-                    from: moment().startOf('year').format('YYYY-MM-DD')
-                    to: toDate
-                }
-                {
-                  label: 'Financial year to date', value:
-                    from: scope.financialYearStartDate
-                    to: toDate
-                }
-                {
-                  label: 'Last 6 months', value:
-                    time_range: '-6m'
-                    to: toDate
-                }
-                {
-                  label: 'Last 4 quarters', value:
-                    time_range: '-4q'
-                    to: toDate
-                }
-                {
-                  label: 'Last 4 weeks', value:
-                    time_range: '-4w'
-                    to: toDate
-                }
-              ]
-
-            )
-
+        return true
 
       scope.setting.toMetadata = ->
+        result = {}
+        _.forEach(scope.selectedPreset.value, (value, key) ->
+          if angular.isFunction(value)
+            result[key] = value(fyEndMonth)
+          else
+            result[key] = value
+        )
+
         return {
-          hist_parameters: scope.selectedPreset.value
+          hist_parameters: result
         }
 
 

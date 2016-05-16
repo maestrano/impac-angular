@@ -2,7 +2,7 @@
   .tall-widget();
   .widget-lines-container {
     .scrollable(scroll);
-    max-height: 540px;
+    max-height: 515px;
     @media (max-width: @screen-xs-max) {
       .row.widget-line {
         border-top: dashed 1px @impac-widget-borders-color;
@@ -10,9 +10,14 @@
       }
     }
     .row.widget-line.header > [class*='col-'] { position: static; }
+
+    &.no-scroll {
+      overflow: visible;
+    }
   }
 
   .no-data-block {
     .center-thin();
+    margin: 15px 0px;
   }
 }

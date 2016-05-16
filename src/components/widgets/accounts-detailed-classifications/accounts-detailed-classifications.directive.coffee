@@ -13,6 +13,10 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
     # $scope.paramSelecterDeferred.promise
   ]
 
+  $scope.forwardParams = {
+    accountingBehaviour: 'bls'
+  }
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->

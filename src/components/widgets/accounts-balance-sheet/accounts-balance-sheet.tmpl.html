@@ -14,18 +14,24 @@
   <div ng-hide="widget.isEditMode">
 
     <div class="no-data-block" ng-show="(isDataFound==false)">
-      No balance sheet can be generated between this {{period.label.toLowerCase()}} and the previous {{period.label.toLowerCase()}}. <br />
-      Maybe try selecting a longer period? <br />
-      <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorFrontDeferred" />
+      No balance sheet can be generated between {{fromDate}} and {{toDate}}
+      <br />
+      Please select another period
+    </div>
+
+    <!-- Tab header -->
+    <!-- TODO: review widget-lines-container scrolling -->
+    <div class="widget-lines-container no-scroll">
+      <div class="row widget-line header">
+        <div class="col-sm-6 col-xs-12 text-left">Compare balances at dates:</div>
+
+        <div class="col-sm-6 col-xs-12">
+          <div setting-dates-picker parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="keepToday" update-on-pick="true" bootstrap-mode="true" />
+        </div>
+      </div>
     </div>
 
     <div ng-show="(isDataFound==true)" class="widget-lines-container">
-      <!-- Tab header -->
-      <div class="row widget-line header">
-        <div class="col-sm-6 col-xs-12 text-left">Compare with previous: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorBackDeferred" /></div>
-        <div class="col-sm-3 col-xs-6 text-right">{{widget.content.dates[0] | mnoDate : widget.metadata.period}}</div>
-        <div class="col-sm-3 col-xs-6 text-right">{{widget.content.dates[1] | mnoDate : widget.metadata.period}}</div>
-      </div>
      
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="category in categories" >
