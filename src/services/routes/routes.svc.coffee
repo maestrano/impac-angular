@@ -161,10 +161,10 @@ angular
           index: () ->
             "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts"
           create: (kpi_id) ->
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/kpis/#{kpi_id}/alerts"
+            "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
 
           delete: (alert_id) ->
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts/#{alert_id}"
+            "#{defaults.mnoHub}/impac/alerts/#{alert_id}"
 
       service.organizations =
         appInstancesSync: (uid) ->
