@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, ImpacKpisSvc) ->
+  .directive('impacKpi', ($log, ImpacKpisSvc, $modal, $templateCache, ImpacMainSvc) ->
     return {
       restrict: 'EA'
       scope: {
@@ -64,5 +64,62 @@ angular
         $scope.deleteKpi = ->
           return if $scope.kpi.static
           ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
+
+
+        # --------------------------------------------------------------------------
+        # Alerts settings modal
+        # --------------------------------------------------------------------------
+
+        alertsSettingsModalScope = $scope.$new()
+        alertsSettingsModalScope.kpi = $scope.kpi
+        alertsSettingsModalScope.alerts = {
+          inapp:
+            service: 'inapp'
+            label: "With in-app notifications"
+          email:
+            service: 'email'
+            label: "By sending me an email"
+        }
+        
+        ImpacMainSvc.load().then(
+          (config) -> alertsSettingsModalScope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
+        )
+
+        alertsSettingsModalScope.save = (alerts) ->
+          ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
+          alertsSettingsModalScope.modal.close()
+
+        alertsSettingsModalScope.toggleAlert = (alert) ->
+          alert.active = !alert.active
+
+        alertsSettingsModalScope.translateTarget = (kpi) ->
+          return unless kpi.targets? && kpi.targets.length > 0
+          result = []
+
+          if kpi.targets[0].max?
+            result.push("over", kpi.targets[0].max)
+          else if kpi.targets[0].min
+            result.push("below", kpi.targets[0].min)
+          
+          result.push(kpi.data.unit) if kpi.data?
+
+          return result.join(' ')
+        
+        alertsSettingsModal = {
+          options:
+            backdrop: 'static'
+            template: $templateCache.get('kpi/alerts-settings-modal.tmpl.html')
+            scope: alertsSettingsModalScope
+        }
+
+        $scope.showAlertsSettings = ->
+          # All the alerts that are already in kpi.alerts must appear as "active"
+          for alert in $scope.kpi.alerts
+            alertsSettingsModalScope.alerts[alert.service].active = true
+
+          alertsSettingsModalScope.modal = $modal.open(alertsSettingsModal.options)
+
+        # --------------------------------------------------------------------------
+
     }
   )

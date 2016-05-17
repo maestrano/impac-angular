@@ -157,6 +157,13 @@ angular
 
         local: -> defaults.kpis.local
 
+        alerts:
+          create: (kpi_id) ->
+            "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
+
+          delete: (alert_id) ->
+            "#{defaults.mnoHub}/impac/alerts/#{alert_id}"
+
       service.organizations =
         appInstancesSync: (uid) ->
           if defaults.organizations.appInstancesSync

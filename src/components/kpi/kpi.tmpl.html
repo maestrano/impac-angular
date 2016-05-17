@@ -14,6 +14,7 @@
 
     <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
     <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
+    <div class="kpi-bell" ng-show="editMode && kpi.targets.length > 0" ng-click="showAlertsSettings()"><i class="fa fa-bell-o" /> </div>
   </div>
 
   <div class="kpi-edit" ng-show="showEditSettings">
