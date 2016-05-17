@@ -120,7 +120,7 @@ angular
       )
       return _self.initialized.promise
 
-
+    # TODO: this method should message alerts.svc for Alerts requests.
     @saveAlerts = (kpi, alerts) ->
       # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
       alertsToCreate = _.filter(alerts, (alert) ->
@@ -145,7 +145,7 @@ angular
         if alert.service == 'inapp'
           alert.metadata = {
             pusher: {
-              channel: "channel_#{_self.getUserIds().id}",
+              channel: "alerts_channel_#{_self.getUserIds().id}",
               event: "kpi_target_alert"
             }
           }
@@ -167,6 +167,7 @@ angular
             # else: push the added alert to the kpi.alerts array
             else
               kpi.alerts.push resp.data
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
       )
 
     @refreshAll = (refreshCache=false) ->
