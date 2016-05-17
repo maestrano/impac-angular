@@ -159,7 +159,7 @@ angular
 
         alerts:
           index: () ->
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts"
+            "#{defaults.mnoHub}/impac/alerts"
           create: (kpi_id) ->
             "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
 
