@@ -6,6 +6,10 @@
 -------------------------------------------------------------
 # v1.3.4 | Week 20: 
 
+### Adds
+- dates-picker to be inversible (from date can be displayed first in bootstrap mode)
+- Balance sheet widget to invert from/to dates
+
 ### Fixes
 - dates-picker autofocus + remove outline
 
