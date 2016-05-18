@@ -17,9 +17,8 @@ angular
     EVENTS = {
       # A kpi or kpi attached to a widget's target has been met.
       kpi_target_alert: (response)->
-        $log.debug "Impac Notification! 'kpi_target_alert'"
         notification = response.data
-        toastr.warning(notification.alert.subject)
+        toastr.warning(notification.subject)
         ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpiTargetAlert, notification)
     }
     # ----

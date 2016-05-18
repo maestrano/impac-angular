@@ -3,16 +3,24 @@ angular
   .service 'ImpacMainSvc', ($q, $log, ImpacLinking, ImpacNotifications) ->
 
     _self = @
+
+    #====================================
+    # Getters
+    #====================================
     @config = {}
     @config.organizations = []
     @config.currentOrganization = {}
     @config.userData = {}
     @config.currencies = ["USD","AUD","CAD","CNY","EUR","GBP","HKD","INR","JPY","NZD","SGD","PHP","AED","IDR"]
 
+    @getSsoSessionId = ->
+       _self.config.userData.sso_session
 
+    #====================================
+    # Load and initialize
+    #====================================
     isConfigurationLoaded = ->
       return !( _.isEmpty(_self.config.organizations) || _.isEmpty(_self.config.currentOrganization || _.isEmpty(_self.config.userData)) )
-
 
     @load = (force=false) ->
       deferred = $q.defer()

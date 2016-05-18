@@ -9,17 +9,9 @@ angular
     #====================================
 
     @config = {}
-    @config.userData = {}
 
     @getSsoSessionId = ->
-      return _self.config.userData.ssoSessionId
-
-    # @return [Hash] containing user ids important to the kpis & kpis alerting features.
-    #   userId [Integer]
-    #   orgUids [Array]
-    #   ssoSessionId [String]
-    @getUserIds = ->
-      return _self.config.userData
+      return ImpacMainSvc.getSsoSessionId()
 
     @config.kpisTemplates = []
     @getKpisTemplates = ->
@@ -58,10 +50,7 @@ angular
 
       if _.isEmpty(_self.getSsoSessionId()) || force
         ImpacMainSvc.loadUserData(force).then(
-          (mainConfig) ->
-            _self.config.userData.id = mainConfig.id
-            _self.config.userData.orgUids = _.map(mainConfig.organizations, (o)-> o.uid)
-            _self.config.userData.ssoSessionId = mainConfig.sso_session if mainConfig.sso_session
+          () ->
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)
@@ -139,17 +128,8 @@ angular
 
       createUrl = ImpacRoutes.kpis.alerts.create(kpi.id)
 
-
       for alert in alertsToCreate
-        # Configure alert for inapp websockets with Pusher.
-        if alert.service == 'inapp'
-          alert.metadata = {
-            pusher: {
-              channel: "alerts_channel_#{_self.getUserIds().id}",
-              event: "kpi_target_alert"
-            }
-          }
-        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service', 'metadata'])})
+        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service'])})
 
       for alert in alertsToDelete
         deleteUrl = ImpacRoutes.kpis.alerts.delete(alert.id)
