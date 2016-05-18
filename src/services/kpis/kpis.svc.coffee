@@ -127,14 +127,11 @@ angular
 
       promises = []
 
-      createUrl = ImpacRoutes.kpis.alerts.create(kpi.id)
-
       for alert in alertsToCreate
-        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service'])})
+        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
 
       for alert in alertsToDelete
-        deleteUrl = ImpacRoutes.kpis.alerts.delete(alert.id)
-        promises.push $http.delete(deleteUrl)
+        promises.push ImpacAlerts.delete(alert.id)
 
       return $q.all(promises).then(
         (success) ->

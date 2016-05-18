@@ -51,5 +51,11 @@
           error
       )
 
+    @create = (kpiId, params)->
+      $http.post(ImpacRoutes.kpis.alerts.create(kpiId), params)
+
+    @delete = (alertId)->
+      $http.delete(ImpacRoutes.kpis.alerts.delete(alertId))
+
     return _self
   )
