@@ -63,6 +63,7 @@ angular
 
     # Will be called by ImpacDashboardsSvc when the current Dhb is set
     # (required because we need the list of organizations uids to properly load the available kpis fron #INDEX)
+    # TODO: should not depend on one specific dashboard, it should inject the dashboard service.
     @initialize = (dashboard) ->
       # Re-assign a new initialization promise, if the previous has been resolved or rejected.
       _self.initialized = $q.defer() if _self.initialized.promise.$$state > 0
@@ -154,7 +155,7 @@ angular
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
           _self.show(k, refreshCache).then(
-            (renderedKpi)-> $log.debug('ImpacKpisSvc: Successfully refreshed Kpis.')
+            (renderedKpi)-> # success
             (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
           )
       )

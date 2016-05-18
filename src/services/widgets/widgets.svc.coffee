@@ -14,7 +14,7 @@ angular
     # Register Listeners
     #====================================
     ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
-      _self.refreshAll(notification.dashboardId, true)
+      _self.refreshAll(true)
     )
 
     #====================================
