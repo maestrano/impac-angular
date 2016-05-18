@@ -1,5 +1,15 @@
 # master | Ongoing development
 
+### Adds
+- In-app push notification (Pusher WebSockets) & Email alerts when KPI targets are met.
+
+### Config changes
+- Optional Pusher ImpacLinking configuration:
+
+```coffeescript
+  pusher_key: 'pusher-key-goes-here'
+```
+
 -------------------------------------------------------------
 # v1.3 | UNTAGGED
 
