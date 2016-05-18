@@ -8,7 +8,9 @@ angular
     # Getters
     #====================================
     @config = {}
-    @config.ssoSessionId = ""
+
+    @getSsoSessionId = ->
+      return ImpacMainSvc.getSsoSessionId()
 
     #====================================
     # Register Listeners
@@ -24,11 +26,10 @@ angular
     @load = (force=false) ->
       deferred = $q.defer()
 
-      if _.isEmpty(_self.config.ssoSessionId) || force
+      if _.isEmpty(_self.getSsoSessionId()) || force
 
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
           (results) ->
-            _self.config.ssoSessionId = results[0].sso_session if results[0].sso_session
             deferred.resolve(_self.config)
           (error) ->
             deferred.reject(error)
@@ -158,7 +159,7 @@ angular
           else
             data = {
               owner: widget.owner
-              sso_session: _self.config.ssoSessionId
+              sso_session: _self.getSsoSessionId()
               metadata: widget.metadata
               engine: widget.category
             }
