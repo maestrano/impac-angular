@@ -35,9 +35,22 @@ describe('<> ImpacWidgetsSvc', function () {
 
   it('has a config object', function () {
     expect(svc.config).toBeDefined();
-    expect(svc.config.ssoSessionId).toEqual("");
   });
 
+  it('has a sso session getter method', function () {
+    expect(svc.getSsoSessionId).toEqual(jasmine.any(Function));
+  });
+
+  describe('#getSsoSessionId', function() {
+    beforeEach(function () {
+      spyOn(ImpacMainSvc, 'getSsoSessionId').and.returnValue('sso_session');
+    });
+
+    it('retrieves an ssoSessionId', function () {
+      expect(svc.getSsoSessionId()).toEqual('sso_session');
+      expect(ImpacMainSvc.getSsoSessionId).toHaveBeenCalled();
+    });
+  });
 
   // Load
   // -------------------------------------------------
