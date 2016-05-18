@@ -11,23 +11,32 @@ angular
     # Private Defaults
     #=======================================
     # Required data:
-    links = {
+    required_links = {
       user: null, # @params Function -> returns Promise
       organizations: null # @params Function -> return Promise
+    }
+    # Optional data:
+    optional_links = {
+      pusher_key: '' # @params String
     }
     #=======================================
     # Public methods available in config
     #=======================================
     # Iterates over default links object and assigns values from configData with strict checking.
     provider.linkData = (configData)  ->
-      _.forIn(links, (value, key) ->
+      for key, value of required_links
         link = configData[key]
         unless link?
           throw new Error("impac-angular linking.svc: Missing core data (#{key}) to run impac-angular.")
         if typeof link != 'function'
           throw new TypeError("impac-angular linking.svc: #{key} should be a Function.")
-        links[key] = link
-      )
+        required_links[key] = link
+      for key, value of optional_links
+        link = configData[key]
+        unless link?
+          console.error("impac-angular linking.svc: No #{key} is configured, Alerts are disabled.")
+        else
+          optional_links[key] = link
 
     #=======================================
     _$get = ($q) ->
@@ -36,7 +45,7 @@ angular
       # Public methods available as service
       #=======================================
       service.getUserData = ->
-        return links.user().then(
+        return required_links.user().then(
           (success) ->
             return success
           (err) ->
@@ -44,12 +53,15 @@ angular
       )
 
       service.getOrganizations = ->
-        return links.organizations().then(
+        return required_links.organizations().then(
           (success) ->
             return success
           (err) ->
             return $q.reject(err)
         )
+
+      service.getPusherKey = ->
+        return optional_links.pusher_key
 
       return service
     # inject service dependencies here, and declare in _$get function args.

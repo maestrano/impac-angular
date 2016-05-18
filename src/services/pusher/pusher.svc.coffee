@@ -4,12 +4,11 @@
 
 angular
   .module('impac.services.pusher', [])
-  .service('Pusher', ($window) ->
+  .service('Pusher', ($window, ImpacLinking) ->
 
     _self = @
 
     @config =
-      key: 'e98dfd8e4a359a7faf48'
       pusherOpts:
         encrypted: true
 
@@ -18,7 +17,7 @@ angular
     # @param channels [Array of Strings] Subscribe pusher client to channels
     # @return [Pusher] Chain onto class methods, e.g the `@bind` method.
     @init = (channels=[]) ->
-      _self.socket = new $window.Pusher(_self.config.key, _self.config.pusherOpts) unless _self.socket
+      _self.socket = new $window.Pusher(ImpacLinking.getPusherKey(), _self.config.pusherOpts) unless _self.socket
       _.forEach(channels, (channel)-> _self.socket.subscribe(channel))
       return _self
 

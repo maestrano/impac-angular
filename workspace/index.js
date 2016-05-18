@@ -105,7 +105,8 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
     },
     user: function () {
       return getUser();
-    }
+    },
+    pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
   });
 
   function getOrganizations() {
