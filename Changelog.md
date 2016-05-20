@@ -12,7 +12,8 @@
 
 ### Fixes
 - dates-picker autofocus + remove outline
-- sso_session id to be stored only in ImpacMainSvc 
+- sso_session id to be stored only in ImpacMainSvc
+- Important refactor of Kpis.svc
 
 -------------------------------------------------------------
 # v1.3.3 | Week 19: Accounting behaviours improvements
