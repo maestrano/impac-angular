@@ -40,7 +40,7 @@ describe('<> ImpacWidgetsSvc', function () {
     });
 
     it('returns the sso session id stored in ImpacMainSvc', function(){
-      expect(ImpacMainSvc.getSsoSessionId).toHaveBeenCalled();
+      expect(ImpacMainSvc.getSsoSessionId()).toEqual('id-15634613541');
     });
   });
 

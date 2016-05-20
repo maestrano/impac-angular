@@ -61,12 +61,12 @@ angular
 
     @loadLocked=false
     @load = (force=false) ->
+      deferred = $q.defer()
 
       # Singleton prevents concurrent calls of _self.load
       if !_self.loadLocked
         _self.loadLocked=true
 
-        deferred = $q.defer()
         if (needConfigurationLoad() || force)
 
           ImpacMainSvc.load(force).then (success) ->
@@ -96,11 +96,15 @@ angular
           _self.loadLocked=false
           deferred.resolve(_self.config)
 
-        return deferred.promise
-
       else
         $log.warn "Impac! - DashboardsSvc: Load locked. Trying again in 1s"
-        $timeout (-> _self.load(force)), 1000
+        $timeout (-> _self.load(force).then(
+          (success) -> deferred.resolve(success)
+          (errors) -> deferred.reject(errors)
+          )
+        ), 1000
+
+      return deferred.promise
 
 
     setDefaultCurrentDashboard = ->
