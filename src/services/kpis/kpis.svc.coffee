@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, ImpacRoutes, ImpacMainSvc, ImpacDeveloper) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
 
     _self = @
 
@@ -8,19 +8,15 @@ angular
     # Getters
     #====================================
 
-    @config = {}
 
-    @config.ssoSessionId = ""
-    @getSsoSessionId = ->
-      return _self.config.ssoSessionId
+    # Simply forward the getters for objects that remain stored in other services
+    @getSsoSessionId = ImpacMainSvc.getSsoSessionId
+    @getCurrentDashboard = ImpacDashboardsSvc.getCurrentDashboard
 
-    @config.kpisTemplates = []
+    @config =
+      kpisTemplates: []
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
-
-    @config.currentDashboardId = ""
-    @getCurrentDashboardId = ->
-      return _self.config.currentDashboardId
 
 
     #====================================
@@ -32,103 +28,94 @@ angular
       url = [baseUrl,decodeURIComponent( $.param( params ) )].join('?')
       return url
 
+
     #====================================
     # Load and initialize
     #====================================
 
-    # Methods can tap into this promise to receive resolution on initialization.
-    @initialized = $q.defer()
-
+    @locked = false
     @load = (force=false) ->
-      deferred = $q.defer()
+      unless _self.locked
+        _self.locked = true
 
-      if _.isEmpty(_self.config.ssoSessionId) || force
-        ImpacMainSvc.loadUserData(force).then(
-          (mainConfig) ->
-            _self.config.ssoSessionId = mainConfig.sso_session
-            deferred.resolve(_self.config)
-          (error) ->
-            deferred.reject(error)
-        )
+        if !_self.getSsoSessionId()? || !_self.getCurrentDashboard()? || _.isEmpty(_self.getKpisTemplates()) || force
+      
+          # Needed:
+          #   sso session id => ImpacMainSvc.loadUserData
+          #   organizations uids (data sources) => ImpacDashboardsSvc.load
+          _self.config.kpisTemplates = []
+
+          return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then( (results) ->
+            orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
+
+            params =
+              metadata:
+                organization_ids: orgUids
+              sso_session: _self.getSsoSessionId()
+
+            promises =
+              impac: index(params)
+
+            # Get local kpis
+            if ImpacRoutes.kpis.local()
+              promises.local = $http.get(ImpacRoutes.kpis.local())
+
+            $q.all(promises).then(
+              (response) ->
+                # clear array
+                _.remove _self.config.kpisTemplates, (-> true)
+
+                # fill array with new values from Impac! api
+                for template in response.impac.data.kpis
+                  template.source ||= 'impac'
+                  _self.config.kpisTemplates.push template
+
+                if response.local
+                  # fill array with new values from local endpoints
+                  for template in response.local.data.kpis
+                    template.source = 'local'
+                    _self.config.kpisTemplates.push template
+      
+                $log.info("Impac! - KpisSvc: loaded (force=#{force})")
+
+              (error) ->
+                $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', error)
+            )
+          ).finally(-> _self.locked = false )
+
+        else
+            _self.locked = false
+           return $q.resolve()
 
       else
-         deferred.resolve(_self.config)
-
-      return deferred.promise
-
-    # Will be called by ImpacDashboardsSvc when the current Dhb is set
-    # (required because we need the list of organizations uids to properly load the available kpis fron #INDEX)
-    @initialize = (dashboard) ->
-      # Re-assign a new initialization promise, if the previous has been resolved or rejected.
-      _self.initialized = $q.defer() if _self.initialized.promise.$$state > 0
-      _self.load().then( ->
-        _self.config.currentDashboardId = dashboard.id
-
-        orgUids = _.pluck dashboard.data_sources, 'uid'
-
-        params =
-          metadata:
-            organization_ids: orgUids
-
-        params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
-
-        promises = {
-          impac: index(params)
-        }
-
-        # Get local kpis
-        if ImpacRoutes.kpis.local()
-          promises.local = $http.get(ImpacRoutes.kpis.local())
-
-        $q.all(promises).then(
-          (response) ->
-            # clear array
-            _.remove _self.config.kpisTemplates, (-> true)
-
-            # fill array with new values from Impac! api
-            for template in response.impac.data.kpis
-              template.source ||= 'impac'
-              _self.config.kpisTemplates.push template
-
-            if response.local
-              # fill array with new values from local endpoinst
-              for template in response.local.data.kpis
-                template.source = 'local'
-                _self.config.kpisTemplates.push template
-
-            _self.initialized.resolve(true)
-          (error) ->
-            $log.error('ImpacKpisSvc - cannot retrieve kpis templates list', error)
-            _self.initialized.reject(false)
-        )
-      )
-      return _self.initialized.promise
+        $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
+        $timeout (-> _self.load(force)), 1000
 
     #====================================
     # CRUD methods
     #====================================
 
     # Retrieve all the available kpis from Impac!
-    # Note: index is a private method that should be called only by _self.initialized
+    # Note: index is a private method that should be called only by load()
     index = (params) ->
       host = ImpacRoutes.kpis.index()
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
 
 
-    # retrieves data for kpi from api
+    # Retrieve data for kpi from api
     @show = (kpi) ->
-      _self.initialized.promise.then(
-        ()->
+      _self.load().then(
+        ->
           params = {}
-          params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+          params.sso_session = _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
 
           switch kpi.source
             when 'impac'
-              host = ImpacRoutes.kpis.show(_self.config.currentDashboardId, kpi.id)
+              host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
             when 'local'
               host = ImpacRoutes.kpis.local()
 
@@ -136,80 +123,69 @@ angular
 
           $http.get(url).then(
             (response) ->
-              kpi.data ||= {}
-              angular.extend kpi.data, _.pick response.data.kpi, ['value', 'unit', 'results']
+              kpi.data = _.pick(response.data.kpi, ['value', 'unit', 'results'])
 
               # When the kpi initial configuration is partial, we update it with what the API has picked by default
               updatedConfig = response.data.kpi.configuration || {}
               missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
               angular.extend kpi, _.pick(updatedConfig, missingParams)
               kpi
+
             (err) ->
-              $log.error 'impac-angular ERROR: Could not retrieve KPI at: ' + kpi.endpoint, err
+              $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
               err
           )
-        ()->
-          $log.error 'ImpacKpisSvc - Service not initialized'
-          {error: { message: 'ImpacKpisSvc is not initialized' }}
+        ->
+          $log.error 'Impac! - KpisSvc: Service not initialized'
+          {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
       )
 
     @create = (source, endpoint, elementWatched) ->
-    # @create = (source, endpoint, elementWatched, extraParams=[]) ->
-      _self.initialized.promise.then(
-        ()->
+      _self.load().then(
+        ->
           params = {
             source: source
             endpoint: endpoint
             element_watched: elementWatched
           }
-          # for param in extraParams
-          #   params.extra_params ||= []
-          #   params.extra_params.push param
 
-          url = ImpacRoutes.kpis.create(_self.config.currentDashboardId)
+          url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
           $http.post(url, {kpi: params}).then(
             (success) -> success.data
             (err) -> err
           )
-        ()->
-          { error: {message: 'ImpacKpisSvc is not initialized'} }
+        ->
+          { error: {message: 'Impac! - KpisSvc: Service is not initialized'} }
       )
 
     @update = (kpi, params) ->
-      deferred = $q.defer()
+      _self.load().then(
 
-      filtered_params = {}
-      filtered_params.name = params.name if params.name?
-      filtered_params.settings = params.metadata if params.metadata?
-      filtered_params.targets = params.targets if params.targets?
-      filtered_params.extra_params = params.extra_params if params.extra_params?
+        filtered_params = {}
+        filtered_params.name = params.name if params.name?
+        filtered_params.settings = params.metadata if params.metadata?
+        filtered_params.targets = params.targets if params.targets?
+        filtered_params.extra_params = params.extra_params if params.extra_params?
 
-      url = ImpacRoutes.kpis.update(_self.config.currentDashboardId, kpi.id)
+        url = ImpacRoutes.kpis.update(_self.getCurrentDashboard().id, kpi.id)
 
-      if !_.isEmpty filtered_params
-        $http.put(url, {kpi: params}).then (success) ->
-          angular.extend(kpi, success.data)
-          _self.show(kpi)
-          deferred.resolve(kpi)
-        ,(err) ->
-          $log.error 'impac-angular ERROR: Unable to update KPI ', err
-          deferred.reject(err)
-
-      return deferred.promise
+        if !_.isEmpty filtered_params
+          $http.put(url, {kpi: params}).then (success) ->
+            angular.extend(kpi, success.data)
+            _self.show(kpi)
+            $q.resolve(kpi)
+          ,(err) ->
+            $log.error 'Impac! - KpisSvc: Unable to update KPI ', err
+            $q.reject(err)
+      )
 
 
     @delete = (kpi) ->
-      deferred = $q.defer()
-
-      url = ImpacRoutes.kpis.delete(_self.config.currentDashboardId, kpi.id)
-      $http.delete(url).then (success) ->
-        deferred.resolve(success)
-      ,(err) ->
-        deferred.reject(err)
-
-      return deferred.promise
-
+      _self.load().then(
+        url = ImpacRoutes.kpis.delete(_self.getCurrentDashboard().id, kpi.id)
+        $http.delete(url)
+      )
 
     return @
   )
