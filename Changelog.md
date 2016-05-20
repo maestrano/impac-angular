@@ -12,6 +12,7 @@
 
 ### Fixes
 - dates-picker autofocus + remove outline
+- sso_session id to be stored only in ImpacMainSvc 
 
 -------------------------------------------------------------
 # v1.3.3 | Week 19: Accounting behaviours improvements

@@ -3,35 +3,24 @@ angular
   .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
 
     _self = @
-    @config = {}
-    @config.ssoSessionId = ""
 
+    # Simply forward the sso_session id which must be stored only in MainSvc
+    @getSsoSessionId = ->
+      ImpacMainSvc.getSsoSessionId()
 
     @load = (force=false) ->
-      deferred = $q.defer()
-
-      if _.isEmpty(_self.config.ssoSessionId) || force
-
-        $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
-          (results) ->
-            _self.config.ssoSessionId = results[0].sso_session
-            deferred.resolve(_self.config)
-          (error) ->
-            deferred.reject(error)
-        )
+      if !_self.getSsoSessionId()? || force
+        $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)])
 
       else
-         deferred.resolve(_self.config)
-
-      return deferred.promise
+        $q.resolve()
 
 
     @create = (opts) ->
       deferred = $q.defer()
 
       _self.load().then(
-        (config) ->
-
+        ->
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           data = { widget: opts }
 
@@ -171,7 +160,7 @@ angular
       deferred = $q.defer()
 
       _self.load().then(
-        (config) ->
+        ->
           unless isWidgetInCurrentDashboard(widget.id)
             $log.info("ImpacWidgetsSvc: trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
             deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
@@ -179,7 +168,7 @@ angular
           else
             data = {
               owner: widget.owner
-              sso_session: _self.config.ssoSessionId
+              sso_session: _self.getSsoSessionId()
               metadata: widget.metadata
               engine: widget.category
             }
@@ -228,7 +217,7 @@ angular
       deferred = $q.defer()
 
       _self.load().then(
-        (config) ->
+        ->
           unless isWidgetInCurrentDashboard(widget.id)
             $log.info("ImpacWidgetsSvc: trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
             deferred.reject("trying to update a widget (id: #{widget.id}) that is not in currentDashboard")
@@ -264,7 +253,7 @@ angular
       deferred = $q.defer()
 
       _self.load().then(
-        (config) ->
+        ->
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
           # form a http request or a stubbed request which returns a promise.

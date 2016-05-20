@@ -10,9 +10,9 @@ angular
 
     @config = {}
 
-    @config.ssoSessionId = ""
+    # Simply forward the sso_session id which must be stored only in MainSvc
     @getSsoSessionId = ->
-      return _self.config.ssoSessionId
+      return ImpacMainSvc.getSsoSessionId()
 
     @config.kpisTemplates = []
     @getKpisTemplates = ->
@@ -40,21 +40,10 @@ angular
     @initialized = $q.defer()
 
     @load = (force=false) ->
-      deferred = $q.defer()
-
-      if _.isEmpty(_self.config.ssoSessionId) || force
-        ImpacMainSvc.loadUserData(force).then(
-          (mainConfig) ->
-            _self.config.ssoSessionId = mainConfig.sso_session
-            deferred.resolve(_self.config)
-          (error) ->
-            deferred.reject(error)
-        )
-
+      if !_self.getSsoSessionId()? || force
+        return ImpacMainSvc.loadUserData(force)
       else
-         deferred.resolve(_self.config)
-
-      return deferred.promise
+         return $q.resolve()
 
     # Will be called by ImpacDashboardsSvc when the current Dhb is set
     # (required because we need the list of organizations uids to properly load the available kpis fron #INDEX)
@@ -70,7 +59,7 @@ angular
           metadata:
             organization_ids: orgUids
 
-        params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+        params.sso_session = _self.getSsoSessionId()
 
         promises = {
           impac: index(params)
@@ -121,7 +110,7 @@ angular
       _self.initialized.promise.then(
         ()->
           params = {}
-          params.sso_session = _self.config.ssoSessionId if _self.config.ssoSessionId
+          params.sso_session = _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?

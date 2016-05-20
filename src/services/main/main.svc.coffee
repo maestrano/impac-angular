@@ -21,6 +21,7 @@ angular
 
         $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
           deferred.resolve(_self.config)
+          $log.info("Impac! front-end loaded (force=#{force})")
         ,(error) ->
           $log.error("ImpacMainSvc: failed to load configuration")
           deferred.reject(error)
@@ -98,6 +99,9 @@ angular
         deferred.resolve(_self.config.userData)
 
       return deferred.promise
+
+    @getSsoSessionId = ->
+      _self.config.userData.sso_session
 
 
 # =====================================================
