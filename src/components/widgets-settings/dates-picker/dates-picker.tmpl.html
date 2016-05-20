@@ -2,15 +2,21 @@
   <h5 ng-if="showTitle()">Time range</h5>
 
   <div class="buttons row" ng-click="onUse()" ng-if="bootstrapMode">
-    <div class="col-xs-6 text-right">
+    <div class="col-xs-6 text-right" ng-if="!invert">
       <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()">
         {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
       </button>
     </div>
 
     <div class="col-xs-6 text-right">
-      <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" ng-focus="onUse()">
+      <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()">
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
+      </button>
+    </div>
+
+    <div class="col-xs-6 text-right" ng-if="invert">
+      <button class="btn btn-sm btn-default" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()">
+        {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
       </button>
     </div>
   </div>
@@ -22,7 +28,7 @@
 
     to 
 
-    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" on-open-focus="false" ng-focus="onUse()">
+    <button class="btn btn-sm btn-default" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()">
       {{ calendarTo.value | date : 'yyyy-MM-dd' }}
     </button>
 
