@@ -31,7 +31,8 @@
     "components-font-awesome": "~4.5.0",
     "angular-poller": "~0.4.2",
     "moment": "^2.11.2",
-    "angular-toastr": "^1.7.0"
+    "angular-toastr": "^1.7.0",
+    "angular-messages": "^1.5.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0",
@@ -41,5 +42,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/maestrano/impac-angular.git"
+  },
+  "resolutions": {
+    "angular": "~1.4.0"
   }
 }

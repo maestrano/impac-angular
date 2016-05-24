@@ -55,6 +55,7 @@
 # v1.3.0 | Better time period selection, accounting behaviours, widgets generator, better dashboard sync...
 
 ### Adds
+- KPIs target selection is now mandatory, added loading spinner for data fetching.
 - Reworked sync-apps UI, statuses & error management: new design & last sync statuses, last sync statuses customizable via ImpacTheming, alerts modal displays successful connector syncs, details & proper error messages for each alert, and a new caution button which opens the alerts modal.
 - Workspace Http Interceptor: applys basic auth intelligently to requests to Maestrano's ecosystem.
 - Widget Generator: generator widget components from the CLI.
