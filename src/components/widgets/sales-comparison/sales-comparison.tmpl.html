@@ -86,7 +86,7 @@
               </div>
             </div>
 
-            <div class="row widget-line" ng-repeat="element in selectedElements">
+            <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
               <div class="col-xs-1">
                 <i class="fa fa-circle" style="color: {{getElementChartColor($index)}}" />
               </div>
