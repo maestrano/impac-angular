@@ -22,21 +22,22 @@ angular
         ]
 
         unless $scope.kpi.static
-          ImpacKpisSvc.show($scope.kpi).then(
-            (success) ->
-              # Get the corresponding template of the KPI loaded
-              kpiTemplate = _.find $scope.kpiTemplates, (aKpi) ->
-                aKpi.endpoint == $scope.kpi.endpoint
+          ImpacKpisSvc.show($scope.kpi).then( (renderedKpi) ->
+            angular.extend $scope.kpi, renderedKpi
 
-              # If the template contains extra params we add it to the KPI
-              if kpiTemplate? && kpiTemplate.extra_params?
-                $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
+            # Get the corresponding template of the KPI loaded
+            kpiTemplate = _.find $scope.kpiTemplates, (aKpi) ->
+              aKpi.endpoint == $scope.kpi.endpoint
 
-              $scope.kpi.targets ||= []
-              if !_.isEmpty($scope.kpi.targets[0])
-                $scope.kpi.limit = {} if !$scope.kpi.limit?
-                $scope.kpi.limit.mode = _.keys($scope.kpi.targets[0])[0]
-                $scope.kpi.limit.value = _.values($scope.kpi.targets[0])[0]
+            # If the template contains extra params we add it to the KPI
+            if kpiTemplate? && kpiTemplate.extra_params?
+              $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
+
+            $scope.kpi.targets ||= []
+            if !_.isEmpty($scope.kpi.targets[0])
+              $scope.kpi.limit = {} if !$scope.kpi.limit?
+              $scope.kpi.limit.mode = _.keys($scope.kpi.targets[0])[0]
+              $scope.kpi.limit.value = _.values($scope.kpi.targets[0])[0]
           )
 
         $scope.displayEditSettings = ->

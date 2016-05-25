@@ -4,6 +4,18 @@
 # v1.3 | UNTAGGED
 
 -------------------------------------------------------------
+# v1.3.4 | Week 20: 
+
+### Adds
+- dates-picker to be inversible (from date can be displayed first in bootstrap mode)
+- Balance sheet widget to invert from/to dates
+
+### Fixes
+- dates-picker autofocus + remove outline
+- sso_session id to be stored only in ImpacMainSvc
+- Important refactor of Kpis.svc
+
+-------------------------------------------------------------
 # v1.3.3 | Week 19: Accounting behaviours improvements
 
 ### Adds

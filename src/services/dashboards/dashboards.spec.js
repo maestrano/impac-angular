@@ -1,15 +1,14 @@
 describe('<> ImpacDashboardsSvc', function () {
   'use strict';
 
-  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacDeveloper, $q, $http, $rootScope;
+  var subject, svc, ImpacDashboardsSvc, ImpacMainSvc, ImpacRoutes, ImpacDeveloper, $q, $http, $rootScope;
 
   beforeEach(function() {
     module('maestrano.impac');
-    inject(function (_ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _ImpacKpisSvc_, _ImpacDeveloper_, _$q_, _$http_, _$rootScope_) {
+    inject(function (_ImpacDashboardsSvc_, _ImpacMainSvc_, _ImpacRoutes_, _ImpacDeveloper_, _$q_, _$http_, _$rootScope_) {
       svc = ImpacDashboardsSvc = _ImpacDashboardsSvc_;
       ImpacMainSvc = _ImpacMainSvc_;
       ImpacRoutes = _ImpacRoutes_;
-      ImpacKpisSvc = _ImpacKpisSvc_;
       ImpacDeveloper = _ImpacDeveloper_;
       $q = _$q_;
       $http = _$http_;
@@ -68,6 +67,9 @@ describe('<> ImpacDashboardsSvc', function () {
         orgsDeferred.resolve({currentOrganization: {id: 1}});
         return orgsDeferred.promise;
       });
+
+      // Stub for ImpacMainSvc.loadUserData()
+      spyOn(ImpacMainSvc, "loadUserData").and.returnValue($q.resolve({sso_session: 'id-13513754'}));
 
       // Stub for $http.get()
       spyOn($http, "get").and.callFake(function() {
@@ -152,7 +154,6 @@ describe('<> ImpacDashboardsSvc', function () {
       };
 
       spyOn(svc, 'setWidgetsTemplates').and.returnValue(true);
-      spyOn(ImpacKpisSvc, 'initialize').and.returnValue(true);
       spyOn(svc, 'initializeActiveTabs').and.returnValue(true);
       spyOn(svc.callbacks.dashboardChanged, 'notify').and.callThrough();
     });
@@ -161,10 +162,6 @@ describe('<> ImpacDashboardsSvc', function () {
     function sharedBehaviorForSetDependingAttributes() {
       it('stores the widgets templates list in the service', function() {
         expect(svc.setWidgetsTemplates).toHaveBeenCalled();
-      });
-
-      it('initializes the kpis service', function() {
-        expect(ImpacKpisSvc.initialize).toHaveBeenCalled();
       });
 
       it('initializes the tabs status', function() {

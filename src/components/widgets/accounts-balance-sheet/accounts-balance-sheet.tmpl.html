@@ -26,7 +26,7 @@
         <div class="col-sm-6 col-xs-12 text-left">Compare balances at dates:</div>
 
         <div class="col-sm-6 col-xs-12">
-          <div setting-dates-picker parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="keepToday" update-on-pick="true" bootstrap-mode="true" />
+          <div setting-dates-picker parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="keepToday" update-on-pick="true" bootstrap-mode="true" invert="true" />
         </div>
       </div>
     </div>
@@ -46,10 +46,10 @@
               <strong>{{category | titleize}}</strong>
             </div>
             <div class="col-sm-3 col-xs-6 text-right">
-              <strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong>
+              <strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong>
             </div>
             <div class="col-sm-3 col-xs-6 text-right">
-              <strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong>
+              <strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong>
             </div>
           </div>
 
@@ -61,10 +61,10 @@
                   {{account.name | titleize}}
                 </div>
                 <div class="col-sm-3 col-xs-6 text-right">
-                  {{account.totals[0] | mnoCurrency : account.currency}}
+                  {{account.totals[1] | mnoCurrency : account.currency}}
                 </div>
                 <div class="col-sm-3 col-xs-6 text-right">
-                  {{account.totals[1] | mnoCurrency : account.currency}}
+                  {{account.totals[0] | mnoCurrency : account.currency}}
                 </div>
               </div>
             </div>

@@ -33,9 +33,15 @@ describe('<> ImpacWidgetsSvc', function () {
     expect(typeof svc).toBeDefined();
   });
 
-  it('has a config object', function () {
-    expect(svc.config).toBeDefined();
-    expect(svc.config.ssoSessionId).toEqual("");
+  describe('#getSsoSessionId()', function() {
+    beforeEach(function() {
+      spyOn(ImpacMainSvc, 'getSsoSessionId').and.returnValue('id-15634613541');
+      svc.getSsoSessionId();
+    });
+
+    it('returns the sso session id stored in ImpacMainSvc', function(){
+      expect(ImpacMainSvc.getSsoSessionId()).toEqual('id-15634613541');
+    });
   });
 
 
