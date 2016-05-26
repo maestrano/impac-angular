@@ -119,7 +119,7 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
     return $http.get(settings.mno_url + '/api/v2/impac/organizations')
       .then(function (response) {
         var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[2].id || null) };
+        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);
