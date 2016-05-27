@@ -6,8 +6,12 @@
 -------------------------------------------------------------
 # v1.3.5 | Week 21
 
+### Fixes
+- Revert workspace/index.js and workspace/index.css
+- Add track by to ng-repeats in widgets
+
 -------------------------------------------------------------
-# v1.3.4 | Week 20: 
+# v1.3.4 | Week 20
 
 ### Adds
 - dates-picker to be inversible (from date can be displayed first in bootstrap mode)
