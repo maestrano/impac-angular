@@ -6,6 +6,12 @@
 -------------------------------------------------------------
 # v1.3.6 | Week 22
 
+### Adds
+- Update Chart.js to v2.1.4
+
+### Fixes
+- Accounts balance: wait for updateSettings to finish before calling format()
+
 -------------------------------------------------------------
 # v1.3.5 | Week 21
 
