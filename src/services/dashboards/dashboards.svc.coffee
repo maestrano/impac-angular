@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacKpisSvc, ImpacTheming, ImpacDeveloper) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -61,15 +61,15 @@ angular
 
     @loadLocked=false
     @load = (force=false) ->
+      deferred = $q.defer()
 
       # Singleton prevents concurrent calls of _self.load
       if !_self.loadLocked
         _self.loadLocked=true
 
-        deferred = $q.defer()
         if (needConfigurationLoad() || force)
 
-          ImpacMainSvc.loadOrganizations(force).then (success) ->
+          ImpacMainSvc.load(force).then (success) ->
             orgId = success.currentOrganization.id
 
             $http.get(ImpacRoutes.dashboards.index(orgId)).then (dashboards) ->
@@ -77,17 +77,18 @@ angular
                 _self.setCurrentDashboard()
                 _self.loadLocked=false
                 deferred.resolve(_self.config)
+                $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
               (error) ->
                 _self.loadLocked=false
                 deferred.reject(error)
 
-            ,(error) ->
-              $log.error("Impac - DashboardSvc: cannot retrieve dashboards list for org: #{orgId}")
+            (error) ->
+              $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
               _self.loadLocked=false
               deferred.reject(error)
 
-          ,(error) ->
-            $log.error("Impac - DashboardSvc: cannot retrieve current organization")
+          (error) ->
+            $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
             _self.loadLocked=false
             deferred.reject(error)
 
@@ -95,24 +96,27 @@ angular
           _self.loadLocked=false
           deferred.resolve(_self.config)
 
-        return deferred.promise
-
       else
-        $log.warn "ImpacDashboardsSvc.load locked. Trying again in 1s"
-        $timeout (-> _self.load(force)), 1000
+        $log.warn "Impac! - DashboardsSvc: Load locked. Trying again in 1s"
+        $timeout (-> _self.load(force).then(
+          (success) -> deferred.resolve(success)
+          (errors) -> deferred.reject(errors)
+          )
+        ), 1000
+
+      return deferred.promise
 
 
     setDefaultCurrentDashboard = ->
       if _self.config.dashboards? && _self.config.dashboards.length > 0
-        $log.info("Impac - DashboardSvc: first dashboard set as current by default")
+        $log.info("Impac! - DashboardsSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
         _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
-        ImpacKpisSvc.initialize(_self.config.currentDashboard) if _self.areKpisEnabled()
         _self.initializeActiveTabs()
         _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
         return true
       else
-        $log.warn("Impac - DashboardSvc: cannot set default current dashboard")
+        $log.warn("Impac! - DashboardsSvc: cannot set default current dashboard")
         ImpacMainSvc.override _self.config.currentDashboard, {}
         _self.callbacks.dashboardChanged.notify(false)
         return false
@@ -124,12 +128,11 @@ angular
         if !_.isEmpty(fetchedDhb)
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
           _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
-          ImpacKpisSvc.initialize(_self.config.currentDashboard) if _self.areKpisEnabled()
           _self.initializeActiveTabs()
           _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
           return true
         else
-          $log.error("Impac - DashboardSvc: dashboard: #{id} not found in dashboards list")
+          $log.error("Impac! - DashboardsSvc: Dashboard #{id} not found in dashboards list")
           return setDefaultCurrentDashboard()
 
       else
@@ -152,7 +155,7 @@ angular
             if belongsToCurrentOrganization(dhb, curOrg)
               _self.config.dashboards.push dhb
         (error) ->
-          $log.error("Impac - DashboardSvc: Cannot load user's organizations")
+          $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
 
 
@@ -192,7 +195,7 @@ angular
           _self.setCurrentDashboard(success.data.id)
           deferred.resolve(success.data)
         ,(error) ->
-          $log.error("Impac - DashboardSvc: cannot create dashboard with parameters: #{angular.toJson(dashboard)}", error)
+          $log.error("Impac! - DashboardsSvc: Cannot create dashboard with parameters: #{angular.toJson(dashboard)}", error)
           deferred.reject(error)
 
         return deferred.promise
@@ -207,7 +210,7 @@ angular
         _self.setCurrentDashboard()
         deferred.resolve(success)
       ,(error) ->
-        $log.error("Impac - DashboardSvc: cannot delete dashboard: #{id}")
+        $log.error("Impac! - DashboardsSvc: Cannot delete dashboard: #{id}")
         deferred.reject(error)
 
       return deferred.promise
@@ -227,7 +230,7 @@ angular
 
         deferred.resolve(success.data)
       ,(error) ->
-        $log.error("Impac - DashboardSvc: cannot update dashboard: #{id} with parameters: #{opts}")
+        $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{opts}")
         deferred.reject(error)
 
       return deferred.promise

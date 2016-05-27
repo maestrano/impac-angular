@@ -115,7 +115,7 @@
           </div>
 
           <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
-            <div class="row widget-line" ng-repeat="element in selectedElements">
+            <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
               <div class="col-xs-7 text-left">
                 <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
                 {{getName(element) | titleize}}

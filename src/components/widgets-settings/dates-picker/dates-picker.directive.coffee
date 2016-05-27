@@ -13,6 +13,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       minDate: '=?'
       updateOnPick: '=?'
       bootstrapMode: '=?'
+      invert: '=?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
     

@@ -4,6 +4,25 @@
 # v1.3 | UNTAGGED
 
 -------------------------------------------------------------
+# v1.3.5 | Week 21
+
+### Fixes
+- Revert workspace/index.js and workspace/index.css
+- Add track by to ng-repeats in widgets
+
+-------------------------------------------------------------
+# v1.3.4 | Week 20
+
+### Adds
+- dates-picker to be inversible (from date can be displayed first in bootstrap mode)
+- Balance sheet widget to invert from/to dates
+
+### Fixes
+- dates-picker autofocus + remove outline
+- sso_session id to be stored only in ImpacMainSvc
+- Important refactor of Kpis.svc
+
+-------------------------------------------------------------
 # v1.3.3 | Week 19: Accounting behaviours improvements
 
 ### Adds
