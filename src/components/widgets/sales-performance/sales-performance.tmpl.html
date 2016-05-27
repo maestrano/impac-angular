@@ -53,23 +53,23 @@
       </div>
 
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
-        
+
         <div ng-hide="selectedElements.length > 0" class="no-element">
           Select an employee or team to display the corresponding opportunities won/lost.
         </div>
-        
+
         <div ng-show="no_sales_stages_selected()" class="no-element">
           Pick the status that should be considered as 'Closed Won' and 'Closed Lost' in your widget settings.
         </div>
-        
+
         <div ng-show="selectedElements.length > 0 && !no_sales_stages_selected()">
           <div class="chart-container">
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
             <div class="legend">Total won : {{getTotalWon() | mnoCurrency : widget.metadata.currency}}</div>
           </div>
-          
+
           <div class="widget-lines-container" ng-init="collapsedAll=false">
-            <div ng-repeat="selectedElement in selectedElements">
+            <div ng-repeat="selectedElement in selectedElements track by $index">
               <div class="row widget-line header" ng-click="collapsedAll=!collapsedAll">
                 <div class="col-xs-8">
                   <i class="fa fa-circle" style="color: {{getElementChartColor($index)}}"></i>
