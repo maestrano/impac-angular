@@ -1,51 +1,31 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
-
+# ====================================
+# Getters
+# ====================================
     # Simply forward the getter for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
 
+
+# ====================================
+# Register Listeners
+# ====================================
+    ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
+      _self.refreshAll(true)
+    )
+
+
+# ====================================
+# Load and initialize
+# ====================================
     @load = (force=false) ->
       if !_self.getSsoSessionId()? || force
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)])
       else
         $q.resolve()
-
-
-    @create = (opts) ->
-      deferred = $q.defer()
-
-      _self.load().then(
-        ->
-          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-          data = { widget: opts }
-
-          # form a http request or a stubbed request which returns a promise.
-          if ImpacDeveloper.isWidgetStubbed(data.widget)
-            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
-          else
-            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
-
-          request.then(
-            (success) ->
-              newWidget = success.data
-              dashboard.widgets.push(newWidget)
-              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
-              deferred.resolve(newWidget)
-
-            (error) ->
-              $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
-              deferred.reject(error)
-          )
-
-        (error) ->
-          $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
-          deferred.reject(error)
-      )
-
-      return deferred.promise
 
 
     isWidgetInCurrentDashboard = (widgetId) ->
@@ -150,9 +130,9 @@ angular
           )
       )
 
-    #====================================
-    # CRUD methods
-    #====================================
+# ====================================
+# CRUD methods
+# ====================================
 
     @show = (widget, refreshCache=false) ->
       deferred = $q.defer()
@@ -202,6 +182,40 @@ angular
                 widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
                 deferred.reject(errorResponse)
             )
+
+        (error) ->
+          $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
+          deferred.reject(error)
+      )
+
+      return deferred.promise
+
+
+    @create = (opts) ->
+      deferred = $q.defer()
+
+      _self.load().then(
+        ->
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          data = { widget: opts }
+
+          # form a http request or a stubbed request which returns a promise.
+          if ImpacDeveloper.isWidgetStubbed(data.widget)
+            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
+          else
+            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
+
+          request.then(
+            (success) ->
+              newWidget = success.data
+              dashboard.widgets.push(newWidget)
+              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
+              deferred.resolve(newWidget)
+
+            (error) ->
+              $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
+              deferred.reject(error)
+          )
 
         (error) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")

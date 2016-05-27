@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
 
@@ -18,6 +18,12 @@ angular
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
+    #====================================
+    # Register Listeners
+    #====================================
+    ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
+      _self.refreshAll(true)
+    )
 
     #====================================
     # Context helpers
@@ -108,13 +114,11 @@ angular
 
       promises = []
 
-      createUrl = ImpacRoutes.kpis.alerts.create(kpi.id)
       for alert in alertsToCreate
-        promises.push $http.post(createUrl, {alert: _.pick(alert, ['service'])})
+        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
 
       for alert in alertsToDelete
-        deleteUrl = ImpacRoutes.kpis.alerts.delete(alert.id)
-        promises.push $http.delete(deleteUrl)
+        promises.push ImpacAlerts.delete(alert.id)
 
       return $q.all(promises).then(
         (success) ->
@@ -128,6 +132,16 @@ angular
             # else: push the added alert to the kpi.alerts array
             else
               kpi.alerts.push resp.data
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+      )
+
+    @refreshAll = (refreshCache=false) ->
+      _self.load().then(->
+        for k in _self.getCurrentDashboard().kpis
+          _self.show(k, refreshCache).then(
+            (renderedKpi)-> # success
+            (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
+          )
       )
 
 

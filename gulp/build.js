@@ -48,7 +48,7 @@ gulp.task('clean', function (asyncCallback) {
 });
 
 gulp.task('build', ['scripts', 'styles', 'partials'], function() {
-  // Source files for final dist build - NOTE: order is imporant.
+  // Source files for final dist build - NOTE: order is important.
   var buildSourceFiles = [
     path.join(conf.paths.src, 'impac-angular.prefix'),
     path.join(conf.paths.src, 'impac-angular.module.js'),

@@ -13,7 +13,7 @@ module.factory('settings', function () {
   return {
     // Credentials and endpoints
     mno_url: 'https://uat.maestrano.io',
-    impac_url: 'http://api-impac-uat.maestrano.io',
+    impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: '',
 
@@ -104,18 +104,36 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
       return getOrganizations();
     },
     user: function () {
-      return $q.when({
-        name: 'Developer',
-        email: 'developer@maestrano.com'
-      });
-    }
+      return getUser();
+    },
+    pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
   });
 
   function getOrganizations() {
-    return $http.get(settings.mno_url + '/api/v2/impac/organizations')
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      var orgs = (user.organizations || []);
+      deferred.resolve({ organizations: orgs, currentOrgId: (orgs[0].id || null) });
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUser() {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      deferred.resolve(user);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUserData() {
+    return $http.get(settings.mno_url + '/api/v2/impac/users')
       .then(function (response) {
-        var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+        return response.data;
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);

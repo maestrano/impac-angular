@@ -61,8 +61,8 @@ describe('<> ImpacDashboardsSvc', function () {
   // -------------------------------------------------
   describe('#load', function() {
     beforeEach(function() {
-      // Stub for ImpacMainSvc.loadOrganizations()
-      spyOn(ImpacMainSvc, "loadOrganizations").and.callFake(function() {
+      // Stub for ImpacMainSvc.load()
+      spyOn(ImpacMainSvc, "load").and.callFake(function() {
         var orgsDeferred = $q.defer();
         orgsDeferred.resolve({currentOrganization: {id: 1}});
         return orgsDeferred.promise;
@@ -100,7 +100,7 @@ describe('<> ImpacDashboardsSvc', function () {
       });
 
       it('loads the organizations', function() {
-        expect(ImpacMainSvc.loadOrganizations).toHaveBeenCalled();
+        expect(ImpacMainSvc.load).toHaveBeenCalled();
       });
 
       it('retrieves the dashboards from mnoe API', function() {
@@ -131,13 +131,13 @@ describe('<> ImpacDashboardsSvc', function () {
       it('simply resolves the config object', function() {
         subject = svc.load();
         expect(subject.$$state.value).toBe(svc.config)
-        expect(ImpacMainSvc.loadOrganizations).not.toHaveBeenCalled();
+        expect(ImpacMainSvc.load).not.toHaveBeenCalled();
       });
 
       describe('when force is true', function() {
         it('reloads the service', function() {
           subject = svc.load(true);
-          expect(ImpacMainSvc.loadOrganizations).toHaveBeenCalledWith(true);
+          expect(ImpacMainSvc.load).toHaveBeenCalledWith(true);
         });
       });
     });

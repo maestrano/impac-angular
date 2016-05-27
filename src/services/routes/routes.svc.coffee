@@ -11,7 +11,7 @@ angular
       mnoHub: '/api/v2'
       impacPrefix: '/impac'
       impacApi: 'http://localhost:4000/api'
-      
+
       dashboards:
         index: null
         show: null
@@ -158,6 +158,8 @@ angular
         local: -> defaults.kpis.local
 
         alerts:
+          index: () ->
+            "#{defaults.mnoHub}/impac/alerts"
           create: (kpi_id) ->
             "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
 

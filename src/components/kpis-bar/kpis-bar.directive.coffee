@@ -16,7 +16,8 @@ angular
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
-        $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+        ImpacKpisSvc.load().then ->
+          $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
 
         # $scope.keyStats = [
         #   { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },

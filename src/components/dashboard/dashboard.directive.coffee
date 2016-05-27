@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
 
     #====================================
     # Initialization
@@ -56,7 +56,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
     $scope.myobMessageConfig = ImpacTheming.get().dhbSubMenuConfig.myobMessage
 
-    # load dashboards with their widgets
+    # Load dashboards with their widgets
     # -------------------------------------
     # 'true' forces the reload: will cause the service to update the organization id and other core data that Impac! needs
     # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
@@ -84,7 +84,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $timeout ->
         $scope.isLoading=false
       ,timer
-
 
     # ============================================
     # Create dashboard modal
