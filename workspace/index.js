@@ -131,7 +131,7 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
   }
 
   function getUserData() {
-    return $http.get(settings.mno_url + '/api/v2/impac/users')
+    return $http.get(settings.mno_url + '/api/v2/current_user')
       .then(function (response) {
         return response.data;
       }, function () {
