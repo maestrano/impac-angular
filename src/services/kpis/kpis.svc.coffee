@@ -38,14 +38,14 @@ angular
     #====================================
     # Load and initialize
     #====================================
-
+    # TODO: kpi.svc CRUD methods should not resolve until #load has finished.
     @locked = false
     @load = (force=false) ->
       unless _self.locked
         _self.locked = true
 
         if !_self.getSsoSessionId()? || !_self.getCurrentDashboard()? || _.isEmpty(_self.getKpisTemplates()) || force
-      
+
           # Needed:
           #   sso session id => ImpacMainSvc.loadUserData
           #   organizations uids (data sources) => ImpacDashboardsSvc.load
@@ -81,7 +81,7 @@ angular
                   for template in response.local.data.kpis
                     template.source = 'local'
                     _self.config.kpisTemplates.push template
-      
+
                 $log.info("Impac! - KpisSvc: loaded (force=#{force})")
 
               (error) ->
@@ -100,7 +100,7 @@ angular
 
     @saveAlerts = (kpi, alerts) ->
       # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
-      alertsToCreate = _.filter(alerts, (alert) -> 
+      alertsToCreate = _.filter(alerts, (alert) ->
         alert.active && !_.includes(
           _.map(kpi.alerts, (a) -> a.service),
           alert.service

@@ -37,6 +37,7 @@
 
 ### Adds
 - Common directive "time-period-info" to display selected time period
+- KPIs target selection is now mandatory, added loading spinner for data fetching.
 - time-period-info added to hist-mode choser and some widgets
 - time-presets can now be defined in ThemingSvc
 - Better UI for widget Team performance

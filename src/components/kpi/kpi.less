@@ -101,7 +101,7 @@ impac-kpi .kpi {
       }
     }
 
-    .kpi-bell {
+    .alerts-config {
       position: absolute;
       bottom: auto;
       left: auto;
@@ -149,6 +149,21 @@ impac-kpi .kpi {
     .btn.btn-xs {
       margin-top: 4px;
     }
+
+    .error-messages {
+      color: red;
+      font-size: 11px;
+      margin-top: 2px;
+      &.limit {
+        position: relative;
+        left: -52px;
+      }
+    }
+  }
+
+  .kpi-data-loader {
+    width: 100%;
+    min-height: 115px;
   }
 }
 
@@ -180,7 +195,7 @@ impac-kpi .kpi {
 
       &:hover { cursor: pointer; }
     }
-   
+
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;

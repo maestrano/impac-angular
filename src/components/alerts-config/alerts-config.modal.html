@@ -1,0 +1,25 @@
+<div class="kpi-alerts-settings">
+
+  <div class="modal-header">
+    Alerts settings
+  </div>
+
+  <div class="modal-body">
+    Alert me when <strong>{{kpi.name}} ({{kpi.element_watched}})</strong> is <u>{{translateTarget(kpi)}}</u> :
+
+    <ul class="list-group">
+
+      <li class="list-group-item" ng-repeat="alert in alerts" ng-class="{active: alert.active}" ng-click="toggleAlert(alert)">
+        <i class="fa" ng-class="alert.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
+        {{alert.label}}
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="modal-footer text-right">
+    <button class="btn btn-default" ng-click="modal.close()">Cancel</button>
+    <button class="btn btn-success" ng-click="save(alerts)"><strong>Save</strong></button>
+  </div>
+
+</div>
