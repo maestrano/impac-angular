@@ -15,6 +15,7 @@
 
 #### Fixes
 - Accounts balance: wait for updateSettings to finish before calling format()
+- KpisSvc.load() to systematically wait for MainSvc and DashboardsSvc loading
 
 
 -------------------------------------------------------------
