@@ -111,43 +111,42 @@ angular
 
     angular.merge Chart.defaults.global, {
       defaultColor: _self.getColor(0)
-      # responsiveAnimationDuration: 1000
-      tooltips: {
+
+      tooltips:
         titleFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         bodyFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         footerFontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
 
         enabled: false
         custom: _self.customTooltip
-      }
-      elements: {
-        point: {
+      
+      elements:
+        point:
           hitRadius: 8
           hoverRadius: 8
-        }
-        line: {
+        line:
           tension: 0
           borderWidth: 2
-        }
-      }
+      
+      legend:
+        display: false
     }
 
     angular.merge Chart.defaults.scale, {
-      ticks: {
+      ticks:
         beginAtZero: true
         minRotation: 0
         # maxRotation: 0
         fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-      }
-      scaleLabel: {
+
+      scaleLabel:
         fontFamily: "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-      }
     }
 
     @setTooltipsTextLayout = (opts, showSerieInTitle=false) ->
       angular.merge opts, {
-        tooltips: {
-          callbacks: {
+        tooltips:
+          callbacks:
             title: (context, data) ->
               unless showSerieInTitle
                 return data.labels[context[0].index]
@@ -162,8 +161,6 @@ angular
                 return $filter('mnoCurrency')(data.datasets[context.datasetIndex].data[context.index], currency)
               else
                 return data.datasets[context.datasetIndex].data[context.index]
-          }
-        }
       }
 
 
@@ -191,14 +188,11 @@ angular
       # Defaut when several datasets or single dataset but with only one value: straight lines without point dot
       if inputDataArray.length > 1 || (opts.pointDot? && !opts.pointDot) || singleValue
         angular.merge(opts, {
-          elements: {
-            point: {
+          elements:
+            point:
               radius: 0.0001
-            }
-            line: {
+            line:
               tension: 0.3
-            }
-          }
         })
 
       return {

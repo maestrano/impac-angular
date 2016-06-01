@@ -38,54 +38,55 @@ angular
       unless _self.locked
         _self.locked = true
 
-        if !_self.getSsoSessionId()? || !_self.getCurrentDashboard()? || _.isEmpty(_self.getKpisTemplates()) || force
-      
-          # Needed:
-          #   sso session id => ImpacMainSvc.loadUserData
-          #   organizations uids (data sources) => ImpacDashboardsSvc.load
-          _self.config.kpisTemplates = []
+        # Needed:
+        #   sso session id => ImpacMainSvc.loadUserData
+        #   organizations uids (data sources) => ImpacDashboardsSvc.load
+        return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
+          (results) ->
+            if _.isEmpty(_self.getKpisTemplates()) || force
 
-          return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then( (results) ->
-            orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
+              # clear array
+              _.remove _self.config.kpisTemplates, (-> true)
 
-            params =
-              metadata:
-                organization_ids: orgUids
-              sso_session: _self.getSsoSessionId()
+              orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
+              ssoSessionId = _self.getSsoSessionId()
 
-            promises =
-              impac: index(params)
+              params =
+                metadata:
+                  organization_ids: orgUids
+                sso_session: ssoSessionId
 
-            # Get local kpis
-            if ImpacRoutes.kpis.local()
-              promises.local = $http.get(ImpacRoutes.kpis.local())
+              promises =
+                impac: index(params)
 
-            $q.all(promises).then(
-              (response) ->
-                # clear array
-                _.remove _self.config.kpisTemplates, (-> true)
+              # Get local kpis
+              if ImpacRoutes.kpis.local()
+                promises.local = $http.get(ImpacRoutes.kpis.local())
 
-                # fill array with new values from Impac! api
-                for template in response.impac.data.kpis
-                  template.source ||= 'impac'
-                  _self.config.kpisTemplates.push template
+              return $q.all(promises).then(
+                (response) ->
 
-                if response.local
-                  # fill array with new values from local endpoints
-                  for template in response.local.data.kpis
-                    template.source = 'local'
+                  # fill array with new values from Impac! api
+                  for template in response.impac.data.kpis
+                    template.source ||= 'impac'
                     _self.config.kpisTemplates.push template
-      
-                $log.info("Impac! - KpisSvc: loaded (force=#{force})")
 
-              (error) ->
-                $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', error)
-            )
-          ).finally(-> _self.locked = false )
+                  if response.local
+                    # fill array with new values from local endpoints
+                    for template in response.local.data.kpis
+                      template.source = 'local'
+                      _self.config.kpisTemplates.push template
+        
+                  $log.info("Impac! - KpisSvc: loaded (force=#{force})")
 
-        else
-            _self.locked = false
-           return $q.resolve()
+                (error) ->
+                  $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', error)
+              ).finally(-> _self.locked = false )
+
+            else
+              _self.locked = false
+              return $q.resolve()
+        )
 
       else
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
