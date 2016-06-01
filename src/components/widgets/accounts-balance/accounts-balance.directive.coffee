@@ -48,8 +48,8 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     w.selectedAccount.currency if w.selectedAccount?
 
   $scope.displayAccount = ->
-    $scope.updateSettings(false)
-    w.format()
+    $scope.updateSettings(false).then ->
+      w.format()
 
 
   # Chart formating function

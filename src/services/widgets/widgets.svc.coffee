@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
 # ====================================
@@ -144,13 +144,12 @@ angular
             deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
 
           else
-            data = {
+            data =
               owner: widget.owner
               sso_session: _self.getSsoSessionId()
               metadata: widget.metadata
               engine: widget.category
-            }
-            angular.extend(data, {refresh_cache: true}) if refreshCache
+            data.refresh_cache = true if refreshCache
 
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
@@ -168,7 +167,8 @@ angular
                   setting.initialize() if angular.isDefined(setting.initialize)
 
                 # Formats the chart when necessary
-                widget.format() if angular.isDefined(widget.format)
+                if angular.isDefined(widget.format)
+                  widget.format()
 
                 deferred.resolve widget
 

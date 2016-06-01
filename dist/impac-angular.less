@@ -1549,6 +1549,18 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1570,18 +1582,6 @@ impac-kpi .kpi {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
   }
 }
 
@@ -1950,6 +1950,9 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -1974,9 +1977,6 @@ impac-kpi .kpi {
     margin-bottom: 10px;
     font-size: 14px;
   }
-}
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
