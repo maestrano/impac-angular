@@ -59,6 +59,8 @@ angular
                 organization_ids: orgUids
               sso_session: _self.getSsoSessionId()
 
+            # TODO: the retrieval of available kpis should not be coupled within the @load method.
+            #
             promises =
               impac: index(params)
 
@@ -144,11 +146,24 @@ angular
           )
       )
 
+    #====================================
+    # Formatting methods
+    #====================================
+    @validateKpiTarget = (kpi)->
+      return false unless kpi.limit && kpi.limit.value && kpi.limit.mode
+      !(_.isEmpty kpi.limit.value || _.isEmpty kpi.limit.mode)
+
+    @formatKpiName = (endpoint) ->
+      endpoint_splitted = endpoint.split('/')
+      name = endpoint_splitted[0] + ' | ' + endpoint_splitted.slice(1,endpoint_splitted.length).join(' ')
+      name = name.replace('_', ' ')
+      return name
 
     #====================================
     # CRUD methods
     #====================================
 
+    # TODO: merge this with the index class method below.
     # Retrieve all the available kpis from Impac!
     # Note: index is a private method that should be called only by load()
     index = (params) ->
@@ -156,6 +171,27 @@ angular
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
 
+    @index = (widgetKpis=false) ->
+      _self.load().then(
+        ->
+          params =
+            metadata:
+              organization_ids: _.pluck _self.getCurrentDashboard().data_sources, 'uid'
+            sso_session: _self.getSsoSessionId()
+
+          angular.extend(params, {widget: true}) if widgetKpis
+
+          index(params).then(
+            (resp) ->
+              resp.data.kpis
+            (err) ->
+              $log.error 'Impac! - KpisSvc: Could not retrieve KPIs (index)', err
+              err
+          )
+        ->
+          $log.error 'Impac! - KpisSvc: Service not initialized'
+          {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
+      )
 
     # Retrieve data for kpi from api
     @show = (kpi) ->
@@ -194,7 +230,7 @@ angular
           {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
       )
 
-    @create = (source, endpoint, elementWatched) ->
+    @create = (source, endpoint, elementWatched, opts={}) ->
       _self.load().then(
         ->
           params = {
@@ -203,11 +239,19 @@ angular
             element_watched: elementWatched
           }
 
+          angular.extend params, opts
+
           url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
           $http.post(url, {kpi: params}).then(
-            (success) -> success.data
-            (err) -> err
+            (success) ->
+              # Alerts can be created by default on kpi#create (widget.kpis), check for
+              # new alerts and register them with Pusher.
+              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+              success.data
+            (err) ->
+              $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+              err
           )
         ->
           { error: {message: 'Impac! - KpisSvc: Service is not initialized'} }
@@ -228,9 +272,12 @@ angular
           $http.put(url, {kpi: params}).then (success) ->
             angular.extend(kpi, success.data)
             _self.show(kpi)
+            # Alerts can be created by default on kpi#update (dashboard.kpis), check for
+            # new alerts and register them with Pusher.
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
             $q.resolve(kpi)
           ,(err) ->
-            $log.error 'Impac! - KpisSvc: Unable to update KPI ', err
+            $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
             $q.reject(err)
       )
 
@@ -238,7 +285,14 @@ angular
     @delete = (kpi) ->
       _self.load().then(
         url = ImpacRoutes.kpis.delete(_self.getCurrentDashboard().id, kpi.id)
-        $http.delete(url)
+        $http.delete(url).then(
+          (res)->
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+            res
+          (err)->
+            $log.error("Impac! KpisSvc: Unable to delete KPI #{kpi.id}", err)
+            err
+        )
       )
 
     return @

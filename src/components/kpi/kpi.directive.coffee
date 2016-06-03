@@ -60,8 +60,7 @@ angular
           ImpacKpisSvc.update($scope.kpi, { name: $scope.kpi.name })
 
         $scope.hasValidTarget = ->
-          return false unless $scope.kpi.limit && $scope.kpi.limit.value && $scope.kpi.limit.mode
-          !(_.isEmpty $scope.kpi.limit.value || _.isEmpty $scope.kpi.limit.mode)
+          ImpacKpisSvc.validateKpiTarget($scope.kpi)
 
         $scope.updateSettings = ->
           params = {}

@@ -1,6 +1,7 @@
 # master | Ongoing development
 
 ### Adds
+- Attach KPI's & Alerts onto widgets: adds a `settings-attach-kpi` widgets-settings component. 
 - In-app push notification (Pusher WebSockets) & Email alerts when KPI targets are met.
 
 ### Config changes
