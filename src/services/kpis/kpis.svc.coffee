@@ -228,6 +228,9 @@ angular
           $http.put(url, {kpi: params}).then (success) ->
             angular.extend(kpi, success.data)
             _self.show(kpi)
+            # Alerts can be created by default on kpi#update (dashboard.kpis), check for
+            # new alerts and register them with Pusher.
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
             $q.resolve(kpi)
           ,(err) ->
             $log.error 'Impac! - KpisSvc: Unable to update KPI ', err
@@ -238,7 +241,14 @@ angular
     @delete = (kpi) ->
       _self.load().then(
         url = ImpacRoutes.kpis.delete(_self.getCurrentDashboard().id, kpi.id)
-        $http.delete(url)
+        $http.delete(url).then(
+          (res)->
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+            res
+          (err)->
+            $log.error("Impac! KpisSvc: Unable to delete KPI #{kpi.id}", err)
+            err
+        )
       )
 
     return @
