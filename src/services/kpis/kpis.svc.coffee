@@ -158,6 +158,14 @@ angular
       name = name.replace('_', ' ')
       return name
 
+    @updateKpisOrder = (kpisIds) ->
+      dashboardId = _self.getCurrentDashboard().id
+      data = {
+        metadata:
+          kpis_order: kpisIds
+      }
+      ImpacDashboardsSvc.update(dashboardId, data)
+
     #====================================
     # CRUD methods
     #====================================

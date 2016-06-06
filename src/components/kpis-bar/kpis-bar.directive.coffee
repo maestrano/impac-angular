@@ -27,6 +27,22 @@ angular
         #   { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
         # ]
 
+        $scope.sortableOptions = {
+          stop: ->
+            ids = _.pluck $scope.kpis, 'id'
+            ImpacKpisSvc.updateKpisOrder(ids)
+          cursorAt:
+            left: 100
+            top: 20
+          opacity: 0.5
+          delay: 150
+          tolerance: 'pointer'
+          cursor: "move"
+          revert: 250
+          cancel: ".unsortable"
+          helper: 'clone'
+        }
+
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
 
