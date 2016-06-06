@@ -2,17 +2,24 @@
 
 ## Unreleased - development in progress
 
-### Adds
-- Attach KPI's & Alerts onto widgets: adds a `settings-attach-kpi` widgets-settings component. 
+### feature/kpis-rework
+
+#### Adds
+- Attach KPI's & Alerts onto widgets: adds a `settings-attach-kpi` widgets-settings component.
+
+### feature/alerting
+
+#### Adds
 - In-app push notification (Pusher WebSockets) & Email alerts when KPI targets are met.
 
-### Config changes
-- Optional Pusher ImpacLinking configuration:
+#### Config changes
+- Optional Pusher ImpacLinking configuration (ImpacLinking)
 
-```coffeescript
+```
   pusher_key: 'pusher-key-goes-here'
 ```
 
+-------------------------------------------------------------
 -------------------------------------------------------------
 
 ## Released
