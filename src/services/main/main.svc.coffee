@@ -113,7 +113,7 @@ angular
           ImpacLinking.getUserData().then(
             (user) ->
               angular.extend _self.config.userData, user
-              $log.info("Impac! - MainSvc: User data loaded (force=#{force})")
+              $log.info("Impac! - MainSvc: User data loaded (force=#{force}) with sso_session #{_self.config.userData.sso_session}")
               deferred.resolve(_self.config.userData)
 
             (error) ->

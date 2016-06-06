@@ -46,10 +46,10 @@ angular
             $log.error(error)
           (chartData) ->
             userAgent = $window.navigator.userAgent
-            isSafari = ((userAgent.indexOf('Safari') != -1) && !(userAgent.indexOf('Chrome') != -1))
+            waitUntilVisible = ((userAgent.indexOf('Safari') != -1) || (userAgent.indexOf('Chrome') != -1))
 
             # Chart.js
-            if isSafari
+            if waitUntilVisible
               timeoutUntilVisible = () ->
                 # Use jquery function to detect if the canvas container is visible
                 visible = $(elem).is(':visible')
