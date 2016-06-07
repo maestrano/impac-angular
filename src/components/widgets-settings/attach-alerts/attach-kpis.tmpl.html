@@ -2,17 +2,18 @@
 
   <div class="attach-kpi">
     <h5>Attach a KPI</h5>
-    <form name="attachKpiForm">
-      <div class="row nomargin">
+    <form name="attachKpiForm" class='attach-kpi-form'>
+      <!-- <div class="row nomargin">
         <select class="form-control input-sm" ng-model="kpi.endpoint" ng-options="kpi.endpoint as formatKpiName(kpi.endpoint) for kpi in availableKpis" ng-change="selectKpi()"></select>
       </div>
       <div class="row nomargin">
         <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
           <select class="form-control input-sm" name="{{param}}" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues" ng-init="kpi.extra_params[param] = paramValues[0].id"></select>
         </div>
-      </div>
-      <div class="row nomargin">
-        <select class="form-control input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select>
+      </div> -->
+      <div class="row nomargin kpi-description">
+        <!-- TODO: support for multple extra params, and watchables. -->
+        Keep the {{kpi.element_watched}} of <span>{{extraParams[selectedParam].name}}</span>
       </div>
       <div class="row nomargin">
         <div class="col-xs-5 nopadding">
@@ -33,21 +34,15 @@
   </div>
 
   <div class="list-group attached-kpis" ng-show="attachedKpis.length">
-    <h5>KPI's</h5>
+    <h5>Existing KPI's</h5>
     <div class="list-group-item clearfix attached-kpi" ng-repeat="kpi in attachedKpis track by $index">
-      <div class="attached-kpi-name">
-        {{kpi.name}}
-      </div>
+      <div class="attached-kpi-name">Keep {{kpiFormattedTitles[kpi.id] | titleize}}</div>
       <div class="pull-right actions">
-        <!-- <div ng-click="toggleEditKpi(kpi.endpoint)" class="edit-attached-kpi"><i class="fa fa-pencil"></i></div> -->
         <alerts-config kpi="kpi"></alerts-config>
-        <div class="remove-attached-kpi" ng-click="deleteKpi(kpi)"><i class="fa fa-times"></i></div>
+        <div class="remove-attached-kpi" ng-click="deleteKpi(kpi)">
+          <i class="fa fa-times"></i>
+        </div>
       </div>
-      <!-- <div ng-show="showEditKpi[kpi.endpoint]">
-        <form name="editAttachedKpi{{kpi.endpoint.split('/')[-1]}}Form">
-
-        </form>
-      </div> -->
     </div>
   </div>
 

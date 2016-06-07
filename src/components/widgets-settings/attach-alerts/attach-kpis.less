@@ -6,6 +6,21 @@
     form .row {
       padding-bottom: 5px;
     }
+
+    .attach-kpi-form {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+
+    form .row.kpi-description {
+      padding: 10px 2px;
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    }
   }
 
   .attached-kpis {
@@ -17,14 +32,17 @@
 
     .attached-kpi-name {
       overflow: hidden;
-      width: 60%;
+      width: 75%;
       display: inline-block;
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-top: 3px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     .actions {
+      padding-top: 2px;
       .alerts-config {
         display: inline-block;
         text-align: left;

@@ -5,71 +5,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
   controller = ($scope)->
     w = $scope.parentWidget
 
-    $scope.availableKpis = []
-
-    $scope.possibleTargets = [
-      { label: 'over', mode: 'min' }
-      { label: 'below', mode: 'max' }
-    ]
-
-    $scope.kpi = {
-      limit: { mode: $scope.possibleTargets[0].mode },
-      watchables: [],
-      possibleExtraParams: []
-    }
-
-    $scope.attachedKpis = angular.copy(w.kpis)
-
-    ImpacKpisSvc.index(true).then((availableKpis)->
-      $scope.availableKpis = availableKpis
-      # sets first availableKpi as pre-selected kpi in the attachKpiForm.
-      $scope.kpi.endpoint = availableKpis[0].endpoint
-      $scope.selectKpi()
-    )
-
-    $scope.showEditKpi = {}
-
-    $scope.toggleEditKpi = (id)->
-      $scope.showEditKpi[id] = !$scope.showEditKpi[id]
-
-    $scope.formatKpiName = (endpoint)->
-      ImpacKpisSvc.formatKpiName(endpoint)
-
-    $scope.hasValidTarget = ->
-      ImpacKpisSvc.validateKpiTarget($scope.kpi)
-
-    # Ugly code.. refactor later..
-    # Re-binds the new kpi object and object arrays to the form model..
-    $scope.selectKpi = ->
-      selectedKpi = _.find($scope.availableKpis, (k)-> k.endpoint == $scope.kpi.endpoint)
-      return unless selectedKpi
-      $scope.kpi.watchables.length = 0
-      _.forEach(selectedKpi.watchables, (w)-> $scope.kpi.watchables.push(w))
-      $scope.kpi.possibleExtraParams = selectedKpi.extra_params
-      $scope.kpi.endpoint = selectedKpi.endpoint
-      $scope.kpi.element_watched = selectedKpi.watchables[0]
-      $scope.extra_params = {}
-
-    $scope.attachKpi = ->
-      params = {}
-      return unless $scope.hasValidTarget()
-
-      target0 = {}
-      target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
-      params.targets = [target0]
-
-      params.widget_id = w.id
-      params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
-
-      ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.kpi.element_watched, params).then(
-        (kpi)->
-          $scope.attachedKpis.push(kpi)
-      )
-
-    $scope.deleteKpi = (kpi)->
-      ImpacKpisSvc.delete(kpi, {widget_id: w.id}).then(->
-        _.remove($scope.attachedKpis, (k)-> k.id == kpi.id )
-      )
+    # Settings configurations
+    # -----------------------
 
     settings = {}
 
@@ -79,6 +16,92 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
 
     w.settings.push(settings)
 
+    # Linked methods
+    # -----------------------
+
+    $scope.formatKpiName = (endpoint)->
+      ImpacKpisSvc.formatKpiName(endpoint)
+
+    $scope.hasValidTarget = ->
+      ImpacKpisSvc.validateKpiTarget($scope.kpi)
+
+    $scope.attachKpi = ->
+      params = {}
+      return unless $scope.hasValidTarget()
+
+      target0 = {}
+      target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
+      params.targets = [target0]
+
+      params.widget_id = $scope.widgetId
+
+      # NOTE: When multiple extra param functionality is added, this should be
+      #       more dynamic via a selection ngModel or similar.
+      for param, paramValues of $scope.extraParams
+        params.extra_params ||= {}
+        params.extra_params[param] = paramValues.uid
+
+      ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.kpi.element_watched, params).then(
+        (kpi)->
+          $scope.attachedKpis.push(kpi)
+          ImpacKpisSvc.show(kpi).then(->
+            formatAttachedKpiTitle(kpi)
+            # TODO: display interesting things (e.g graph overlays) with KPI data!
+          )
+      )
+
+    $scope.deleteKpi = (kpi)->
+      ImpacKpisSvc.delete(kpi, {widget_id: $scope.widgetId}).then(->
+        _.remove($scope.attachedKpis, (k)-> k.id == kpi.id )
+      )
+
+    # Local methods
+    # -----------------------
+
+    # Builds formatted kpi titles for attached kpis based on the set targets,
+    # possibleTargets mappings, and the kpi.data.unit returned from impac!.
+    # ---
+    # NOTE: if multiple targets are to be supported, this should be revised.
+    formatAttachedKpiTitle = (kpi)->
+      $scope.kpiFormattedTitles[kpi.id] = ImpacKpisSvc.formatKpiTarget(kpi.targets[0], kpi.data.unit, $scope.possibleTargets)
+
+
+    # On-load
+    # -----------------------
+
+    # Mapping target modes to labels.
+    $scope.possibleTargets = [
+      { label: 'over', mode: 'min' }
+      { label: 'below', mode: 'max' }
+    ]
+
+    # Prepare Attachable KPI model.
+    $scope.kpi = {
+      limit: { mode: $scope.possibleTargets[0].mode }
+      # possibleExtraParams: $scope.extraParams
+    }
+
+    # Load Attachable KPI Templates.
+    # -------------------------------------
+    ImpacKpisSvc.getAttachableKpis($scope.widgetEngine).then((kpiTemplates)->
+      $scope.availableKpis = angular.copy(kpiTemplates)
+      # Set default kpi.
+      # TODO: support for multiple kpi's.
+      angular.extend($scope.kpi, $scope.availableKpis[0])
+      # Set default extra param.
+      # TODO: support for multiple extra params.
+      $scope.selectedParam = _.keys($scope.extraParams)[0]
+    )
+
+    # Load Existing KPI's data.
+    $scope.kpiFormattedTitles = {}
+    _.forEach($scope.attachedKpis, (kpi)->
+      ImpacKpisSvc.show(kpi).then(->
+        formatAttachedKpiTitle(kpi)
+        # TODO: display interesting things (e.g graph overlays) with KPI data!
+      )
+    )
+
     # Setting is ready: trigger load content
     # ------------------------------------
     $scope.deferred.resolve($scope.parentWidget)
@@ -87,6 +110,10 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
     restrict: 'A'
     scope: {
       parentWidget: '='
+      attachedKpis: '='
+      widgetEngine: '='
+      widgetId: '='
+      extraParams: '='
       deferred: '='
     }
     template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html')

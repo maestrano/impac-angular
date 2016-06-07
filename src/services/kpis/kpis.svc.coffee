@@ -7,16 +7,22 @@ angular
     #====================================
     # Getters
     #====================================
-
-
     # Simply forward the getters for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
     @getCurrentDashboard = ImpacDashboardsSvc.getCurrentDashboard
-
     @config =
       kpisTemplates: []
+
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
+
+    @getAttachableKpis = (widgetEngine) ->
+      _self.load().then(->
+        _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+          return false unless _.isArray(kpiTemplate.attachables)
+          _.includes(kpiTemplate.attachables, widgetEngine)
+        )
+      )
 
     #====================================
     # Register Listeners
@@ -38,7 +44,6 @@ angular
     #====================================
     # Load and initialize
     #====================================
-    # TODO: kpi.svc CRUD methods should not resolve until #load has finished.
     @locked = false
     @load = (force=false) ->
       unless _self.locked
@@ -61,7 +66,6 @@ angular
                   organization_ids: orgUids
                 sso_session: ssoSessionId
 
-              # TODO: the retrieval of available kpis should not be coupled within the @load method.
               promises =
                 impac: index(params)
 
@@ -98,44 +102,6 @@ angular
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
         $timeout (-> _self.load(force)), 1000
 
-
-    @saveAlerts = (kpi, alerts) ->
-      # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
-      alertsToCreate = _.filter(alerts, (alert) ->
-        alert.active && !_.includes(
-          _.map(kpi.alerts, (a) -> a.service),
-          alert.service
-        )
-      )
-
-      # Remove alerts that are not ticked in the modal and are part of kpi.alerts
-      alertsToDelete = _.filter(kpi.alerts, (alert) ->
-        !alerts[alert.service].active
-      )
-
-      promises = []
-
-      for alert in alertsToCreate
-        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
-
-      for alert in alertsToDelete
-        promises.push ImpacAlerts.delete(alert.id)
-
-      return $q.all(promises).then(
-        (success) ->
-          kpi.alerts ||= {}
-          for resp in success
-            # if "deleted" is received, remove the alert from the kpi.alerts array
-            if resp.data.deleted
-              _.remove(kpi.alerts, (alert) ->
-                alert.service == resp.data.deleted.service
-              )
-            # else: push the added alert to the kpi.alerts array
-            else
-              kpi.alerts.push resp.data
-          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-      )
-
     @refreshAll = (refreshCache=false) ->
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
@@ -158,6 +124,15 @@ angular
       name = name.replace('_', ' ')
       return name
 
+    # Format a kpi target into a displayable string.
+    # @param target [Object] containing target mode and value e.g { min: 600 }
+    # @param mappings [Array] array of objects to map mode names to given labels e.g [{label:
+    #                         'over', mode: 'min'}]
+    @formatKpiTarget = (target, unit, mappings=[])->
+      targetMode = _.keys(target)[0]
+      label = _.find(mappings, (map)-> map.mode == targetMode ).label
+      "#{label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
+
     @updateKpisOrder = (kpisIds) ->
       dashboardId = _self.getCurrentDashboard().id
       data = {
@@ -170,35 +145,12 @@ angular
     # CRUD methods
     #====================================
 
-    # TODO: merge this with the index class method below.
     # Retrieve all the available kpis from Impac!
     # Note: index is a private method that should be called only by load()
     index = (params) ->
       host = ImpacRoutes.kpis.index()
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
-
-    @index = (widgetKpis=false) ->
-      _self.load().then(
-        ->
-          params =
-            metadata:
-              organization_ids: _.pluck _self.getCurrentDashboard().data_sources, 'uid'
-            sso_session: _self.getSsoSessionId()
-
-          angular.extend(params, {widget: true}) if widgetKpis
-
-          index(params).then(
-            (resp) ->
-              resp.data.kpis
-            (err) ->
-              $log.error 'Impac! - KpisSvc: Could not retrieve KPIs (index)', err
-              err
-          )
-        ->
-          $log.error 'Impac! - KpisSvc: Service not initialized'
-          {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
-      )
 
     # Retrieve data for kpi from api
     @show = (kpi) ->
@@ -300,6 +252,43 @@ angular
             $log.error("Impac! KpisSvc: Unable to delete KPI #{kpi.id}", err)
             err
         )
+      )
+
+    @saveAlerts = (kpi, alerts) ->
+      # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
+      alertsToCreate = _.filter(alerts, (alert) ->
+        alert.active && !_.includes(
+          _.map(kpi.alerts, (a) -> a.service),
+          alert.service
+        )
+      )
+
+      # Remove alerts that are not ticked in the modal and are part of kpi.alerts
+      alertsToDelete = _.filter(kpi.alerts, (alert) ->
+        !alerts[alert.service].active
+      )
+
+      promises = []
+
+      for alert in alertsToCreate
+        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
+
+      for alert in alertsToDelete
+        promises.push ImpacAlerts.delete(alert.id)
+
+      return $q.all(promises).then(
+        (success) ->
+          kpi.alerts ||= {}
+          for resp in success
+            # if "deleted" is received, remove the alert from the kpi.alerts array
+            if resp.data.deleted
+              _.remove(kpi.alerts, (alert) ->
+                alert.service == resp.data.deleted.service
+              )
+            # else: push the added alert to the kpi.alerts array
+            else
+              kpi.alerts.push resp.data
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
       )
 
     return @
