@@ -1,0 +1,80 @@
+.analytics .settings.attach-kpis {
+
+  .attach-kpi {
+    padding: 8px 5px;
+
+    form .row {
+      padding-bottom: 5px;
+    }
+
+    .attach-kpi-form {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+
+    form .row.kpi-description {
+      padding: 10px 2px;
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .attached-kpis {
+    padding: 5px;
+  }
+
+  .list-group-item.attached-kpi {
+    padding: 5px 10px;
+
+    .attached-kpi-name {
+      overflow: hidden;
+      width: 75%;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .actions {
+      padding-top: 2px;
+      .alerts-config {
+        display: inline-block;
+        text-align: left;
+        padding-left: 4px;
+        height: 20px;
+      }
+      .edit-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @mblue;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @mblue;
+          &:hover { cursor: pointer; }
+        }
+      }
+      .remove-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @fluropink;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @fluropink;
+          &:hover { cursor: pointer; }
+        }
+      }
+    }
+  }
+}

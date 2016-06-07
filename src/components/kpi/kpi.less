@@ -101,20 +101,12 @@ impac-kpi .kpi {
       }
     }
 
-    .kpi-bell {
+    .alerts-config {
       position: absolute;
       bottom: auto;
       left: auto;
       right: 45px;
       top: 5px;
-      border-radius: 10px;
-      width: 21px;
-      color: @mblue;
-      background-color: white;
-      padding-left: 1px;
-      border: solid 1px @mblue;
-
-      &:hover { cursor: pointer; }
     }
   }
 
@@ -149,6 +141,21 @@ impac-kpi .kpi {
     .btn.btn-xs {
       margin-top: 4px;
     }
+
+    .error-messages {
+      color: red;
+      font-size: 11px;
+      margin-top: 2px;
+      &.limit {
+        position: relative;
+        left: -52px;
+      }
+    }
+  }
+
+  .kpi-data-loader {
+    width: 100%;
+    min-height: 115px;
   }
 }
 
@@ -180,7 +187,7 @@ impac-kpi .kpi {
 
       &:hover { cursor: pointer; }
     }
-   
+
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;

@@ -12,7 +12,12 @@ angular.module('maestrano.impac',
     'impac.services',
     'impac.filters',
     'impac.components',
-    // EXTERNAL DEPENDENCIES //
+    /*
+     * EXTERNAL DEPENDENCIES *
+     * note: for unit-tests these dependancies need to be manually added into the
+     * karma/karma-min.conf config files.
+    */
+    'ngMessages',
     'ui.sortable',
     'ui.bootstrap',
     'emguo.poller',
@@ -30,6 +35,7 @@ angular.module('impac.components',
     'impac.components.kpis-bar',
     'impac.components.kpi',
     'impac.components.chart',
+    'impac.components.alerts-config',
     'impac.components.widget',
     'impac.components.widgets',
     'impac.components.widgets-settings',
@@ -106,7 +112,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-period',
     'impac.components.widgets-settings.time-presets',
     'impac.components.widgets-settings.time-slider',
-    'impac.components.widgets-settings.width'
+    'impac.components.widgets-settings.width',
+    'impac.components.widgets-settings.attach-kpis'
   ]
 );
 angular.module('impac.components.dashboard-settings',

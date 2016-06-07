@@ -7,16 +7,22 @@ angular
     #====================================
     # Getters
     #====================================
-
-
     # Simply forward the getters for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
     @getCurrentDashboard = ImpacDashboardsSvc.getCurrentDashboard
-
     @config =
       kpisTemplates: []
+
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
+
+    @getAttachableKpis = (widgetEngine) ->
+      _self.load().then(->
+        _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+          return false unless _.isArray(kpiTemplate.attachables)
+          _.includes(kpiTemplate.attachables, widgetEngine)
+        )
+      )
 
     #====================================
     # Register Listeners
@@ -38,12 +44,10 @@ angular
     #====================================
     # Load and initialize
     #====================================
-
     @locked = false
     @load = (force=false) ->
       unless _self.locked
         _self.locked = true
-
         # Needed:
         #   sso session id => ImpacMainSvc.loadUserData
         #   organizations uids (data sources) => ImpacDashboardsSvc.load
@@ -82,7 +86,7 @@ angular
                     for template in response.local.data.kpis
                       template.source = 'local'
                       _self.config.kpisTemplates.push template
-        
+
                   $log.info("Impac! - KpisSvc: loaded (force=#{force})")
 
                 (error) ->
@@ -98,44 +102,6 @@ angular
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
         $timeout (-> _self.load(force)), 1000
 
-
-    @saveAlerts = (kpi, alerts) ->
-      # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
-      alertsToCreate = _.filter(alerts, (alert) -> 
-        alert.active && !_.includes(
-          _.map(kpi.alerts, (a) -> a.service),
-          alert.service
-        )
-      )
-
-      # Remove alerts that are not ticked in the modal and are part of kpi.alerts
-      alertsToDelete = _.filter(kpi.alerts, (alert) ->
-        !alerts[alert.service].active
-      )
-
-      promises = []
-
-      for alert in alertsToCreate
-        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
-
-      for alert in alertsToDelete
-        promises.push ImpacAlerts.delete(alert.id)
-
-      return $q.all(promises).then(
-        (success) ->
-          kpi.alerts ||= {}
-          for resp in success
-            # if "deleted" is received, remove the alert from the kpi.alerts array
-            if resp.data.deleted
-              _.remove(kpi.alerts, (alert) ->
-                alert.service == resp.data.deleted.service
-              )
-            # else: push the added alert to the kpi.alerts array
-            else
-              kpi.alerts.push resp.data
-          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-      )
-
     @refreshAll = (refreshCache=false) ->
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
@@ -145,6 +111,28 @@ angular
           )
       )
 
+    #====================================
+    # Formatting methods
+    #====================================
+    @validateKpiTarget = (kpi)->
+      return false unless kpi.limit && kpi.limit.value && kpi.limit.mode
+      !(_.isEmpty kpi.limit.value || _.isEmpty kpi.limit.mode)
+
+    @formatKpiName = (endpoint) ->
+      endpoint_splitted = endpoint.split('/')
+      name = endpoint_splitted[0] + ' | ' + endpoint_splitted.slice(1,endpoint_splitted.length).join(' ')
+      name = name.replace('_', ' ')
+      return name
+
+    # Format a kpi target into a displayable string.
+    # @param target [Object] containing target mode and value e.g { min: 600 }
+    # @param mappings [Array] array of objects to map mode names to given labels e.g [{label:
+    #                         'over', mode: 'min'}]
+    @formatKpiTarget = (target, unit, mappings=[])->
+      targetMode = _.keys(target)[0]
+      label = _.find(mappings, (map)-> map.mode == targetMode ).label
+      "#{label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
+
     @updateKpisOrder = (kpisIds) ->
       dashboardId = _self.getCurrentDashboard().id
       data = {
@@ -152,7 +140,6 @@ angular
           kpis_order: kpisIds
       }
       ImpacDashboardsSvc.update(dashboardId, data)
-
 
     #====================================
     # CRUD methods
@@ -164,7 +151,6 @@ angular
       host = ImpacRoutes.kpis.index()
       url = [host,decodeURIComponent( $.param( params ) )].join('?')
       return $http.get(url)
-
 
     # Retrieve data for kpi from api
     @show = (kpi) ->
@@ -203,7 +189,7 @@ angular
           {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
       )
 
-    @create = (source, endpoint, elementWatched) ->
+    @create = (source, endpoint, elementWatched, opts={}) ->
       _self.load().then(
         ->
           params = {
@@ -212,11 +198,19 @@ angular
             element_watched: elementWatched
           }
 
+          angular.extend params, opts
+
           url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
           $http.post(url, {kpi: params}).then(
-            (success) -> success.data
-            (err) -> err
+            (success) ->
+              # Alerts can be created by default on kpi#create (widget.kpis), check for
+              # new alerts and register them with Pusher.
+              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+              success.data
+            (err) ->
+              $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+              err
           )
         ->
           { error: {message: 'Impac! - KpisSvc: Service is not initialized'} }
@@ -242,7 +236,7 @@ angular
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
             $q.resolve(kpi)
           ,(err) ->
-            $log.error 'Impac! - KpisSvc: Unable to update KPI ', err
+            $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
             $q.reject(err)
       )
 
@@ -258,6 +252,43 @@ angular
             $log.error("Impac! KpisSvc: Unable to delete KPI #{kpi.id}", err)
             err
         )
+      )
+
+    @saveAlerts = (kpi, alerts) ->
+      # Create alerts that have been ticked in the modal, and are not already in kpi.alerts
+      alertsToCreate = _.filter(alerts, (alert) ->
+        alert.active && !_.includes(
+          _.map(kpi.alerts, (a) -> a.service),
+          alert.service
+        )
+      )
+
+      # Remove alerts that are not ticked in the modal and are part of kpi.alerts
+      alertsToDelete = _.filter(kpi.alerts, (alert) ->
+        !alerts[alert.service].active
+      )
+
+      promises = []
+
+      for alert in alertsToCreate
+        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
+
+      for alert in alertsToDelete
+        promises.push ImpacAlerts.delete(alert.id)
+
+      return $q.all(promises).then(
+        (success) ->
+          kpi.alerts ||= {}
+          for resp in success
+            # if "deleted" is received, remove the alert from the kpi.alerts array
+            if resp.data.deleted
+              _.remove(kpi.alerts, (alert) ->
+                alert.service == resp.data.deleted.service
+              )
+            # else: push the added alert to the kpi.alerts array
+            else
+              kpi.alerts.push resp.data
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
       )
 
     return @

@@ -3,24 +3,24 @@ angular
   .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
-# ====================================
-# Getters
-# ====================================
+    # ====================================
+    # Getters
+    # ====================================
     # Simply forward the getter for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
 
 
-# ====================================
-# Register Listeners
-# ====================================
+    # ====================================
+    # Register Listeners
+    # ====================================
     ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
       _self.refreshAll(true)
     )
 
 
-# ====================================
-# Load and initialize
-# ====================================
+    # ====================================
+    # Load and initialize
+    # ====================================
     @load = (force=false) ->
       if !_self.getSsoSessionId()? || force
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)])
@@ -56,8 +56,8 @@ angular
 
       widget.isLoading = true if needContentReload
       meta = _.reduce(
-        _.map( widget.settings, (set) -> set.toMetadata() ), 
-        (result={}, setMeta) -> 
+        _.map( widget.settings, (set) -> set.toMetadata() ),
+        (result={}, setMeta) ->
           angular.merge(result, setMeta)
       )
 
@@ -130,9 +130,9 @@ angular
           )
       )
 
-# ====================================
-# CRUD methods
-# ====================================
+    # ====================================
+    # CRUD methods
+    # ====================================
 
     @show = (widget, refreshCache=false) ->
       deferred = $q.defer()
@@ -245,7 +245,7 @@ angular
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
             request.then(
-              (success) -> 
+              (success) ->
                 angular.extend widget, success.data
                 deferred.resolve(widget)
               (error) ->

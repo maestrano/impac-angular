@@ -46,11 +46,8 @@ angular
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
 
-        $scope.formatKpiName = (endpoint) ->
-          endpoint_splitted = endpoint.split('/')
-          name = endpoint_splitted[0] + ' | ' + endpoint_splitted.slice(1,endpoint_splitted.length).join(' ')
-          name = name.replace('_', ' ')
-          return name
+        $scope.formatKpiName = (endpoint)->
+          ImpacKpisSvc.formatKpiName(endpoint)
 
         $scope.addKpi = (kpi) ->
           $scope.isAddingKPI = true

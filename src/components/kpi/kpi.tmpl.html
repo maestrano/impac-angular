@@ -1,44 +1,53 @@
 <div class="tile kpi" ng-class="{ 'static': kpi.static }">
+  <div class="kpi-content" ng-hide="showKpiLoader">
+    <div class="kpi-show" ng-hide="showEditSettings">
+      <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
+      <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="yes" onaftersave="updateName()">{{kpi.name}}</small>
+      <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
+      <span class="kpi-value">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>
 
-  <div class="kpi-show" ng-hide="showEditSettings">
-    <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
-    <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="yes" onaftersave="updateName()">{{kpi.name}}</small>
-    <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
-    <span class="kpi-value">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>
+      <!-- TODO: refactor design to handle multiple targets and ranges -->
+      <div class="kpi-alert" ng-repeat="target in kpi.targets track by $index" ng-hide="editMode || kpi.data.results[$index]">
+        <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit}}</span>
+        <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
+      </div>
 
-    <!-- TODO: refactor design to handle multiple targets and ranges -->
-    <div class="kpi-alert" ng-repeat="target in kpi.targets track by $index" ng-hide="editMode || kpi.data.results[$index]">
-      <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit}}</span>
-      <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
-    </div>
-
-    <div class="kpi-alert" ng-show="editMode" ng-click="displayEditSettings()">Edit</div>
-    <div class="kpi-alert kpi-close" ng-show="editMode" ng-click="deleteKpi()">x</div>
-    <div class="kpi-bell" ng-show="editMode && kpi.targets.length > 0" ng-click="showAlertsSettings()"><i class="fa fa-bell-o" /> </div>
-  </div>
-
-  <div class="kpi-edit" ng-show="showEditSettings">
-    <span class="param-name">KPI target:</span>
-
-    <!-- TODO: refactor design to handle multiple targets and ranges -->
-    <div class="clearfix edit-limit align">
-      <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
-      </select>
-
-      <div class="pull-right input-limit-value form-group has-feedback">
-        <input type="text" class="form-control input-sm" ng-model="kpi.limit.value">
-        <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+      <div ng-show="editMode">
+        <div class="kpi-alert" ng-click="displayEditSettings()">Edit</div>
+        <div class="kpi-alert kpi-close" ng-click="deleteKpi()">x</div>
+        <alerts-config kpi="kpi"></alerts-config>
       </div>
     </div>
 
-    <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
-      <span class="param-name">Select {{param | titleize}}:</span>
-      <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
-      </select>
+    <div class="kpi-edit" ng-show="showEditSettings">
+      <span class="param-name">KPI target:</span>
+
+      <!-- TODO: refactor design to handle multiple targets and ranges -->
+      <form name="kpi{{kpi.id}}SettingsForm">
+        <div class="clearfix edit-limit align">
+          <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
+          </select>
+          <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
+            <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
+            <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+            <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
+              <span ng-message="required">KPI target is required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
+          <span class="param-name">Select {{param | titleize}}:</span>
+          <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
+          </select>
+        </div>
+      </form>
+
+      <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
+      <button class="btn btn-xs btn-success" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
     </div>
-
-    <button class="btn btn-xs btn-default" ng-click="hideEditSettings()">Cancel</button>
-    <button class="btn btn-xs btn-success" ng-click="updateSettings()">Save</button>
   </div>
-
+  <div class="col-xs-2 kpi-data-loader loader" ng-show="showKpiLoader">
+    <i class="fa fa-spinner fa-pulse fa-3x"></i>
+  </div>
 </div>
