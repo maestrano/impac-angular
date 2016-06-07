@@ -1,18 +1,20 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities) ->
 
     _self = @
 
     #====================================
     # Getters
     #====================================
+
+
     # Simply forward the getters for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
     @getCurrentDashboard = ImpacDashboardsSvc.getCurrentDashboard
+
     @config =
       kpisTemplates: []
-
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
@@ -44,15 +46,14 @@ angular
     #====================================
     # Load and initialize
     #====================================
+
     @locked = false
     @load = (force=false) ->
       unless _self.locked
         _self.locked = true
-        # Needed:
-        #   sso session id => ImpacMainSvc.loadUserData
-        #   organizations uids (data sources) => ImpacDashboardsSvc.load
-        return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
-          (results) ->
+
+        return ImpacDashboardsSvc.load(force).then(
+          ->
             if _.isEmpty(_self.getKpisTemplates()) || force
 
               # clear array
@@ -102,14 +103,26 @@ angular
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
         $timeout (-> _self.load(force)), 1000
 
-    @refreshAll = (refreshCache=false) ->
+    @massAssignAll = (metadata) ->
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
-          _self.show(k, refreshCache).then(
+          _self.update(k, {metadata: metadata}).then(->
+            _self.show(k).then(
+              (renderedKpi)-> # success
+              (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
+            )
+          )
+      )
+
+    @refreshAll = ->
+      _self.load().then(->
+        for k in _self.getCurrentDashboard().kpis
+          _self.show(k).then(
             (renderedKpi)-> # success
             (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
           )
       )
+
 
     #====================================
     # Formatting methods
@@ -141,6 +154,7 @@ angular
       }
       ImpacDashboardsSvc.update(dashboardId, data)
 
+
     #====================================
     # CRUD methods
     #====================================
@@ -156,11 +170,24 @@ angular
     @show = (kpi) ->
       _self.load().then(
         ->
-          params = {}
-          params.sso_session = _self.getSsoSessionId()
+          fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+
+          params = {
+            sso_session: _self.getSsoSessionId()
+            opts:
+              financial_year_end_month: fy_end_month
+          }
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
+
+          # TODO make it editable!
+          angular.extend params.metadata, {
+            hist_parameters:
+              from: ImpacUtilities.financialYearDates(fy_end_month).start
+              to: moment().format('YYYY-MM-DD')
+              period: 'MONTHLY'
+          }
 
           switch kpi.source
             when 'impac'
@@ -196,6 +223,8 @@ angular
             source: source
             endpoint: endpoint
             element_watched: elementWatched
+            metadata:
+              currency: _self.getCurrentDashboard().currency
           }
 
           angular.extend params, opts

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.currency',[])
 
-module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacTheming) ->
+module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacKpisSvc, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
@@ -21,6 +21,7 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
         data = {currency: scope.currency}
         ImpacDashboardsSvc.update(scope.currentDhb.id, data).then( ->
           ImpacWidgetsSvc.massAssignAll(data)
+          ImpacKpisSvc.massAssignAll(data)
         )
 
 

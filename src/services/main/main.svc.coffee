@@ -16,6 +16,9 @@ angular
     @getSsoSessionId = ->
       _self.config.userData.sso_session
 
+    @getFinancialYearEndMonth = ->
+      parseInt(_self.config.currentOrganization.financial_year_end_month)
+
 
 # ====================================
 # Load and initialize
