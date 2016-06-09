@@ -1,6 +1,6 @@
 <div class="tile kpi" ng-class="{ 'static': kpi.static }">
-  <div class="top-line"></div>
   <div class="kpi-content" ng-hide="showKpiLoader">
+    <div class="top-line"></div>
     <div class="kpi-show" ng-hide="showEditSettings">
       <small class="kpi-title" ng-if="::kpi.static">{{::kpi.name}}</small>
       <small class="kpi-title" ng-if="::!kpi.static" editable-text="kpi.name" buttons="yes" onaftersave="updateName()">{{kpi.name}}</small>

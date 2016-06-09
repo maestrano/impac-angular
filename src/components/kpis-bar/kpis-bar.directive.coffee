@@ -41,7 +41,7 @@ angular
           tolerance: 'pointer'
           cursor: "move"
           revert: 250
-          # only the top-line with title will provide the handle to drag/drop widgets
+          # only the top-line with title will provide the handle to drag/drop kpis
           handle: ".top-line"
           cancel: ".unsortable"
           helper: 'clone'

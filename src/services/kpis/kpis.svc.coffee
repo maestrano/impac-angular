@@ -64,7 +64,8 @@ angular
               params =
                 metadata:
                   organization_ids: orgUids
-                sso_session: ssoSessionId
+
+              params.sso_session = ssoSessionId if ssoSessionId
 
               promises =
                 impac: index(params)
