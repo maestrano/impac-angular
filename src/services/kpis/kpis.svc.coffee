@@ -157,7 +157,7 @@ angular
       _self.load().then(
         ->
           params = {}
-          params.sso_session = _self.getSsoSessionId()
+          params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
