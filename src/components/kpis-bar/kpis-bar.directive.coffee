@@ -28,9 +28,11 @@ angular
         # ]
 
         $scope.sortableOptions = {
-          stop: ->
-            ids = _.pluck $scope.kpis, 'id'
-            ImpacKpisSvc.updateKpisOrder(ids)
+          # TODO: once current dashboard is updated with new kpis templates order, the
+          #       corresponding data does not get re-applied, causing a "data jumble".
+          # stop: ->
+          #   ids = _.pluck $scope.kpis, 'id'
+          #   ImpacKpisSvc.updateKpisOrder(ids)
           cursorAt:
             left: 100
             top: 20
@@ -39,6 +41,8 @@ angular
           tolerance: 'pointer'
           cursor: "move"
           revert: 250
+          # only the top-line with title will provide the handle to drag/drop widgets
+          handle: ".top-line"
           cancel: ".unsortable"
           helper: 'clone'
         }

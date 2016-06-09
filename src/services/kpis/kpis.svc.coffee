@@ -139,7 +139,13 @@ angular
         metadata:
           kpis_order: kpisIds
       }
-      ImpacDashboardsSvc.update(dashboardId, data)
+      ImpacDashboardsSvc.update(dashboardId, data).then(->
+        # NOTE: attempted fix for "jumbled data", targets still get messed up, and there is
+        #       a delay that looks really clunky.
+        # _.forEach(ImpacDashboardsSvc.getCurrentDashboard().kpis, (kpi)->
+        #   _self.show(kpi)
+        # )
+      )
 
     #====================================
     # CRUD methods
