@@ -17,7 +17,7 @@ angular
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
         ImpacKpisSvc.load().then ->
-          $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+          $scope.availableKpis = _.select ImpacKpisSvc.getKpisTemplates(), (k) -> _.isEmpty(k.attachables)
 
         # $scope.keyStats = [
         #   { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },
@@ -28,9 +28,11 @@ angular
         # ]
 
         $scope.sortableOptions = {
-          stop: ->
-            ids = _.pluck $scope.kpis, 'id'
-            ImpacKpisSvc.updateKpisOrder(ids)
+          # TODO: once current dashboard is updated with new kpis templates order, the
+          #       corresponding data does not get re-applied, causing a "data jumble".
+          # stop: ->
+          #   ids = _.pluck $scope.kpis, 'id'
+          #   ImpacKpisSvc.updateKpisOrder(ids)
           cursorAt:
             left: 100
             top: 20
@@ -39,6 +41,8 @@ angular
           tolerance: 'pointer'
           cursor: "move"
           revert: 250
+          # only the top-line with title will provide the handle to drag/drop kpis
+          handle: ".top-line"
           cancel: ".unsortable"
           helper: 'clone'
         }

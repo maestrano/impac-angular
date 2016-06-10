@@ -15,6 +15,7 @@ angular
 
     @config =
       kpisTemplates: []
+
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
@@ -65,7 +66,8 @@ angular
               params =
                 metadata:
                   organization_ids: orgUids
-                sso_session: ssoSessionId
+
+              params.sso_session = ssoSessionId if ssoSessionId
 
               promises =
                 impac: index(params)
@@ -173,10 +175,10 @@ angular
           fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
 
           params = {
-            sso_session: _self.getSsoSessionId()
             opts:
               financial_year_end_month: fy_end_month
           }
+          params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
