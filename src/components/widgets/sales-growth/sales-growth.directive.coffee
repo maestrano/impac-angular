@@ -4,6 +4,8 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
 
   w = $scope.widget
 
+  productLineThreshold = 35
+
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
@@ -26,10 +28,12 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
   $scope.isDataQuantity = true
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
-
+      
       $scope.productOptions = _.flatten(_.map(w.content.summary, (product) ->
-        return {label: product.code, value: product.id}
+        label = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
+        return {label: label, value: product.id}
       ))
+
       $scope.product = angular.copy(_.find($scope.productOptions, (o) ->
         o.value == w.content.product
       ) || {label: "SELECT PRODUCT", value: -1})
@@ -49,9 +53,13 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
       $scope.isDataQuantity = $scope.filter.value.match('quantity')
 
   $scope.getSelectedProduct = ->
-    return _.find(w.content.summary, (product) ->
-      product.id == $scope.product.value
-    ) if $scope.isDataFound
+    if $scope.isDataFound
+      product = _.find(w.content.summary, (product) ->
+        product.id == $scope.product.value
+      )
+      displayName = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
+      displayName = if displayName.length > productLineThreshold then product.code else displayName
+      return _.extend(product, {displayName: displayName}) 
 
   $scope.getCurrentValue = ->
     return _.last($scope.getSelectedProduct().totals) if $scope.getSelectedProduct()?
