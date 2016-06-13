@@ -134,10 +134,8 @@ angular
       !(_.isEmpty kpi.limit.value || _.isEmpty kpi.limit.mode)
 
     @formatKpiName = (endpoint) ->
-      endpoint_splitted = endpoint.split('/')
-      name = endpoint_splitted[0] + ' | ' + endpoint_splitted.slice(1,endpoint_splitted.length).join(' ')
-      name = name.replace('_', ' ')
-      return name
+      kpi_template = _.find(_self.getKpisTemplates(), (tmpl) -> tmpl.endpoint == endpoint )
+      return angular.copy(kpi_template.name)
 
     # Format a kpi target into a displayable string.
     # @param target [Object] containing target mode and value e.g { min: 600 }

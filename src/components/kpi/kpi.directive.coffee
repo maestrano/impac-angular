@@ -30,6 +30,8 @@ angular
             kpiTemplate = _.find $scope.kpiTemplates, (aKpi) ->
               aKpi.endpoint == $scope.kpi.endpoint
 
+            $scope.kpi.name = kpiTemplate.name
+
             # If the template contains extra params we add it to the KPI
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
@@ -54,10 +56,6 @@ angular
 
         $scope.hideEditSettings = ->
           $scope.showEditSettings = false
-
-        $scope.updateName = ->
-          return if _.isEmpty($scope.kpi.name)
-          ImpacKpisSvc.update($scope.kpi, { name: $scope.kpi.name })
 
         $scope.hasValidTarget = ->
           ImpacKpisSvc.validateKpiTarget($scope.kpi)
