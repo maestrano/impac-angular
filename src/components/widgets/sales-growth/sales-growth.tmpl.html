@@ -17,8 +17,8 @@
     <div ng-show="(isDataFound==true)">
 
       <div class="selector">
-        <div setting-param-selector-classic parent-widget="widget" param="product" options="productOptions" selected="product" no-reload on-select="widget.format()" deferred="::paramSelectorDeferred1"/>
-        <div ng-show="product.value != -1" setting-param-selector-classic parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/>
+        <div setting-param-selector classic="true" parent-widget="widget" param="product" options="productOptions" selected="product" no-reload on-select="widget.format()" deferred="::paramSelectorDeferred1"/>
+        <div ng-show="product.value != -1" setting-param-selector classic="true" parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/>
       </div>
 
       <div class="chart-container" ng-class="{'invisible': product.value==-1}">

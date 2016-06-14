@@ -1,0 +1,4 @@
+<span class="settings param-selector classic" ng-if="selected != undefined">
+  <select ng-options="option as option.label for option in options track by option.value" ng-model="$parent.selectedOption" ng-change="onChangeOption()" ng-init="onInit()">
+  </select>
+</span>

@@ -5,6 +5,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
   w = $scope.widget
 
   productLineThreshold = 35
+  productOptionThreshold = 25
 
   # Define settings
   # --------------------------------------
@@ -29,9 +30,8 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
       
-      $scope.productOptions = _.flatten(_.map(w.content.summary, (product) ->
-        label = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
-        return {label: label, value: product.id}
+      $scope.productOptions = _.flatten(_.map(w.content.summary, (product) ->        
+        return {label: $scope.getDisplayName(product, productOptionThreshold), value: product.id}
       ))
 
       $scope.product = angular.copy(_.find($scope.productOptions, (o) ->
@@ -57,9 +57,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
       product = _.find(w.content.summary, (product) ->
         product.id == $scope.product.value
       )
-      displayName = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
-      displayName = if displayName.length > productLineThreshold then product.code else displayName
-      return _.extend(product, {displayName: displayName}) 
+      return _.extend(product, {displayName: $scope.getDisplayName(product, productLineThreshold)}) 
 
   $scope.getCurrentValue = ->
     return _.last($scope.getSelectedProduct().totals) if $scope.getSelectedProduct()?
@@ -67,6 +65,10 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
   $scope.getCurrentDate = ->
     return _.last(w.content.dates) if $scope.isDataFound
 
+  $scope.getDisplayName = (product, threshold) ->
+    fullName = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
+    codeName = if w.content.organizations.length = 1 then product.code else product.company + ' - ' + product.code
+    return if fullName.length > threshold then codeName else fullName
 
   # Chart formating function
   # --------------------------------------
