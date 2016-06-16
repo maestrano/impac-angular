@@ -117,6 +117,23 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       w.width = 6 unless $scope.selectedElement?
 
 
+  $scope.$on('onPdfModeChange', (event, isPDFMode) ->
+    if isPDFMode
+      $scope.beforePdfMode = {
+        unCollapsed: angular.copy($scope.unCollapsed)
+        isExpanded: $scope.isExpanded
+      }
+      angular.forEach w.content.summary, (element) ->
+        unless _.find($scope.unCollapsed, ((name) -> element.name == name))
+          $scope.unCollapsed.push(element.name)
+      if !w.isExpanded()
+        w.toggleExpanded(false)
+    else
+      $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
+      if w.isExpanded() != $scope.beforePdfMode.isExpanded
+        w.toggleExpanded(false)
+  )
+
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()

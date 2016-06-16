@@ -6,18 +6,20 @@
   <div id="head-title">
     <div class="row" ng-if="showDhbHeading">
       <div class="col-md-6 col-sm-12" id="dashboard-heading">
-        <img ng-src="{{impacTitleLogo}}" />
-        <h2>
-          {{dhbHeadingText}}
-        </h2>
+
+        <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()"/>
+        <input type="file" style="display:none" id="fileInput" name="filedata"/>
+
+        <h2>{{dhbHeadingText}}</h2>
+
       </div>
     </div>
 
     <!-- Impac KPI's -->
-    <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
+    <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis" ng-hide="pdfMode"></kpis-bar>
 
     <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()"></dashboard-selector>
+    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" on-print-pdf="printPdf()"></dashboard-selector>
   </div>
 
   <div id="sub-menu" collapse="!showSubMenu">
@@ -86,7 +88,7 @@
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
   <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right">
-    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
+    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()" ng-hide="pdfMode"/>
     <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
 

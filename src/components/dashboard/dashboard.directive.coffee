@@ -74,6 +74,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         $scope.isLoading=false
     )
 
+    $scope.pdfMode = false
+
     $scope.activateTimer = ->
       $scope.isLoading ||= true
       # The dashboard will load 100ms per widget before being displayed
@@ -302,6 +304,26 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
 
+    $scope.printPdf = () ->
+      $scope.pdfMode = !$scope.pdfMode
+      if $scope.pdfMode
+        angular.element('#workspace-dashboard').addClass('pdf-mode')
+      else
+        angular.element('#workspace-dashboard').removeClass('pdf-mode')
+      $scope.$broadcast('onPdfModeChange', $scope.pdfMode)
+
+    $scope.triggerUpload = () ->
+      fileInput = angular.element("#fileInput")
+      fileInput.on('change', (event) ->
+        files = event.target.files
+        if  files && files[0]
+          reader = new FileReader()
+          reader.onload = (e) ->
+            $scope.impacTitleLogo = e.target.result
+          reader.readAsDataURL(files[0])
+      )
+      fileInput.trigger('click')
+      return true
 
     #====================================
     # Dashboard Settings Panel

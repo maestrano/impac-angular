@@ -8,6 +8,7 @@ angular
       isWidgetSelectorShown: '&'
       onDisplayWidgetSelector: '&'
       onSelectDashboard: '&'
+      onPrintPdf: '&'
     }
     controller: ($scope) ->
 
@@ -40,7 +41,7 @@ angular
             $scope.onSelectDashboard()
             $scope.isLoading = false
         , 50
-        
+
 
       # ============================================
       # Change dashboard name
@@ -102,7 +103,7 @@ angular
         self.errors = ''
         self.isLoading = false
         self.instance = $modal.open(self.config)
-      
+
         self.instance.rendered.then (onRender) ->
           self.locked = true
         self.instance.result.then (onClose) ->
@@ -123,6 +124,10 @@ angular
             self.isLoading = false
         )
 
+
+      $scope.printPdf = () ->
+        $scope.pdfMode = !$scope.pdfMode
+        $scope.onPrintPdf()
 
       return $scope
 
@@ -149,6 +154,7 @@ angular
       scope.showDashboardsDropdown = false
       scope.showChangeDashboardNameBox = false
       scope.accessibilityMode = false
+      scope.pdfMode = false
 
       if !!options.customTmplPath
         customUrl = options.customTmplPath
@@ -189,5 +195,3 @@ angular
       if customUrl then getCustomTemplate() else getTemplate()
   }
 )
-
-

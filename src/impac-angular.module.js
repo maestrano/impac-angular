@@ -160,5 +160,3 @@ angular.module('impac.config', []).config(['$httpProvider',
     $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
   }
 ]);
-
-

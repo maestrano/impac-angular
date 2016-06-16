@@ -28,10 +28,13 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
         angular.element(elem).animate({opacity: 1}, 200)
     , 300
 
-  w.toggleExpanded = ->
+  w.toggleExpanded = (save) ->
+    if typeof(save) == 'undefined'
+      save = true
+
     $scope.expanded = !$scope.expanded
     # false because we want to resize the widget without waiting for the response from the dashboarding API
-    ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
+    ImpacWidgetsSvc.updateWidgetSettings(w,false,true) if save
 
     hideOnResize($scope.contentElements)
 

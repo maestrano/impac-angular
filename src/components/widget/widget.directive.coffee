@@ -42,6 +42,17 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
 
   w.getColClass = ->
     "col-md-#{w.width}"
+
+  $scope.$on('onPdfModeChange', (event, pdfMode) ->
+    w.pdfMode = pdfMode
+    if pdfMode
+      $scope.beforePdfMode = {
+        width: w.width
+      }
+      w.width = 12
+    else
+      w.width = $scope.beforePdfMode.width
+  )
 )
 
 module.directive('impacWidget', ($templateCache) ->
@@ -103,8 +114,7 @@ module.directive('impacWidget', ($templateCache) ->
         scope.editTitle
 
       scope.toggleEditTitle = ->
-        scope.editTitle = !scope.editTitle 
-
+        scope.editTitle = !scope.editTitle
 
     ,template: $templateCache.get('widget/widget.tmpl.html')
   }

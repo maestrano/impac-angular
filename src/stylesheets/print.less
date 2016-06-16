@@ -1,0 +1,71 @@
+.pdf-mode {
+  // Dashboard title logo
+  .analytics #head-title #dashboard-heading h2 {
+    display: inline-block;
+  }
+  // Dashboard selector
+  #module__dashboard-selector .buttons-bar .dropdown-container .dashboard-title {
+    color: black;
+    cursor: auto;
+  }
+  #module__dashboard-selector .buttons-bar {
+    position: relative;
+  }
+  .dropdown-container {
+    width: 100%;
+    text-align: center;
+  }
+  .actions-panel {
+    position: absolute;
+    right: 0;
+  }
+  //  Widgets
+  .analytics {
+    .widget-item {
+      .content {
+        .legend {
+          max-height: none !important;
+        }
+        .widget-lines-container {
+          max-height: none !important;
+        }
+        &.accounts-cash-summary {
+          height: 100%;
+        }
+        &.accounts-assets-liability-summary {
+          height: 100%;
+        }
+        &.accounts-comparison {
+          min-height: 0;
+          height: 100%;
+          .add-account {
+            display: none;
+          }
+        }
+        &.accounts-balance-sheet {
+          min-height: 0;
+        }
+      }
+    }
+  }
+  @media (min-width: 992px) {
+    .analytics {
+      .widget-item .content {
+        height: 100%;
+        .chart-container {
+          max-height: none;
+        }
+        .invisible {
+          max-height: 0;
+        }
+        &.accounts-balance-sheet {
+          height: 100%;
+        }
+        &.accounts-cash-summary {
+          height: 100%;
+          min-height: none;
+        }
+      }
+    }
+  }
+}

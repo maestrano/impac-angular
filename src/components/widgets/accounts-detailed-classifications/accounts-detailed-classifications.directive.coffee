@@ -70,6 +70,17 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
       else
         return true
 
+  $scope.$on('onPdfModeChange', (event, isPDFMode) ->
+    if isPDFMode
+      $scope.beforePdfMode = {
+        unCollapsed: angular.copy($scope.unCollapsed)
+      }
+      angular.forEach $scope.dataSource, (element) ->
+        unless _.find($scope.unCollapsed, ((name) -> element.label == name))
+          $scope.unCollapsed.push(element.label)
+    else
+      $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
+  )
   # Mini-settings objects
   # handles the saving of collapsed / uncollapsed list groups.
   # --------------------------------------
