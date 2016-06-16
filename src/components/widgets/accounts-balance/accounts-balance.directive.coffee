@@ -43,7 +43,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       if $scope.getBehaviour() == 'pnl'
         _.sum w.selectedAccount.balances
       else
-        w.selectedAccount.current_balance
+        _.last(w.selectedAccount.balances)
     else
       0.0
 

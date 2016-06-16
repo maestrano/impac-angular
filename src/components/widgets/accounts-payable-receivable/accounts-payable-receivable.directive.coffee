@@ -25,10 +25,10 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
     $scope.isDataFound = w.content? && w.content.values? && w.content.live_values?
 
   $scope.getCurrentPayable = ->
-    if $scope.isDataFound then w.content.live_values.payable else 0.0
+    if $scope.isDataFound then _.last(w.content.values.payables) else 0.0
 
   $scope.getCurrentReceivable = ->
-    if $scope.isDataFound then w.content.live_values.receivable else 0.0
+    if $scope.isDataFound then _.last(w.content.values.receivables) else 0.0
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound

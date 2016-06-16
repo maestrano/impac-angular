@@ -398,6 +398,16 @@ body {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // --- Common adjustments
+  // ---------------------------------------------------------------------------
+  .nopadding {
+    padding: 0;
+  }
+
+  .nomargin {
+    margin: 0;
+  }
 
   // ---------------------------------------------------------------------------
   // --- Custom elements
@@ -638,6 +648,17 @@ body {
       }
     }
   }
+}
+
+.alerts-config {
+  border-radius: 10px;
+  width: 21px;
+  color: @mblue;
+  background-color: white;
+  padding-left: 1px;
+  border: solid 1px @mblue;
+
+  &:hover { cursor: pointer; }
 }
 
 .analytics {
@@ -1139,7 +1160,7 @@ impac-kpi .kpi {
   text-align: center;
   max-width: 160px;
   min-height: 135px;
-  padding: 10px 3px;
+  // padding: 10px 3px;
   border-radius: 3px;
   box-shadow: 0px 4px 12px -7px #17262d;
 
@@ -1151,6 +1172,28 @@ impac-kpi .kpi {
       font-size: 14px;
       font-weight: 700;
     }
+  }
+
+  .top-line {
+    width: 100%;
+    position: relative;
+    cursor: move;
+    background-color: white;
+    padding: 9px 9px 0px 12px;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: none;
+    min-height: 16px;
+    box-shadow: 0px 1px 8px -4px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    margin-bottom: 5px;
   }
 
   .kpi-show {
@@ -1237,20 +1280,12 @@ impac-kpi .kpi {
       }
     }
 
-    .kpi-bell {
+    .alerts-config {
       position: absolute;
       bottom: auto;
       left: auto;
       right: 45px;
       top: 5px;
-      border-radius: 10px;
-      width: 21px;
-      color: @mblue;
-      background-color: white;
-      padding-left: 1px;
-      border: solid 1px @mblue;
-
-      &:hover { cursor: pointer; }
     }
   }
 
@@ -1285,6 +1320,21 @@ impac-kpi .kpi {
     .btn.btn-xs {
       margin-top: 4px;
     }
+
+    .error-messages {
+      color: red;
+      font-size: 11px;
+      margin-top: 2px;
+      &.limit {
+        position: relative;
+        left: -52px;
+      }
+    }
+  }
+
+  .kpi-data-loader {
+    width: 100%;
+    min-height: 115px;
   }
 }
 
@@ -1316,7 +1366,7 @@ impac-kpi .kpi {
 
       &:hover { cursor: pointer; }
     }
-   
+
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
@@ -1504,6 +1554,218 @@ impac-kpi .kpi {
   .fa.success { color: @flurogreen; }
 }
 
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 90px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+.analytics .widget-item {
+  .editable-title {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 22px;
+  }
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+  // }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 65px;
+  left: 24px;
+  width: ~"calc(100% - 48px)";
+  max-height: ~"calc(100% - 90px)";
+  height: 100%;
+
+  background-color: white;
+  opacity: .85;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+    white-space: normal;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -1543,7 +1805,7 @@ impac-kpi .kpi {
     .left-thin(30px);
     text-align: center;
   }
-  
+
   .price {
     .center-bold(0px);
   }
@@ -1684,6 +1946,22 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.accounts-expense-weight {
+  [common-time-period-info] {
+    margin-top: 5px;
+  }
+
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1702,22 +1980,6 @@ impac-kpi .kpi {
 }
 
 
-
-.analytics .widget-item .content.accounts-expense-weight {
-  [common-time-period-info] {
-    margin-top: 5px;
-  }
-
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
 
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
@@ -1756,6 +2018,22 @@ impac-kpi .kpi {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1781,22 +2059,6 @@ impac-kpi .kpi {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
-  }
-}
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
   }
 }
 .analytics .widget-item .content.hr-leaves-balance{
@@ -2212,218 +2474,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 90px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-.analytics .widget-item {
-  .editable-title {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-    height: 22px;
-  }
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-  // }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 65px;
-  left: 24px;
-  width: ~"calc(100% - 48px)";
-  max-height: ~"calc(100% - 90px)";
-  height: 100%;
-
-  background-color: white;
-  opacity: .85;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-    white-space: normal;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -2435,6 +2485,87 @@ impac-kpi .kpi {
     &.focus, &.active { background-color: @impac-widget-link-color; }
   }
 
+}
+
+.analytics .settings.attach-kpis {
+
+  .attach-kpi {
+    padding: 8px 5px;
+
+    form .row {
+      padding-bottom: 5px;
+    }
+
+    .attach-kpi-form {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+
+    form .row.kpi-description {
+      padding: 10px 2px;
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .attached-kpis {
+    padding: 5px;
+  }
+
+  .list-group-item.attached-kpi {
+    padding: 5px 10px;
+
+    .attached-kpi-name {
+      overflow: hidden;
+      width: 75%;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .actions {
+      padding-top: 2px;
+      .alerts-config {
+        display: inline-block;
+        text-align: left;
+        padding-left: 4px;
+        height: 20px;
+      }
+      .edit-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @mblue;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @mblue;
+          &:hover { cursor: pointer; }
+        }
+      }
+      .remove-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @fluropink;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @fluropink;
+          &:hover { cursor: pointer; }
+        }
+      }
+    }
+  }
 }
 
 .analytics .widget-item .content .settings.chart-filters {
