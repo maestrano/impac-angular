@@ -1708,18 +1708,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -1741,6 +1729,18 @@ impac-kpi .kpi {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 
@@ -1915,22 +1915,6 @@ impac-kpi .kpi {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -1956,6 +1940,22 @@ impac-kpi .kpi {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+}
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
   }
 }
 .analytics .widget-item .content.hr-leaves-balance{
@@ -2003,14 +2003,6 @@ impac-kpi .kpi {
 .analytics .widget-item .content.hr-salaries-summary {
   .expandable-filterable-widget();
 }
-.analytics .widget-item .content.hr-timesheets {
-  .currency {
-    font-size: 14px;
-  }
-  .widget-lines-container {
-    max-height: 210px;
-  }
-}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -2024,6 +2016,14 @@ impac-kpi .kpi {
   }
   .price {
     .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
   }
 }
 .analytics .widget-item .content.hr-workforce-summary {
@@ -2166,6 +2166,9 @@ impac-kpi .kpi {
     .scrollable(scroll);
   }
 }
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2175,9 +2178,6 @@ impac-kpi .kpi {
   .selector {
     margin-bottom: 4px;
   }
-}
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
 }
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
@@ -2384,25 +2384,6 @@ impac-kpi .kpi {
 
 }
 
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: 20px;
-  }
-}
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
@@ -2428,6 +2409,25 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: 20px;
+  }
+}
 .analytics .widget-item .content .settings.hist-mode-choser {
   max-height: 70px;
 
