@@ -199,8 +199,7 @@ angular
 
           $http.get(url).then(
             (response) ->
-              kpi.data = _.pick(response.data.kpi, ['value', 'unit', 'results'])
-
+              angular.extend kpi, _.pick(response.data.kpi, ['data', 'results'])
               # When the kpi initial configuration is partial, we update it with what the API has picked by default
               updatedConfig = response.data.kpi.configuration || {}
               missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)

@@ -36,11 +36,18 @@ angular
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
 
-            $scope.kpi.targets ||= []
-            if !_.isEmpty($scope.kpi.targets[0])
+            $scope.kpi.data ||= {}
+            $scope.kpi.results ||= {}
+            $scope.kpi.targets ||= {}
+
+            $scope.watchableData = $scope.kpi.data[$scope.kpi.element_watched]
+            $scope.watchableResults = $scope.kpi.results[$scope.kpi.element_watched]
+            $scope.watchableTargets = $scope.kpi.targets[$scope.kpi.element_watched]
+
+            if !_.isEmpty($scope.watchableTargets)
               $scope.kpi.limit = {} if !$scope.kpi.limit?
-              $scope.kpi.limit.mode = _.keys($scope.kpi.targets[0])[0]
-              $scope.kpi.limit.value = _.values($scope.kpi.targets[0])[0]
+              $scope.kpi.limit.mode = _.keys($scope.watchableTargets[0])[0]
+              $scope.kpi.limit.value = _.values($scope.watchableTargets[0])[0]
             else
               # set default <select> option value, and show edit mode.
               $scope.kpi.limit = { mode: $scope.possibleTargets[0].mode }
@@ -66,8 +73,9 @@ angular
 
           target0 = {}
           target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
-          params.targets = [target0]
 
+          params.targets = {}
+          params.targets[$scope.kpi.element_watched] = [target0]
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
           ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)

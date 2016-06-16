@@ -13,7 +13,7 @@
       </div> -->
       <div class="row nomargin kpi-description">
         <!-- TODO: support for multple extra params, and watchables. -->
-        Keep the {{kpi.element_watched}} of <span>{{extraParams[selectedParam].name}}</span>
+        Keep the {{elementWatched}} of <span>{{extraParams[selectedParam].name}}</span>
       </div>
       <div class="row nomargin">
         <div class="col-xs-5 nopadding">
@@ -21,7 +21,8 @@
         </div>
         <div class="form-group col-xs-5 nopadding nomargin" ng-class="attachKpiForm.limitValue.$valid ? 'has-success' : 'has-error'">
           <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-          <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+          <!-- TODO: return possible units from API? -->
+          <!-- <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span> -->
           <div class="error-messages limit" ng-messages="attachKpiForm.limitValue.$error">
             <span ng-message="required">KPI target is required</span>
           </div>
