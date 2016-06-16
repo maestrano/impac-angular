@@ -92,8 +92,10 @@ angular
         histModeChoser:
           currentLabels:
             pnl: "Total period"
-            bls: "Live balance"
+            bls: "Balance"
             default: "Current"
+          todayPrefixes: 
+            bls: "Live"
 
 
     #=======================================

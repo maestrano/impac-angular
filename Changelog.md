@@ -20,6 +20,15 @@
 
 ## Released
 
+### v1.3.7 | Week 24
+
+#### Adds
+- Balance sheet widgets to show balance at end date (instead of current balance)
+- Impac favicon in Developer toolkit
+
+
+-------------------------------------------------------------
+
 ### v1.3.6 | Week 22
 
 #### Adds

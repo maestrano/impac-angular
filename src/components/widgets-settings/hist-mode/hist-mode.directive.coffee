@@ -42,9 +42,13 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming,
     return {hist_parameters: {mode: mode}}
 
   labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
+  todayPrefixes = ImpacTheming.get().widgetSettings.histModeChoser.todayPrefixes
   $scope.getCurrentLabel = ->
     if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
-      return labels[$scope.accountingBehaviour]
+      needPrefix = ( !$scope.endDate? || ($scope.endDate == moment().format('YYYY-MM-DD')) )
+      label_array = [labels[$scope.accountingBehaviour]]
+      label_array.unshift(todayPrefixes[$scope.accountingBehaviour]) if needPrefix
+      return _.compact(label_array).join(' ')
     else
       return labels.default
 
@@ -64,6 +68,7 @@ module.directive('settingHistMode', ($templateCache) ->
       deferred: '='
       onToggle: '&'
       accountingBehaviour: '@?'
+      endDate: '=?'
     },
     template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
     controller: 'SettingHistModeCtrl'
