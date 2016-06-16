@@ -20,7 +20,7 @@
 
       <!-- All the below divs will remain hidden until an account is selected -->
       <div ng-show="widget.selectedAccount">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" />
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
 
         <div ng-hide="widget.isHistoryMode">
           <h3>{{getName()}}</h3>
