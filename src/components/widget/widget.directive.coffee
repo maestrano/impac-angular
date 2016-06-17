@@ -32,7 +32,11 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
           w.width = 12
         else if w.initialWidth
           w.width = w.initialWidth
-    ).finally( -> w.isLoading = false )
+        if w.pdfMode
+          pdfModeHandler()
+    ).finally( ->
+      w.isLoading = false
+    )
 
   $scope.initSettings = ->
     ImpacWidgetsSvc.initWidgetSettings(w)
@@ -43,16 +47,23 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   w.getColClass = ->
     "col-md-#{w.width}"
 
-  $scope.$on('onPdfModeChange', (event, pdfMode) ->
-    w.pdfMode = pdfMode
-    if pdfMode
+  pdfModeHandler = ->
+    if w.pdfMode
       $scope.beforePdfMode = {
         width: w.width
       }
       w.width = 12
     else
       w.width = $scope.beforePdfMode.width
+
+  $scope.$on('pdfModeChange', (event, pdfMode) ->
+    w.pdfMode = pdfMode
+    w.ticked = true
+    pdfModeHandler() unless w.isLoading
   )
+
+  $scope.tick = ->
+    w.ticked = !w.ticked
 )
 
 module.directive('impacWidget', ($templateCache) ->

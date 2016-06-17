@@ -310,7 +310,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         angular.element('#workspace-dashboard').addClass('pdf-mode')
       else
         angular.element('#workspace-dashboard').removeClass('pdf-mode')
-      $scope.$broadcast('onPdfModeChange', $scope.pdfMode)
+      $scope.$broadcast('pdfModeChange', $scope.pdfMode)
 
     $scope.triggerUpload = () ->
       fileInput = angular.element("#fileInput")

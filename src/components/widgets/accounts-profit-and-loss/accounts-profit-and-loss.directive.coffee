@@ -64,6 +64,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
 
+    pdfModeHandler() if w.pdfMode
+
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
 
@@ -162,8 +164,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
 
-  $scope.$on('onPdfModeChange', (event, isPDFMode) ->
-    if isPDFMode
+  pdfModeHandler = ->
+    if w.pdfMode
       $scope.beforePdfMode = {
         unCollapsed: angular.copy($scope.unCollapsed)
         isExpanded: $scope.isExpanded
@@ -177,6 +179,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
       if w.isExpanded() != $scope.beforePdfMode.isExpanded
         w.toggleExpanded(false)
+
+  $scope.$on('pdfModeChange', (event) ->
+    pdfModeHandler() unless w.isLoading
   )
 
   # Chart formating function

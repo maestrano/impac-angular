@@ -35,6 +35,7 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
     ) || $scope.filterOptions[0])
 
     $scope.unCollapsed = w.metadata.unCollapsed || []
+    pdfModeHandler() if w.pdfMode
 
   $scope.toggleCollapsed = (categoryName) ->
     if categoryName?
@@ -53,6 +54,20 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
       else
         return true
 
+  pdfModeHandler = ->
+    if w.pdfMode
+      $scope.beforePdfMode = {
+        unCollapsed: angular.copy($scope.unCollapsed)
+      }
+      angular.forEach w.content.summary, (element) ->
+        unless _.find($scope.unCollapsed, ((name) -> element.name == name))
+          $scope.unCollapsed.push(element.name)
+    else
+      $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
+
+  $scope.$on('pdfModeChange', (event) ->
+    pdfModeHandler() unless w.isLoading
+  )
 
   # Mini-settings
   # --------------------------------------
