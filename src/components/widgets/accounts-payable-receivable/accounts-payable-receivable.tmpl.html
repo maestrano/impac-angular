@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)">
-      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="bls" />
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="bls" end-date="widget.metadata.hist_parameters.to" />
 
       <div ng-hide="widget.isHistoryMode">
         <div class="receivable">

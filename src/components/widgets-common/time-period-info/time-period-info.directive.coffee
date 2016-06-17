@@ -17,11 +17,10 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
 
       scope.getDateInfo = ->
         context = scope.context
+        dates = ImpacUtilities.selectedTimeRange(context.histParams)
         if getBehaviour() == 'bls'
-          today = moment().format('YYYY-MM-DD')
-          return "As at #{today}"
+          return "As at #{dates.to}"
         else
-          dates = ImpacUtilities.selectedTimeRange(context.histParams)
           return "From #{dates.from} to #{dates.to}"
   }
 )
