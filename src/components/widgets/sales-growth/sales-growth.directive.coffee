@@ -66,8 +66,8 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
     return _.last(w.content.dates) if $scope.isDataFound
 
   $scope.getDisplayName = (product, threshold) ->
-    fullName = if w.content.organizations.length = 1 then product.name else product.company + ' - ' + product.name
-    codeName = if w.content.organizations.length = 1 then product.code else product.company + ' - ' + product.code
+    fullName = if w.content.organizations.length == 1 then product.name else product.company + ' - ' + product.name
+    codeName = if w.content.organizations.length == 1 then product.code else product.company + ' - ' + product.code
     return if fullName.length > threshold then codeName else fullName
 
   # Chart formating function
