@@ -40,7 +40,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       if $scope.getBehaviour() == 'pnl'
         _.sum w.selectedAccount.balances
       else
-        w.selectedAccount.current_balance
+        _.last(w.selectedAccount.balances)
     else
       0.0
 
@@ -48,8 +48,8 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     w.selectedAccount.currency if w.selectedAccount?
 
   $scope.displayAccount = ->
-    $scope.updateSettings(false)
-    w.format()
+    $scope.updateSettings(false).then ->
+      w.format()
 
 
   # Chart formating function
