@@ -56,7 +56,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
     if $scope.isDataFound
       product = _.find(w.content.summary, (product) ->
         product.id == $scope.product.value
-      )
+      ) || w.content.summary[0]
       return _.extend(product, {displayName: $scope.getDisplayName(product, productLineThreshold)}) 
 
   $scope.getCurrentValue = ->
