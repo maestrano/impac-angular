@@ -26,15 +26,22 @@ module.exports = function(config) {
     files: [
       // `maestrano.impac` module external dependencies.
       // TODO: wiredep inject bower_components here!
+      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/lodash/lodash.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-ui-sortable/sortable.js',
-      'bower_components/angular-bootstrap/ui-bootstrap.js',
-      'bower_components/angular-poller/angular-poller.js',
-      'bower_components/angular-messages/angular-messages.js',
+      'bower_components/angular-xeditable/dist/js/xeditable.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/Chart.js/Chart.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+      'bower_components/pusher/dist/pusher.js',
+      'bower_components/angular-messages/angular-messages.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-scenario/angular-scenario.js',
       // impac-angular & test scripts.
       'dist/impac-angular.js',
       'src/**/*.spec.js'
