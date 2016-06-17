@@ -52,7 +52,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
           params.extra_params ||= {}
           params.extra_params[param] = paramValues.uid
 
-        ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.kpi.element_watched, params).then(
+        ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.elementWatched, params).then(
           (kpi)->
             $scope.attachedKpis.push(kpi)
             ImpacKpisSvc.show(kpi).then(->
@@ -102,6 +102,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
         # Set default extra param.
         # TODO: support for multiple extra params.
         $scope.selectedParam = _.keys($scope.extraParams)[0]
+        # TODO: support for watchable selection.
+        $scope.elementWatched = $scope.kpi.watchables[0]
       )
 
       # Load Existing KPI's data.

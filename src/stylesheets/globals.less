@@ -258,3 +258,17 @@ body {
     color: @mgreen;
   }
 }
+
+// ---------------------------------------------------------------------------
+// --- Bootstrap overrides
+// ---------------------------------------------------------------------------
+
+.has-error .form-control {
+  border-color: @brand-danger;
+  &:focus { border-color: @brand-danger }
+}
+
+.has-success .form-control {
+  border-color: @brand-success;
+  &:focus { border-color: @brand-success }
+}

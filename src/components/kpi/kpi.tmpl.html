@@ -29,7 +29,7 @@
           </select>
           <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
             <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-            <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+            <span class="form-control-feedback target-label" aria-hidden="true">{{kpi.data.unit}}</span>
             <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
               <span ng-message="required">KPI target is required</span>
             </div>
@@ -44,7 +44,7 @@
       </form>
 
       <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
-      <button class="btn btn-xs btn-success" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
+      <button class="btn btn-xs btn-warning" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
     </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-show="showKpiLoader">

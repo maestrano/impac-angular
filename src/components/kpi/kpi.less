@@ -146,6 +146,11 @@ impac-kpi .kpi {
           color: @impac-widget-text-color-medium;
           .small();
           line-height: 24px;
+
+          &.target-label {
+            // maestrano.com is applying an undesirable bootstrap override on .form-control-feedback. This ensures correction within kpis.
+            top: 0px;
+          }
         }
       }
     }
@@ -154,6 +159,7 @@ impac-kpi .kpi {
       margin-top: 0;
       height: 24px;
       line-height: 24px;
+      background-color: white;
     }
 
     .form-group {
@@ -165,7 +171,7 @@ impac-kpi .kpi {
     }
 
     .error-messages {
-      color: red;
+      color: @brand-danger;
       font-size: 11px;
       margin-top: 2px;
       &.limit {
