@@ -168,6 +168,7 @@ angular
 
     # Retrieve data for kpi from api
     @show = (kpi) ->
+      kpi.isLoading = true
       _self.load().then(
         ->
           fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
@@ -199,12 +200,28 @@ angular
 
           $http.get(url).then(
             (response) ->
-              angular.extend kpi, _.pick(response.data.kpi, ['data', 'results'])
-              # When the kpi initial configuration is partial, we update it with what the API has picked by default
-              updatedConfig = response.data.kpi.configuration || {}
-              missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-              angular.extend kpi, _.pick(updatedConfig, missingParams)
-              kpi
+              # When no target has been defined
+              if response.data.error && response.data.error.code == 422
+                # TODO force edit mode
+                return false
+              else
+                kpiResp = response.data.kpi
+                
+                # Calculation
+                # angular.extend kpi.data, kpiResp.calculation
+                kpi.data = kpiResp.calculation
+                
+                # Configuration
+                # When the kpi initial configuration is partial, we update it with what the API has picked by default
+                updatedConfig = kpiResp.configuration || {}
+                missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+                angular.extend kpi, _.pick(updatedConfig, missingParams)
+                
+                # Layout
+                # angular.extend kpi.layout, kpiResp.layout
+                kpi.layout = kpiResp.layout
+
+                return kpi
 
             (err) ->
               $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
@@ -213,7 +230,7 @@ angular
         ->
           $log.error 'Impac! - KpisSvc: Service not initialized'
           {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
-      )
+      ).finally ( -> kpi.isLoading = false )
 
     @create = (source, endpoint, elementWatched, opts={}) ->
       _self.load().then(
@@ -245,6 +262,7 @@ angular
       )
 
     @update = (kpi, params) ->
+      kpi.isLoading = true
       _self.load().then(
 
         filtered_params = {}
@@ -257,16 +275,15 @@ angular
 
         if !_.isEmpty filtered_params
           $http.put(url, {kpi: params}).then (success) ->
-            angular.extend(kpi, success.data)
-            _self.show(kpi)
             # Alerts can be created by default on kpi#update (dashboard.kpis), check for
             # new alerts and register them with Pusher.
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-            $q.resolve(kpi)
+            angular.extend(kpi, success.data)
+            _self.show(kpi)
           ,(err) ->
             $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
             $q.reject(err)
-      )
+      ).finally( -> kpi.isLoading = false)
 
 
     @delete = (kpi) ->
