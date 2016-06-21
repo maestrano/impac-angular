@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $window, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
 
     #====================================
     # Initialization
@@ -304,13 +304,23 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
 
-    $scope.printPdf = () ->
+    $scope.changePdfMode = () ->
       $scope.pdfMode = !$scope.pdfMode
       if $scope.pdfMode
         angular.element('#workspace-dashboard').addClass('pdf-mode')
       else
         angular.element('#workspace-dashboard').removeClass('pdf-mode')
       $scope.$broadcast('pdfModeChange', $scope.pdfMode)
+
+    $scope.savePdf = () ->
+      console.log 'savePdf'
+      $scope.changePdfMode()
+      ImpacDashboardsSvc.load()
+
+    $scope.printPdf = () ->
+      $window.print()
+      $scope.changePdfMode()
+      # ImpacDashboardsSvc.load()
 
     $scope.triggerUpload = () ->
       fileInput = angular.element("#fileInput")
