@@ -7,11 +7,14 @@ angular
         onDelete: '&'
         kpi: '='
         editMode: '='
+        kpiEditSettings: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
       controller: ($scope) ->
-        $scope.showEditSettings = false
+        # Load
+        # -------------------------
+        $scope.showKpiLoader = true
 
         $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
         $scope.possibleExtraParams = []
@@ -45,19 +48,21 @@ angular
               $scope.displayEditSettings()
           )
 
+        # Linked methods
+        # -------------------------
         $scope.displayEditSettings = ->
-          $scope.showEditSettings = true
+          $scope.kpiEditSettings.isEditing = true
 
         $scope.hideEditSettings = ->
-          $scope.showEditSettings = false
-          $scope.editMode = false
+          $scope.kpiEditSettings.isEditing = false
 
         $scope.hasValidTarget = ->
           ImpacKpisSvc.validateKpiTarget($scope.kpi)
 
         $scope.updateSettings = ->
           params = {}
-          return unless $scope.hasValidTarget()
+          return $scope.cancelUpdateSettings() unless $scope.hasValidTarget()
+
           target0 = {}
           target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
 
@@ -73,8 +78,11 @@ angular
           , 500
             
 
+        # Register callback accessible by parent (kpi-bar).
+        $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }
+
         $scope.cancelUpdateSettings = ->
-          $scope.deleteKpi() unless $scope.hasValidTarget()
+          $scope.deleteKpi() unless $scope.hasValidTarget() || $scope.showKpiLoader
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()

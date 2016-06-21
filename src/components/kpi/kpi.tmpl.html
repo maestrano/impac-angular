@@ -1,8 +1,8 @@
 <div class="kpi" ng-class="{ 'static': kpi.static }">
+  <div class="top-line" ng-hide="showKpiLoader"></div>
   <div class="kpi-content" ng-hide="showKpiLoader">
-    <div class="top-line"></div>
-    <div class="kpi-show row nomargin nopadding" ng-hide="showEditSettings">
-
+    <!-- SHOW -->
+    <div class="kpi-show row nomargin nopadding" ng-hide="(kpiEditSettings.isEditing || editMode)">
       <div class="col-md-3 kpi-icon">
         <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
       </div>
@@ -10,17 +10,14 @@
         <span class="caption">{{kpi.layout.text.caption}}</span>
         <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
       </div>
-
-      <div ng-show="editMode">
-        <div class="kpi-alert" ng-click="displayEditSettings()">Edit</div>
-        <div class="kpi-alert kpi-close" ng-click="deleteKpi()">x</div>
-        <alerts-config kpi="kpi"></alerts-config>
-      </div>
     </div>
-
-    <div class="kpi-edit" ng-show="showEditSettings">
-      <span class="param-name">KPI target:</span>
-
+    <!-- EDIT -->
+    <div class="kpi-edit" ng-show="(kpiEditSettings.isEditing || editMode)">
+      <div class="kpi-name">
+        <h6>{{::kpi.name.toUpperCase()}}</h6>
+        <span class="menu-gradient-line"></span>
+      </div>
+      <span class="param-name">Target:</span>
       <!-- TODO: refactor design to handle multiple targets and ranges -->
       <form name="kpi{{kpi.id}}SettingsForm">
         <div class="clearfix edit-limit align">
@@ -42,8 +39,12 @@
         </div>
       </form>
 
-      <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
-      <button class="btn btn-xs btn-warning" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
+      <!-- Temporary placement of delete & alerts settings -->
+      <div ng-show="editMode">
+        <div class="kpi-alert kpi-close" ng-click="deleteKpi()">x</div>
+        <alerts-config kpi="kpi"></alerts-config>
+      </div>
+
     </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-show="kpi.isLoading">

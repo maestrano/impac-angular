@@ -1,7 +1,7 @@
 impac-kpi .kpi {
-  .scrollable();
   max-width: 220px;
-  min-height: 95px;
+  min-height: @kpi-max-height;
+  max-height: @kpi-max-height;
   background-color: @kpi-background-color;
   margin: 10px 0 10px 0;
   border-bottom: 1px solid @kpi-background-color;
@@ -44,6 +44,11 @@ impac-kpi .kpi {
     .transition(background .2s ease-in);
   }
 
+  .kpi-content {
+    max-height: @kpi-max-height - 5px;
+    .scrollable();
+  }
+
   .kpi-show {
     white-space: normal;
     padding: 10px;
@@ -68,58 +73,24 @@ impac-kpi .kpi {
       .transition(color .2s ease-in);
       &.triggered { color: @kpi-icon-triggered-color; }
     }
-
-    .kpi-alert {
-      .text-uppercase();
-      font-size: 11px;
-      font-weight: 700;
-      background-color: white;
-      border: 1px solid @brand-danger;
-      border-radius: 4px;
-      color: @brand-danger;
-      padding: 2px 5px;
-
-      position: absolute;
-      bottom: 15px;
-      left: 15%;
-      width: 70%;
-
-      &.kpi-close {
-        bottom: auto;
-        right: 20px;
-        top: 5px;
-        border-radius: 10px;
-        width: 21px;
-        left: auto;
-        height: 22px;
-        padding-left: 6px;
-        padding-top: 3px;
-      }
-
-      &:hover {
-        color: darken(@brand-danger, 10%);
-        border-color: darken(@brand-danger, 10%);
-        cursor: pointer;
-      }
-
-      &.static {
-        position: static;
-        margin: 5px 20px;
-      }
-    }
-
-    .alerts-config {
-      position: absolute;
-      bottom: auto;
-      left: auto;
-      right: 45px;
-      top: 5px;
-    }
   }
 
   .kpi-edit {
     .param-name {
       .small();
+    }
+
+    .kpi-name {
+      text-align: center;
+      margin-bottom: 5px;
+      h6 { margin-bottom: 2px; }
+      span.menu-gradient-line {
+        display:block;
+        visibility: visible;
+        border:none;
+        height:1px;
+        background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 80, from(#000), to(#fff));
+      }
     }
 
     .edit-limit {
@@ -165,6 +136,57 @@ impac-kpi .kpi {
       }
     }
   }
+
+  // Alert & Delete absolute icons.
+  // TODO: clarify design
+  // ----------
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+      height: 22px;
+      padding-left: 6px;
+      padding-top: 3px;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+      cursor: pointer;
+    }
+
+    &.static {
+      position: static;
+      margin: 5px 20px;
+    }
+  }
+
+  .alerts-config {
+    position: absolute;
+    bottom: auto;
+    left: auto;
+    right: 45px;
+    top: 5px;
+  }
+  // ----------
 
   .kpi-data-loader {
     width: 100%;

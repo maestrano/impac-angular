@@ -4,7 +4,6 @@
 
       <div class="title" ng-click="toggleAvailableKpis()">
         <a href=""><i class="fa fa-plus"></i> Add KPI</a>
-        <span class="menu-gradient-line"></span>
       </div>
 
       <div class="available-kpis-container" collapse="hideAvailableKpis">
@@ -16,20 +15,18 @@
       </div>
 
       <div class="title" ng-click="toggleEditMode()">
-        <a href=""><i class="fa fa-cog"></i> Edit KPI Settings</a>
-        <span class="menu-gradient-line"></span>
+        <a href=""><i class="fa fa-cog"></i> {{isEditing() ? 'Save' : 'Edit'}} KPI Settings</a>
       </div>
     </div>
     <div class="col-sm-10">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
-          <impac-kpi class="col-xs-3 col-sm-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by kpi.id" />
+          <impac-kpi class="col-xs-3 col-sm-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis" ng-repeat="kpi in kpis track by kpi.id" />
+        </div>
+        <div ng-show="isAddingKPI" class="col-xs-3 col-sm-3 kpi-loader">
+          <i class="fa fa-2x fa-spin fa-refresh"></i>
         </div>
       </div>
     </div>
-  </div>
-
-  <div ng-show="isAddingKPI" class="col-xs-2 kpi-loader">
-    <i class="fa fa-2x fa-spin fa-refresh"></i>
   </div>
 </div>

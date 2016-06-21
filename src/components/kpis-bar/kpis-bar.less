@@ -54,26 +54,22 @@
         text-transform: uppercase;
         font-weight: normal;
         font-size: 13px;
+        font-weight: bold;
         &:hover, &:focus {
           text-decoration: none;
         }
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
       }
     }
-  }
-
-  span.menu-gradient-line {
-    display:block;
-    visibility: hidden;
-    border:none;
-    height:1px;
-    background: -webkit-gradient(radial, 0% 50%, 0, 40% 50%, 90, from(#000), to(#fff));
   }
 
   .kpi-loader {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 135px;
+    min-height: @kpi-max-height + 20px;
   }
 }
 
