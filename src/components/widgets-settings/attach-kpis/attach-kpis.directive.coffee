@@ -42,8 +42,9 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
 
         target0 = {}
         target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
-        params.targets = [target0]
 
+        params.targets = {}
+        params.targets[$scope.kpi.watchables[0]] = [target0]
         params.widget_id = $scope.widgetId
 
         # NOTE: When multiple extra param functionality is added, this should be
@@ -52,7 +53,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
           params.extra_params ||= {}
           params.extra_params[param] = paramValues.uid
 
-        ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.kpi.element_watched, params).then(
+        ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.elementWatched, params).then(
           (kpi)->
             $scope.attachedKpis.push(kpi)
             ImpacKpisSvc.show(kpi).then(->
@@ -74,7 +75,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
       # ---
       # NOTE: if multiple targets are to be supported, this should be revised.
       formatAttachedKpiTitle = (kpi)->
-        $scope.kpiFormattedTitles[kpi.id] = ImpacKpisSvc.formatKpiTarget(kpi.targets[0], kpi.data.unit, $scope.possibleTargets)
+        $scope.kpiFormattedTitles[kpi.id] = ImpacKpisSvc.formatKpiTarget(kpi.targets[$scope.elementWatched][0], kpi.data[$scope.elementWatched].unit, $scope.possibleTargets)
 
 
       # On-load
@@ -102,6 +103,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
         # Set default extra param.
         # TODO: support for multiple extra params.
         $scope.selectedParam = _.keys($scope.extraParams)[0]
+        # TODO: support for watchable selection.
+        $scope.elementWatched = $scope.kpi.watchables[0]
       )
 
       # Load Existing KPI's data.

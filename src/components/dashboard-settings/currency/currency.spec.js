@@ -1,7 +1,7 @@
 describe('<> dashboard-setting-currency', function () {
   'use strict';
 
-  var subject, subjectScope, $q, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc;
+  var subject, subjectScope, $q, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacKpisSvc;
 
   var currencies = ['cur1', 'cur2'];
   var mainConfig = {currencies: currencies};
@@ -22,10 +22,11 @@ describe('<> dashboard-setting-currency', function () {
     subject = angular.element('<div dashboard-setting-currency />');
 
     // Inject services called by the directive...
-    inject(function (_$q_, _ImpacMainSvc_, _ImpacDashboardsSvc_, _ImpacWidgetsSvc_) {
+    inject(function (_$q_, _ImpacMainSvc_, _ImpacDashboardsSvc_, _ImpacWidgetsSvc_, _ImpacKpisSvc_) {
       ImpacMainSvc = _ImpacMainSvc_;
       ImpacDashboardsSvc = _ImpacDashboardsSvc_;
       ImpacWidgetsSvc = _ImpacWidgetsSvc_;
+      ImpacKpisSvc = _ImpacKpisSvc_;
       $q = _$q_;
     });
 
@@ -61,7 +62,8 @@ describe('<> dashboard-setting-currency', function () {
     beforeEach(function() {
       spyOn(ImpacDashboardsSvc, 'update').and.returnValue($q.resolve());
       spyOn(ImpacWidgetsSvc, 'massAssignAll').and.stub();
-      
+      spyOn(ImpacKpisSvc, 'massAssignAll').and.stub();
+
       subjectScope = compile();
       subjectScope.currency = 'cur2';
       subjectScope.$digest();
@@ -71,11 +73,11 @@ describe('<> dashboard-setting-currency', function () {
     });
 
     it('updates the current dashboard with a currency', function() {
-      expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(1, {currency: 'cur2'});     
+      expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(1, {currency: 'cur2'});
     });
 
     it('updates the current dashboard\'s widgets with a currency', function() {
-      expect(ImpacWidgetsSvc.massAssignAll).toHaveBeenCalledWith({currency: 'cur2'});     
+      expect(ImpacWidgetsSvc.massAssignAll).toHaveBeenCalledWith({currency: 'cur2'});
     });
   });
 

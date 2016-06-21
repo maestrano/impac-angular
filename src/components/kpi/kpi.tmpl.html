@@ -1,15 +1,15 @@
 <div class="tile kpi" ng-class="{ 'static': kpi.static }">
-  <div class="kpi-content" ng-hide="showKpiLoader">
+  <div class="kpi-content" ng-hide="kpi.isLoading">
     <div class="top-line"></div>
     <div class="kpi-show" ng-hide="showEditSettings">
-      <small class="kpi-title">{{::kpi.name}}</small>
-      <div class="kpi-watch" ng-if="::!kpi.static">({{::kpi.element_watched}})</div>
-      <span class="kpi-value">{{kpi.data.value | mnoCurrency : kpi.data.unit}}</span>
+      <small class="kpi-title">{{kpi.name}}</small>
+      <div class="kpi-watch" ng-if="!kpi.static">({{kpi.element_watched}})</div>
+      <span class="kpi-value">{{getKpiValue() | mnoCurrency : getKpiUnit()}}</span>
 
       <!-- TODO: refactor design to handle multiple targets and ranges -->
-      <div class="kpi-alert" ng-repeat="target in kpi.targets track by $index" ng-hide="editMode || kpi.data.results[$index]">
-        <span ng-show="target.max">over {{target.max | mnoCurrency : kpi.data.unit}}</span>
-        <span ng-show="target.min">below {{target.min | mnoCurrency : kpi.data.unit}}</span>
+      <div class="kpi-alert" ng-repeat="target in getKpiTargets() track by $index" ng-hide="editMode" ng-if="isTriggered()">
+        <span ng-show="target.max">over {{target.max | mnoCurrency : getKpiUnit()}}</span>
+        <span ng-show="target.min">below {{target.min | mnoCurrency : getKpiUnit()}}</span>
       </div>
 
       <div ng-show="editMode">
@@ -29,7 +29,7 @@
           </select>
           <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
             <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-            <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span>
+            <span class="form-control-feedback" aria-hidden="true">{{getKpiUnit()}}</span>
             <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
               <span ng-message="required">KPI target is required</span>
             </div>
@@ -47,7 +47,7 @@
       <button class="btn btn-xs btn-success" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
     </div>
   </div>
-  <div class="col-xs-2 kpi-data-loader loader" ng-show="showKpiLoader">
+  <div class="col-xs-2 kpi-data-loader loader" ng-show="kpi.isLoading">
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
   </div>
 </div>
