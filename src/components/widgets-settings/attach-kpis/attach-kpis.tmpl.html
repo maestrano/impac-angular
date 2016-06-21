@@ -20,7 +20,7 @@
           <select class="pull-left form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" ></select>
         </div>
         <div class="form-group col-xs-5 nopadding nomargin" ng-class="attachKpiForm.limitValue.$valid ? 'has-success' : 'has-error'">
-          <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
+          <input name="limitValue" type="text" class="form-control input-sm attach-target" ng-model="kpi.limit.value" required>
           <!-- TODO: return possible units from API? -->
           <!-- <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span> -->
           <div class="error-messages limit" ng-messages="attachKpiForm.limitValue.$error">

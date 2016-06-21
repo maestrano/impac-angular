@@ -44,7 +44,7 @@
       </form>
 
       <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
-      <button class="btn btn-xs btn-success" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
+      <button class="btn btn-xs btn-warning" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
     </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-show="kpi.isLoading">
