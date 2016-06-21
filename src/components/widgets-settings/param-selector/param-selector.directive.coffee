@@ -11,9 +11,6 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
     $scope.selectedOption = {}
     angular.extend $scope.selectedOption, $scope.selected
   
-  $scope.onChangeOption = ->
-    $scope.selectOption($scope.selectedOption)
-
   $scope.selectOption = (anOption) ->
     if anOption.value != $scope.selected.value
       angular.extend $scope.selected, anOption
