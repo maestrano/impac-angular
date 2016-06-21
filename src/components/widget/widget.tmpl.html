@@ -3,7 +3,7 @@
   <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited() || widget.pdfMode" on-toggle-info-panel="toggleInfoPanel()"/>
 </div>
 
-<div ng-if="widget.pdfMode" class="include-to-pdf hidden-print">
+<div ng-if="widget.pdfMode && !widget.ticked" class="include-to-pdf title">
   <h6>CLICK TO INCLUDE IN PDF</h6>
 </div>
 
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div ng-if="widget.pdfMode" class="hidden-print">
+  <div ng-if="widget.pdfMode" class="include-to-pdf tick">
     <!-- <h6>CLICK TO INCLUDE TO PDF</h6> -->
     <a class="widget-hover" ng-click="tick()">
       <i class="fa fa-check-circle fa-5x" aria-hidden="true" ng-show="widget.ticked"></i>

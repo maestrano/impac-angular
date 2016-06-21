@@ -27,41 +27,46 @@
         display: none;
       }
       .include-to-pdf{
-        background-color: white;
-        padding-top: 10px;
-        border-top: 0;
-        border-right: 1px;
-        border-bottom: 0;
-        border-left: 1px;
-        border-style: solid;
-        border-color: #c8d7d9;
-        box-shadow: 0px 1px 8px -4px;
-        h6 {
-          padding: 10px;
-          background-color: #FFC928;
-          text-align: center;
-          margin: 0;
-        }
-      }
-      .widget-hover {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        padding: 9px;
-        top: 0;
-        right: 0;
-        -webkit-transition: all ease .5s;
-        -moz-transition: all ease .5s;
-        transition: all ease .5s;
-        z-index: 3;
-        i {
+        // background-color: white;
+        // padding-top: 10px;
+
+        &.title {
           position: absolute;
-          top: 35%;
-          left: 46%;
-          font-size: 100px;
+          width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
+          z-index: 3;
+          h6 {
+            padding: 10px;
+            background-color: #FFC928;
+            text-align: center;
+            margin: 0;
+          }
+        }
+        .widget-hover {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          padding: 9px;
+          top: 0;
+          right: 0;
+          -webkit-transition: all ease .5s;
+          -moz-transition: all ease .5s;
+          transition: all ease .5s;
+          z-index: 1;
+        }
+        .widget-hover:hover {
           opacity: .5;
-          z-index: 4;
-          color: black;
+          background: #CCCFD0;
+        }
+        &.tick {
+          i {
+            position: absolute;
+            top: 35%;
+            left: 46%;
+            font-size: 100px;
+            opacity: .5;
+            z-index: 2;
+            color: black;
+          }
         }
       }
       .widget-hover:hover {
