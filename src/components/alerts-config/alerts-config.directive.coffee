@@ -38,15 +38,16 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         alert.active = !alert.active
 
       $scope.translateTarget = (kpi) ->
-        return unless kpi.targets? && kpi.targets.length > 0
+        watchableTargets = kpi.targets[kpi.element_watched] if kpi.targets
+        return unless watchableTargets && watchableTargets.length > 0
         result = []
 
-        if kpi.targets[0].max?
-          result.push("over", kpi.targets[0].max)
-        else if kpi.targets[0].min
-          result.push("below", kpi.targets[0].min)
+        if watchableTargets[0].max?
+          result.push("over", watchableTargets[0].max)
+        else if watchableTargets[0].min
+          result.push("below", watchableTargets[0].min)
 
-        result.push(kpi.data.unit) if kpi.data?
+        result.push(kpi.data[kpi.element_watched].unit) if kpi.data?
 
         return result.join(' ')
 

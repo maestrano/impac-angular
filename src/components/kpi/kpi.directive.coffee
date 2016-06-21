@@ -12,7 +12,6 @@ angular
 
       controller: ($scope) ->
         $scope.showEditSettings = false
-        $scope.showKpiLoader = true
 
         $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
         $scope.possibleExtraParams = []
@@ -36,26 +35,22 @@ angular
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
 
-            $scope.kpi.targets ||= []
-            if !_.isEmpty($scope.kpi.targets[0])
+            if !_.isEmpty $scope.getKpiTargets()
               $scope.kpi.limit = {} if !$scope.kpi.limit?
-              $scope.kpi.limit.mode = _.keys($scope.kpi.targets[0])[0]
-              $scope.kpi.limit.value = _.values($scope.kpi.targets[0])[0]
+              $scope.kpi.limit.mode = _.keys($scope.getKpiTargets()[0])[0]
+              $scope.kpi.limit.value = _.values($scope.getKpiTargets()[0])[0]
             else
               # set default <select> option value, and show edit mode.
               $scope.kpi.limit = { mode: $scope.possibleTargets[0].mode }
               $scope.displayEditSettings()
-
-            $scope.showKpiLoader = false
           )
-        else
-          $scope.showKpiLoader = false
 
         $scope.displayEditSettings = ->
           $scope.showEditSettings = true
 
         $scope.hideEditSettings = ->
           $scope.showEditSettings = false
+          $scope.editMode = false
 
         $scope.hasValidTarget = ->
           ImpacKpisSvc.validateKpiTarget($scope.kpi)
@@ -63,27 +58,44 @@ angular
         $scope.updateSettings = ->
           params = {}
           return unless $scope.hasValidTarget()
-
           target0 = {}
           target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
-          params.targets = [target0]
 
+          params.targets = {}
+          params.targets[$scope.kpi.element_watched] = [target0]
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
           ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
 
-          $scope.hideEditSettings()
+          # smoother update transition
+          $timeout ->
+            $scope.hideEditSettings()
+          , 500
+            
 
         $scope.cancelUpdateSettings = ->
           $scope.deleteKpi() unless $scope.hasValidTarget()
           # smoother delete transition
-          $timeout ()->
+          $timeout ->
             $scope.hideEditSettings()
           , 500
 
         $scope.deleteKpi = ->
           return if $scope.kpi.static
           ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
+
+        $scope.isTriggered = ->
+          $scope.kpi.layout? && $scope.kpi.layout.triggered
+
+        $scope.getKpiUnit = ->
+          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit
+
+        $scope.getKpiValue = ->
+          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].value
+
+        # TODO several watchables?
+        $scope.getKpiTargets = ->
+          $scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]
 
     }
   )
