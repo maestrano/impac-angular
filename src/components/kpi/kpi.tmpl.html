@@ -1,15 +1,14 @@
-<div class="tile kpi" ng-class="{ 'static': kpi.static }">
-  <div class="kpi-content" ng-hide="kpi.isLoading">
+<div class="kpi" ng-class="{ 'static': kpi.static }">
+  <div class="kpi-content" ng-hide="showKpiLoader">
     <div class="top-line"></div>
-    <div class="kpi-show" ng-hide="showEditSettings">
-      <small class="kpi-title">{{kpi.name}}</small>
-      <div class="kpi-watch" ng-if="!kpi.static">({{kpi.element_watched}})</div>
-      <span class="kpi-value">{{getKpiValue() | mnoCurrency : getKpiUnit()}}</span>
+    <div class="kpi-show row nomargin nopadding" ng-hide="showEditSettings">
 
-      <!-- TODO: refactor design to handle multiple targets and ranges -->
-      <div class="kpi-alert" ng-repeat="target in getKpiTargets() track by $index" ng-hide="editMode" ng-if="isTriggered()">
-        <span ng-show="target.max">over {{target.max | mnoCurrency : getKpiUnit()}}</span>
-        <span ng-show="target.min">below {{target.min | mnoCurrency : getKpiUnit()}}</span>
+      <div class="col-md-3 kpi-icon">
+        <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
+      </div>
+      <div class="col-md-9 kpi-text">
+        <span class="caption">{{kpi.layout.text.caption}}</span>
+        <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
       </div>
 
       <div ng-show="editMode">

@@ -1,7 +1,9 @@
 .analytics kpis-bar > .kpis {
-  padding: 10px 0px;
+  padding: 15px;
   min-height: 145px;
   overflow: hidden;
+  background-color: @kpis-bar-background-color;
+  box-shadow: @kpis-bar-box-shadow;
 
   .available-kpis-container {
     text-align: left;
@@ -38,10 +40,33 @@
   }
 
   .title-actions {
+    margin: 7px 0 0 0;
+    padding: 0;
     .title {
-      margin-top: 10px;
-      font-weight: 700;
+      margin-left: 10px;
+      padding: 1px 0;
+      &:hover {
+        .menu-gradient-line {
+          visibility: visible;
+        }
+      }
+      a {
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 13px;
+        &:hover, &:focus {
+          text-decoration: none;
+        }
+      }
     }
+  }
+
+  span.menu-gradient-line {
+    display:block;
+    visibility: hidden;
+    border:none;
+    height:1px;
+    background: -webkit-gradient(radial, 0% 50%, 0, 40% 50%, 90, from(#000), to(#fff));
   }
 
   .kpi-loader {

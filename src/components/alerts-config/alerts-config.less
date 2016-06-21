@@ -1,3 +1,4 @@
+// Selector styles
 .alerts-config {
   border-radius: 10px;
   width: 21px;
@@ -7,4 +8,36 @@
   border: solid 1px @mblue;
 
   &:hover { cursor: pointer; }
+}
+
+// Modal kpis alerts settings
+.kpi-alerts-settings {
+  .modal-header { font-size: 20px; }
+
+  .modal-body {
+    line-height: 2;
+
+    ul { margin-top: 10px; }
+
+    ul > li.list-group-item {
+      list-style: none;
+      padding: 6px 15px;
+      color: @impac-widget-text-color-medium;
+      user-select: none;
+
+      &.active {
+        color: @mblue;
+        font-weight: bold;
+        background-color: transparent;
+        border-color: #c4caca;
+      }
+
+      &:hover { cursor: pointer; }
+    }
+
+    .fa.fa-toggle-on, .fa.fa-toggle-off {
+      font-size: 17px;
+      margin-right: 8px;
+    }
+  }
 }
