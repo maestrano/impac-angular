@@ -104,5 +104,8 @@ angular
         $scope.getKpiTargets = ->
           ($scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]) || []
 
+        $scope.isEditing = ->
+          $scope.kpiEditSettings.isEditing || $scope.editMode
+
     }
   )

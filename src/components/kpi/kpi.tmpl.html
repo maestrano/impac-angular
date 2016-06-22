@@ -1,18 +1,18 @@
-<div class="kpi" ng-class="{ 'static': kpi.static }">
-  <div class="top-line" ng-hide="kpi.isLoading"></div>
+<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !kpi.isLoading) }">
+  <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }" ng-hide="kpi.isLoading"></div>
   <div class="kpi-content" ng-hide="kpi.isLoading">
     <!-- SHOW -->
-    <div class="kpi-show row nomargin nopadding" ng-hide="(kpiEditSettings.isEditing || editMode)">
-      <div class="col-md-3 kpi-icon">
+    <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
+      <div class="col-md-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
         <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
       </div>
-      <div class="col-md-9 kpi-text">
+      <div class="col-md-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
         <span class="caption">{{kpi.layout.text.caption}}</span>
         <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
       </div>
     </div>
     <!-- EDIT -->
-    <div class="kpi-edit" ng-show="(kpiEditSettings.isEditing || editMode)">
+    <div class="kpi-edit" ng-show="isEditing()">
       <div class="kpi-name">
         <h6>{{::kpi.name.toUpperCase()}}</h6>
         <span class="menu-gradient-line"></span>
