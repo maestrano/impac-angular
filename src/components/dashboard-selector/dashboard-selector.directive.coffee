@@ -9,9 +9,7 @@ angular
       onDisplayWidgetSelector: '&'
       onSelectDashboard: '&'
       onChangePdfMode: '&'
-      onSavePdf: '&'
-      onPrintPdf: '&'
-      pdfMode: '=pdfMode'
+      pdfMode: '='
     }
     controller: ($scope) ->
 
@@ -153,7 +151,6 @@ angular
       scope.showDashboardsDropdown = false
       scope.showChangeDashboardNameBox = false
       scope.accessibilityMode = false
-      # scope.pdfMode = false
 
       if !!options.customTmplPath
         customUrl = options.customTmplPath

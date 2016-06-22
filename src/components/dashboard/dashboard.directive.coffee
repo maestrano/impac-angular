@@ -312,16 +312,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         angular.element('#workspace-dashboard').removeClass('pdf-mode')
       $scope.$broadcast('pdfModeChange', $scope.pdfMode)
 
-    $scope.savePdf = () ->
-      console.log 'savePdf'
-      $scope.changePdfMode()
-      ImpacDashboardsSvc.load()
-
-    $scope.printPdf = () ->
-      $window.print()
-      $scope.changePdfMode()
-      # ImpacDashboardsSvc.load()
-
     $scope.triggerUpload = () ->
       fileInput = angular.element("#fileInput")
       fileInput.on('change', (event) ->
