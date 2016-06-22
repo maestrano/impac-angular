@@ -42,7 +42,7 @@ angular
               $scope.kpi.limit.value = _.values($scope.getKpiTargets()[0])[0]
             else
               # set default <select> option value, and show edit mode.
-              $scope.kpi.limit = { mode: $scope.possibleTargets[0].mode }
+              $scope.kpi.limit = { mode: $scope.getTargetMode() }
               $scope.displayEditSettings()
           )
 
@@ -94,11 +94,15 @@ angular
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
-        $scope.getKpiUnit = ->
-          ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || ''
+        $scope.getKpiTargetUnit = ->
+          unit = ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || $scope.getTargetPlaceholder().unit || ''
+          if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
 
-        $scope.getKpiValue = ->
-          ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || ''
+        $scope.getKpiTargetValue = ->
+          $scope.getTargetPlaceholder().value || ''
+
+        $scope.getTargetMode = ->
+          $scope.getTargetPlaceholder().mode || $scope.possibleTargets[0].mode
 
         # TODO several watchables?
         $scope.getKpiTargets = ->
@@ -106,6 +110,10 @@ angular
 
         $scope.isEditing = ->
           $scope.kpiEditSettings.isEditing || $scope.editMode
+
+        $scope.getTargetPlaceholder = ->
+          templ = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint)
+          ((templ? && templ.target_placeholders?) && templ.target_placeholders[$scope.kpi.element_watched]) || {}
 
     }
   )

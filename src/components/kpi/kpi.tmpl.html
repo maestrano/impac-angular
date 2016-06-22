@@ -24,8 +24,8 @@
           <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
           </select>
           <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
-            <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-            <span class="form-control-feedback" aria-hidden="true">{{getKpiUnit()}}</span>
+            <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" placeholder="{{getKpiTargetValue()}}" required>
+            <span class="form-control-feedback" aria-hidden="true">{{getKpiTargetUnit()}}</span>
             <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
               <span ng-message="required">KPI target is required</span>
             </div>

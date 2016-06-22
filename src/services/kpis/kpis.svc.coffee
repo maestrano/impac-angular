@@ -19,6 +19,9 @@ angular
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
+    @getKpiTemplate = (endpoint)->
+      return _.find(_self.getKpisTemplates(), (k)-> k.endpoint == endpoint )
+
     @getAttachableKpis = (widgetEngine) ->
       _self.load().then(->
         _.select(_self.getKpisTemplates(), (kpiTemplate) ->
