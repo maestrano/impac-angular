@@ -14,8 +14,6 @@ angular
       controller: ($scope) ->
         # Load
         # -------------------------
-        $scope.showKpiLoader = true
-
         $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
         $scope.possibleExtraParams = []
         $scope.limit = {}
@@ -48,6 +46,7 @@ angular
               $scope.displayEditSettings()
           )
 
+
         # Linked methods
         # -------------------------
         $scope.displayEditSettings = ->
@@ -76,13 +75,13 @@ angular
           $timeout ->
             $scope.hideEditSettings()
           , 500
-            
+
 
         # Register callback accessible by parent (kpi-bar).
         $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }
 
         $scope.cancelUpdateSettings = ->
-          $scope.deleteKpi() unless $scope.hasValidTarget() || $scope.showKpiLoader
+          $scope.deleteKpi() unless $scope.hasValidTarget() || $scope.kpi.isLoading
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
@@ -96,14 +95,14 @@ angular
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
         $scope.getKpiUnit = ->
-          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit
+          ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || ''
 
         $scope.getKpiValue = ->
-          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].value
+          ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || ''
 
         # TODO several watchables?
         $scope.getKpiTargets = ->
-          $scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]
+          ($scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]) || []
 
     }
   )

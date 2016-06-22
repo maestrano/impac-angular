@@ -206,17 +206,16 @@ angular
                 return false
               else
                 kpiResp = response.data.kpi
-                
                 # Calculation
                 # angular.extend kpi.data, kpiResp.calculation
                 kpi.data = kpiResp.calculation
-                
+
                 # Configuration
                 # When the kpi initial configuration is partial, we update it with what the API has picked by default
                 updatedConfig = kpiResp.configuration || {}
                 missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
                 angular.extend kpi, _.pick(updatedConfig, missingParams)
-                
+
                 # Layout
                 # angular.extend kpi.layout, kpiResp.layout
                 kpi.layout = kpiResp.layout

@@ -1,6 +1,6 @@
 <div class="kpi" ng-class="{ 'static': kpi.static }">
-  <div class="top-line" ng-hide="showKpiLoader"></div>
-  <div class="kpi-content" ng-hide="showKpiLoader">
+  <div class="top-line" ng-hide="kpi.isLoading"></div>
+  <div class="kpi-content" ng-hide="kpi.isLoading">
     <!-- SHOW -->
     <div class="kpi-show row nomargin nopadding" ng-hide="(kpiEditSettings.isEditing || editMode)">
       <div class="col-md-3 kpi-icon">
