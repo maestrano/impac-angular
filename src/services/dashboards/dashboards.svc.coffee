@@ -34,6 +34,19 @@ angular
     @widgetAdded = ->
       return _self.callbacks.widgetAdded.promise
 
+    @callbacks.pdfModeEnabled = $q.defer()
+    @pdfModeEnabled = ->
+      return _self.callbacks.pdfModeEnabled.promise
+    @callbacks.pdfModeCanceled = $q.defer()
+    @pdfModeCanceled = ->
+      return _self.callbacks.pdfModeCanceled.promise
+
+    @togglePdfMode = (enabled) ->
+      if enabled
+        _self.callbacks.pdfModeEnabled.notify()
+      else
+        _self.callbacks.pdfModeCanceled.notify()
+
 
     #====================================
     # Context helpers (return booleans: can be called but can't be bound!)

@@ -8,7 +8,6 @@ angular
       isWidgetSelectorShown: '&'
       onDisplayWidgetSelector: '&'
       onSelectDashboard: '&'
-      onChangePdfMode: '&'
       pdfMode: '='
     }
     controller: ($scope) ->

@@ -49,7 +49,7 @@
 
     <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
 
-    <div dashboard-settings-pdf-mode on-enable="onChangePdfMode()" on-cancel="onChangePdfMode()" />
+    <div dashboard-settings-pdf-mode />
 
     <button ng-if="isDeleteDhbEnabled" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
   </div>

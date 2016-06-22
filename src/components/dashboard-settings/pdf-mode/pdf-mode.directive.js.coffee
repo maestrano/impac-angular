@@ -1,12 +1,9 @@
 module = angular.module('impac.components.dashboard-settings.pdf-mode',[])
 
-module.directive('dashboardSettingsPdfMode', ($templateCache, $window) ->
+module.directive('dashboardSettingsPdfMode', ($templateCache, $window, ImpacDashboardsSvc) ->
   return {
     restrict: 'A',
-    scope: {
-      onEnable: '&'
-      onCancel: '&'
-    },
+    scope: {},
     template: $templateCache.get('dashboard-settings/pdf-mode.tmpl.html'),
     
     link: (scope, element, attrs) ->
@@ -14,10 +11,7 @@ module.directive('dashboardSettingsPdfMode', ($templateCache, $window) ->
 
       scope.toggle = ->
         scope.pdfMode = !scope.pdfMode
-        if scope.pdfMode
-          scope.onEnable()
-        else
-          scope.onCancel()
+        ImpacDashboardsSvc.togglePdfMode(scope.pdfMode)
 
       scope.print = ->
         $window.print()

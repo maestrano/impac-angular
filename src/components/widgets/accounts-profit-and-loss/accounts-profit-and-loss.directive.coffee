@@ -164,26 +164,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
 
-  pdfModeHandler = ->
-    if w.pdfMode
-      $scope.beforePdfMode = {
-        # unCollapsed: angular.copy($scope.unCollapsed)
-        isExpanded: $scope.isExpanded
-      }
-      # angular.forEach w.content.summary, (element) ->
-      #   unless _.find($scope.unCollapsed, ((name) -> element.name == name))
-      #     $scope.unCollapsed.push(element.name)
-      if !w.isExpanded()
-        w.toggleExpanded(false)
-    else
-      # $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
-      if w.isExpanded() != $scope.beforePdfMode.isExpanded
-        w.toggleExpanded(false)
-
-  $scope.$on('pdfModeChange', (event) ->
-    pdfModeHandler() unless w.isLoading
-  )
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
