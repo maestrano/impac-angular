@@ -60,7 +60,8 @@ angular
 
         $scope.updateSettings = ->
           params = {}
-          return $scope.cancelUpdateSettings() unless $scope.hasValidTarget()
+          touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]).$dirty
+          return $scope.cancelUpdateSettings() unless touched && $scope.hasValidTarget()
 
           target0 = {}
           target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
@@ -70,12 +71,11 @@ angular
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
           ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
-
+          form.$setPristine()
           # smoother update transition
           $timeout ->
             $scope.hideEditSettings()
           , 500
-
 
         # Register callback accessible by parent (kpi-bar).
         $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }

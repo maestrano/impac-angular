@@ -146,8 +146,8 @@ angular
     #                         'over', mode: 'min'}]
     @formatKpiTarget = (target, unit, mappings=[])->
       targetMode = _.keys(target)[0]
-      label = _.find(mappings, (map)-> map.mode == targetMode ).label
-      "#{label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
+      mapping = _.find(mappings, (map)-> map.mode == targetMode )
+      "#{mapping.label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
 
     @updateKpisOrder = (kpisIds) ->
       dashboardId = _self.getCurrentDashboard().id

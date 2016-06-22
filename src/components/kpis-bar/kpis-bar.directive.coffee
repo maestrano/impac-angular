@@ -90,6 +90,7 @@ angular
             # skips kpis that don't exist
             continue unless _.find($scope.kpis, (kpi)-> kpi.id == parseInt(id))
             data.callback() if data && data.callback && (data.isEditing || force)
+          return
 
     }
   )
