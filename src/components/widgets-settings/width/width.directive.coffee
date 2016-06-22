@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWidgetsSvc) ->
+module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
 
@@ -58,6 +58,16 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
     else
       newWidth = $scope.min
     return { width: parseInt(newWidth) }
+
+  ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+    $scope.initiallyExpanded = $scope.expanded
+    # Expand the widget if it's not already the case
+    w.toggleExpanded(false) unless $scope.expanded
+  )
+  ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+    # Reduce the widget if it wasn't expanded initially
+    w.toggleExpanded(false) unless $scope.initiallyExpanded
+  )
 
   w.settings.push(setting)
 

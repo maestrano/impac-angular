@@ -74,8 +74,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         $scope.isLoading=false
     )
 
-    $scope.pdfMode = false
-
     $scope.activateTimer = ->
       $scope.isLoading ||= true
       # The dashboard will load 100ms per widget before being displayed
@@ -304,24 +302,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
 
-    $scope.changePdfMode = () ->
-      $scope.pdfMode = !$scope.pdfMode
-      if $scope.pdfMode
-        angular.element('#workspace-dashboard').addClass('pdf-mode')
-      else
-        angular.element('#workspace-dashboard').removeClass('pdf-mode')
-      $scope.$broadcast('pdfModeChange', $scope.pdfMode)
-
-    $scope.savePdf = () ->
-      console.log 'savePdf'
-      $scope.changePdfMode()
-      ImpacDashboardsSvc.load()
-
-    $scope.printPdf = () ->
-      $window.print()
-      $scope.changePdfMode()
-      # ImpacDashboardsSvc.load()
-
     $scope.triggerUpload = () ->
       fileInput = angular.element("#fileInput")
       fileInput.on('change', (event) ->
@@ -443,7 +423,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
 )
 
-module.directive('impacDashboard', ($templateCache) ->
+module.directive('impacDashboard', ($templateCache, ImpacDashboardsSvc) ->
   return {
       restrict: 'EA',
       scope: {
@@ -451,5 +431,16 @@ module.directive('impacDashboard', ($templateCache) ->
       },
       template: $templateCache.get('dashboard/dashboard.tmpl.html'),
       controller: 'ImpacDashboardCtrl'
+      
+      link: (scope, element) ->
+        scope.pdfMode = false
+        ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+          scope.pdfMode = true
+          element.addClass('pdf-mode')
+        )
+        ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+          scope.pdfMode = false
+          element.removeClass('pdf-mode')
+        )
     }
 )

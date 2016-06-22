@@ -48,16 +48,10 @@
     <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> Add Widget</button>
 
     <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
-    <!-- <button id='data-upload-wizard' ng-click='dhbCtrl.openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
-    <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onChangePdfMode()" class='btn btn-success' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-print'></span> Print pdf</button>
+
+    <div dashboard-settings-pdf-mode />
 
     <button ng-if="isDeleteDhbEnabled" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
-
-    <div ng-if="pdfMode">
-      <button ng-click="onChangePdfMode()" class='btn btn-default'>Cancel</button>
-      <button ng-click="onSavePdf()" class='btn btn-default'>Save</button>
-      <button ng-click="onPrintPdf()" class='btn btn-default'>Print</button>
-    </div>
   </div>
 
 </div>

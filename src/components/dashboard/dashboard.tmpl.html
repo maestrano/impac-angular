@@ -19,7 +19,7 @@
     <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis" ng-hide="pdfMode"></kpis-bar>
 
     <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" class="hidden-print" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" on-change-pdf-mode="changePdfMode()" on-save-pdf="savePdf()" on-print-pdf="printPdf()" pdf-mode="pdfMode"></dashboard-selector>
+    <dashboard-selector id="module__dashboard-selector" class="hidden-print" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
   </div>
 
   <div id="sub-menu" collapse="!showSubMenu">
@@ -87,7 +87,7 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right"  ng-hide="pdfMode">
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right" ng-hide="pdfMode">
     <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
     <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
@@ -163,7 +163,7 @@
     <div class="col-md-12">
       <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">
         <!-- Widgets -->
-        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="{'hidden-print': !widget.ticked, '{{widget.getColClass()}}': true }" on-display-alerts="displaySubMenu()" />
+        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getCssClasses()" on-display-alerts="displaySubMenu()" />
         <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
         <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
           <div class="col-md-6 widget-item add-chart">

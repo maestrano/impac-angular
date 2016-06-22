@@ -1,0 +1,14 @@
+<div class="dashboard-settings pdf-mode">
+  <div ng-hide="pdfMode">
+    <button ng-click="toggle()" class='btn btn-success'>
+      <span class='fa fa-print' />
+    </button>
+  </div>
+
+  <div ng-show="pdfMode">
+    <button ng-click="print()" class='btn btn-success'>
+      <span class='fa fa-print' /> Print
+    </button>
+    <button ng-click="toggle()" class='btn btn-default'>Cancel</button>
+  </div>
+</div>
