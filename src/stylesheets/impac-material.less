@@ -130,30 +130,6 @@
     }
   }
 
-  .im-form-help {
-    margin-top: @im-spacer;
-    margin-left: @im-spacer;
-    color: @im-label-color;
-    font-size: @im-active-font-size;
-
-    .im-checkbox &,
-    .im-form-radio &,
-    .im-form-group & {
-      position: absolute;
-      width: 100%;
-    }
-
-    .im-checkbox & {
-      position: relative;
-      margin-bottom: @im-font-size;
-    }
-
-    .im-form-radio & {
-      padding-top: (@im-spacer * 2);
-      margin-top: -@im-font-size;
-    }
-  }
-
   .im-form-group {
     input {
       height: (@im-font-size * 1.9);
@@ -413,10 +389,20 @@
     margin-top: @im-font-size;
   }
 
+  // Add class onto ng-messages div
+  .im-messages {
+    font-size: @im-font-size / 1.2;
+    color: @im-error-color;
+    overflow: hidden;
+    transition: all @im-transition-speed cubic-bezier(.55,0,.55,.2);
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 5px;
+  }
+
   .has-error {
     .legend.legend,
     &.im-form-group .im-control-label.im-control-label {
-      // Prevent !importantRule
       color: @im-error-color;
     }
 
@@ -424,9 +410,10 @@
     &.im-checkbox,
     &.im-radio,
     &.im-form-radio {
-      .im-form-help,
+      .im-messages,
       .im-helper {
         color: @im-error-color;
+        opacity: 1;
       }
     }
 
