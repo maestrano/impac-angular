@@ -47,6 +47,12 @@ angular
       else
         _self.callbacks.pdfModeCanceled.notify()
 
+    @callbacks.ticked = $q.defer()
+    @ticked = ->
+      return _self.callbacks.ticked.promise
+    @tick = ->
+      _self.callbacks.ticked.notify()
+
 
     #====================================
     # Context helpers (return booleans: can be called but can't be bound!)

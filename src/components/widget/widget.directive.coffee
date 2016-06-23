@@ -48,7 +48,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
 
   w.getCssClasses = ->
     classes = [$scope.getColClass()]
-    classes.push 'hidden-print' unless $scope.ticked
+    classes.push 'hidden-print' unless w.ticked
     return classes.join(' ')
 
   ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
@@ -57,7 +57,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
       w.initialWidth = w.width
       w.width = 12
     $scope.pdfMode = true
-    $scope.ticked = true unless angular.isDefined($scope.ticked)
+    w.ticked = true unless angular.isDefined(w.ticked)
     $scope.widget.hasEditAbility = false
   )
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
@@ -69,7 +69,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   )
 
   $scope.tick = ->
-    $scope.ticked = !$scope.ticked
+    w.ticked = !w.ticked
+    ImpacDashboardsSvc.tick()
 )
 
 module.directive('impacWidget', ($templateCache) ->

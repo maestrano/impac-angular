@@ -5,9 +5,11 @@ module.directive('dashboardSettingsPdfMode', ($templateCache, $window, ImpacDash
     restrict: 'A',
     scope: {},
     template: $templateCache.get('dashboard-settings/pdf-mode.tmpl.html'),
-    
+
     link: (scope, element, attrs) ->
+      scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
       scope.pdfMode = false
+      scope.allNotTicked = false
 
       scope.toggle = ->
         scope.pdfMode = !scope.pdfMode
@@ -15,6 +17,10 @@ module.directive('dashboardSettingsPdfMode', ($templateCache, $window, ImpacDash
 
       scope.print = ->
         $window.print()
+
+      ImpacDashboardsSvc.ticked().then(null, null, ->
+        scope.allNotTicked = _.all(scope.currentDhb.widgets, { ticked: false })
+      )
 
   }
 )

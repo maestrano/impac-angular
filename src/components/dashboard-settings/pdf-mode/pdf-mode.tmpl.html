@@ -6,7 +6,7 @@
   </div>
 
   <div ng-show="pdfMode">
-    <button ng-click="print()" class='btn btn-success'>
+    <button ng-click="print()" class='btn btn-success' ng-disabled="allNotTicked">
       <span class='fa fa-print' /> Print
     </button>
     <button ng-click="toggle()" class='btn btn-default'>Cancel</button>
