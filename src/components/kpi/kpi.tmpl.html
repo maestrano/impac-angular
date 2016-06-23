@@ -3,10 +3,10 @@
   <div class="kpi-content" ng-hide="kpi.isLoading">
     <!-- SHOW -->
     <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
-      <div class="col-md-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
+      <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
         <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
       </div>
-      <div class="col-md-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
+      <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
         <span class="caption">{{kpi.layout.text.caption}}</span>
         <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
       </div>
