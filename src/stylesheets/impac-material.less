@@ -1,0 +1,497 @@
+/* ************************************************************************ */
+/*                                IMPAC MATERIAL
+/*                  ------------------------------------------
+** Mixin material styled form inputs, overriding bootstrap's ungodly round-ness.
+/* ************************************************************************ */
+
+/* DEMO HTML - use this html to test all impac material features.
+<form>
+  <div class="im-form-group">
+    <select>
+      <option>Value 1</option>
+      <option>Value 2</option>
+    </select>
+    <label for="select" class="im-control-label">Selectbox</label><i class="im-bar"></i>
+  </div>
+  <div class="im-form-group">
+    <input type="text" required="required"/>
+    <label for="input" class="im-control-label">Textfield</label><i class="im-bar"></i>
+  </div>
+  <div class="im-form-group">
+    <textarea required="required"></textarea>
+    <label for="textarea" class="im-control-label">Textarea</label><i class="im-bar"></i>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox" checked="checked"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-form-radio">
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio" checked="checked"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+</form>
+*/
+
+@body-bg: #fff;
+
+// Shadows
+@shadow-inset: inset 0 2px 2px 0 rgba(0,0,0,.14);
+@shadow-0: 0 0 1px rgba(0, 0, 0, 0);
+@shadow-2: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+@shadow-3: 0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.2),0 1px 8px 0 rgba(0,0,0,.12);
+@shadow-4: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+@shadow-6: 0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12),0 3px 5px -1px rgba(0,0,0,.2);
+@shadow-8: 0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12),0 5px 5px -3px rgba(0,0,0,.2);
+
+// Font Sizes
+@im-font-size: 1.25rem;
+@im-active-font-size: @im-font-size * 0.8;
+@im-active-top: -@im-font-size;
+
+// Margin & Paddings
+@im-gap: @im-font-size * .9;
+@im-spacer: @im-font-size / 8;
+@im-fieldset-margin: 0 0 @im-gap * 2;
+@im-checkbox-gap: @im-font-size * 2;
+@im-checkbox-top: 0;
+@im-radio-margin: @im-font-size / -4;
+
+// Colors
+@im-border-color: #999;
+@im-label-color: lighten(@im-border-color, 10%);
+@im-active-color: darken(@im-border-color, 10%);
+
+// Animation
+@im-transition-speed: 0.28s;
+
+.material-inputs (@im-input-color: #333, @im-focus-color: #337ab7, @im-error-color: #d9534f) {
+  /* Flatten der Bootstrap */
+  .well, .navbar-inner, .popover, .btn, .tooltip, input, select, textarea, pre, .progress, .modal, .add-on, .alert, .table-bordered, .nav>.active>a, .dropdown-menu, .tooltip-inner, .badge, .label, .img-polaroid {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    border-collapse: collapse !important;
+    background-image: none !important;
+  }
+
+  body,
+  input,
+  select,
+  textarea {
+    box-sizing: border-box;
+
+    &::after,
+    &::before {
+      box-sizing: border-box;
+    }
+  }
+
+  // The Styles for the form
+  fieldset {
+    margin: @im-fieldset-margin;
+    padding: 0;
+    border: none;
+  }
+
+  .im-form-radio,
+  .im-form-group {
+    position: relative;
+    margin-top: (@im-gap * 1.5);
+    margin-bottom: (@im-gap * 1.5);
+  }
+
+  .im-form-inline {
+    > .im-form-group,
+    > .btn {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  }
+
+  .im-form-help {
+    margin-top: @im-spacer;
+    margin-left: @im-spacer;
+    color: @im-label-color;
+    font-size: @im-active-font-size;
+
+    .im-checkbox &,
+    .im-form-radio &,
+    .im-form-group & {
+      position: absolute;
+      width: 100%;
+    }
+
+    .im-checkbox & {
+      position: relative;
+      margin-bottom: @im-font-size;
+    }
+
+    .im-form-radio & {
+      padding-top: (@im-spacer * 2);
+      margin-top: -@im-font-size;
+    }
+  }
+
+  .im-form-group {
+    input {
+      height: (@im-font-size * 1.9);
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    select {
+      width: 100%;
+      font-size: @im-font-size;
+      height: (@im-font-size * 1.6);
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      background: none;
+      border: none;
+      line-height: 1.6;
+      box-shadow: none;
+    }
+
+    .im-control-label {
+      position: absolute;
+      top: (@im-font-size / 4);
+      pointer-events: none;
+      padding-left: @im-spacer;
+      z-index: 1;
+      color: @im-label-color;
+      font-size: @im-font-size;
+      font-weight: normal;
+      transition: all @im-transition-speed ease;
+    }
+
+    .im-bar {
+      position: relative;
+      border-bottom: (@im-font-size / 16) solid @im-border-color;
+      display: block;
+
+      &::before {
+        content: '';
+        height: (@im-font-size / 8);
+        width: 0;
+        left: 50%;
+        bottom: (@im-font-size / -16);
+        position: absolute;
+        background: @im-focus-color;
+        transition: left @im-transition-speed ease, width @im-transition-speed ease;
+        z-index: 2;
+      }
+    }
+
+    input,
+    textarea {
+      display: block;
+      background: none;
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      font-size: @im-font-size;
+      border-width: 0;
+      border-color: transparent;
+      line-height: 1.9;
+      width: 100%;
+      color: transparent;
+      transition: all @im-transition-speed ease;
+      box-shadow: none;
+    }
+
+    input[type="file"] {
+      line-height: 1;
+
+      ~ .im-bar {
+        display: none;
+      }
+    }
+
+    select,
+    input:focus,
+    input:valid,
+    input.form-file,
+    input.has-value,
+    textarea:focus,
+    textarea:valid,
+    textarea.form-file,
+    textarea.has-value {
+      color: @im-input-color;
+
+      ~ .im-control-label {
+        font-size: @im-active-font-size;
+        color: @im-active-color;
+        top: @im-active-top;
+        left: 0;
+      }
+    }
+
+    select,
+    input,
+    textarea {
+      &:focus {
+        outline: none;
+
+        ~ .im-control-label {
+          color: @im-focus-color;
+        }
+
+        ~ .im-bar {
+          &::before {
+            width: 100%;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Radio & Checkbox
+  .im-checkbox,
+  .im-form-radio {
+    label {
+      position: relative;
+      cursor: pointer;
+      padding-left: @im-checkbox-gap;
+      text-align: left;
+      color: @im-input-color;
+      display: block;
+    }
+
+    input {
+      width: auto;
+      opacity: 0.00000001;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  .im-radio {
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      position: absolute;
+      top: @im-radio-margin;
+      left: @im-radio-margin;
+      cursor: pointer;
+      display: block;
+      font-size: @im-font-size;
+      user-select: none;
+      color: @im-border-color;
+
+      // TODO: improve radio transition - ripple effect like angular md would be cool :)
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: (@im-spacer * 2);
+        width: @im-font-size;
+        height: @im-font-size;
+        transition: transform @im-transition-speed ease;
+        border-radius: 50%;
+        border: (@im-font-size / 8) solid currentColor;
+      }
+
+      &::after {
+        transform: scale(0);
+        background-color: @im-focus-color;
+        border-color: @im-focus-color;
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        &::after {
+            transform: scale(0.5);
+        }
+        &::before {
+          color: @im-focus-color;
+        }
+      }
+    }
+  }
+
+  .im-checkbox {
+    margin-top: (@im-gap * 2);
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      color: @im-border-color;
+      position: absolute;
+      top: @im-checkbox-top;
+      left: 0;
+      width: @im-font-size;
+      height: @im-font-size;
+      z-index: 0;
+      border: (@im-font-size / 8) solid currentColor;
+      border-radius: (@im-font-size / 16);
+      transition: border-color @im-transition-speed ease;
+
+      &::before,
+      &::after {
+        position: absolute;
+        height: 0;
+        width: (@im-font-size * 0.2);
+        background-color: @im-focus-color;
+        display: block;
+        transform-origin: left top;
+        border-radius: (@im-font-size / 4);
+        content: '';
+        transition: opacity @im-transition-speed ease, height 0s linear @im-transition-speed;
+        opacity: 0;
+      }
+
+      &::before {
+        top: (@im-font-size * 0.65);
+        left: (@im-font-size * 0.38);
+        transform: rotate(-135deg);
+        box-shadow: 0 0 0 (@im-font-size / 16) @body-bg;
+      }
+
+      &::after {
+        top: (@im-font-size * 0.3);
+        left: 0;
+        transform: rotate(-45deg);
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        color: @im-focus-color;
+
+        // TODO: improve checked transition.
+        &::after,
+        &::before {
+          opacity: 1;
+          transition: height @im-transition-speed ease;
+        }
+
+        &::after {
+          height: (@im-font-size / 2);
+        }
+
+        &::before {
+          height: (@im-font-size * 1.2);
+          transition-delay: @im-transition-speed;
+        }
+      }
+    }
+  }
+
+  .im-radio + .im-radio,
+  .im-checkbox + .im-checkbox {
+    margin-top: @im-font-size;
+  }
+
+  .has-error {
+    .legend.legend,
+    &.im-form-group .im-control-label.im-control-label {
+      // Prevent !importantRule
+      color: @im-error-color;
+    }
+
+    &.im-form-group,
+    &.im-checkbox,
+    &.im-radio,
+    &.im-form-radio {
+      .im-form-help,
+      .im-helper {
+        color: @im-error-color;
+      }
+    }
+
+    .im-bar {
+      &::before {
+        background: @im-error-color;
+        left: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  // TODO: build im-buttons!
+  .im-button {
+    position: relative;
+    background: currentColor;
+    border: 1px solid currentColor;
+    font-size: (@im-font-size * 1.1);
+    color: lighten(@im-focus-color, 10%);
+    margin:( @im-gap * 2) 0;
+    padding: (@im-gap / 2) (@im-gap * 2);
+    cursor: pointer;
+    transition: background-color @im-transition-speed ease, color @im-transition-speed ease, box-shadow @im-transition-speed ease;
+    overflow: hidden;
+    box-shadow: @shadow-2;
+
+    span {
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      background: darken(@im-focus-color, 40%);
+      border: 50vh solid darken(@im-focus-color, 20%);
+      width: 30vh;
+      height: 30vh;
+      border-radius: 50%;
+      display: block;
+      top: 50%;
+      left: 50%;
+      z-index: 0;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    &:hover {
+      color: @im-focus-color;
+      box-shadow: @shadow-6;
+    }
+
+    &:active,
+    &:focus {
+      &::before {
+        transition: transform (@im-transition-speed * 4) ease, opacity @im-transition-speed ease (@im-transition-speed * 1.3);
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+}

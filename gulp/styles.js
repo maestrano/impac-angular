@@ -46,6 +46,7 @@ gulp.task('styles-concat', function () {
   return gulp.src([
       path.join(conf.paths.src, '/stylesheets/variables.less'),
       path.join(conf.paths.src, '/stylesheets/mixins.less'),
+      path.join(conf.paths.src, '/stylesheets/impac-material.less'),
       path.join(conf.paths.src, '/stylesheets/globals.less'),
       path.join(conf.paths.src, '/stylesheets/widget-master-styles.less'),
       path.join(conf.paths.src, '/components/**/*.less')
