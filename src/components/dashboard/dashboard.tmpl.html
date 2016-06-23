@@ -19,7 +19,7 @@
     <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis" ng-hide="pdfMode"></kpis-bar>
 
     <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" class="hidden-print" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
+    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
   </div>
 
   <div id="sub-menu" collapse="!showSubMenu">

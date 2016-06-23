@@ -14,7 +14,7 @@
         {{currentDhb.full_name}}
       </h1>
 
-      <div ng-show="showDashboardsDropdown" class='dashboard-select'>
+      <div ng-show="showDashboardsDropdown" class='dashboard-select hidden-print'>
         <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
           <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
           <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
@@ -40,7 +40,7 @@
     <i class="fa fa-spinner fa-pulse fa-4x loading-spinner"/>
   </div>
 
-  <div class='col-md-6 actions-panel'>
+  <div class='col-md-6 actions-panel hidden-print'>
 
     <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector" ng-hide="pdfMode"><span class='fa fa-wheelchair'></span></button>
 
