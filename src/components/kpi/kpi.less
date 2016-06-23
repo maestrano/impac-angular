@@ -5,10 +5,14 @@ impac-kpi .kpi {
   background-color: @kpi-background-color;
   margin: 10px 0 10px 0;
   border-bottom: 1px solid @kpi-background-color;
-  .transition(border .2s ease-in);
+  transition: all .2s ease-in;
 
   &.triggered {
     border-bottom: @kpi-triggered-border-bottom;
+  }
+
+  &.editing {
+    min-height: @kpi-max-height + 60px;
   }
 
   &:hover { cursor: default; }
@@ -41,12 +45,15 @@ impac-kpi .kpi {
     margin-bottom: 5px;
     background-color: @kpi-top-line-background-color;
     &.triggered { background-color: @kpi-top-line-triggered-background-color; }
-    .transition(background .2s ease-in);
+    transition: background .2s ease-in;
   }
 
   .kpi-content {
     max-height: @kpi-max-height - 5px;
-    .scrollable();
+    &.editing {
+      min-height: @kpi-max-height + 50px;
+      .scrollable();
+    }
   }
 
   .kpi-show {
@@ -57,7 +64,7 @@ impac-kpi .kpi {
       & > span { display: block; }
       padding: 7px 0;
       color: @kpi-text-color;
-      .transition(color .2s ease-in);
+      transition: color .2s ease-in;
       &.triggered { color: @kpi-text-triggered-color; }
 
       .caption {
@@ -70,7 +77,7 @@ impac-kpi .kpi {
       font-size: 16px;
       padding: 10px 0px;
       color: @kpi-icon-color;
-      .transition(color .2s ease-in);
+      transition: color .2s ease-in;
       &.triggered { color: @kpi-icon-triggered-color; }
     }
   }

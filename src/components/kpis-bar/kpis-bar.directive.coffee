@@ -79,14 +79,6 @@ angular
         $scope.isEditing = ->
           $scope.showEditMode || kpiIsEditing()
 
-        # Clears the column of the last non editting kpi to create a full new column
-        # for editing KPIs with a larger height without distorting the grid.
-        $scope.applyClearfix = (index, kpi)->
-          return unless kpi && (nKpi = $scope.kpis[index+1])
-          current = $scope.kpisEditSettings[kpi.id]
-          next = $scope.kpisEditSettings[nKpi.id]
-          current && next && !current.isEditing && next.isEditing
-
         # Private methods
         # -------------------------
         kpiIsEditing = ->
