@@ -64,8 +64,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
 
-    pdfModeHandler() if w.pdfMode
-
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
 

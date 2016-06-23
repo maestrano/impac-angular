@@ -34,8 +34,6 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
         o.value == w.content.filter
       ) || $scope.filterOptions[0])
 
-    pdfModeHandler() if w.pdfMode
-
   $scope.getAnalysis = ->
     if $scope.isDataFound
       if w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50
@@ -63,21 +61,6 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
         max = Math.max(max, range.percentage)
 
       return maxRange
-
-  pdfModeHandler = ->
-    if w.pdfMode
-      $scope.beforePdfMode = {
-        isExpanded: $scope.isExpanded
-      }
-      if !w.isExpanded()
-        w.toggleExpanded(false)
-    else
-      if w.isExpanded() != $scope.beforePdfMode.isExpanded
-        w.toggleExpanded(false)
-
-  $scope.$on('pdfModeChange', (event) ->
-    pdfModeHandler() unless w.isLoading
-  )
 
   # Chart formating function
   # --------------------------------------

@@ -93,8 +93,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-    pdfModeHandler() if w.pdfMode
-
   $scope.isSelected = (element) ->
     if element? && $scope.selectedElements?
       if _.find($scope.selectedElements, (sElem) ->
@@ -129,31 +127,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
-
-  pdfModeHandler = ->
-    if w.pdfMode
-      $scope.beforePdfMode = {
-        unCollapsed: angular.copy($scope.unCollapsed)
-        isExpanded: $scope.isExpanded
-      }
-
-      element = w.content.payables
-      unless _.find($scope.unCollapsed, ((name) -> element.name == name))
-        $scope.unCollapsed.push(element.name)
-      element = w.content.receivables
-      unless _.find($scope.unCollapsed, ((name) -> element.name == name))
-        $scope.unCollapsed.push(element.name)
-
-      if !w.isExpanded()
-        w.toggleExpanded(false)
-    else
-      $scope.unCollapsed = $scope.beforePdfMode.unCollapsed
-      if w.isExpanded() != $scope.beforePdfMode.isExpanded
-        w.toggleExpanded(false)
-
-  $scope.$on('pdfModeChange', (event) ->
-    pdfModeHandler() unless w.isLoading
-  )
 
   # Chart formating function
   # --------------------------------------
