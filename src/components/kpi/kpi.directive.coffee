@@ -7,12 +7,13 @@ angular
         onDelete: '&'
         kpi: '='
         editMode: '='
+        kpiEditSettings: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
       controller: ($scope) ->
-        $scope.showEditSettings = false
-
+        # Load
+        # -------------------------
         $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
         $scope.possibleExtraParams = []
         $scope.limit = {}
@@ -41,23 +42,27 @@ angular
               $scope.kpi.limit.value = _.values($scope.getKpiTargets()[0])[0]
             else
               # set default <select> option value, and show edit mode.
-              $scope.kpi.limit = { mode: $scope.possibleTargets[0].mode }
+              $scope.kpi.limit = { mode: $scope.getTargetMode() }
               $scope.displayEditSettings()
           )
 
+
+        # Linked methods
+        # -------------------------
         $scope.displayEditSettings = ->
-          $scope.showEditSettings = true
+          $scope.kpiEditSettings.isEditing = true
 
         $scope.hideEditSettings = ->
-          $scope.showEditSettings = false
-          $scope.editMode = false
+          $scope.kpiEditSettings.isEditing = false
 
         $scope.hasValidTarget = ->
           ImpacKpisSvc.validateKpiTarget($scope.kpi)
 
         $scope.updateSettings = ->
           params = {}
-          return unless $scope.hasValidTarget()
+          touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]).$dirty
+          return $scope.cancelUpdateSettings() unless touched && $scope.hasValidTarget()
+
           target0 = {}
           target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
 
@@ -66,15 +71,17 @@ angular
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
           ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
-
+          form.$setPristine()
           # smoother update transition
           $timeout ->
             $scope.hideEditSettings()
           , 500
-            
+
+        # Register callback accessible by parent (kpi-bar).
+        $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }
 
         $scope.cancelUpdateSettings = ->
-          $scope.deleteKpi() unless $scope.hasValidTarget()
+          $scope.deleteKpi() unless $scope.hasValidTarget() || $scope.kpi.isLoading
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
@@ -87,15 +94,26 @@ angular
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
-        $scope.getKpiUnit = ->
-          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit
+        $scope.getKpiTargetUnit = ->
+          unit = ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || $scope.getTargetPlaceholder().unit || ''
+          if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
 
-        $scope.getKpiValue = ->
-          $scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].value
+        $scope.getKpiTargetValue = ->
+          $scope.getTargetPlaceholder().value || ''
+
+        $scope.getTargetMode = ->
+          $scope.getTargetPlaceholder().mode || $scope.possibleTargets[0].mode
 
         # TODO several watchables?
         $scope.getKpiTargets = ->
-          $scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]
+          ($scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]) || []
+
+        $scope.isEditing = ->
+          $scope.kpiEditSettings.isEditing || $scope.editMode
+
+        $scope.getTargetPlaceholder = ->
+          templ = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint)
+          ((templ? && templ.target_placeholders?) && templ.target_placeholders[$scope.kpi.element_watched]) || {}
 
     }
   )

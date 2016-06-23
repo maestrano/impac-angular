@@ -9,9 +9,15 @@ angular
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
       controller: ($scope, $timeout, $log) ->
+        # Load
+        # -------------------------
         $scope.hideAvailableKpis = true
         $scope.showKpisExpanded = false
+        # All kpis edit panels are shown
         $scope.showEditMode = false
+        # Children kpis register data onto this hash by kpi.id so this directive can manage kpi
+        # mandatory target selection without showing all edit views.
+        $scope.kpisEditSettings = {}
         $scope.isAddingKPI = false
 
         # references to services (bound objects shared between all controllers)
@@ -45,6 +51,8 @@ angular
           helper: 'clone'
         }
 
+        # Linked methods
+        # -------------------------
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
 
@@ -62,6 +70,27 @@ angular
         $scope.removeKpi = (kpiId) -> _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
 
         $scope.toggleEditMode = ->
-          $scope.showEditMode = !$scope.showEditMode
+          if (kpiIsEditing() && !$scope.showEditMode)
+            updateKpis()
+          else
+            updateKpis(f) if (f = $scope.showEditMode)
+            $scope.showEditMode = !$scope.showEditMode
+
+        $scope.isEditing = ->
+          $scope.showEditMode || kpiIsEditing()
+
+        # Private methods
+        # -------------------------
+        kpiIsEditing = ->
+          _.includes(_.map($scope.kpisEditSettings, (data, id)-> data.isEditing), true)
+
+        # Update or cancel the kpi.
+        updateKpis = (force)->
+          for id, data of $scope.kpisEditSettings
+            # skips kpis that don't exist
+            continue unless _.find($scope.kpis, (kpi)-> kpi.id == parseInt(id))
+            data.callback() if data && data.callback && (data.isEditing || force)
+          return
+
     }
   )

@@ -1,11 +1,15 @@
 impac-kpi .kpi {
-  .scrollable();
-  text-align: center;
-  max-width: 160px;
-  min-height: 135px;
-  // padding: 10px 3px;
-  border-radius: 3px;
-  box-shadow: 0px 4px 12px -7px #17262d;
+  max-width: 220px;
+  min-height: @kpi-max-height;
+  max-height: @kpi-max-height;
+  background-color: @kpi-background-color;
+  margin: 10px 0 10px 0;
+  border-bottom: 1px solid @kpi-background-color;
+  .transition(border .2s ease-in);
+
+  &.triggered {
+    border-bottom: @kpi-triggered-border-bottom;
+  }
 
   &:hover { cursor: default; }
 
@@ -21,12 +25,10 @@ impac-kpi .kpi {
     width: 100%;
     position: relative;
     cursor: move;
-    background-color: white;
     padding: 9px 9px 0px 12px;
-    border-radius: 5px 5px 0px 0px;
     border-bottom: none;
-    min-height: 16px;
-    box-shadow: 0px 1px 8px -4px;
+    min-height: @kpi-top-line-height;
+    box-shadow: @kpi-top-line-box-shadow;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -37,104 +39,58 @@ impac-kpi .kpi {
     -ms-flex-direction: row;
     flex-direction: row;
     margin-bottom: 5px;
+    background-color: @kpi-top-line-background-color;
+    &.triggered { background-color: @kpi-top-line-triggered-background-color; }
+    .transition(background .2s ease-in);
+  }
+
+  .kpi-content {
+    max-height: @kpi-max-height - 5px;
+    .scrollable();
   }
 
   .kpi-show {
     white-space: normal;
+    padding: 10px;
 
-    .kpi-title {
-      .text-uppercase();
-      font-size: 12px;
-      font-weight: 600;
-      color: @impac-widget-text-color-medium;
-      // border-bottom-color: @impac-widget-text-color-medium;
+    .kpi-text {
+      & > span { display: block; }
+      padding: 7px 0;
+      color: @kpi-text-color;
+      .transition(color .2s ease-in);
+      &.triggered { color: @kpi-text-triggered-color; }
 
-      // &:hover {
-      //   color: @impac-widget-text-color;
-      //   border-bottom-color: @impac-widget-text-color;
-      // }
-    }
-
-    .editable-wrap .editable-controls {
-      & > input {
-        width: 65%;
-        height: 25px;
-        line-height: 25px;
-      }
-
-      .editable-buttons {
-        button {
-          margin: 0px 0px 0px 1px;
-          height: 25px;
-          padding: 0px 4px;
-        }
+      .caption {
+        font-size: 11px;
+        padding-bottom: 2px;
       }
     }
 
-    .kpi-watch {
-      font-size: 11px;
-    }
-
-    .kpi-value {
-      position: absolute;
-      top: 75px;
-      left: 0;
-      right: 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .kpi-alert {
-      .text-uppercase();
-      font-size: 11px;
-      font-weight: 700;
-      background-color: white;
-      border: 1px solid @brand-danger;
-      border-radius: 4px;
-      color: @brand-danger;
-      padding: 2px 5px;
-
-      position: absolute;
-      bottom: 15px;
-      left: 15%;
-      width: 70%;
-
-      &.kpi-close {
-        bottom: auto;
-        right: 20px;
-        top: 5px;
-        border-radius: 10px;
-        width: 21px;
-        left: auto;
-        height: 22px;
-        padding-left: 6px;
-        padding-top: 3px;
-      }
-
-      &:hover {
-        color: darken(@brand-danger, 10%);
-        border-color: darken(@brand-danger, 10%);
-        cursor: pointer;
-      }
-
-      &.static {
-        position: static;
-        margin: 5px 20px;
-      }
-    }
-
-    .alerts-config {
-      position: absolute;
-      bottom: auto;
-      left: auto;
-      right: 45px;
-      top: 5px;
+    .kpi-icon {
+      font-size: 16px;
+      padding: 10px 0px;
+      color: @kpi-icon-color;
+      .transition(color .2s ease-in);
+      &.triggered { color: @kpi-icon-triggered-color; }
     }
   }
 
   .kpi-edit {
     .param-name {
       .small();
+    }
+
+    .kpi-name {
+      text-align: center;
+      margin-bottom: 5px;
+      h6 { margin-bottom: 2px; }
+      span.menu-gradient-line {
+        display:block;
+        visibility: visible;
+        border:none;
+        height:1px;
+        background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 80, from(#000), to(#fff));
+      }
     }
 
     .edit-limit {
@@ -172,53 +128,71 @@ impac-kpi .kpi {
 
     .error-messages {
       color: @brand-danger;
-      font-size: 11px;
+      font-size: 10px;
       margin-top: 2px;
       &.limit {
         position: relative;
-        left: -52px;
       }
     }
   }
 
+  // Alert & Delete absolute icons.
+  // TODO: clarify design
+  // ----------
+  .kpi-alert {
+    .text-uppercase();
+    font-size: 11px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid @brand-danger;
+    border-radius: 4px;
+    color: @brand-danger;
+    padding: 2px 5px;
+
+    position: absolute;
+    bottom: 15px;
+    left: 15%;
+    width: 70%;
+
+    &.kpi-close {
+      bottom: auto;
+      right: 20px;
+      top: 5px;
+      border-radius: 10px;
+      width: 21px;
+      left: auto;
+      height: 22px;
+      padding-left: 6px;
+      padding-top: 3px;
+    }
+
+    &:hover {
+      color: darken(@brand-danger, 10%);
+      border-color: darken(@brand-danger, 10%);
+      cursor: pointer;
+    }
+
+    &.static {
+      position: static;
+      margin: 5px 20px;
+    }
+  }
+
+  .alerts-config {
+    position: absolute;
+    bottom: auto;
+    left: auto;
+    right: 45px;
+    top: 5px;
+  }
+  // ----------
+
   .kpi-data-loader {
     width: 100%;
-    min-height: 115px;
+    min-height: 95px;
   }
 }
 
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
-}
-
-// Modal kpis alerts settings
-.kpi-alerts-settings {
-  .modal-header { font-size: 20px; }
-
-  .modal-body {
-    line-height: 2;
-
-    ul { margin-top: 10px; }
-
-    ul > li.list-group-item {
-      list-style: none;
-      padding: 6px 15px;
-      color: @impac-widget-text-color-medium;
-      user-select: none;
-
-      &.active {
-        color: @mblue;
-        font-weight: bold;
-        background-color: transparent;
-        border-color: #c4caca;
-      }
-
-      &:hover { cursor: pointer; }
-    }
-
-    .fa.fa-toggle-on, .fa.fa-toggle-off {
-      font-size: 17px;
-      margin-right: 8px;
-    }
-  }
 }

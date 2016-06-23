@@ -19,6 +19,9 @@ angular
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
+    @getKpiTemplate = (endpoint)->
+      return _.find(_self.getKpisTemplates(), (k)-> k.endpoint == endpoint )
+
     @getAttachableKpis = (widgetEngine) ->
       _self.load().then(->
         _.select(_self.getKpisTemplates(), (kpiTemplate) ->
@@ -142,9 +145,10 @@ angular
     # @param mappings [Array] array of objects to map mode names to given labels e.g [{label:
     #                         'over', mode: 'min'}]
     @formatKpiTarget = (target, unit, mappings=[])->
+      return '' unless target && unit
       targetMode = _.keys(target)[0]
-      label = _.find(mappings, (map)-> map.mode == targetMode ).label
-      "#{label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
+      mapping = _.find(mappings, (map)-> map.mode == targetMode ) || {}
+      "#{(mapping.label || targetMode)} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
 
     @updateKpisOrder = (kpisIds) ->
       dashboardId = _self.getCurrentDashboard().id
@@ -206,17 +210,16 @@ angular
                 return false
               else
                 kpiResp = response.data.kpi
-                
                 # Calculation
                 # angular.extend kpi.data, kpiResp.calculation
                 kpi.data = kpiResp.calculation
-                
+
                 # Configuration
                 # When the kpi initial configuration is partial, we update it with what the API has picked by default
                 updatedConfig = kpiResp.configuration || {}
                 missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
                 angular.extend kpi, _.pick(updatedConfig, missingParams)
-                
+
                 # Layout
                 # angular.extend kpi.layout, kpiResp.layout
                 kpi.layout = kpiResp.layout
