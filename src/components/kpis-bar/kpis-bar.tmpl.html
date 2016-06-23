@@ -21,7 +21,10 @@
     <div class="col-xs-10 col-sm-10">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
-          <impac-kpi class="col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis" ng-repeat="kpi in kpis track by kpi.id" />
+          <div ng-repeat="kpi in kpis track by kpi.id">
+            <impac-kpi class="col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis" />
+            <div ng-class="{ 'clearfix': applyClearfix($index, kpi) }"></div>
+          </div>
         </div>
         <div ng-show="isAddingKPI" class="col-xs-3 col-sm-3 kpi-loader">
           <i class="fa fa-2x fa-spin fa-refresh"></i>
