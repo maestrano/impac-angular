@@ -145,6 +145,7 @@ angular
     # @param mappings [Array] array of objects to map mode names to given labels e.g [{label:
     #                         'over', mode: 'min'}]
     @formatKpiTarget = (target, unit, mappings=[])->
+      return '' unless target && unit
       targetMode = _.keys(target)[0]
       mapping = _.find(mappings, (map)-> map.mode == targetMode ) || {}
       "#{(mapping.label || targetMode)} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
