@@ -5,16 +5,16 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
     restrict: 'EA'
     scope:
       kpi: '='
-      buttonHtml: '=?'
+      buttonHtml: '@'
       afterSaveCallback: '=?'
     template: $templateCache.get('alerts-config/alerts-config.tmpl.html')
-    
+
     link: (scope, element, attrs) ->
       htmlString = if scope.buttonHtml then scope.buttonHtml else "<i class='fa fa-bell-o' />"
       alertsConfig = element.find('.alerts-config')
       alertsConfig.html(htmlString).show()
       $compile(alertsConfig.contents())(scope)
-    
+
     controller: ($scope) ->
       $scope.alerts = {
         inapp:

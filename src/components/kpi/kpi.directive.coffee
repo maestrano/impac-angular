@@ -46,7 +46,6 @@ angular
               $scope.displayEditSettings()
           )
 
-
         # Linked methods
         # -------------------------
         $scope.displayEditSettings = ->
@@ -103,6 +102,9 @@ angular
 
         $scope.getTargetMode = ->
           $scope.getTargetPlaceholder().mode || $scope.possibleTargets[0].mode
+
+        $scope.getTargetModeLabel = ->
+          _.find($scope.possibleTargets, (pt)-> pt.mode == $scope.getTargetMode()).label
 
         # TODO several watchables?
         $scope.getKpiTargets = ->

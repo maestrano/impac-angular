@@ -16,21 +16,24 @@
       <div class="kpi-name">
         <h6>{{::kpi.name.toUpperCase()}}</h6>
       </div>
+
+      <alerts-config kpi="kpi" button-html="
+          <div class='im-button alert-caption'>
+            <span>Alert me when I'm {{getTargetModeLabel()}}</span>
+          </div>">
+      </alerts-config>
+
       <!-- TODO: refactor design to handle multiple targets and ranges -->
       <form name="kpi{{kpi.id}}SettingsForm">
         <!-- <div class="im-form-inline"> -->
         <div class="im-form-group" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
           <!-- target input -->
           <input name="limitValue" type="text" ng-model="kpi.limit.value" placeholder="{{targetPlaceholder}}" ng-focus="setTargetPlaceholder()" ng-blur="resetTargetPlaceholder()" required>
-          <label for="limitValue" class="im-control-label">Target</label><i class="im-bar"></i>
+          <label for="limitValue" class="im-control-label">{{kpi.element_watched}}</label><i class="im-bar"></i>
           <span class="kpi-target-unit" aria-hidden="true">{{getKpiTargetUnit()}}</span>
           <!-- error messages -->
           <div ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error" class="im-messages">
             <span ng-message="required">KPI target is required</span>
-          </div>
-          <!-- watchable display -->
-          <div class="kpi-target-watchable">
-            <span>{{kpi.element_watched}}</span>
           </div>
         </div>
           <!-- TODO: second watchable. -->
@@ -51,11 +54,10 @@
         </div>
       </form>
 
-      <!-- Temporary placement of delete & alerts settings -->
-      <div ng-show="editMode">
-        <div class="kpi-alert kpi-close" ng-click="deleteKpi()">x</div>
-        <alerts-config kpi="kpi"></alerts-config>
-      </div>
+      <!-- Remove KPI -->
+      <button type="button" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
 
     </div>
   </div>
