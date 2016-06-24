@@ -1,34 +1,35 @@
 <div class="kpis">
-  <div class="row">
-    <div class="title-actions col-xs-2 col-sm-2">
+  <div class="title-actions">
 
-      <div class="title" ng-click="toggleAvailableKpis()">
-        <a href=""><i class="fa fa-plus"></i> Add KPI</a>
-      </div>
+    <button type="button" class="add-kpis im-fab im-primary" ng-click="toggleAvailableKpis()">
+      <a href=""><i class="fa fa-plus"></i></a>
+    </button>
+    <button type="button" class="edit-kpis im-fab im-primary" ng-click="toggleEditMode()">
+      <a href=""><i class="fa fa-cog"></i></a>
+    </button>
 
-      <div class="available-kpis-container" collapse="hideAvailableKpis">
-        <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
-          <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
-          <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)">+ Attach</button>
-          <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select>
-        </div>
-      </div>
-
-      <div class="title" ng-click="toggleEditMode()">
-        <a href=""><i class="fa fa-cog"></i> {{isEditing() ? 'Save' : 'Edit'}} KPI Settings</a>
+    <div class="available-kpis-container" collapse="hideAvailableKpis">
+      <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
+        <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
+        <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)">+ Attach</button>
+        <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select>
       </div>
     </div>
-    <div class="col-xs-10 col-sm-10">
+
+  </div>
+  <div class="row">
+    <div class="col-xs-11 col-sm-11 actions-spacer">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
           <div ng-repeat="kpi in kpis track by kpi.id">
             <impac-kpi class="col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis" />
           </div>
         </div>
-        <div ng-show="isAddingKPI" class="col-xs-3 col-sm-3 kpi-loader">
+        <div ng-show="isAddingKPI" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
           <i class="fa fa-2x fa-spin fa-refresh"></i>
         </div>
       </div>
     </div>
+    <div class="col-xs-1 col-sm-1"></div>
   </div>
 </div>

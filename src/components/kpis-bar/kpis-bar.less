@@ -1,7 +1,8 @@
 .analytics kpis-bar > .kpis {
+  position: relative;
   padding: 15px;
   min-height: 145px;
-  overflow: hidden;
+  // overflow: hidden;
   background-color: @kpis-bar-background-color;
   box-shadow: @kpis-bar-box-shadow;
 
@@ -44,29 +45,34 @@
   }
 
   .title-actions {
-    margin: 7px 0 0 0;
-    padding: 0;
-    .title {
-      margin-left: 10px;
-      padding: 1px 0;
-      &:hover {
-        .menu-gradient-line {
-          visibility: visible;
-        }
-      }
-      a {
-        text-transform: uppercase;
-        font-weight: normal;
-        font-size: 13px;
-        font-weight: bold;
-        &:hover, &:focus {
-          text-decoration: none;
-        }
-        &:hover {
-          color: darken(@impac-dashboard-title-color,10%);
-        }
-      }
+    .impac-material();
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis {
+      position: absolute;
     }
+
+    button.im-fab.add-kpis {
+      top: -14px;
+      right: -10px;
+      z-index: 10;
+    }
+    button.im-fab.edit-kpis {
+      top: 38px;
+      right: -10px;
+      z-index: 10;
+    }
+  }
+
+  // > 1200px (col-lg) increase padding to tighten kpis without increasing kpi tile dimensions.
+  impac-kpi {
+    @media (min-width: 1200px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  @media (min-width: 1200px) {
+    padding: 0 55px;
   }
 
   .kpi-loader {
