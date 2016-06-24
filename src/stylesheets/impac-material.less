@@ -3,7 +3,6 @@
 /*                  ------------------------------------------
 ** Mixin material styled form inputs, overriding bootstrap's ungodly round-ness.
 /* ************************************************************************ */
-
 /* DEMO HTML - use this html to test all impac material features.
 <form>
   <div class="im-form-group">
@@ -14,11 +13,24 @@
     <label for="select" class="im-control-label">Selectbox</label><i class="im-bar"></i>
   </div>
   <div class="im-form-group">
-    <input type="text" required="required"/>
+    <input type="text" required/>
     <label for="input" class="im-control-label">Textfield</label><i class="im-bar"></i>
+    <div class="im-messages">
+      <p>This is an error message</p>
+    </div>
+  </div>
+  <div class="im-form-inline">
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
   </div>
   <div class="im-form-group">
-    <textarea required="required"></textarea>
+    <textarea required></textarea>
     <label for="textarea" class="im-control-label">Textarea</label><i class="im-bar"></i>
   </div>
   <div class="im-checkbox">
@@ -68,7 +80,7 @@
 @im-active-top: -@im-font-size;
 
 // Margin & Paddings
-@im-gap: @im-font-size * .9;
+@im-gap: @im-font-size * .7;
 @im-spacer: @im-font-size / 8;
 @im-fieldset-margin: 0 0 @im-gap * 2;
 @im-checkbox-gap: @im-font-size * 2;
@@ -123,7 +135,19 @@
   }
 
   .im-form-inline {
-    > .im-form-group,
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    > .im-form-group {
+      display: block;
+      flex: 1;
+      position: relative;
+      vertical-align: middle;
+      margin-left: (@im-gap * .2);
+      margin-right: (@im-gap * .2);
+    }
+
     > .btn {
       display: inline-block;
       margin-bottom: 0;
@@ -480,5 +504,7 @@
       outline: none;
     }
   }
+
+  // TODO: im-fab buttons!
 
 }
