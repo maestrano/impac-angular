@@ -115,5 +115,13 @@ angular
           templ = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint)
           ((templ? && templ.target_placeholders?) && templ.target_placeholders[$scope.kpi.element_watched]) || {}
 
+        # Add / remove placeholder for impac-material nice-ness.
+        $scope.targetPlaceholder = ''
+        $scope.setTargetPlaceholder = ->
+          $scope.targetPlaceholder = $scope.getKpiTargetValue()
+
+        $scope.resetTargetPlaceholder = ->
+          $scope.targetPlaceholder = ''
+
     }
   )

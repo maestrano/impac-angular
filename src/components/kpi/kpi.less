@@ -83,63 +83,40 @@ impac-kpi .kpi {
   }
 
   .kpi-edit {
-    .param-name {
-      .small();
-    }
+
+    .material-inputs();
 
     .kpi-name {
       text-align: center;
       margin-bottom: 5px;
       h6 { margin-bottom: 2px; }
-      span.menu-gradient-line {
-        display:block;
-        visibility: visible;
-        border:none;
-        height:1px;
-        background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 80, from(#000), to(#fff));
-      }
     }
 
-    .edit-limit {
-      .input-limit-value, .select-limit-mode {
-        margin-top: 0;
-        width: 50%;
-
-        .form-control-feedback {
-          color: @impac-widget-text-color-medium;
-          .small();
-          line-height: 24px;
-
-          &.target-label {
-            // maestrano.com is applying an undesirable bootstrap override on .form-control-feedback. This ensures correction within kpis.
-            top: 0px;
-          }
-        }
-      }
+    .kpi-target-watchable,
+    .kpi-target-unit {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 11px;
     }
 
-    .form-control.input-sm {
-      margin-top: 0;
-      height: 24px;
-      line-height: 24px;
-      background-color: white;
+    .kpi-target-watchable {
+      margin-bottom: 20px;
+      color: lighten(@kpi-top-line-background-color, 5%);
     }
 
-    .form-group {
-      margin-bottom: 0;
+    .kpi-target-unit {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: lighten(@kpi-top-line-background-color, 10%);
+    }
+
+    .param-name {
+      .small();
     }
 
     .btn.btn-xs {
       margin-top: 4px;
-    }
-
-    .error-messages {
-      color: @brand-danger;
-      font-size: 10px;
-      margin-top: 2px;
-      &.limit {
-        position: relative;
-      }
     }
   }
 
