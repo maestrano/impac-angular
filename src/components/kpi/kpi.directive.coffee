@@ -36,10 +36,10 @@ angular
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
 
-            if !_.isEmpty $scope.getKpiTargets()
+            if !_.isEmpty $scope.getTargets()
               $scope.kpi.limit = {} if !$scope.kpi.limit?
-              $scope.kpi.limit.mode = _.keys($scope.getKpiTargets()[0])[0]
-              $scope.kpi.limit.value = _.values($scope.getKpiTargets()[0])[0]
+              $scope.kpi.limit.mode = _.keys($scope.getTargets()[0])[0]
+              $scope.kpi.limit.value = _.values($scope.getTargets()[0])[0]
             else
               # set default <select> option value, and show edit mode.
               $scope.kpi.limit = { mode: $scope.getTargetMode() }
@@ -93,11 +93,11 @@ angular
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
-        $scope.getKpiTargetUnit = ->
+        $scope.getTargetUnit = ->
           unit = ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || $scope.getTargetPlaceholder().unit || ''
           if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
 
-        $scope.getKpiTargetValue = ->
+        $scope.getTargetValue = ->
           $scope.getTargetPlaceholder().value || ''
 
         $scope.getTargetMode = ->
@@ -107,7 +107,7 @@ angular
           _.find($scope.possibleTargets, (pt)-> pt.mode == $scope.getTargetMode()).label
 
         # TODO several watchables?
-        $scope.getKpiTargets = ->
+        $scope.getTargets = ->
           ($scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]) || []
 
         $scope.isEditing = ->
@@ -120,7 +120,7 @@ angular
         # Add / remove placeholder for impac-material nice-ness.
         $scope.targetPlaceholder = ''
         $scope.setTargetPlaceholder = ->
-          $scope.targetPlaceholder = $scope.getKpiTargetValue()
+          $scope.targetPlaceholder = $scope.getTargetValue()
 
         $scope.resetTargetPlaceholder = ->
           $scope.targetPlaceholder = ''

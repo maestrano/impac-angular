@@ -29,8 +29,8 @@
         <div class="im-form-group" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
           <!-- target input -->
           <input name="limitValue" type="text" ng-model="kpi.limit.value" placeholder="{{targetPlaceholder}}" ng-focus="setTargetPlaceholder()" ng-blur="resetTargetPlaceholder()" required>
-          <label for="limitValue" class="im-control-label">{{kpi.element_watched}}</label><i class="im-bar"></i>
-          <span class="kpi-target-unit" aria-hidden="true">{{getKpiTargetUnit()}}</span>
+          <label for="limitValue" class="im-control-label">{{kpi.element_watched | titleize}}</label><i class="im-bar"></i>
+          <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit()}}</span>
           <!-- error messages -->
           <div ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error" class="im-messages">
             <span ng-message="required">KPI target is required</span>
