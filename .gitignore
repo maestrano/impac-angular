@@ -28,3 +28,9 @@ scripts/
 
 # Generated filders
 reports/
+
+# Distribution
+dist/
+
+# Dev keys
+workspace/index.js
