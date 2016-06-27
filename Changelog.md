@@ -13,6 +13,7 @@
 #### Adds
 - Widget sales/growth: Better product selection
 - Widget opportunities funnel: now filterable by assignee
+- Bower dependencies injected to karma config
 
 
 -------------------------------------------------------------
