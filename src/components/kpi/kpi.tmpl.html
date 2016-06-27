@@ -16,11 +16,10 @@
       <div class="kpi-name">
         <h6>{{::kpi.name.toUpperCase()}}</h6>
       </div>
-
       <alerts-config kpi="kpi" button-html="
           <div class='im-button alert-caption'>
             <!-- TODO: This should be returned from the API. -->
-            <span>Alert me when I'm {{getTargetModeLabel()}}</span>
+            <span><a href=''>Alert me when I'm {{getTargetModeLabel()}}</a></span>
           </div>">
       </alerts-config>
 
