@@ -1,4 +1,5 @@
 impac-kpi .kpi {
+  position: relative;
   max-width: 220px;
   min-height: @kpi-max-height;
   max-height: @kpi-max-height;
@@ -6,6 +7,11 @@ impac-kpi .kpi {
   margin: 10px 0 10px 0;
   border-bottom: 1px solid @kpi-background-color;
   transition: all .2s ease-in;
+
+  @media screen and (max-width: 768px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   &.triggered {
     border-bottom: @kpi-triggered-border-bottom;
@@ -59,6 +65,10 @@ impac-kpi .kpi {
   .kpi-show {
     white-space: normal;
     padding: 10px;
+    // small fix for iphone 6 and smaller
+    @media screen and (max-width: 380px) {
+      padding: 10px 3px;
+    }
 
     .kpi-text {
       & > span { display: block; }
@@ -133,8 +143,8 @@ impac-kpi .kpi {
 
   .kpi-remove.im-fab.im-warn {
     position: absolute;
-    top: -7px;
-    right: 0;
+    top: -12px;
+    right: -11px;
     width: 30px;
     height: 30px;
     font-size: 20px;
