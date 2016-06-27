@@ -8,6 +8,14 @@
 
 ## Released
 
+### v1.3.8 | Week 26
+
+#### Adds
+- Widget sales/growth: Better product selection
+
+
+-------------------------------------------------------------
+
 ### v1.3.7 | Week 24
 
 #### Adds
