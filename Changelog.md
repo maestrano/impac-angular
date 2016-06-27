@@ -12,6 +12,7 @@
 
 #### Adds
 - Widget sales/growth: Better product selection
+- Widget opportunities funnel: now filterable by assignee
 
 
 -------------------------------------------------------------
