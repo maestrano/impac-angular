@@ -158,6 +158,10 @@ angular
       }
       ImpacDashboardsSvc.update(dashboardId, data)
 
+    @getKpiTargetPlaceholder = (kpiEndpoint, kpiWatchable) ->
+      templ = _self.getKpiTemplate(kpiEndpoint)
+      ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}
+
 
     #====================================
     # CRUD methods

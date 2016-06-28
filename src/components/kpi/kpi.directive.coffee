@@ -18,8 +18,8 @@ angular
         $scope.possibleExtraParams = []
         $scope.limit = {}
         $scope.possibleTargets = [
-          { label: 'over', mode: 'min' }
-          { label: 'below', mode: 'max' }
+          { label: 'below', mode: 'min' }
+          { label: 'over', mode: 'max' }
         ]
 
         unless $scope.kpi.static
@@ -114,8 +114,7 @@ angular
           $scope.kpiEditSettings.isEditing || $scope.editMode
 
         $scope.getTargetPlaceholder = ->
-          templ = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint)
-          ((templ? && templ.target_placeholders?) && templ.target_placeholders[$scope.kpi.element_watched]) || {}
+          ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, $scope.kpi.element_watched)
 
         # Add / remove placeholder for impac-material nice-ness.
         $scope.targetPlaceholder = ''
