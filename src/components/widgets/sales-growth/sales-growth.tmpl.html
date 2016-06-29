@@ -21,7 +21,7 @@
         <div ng-show="product.value != -1" setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/>
       </div>
 
-      <div class="chart-container" ng-class="{'invisible': product.value==-1}">
+      <div class="chart-container" ng-hide="(product.value == -1)">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
 

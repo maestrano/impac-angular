@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
+      <div class="chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">
           <span class="negative2">Payable</span> -
