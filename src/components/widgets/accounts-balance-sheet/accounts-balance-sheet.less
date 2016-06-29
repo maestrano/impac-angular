@@ -5,8 +5,7 @@
     max-height: 515px;
     @media (max-width: @screen-xs-max) {
       .row.widget-line {
-        border-top: dashed 1px @impac-widget-borders-color;
-        &.header, &.total { border-top: none; }
+        &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
       }
     }
     .row.widget-line.header > [class*='col-'] { position: static; }
