@@ -1,6 +1,7 @@
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
+  &.pdf-mode { padding-top: 20px; }
 
   &.show-dhb {
     transition: opacity 1s;
@@ -14,14 +15,13 @@
     // contains customisable impac logo, and heading text.
     #dashboard-heading {
       img {
-      float: left;
-      margin-right: 15px;
+        float: left;
+        margin-right: 15px;
+        &.pdf-mode:hover { cursor: pointer; }
       }
-      h2 {
-        padding-top: 12px;
-        height: 48px;
-        font-size: 30px;
-        color: #67bbe9;
+      .caption {
+        font-size: 14px;
+        margin: 5px 0px;
       }
     }
   }
@@ -265,11 +265,6 @@
       float: left;
       border: @impac-placeholder-border;
       background: none;
-    }
-
-    // individual widget
-    .widget-item {
-      padding: @impac-padding-between-widgets;
     }
   }
 }

@@ -116,7 +116,6 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         return true
       w.width = 6 unless $scope.selectedElement?
 
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
@@ -173,6 +172,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
+
 )
 
 module.directive('widgetAccountsCashSummary', ->

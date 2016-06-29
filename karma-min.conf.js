@@ -24,16 +24,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // `maestrano.impac` module external dependencies.
-      // TODO: wiredep inject bower_components here!
+      /* inject:bower */
+      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/lodash/lodash.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-ui-sortable/sortable.js',
-      'bower_components/angular-bootstrap/ui-bootstrap.js',
-      'bower_components/angular-poller/angular-poller.js',
+      'bower_components/angular-xeditable/dist/js/xeditable.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/Chart.js/Chart.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
-      // impac-angular & test scripts.
+      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-scenario/angular-scenario.js',
+      /* endinject */
       'dist/impac-angular.min.js',
       'src/**/*.spec.js'
     ],

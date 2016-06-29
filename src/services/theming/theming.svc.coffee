@@ -38,6 +38,7 @@ angular
         addWidgetEnabled: true
         addDhbEnabled: true
         deleteDhbEnabled: true
+        pdfModeEnabled: false
       # kpis options
       dhbKpisConfig:
         enableKpis: false

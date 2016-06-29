@@ -1,6 +1,10 @@
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
+  .chart-container {
+    @media print { max-width: 80% !important; }
+  }
+
   .add-account {
     position: absolute;
     right: 40px;

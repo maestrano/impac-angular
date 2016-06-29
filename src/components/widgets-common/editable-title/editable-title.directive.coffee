@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.editable-title',[])
 
-module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc) ->
+module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
     w = $scope.parentWidget
 
@@ -11,6 +11,19 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc) ->
       else
         data = { name: w.name }
         ImpacWidgetsSvc.update(w,data)
+
+    $scope.getTooltip = ->
+      if $scope.pdfMode
+        return ''
+      else
+        return w.name + if w.hasEditAbility then ' (click to edit name)' else ''
+
+    ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+      $scope.pdfMode = true
+    )
+    ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+      $scope.pdfMode = false
+    )
 )
 
 module.directive('commonEditableTitle', ($templateCache) ->

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $window, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, ImpacDeveloper) ->
 
     #====================================
     # Initialization
@@ -302,6 +302,18 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
           angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
       )
 
+    $scope.triggerUpload = () ->
+      fileInput = angular.element("#fileInput")
+      fileInput.on('change', (event) ->
+        files = event.target.files
+        if  files && files[0]
+          reader = new FileReader()
+          reader.onload = (e) ->
+            $scope.impacTitleLogo = e.target.result
+          reader.readAsDataURL(files[0])
+      )
+      fileInput.trigger('click')
+      return true
 
     #====================================
     # Dashboard Settings Panel
@@ -411,7 +423,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
 
 )
 
-module.directive('impacDashboard', ($templateCache) ->
+module.directive('impacDashboard', ($templateCache, ImpacDashboardsSvc) ->
   return {
       restrict: 'EA',
       scope: {
@@ -419,5 +431,14 @@ module.directive('impacDashboard', ($templateCache) ->
       },
       template: $templateCache.get('dashboard/dashboard.tmpl.html'),
       controller: 'ImpacDashboardCtrl'
+      
+      link: (scope, element) ->
+        scope.pdfMode = false
+        ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+          scope.pdfMode = true
+        )
+        ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+          scope.pdfMode = false
+        )
     }
 )

@@ -36,8 +36,8 @@
       </div>
 
       <div class="row" ng-show="hasAccountsSelected()">
-        <div class="col-xs-12 chart-container">
-          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        <div class="col-xs-12 text-center">
+          <div class="chart-container" impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
       </div>
 
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <div class="row" ng-show="hasAccountsSelected()">
+      <div class="row" ng-show="hasAccountsSelected() && !pdfMode">
         <div class="col-xs-12 input-group add-account">
           <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
             <option value="" disabled selected>+ ADD ACCOUNT</option>
