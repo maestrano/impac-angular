@@ -67,6 +67,7 @@ module.config(function ($httpProvider) {
 // Impac! Angular Provider configurations
 // -------------------------------------------------------
 module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, ImpacDeveloper, settings, toastr) {
+module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, settings, toastr) {
 
   // Check credentials have been provided
   if (!settings.api_key || !settings.api_secret) {
@@ -84,6 +85,10 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
   ImpacTheming.configure({
     dhbKpisConfig: {
       enableKpis: true
+    },
+    dhbConfig: {
+      showDhbHeading: true,
+      dhbHeadingText: ''
     },
     dhbSettings: {
       syncApps: {
@@ -110,6 +115,11 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacRoutes, ImpacTheming, I
       });
     }
   });
+
+  // Link Impac! Assets
+  ImpacAssets.configure({
+    impacTitleLogo: 'assets/impac-logo.png'
+  })
 
   function getOrganizations() {
     return $http.get(settings.mno_url + '/api/v2/impac/organizations')
