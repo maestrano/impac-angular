@@ -52,9 +52,9 @@
 
     <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
 
-    <div dashboard-settings-pdf-mode />
+    <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
-    <button ng-if="isDeleteDhbEnabled" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
+    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
   </div>
 
 </div>

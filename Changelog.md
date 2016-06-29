@@ -17,6 +17,12 @@
 - Dashboard printing capability (**IMPORTANT** bootstrap print.less has to be ignored for the dashboard to be properly printed)
 - Serve assets in the developer workspace
 
+#### Config changes
+- In ImpacTheming.configure, to activate the PDF mode (enables dashboard printing capability)
+```
+  dhbSelectorConfig:
+    pdfModeEnabled: true
+```
 
 -------------------------------------------------------------
 

@@ -133,8 +133,8 @@ angular
       # -------------------------------------
       scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
       scope.dashboardsList = ImpacDashboardsSvc.getDashboards()
-      scope.isThereADashboard = ->
-        ImpacDashboardsSvc.isThereADashboard()
+      scope.isThereADashboard = ImpacDashboardsSvc.isThereADashboard
+      scope.isCurrentDashboardEmpty = ImpacDashboardsSvc.isCurrentDashboardEmpty
 
       # display options / permissions
       # -------------------------------------
