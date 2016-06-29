@@ -128,7 +128,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
 
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
@@ -138,7 +137,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       # Hist chart
       all_values_are_positive = true
       inputData = []
-      
+
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
@@ -159,7 +158,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         pointDot: $scope.selectedElements.length == 1,
       }
       chartData = ChartFormatterSvc.lineChart(inputData,options)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

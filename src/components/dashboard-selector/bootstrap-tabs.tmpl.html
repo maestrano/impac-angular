@@ -1,5 +1,15 @@
-<div class="row buttons-bar-row">
-  <div class="buttons-bar col-sm-8" ng-show="isThereADashboard()">
+<div class="row buttons-bar-row" ng-class="{'pdf-mode': pdfMode}">
+
+  <div ng-show="pdfMode" class='col-md-6 col-md-offset-3 title-container text-center'>
+    <h1 class="dashboard-title">
+      {{currentDhb.full_name}}
+    </h1>
+    <p class="data-source-label">
+      <small><b>Source:</b> {{organizationsNames()}}</small>
+    </p>
+  </div>
+
+  <div class="buttons-bar col-sm-8" ng-show="isThereADashboard() && !pdfMode">
     <tabset type="{{selectorType}}">
       <tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
         <tab-heading>
@@ -21,11 +31,14 @@
       </tab>
     </tabset>
   </div>
-  <div class='buttons-bar col-sm-4'>
+
+  <div class='buttons-bar hidden-print' ng-class="{'col-md-3': pdfMode, 'col-sm-4': !pdfMode}">
     <div class='actions-panel'>
-      <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-wheelchair'></span></button>
-      <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> Add Widget</button>
-      <!-- <button id='data-upload-wizard' ng-click='openStarWizard()' class='btn btn-success hidden-xs' ><span class='fa fa-upload'></span> Data Upload</button> -->
+      <button ng-if='isAccessibilityEnabled && !pdfMode' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-wheelchair'></span></button>
+      <button ng-if="isAddWidgetEnabled && isThereADashboard() && !pdfMode" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> Add Widget</button>
+
+      <div dashboard-settings-pdf-mode />
+
     </div>
   </div>
 </div>

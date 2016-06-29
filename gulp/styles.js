@@ -7,6 +7,13 @@ var conf = require('./conf');
 var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep').stream;
 
+// Bootstrap print.less is interfering with the dashboard printing feature -> we comment the stylesheet import
+gulp.task('remove-boostrap-print', function(){
+  return gulp.src(['bower_components/bootstrap/less/bootstrap.less'])
+    .pipe($.replace('@import "print.less";', '// @import "print.less";'))
+    .pipe(gulp.dest('bower_components/bootstrap/less'));
+});
+
 // Compile dist/impac-angular.css from src/impac-angular.less
 gulp.task('styles-compile', function () {
   var lessOptions = {
@@ -48,10 +55,11 @@ gulp.task('styles-concat', function () {
       path.join(conf.paths.src, '/stylesheets/mixins.less'),
       path.join(conf.paths.src, '/stylesheets/globals.less'),
       path.join(conf.paths.src, '/stylesheets/widget-master-styles.less'),
+      path.join(conf.paths.src, '/stylesheets/print.less'),
       path.join(conf.paths.src, '/components/**/*.less')
     ])
     .pipe($.concat('impac-angular.less'))
     .pipe(gulp.dest(path.join(conf.paths.dist)));
 });
 
-gulp.task('styles', ['styles-concat', 'styles-compile']);
+gulp.task('styles', ['remove-boostrap-print', 'styles-concat', 'styles-compile']);

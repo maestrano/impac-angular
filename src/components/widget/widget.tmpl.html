@@ -1,6 +1,10 @@
 <div class="top-line">
   <div common-editable-title parent-widget="widget" class="editable-title" on-toggle="toggleEditTitle()" />
-  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited()" on-toggle-info-panel="toggleInfoPanel()"/>
+  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited() || pdfMode" on-toggle-info-panel="toggleInfoPanel()"/>
+</div>
+
+<div ng-if="pdfMode && !widget.ticked" class="include-to-pdf title hidden-print">
+  <h6>CLICK TO INCLUDE IN PDF</h6>
 </div>
 
 <div class="content" ng-class="templateName">
@@ -9,6 +13,12 @@
       <i class="fa fa-spinner fa-pulse fa-3x"></i>
       <p>Your data is being retrieved...</p>
     </div>
+  </div>
+
+  <div ng-if="pdfMode" class="include-to-pdf tick hidden-print">
+    <a class="widget-hover" ng-click="tick()">
+      <i class="fa fa-check-circle fa-5x" aria-hidden="true" ng-show="widget.ticked"></i>
+    </a>
   </div>
 
   <div ng-hide="widget.isLoading" ng-include="widgetContentTemplate()" />

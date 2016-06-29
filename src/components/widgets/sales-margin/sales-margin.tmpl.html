@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="history chart-container" ng-class="{'invisible': !widget.isHistoryMode}">
+      <div class="history chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         <div class="legend">Total sold - Total purchased</div>
       </div>

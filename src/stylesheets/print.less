@@ -1,0 +1,31 @@
+@media print {
+  body { background-color: white !important; }
+  .analytics {
+    padding-top: 0px !important;
+    #module__dashboard-selector .title-container { margin-top: 20px; }
+    .widget-item {
+      .content .chart-container {
+        max-width: 270px;
+        margin: auto;
+        canvas {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+      .right-panel {
+        border-left: 0;
+        padding-left: 0;
+        .chart-container {
+          max-width: inherit;
+          max-height: inherit;
+          canvas {
+            width: 80% !important;
+            height: 80% !important;
+          }
+        }
+      }
+    }
+    // #module__dashboard-selector .buttons-bar-row { margin-top: 0; }
+  }
+  * { transition: none !important; }
+}

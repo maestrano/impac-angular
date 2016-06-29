@@ -1,8 +1,8 @@
-<div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" tooltip="{{ parentWidget.name }} (click to edit name)" tooltip-placement="top-left">
+<div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
   {{ parentWidget.name }}
 </div>
 
-<div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" tooltip="{{ parentWidget.name }}" tooltip-placement="top-left">
+<div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
   {{ parentWidget.name }}
 </div>
 
