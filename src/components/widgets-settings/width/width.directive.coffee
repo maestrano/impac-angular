@@ -59,12 +59,15 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
       newWidth = $scope.min
     return { width: parseInt(newWidth) }
 
+  $scope.pdfMode = false
   ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+    $scope.pdfMode = true
     $scope.initiallyExpanded = $scope.expanded
     # Expand the widget if it's not already the case
     w.toggleExpanded(false) unless $scope.expanded
   )
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+    $scope.pdfMode = false
     # Reduce the widget if it wasn't expanded initially
     w.toggleExpanded(false) unless $scope.initiallyExpanded
   )

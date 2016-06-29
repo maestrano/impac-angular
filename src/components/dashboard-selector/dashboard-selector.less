@@ -14,6 +14,9 @@
   // container for dashboard selector 'dropdown' template
   .buttons-bar {
     padding: 0;
+    position: relative;
+
+    &.pdf-mode { margin-top: 20px; }
 
     .btn {
       float: right;
@@ -21,8 +24,15 @@
       border-radius: @impac-dashboard-buttons-border-radius;
     }
 
-    .dropdown-container {
+    .title-container {
+      h1 {
+        margin: 0px;
+        color: black;
+        cursor: auto;
+      }
+    }
 
+    .dropdown-container {
       .dashboard-title {
         color: @impac-dashboard-title-color;
         display: inline;
@@ -38,7 +48,6 @@
           }
         }
       }
-
       .dashboard-select {
         margin: 5px 0px 10px 30px;
         height: auto;
@@ -80,7 +89,6 @@
           }
         }
       }
-
       .change-name {
         position: absolute;
         top: 30px;
@@ -100,7 +108,6 @@
           margin-bottom: 10px;
         }
       }
-
       .data-source-label {
         color: @impac-dashboard-source-color;
         padding-left: 3px;

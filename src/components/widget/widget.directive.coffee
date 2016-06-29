@@ -48,6 +48,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
 
   w.getCssClasses = ->
     classes = [$scope.getColClass()]
+    classes.push 'pdf-mode' if $scope.pdfMode
     classes.push 'hidden-print' unless w.ticked
     return classes.join(' ')
 

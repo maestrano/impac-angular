@@ -1,3 +1,12 @@
+.widget-item {
+  transition: width 0.3s;
+  padding: @impac-padding-between-widgets;
+  &.pdf-mode {
+    width: 100%;
+    padding: ~"@{impac-padding-between-widgets} 0px";
+  }
+}
+
 .widget-item .top-line {
   position: relative;
   cursor: move;
@@ -15,28 +24,94 @@
   z-index: 4;
 }
 
-.widget-item .content {
-  padding: 9px;
-  border-radius: @impac-widget-content-border-radius;
-  border: @impac-widget-border;
-  border-top: none;
-  background-color: @impac-widget-background-color;
+.widget-item {
+  .content {
+    position: relative;
+    padding: 9px;
+    border-radius: @impac-widget-content-border-radius;
+    border: @impac-widget-border;
+    border-top: none;
+    background-color: @impac-widget-background-color;
 
-  vertical-align: top;
-  .box-shadow(0px 1px 8px -4px);
-  .short-widget();
+    vertical-align: top;
+    .box-shadow(0px 1px 8px -4px);
+    .short-widget();
 
-  .edit {
-    .edit-panel-style();
+    .edit {
+      .edit-panel-style();
+    }
+
+    &.accessible {
+      height: auto !important;
+      min-height: 250px !important;
+      max-height: auto !important;
+    }
   }
 
-  &.accessible {
-    height: auto !important;
+  &.pdf-mode .content {
+    height: 100% !important;
     min-height: 250px !important;
-    max-height: auto !important;
+    max-height: none !important;
+    .collapse {
+      display: inherit;
+    }
+    .fa-plus-square-o:before {
+      content: "\f147";
+    }
+    .legend {
+      max-height: none !important;
+    }
+    .chart-container {
+      max-height: none;
+    }
+    .widget-lines-container {
+      max-height: none !important;
+    }
+    .data-not-found .message {
+      position: inherit;
+      width: 100%;
+    }
   }
 }
 
-.widget-item {
-  transition: width 0.3s;
+.widget-item.pdf-mode .include-to-pdf{
+  &.title {
+    position: absolute;
+    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
+    z-index: 3;
+    padding-right: 1px;
+    h6 {
+      padding: 10px;
+      background-color: #FFC928;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  &.tick {
+    i {
+      position: absolute;
+      top: 35%;
+      left: 46%;
+      font-size: 100px;
+      opacity: .5;
+      z-index: 2;
+      color: black;
+    }
+  }
+  .widget-hover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 9px;
+    top: 0;
+    right: 0;
+    -webkit-transition: all ease .5s;
+    -moz-transition: all ease .5s;
+    transition: all ease .5s;
+    z-index: 1;
+    &:hover {
+      opacity: .5;
+      background: #CCCFD0;
+    }
+  }
 }

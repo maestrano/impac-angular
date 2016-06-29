@@ -1,18 +1,23 @@
-<div class="row buttons-bar-row buttons-bar">
+<div class="row buttons-bar-row buttons-bar" ng-class="{'pdf-mode': pdfMode}">
 
-  <div class="col-md-6 dropdown-container" ng-hide="isLoading">
+  <div ng-show="pdfMode" class='col-md-6 col-md-offset-3 title-container text-center'>
+    <h1 class="dashboard-title">
+      {{currentDhb.full_name}}
+    </h1>
+    <p class="data-source-label">
+      <small><b>Source:</b> {{organizationsNames()}}</small>
+    </p>
+  </div>
+
+  <div class="col-md-6 dropdown-container" ng-hide="isLoading || pdfMode">
     <div ng-if="isThereADashboard()">
-      <h4 class='dashboard-title' ng-hide="pdfMode">
+      <h4 class='dashboard-title'>
         <div style="display: inline-block;" ng-click="toggleShowDashboardsDropdown()">
           {{currentDhb.full_name}}
           <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
         </div>
-        <i ng-hide="showChangeDashboardNameBox || pdfMode" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
+        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
       </h4>
-
-      <h1 ng-if="pdfMode" class='dashboard-title'>
-        {{currentDhb.full_name}}
-      </h1>
 
       <div ng-show="showDashboardsDropdown" class='dashboard-select hidden-print'>
         <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
@@ -40,10 +45,8 @@
     <i class="fa fa-spinner fa-pulse fa-4x loading-spinner"/>
   </div>
 
-  <div class='col-md-6 actions-panel hidden-print'>
-
+  <div class='actions-panel hidden-print' ng-class="{'col-md-3': pdfMode, 'col-md-6': !pdfMode}">
     <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector" ng-hide="pdfMode"><span class='fa fa-wheelchair'></span></button>
-
 
     <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> Add Widget</button>
 

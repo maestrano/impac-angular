@@ -436,11 +436,9 @@ module.directive('impacDashboard', ($templateCache, ImpacDashboardsSvc) ->
         scope.pdfMode = false
         ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
           scope.pdfMode = true
-          element.addClass('pdf-mode')
         )
         ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
           scope.pdfMode = false
-          element.removeClass('pdf-mode')
         )
     }
 )
