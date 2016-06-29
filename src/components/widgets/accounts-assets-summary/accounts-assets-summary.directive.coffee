@@ -18,7 +18,7 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
-    
+
     if $scope.isDataFound
       if w.metadata.organization_ids.length > 1
         $scope.dataSource = w.content.repartition

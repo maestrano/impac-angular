@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widget', [])
-module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSvc) ->
+module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget || {}
 
@@ -32,7 +32,10 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
           w.width = 12
         else if w.initialWidth
           w.width = w.initialWidth
-    ).finally( -> w.isLoading = false )
+
+    ).finally( ->
+      w.isLoading = false
+    )
 
   $scope.initSettings = ->
     ImpacWidgetsSvc.initWidgetSettings(w)
@@ -40,8 +43,35 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   $scope.updateSettings = (needContentReload=true) ->
     ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
 
-  w.getColClass = ->
+  $scope.getColClass = ->
     "col-md-#{w.width}"
+
+  w.getCssClasses = ->
+    classes = [$scope.getColClass()]
+    classes.push 'pdf-mode' if $scope.pdfMode
+    classes.push 'hidden-print' unless w.ticked
+    return classes.join(' ')
+
+  ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+    # if w.expanded is defined, the width directive will handle the display
+    unless angular.isDefined(w.expanded)
+      w.initialWidth = w.width
+      w.width = 12
+    $scope.pdfMode = true
+    w.ticked = true unless angular.isDefined(w.ticked)
+    $scope.widget.hasEditAbility = false
+  )
+  ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+    $scope.pdfMode = false
+    $scope.widget.hasEditAbility = true
+    # if w.expanded is defined, the width directive will handle the display
+    unless angular.isDefined(w.expanded)
+      w.width = w.initialWidth
+  )
+
+  $scope.tick = ->
+    w.ticked = !w.ticked
+    ImpacDashboardsSvc.tick()
 )
 
 module.directive('impacWidget', ($templateCache) ->
@@ -60,6 +90,7 @@ module.directive('impacWidget', ($templateCache) ->
       # --------------------------------------
       scope.widget.isLoading = true
       scope.widget.settings = []
+      scope.pdfMode = false
       # Unused so far -->
       scope.widget.hasEditAbility = true
       scope.widget.hasDeleteAbility = true
@@ -103,8 +134,7 @@ module.directive('impacWidget', ($templateCache) ->
         scope.editTitle
 
       scope.toggleEditTitle = ->
-        scope.editTitle = !scope.editTitle 
-
+        scope.editTitle = !scope.editTitle
 
     ,template: $templateCache.get('widget/widget.tmpl.html')
   }

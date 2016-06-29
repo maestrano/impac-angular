@@ -53,7 +53,6 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
       else
         return true
 
-
   # Mini-settings
   # --------------------------------------
   unCollapsedSetting = {}

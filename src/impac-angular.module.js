@@ -109,7 +109,8 @@ angular.module('impac.components.widgets-settings',
 angular.module('impac.components.dashboard-settings',
   [
     'impac.components.dashboard-settings.currency',
-    'impac.components.dashboard-settings.sync-apps',
+    'impac.components.dashboard-settings.pdf-mode',
+    'impac.components.dashboard-settings.sync-apps'
   ]
 );
 angular.module('impac.components.widgets-common',
@@ -160,5 +161,3 @@ angular.module('impac.config', []).config(['$httpProvider',
     $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
   }
 ]);
-
-

@@ -23,27 +23,27 @@
         <div class="details-container">
           <div class="row">
             <div class="col-md-4"><label>Email</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().email}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().email || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label>Phone</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().phone}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().phone || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label>Website</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().website}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().website || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label>Contact</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().contact}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().contact || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label>City</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().city}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().city || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label>Country</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().country}}</pre></div>
+            <div class="col-md-8"><pre>{{getCustomer().country || '-'}}</pre></div>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@
         <div class="details-container">
           <div class="row" style="border-bottom: solid 1px #e6e6e6; margin-bottom: 10px; padding-bottom: 5px;">
             <div class="col-md-3"><label>Address</label></div>
-            <div class="col-md-9"><pre>{{formatAddress(getCustomer().full_address)}}</pre></div>
+            <div class="col-md-9"><pre>{{formatAddress(getCustomer().full_address) || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-12 center legend">From {{getFromDate() | date : 'd MMM yyyy'}} to {{getToDate() | date : 'd MMM yyyy'}}:</div>

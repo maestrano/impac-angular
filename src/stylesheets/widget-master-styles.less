@@ -49,7 +49,7 @@
 // Workforce-Summary - Salaries-Summary
 .expandable-filterable-widget() {
   h3.left {
-    margin-top: 69px;
+    @media (min-width: @screen-md-min) { margin-top: 69px; }
     text-align: center;
   }
   h3.right {
@@ -64,6 +64,9 @@
     .widget-line {
       font-size: 11px;
     }
+  }
+  .right-panel .chart-container {
+    @media (min-width: @screen-xs-min) and (max-width: @screen-sm-max) { max-width: 320px; }
   }
 }
 
