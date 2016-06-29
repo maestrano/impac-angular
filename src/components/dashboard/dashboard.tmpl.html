@@ -1,15 +1,19 @@
 <!-- DASHBOARD -->
-<div class="analytics" ng-hide="(isLoading || forceLoad || failedDashboardLoad)" ng-class="{'hide-dhb': (isLoading || forceLoad), 'show-dhb': !(isLoading || forceLoad)}">
+<div class="analytics" ng-hide="(isLoading || forceLoad || failedDashboardLoad)" ng-class="{'hide-dhb': (isLoading || forceLoad), 'show-dhb': !(isLoading || forceLoad), 'pdf-mode': pdfMode }">
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
   <!-- Title and Dashboard selection -->
   <div id="head-title">
-    <div class="row" ng-if="showDhbHeading">
-      <div class="col-md-6 col-sm-12" id="dashboard-heading">
-        <img ng-src="{{impacTitleLogo}}" />
-        <h2>
-          {{dhbHeadingText}}
-        </h2>
+    <div class="row" id="dashboard-heading" ng-if="showDhbHeading">
+      <div class="col-xs-12">
+        <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()" ng-class="{'pdf-mode': pdfMode}" />
+        <br />
+        <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode">Change logo</button>
+        <input type="file" style="display:none" id="fileInput" name="filedata"/>
+      </div>
+
+      <div class="col-xs-12">
+        <div class="caption">{{dhbHeadingText}}</div>
       </div>
     </div>
 
@@ -17,7 +21,7 @@
     <kpis-bar ng-if="showKpisBar" kpis="currentDhb.kpis"></kpis-bar>
 
     <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()"></dashboard-selector>
+    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
   </div>
 
   <div id="sub-menu" collapse="!showSubMenu">
@@ -85,7 +89,7 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right">
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right" ng-hide="pdfMode">
     <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
     <div dashboard-setting-currency currency="currentDhb.currency" />
   </div>
@@ -161,7 +165,7 @@
     <div class="col-md-12">
       <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">
         <!-- Widgets -->
-        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getColClass()" on-display-alerts="displaySubMenu()" />
+        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getCssClasses()" on-display-alerts="displaySubMenu()" />
         <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
         <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
           <div class="col-md-6 widget-item add-chart">

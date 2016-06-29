@@ -7,6 +7,10 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
   $scope.toggleShowOptions = ->
     $scope.showOptions = !$scope.showOptions
 
+  $scope.onInit = ->
+    $scope.selectedOption = {}
+    angular.extend $scope.selectedOption, $scope.selected
+  
   $scope.selectOption = (anOption) ->
     if anOption.value != $scope.selected.value
       angular.extend $scope.selected, anOption
@@ -56,7 +60,8 @@ module.directive('settingParamSelector', ($templateCache) ->
     link: (scope, elements, attrs) ->
       scope.noReload = typeof attrs.noReload != 'undefined'
       scope.truncateNo = attrs.truncateNo || 20
-    template: $templateCache.get('widgets-settings/param-selector.tmpl.html'),
+    template: (elements, attrs) -> 
+      return $templateCache.get(if attrs.classic then 'widgets-settings/param-selector-classic.tmpl.html' else 'widgets-settings/param-selector.tmpl.html')
     controller: 'SettingParamSelectorCtrl'
   }
 )

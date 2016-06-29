@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.width',[])
 
-module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWidgetsSvc) ->
+module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
 
@@ -28,10 +28,13 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
         angular.element(elem).animate({opacity: 1}, 200)
     , 300
 
-  w.toggleExpanded = ->
+  w.toggleExpanded = (save) ->
+    if typeof(save) == 'undefined'
+      save = true
+
     $scope.expanded = !$scope.expanded
     # false because we want to resize the widget without waiting for the response from the dashboarding API
-    ImpacWidgetsSvc.updateWidgetSettings(w,false,true)
+    ImpacWidgetsSvc.updateWidgetSettings(w,false,true) if save
 
     hideOnResize($scope.contentElements)
 
@@ -55,6 +58,19 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
     else
       newWidth = $scope.min
     return { width: parseInt(newWidth) }
+
+  $scope.pdfMode = false
+  ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
+    $scope.pdfMode = true
+    $scope.initiallyExpanded = $scope.expanded
+    # Expand the widget if it's not already the case
+    w.toggleExpanded(false) unless $scope.expanded
+  )
+  ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
+    $scope.pdfMode = false
+    # Reduce the widget if it wasn't expanded initially
+    w.toggleExpanded(false) unless $scope.initiallyExpanded
+  )
 
   w.settings.push(setting)
 

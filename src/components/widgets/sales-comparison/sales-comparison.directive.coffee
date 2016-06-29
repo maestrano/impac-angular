@@ -136,7 +136,6 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
 
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()

@@ -62,7 +62,6 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
 
       return maxRange
 
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
@@ -82,7 +81,7 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
         barDatasetSpacing: 15,
       }
       chartData = ChartFormatterSvc.barChart(barData, barOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
