@@ -89,6 +89,11 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     dhbConfig: {
       showDhbHeading: true,
       dhbHeadingText: ''
+      dhbHeadingText: 'Your business at a glance, in real-time'
+    },
+    dhbSelectorConfig: {
+      selectorType: 'dropdown',
+      pdfModeEnabled: true
     },
     dhbSettings: {
       syncApps: {

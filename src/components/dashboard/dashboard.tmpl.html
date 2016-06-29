@@ -4,14 +4,16 @@
 
   <!-- Title and Dashboard selection -->
   <div id="head-title">
-    <div class="row" ng-if="showDhbHeading">
-      <div class="col-md-6 col-sm-12" id="dashboard-heading">
-
-        <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()"/>
+    <div class="row" id="dashboard-heading" ng-if="showDhbHeading">
+      <div class="col-xs-12">
+        <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()" ng-class="{'pdf-mode': pdfMode}" />
+        <br />
+        <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode">Change logo</button>
         <input type="file" style="display:none" id="fileInput" name="filedata"/>
+      </div>
 
-        <h2>{{dhbHeadingText}}</h2>
-
+      <div class="col-xs-12">
+        <div class="caption">{{dhbHeadingText}}</div>
       </div>
     </div>
 
