@@ -14,6 +14,8 @@
 - Widget sales/growth: Better product selection
 - Widget opportunities funnel: now filterable by assignee
 - Bower dependencies injected to karma config
+- Dashboard printing capability (**IMPORTANT** bootstrap print.less has to be ignored for the dashboard to be properly printed)
+- Serve assets in the developer workspace
 
 
 -------------------------------------------------------------
