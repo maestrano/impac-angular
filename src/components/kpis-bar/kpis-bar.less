@@ -61,10 +61,18 @@
 
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
 
+    a { color: white; }
+
     button.im-fab.add-kpis,
     button.im-fab.edit-kpis {
       position: absolute;
       transition: all 0.28s ease-in;
+      &.im-primary {
+        background: @purple;
+        &:hover {
+          background: darken(@purple, 10%);
+        }
+      }
     }
 
     button.im-fab.add-kpis {

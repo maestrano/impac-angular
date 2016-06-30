@@ -96,6 +96,8 @@ impac-kpi .kpi {
 
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
 
+    a { color: white; }
+
     .kpi-name {
       text-align: center;
       margin-bottom: 5px;
@@ -141,17 +143,16 @@ impac-kpi .kpi {
     }
   }
 
-  .kpi-remove.im-fab.im-warn {
+  button.kpi-remove.im-fab.im-warn {
     position: absolute;
     top: -12px;
     right: -11px;
-    width: 30px;
-    height: 30px;
-    font-size: 20px;
-    i {
-      position: absolute;
-      top: 5px;
-      right: 7px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
     }
   }
 
