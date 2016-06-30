@@ -12,7 +12,7 @@
       <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
         <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
         <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)">+ Attach</button>
-        <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select>
+        <!-- <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select> -->
       </div>
     </div>
 

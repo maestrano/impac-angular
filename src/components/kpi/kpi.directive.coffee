@@ -16,7 +16,7 @@ angular
         # -------------------------
         $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
         $scope.possibleExtraParams = []
-        $scope.limit = {}
+        $scope.targets = {}
         $scope.possibleTargets = [
           { label: 'below', mode: 'min' }
           { label: 'over', mode: 'max' }
@@ -36,37 +36,41 @@ angular
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
 
-            if !_.isEmpty $scope.getTargets()
-              $scope.kpi.limit = {} if !$scope.kpi.limit?
-              $scope.kpi.limit.mode = _.keys($scope.getTargets()[0])[0]
-              $scope.kpi.limit.value = _.values($scope.getTargets()[0])[0]
-            else
-              # set default <select> option value, and show edit mode.
-              $scope.kpi.limit = { mode: $scope.getTargetMode() }
-              $scope.displayEditSettings()
+            watchablesWithoutTargets = false
+            _.forEach($scope.kpi.watchables, (watchable)->
+              if _.isEmpty (existingTargets = $scope.getTargets(watchable))
+                # No targets found - initialise a target form model for watchable
+                $scope.addTargetToWatchable(watchable)
+                watchablesWithoutTargets = true
+              else
+                # Targets found - bind existing targets to the form model
+                $scope.targets[watchable] = existingTargets
+            )
+            # All watchables must have at least one target.
+            $scope.displayEditSettings() if watchablesWithoutTargets
           )
 
         # Linked methods
         # -------------------------
+        $scope.addTargetToWatchable = (watchable)->
+          (newTarget = {})[$scope.getTargetPlaceholder(watchable).mode] = ''
+          ($scope.targets[watchable] ||= []).push(newTarget)
+
         $scope.displayEditSettings = ->
           $scope.kpiEditSettings.isEditing = true
 
         $scope.hideEditSettings = ->
           $scope.kpiEditSettings.isEditing = false
 
-        $scope.hasValidTarget = ->
-          ImpacKpisSvc.validateKpiTarget($scope.kpi)
+        $scope.hasValidTargets = ->
+          ImpacKpisSvc.validateKpiTargets($scope.targets)
 
         $scope.updateSettings = ->
           params = {}
           touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]).$dirty
-          return $scope.cancelUpdateSettings() unless touched && $scope.hasValidTarget()
+          return $scope.cancelUpdateSettings() unless touched && $scope.hasValidTargets()
 
-          target0 = {}
-          target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value
-
-          params.targets = {}
-          params.targets[$scope.kpi.element_watched] = [target0]
+          params.targets = $scope.targets
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
           ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
@@ -80,7 +84,7 @@ angular
         $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }
 
         $scope.cancelUpdateSettings = ->
-          $scope.deleteKpi() unless $scope.hasValidTarget() || $scope.kpi.isLoading
+          $scope.deleteKpi() unless $scope.hasValidTargets() || $scope.kpi.isLoading
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
@@ -93,36 +97,31 @@ angular
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
-        $scope.getTargetUnit = ->
-          unit = ($scope.kpi.data? && $scope.kpi.data[$scope.kpi.element_watched].unit) || $scope.getTargetPlaceholder().unit || ''
-          if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
-
-        $scope.getTargetValue = ->
-          $scope.getTargetPlaceholder().value || ''
-
-        $scope.getTargetMode = ->
-          $scope.getTargetPlaceholder().mode || $scope.possibleTargets[0].mode
-
-        $scope.getTargetModeLabel = ->
-          _.find($scope.possibleTargets, (pt)-> pt.mode == $scope.getTargetMode()).label
-
-        # TODO several watchables?
-        $scope.getTargets = ->
-          ($scope.kpi.targets? && $scope.kpi.targets[$scope.kpi.element_watched]) || []
-
         $scope.isEditing = ->
           $scope.kpiEditSettings.isEditing || $scope.editMode
 
-        $scope.getTargetPlaceholder = ->
-          ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, $scope.kpi.element_watched)
+        $scope.getFormTargetValueInput = (watchable, targetIndex)->
+          $scope["kpi#{$scope.kpi.id}SettingsForm"]["#{watchable}TargetValue#{targetIndex}"]
+
+        $scope.getTargets = (watchable)->
+          ($scope.kpi.targets? && $scope.kpi.targets[watchable]) || []
+
+        $scope.getTargetUnit = (watchable)->
+          unit = ($scope.kpi.data? && $scope.kpi.data[watchable].unit) || $scope.getTargetPlaceholder(watchable).unit || ''
+          if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
+
+        $scope.getTargetPlaceholder = (watchable)->
+          ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, watchable)
 
         # Add / remove placeholder for impac-material nice-ness.
-        $scope.targetPlaceholder = ''
-        $scope.setTargetPlaceholder = ->
-          $scope.targetPlaceholder = $scope.getTargetValue()
+        $scope.bindTargetInputPlaceholder = (watchable, targetIndex)->
+          $scope["#{watchable}TargetPlaceholder#{targetIndex}"] ||= ''
 
-        $scope.resetTargetPlaceholder = ->
-          $scope.targetPlaceholder = ''
+        $scope.setTargetInputPlaceholder = (watchable, targetIndex)->
+          $scope["#{watchable}TargetPlaceholder#{targetIndex}"] = $scope.getTargetPlaceholder(watchable).value || ''
+
+        $scope.resetTargetInputPlaceholder = (watchable, targetIndex)->
+          $scope["#{watchable}TargetPlaceholder#{targetIndex}"] = ''
 
     }
   )

@@ -18,31 +18,27 @@
       </div>
       <alerts-config kpi="kpi" button-html="
           <div class='im-button alert-caption'>
-            <!-- TODO: This should be returned from the API. -->
-            <span><a href=''>Alert me when I'm {{getTargetModeLabel()}}</a></span>
+            <!-- TODO: This needs to be returned from the API. -->
+            <span><a href=''>Alert me when I'm below</a></span>
           </div>">
       </alerts-config>
 
-      <!-- TODO: refactor design to handle multiple targets and ranges -->
       <form name="kpi{{kpi.id}}SettingsForm">
-        <!-- <div class="im-form-inline"> -->
-        <div class="im-form-group" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
-          <!-- target input -->
-          <input name="limitValue" type="text" ng-model="kpi.limit.value" placeholder="{{targetPlaceholder}}" ng-focus="setTargetPlaceholder()" ng-blur="resetTargetPlaceholder()" required>
-          <label for="limitValue" class="im-control-label">{{kpi.element_watched | titleize}}</label><i class="im-bar"></i>
-          <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit()}}</span>
-          <!-- error messages -->
-          <div ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error" class="im-messages">
-            <span ng-message="required">KPI target is required</span>
+        <!-- watchables -->
+        <div ng-repeat="watchable in kpi.watchables track by $index">
+          <!-- targets -->
+          <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
+            <!-- target -->
+            <input name="{{watchable}}TargetValue{{$index}}" type="text" ng-model="target[getTargetPlaceholder(watchable).mode]" placeholder="{{bindTargetInputPlaceholder(watchable, $index)}}" ng-focus="setTargetInputPlaceholder(watchable, $index)" ng-blur="resetTargetInputPlaceholder(watchable, $index)" required>
+            <label for="targetValue" class="im-control-label">{{watchable | titleize}}</label><i class="im-bar"></i>
+            <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit(watchable)}}</span>
+            <!-- target error messages -->
+            <div ng-messages="getFormTargetValueInput(watchable, $index).$error" class="im-messages">
+              <span ng-message="required">KPI target is required</span>
+            </div>
           </div>
         </div>
-          <!-- TODO: second watchable. -->
-          <!-- <div class="im-form-group">
-            <input name="depr" type="text" required>
-            <label for="depr" class="im-control-label">Test</label>
-            <i class="im-bar"></i>
-          </div>
-        </div> -->
+
         <div class="im-form-group">
           <div ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
             <!-- extra param selection -->
