@@ -8,6 +8,13 @@
 
 ## Released
 
+### v1.3.9 | Week 27
+
+#### Fixes
+- Flex layout for dashboard settings (currency + sync)
+
+-------------------------------------------------------------
+
 ### v1.3.8 | Week 26
 
 #### Adds
