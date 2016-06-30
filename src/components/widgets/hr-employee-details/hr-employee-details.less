@@ -2,7 +2,8 @@
   font-size: 12px;
   .details-container {
     padding: 0px;
-    max-height: 200px;
+    max-height: none;
+    @media (min-width: @screen-md-min) { max-height: 200px; }
     .scrollable();
   }
   pre {
@@ -13,7 +14,7 @@
   }
   .right-panel {
     .details-container {
-      max-height: 208px;
+      @media (min-width: @screen-md-min) { max-height: 208px; }
     }
     .legend {
       margin-bottom: 5px;

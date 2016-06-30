@@ -28,7 +28,7 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
   setting.toMetadata = ()->
     param = {}
     param[$scope.param] = {
-      values:_.compact _.map $scope.options, (statusOption) -> statusOption.label if statusOption.selected
+      values:_.compact _.map $scope.options, (statusOption) -> (statusOption.value || statusOption.label) if statusOption.selected
       reach: setting.reach
     }
     return param

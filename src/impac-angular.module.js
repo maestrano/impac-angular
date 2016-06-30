@@ -12,11 +12,7 @@ angular.module('maestrano.impac',
     'impac.services',
     'impac.filters',
     'impac.components',
-    /*
-     * EXTERNAL DEPENDENCIES *
-     * note: for unit-tests these dependancies need to be manually added into the
-     * karma/karma-min.conf config files.
-    */
+    // EXTERNAL DEPENDENCIES //
     'ngMessages',
     'ui.sortable',
     'ui.bootstrap',
@@ -119,7 +115,8 @@ angular.module('impac.components.widgets-settings',
 angular.module('impac.components.dashboard-settings',
   [
     'impac.components.dashboard-settings.currency',
-    'impac.components.dashboard-settings.sync-apps',
+    'impac.components.dashboard-settings.pdf-mode',
+    'impac.components.dashboard-settings.sync-apps'
   ]
 );
 angular.module('impac.components.widgets-common',
@@ -165,3 +162,12 @@ angular.module('impac.filters',
     'impac.filters.mno-date'
   ]
 );
+/*
+** CONFIG
+*/
+angular.module('impac.config', []).config(['$httpProvider',
+  function ($httpProvider) {
+    $httpProvider.defaults.headers.common['Accept'] = 'application/json';
+    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+  }
+]);

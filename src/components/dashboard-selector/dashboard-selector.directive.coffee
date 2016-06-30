@@ -8,6 +8,7 @@ angular
       isWidgetSelectorShown: '&'
       onDisplayWidgetSelector: '&'
       onSelectDashboard: '&'
+      pdfMode: '='
     }
     controller: ($scope) ->
 
@@ -40,7 +41,7 @@ angular
             $scope.onSelectDashboard()
             $scope.isLoading = false
         , 50
-        
+
 
       # ============================================
       # Change dashboard name
@@ -102,7 +103,7 @@ angular
         self.errors = ''
         self.isLoading = false
         self.instance = $modal.open(self.config)
-      
+
         self.instance.rendered.then (onRender) ->
           self.locked = true
         self.instance.result.then (onClose) ->
@@ -132,8 +133,8 @@ angular
       # -------------------------------------
       scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
       scope.dashboardsList = ImpacDashboardsSvc.getDashboards()
-      scope.isThereADashboard = ->
-        ImpacDashboardsSvc.isThereADashboard()
+      scope.isThereADashboard = ImpacDashboardsSvc.isThereADashboard
+      scope.isCurrentDashboardEmpty = ImpacDashboardsSvc.isCurrentDashboardEmpty
 
       # display options / permissions
       # -------------------------------------
@@ -189,5 +190,3 @@ angular
       if customUrl then getCustomTemplate() else getTemplate()
   }
 )
-
-

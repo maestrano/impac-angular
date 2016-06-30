@@ -17,7 +17,8 @@ function browserSyncInit(baseDir, browser) {
   var routes = null;
   routes = {
     '/bower_components': 'bower_components',
-    '/dist': 'dist'
+    '/dist': 'dist',
+    '/assets': 'workspace/assets'
   };
 
   var server = {
