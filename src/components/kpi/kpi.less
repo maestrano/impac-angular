@@ -81,14 +81,23 @@ impac-kpi .kpi {
         font-size: 11px;
         padding-bottom: 2px;
       }
+
+      @media screen and (max-width: 465px) {
+        .caption { font-size: 10px; }
+        .emphasis { font-size: 11px; }
+      }
     }
 
     .kpi-icon {
       font-size: 16px;
-      padding: 10px 0px;
+      padding: 10px 0;
       color: @kpi-icon-color;
       transition: color .2s ease-in;
       &.triggered { color: @kpi-icon-triggered-color; }
+      @media screen and (max-width: 465px) {
+        font-size: 12px;
+        padding: 16px 0;
+      }
     }
   }
 
