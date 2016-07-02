@@ -58,8 +58,6 @@ angular
         $scope.toggleAvailableKpis = ->
           $scope.hideAvailableKpis = !$scope.hideAvailableKpis
 
-        $scope.formatKpiName = ImpacKpisSvc.formatKpiName
-
         $scope.addKpi = (kpi) ->
           $scope.isAddingKPI = true
 
