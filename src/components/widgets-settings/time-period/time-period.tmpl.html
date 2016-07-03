@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-xs-12">
       <strong>Time Range:</strong>
-      <div setting-time-presets parent-widget="timePeriodSetting" deferred="::timePresetsDeferred" on-select="applyPreset(histParams)" presets="presets" on-choose-dates="useDatesPicker()" on-choose-period="useTimeSlider()" hist-params="histParams" />
+      <div setting-time-presets parent-widget="timePeriodSetting" deferred="::timePresetsDeferred" on-select="applyPreset(histParams)" presets="presets" on-choose-dates="useDatesPicker()" on-choose-period="useTimeSlider()" hist-params="histParams" reset-promise="resetPreset.promise" />
     </div>
   </div>
 

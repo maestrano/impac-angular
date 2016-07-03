@@ -11,6 +11,7 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
       onChooseDates: '&?'
       onChoosePeriod: '&?'
       histParams: '=?'
+      resetPromise: '=?'
     },
     template: $templateCache.get('widgets-settings/time-presets.tmpl.html'),
 
@@ -73,10 +74,14 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
 
         scope.presets.unshift({ label: 'Choose period...', value: 'choose-period' }) if angular.isDefined(scope.onChooseDates) && showSlider()
         scope.presets.unshift({ label: 'Choose dates...', value: 'choose-dates' }) if angular.isDefined(scope.onChooseDates)
-      
-        initPreset()
-        scope.presetSelected()
       )
+
+      if scope.resetPromise?
+        scope.resetPromise.then( null, null, (key) ->
+          scope.selectedPreset = _.find( scope.presets, (p) ->
+            p.value == key
+          )
+        )
 
       showSlider = ->
         ImpacTheming.get().widgetSettings? && ImpacTheming.get().widgetSettings.timePeriod? && ImpacTheming.get().widgetSettings.timePeriod.showSlider
@@ -105,6 +110,8 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
 
 
       scope.setting.initialize = ->
+        initPreset()
+        scope.presetSelected()
         return true
 
       scope.setting.toMetadata = ->

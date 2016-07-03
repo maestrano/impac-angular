@@ -30,6 +30,8 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         scope.timePresetsDeferred.promise
       ]
 
+      scope.resetPreset = $q.defer()
+
       scope.periods = [
         "DAILY"
         "WEEKLY"
@@ -167,10 +169,12 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       scope.useTimeSlider = ->
         scope.usedSetting = 'time-slider'
+        scope.resetPreset.notify('choose-period')
         scope.updateSettings()
 
       scope.useDatesPicker = ->
         scope.usedSetting = 'dates-picker'
+        scope.resetPreset.notify('choose-dates')
         scope.updateSettings()
 
       scope.getMinDate = (toDate=undefined) ->
