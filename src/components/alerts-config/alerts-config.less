@@ -1,10 +1,35 @@
-.alerts-config {
-  border-radius: 10px;
-  width: 21px;
-  color: @mblue;
-  background-color: white;
-  padding-left: 1px;
-  border: solid 1px @mblue;
+// NOTE: Do not add styles for the default button or custom injected buttonHtml here.
+//       the parent stylesheet of which this directive is embedded within should
+//       contain the styles.
 
-  &:hover { cursor: pointer; }
+// Modal kpis alerts settings
+.kpi-alerts-settings {
+  .modal-header { font-size: 20px; }
+
+  .modal-body {
+    line-height: 2;
+
+    ul { margin-top: 10px; }
+
+    ul > li.list-group-item {
+      list-style: none;
+      padding: 6px 15px;
+      color: @impac-widget-text-color-medium;
+      user-select: none;
+
+      &.active {
+        color: @mblue;
+        font-weight: bold;
+        background-color: transparent;
+        border-color: #c4caca;
+      }
+
+      &:hover { cursor: pointer; }
+    }
+
+    .fa.fa-toggle-on, .fa.fa-toggle-off {
+      font-size: 17px;
+      margin-right: 8px;
+    }
+  }
 }

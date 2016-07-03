@@ -57,7 +57,6 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
           (kpi)->
             $scope.attachedKpis.push(kpi)
             ImpacKpisSvc.show(kpi).then(->
-              formatAttachedKpiTitle(kpi)
               # TODO: display interesting things (e.g graph overlays) with KPI data!
             )
         )
@@ -67,15 +66,16 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
           _.remove($scope.attachedKpis, (k)-> k.id == kpi.id )
         )
 
-      # Local methods
-      # -----------------------
-
       # Builds formatted kpi titles for attached kpis based on the set targets,
       # possibleTargets mappings, and the kpi.data.unit returned from impac!.
       # ---
       # NOTE: if multiple targets are to be supported, this should be revised.
-      formatAttachedKpiTitle = (kpi)->
-        $scope.kpiFormattedTitles[kpi.id] = ImpacKpisSvc.formatKpiTarget(kpi.targets[$scope.elementWatched][0], kpi.data[$scope.elementWatched].unit, $scope.possibleTargets)
+      $scope.formatAttachedKpiTitle = (kpi)->
+        return '' unless kpi.data && kpi.targets && $scope.elementWatched
+        ImpacKpisSvc.formatKpiTarget(kpi.targets[$scope.elementWatched][0], kpi.data[$scope.elementWatched].unit, $scope.possibleTargets)
+
+      # Local methods
+      # -----------------------
 
 
       # On-load
@@ -108,10 +108,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
       )
 
       # Load Existing KPI's data.
-      $scope.kpiFormattedTitles = {}
       _.forEach($scope.attachedKpis, (kpi)->
-        ImpacKpisSvc.show(kpi).then(->
-          formatAttachedKpiTitle(kpi)
+        ImpacKpisSvc.show(kpi).then((res)->
           # TODO: display interesting things (e.g graph overlays) with KPI data!
         )
       )

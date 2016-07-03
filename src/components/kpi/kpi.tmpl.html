@@ -1,50 +1,60 @@
-<div class="tile kpi" ng-class="{ 'static': kpi.static }">
-  <div class="kpi-content" ng-hide="kpi.isLoading">
-    <div class="top-line"></div>
-    <div class="kpi-show" ng-hide="showEditSettings">
-      <small class="kpi-title">{{kpi.name}}</small>
-      <div class="kpi-watch" ng-if="!kpi.static">({{kpi.element_watched}})</div>
-      <span class="kpi-value">{{getKpiValue() | mnoCurrency : getKpiUnit()}}</span>
-
-      <!-- TODO: refactor design to handle multiple targets and ranges -->
-      <div class="kpi-alert" ng-repeat="target in getKpiTargets() track by $index" ng-hide="editMode" ng-if="isTriggered()">
-        <span ng-show="target.max">over {{target.max | mnoCurrency : getKpiUnit()}}</span>
-        <span ng-show="target.min">below {{target.min | mnoCurrency : getKpiUnit()}}</span>
+<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !kpi.isLoading), 'editing': isEditing() }">
+  <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }" ng-hide="kpi.isLoading"></div>
+  <div class="kpi-content" ng-class="{ 'editing': isEditing() }" ng-hide="kpi.isLoading">
+    <!-- SHOW -->
+    <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
+      <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
+        <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
       </div>
-
-      <div ng-show="editMode">
-        <div class="kpi-alert" ng-click="displayEditSettings()">Edit</div>
-        <div class="kpi-alert kpi-close" ng-click="deleteKpi()">x</div>
-        <alerts-config kpi="kpi"></alerts-config>
+      <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
+        <span class="caption">{{kpi.layout.text.caption}}</span>
+        <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
       </div>
     </div>
+    <!-- EDIT -->
+    <div class="kpi-edit" ng-show="isEditing()">
+      <div class="kpi-name">
+        <h6>{{::kpi.name.toUpperCase()}}</h6>
+      </div>
+      <alerts-config kpi="kpi" button-html="
+          <div class='im-button alert-caption'>
+            <!-- TODO: This needs to be returned from the API. -->
+            <span><a href=''>Alert me when I'm below</a></span>
+          </div>">
+      </alerts-config>
 
-    <div class="kpi-edit" ng-show="showEditSettings">
-      <span class="param-name">KPI target:</span>
-
-      <!-- TODO: refactor design to handle multiple targets and ranges -->
       <form name="kpi{{kpi.id}}SettingsForm">
-        <div class="clearfix edit-limit align">
-          <select class="pull-left select-limit-mode form-control input-sm" ng-model="kpi.limit.mode" ng-options="option.mode as option.label for option in possibleTargets" >
-          </select>
-          <div class="pull-right input-limit-value form-group has-feedback" ng-class="this['kpi'+kpi.id+'SettingsForm'].limitValue.$valid ? 'has-success' : 'has-error'">
-            <input name="limitValue" type="text" class="form-control input-sm" ng-model="kpi.limit.value" required>
-            <span class="form-control-feedback" aria-hidden="true">{{getKpiUnit()}}</span>
-            <div class="error-messages limit" ng-messages="this['kpi'+kpi.id+'SettingsForm'].limitValue.$error">
+        <!-- watchables -->
+        <div ng-repeat="watchable in kpi.watchables track by $index">
+          <!-- targets -->
+          <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
+            <!-- target -->
+            <input name="{{watchable}}TargetValue{{$index}}" type="text" ng-model="target[getTargetPlaceholder(watchable).mode]" placeholder="{{bindTargetInputPlaceholder(watchable, $index)}}" ng-focus="setTargetInputPlaceholder(watchable, $index)" ng-blur="resetTargetInputPlaceholder(watchable, $index)" required>
+            <label for="targetValue" class="im-control-label">{{watchable | titleize}}</label><i class="im-bar"></i>
+            <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit(watchable)}}</span>
+            <!-- target error messages -->
+            <div ng-messages="getFormTargetValueInput(watchable, $index).$error" class="im-messages">
               <span ng-message="required">KPI target is required</span>
             </div>
           </div>
         </div>
 
-        <div class="extra-params" ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
-          <span class="param-name">Select {{param | titleize}}:</span>
-          <select class="form-control input-sm" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
-          </select>
+        <div class="im-form-group">
+          <div ng-repeat="(param, paramValues) in kpi.possibleExtraParams track by $index">
+            <!-- extra param selection -->
+            <select name="extraParam" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues" ng-init="kpi.extra_params[param] = paramValues[0].id">
+            </select>
+            <label for="extraParam" class="im-control-label">Select {{param | titleize}}</label>
+            <i class="im-bar"></i>
+          </div>
         </div>
       </form>
 
-      <button class="btn btn-xs btn-default" ng-click="cancelUpdateSettings()">Cancel</button>
-      <button class="btn btn-xs btn-warning" ng-click="updateSettings()" ng-disabled="!hasValidTarget()">Save</button>
+      <!-- Remove KPI -->
+      <button type="button" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+
     </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-show="kpi.isLoading">

@@ -1,7 +1,27 @@
 .analytics kpis-bar > .kpis {
-  padding: 10px 0px;
-  min-height: 145px;
-  overflow: hidden;
+  position: relative;
+  padding: 15px;
+  min-height: @kpi-max-height + 30px;
+  // overflow: hidden;
+  background-color: @kpis-bar-background-color;
+  box-shadow: @kpis-bar-box-shadow;
+
+  transition: all .2s ease-in;
+  @media screen and (min-width: 725px) {
+    padding: 0 60px;
+  }
+  @media screen and (max-width: 675px) {
+    margin-top: 18px;
+  }
+
+  impac-kpi {
+    .column-gutter(5px);
+
+    @media screen and (min-width: 1200px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
 
   .available-kpis-container {
     text-align: left;
@@ -38,9 +58,49 @@
   }
 
   .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: @purple;
+        &:hover {
+          background: darken(@purple, 10%);
+        }
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: -27px;
+        bottom: 0;
+      }
+    }
+    button.im-fab.edit-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: 20px;
+        bottom: 0;
+      }
     }
   }
 
@@ -48,7 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 135px;
+    min-height: @kpi-max-height + 20px;
   }
 }
 

@@ -37,7 +37,7 @@
   <div class="list-group attached-kpis" ng-show="attachedKpis.length">
     <h5>Existing KPIs</h5>
     <div class="list-group-item clearfix attached-kpi" ng-repeat="kpi in attachedKpis track by $index">
-      <div class="attached-kpi-name">Keep {{kpiFormattedTitles[kpi.id] | titleize}}</div>
+      <div class="attached-kpi-name">Keep {{formatAttachedKpiTitle(kpi) | titleize}}</div>
       <div class="pull-right actions">
         <alerts-config kpi="kpi"></alerts-config>
         <div class="remove-attached-kpi" ng-click="deleteKpi(kpi)">

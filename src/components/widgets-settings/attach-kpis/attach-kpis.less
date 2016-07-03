@@ -1,5 +1,4 @@
 .analytics .settings.attach-kpis {
-
   .attach-kpi {
     padding: 8px 5px;
 
@@ -21,7 +20,7 @@
         font-size: 13px;
       }
     }
-    
+
     form.attach-kpi-form {
       input.attach-target {
         background-color: white;
@@ -60,6 +59,13 @@
         text-align: left;
         padding-left: 4px;
         height: 20px;
+        border-radius: 40px;
+        width: 21px;
+        color: @mblue;
+        background-color: white;
+        border: solid 1px @mblue;
+
+        &:hover { cursor: pointer; }
       }
       .edit-attached-kpi {
         display: inline-block;
@@ -79,11 +85,11 @@
         i {
           border-radius: 10px;
           width: 21px;
-          color: @fluropink;
+          color: @brand-danger;
           background-color: white;
           height: 20px;
           padding: 3px 5px 5px 5px;
-          border: solid 1px @fluropink;
+          border: solid 1px @brand-danger;
           &:hover { cursor: pointer; }
         }
       }

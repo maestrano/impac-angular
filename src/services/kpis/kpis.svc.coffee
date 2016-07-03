@@ -19,6 +19,9 @@ angular
     @getKpisTemplates = ->
       return _self.config.kpisTemplates
 
+    @getKpiTemplate = (endpoint)->
+      return _.find(_self.getKpisTemplates(), (k)-> k.endpoint == endpoint )
+
     @getAttachableKpis = (widgetEngine) ->
       _self.load().then(->
         _.select(_self.getKpisTemplates(), (kpiTemplate) ->
@@ -129,9 +132,17 @@ angular
     #====================================
     # Formatting methods
     #====================================
+    # TODO: to be replaced with @validateKpiTargets when attach-kpi is extended to handle
+    # targets for multiple watchables.
     @validateKpiTarget = (kpi)->
       return false unless kpi.limit && kpi.limit.value && kpi.limit.mode
       !(_.isEmpty kpi.limit.value || _.isEmpty kpi.limit.mode)
+
+    @validateKpiTargets = (targetsByWatchable)->
+      return false if _.isEmpty targetsByWatchable
+      _.every(targetsByWatchable, (targets)->
+        !_.isEmpty(targets) && _.every(targets, (target)-> target.min || target.max)
+      )
 
     @formatKpiName = (endpoint) ->
       kpi_template = _.find(_self.getKpisTemplates(), (tmpl) -> tmpl.endpoint == endpoint )
@@ -142,9 +153,10 @@ angular
     # @param mappings [Array] array of objects to map mode names to given labels e.g [{label:
     #                         'over', mode: 'min'}]
     @formatKpiTarget = (target, unit, mappings=[])->
+      return '' unless target && unit
       targetMode = _.keys(target)[0]
-      label = _.find(mappings, (map)-> map.mode == targetMode ).label
-      "#{label} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
+      mapping = _.find(mappings, (map)-> map.mode == targetMode ) || {}
+      "#{(mapping.label || targetMode)} #{$filter('mnoCurrency')(target[targetMode], unit, false)}"
 
     @updateKpisOrder = (kpisIds) ->
       dashboardId = _self.getCurrentDashboard().id
@@ -154,6 +166,19 @@ angular
       }
       ImpacDashboardsSvc.update(dashboardId, data)
 
+    # Target placeholders are suggestions defined in Impac API for a targets mode, value &
+    # unit depending on the watchable. Impac Angular forces the mode & unit, and suggests the
+    # value in the target input placeholder.
+    @getKpiTargetPlaceholder = (kpiEndpoint, kpiWatchable) ->
+      templ = _self.getKpiTemplate(kpiEndpoint)
+      ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}
+
+    # TODO: mno & impac should be change to deal with `watchables`, instead
+    # of element_watched, and extra_watchables. The first element of watchables should be
+    # considered the primary watchable, a.k.a element_watched.
+    @buildKpiWatchables = (kpi)->
+      return unless kpi.element_watched
+      kpi.watchables = [kpi.element_watched].concat(kpi.extra_watchables || [])
 
     #====================================
     # CRUD methods
@@ -181,6 +206,7 @@ angular
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
+          params.extra_watchables = kpi.extra_watchables if kpi.extra_watchables?
 
           # TODO make it editable!
           angular.extend params.metadata, {
@@ -206,17 +232,16 @@ angular
                 return false
               else
                 kpiResp = response.data.kpi
-                
                 # Calculation
                 # angular.extend kpi.data, kpiResp.calculation
                 kpi.data = kpiResp.calculation
-                
+
                 # Configuration
                 # When the kpi initial configuration is partial, we update it with what the API has picked by default
                 updatedConfig = kpiResp.configuration || {}
                 missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
                 angular.extend kpi, _.pick(updatedConfig, missingParams)
-                
+
                 # Layout
                 # angular.extend kpi.layout, kpiResp.layout
                 kpi.layout = kpiResp.layout
@@ -252,7 +277,9 @@ angular
               # Alerts can be created by default on kpi#create (widget.kpis), check for
               # new alerts and register them with Pusher.
               ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-              success.data
+              kpi = success.data
+              _self.buildKpiWatchables(kpi)
+              kpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
               err
@@ -279,6 +306,7 @@ angular
             # new alerts and register them with Pusher.
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
             angular.extend(kpi, success.data)
+            _self.buildKpiWatchables(kpi)
             _self.show(kpi)
           ,(err) ->
             $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
