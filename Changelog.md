@@ -19,6 +19,14 @@
 #### Fixes
 - Flex layout for dashboard settings (currency + sync)
 
+#### Config changes
+- In ImpacTheming.configure, to hide the slider from the time period selection setting:
+```
+  widgetSettings:
+    timePeriod:
+      showSlider: false
+```
+
 
 -------------------------------------------------------------
 
