@@ -12,9 +12,13 @@
 
 #### Adds
 - Dates picker setting now use dynamic templating
+- Time period selection now led by the presets
+- Add previous financial year in the default presets
+- Can choose to hide time-slider in configuration
 
 #### Fixes
 - Flex layout for dashboard settings (currency + sync)
+
 
 -------------------------------------------------------------
 

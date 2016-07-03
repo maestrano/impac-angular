@@ -42,13 +42,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       # If the app has defined custom presets, will be passed to presets directive
       if ImpacTheming.get().widgetSettings? && ImpacTheming.get().widgetSettings.timePeriod? && !_.isEmpty(ImpacTheming.get().widgetSettings.timePeriod.presets)
-        scope.presets = ImpacTheming.get().widgetSettings.timePeriod.presets
-
-      # Put at "undefined" to cancel the preset and make it disappear from the dropdown
-      resetPreset = ->
-        scope.timePeriodSetting.selectedPreset = undefined
-        return true
-      resetPreset()
+        scope.presets = angular.copy ImpacTheming.get().widgetSettings.timePeriod.presets
 
       # Will be called upon selection of a preset
       scope.applyPreset = (histParams) ->
@@ -58,11 +52,8 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       scope.timePeriodSetting.initialize = ->
         # Make sure scope.histParams have been propagated
         $timeout ->
-          # for set in scope.timePeriodSetting.settings
-          #   set.initialize()
           initPeriod()
           getSetting('time-presets').initialize()
-          initUsedSetting()
 
       scope.timePeriodSetting.toMetadata = ->
         sourceSetting = getSetting(getUsedSettingKey())
@@ -146,7 +137,6 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         return scope.usedSetting
 
       scope.updateSettings = ->
-        resetPreset()
         updateTimeRangePeriod()
         updateFromDate()
 
