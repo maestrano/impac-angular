@@ -10,6 +10,9 @@
 
 ### v1.3.9 | Week 27
 
+#### Adds
+- Dates picker setting now use dynamic templating
+
 #### Fixes
 - Flex layout for dashboard settings (currency + sync)
 

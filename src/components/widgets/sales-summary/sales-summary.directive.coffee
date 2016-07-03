@@ -20,6 +20,8 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
     $scope.chartDeferred.promise
   ]
 
+  $scope.datesPickerTemplate = "<span><from-date> to <to-date></span>"
+
 
   # Widget specific methods
   # --------------------------------------
