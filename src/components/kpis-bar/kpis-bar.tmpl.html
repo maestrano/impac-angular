@@ -1,28 +1,52 @@
-<div class="kpis">
-  <div class="title-actions">
+<div class="kpis" ng-class="{'empty': (kpis.length == 0), 'hidden-print': (kpis.length == 0)}">
 
-    <button type="button" class="add-kpis im-fab im-primary" ng-click="toggleAvailableKpis()">
-      <a href=""><i class="fa fa-plus"></i></a>
+  <div class="title-actions">
+    <button type="button" class="add-kpis im-fab im-primary" ng-click="(availableKpis.list.length > 0) && availableKpis.toggle()" ng-class="{disabled: (availableKpis.list.length == 0)}">
+      <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.hide, 'fa-minus': !availableKpis.hide}"></i></a>
     </button>
-    <button type="button" class="edit-kpis im-fab im-primary" ng-click="toggleEditMode()">
+    <button type="button" class="edit-kpis im-fab im-primary" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
       <a href=""><i class="fa fa-cog"></i></a>
     </button>
+  </div>
 
-    <div class="available-kpis-container" collapse="hideAvailableKpis">
-      <div ng-repeat="kpi in availableKpis track by $index" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
-        <span class="kpi-name">{{kpi.name}}</span>
-        <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)">+ Attach</button>
-        <!-- <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select> -->
+  <div class="row title" ng-if="kpis.length == 0 && availableKpis.hide">
+    <span class="badge">New!</span>
+    <div class="col-xs-12 text-center">
+      <a href="#" ng-click='availableKpis.toggle()'>
+        You can now attach KPIs to your dashboard
+      </a>
+    </div>
+  </div>
+
+  <div class="row add-bar" collapse="availableKpis.hide">
+    <div class="col-xs-12 col-sm-12">
+      <div class="row">
+        <div ng-repeat="kpi in availableKpis.list track by $index" class="impac-kpi col-xs-6 col-sm-4 col-md-3" ng-click="addKpi(kpi)" ng-init="kpi.element_watched = kpi.watchables[0]">
+          <div class="kpi add" ng-hide="isAddingKpi">
+            <div class="top-line ui-sortable-handle"></div>
+            <div class="kpi-content">
+              <div class="kpi-show row nomargin nopadding">
+                <div class="col-xs-3 col-sm-3 kpi-icon">
+                  <i class="fa fa-2x fa-plus"></i>
+                </div>
+                <div class="col-xs-9 col-sm-9 kpi-text">
+                  <span class="caption"><strong>{{kpi.name}}</strong></span>
+                  <span class="emphasis">Add to dashboard</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
+
   <div class="row">
     <div class="col-xs-12 col-sm-12">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
           <div ng-repeat="kpi in kpis track by kpi.id">
-            <impac-kpi class="col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis" />
+            <div impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis.list" />
           </div>
         </div>
         <div ng-show="isAddingKPI" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
