@@ -1,13 +1,12 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $timeout, $modal, $templateCache, ImpacKpisSvc) ->
+  .directive('impacKpi', ($log, $timeout, $modal, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'EA'
       scope: {
         onDelete: '&'
         kpi: '='
         editMode: '='
-        kpiEditSettings: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
@@ -44,11 +43,20 @@ angular
                 watchablesWithoutTargets = true
               else
                 # Targets found - bind existing targets to the form model
-                $scope.targets[watchable] = existingTargets
+                $scope.targets[watchable] = angular.copy(existingTargets)
             )
             # All watchables must have at least one target.
             $scope.displayEditSettings() if watchablesWithoutTargets
           )
+
+
+        onUpdateSettingsCb = (force)-> $scope.updateSettings() if $scope.kpi.isEditing || force
+
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+
+        $scope.$on('$destroy', ()->
+          ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+        )
 
         # Linked methods
         # -------------------------
@@ -57,18 +65,19 @@ angular
           ($scope.targets[watchable] ||= []).push(newTarget)
 
         $scope.displayEditSettings = ->
-          $scope.kpiEditSettings.isEditing = true
+          $scope.kpi.isEditing = true
 
         $scope.hideEditSettings = ->
-          $scope.kpiEditSettings.isEditing = false
+          $scope.kpi.isEditing = false
 
         $scope.hasValidTargets = ->
           ImpacKpisSvc.validateKpiTargets($scope.targets)
 
         $scope.updateSettings = ->
           params = {}
-          touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]).$dirty
-          return $scope.cancelUpdateSettings() unless touched && $scope.hasValidTargets()
+          touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]) && form.$dirty
+          hasValidTargets = $scope.hasValidTargets()
+          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets
 
           params.targets = $scope.targets
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
@@ -78,17 +87,16 @@ angular
           # smoother update transition
           $timeout ->
             $scope.hideEditSettings()
-          , 500
+          , 200
 
-        # Register callback accessible by parent (kpi-bar).
-        $scope.kpiEditSettings = { isEditing: false, callback: $scope.updateSettings }
-
-        $scope.cancelUpdateSettings = ->
-          $scope.deleteKpi() unless $scope.hasValidTargets() || $scope.kpi.isLoading
+        $scope.cancelUpdateSettings = (hasValidTargets)->
+          return $scope.deleteKpi() unless hasValidTargets
+          # Update is cancelled, reset the targets to the last saved values stored on the kpi.
+          $scope.targets = angular.copy($scope.kpi.targets)
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
-          , 500
+          , 200
 
         $scope.deleteKpi = ->
           return if $scope.kpi.static
@@ -98,7 +106,7 @@ angular
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
         $scope.isEditing = ->
-          $scope.kpiEditSettings.isEditing || $scope.editMode
+          $scope.kpi.isEditing || $scope.editMode
 
         $scope.getFormTargetValueInput = (watchable, targetIndex)->
           $scope["kpi#{$scope.kpi.id}SettingsForm"]["#{watchable}TargetValue#{targetIndex}"]

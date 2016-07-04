@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, ImpacKpisSvc) ->
+  .directive('kpisBar', ($templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
@@ -19,10 +19,7 @@ angular
         $scope.showKpisExpanded = false
         # All kpis edit panels are shown
         $scope.showEditMode = false
-        # Children kpis register data onto this hash by kpi.id so this directive can manage kpi
-        # mandatory target selection without showing all edit views.
-        $scope.kpisEditSettings = {}
-        $scope.isAddingKPI = false
+        $scope.isAddingKpi = false
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
@@ -57,18 +54,13 @@ angular
           helper: 'clone'
         }
 
-        initAvailableKpis = ->
-          $scope.availableKpis.list = _.select ImpacKpisSvc.getKpisTemplates(), (k) ->
-            _.isEmpty(k.attachables) &&
-            _.isEmpty(_.select($scope.kpis, (existingKpi) ->
-              existingKpi.endpoint == k.endpoint && existingKpi.element_watched == k.watchables[0]
-            ))
-          $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
-
         # Linked methods
         # -------------------------
         $scope.addKpi = (kpi) ->
-          $scope.isAddingKPI = true
+          return if $scope.isAddingKpi
+          $scope.isAddingKpi = true
+
+          kpi.element_watched = kpi.watchables[0]
 
           # Removes element watched from the available watchables array and saves the rest as
           # extra watchabes.
@@ -85,7 +77,7 @@ angular
               $log.error("Impac Kpis bar can't add a kpi", error)
           ).finally(->
             initAvailableKpis()
-            $scope.isAddingKPI = false
+            $scope.isAddingKpi = false
           )
 
         $scope.removeKpi = (kpiId) ->
@@ -94,10 +86,11 @@ angular
 
         $scope.toggleEditMode = ->
           if (kpiIsEditing() && !$scope.showEditMode)
-            updateKpis()
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings)
           else
-            updateKpis(f) if (f = $scope.showEditMode)
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings, f) if (f = $scope.showEditMode)
             $scope.showEditMode = !$scope.showEditMode
+          $scope.availableKpis.toggle() unless $scope.availableKpis.hide || $scope.showEditMode
 
         $scope.isEditing = ->
           $scope.showEditMode || kpiIsEditing()
@@ -105,15 +98,16 @@ angular
         # Private methods
         # -------------------------
         kpiIsEditing = ->
-          _.includes(_.map($scope.kpisEditSettings, (data, id)-> data.isEditing), true)
+          _.includes(_.map($scope.kpis, (kpi)-> kpi.isEditing), true)
 
-        # Update or cancel the kpi.
-        updateKpis = (force)->
-          for id, data of $scope.kpisEditSettings
-            # skips kpis that don't exist
-            continue unless _.find($scope.kpis, (kpi)-> kpi.id == parseInt(id))
-            data.callback() if data && data.callback && (data.isEditing || force)
-          return
+        initAvailableKpis = ->
+          $scope.availableKpis.list = _.select(ImpacKpisSvc.getKpisTemplates(), (k) ->
+            _.isEmpty(k.attachables) &&
+            _.isEmpty(_.select($scope.kpis, (existingKpi) ->
+              existingKpi.endpoint == k.endpoint && existingKpi.element_watched == k.watchables[0]
+            ))
+          )
+          $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
 
     }
   )

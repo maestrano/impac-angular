@@ -21,8 +21,8 @@
   <div class="row add-bar" collapse="availableKpis.hide">
     <div class="col-xs-12 col-sm-12">
       <div class="row">
-        <div ng-repeat="kpi in availableKpis.list track by $index" class="impac-kpi col-xs-6 col-sm-4 col-md-3" ng-click="addKpi(kpi)" ng-init="kpi.element_watched = kpi.watchables[0]">
-          <div class="kpi add" ng-hide="isAddingKpi">
+        <div ng-repeat="kpi in availableKpis.list track by $index" class="impac-kpi col-xs-6 col-sm-4 col-md-3" ng-click="addKpi(kpi)">
+          <div class="kpi add" ng-hide="(availableKpis.list.length == 0)">
             <div class="top-line ui-sortable-handle"></div>
             <div class="kpi-content">
               <div class="kpi-show row nomargin nopadding">
@@ -46,10 +46,10 @@
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
           <div ng-repeat="kpi in kpis track by kpi.id">
-            <div impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" kpi-edit-settings="kpisEditSettings[kpi.id]" available-kpis="availableKpis.list" />
+            <div impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list" />
           </div>
         </div>
-        <div ng-show="isAddingKPI" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
+        <div ng-show="isAddingKpi" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
           <i class="fa fa-2x fa-spin fa-refresh"></i>
         </div>
       </div>
