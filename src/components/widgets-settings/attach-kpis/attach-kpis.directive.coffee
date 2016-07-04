@@ -22,6 +22,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
       settings = {}
 
       settings.initialize = ->
+        loadKpisData()
 
       settings.toMetadata = ->
 
@@ -107,12 +108,15 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
         $scope.elementWatched = $scope.kpi.watchables[0]
       )
 
-      # Load Existing KPI's data.
-      _.forEach($scope.attachedKpis, (kpi)->
-        ImpacKpisSvc.show(kpi).then((res)->
-          # TODO: display interesting things (e.g graph overlays) with KPI data!
+      # Load attached KPI's data.
+      loadKpisData = ->
+        _.forEach($scope.attachedKpis, (kpi)->
+          ImpacKpisSvc.show(kpi).then((res)->
+            # TODO: display interesting things (e.g graph overlays) with KPI data!
+          )
         )
-      )
+
+      loadKpisData()
 
       # Setting is ready: trigger load content
       # ------------------------------------
