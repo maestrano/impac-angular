@@ -11,7 +11,11 @@ angular
       controller: ($scope, $timeout, $log) ->
         # Load
         # -------------------------
-        $scope.hideAvailableKpis = true
+        $scope.availableKpis = {
+          hide: true,
+          toggle: ->
+            $scope.availableKpis.hide = !$scope.availableKpis.hide
+        }
         $scope.showKpisExpanded = false
         # All kpis edit panels are shown
         $scope.showEditMode = false
@@ -23,7 +27,7 @@ angular
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
         ImpacKpisSvc.load().then ->
-          $scope.availableKpis = _.select ImpacKpisSvc.getKpisTemplates(), (k) -> _.isEmpty(k.attachables)
+          initAvailableKpis()
           # QUICK FIX - see kpi.svc method for comments.
           _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
 
@@ -53,11 +57,16 @@ angular
           helper: 'clone'
         }
 
+        initAvailableKpis = ->
+          $scope.availableKpis.list = _.select ImpacKpisSvc.getKpisTemplates(), (k) ->
+            _.isEmpty(k.attachables) &&
+            _.isEmpty(_.select($scope.kpis, (existingKpi) ->
+              existingKpi.endpoint == k.endpoint && existingKpi.element_watched == k.watchables[0]
+            ))
+          $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
+
         # Linked methods
         # -------------------------
-        $scope.toggleAvailableKpis = ->
-          $scope.hideAvailableKpis = !$scope.hideAvailableKpis
-
         $scope.addKpi = (kpi) ->
           $scope.isAddingKPI = true
 
@@ -74,9 +83,14 @@ angular
               $scope.kpis.push(success)
             (error) ->
               $log.error("Impac Kpis bar can't add a kpi", error)
-          ).finally(-> $scope.isAddingKPI = false)
+          ).finally(->
+            initAvailableKpis()
+            $scope.isAddingKPI = false
+          )
 
-        $scope.removeKpi = (kpiId) -> _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
+        $scope.removeKpi = (kpiId) ->
+          _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
+          initAvailableKpis()
 
         $scope.toggleEditMode = ->
           if (kpiIsEditing() && !$scope.showEditMode)

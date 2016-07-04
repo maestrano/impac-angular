@@ -1,4 +1,4 @@
-impac-kpi .kpi {
+.analytics .impac-kpi .kpi {
   position: relative;
   max-width: 220px;
   min-height: @kpi-max-height;
@@ -13,8 +13,29 @@ impac-kpi .kpi {
     margin-right: auto;
   }
 
-  &.triggered {
+  &.triggered, &.add:hover {
     border-bottom: @kpi-triggered-border-bottom;
+  }
+
+  &.add {
+    .kpi-text {
+      .emphasis { visibility: hidden; }
+    }
+  }
+
+  &.add:hover {
+    cursor: pointer;
+    .top-line { background-color: @kpi-top-line-triggered-background-color; }
+    .kpi-text {
+      color: @kpi-text-triggered-color;
+      .emphasis { visibility: visible; }
+    }
+    .kpi-icon {
+      color: @kpi-icon-triggered-color;
+      .fa-plus:before {
+        content: "\f00c";
+      }
+    }
   }
 
   &.editing {

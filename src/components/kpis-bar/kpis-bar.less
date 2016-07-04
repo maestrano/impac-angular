@@ -6,6 +6,8 @@
   background-color: @kpis-bar-background-color;
   box-shadow: @kpis-bar-box-shadow;
 
+  &.empty { min-height: 50px; }
+
   transition: all .2s ease-in;
   @media screen and (min-width: 725px) {
     padding: 0 60px;
@@ -14,46 +16,12 @@
     margin-top: 18px;
   }
 
-  impac-kpi {
+  .impac-kpi {
     .column-gutter(5px);
 
     @media screen and (min-width: 1200px) {
       padding-left: 20px;
       padding-right: 20px;
-    }
-  }
-
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
-
-    .scrollable();
-
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
-
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
     }
   }
 
@@ -75,9 +43,10 @@
       font-size: 18px;
       transition: all 0.28s ease-in;
       &.im-primary {
-        background: @purple;
-        &:hover {
-          background: darken(@purple, 10%);
+        background: #4c4749;
+        &.disabled { background: #b2b5c1; }
+        &:hover:not(.disabled) {
+          background: black;
         }
       }
     }
@@ -104,6 +73,26 @@
     }
   }
 
+  .title {
+    .text-center {
+      line-height: 3;
+      font-variant: small-caps;
+      font-size: larger;
+    }
+    .badge {
+      position: absolute;
+      top: 8px;
+      left: -10px;
+      background-color: #d1e55c;
+      color: #4f5959;
+      box-shadow: 0px 1px 3px -1px;
+    }
+  }
+
+  .add-bar {
+    border-bottom: dashed 1px;
+  }
+
   .kpi-loader {
     display: flex;
     align-items: center;
@@ -117,3 +106,5 @@
   // color: @light-black;
   padding: 5px 0px;
 }
+
+.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
