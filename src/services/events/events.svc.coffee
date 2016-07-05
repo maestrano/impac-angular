@@ -12,15 +12,23 @@ angular
     observableCallbacks = {}
 
     @registerCb = (event, callback) ->
+      return $log.warn "Callback must be a Function" unless _.isFunction(callback)
+      return $log.warn "Event must be a string" unless _.isString(event)
       observableCallbacks[event] ||= []
       observableCallbacks[event].push(callback)
 
-    @notifyCallbacks = (event, notification) ->
-      unless observableCallbacks[event]
-        return $log.warn "No observableCallbacks event named '#{event}' found."
-      else
-        for cb in observableCallbacks[event]
-          cb(notification)
+    @notifyCallbacks = (event, notification=null) ->
+      return $log.warn "No observableCallbacks event named '#{event}' found." unless observableCallbacks[event]
+      _.forEach(observableCallbacks[event], (callback) -> callback(notification))
+
+    @deregisterCb = (event, callback) ->
+      _.remove(observableCallbacks[event], (registeredCb) ->
+        callback == registeredCb
+      )
+      delete observableCallbacks[event] if _.isEmpty(observableCallbacks[event])
+
+    @unsubscribe = (event) ->
+      delete observableCallbacks[event]
 
     return _self
   )
