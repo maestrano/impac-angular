@@ -137,8 +137,7 @@ angular
     # TODO: to be replaced with @validateKpiTargets when attach-kpi is extended to handle
     # targets for multiple watchables.
     @validateKpiTarget = (kpi)->
-      return false unless kpi.limit && kpi.limit.value && kpi.limit.mode
-      !(_.isEmpty kpi.limit.value || _.isEmpty kpi.limit.mode)
+      (kpi.limit && kpi.limit.value && kpi.limit.mode)
 
     @validateKpiTargets = (targetsByWatchable)->
       return false if _.isEmpty targetsByWatchable
