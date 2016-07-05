@@ -12,11 +12,12 @@ var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 module.factory('settings', function () {
   return {
     // Credentials and endpoints
-    mno_url: 'https://uat.maestrano.io',
-    impac_url: 'https://api-impac-uat.maestrano.io',
-    api_key: '',
-    api_secret: '',
-
+    // -----------------------------------------------
+    // Kpis configurations
+    // -----------------------------------------------
+    // Change this to `true` to force kpi's to allow multiple watchables, instead of
+    // using the mno_hub kpis#discover action maps kpis to have single watchables per kpi.
+    multiple_watchables_mode: false,
     // Stub widget templates - add new widgets!
     //------------------------------------------------
     // Widget templates are stored on Maestrano API, stub your
@@ -74,11 +75,16 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   }
 
   // Configure the ImpacRoutes service options.
-  ImpacRoutes.configureRoutes({
+  var routesConfig = {
     mnoHub: settings.mno_url + '/api/v2',
     impacPrefix: '/impac',
-    impacApi: settings.impac_url + '/api'
-  });
+    impacApi: settings.impac_url + '/api',
+    kpis: {
+      index: settings.mno_url + '/api/v2/impac/kpis'
+    }
+  };
+  if (settings.multiple_watchables_mode) { delete routesConfig.kpis; }
+  ImpacRoutes.configureRoutes(routesConfig);
 
   // Configure the ImpacTheming service options.
   ImpacTheming.configure({
