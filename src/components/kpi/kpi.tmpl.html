@@ -4,11 +4,11 @@
     <!-- SHOW -->
     <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
       <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
-        <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
+        <i class="fa {{::kpi.layout.icon.value}} fa-2x"></i>
       </div>
       <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
-        <span class="caption">{{kpi.layout.text.caption}}</span>
-        <span class="emphasis"><strong>{{kpi.layout.text.emphasis}}</strong></span>
+        <span class="caption">{{::kpi.layout.text.caption}}</span>
+        <span class="emphasis"><strong>{{::kpi.layout.text.emphasis}}</strong></span>
       </div>
     </div>
     <!-- EDIT -->
@@ -17,10 +17,9 @@
         <h6>{{::kpi.name.toUpperCase()}}</h6>
       </div>
       <alerts-config kpi="kpi" button-html="
-          <div class='im-button alert-caption'>
-            <!-- TODO: This needs to be returned from the API. -->
-            <span><a href=''>Alert me when I'm below</a></span>
-          </div>">
+        <div class='im-button alert-caption'>
+          <span><a href='' ng-bind='kpi.layout.text.alert' /></span>
+        </div>">
       </alerts-config>
 
       <form name="kpi{{kpi.id}}SettingsForm">
