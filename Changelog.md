@@ -18,6 +18,7 @@
 
 #### Fixes
 - Flex layout for dashboard settings (currency + sync)
+- Patch regarding the stability issue with the display of charts applied to all browsers
 
 #### Config changes
 - In ImpacTheming.configure, to hide the slider from the time period selection setting:
