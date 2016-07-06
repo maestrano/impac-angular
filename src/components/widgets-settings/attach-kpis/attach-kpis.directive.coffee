@@ -106,7 +106,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
         # TODO: support for multiple extra params.
         $scope.selectedParam = _.keys($scope.extraParams)[0]
         # TODO: support for watchable selection.
-        $scope.elementWatched = $scope.kpi.watchables[0]
+        $scope.elementWatched = $scope.kpi.watchables? && $scope.kpi.watchables[0]
       )
 
       # Load attached KPI's data.

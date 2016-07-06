@@ -83,13 +83,13 @@ angular
 
               return $q.all(promises).then(
                 (response) ->
+                  if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
+                    # fill array with new values from Impac! api
+                    for template in response.impac.data.kpis
+                      template.source ||= 'impac'
+                      _self.config.kpisTemplates.push template
 
-                  # fill array with new values from Impac! api
-                  for template in response.impac.data.kpis
-                    template.source ||= 'impac'
-                    _self.config.kpisTemplates.push template
-
-                  if response.local
+                  if response.local && response.local.data? && !_.isEmpty(response.local.data.kpis)
                     # fill array with new values from local endpoints
                     for template in response.local.data.kpis
                       template.source = 'local'
