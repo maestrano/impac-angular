@@ -29,13 +29,13 @@
           <!-- targets -->
           <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
             <!-- target -->
-            <input name="{{watchable}}TargetValue{{$index}}" type="number" ng-model="target[getTargetPlaceholder(watchable).mode]" placeholder="{{bindTargetInputPlaceholder(watchable, $index)}}" ng-focus="setTargetInputPlaceholder(watchable, $index)" ng-blur="resetTargetInputPlaceholder(watchable, $index)" required>
+            <input name="{{watchable}}TargetValue{{$index}}" type="text" pattern="-?[0-9]+" ng-model="target[getTargetPlaceholder(watchable).mode]" placeholder="{{bindTargetInputPlaceholder(watchable, $index)}}" ng-focus="setTargetInputPlaceholder(watchable, $index)" ng-blur="resetTargetInputPlaceholder(watchable, $index)" required>
             <label for="targetValue" class="im-control-label">{{watchable | titleize}}</label><i class="im-bar"></i>
             <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit(watchable)}}</span>
             <!-- target error messages -->
             <div ng-messages="getFormTargetValueInput(watchable, $index).$error" class="im-messages">
               <span ng-message="required">KPI target is required</span>
-              <span ng-message="number">KPI target must be a number</span>
+              <span ng-message="pattern">KPI target must be a number</span>
             </div>
           </div>
         </div>

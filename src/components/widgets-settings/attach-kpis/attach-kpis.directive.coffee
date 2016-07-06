@@ -10,6 +10,7 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
       widgetId: '='
       extraParams: '='
       deferred: '='
+      showExtraParam: '=?'
     }
     template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html')
 
