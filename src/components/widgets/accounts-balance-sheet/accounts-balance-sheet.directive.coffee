@@ -14,6 +14,17 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
     $scope.datesPickerDeferred.promise
   ]
 
+  $scope.datesPickerTemplate = """
+  <div class="row text-right">
+    <div class="col-xs-6">
+      <to-date>
+    </div>
+    <div class="col-xs-6">
+      <from-date>
+    </div>
+  </div>
+  """
+
   # Init dates
   # --------------------------------------
   initDates = ->

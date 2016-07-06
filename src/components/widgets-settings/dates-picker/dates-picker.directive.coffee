@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.dates-picker',[])
 
-module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout) ->
+module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) ->
   return {
     restrict: 'A',
     scope: {
@@ -12,8 +12,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       onUse: '&?'
       minDate: '=?'
       updateOnPick: '=?'
-      bootstrapMode: '=?'
-      invert: '=?'
+      template: '=?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
     
@@ -36,6 +35,37 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         toggle: ->
           scope.calendarFrom.opened = false
           scope.calendarTo.opened = !scope.calendarTo.opened
+
+      scope.template ||= """
+      <div style="display: flex; flex-wrap: wrap;">
+        <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
+          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">From</span> <from-date style="flex-grow: 2;">
+        </div>
+        <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
+          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">To</span> <to-date style="flex-grow: 2;">
+        </div>
+      </div>
+      """
+      fromDateHtml = """
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
+        {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
+      </button>
+      """
+      toDateHtml = """
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
+        {{ calendarTo.value | date : 'yyyy-MM-dd' }}
+      </button>
+      """
+
+      # First element triggers onUser() when clicked
+      scope.template = scope.template.replace(/>/, " ng-click='onUse()'>")
+      # Custom attributes (style...) for from and to dates
+      scope.template = scope.template.replace(/<from-date([^>]*)>/g, "#{fromDateHtml.replace('ATTRS', '$1')}")
+      scope.template = scope.template.replace(/<to-date([^>]*)>/g, "#{toDateHtml.replace('ATTRS', '$1')}")
+
+      templatesContainer = element.find('#template-container')
+      templatesContainer.html(scope.template).show()
+      $compile(templatesContainer.contents())(scope)
 
       setting.initialize = ->
         # timeout to make sure that the fromDate and toDate are propagated to the directive if updated in widget.initContext()
