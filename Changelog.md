@@ -24,6 +24,29 @@
 
 ## Released
 
+### v1.3.9 | Week 27
+
+#### Adds
+- Dates picker setting now use dynamic templating
+- Time period selection now led by the presets
+- Add previous financial year in the default presets
+- Can choose to hide time-slider in configuration
+
+#### Fixes
+- Flex layout for dashboard settings (currency + sync)
+- Patch regarding the stability issue with the display of charts applied to all browsers
+
+#### Config changes
+- In ImpacTheming.configure, to hide the slider from the time period selection setting:
+```
+  widgetSettings:
+    timePeriod:
+      showSlider: false
+```
+
+
+-------------------------------------------------------------
+
 ### v1.3.8 | Week 26
 
 #### Adds

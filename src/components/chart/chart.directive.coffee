@@ -46,7 +46,12 @@ angular
             $log.error(error)
           (chartData) ->
             userAgent = $window.navigator.userAgent
-            waitUntilVisible = ((userAgent.indexOf('Safari') != -1) || (userAgent.indexOf('Chrome') != -1))
+            
+            # Previously, this hack was only for Safari,
+            # then we activated it for chrome after release of version 51,
+            # now it becomes the default behaviour as IE11 has shown some unstability in the display of charts
+            # waitUntilVisible = ((userAgent.indexOf('Safari') != -1) || (userAgent.indexOf('Chrome') != -1))
+            waitUntilVisible = true
 
             # Chart.js
             if waitUntilVisible

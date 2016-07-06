@@ -35,7 +35,7 @@
 @bluegray:                        #abc4c6;
 @bluegray2:                       #35464c;
 
-@brand-success:                  @green;
+@brand-success:                  @fluroblue;
 @brand-warning:                  @purple;
 @brand-info:                     @fluroblue;
 @brand-danger:                   @fluropink;
@@ -143,6 +143,31 @@
 @impac-widget-sales-break-even-bg:             rgb(25,40,49);
 @impac-widget-sales-break-even-text-color:     #1de9b6;
 
+// KPIs
+//--------------------------------------
+// Kpi bar
+@kpis-bar-background-color:                    white;
+@kpis-bar-box-shadow:                          0px 1px 8px -4px;
+// Kpi
+@kpi-background-color:                         white;
+@kpi-triggered-border-bottom:                  4px solid @brand-danger;
+@kpi-max-height:                               95px;
+// Kpi top-line
+@kpi-top-line-background-color:                grey;
+@kpi-top-line-triggered-background-color:      black;
+@kpi-top-line-height:                          7px;
+@kpi-top-line-box-shadow:                      none;
+// kpi content
+@kpi-text-color:                               grey;
+@kpi-text-triggered-color:                     black;
+@kpi-icon-color:                               grey;
+@kpi-icon-triggered-color:                     black;
+// kpi settings
+@kpi-settings-focus-color:                     @mblue;
+@kpi-settings-error-color:                     @brand-danger;
+@kpi-settings-remove-background:               #4c4749;
+@kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+
 .font(@size,@weight,@color) {
   font-weight:@weight;
   font-size:@size;
@@ -212,7 +237,7 @@
     color: @impac-widget-selectable-color;
   }
   &.selected {
-    border: solid 1px @impac-widget-selectable-color;
+    // border: solid 1px @impac-widget-selectable-color;
     background-color: lighten(@impac-widget-selectable-color, 22%)
   }
   &.no-select {
@@ -296,6 +321,548 @@
 
 .loader-style(@color: @impac-widget-loading-spinner) {
   color: @color;
+}
+
+.column-gutter(@gutter: @grid-gutter-width) {
+  padding-left: @gutter;
+  padding-right: @gutter;
+}
+
+/* ************************************************************************ */
+/*                                IMPAC MATERIAL
+/*                  ------------------------------------------
+** Mixin material styled form inputs, overriding bootstrap's ungodly round-ness.
+/* ************************************************************************ */
+/* DEMO HTML - use this html to test all impac material features.
+<form>
+  <div class="im-form-group">
+    <select>
+      <option>Value 1</option>
+      <option>Value 2</option>
+    </select>
+    <label for="select" class="im-control-label">Selectbox</label><i class="im-bar"></i>
+  </div>
+  <div class="im-form-group">
+    <input type="text" required/>
+    <label for="input" class="im-control-label">Textfield</label><i class="im-bar"></i>
+    <div class="im-messages">
+      <p>This is an error message</p>
+    </div>
+  </div>
+  <div class="im-form-inline">
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
+  </div>
+  <div class="im-form-group">
+    <textarea required></textarea>
+    <label for="textarea" class="im-control-label">Textarea</label><i class="im-bar"></i>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox" checked="checked"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-form-radio">
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio" checked="checked"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <button type="button" class="im-fab im-primary"><i>♥</i></button>
+  <button type="button" class="im-fab im-warn"><i>♥</i></button>
+</form>
+*/
+
+@body-bg: #fff;
+
+// Shadows
+@shadow-inset: inset 0 2px 2px 0 rgba(0,0,0,.14);
+@shadow-0: 0 0 1px rgba(0, 0, 0, 0);
+@shadow-2: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+@shadow-3: 0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.2),0 1px 8px 0 rgba(0,0,0,.12);
+@shadow-4: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+@shadow-6: 0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12),0 3px 5px -1px rgba(0,0,0,.2);
+@shadow-8: 0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12),0 5px 5px -3px rgba(0,0,0,.2);
+
+// Font Sizes
+@im-font-size: 1.25rem;
+@im-active-font-size: @im-font-size * 0.8;
+@im-active-top: -@im-font-size;
+
+// Margin & Paddings
+@im-gap: @im-font-size * .7;
+@im-spacer: @im-font-size / 8;
+@im-fieldset-margin: 0 0 @im-gap * 2;
+@im-checkbox-gap: @im-font-size * 2;
+@im-checkbox-top: 0;
+@im-radio-margin: @im-font-size / -4;
+
+// Colors
+@im-border-color: #999;
+@im-label-color: lighten(@im-border-color, 10%);
+@im-active-color: darken(@im-border-color, 10%);
+
+// Animation
+@im-transition-speed: 0.28s;
+
+.impac-material (@im-focus-color: #337ab7, @im-error-color: #d9534f, @im-input-color: #333) {
+  /* Flatten der Bootstrap */
+  .well, .navbar-inner, .popover, .btn, .tooltip, input, select, textarea, pre, .progress, .modal, .add-on, .alert, .table-bordered, .nav>.active>a, .dropdown-menu, .tooltip-inner, .badge, .label, .img-polaroid {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    border-collapse: collapse !important;
+    background-image: none !important;
+  }
+
+  body,
+  input,
+  select,
+  textarea {
+    box-sizing: border-box;
+
+    &::after,
+    &::before {
+      box-sizing: border-box;
+    }
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  // The Styles for the form
+  fieldset {
+    margin: @im-fieldset-margin;
+    padding: 0;
+    border: none;
+  }
+
+  .im-form-radio,
+  .im-form-group {
+    position: relative;
+    margin-top: (@im-gap * 1.5);
+    margin-bottom: (@im-gap * 1.5);
+  }
+
+  .im-form-inline {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    > .im-form-group {
+      display: block;
+      flex: 1;
+      position: relative;
+      vertical-align: middle;
+      margin-left: (@im-gap * .2);
+      margin-right: (@im-gap * .2);
+    }
+
+    > .btn {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  }
+
+  .im-form-group {
+    input {
+      height: (@im-font-size * 1.9);
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    select {
+      width: 100%;
+      font-size: @im-font-size;
+      height: (@im-font-size * 1.6);
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      background: none;
+      border: none;
+      line-height: 1.6;
+      box-shadow: none;
+    }
+
+    .im-control-label {
+      position: absolute;
+      top: (@im-font-size / 4);
+      pointer-events: none;
+      padding-left: @im-spacer;
+      z-index: 1;
+      color: @im-label-color;
+      font-size: @im-font-size;
+      font-weight: normal;
+      transition: all @im-transition-speed ease;
+    }
+
+    .im-bar {
+      position: relative;
+      border-bottom: (@im-font-size / 16) solid @im-border-color;
+      display: block;
+
+      &::before {
+        content: '';
+        height: (@im-font-size / 8);
+        width: 0;
+        left: 50%;
+        bottom: (@im-font-size / -16);
+        position: absolute;
+        background: @im-focus-color;
+        transition: left @im-transition-speed ease, width @im-transition-speed ease;
+        z-index: 2;
+      }
+    }
+
+    input,
+    textarea {
+      display: block;
+      background: none;
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      font-size: @im-font-size;
+      border-width: 0;
+      border-color: transparent;
+      line-height: 1.9;
+      width: 100%;
+      color: transparent;
+      transition: all @im-transition-speed ease;
+      box-shadow: none;
+    }
+
+    input[type="file"] {
+      line-height: 1;
+
+      ~ .im-bar {
+        display: none;
+      }
+    }
+
+    select,
+    input:focus,
+    input:valid,
+    input.form-file,
+    input.has-value,
+    textarea:focus,
+    textarea:valid,
+    textarea.form-file,
+    textarea.has-value {
+      color: @im-input-color;
+
+      ~ .im-control-label {
+        font-size: @im-active-font-size;
+        color: @im-active-color;
+        top: @im-active-top;
+        left: 0;
+      }
+    }
+
+    select,
+    input,
+    textarea {
+      &:focus {
+        outline: none;
+
+        ~ .im-control-label {
+          color: @im-focus-color;
+        }
+
+        ~ .im-bar {
+          &::before {
+            width: 100%;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Radio & Checkbox
+  .im-checkbox,
+  .im-form-radio {
+    label {
+      position: relative;
+      cursor: pointer;
+      padding-left: @im-checkbox-gap;
+      text-align: left;
+      color: @im-input-color;
+      display: block;
+    }
+
+    input {
+      width: auto;
+      opacity: 0.00000001;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  .im-radio {
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      position: absolute;
+      top: @im-radio-margin;
+      left: @im-radio-margin;
+      cursor: pointer;
+      display: block;
+      font-size: @im-font-size;
+      user-select: none;
+      color: @im-border-color;
+
+      // TODO: improve radio transition - ripple effect like angular md would be cool :)
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: (@im-spacer * 2);
+        width: @im-font-size;
+        height: @im-font-size;
+        transition: transform @im-transition-speed ease;
+        border-radius: 50%;
+        border: (@im-font-size / 8) solid currentColor;
+      }
+
+      &::after {
+        transform: scale(0);
+        background-color: @im-focus-color;
+        border-color: @im-focus-color;
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        &::after {
+            transform: scale(0.5);
+        }
+        &::before {
+          color: @im-focus-color;
+        }
+      }
+    }
+  }
+
+  .im-checkbox {
+    margin-top: (@im-gap * 2);
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      color: @im-border-color;
+      position: absolute;
+      top: @im-checkbox-top;
+      left: 0;
+      width: @im-font-size;
+      height: @im-font-size;
+      z-index: 0;
+      border: (@im-font-size / 8) solid currentColor;
+      border-radius: (@im-font-size / 16);
+      transition: border-color @im-transition-speed ease;
+
+      &::before,
+      &::after {
+        position: absolute;
+        height: 0;
+        width: (@im-font-size * 0.2);
+        background-color: @im-focus-color;
+        display: block;
+        transform-origin: left top;
+        border-radius: (@im-font-size / 4);
+        content: '';
+        transition: opacity @im-transition-speed ease, height 0s linear @im-transition-speed;
+        opacity: 0;
+      }
+
+      &::before {
+        top: (@im-font-size * 0.65);
+        left: (@im-font-size * 0.38);
+        transform: rotate(-135deg);
+        box-shadow: 0 0 0 (@im-font-size / 16) @body-bg;
+      }
+
+      &::after {
+        top: (@im-font-size * 0.3);
+        left: 0;
+        transform: rotate(-45deg);
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        color: @im-focus-color;
+
+        // TODO: improve checked transition.
+        &::after,
+        &::before {
+          opacity: 1;
+          transition: height @im-transition-speed ease;
+        }
+
+        &::after {
+          height: (@im-font-size / 2);
+        }
+
+        &::before {
+          height: (@im-font-size * 1.2);
+          transition-delay: @im-transition-speed;
+        }
+      }
+    }
+  }
+
+  .im-radio + .im-radio,
+  .im-checkbox + .im-checkbox {
+    margin-top: @im-font-size;
+  }
+
+  // Add class onto ng-messages div
+  .im-messages {
+    font-size: @im-font-size / 1.2;
+    color: @im-error-color;
+    overflow: hidden;
+    transition: all @im-transition-speed cubic-bezier(.55,0,.55,.2);
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 5px;
+  }
+
+  .has-error {
+    .legend.legend,
+    &.im-form-group .im-control-label.im-control-label {
+      color: @im-error-color;
+    }
+
+    &.im-form-group,
+    &.im-checkbox,
+    &.im-radio,
+    &.im-form-radio {
+      .im-messages,
+      .im-helper {
+        color: @im-error-color;
+        opacity: 1;
+      }
+    }
+
+    .im-bar {
+      &::before {
+        background: @im-error-color;
+        left: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  .im-button {
+    position: relative;
+    background: lighten(@im-focus-color, 10%);
+    border: 0;
+    font-size: (@im-font-size * 1.1);
+    color: @im-input-color;
+    margin: (@im-gap * .8) 0;
+    padding: (@im-gap / 2) (@im-gap * 2);
+    border-radius: 3px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: @shadow-2;
+
+    span {
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    &:hover {
+      transition: background .1s ease-in;
+      background: darken(@im-focus-color, 5%);
+    }
+
+    &:active {
+      box-shadow: @shadow-inset;
+    }
+
+    a:focus,
+    &:focus {
+      outline: none;
+      text-decoration: none;
+    }
+  }
+
+  button.im-fab {
+    position: relative;
+    height: 46px;
+    width: 46px;
+    flex: 0 0 56px;
+    display: inline-block;
+    padding: 0;
+    margin: 4px;
+    border: 0;
+    border-radius: 100%;
+    overflow: hidden;
+    font-size: 20px;
+    box-shadow: @shadow-4;
+    color: white;
+    &:focus {
+      outline: 0;
+    }
+    &:active {
+      box-shadow: @shadow-inset;
+    }
+    &.im-primary {
+      background: @im-focus-color;
+      &:hover {
+        transition: background .1s ease-in;
+        background: darken(@im-focus-color, 5%);
+      }
+    }
+    &.im-warn {
+      background: @im-error-color;
+      &:hover {
+        transition: background .1s ease-in;
+        background: darken(@im-error-color, 5%);
+      }
+    }
+  }
+
 }
 
 /* ************************************************************************ */
@@ -699,15 +1266,40 @@ body {
   * { transition: none !important; }
 }
 
-.alerts-config {
-  border-radius: 10px;
-  width: 21px;
-  color: @mblue;
-  background-color: white;
-  padding-left: 1px;
-  border: solid 1px @mblue;
+// NOTE: Do not add styles for the default button or custom injected buttonHtml here.
+//       the parent stylesheet of which this directive is embedded within should
+//       contain the styles.
 
-  &:hover { cursor: pointer; }
+// Modal kpis alerts settings
+.kpi-alerts-settings {
+  .modal-header { font-size: 20px; }
+
+  .modal-body {
+    line-height: 2;
+
+    ul { margin-top: 10px; }
+
+    ul > li.list-group-item {
+      list-style: none;
+      padding: 6px 15px;
+      color: @impac-widget-text-color-medium;
+      user-select: none;
+
+      &.active {
+        color: @mblue;
+        font-weight: bold;
+        background-color: transparent;
+        border-color: #c4caca;
+      }
+
+      &:hover { cursor: pointer; }
+    }
+
+    .fa.fa-toggle-on, .fa.fa-toggle-off {
+      font-size: 17px;
+      margin-right: 8px;
+    }
+  }
 }
 
 .analytics {
@@ -920,22 +1512,16 @@ body {
 
   #dashboard-settings-panel {
     position: relative;
-    margin: 0px 2px;
-    &.in-widgets-container {
-      margin: 0;
-      padding: 0 @impac-padding-between-widgets;
-    }
+    margin-top: 5px;
     & > div {
-      display: inline-block;
-      margin-left: 5px;
-      margin-top: 5px;
+      display: flex;
+      justify-content: flex-end;
+      & > * { margin: 0px 3px; }
     }
     select {
       margin: 0;
-    }
-    .btn {
-      height: 32px;
-      padding-top: 5px;
+      height: 34px;
+      padding-top: 1px;
     }
   }
 
@@ -1205,14 +1791,49 @@ body {
   ////////
 }
 
-impac-kpi .kpi {
-  .scrollable();
-  text-align: center;
-  max-width: 160px;
-  min-height: 135px;
-  // padding: 10px 3px;
-  border-radius: 3px;
-  box-shadow: 0px 4px 12px -7px #17262d;
+.analytics .impac-kpi .kpi {
+  position: relative;
+  max-width: 220px;
+  min-height: @kpi-max-height;
+  max-height: @kpi-max-height;
+  background-color: @kpi-background-color;
+  margin: 10px 0 10px 0;
+  border-bottom: 1px solid @kpi-background-color;
+  transition: all .2s ease-in;
+
+  @media screen and (max-width: 768px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.triggered, &.add:hover {
+    border-bottom: @kpi-triggered-border-bottom;
+  }
+
+  &.add {
+    .kpi-text {
+      .emphasis { visibility: hidden; }
+    }
+  }
+
+  &.add:hover {
+    cursor: pointer;
+    .top-line { background-color: @kpi-top-line-triggered-background-color; }
+    .kpi-text {
+      color: @kpi-text-triggered-color;
+      .emphasis { visibility: visible; }
+    }
+    .kpi-icon {
+      color: @kpi-icon-triggered-color;
+      .fa-plus:before {
+        content: "\f00c";
+      }
+    }
+  }
+
+  &.editing {
+    min-height: @kpi-max-height + 60px;
+  }
 
   &:hover { cursor: default; }
 
@@ -1228,12 +1849,10 @@ impac-kpi .kpi {
     width: 100%;
     position: relative;
     cursor: move;
-    background-color: white;
     padding: 9px 9px 0px 12px;
-    border-radius: 5px 5px 0px 0px;
     border-bottom: none;
-    min-height: 16px;
-    box-shadow: 0px 1px 8px -4px;
+    min-height: @kpi-top-line-height;
+    box-shadow: @kpi-top-line-box-shadow;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -1244,153 +1863,125 @@ impac-kpi .kpi {
     -ms-flex-direction: row;
     flex-direction: row;
     margin-bottom: 5px;
+    background-color: @kpi-top-line-background-color;
+    &.triggered { background-color: @kpi-top-line-triggered-background-color; }
+    transition: background .2s ease-in;
+  }
+
+  .kpi-content {
+    max-height: @kpi-max-height - 5px;
+    &.editing {
+      min-height: @kpi-max-height + 50px;
+      .scrollable();
+    }
   }
 
   .kpi-show {
     white-space: normal;
-
-    .kpi-title {
-      .text-uppercase();
-      font-size: 12px;
-      font-weight: 600;
-      color: @impac-widget-text-color-medium;
-      // border-bottom-color: @impac-widget-text-color-medium;
-
-      // &:hover {
-      //   color: @impac-widget-text-color;
-      //   border-bottom-color: @impac-widget-text-color;
-      // }
+    padding: 10px;
+    // small fix for iphone 6 and smaller
+    @media screen and (max-width: 380px) {
+      padding: 10px 3px;
     }
 
-    .editable-wrap .editable-controls {
-      & > input {
-        width: 65%;
-        height: 25px;
-        line-height: 25px;
+    .kpi-text {
+      & > span { display: block; }
+      padding: 7px 0;
+      color: @kpi-text-color;
+      transition: color .2s ease-in;
+      &.triggered { color: @kpi-text-triggered-color; }
+
+      .caption {
+        font-size: 11px;
+        padding-bottom: 2px;
       }
 
-      .editable-buttons {
-        button {
-          margin: 0px 0px 0px 1px;
-          height: 25px;
-          padding: 0px 4px;
-        }
+      @media screen and (max-width: 465px) {
+        .caption { font-size: 10px; }
+        .emphasis { font-size: 11px; }
       }
     }
 
-    .kpi-watch {
-      font-size: 11px;
-    }
-
-    .kpi-value {
-      position: absolute;
-      top: 75px;
-      left: 0;
-      right: 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .kpi-alert {
-      .text-uppercase();
-      font-size: 11px;
-      font-weight: 700;
-      background-color: white;
-      border: 1px solid @brand-danger;
-      border-radius: 4px;
-      color: @brand-danger;
-      padding: 2px 5px;
-
-      position: absolute;
-      bottom: 15px;
-      left: 15%;
-      width: 70%;
-
-      &.kpi-close {
-        bottom: auto;
-        right: 20px;
-        top: 5px;
-        border-radius: 10px;
-        width: 21px;
-        left: auto;
-        height: 22px;
-        padding-left: 6px;
-        padding-top: 3px;
+    .kpi-icon {
+      font-size: 16px;
+      padding: 10px 0;
+      color: @kpi-icon-color;
+      transition: color .2s ease-in;
+      &.triggered { color: @kpi-icon-triggered-color; }
+      @media screen and (max-width: 465px) {
+        font-size: 12px;
+        padding: 16px 0;
       }
-
-      &:hover {
-        color: darken(@brand-danger, 10%);
-        border-color: darken(@brand-danger, 10%);
-        cursor: pointer;
-      }
-
-      &.static {
-        position: static;
-        margin: 5px 20px;
-      }
-    }
-
-    .alerts-config {
-      position: absolute;
-      bottom: auto;
-      left: auto;
-      right: 45px;
-      top: 5px;
     }
   }
 
   .kpi-edit {
-    .param-name {
-      .small();
-    }
 
-    .edit-limit {
-      .input-limit-value, .select-limit-mode {
-        margin-top: 0;
-        width: 50%;
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
 
-        .form-control-feedback {
-          color: @impac-widget-text-color-medium;
-          .small();
-          line-height: 24px;
+    a { color: white; }
 
-          &.target-label {
-            // maestrano.com is applying an undesirable bootstrap override on .form-control-feedback. This ensures correction within kpis.
-            top: 0px;
-          }
-        }
+    .kpi-name {
+      text-align: center;
+      margin-bottom: 5px;
+      h6 {
+        margin: 0 0 5px 0;
       }
     }
 
-    .form-control.input-sm {
-      margin-top: 0;
-      height: 24px;
-      line-height: 24px;
-      background-color: white;
+    .im-button.alert-caption {
+      text-align: center;
+      font-size: 11px;
+      width: 81%;
+      margin: 0 auto 20px auto;
+      box-shadow: none;
+      padding: 2px;
     }
 
-    .form-group {
-      margin-bottom: 0;
+    .kpi-target-watchable,
+    .kpi-target-unit {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    .kpi-target-watchable {
+      margin-bottom: 20px;
+      color: lighten(@kpi-top-line-background-color, 5%);
+    }
+
+    .kpi-target-unit {
+      position: absolute;
+      top: 6px;
+      right: 0;
+      color: lighten(@kpi-top-line-background-color, 10%);
+    }
+
+    .param-name {
+      .small();
     }
 
     .btn.btn-xs {
       margin-top: 4px;
     }
+  }
 
-    .error-messages {
-      color: @brand-danger;
-      font-size: 11px;
-      margin-top: 2px;
-      &.limit {
-        position: relative;
-        left: -52px;
-      }
+  button.kpi-remove.im-fab.im-warn {
+    position: absolute;
+    top: -12px;
+    right: -11px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
     }
   }
 
   .kpi-data-loader {
     width: 100%;
-    min-height: 115px;
+    min-height: 95px;
   }
 }
 
@@ -1398,89 +1989,106 @@ impac-kpi .kpi {
   min-height: 80px;
 }
 
-// Modal kpis alerts settings
-.kpi-alerts-settings {
-  .modal-header { font-size: 20px; }
-
-  .modal-body {
-    line-height: 2;
-
-    ul { margin-top: 10px; }
-
-    ul > li.list-group-item {
-      list-style: none;
-      padding: 6px 15px;
-      color: @impac-widget-text-color-medium;
-      user-select: none;
-
-      &.active {
-        color: @mblue;
-        font-weight: bold;
-        background-color: transparent;
-        border-color: #c4caca;
-      }
-
-      &:hover { cursor: pointer; }
-    }
-
-    .fa.fa-toggle-on, .fa.fa-toggle-off {
-      font-size: 17px;
-      margin-right: 8px;
-    }
-  }
-}
-
 .analytics kpis-bar > .kpis {
-  padding: 10px 0px;
-  min-height: 145px;
-  overflow: hidden;
+  position: relative;
+  padding: 15px;
+  min-height: @kpi-max-height + 30px;
+  // overflow: hidden;
+  background-color: @kpis-bar-background-color;
+  box-shadow: @kpis-bar-box-shadow;
 
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
+  &.empty { min-height: 50px; }
 
-    .scrollable();
+  transition: all .2s ease-in;
+  @media screen and (min-width: 725px) {
+    padding: 0 60px;
+  }
+  @media screen and (max-width: 675px) {
+    margin-top: 18px;
+  }
 
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
+  .impac-kpi {
+    .column-gutter(5px);
 
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
-
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
-      }
+    @media screen and (min-width: 1200px) {
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 
   .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
     }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled { background: #b2b5c1; }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: -27px;
+        bottom: 0;
+      }
+    }
+    button.im-fab.edit-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: 20px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .title {
+    .text-center {
+      line-height: 3;
+      font-variant: small-caps;
+      font-size: larger;
+    }
+    .badge {
+      position: absolute;
+      top: 8px;
+      left: -10px;
+      background-color: #d1e55c;
+      color: #4f5959;
+      box-shadow: 0px 1px 3px -1px;
+    }
+  }
+
+  .add-bar {
+    border-bottom: dashed 1px;
   }
 
   .kpi-loader {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 135px;
+    min-height: @kpi-max-height + 20px;
   }
 }
 
@@ -1489,6 +2097,8 @@ impac-kpi .kpi {
   // color: @light-black;
   padding: 5px 0px;
 }
+
+.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
 
 .widget-item {
   transition: width 0.3s;
@@ -1830,12 +2440,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -1902,6 +2506,12 @@ impac-kpi .kpi {
 
 }
 
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -1915,52 +2525,7 @@ impac-kpi .kpi {
 
 }
 
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  .buttons {
-    // margin-left: 5px;
-    button.btn.btn-sm {
-      line-height: 1;
-      &.btn-danger {
-        display: none;
-      }
-      &.btn-info {
-        border-radius: 3px;
-      }
-    }
-  }
-
-  .tooltip-inner {
-    text-transform: none;
-  }
-
-  .dropdown-menu > li > div > table {
-    outline: none;
-  }
-}
-
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: 20px;
-  }
-}
 .analytics .settings.attach-kpis {
-
   .attach-kpi {
     padding: 8px 5px;
 
@@ -1982,7 +2547,7 @@ impac-kpi .kpi {
         font-size: 13px;
       }
     }
-    
+
     form.attach-kpi-form {
       input.attach-target {
         background-color: white;
@@ -2021,6 +2586,13 @@ impac-kpi .kpi {
         text-align: left;
         padding-left: 4px;
         height: 20px;
+        border-radius: 40px;
+        width: 21px;
+        color: @mblue;
+        background-color: white;
+        border: solid 1px @mblue;
+
+        &:hover { cursor: pointer; }
       }
       .edit-attached-kpi {
         display: inline-block;
@@ -2040,16 +2612,50 @@ impac-kpi .kpi {
         i {
           border-radius: 10px;
           width: 21px;
-          color: @fluropink;
+          color: @brand-danger;
           background-color: white;
           height: 20px;
           padding: 3px 5px 5px 5px;
-          border: solid 1px @fluropink;
+          border: solid 1px @brand-danger;
           &:hover { cursor: pointer; }
         }
       }
     }
   }
+}
+
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: 20px;
+  }
+}
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -2264,18 +2870,7 @@ impac-kpi .kpi {
       position: static;
     }
 
-    .sub-setting {
-      padding: 5px;
-      &.used {
-        border: solid 1px silver;
-        background-color: white;
-      }
-      &.unused {
-        border: solid 1px @impac-widget-sub-bg-color-light;
-        color: silver;
-        button { color: silver; }
-      }
-    }
+    .sub-setting { padding: 5px; }
   }
 }
 
@@ -2784,6 +3379,10 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -2794,10 +3393,6 @@ impac-kpi .kpi {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-leads-list {
