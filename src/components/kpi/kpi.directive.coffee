@@ -26,9 +26,7 @@ angular
             angular.extend $scope.kpi, renderedKpi
 
             # Get the corresponding template of the KPI loaded
-            kpiTemplate = _.find $scope.kpiTemplates, (aKpi) ->
-              aKpi.endpoint == $scope.kpi.endpoint
-
+            kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
             $scope.kpi.name = kpiTemplate.name
 
             # If the template contains extra params we add it to the KPI
