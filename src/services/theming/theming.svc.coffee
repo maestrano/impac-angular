@@ -97,6 +97,8 @@ angular
             default: "Current"
           todayPrefixes: 
             bls: "Live"
+        timePeriod:
+          showSlider: true
 
 
     #=======================================

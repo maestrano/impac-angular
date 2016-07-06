@@ -16,7 +16,7 @@
 
     <div class="selector">
       <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred" />
-      <span setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
+      <span setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred" template="::datesPickerTemplate"/>
     </div>
 
     <div class="chart-container" ng-show="(isDataFound==true)">

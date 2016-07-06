@@ -22,7 +22,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
         image.onerror = ->
           $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
-          image.remove()
+          image.remove() if image?
 
         image.src = dir + scope.widgetEngine + '.png'
 

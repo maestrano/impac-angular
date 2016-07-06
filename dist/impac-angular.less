@@ -212,7 +212,7 @@
     color: @impac-widget-selectable-color;
   }
   &.selected {
-    border: solid 1px @impac-widget-selectable-color;
+    // border: solid 1px @impac-widget-selectable-color;
     background-color: lighten(@impac-widget-selectable-color, 22%)
   }
   &.no-select {
@@ -885,22 +885,16 @@ body {
 
   #dashboard-settings-panel {
     position: relative;
-    margin: 0px 2px;
-    &.in-widgets-container {
-      margin: 0;
-      padding: 0 @impac-padding-between-widgets;
-    }
+    margin-top: 5px;
     & > div {
-      display: inline-block;
-      margin-left: 5px;
-      margin-top: 5px;
+      display: flex;
+      justify-content: flex-end;
+      & > * { margin: 0px 3px; }
     }
     select {
       margin: 0;
-    }
-    .btn {
-      height: 32px;
-      padding-top: 5px;
+      height: 34px;
+      padding-top: 1px;
     }
   }
 
@@ -1962,6 +1956,22 @@ impac-kpi .kpi {
     }
   }
 }
+.analytics .widget-item .content.accounts-expense-weight {
+  [common-time-period-info] {
+    margin-top: 5px;
+  }
+
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -1980,22 +1990,6 @@ impac-kpi .kpi {
 }
 
 
-
-.analytics .widget-item .content.accounts-expense-weight {
-  [common-time-period-info] {
-    margin-top: 5px;
-  }
-
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
 
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
@@ -2034,6 +2028,22 @@ impac-kpi .kpi {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -2063,22 +2073,6 @@ impac-kpi .kpi {
   }
 }
 
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-leaves-balance{
   .employee-name {
     text-align: center;
@@ -2282,16 +2276,16 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2344,6 +2338,30 @@ impac-kpi .kpi {
   }
 }
 
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -2371,30 +2389,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
@@ -2433,6 +2427,22 @@ impac-kpi .kpi {
     margin-bottom: 5px;
   }
 }
+.analytics .widget-item .content.sales-top-customers {
+  .selector {
+    border-bottom: dashed 1px #E6E6E6;
+    padding-bottom: 3px;
+    a { font-weight: normal; }
+    .param-selector { display: inline-block; }
+  }
+  .widget-lines-container {
+    max-height: 235px;
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
+
+    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
+    .row > [class*='col-'] { position: static; }
+  }
+}
+
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -2481,22 +2491,6 @@ impac-kpi .kpi {
     }
   }
 }
-.analytics .widget-item .content.sales-top-customers {
-  .selector {
-    border-bottom: dashed 1px #E6E6E6;
-    padding-bottom: 3px;
-    a { font-weight: normal; }
-    .param-selector { display: inline-block; }
-  }
-  .widget-lines-container {
-    max-height: 235px;
-    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
-
-    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
-    .row > [class*='col-'] { position: static; }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -2532,26 +2526,16 @@ impac-kpi .kpi {
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
-  .buttons {
-    // margin-left: 5px;
-    button.btn.btn-sm {
-      line-height: 1;
-      &.btn-danger {
-        display: none;
-      }
-      &.btn-info {
-        border-radius: 3px;
-      }
-    }
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
   }
 
-  .tooltip-inner {
-    text-transform: none;
-  }
+  .tooltip-inner { text-transform: none; }
 
-  .dropdown-menu > li > div > table {
-    outline: none;
-  }
+  .dropdown-menu > li > div > table { outline: none; }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -2766,18 +2750,7 @@ impac-kpi .kpi {
       position: static;
     }
 
-    .sub-setting {
-      padding: 5px;
-      &.used {
-        border: solid 1px silver;
-        background-color: white;
-      }
-      &.unused {
-        border: solid 1px @impac-widget-sub-bg-color-light;
-        color: silver;
-        button { color: silver; }
-      }
-    }
+    .sub-setting { padding: 5px; }
   }
 }
 
