@@ -44,7 +44,11 @@
       transition: all 0.28s ease-in;
       &.im-primary {
         background: #4c4749;
-        &.disabled { background: #b2b5c1; }
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
         &:hover:not(.disabled) {
           background: black;
         }
