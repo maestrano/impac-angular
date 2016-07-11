@@ -18,6 +18,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'customer'
 
   # Widget specific methods
   # --------------------------------------
@@ -44,6 +46,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index) if index?
@@ -126,6 +129,31 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  sortBy = (data, getElem) ->
+    data.sort (a, b) ->
+      res = if getElem(a) > getElem(b) then 1
+      else if getElem(a) < getElem(b) then -1
+      else 0
+      res *= -1 unless $scope.ascending
+      return res
+
+  sortData = ->
+    if $scope.sortedColumn == 'customer'
+      sortBy(w.content.payables.suppliers, (el) -> el.name )
+      sortBy(w.content.receivables.customers, (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getTotalSum(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getTotalSum(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # <---
 
   # Chart formating function

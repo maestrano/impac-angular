@@ -16,19 +16,21 @@
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
-        <div class="col-md-8 text-left">
+        <div class="col-md-8 text-left sortable-title" ng-click="sort('account')">
           {{widget.content.companies[0].name}} - Accounts classifications
+          <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
-        
-        <div class="col-md-4 text-right">
+
+        <div class="col-md-4 text-right sortable-title" ng-click="sort('total')">
           <div common-time-period-info context="forwardParams" />
+          <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
       </div>
 
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="source in dataSource track by source.label">
         <div class="col-xs-12">
-        
+
           <!-- Statements lines -->
           <div class="row widget-line">
             <div class="col-xs-1" ng-click="toggleCollapsed(source.label)" style="cursor: pointer;">
@@ -62,4 +64,3 @@
     <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
   </div>
 </div>
-

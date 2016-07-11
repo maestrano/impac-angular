@@ -17,6 +17,10 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
     accountingBehaviour: 'bls'
   }
 
+
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -52,6 +56,7 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
                 currency: klass.currency
               }
           }
+      sortData()
 
   $scope.toggleCollapsed = (groupName) ->
     if groupName?
@@ -69,6 +74,31 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
         return false
       else
         return true
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach($scope.dataSource, (sElem) ->
+      if sElem.entries
+        sElem.entries.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.label )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> el.value )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
   # Mini-settings objects
   # handles the saving of collapsed / uncollapsed list groups.
