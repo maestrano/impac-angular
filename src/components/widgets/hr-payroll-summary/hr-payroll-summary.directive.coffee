@@ -154,6 +154,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
 
@@ -207,7 +210,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           currency: 'hide'
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

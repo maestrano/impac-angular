@@ -131,6 +131,13 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
     else
       return false
 
+  $scope.hasElements = ->
+    $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  # <---
+
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()

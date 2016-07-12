@@ -134,6 +134,9 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
   # Chart formating function
