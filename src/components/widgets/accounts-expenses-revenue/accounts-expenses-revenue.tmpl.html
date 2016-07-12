@@ -18,24 +18,25 @@
 
       <div class="chart-container">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-      </div>
-        
-      <div class="legend" ng-if="widget.isHistoryMode">
-        <span ng-hide="isNetProfitDisplayed">
-          <span class="negative2">Expenses</span> -
-          <span class="positive2">Revenue</span>
-        </span>
-        <span ng-show="isNetProfitDisplayed">
-          <strong>Net Profit</strong>
-        </span>
-      </div>
 
-      <div ng-show="widget.isHistoryMode" setting-params-checkboxes options="displayOptions" param="display" parent-widget="widget" deferred="::paramsCheckboxesDeferred"/>
+        <div class="legend" ng-if="widget.isHistoryMode">
+          <span ng-hide="isNetProfitDisplayed">
+            <span class="negative2">Expenses</span> -
+            <span class="positive2">Revenue</span>
+          </span>
+          <span ng-show="isNetProfitDisplayed">
+            <strong>Net Profit</strong>
+          </span>
+        </div>
 
-      <div class="legend" ng-if="!widget.isHistoryMode">
-        <span class="negative2">Expenses: {{getCurrentExpenses() | mnoCurrency : getCurrency()}}</span>
-        </br>
-        <span class="positive2">Revenue: {{getCurrentRevenue() | mnoCurrency : getCurrency()}}</span>
+        <div ng-show="widget.isHistoryMode" setting-params-checkboxes options="displayOptions" param="display" parent-widget="widget" deferred="::paramsCheckboxesDeferred"/>
+
+        <div class="legend" ng-if="!widget.isHistoryMode">
+          <span class="negative2">Expenses: {{getCurrentExpenses() | mnoCurrency : getCurrency()}}</span>
+          </br>
+          <span class="positive2">Revenue: {{getCurrentRevenue() | mnoCurrency : getCurrency()}}</span>
+        </div>
+
       </div>
     </div>
 

@@ -18,6 +18,8 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
     $scope.chartDeferred.promise
   ]
 
+  $scope.chartTitle = "Your sales cycle represents how much time your leads stay set to each status"
+
 
   # Widget specific methods
   # --------------------------------------
@@ -45,17 +47,22 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
     if error.code == 404
       $scope.isDataFound = false
 
+  $scope.getEntityColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.pieData, elem)) if $scope.isDataFound
+
+  getName = (name) ->
+    if name?
+      return name.replace(/_/g, " ")
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      pieData = _.compact _.map $scope.statusOptions, (statusOption) ->
+      $scope.pieData = _.compact _.map $scope.statusOptions, (statusOption) ->
         value = w.content.status_average_durations[statusOption.label]
-
         {
-          label: "#{$filter('titleize')(statusOption.label)}: #{value} #{$scope.unit}",
+          label: "#{$filter('titleize')(getName(statusOption.label))}",
           value: value
         } if statusOption.selected && angular.isDefined(value)
 
@@ -64,7 +71,7 @@ module.controller('WidgetSalesCycleCtrl', ($scope, $q, ChartFormatterSvc, $filte
         tooltipFontSize: 12,
         currency: w.content.unit
       }
-      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      chartData = ChartFormatterSvc.pieChart($scope.pieData, pieOptions)
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)

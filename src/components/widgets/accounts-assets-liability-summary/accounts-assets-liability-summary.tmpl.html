@@ -16,9 +16,9 @@
       <div setting-param-selector parent-widget="widget" param="classification" options="accountsOptions" selected="selectedAccountsOption" class="row param-selector" deferred="::paramSelectorDeferred"/>
       <!---->
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
+      <div class="title" ng-hide="widget.metadata.organization_ids.length==1">{{classification}} repartition</div>
       <div class="legend">
-        <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
-        <div class="title" ng-hide="widget.metadata.organization_ids.length==1">{{classification}} repartition</div>
         <span ng-repeat="valuePair in dataSource">
           <span style="font-weight: bold; color: {{getAccountColor(valuePair)}};">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}
           <br />

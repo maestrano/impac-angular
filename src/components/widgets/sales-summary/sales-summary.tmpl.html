@@ -21,12 +21,17 @@
 
     <div class="chart-container" ng-show="(isDataFound==true)">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      <div class="title">{{widget.content.summary[0].company}} sales</div>
+      <div class="legend">
+        <span ng-repeat="valuePair in pieData">
+          <span style="font-weight: bold; color: {{getEntityColor(valuePair)}};">{{valuePair.label}}</span>: {{valuePair.value | mnoCurrency : getCurrency()}}
+          <br />
+        </span>
+      </div>
     </div>
 
     <div class="data-not-found" ng-show="(isDataFound==false)">
       <div class="message">No data found for this time range<br/> Please select another one</div>
     </div>
-
   </div>
-
 </div>
