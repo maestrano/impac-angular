@@ -16,7 +16,8 @@ module.config(($translateProvider, LOCALES) ->
   # })
 
   # language strategy
-  $translateProvider.useSanitizeValueStrategy('sanitizeParameters')
+  $translateProvider.useSanitizeValueStrategy('escapeParameters')
+  $translateProvider.useMessageFormatInterpolation()
   $translateProvider.useMissingTranslationHandlerLog()
   $translateProvider.preferredLanguage(LOCALES.preferredLanguage)
   $translateProvider.fallbackLanguage(LOCALES.fallbackLanguage)

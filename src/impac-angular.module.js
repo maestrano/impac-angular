@@ -13,6 +13,7 @@ angular.module('maestrano.impac',
     'impac.components',
     // EXTERNAL DEPENDENCIES //
     'ngMessages',
+    'ngMessageFormat',
     'ui.sortable',
     'ui.bootstrap',
     'emguo.poller',
