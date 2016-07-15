@@ -83,10 +83,10 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
 
       initPreset = ->
         if scope.histParams?
-          scope.selectedPreset = _.find(scope.presets, (p) ->
-            _.every _.map(p.value, (v,k) ->
-              scope.histParams[k] == v
-            )
+          # Find if this match an existing preset
+          # TODO: DRY with setting.toMetadata?
+          selectedPreset  = _.find(scope.presets, (p) ->
+            _.every(p.value, (v, k) -> scope.histParams[k] == if angular.isFunction(v) then v(fyEndMonth) else v)
           )
 
           if !scope.selectedPreset? && scope.histParams.time_range? && showSlider()

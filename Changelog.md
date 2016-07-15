@@ -24,6 +24,15 @@
 
 ## Released
 
+### [v1.3.10](https://github.com/maestrano/impac-angular/tree/v1.3.10) (2016-07-15)
+[Full Changelog](https://github.com/maestrano/impac-angular/compare/v1.3.9...v1.3.10)
+
+**Fixed bugs:**
+
+- Fix apply button when date range changes [\#208](https://github.com/maestrano/impac-angular/pull/208) ([alexnoox](https://github.com/alexnoox))
+- Fix Date Preset auto-selection [\#207](https://github.com/maestrano/impac-angular/pull/207) ([ouranos](https://github.com/ouranos))
+
+
 ### v1.3.9 | Week 27
 
 #### Adds

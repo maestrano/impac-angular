@@ -15,7 +15,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       template: '=?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
-    
+
     link: (scope, element) ->
       w = scope.parentWidget
 
@@ -56,12 +56,17 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
       </button>
       """
+      applyHtml = """<button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
+        <i class="fa fa-check"/>
+      </button>
+      """
 
       # First element triggers onUser() when clicked
       scope.template = scope.template.replace(/>/, " ng-click='onUse()'>")
       # Custom attributes (style...) for from and to dates
       scope.template = scope.template.replace(/<from-date([^>]*)>/g, "#{fromDateHtml.replace('ATTRS', '$1')}")
       scope.template = scope.template.replace(/<to-date([^>]*)>/g, "#{toDateHtml.replace('ATTRS', '$1')}")
+      scope.template = scope.template.replace(/<apply([^>]*)>/g, "#{applyHtml.replace('ATTRS', '$1')}")
 
       templatesContainer = element.find('#template-container')
       templatesContainer.html(scope.template).show()
@@ -97,7 +102,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       setting.toMetadata = ->
         return {
-          hist_parameters: 
+          hist_parameters:
             from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
             to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
             period: "RANGE"
@@ -116,7 +121,6 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       scope.showTitle = ->
         element.hasClass('part')
-
 
       w.settings.push(setting)
 
