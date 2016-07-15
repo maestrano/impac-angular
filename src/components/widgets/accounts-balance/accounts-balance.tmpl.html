@@ -4,7 +4,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-account parent-widget="widget" class="part" deferred="::accountBackDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
@@ -14,30 +13,131 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)">
-      <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
+    <div ng-show="(isDataFound==true)" class="row" >
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
-      <!-- All the below divs will remain hidden until an account is selected -->
-      <div ng-show="widget.selectedAccount">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
-
-        <div ng-hide="widget.isHistoryMode">
-          <h3>{{getName()}}</h3>
-          <div class="price">
-             {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
+        <div class="widget-lines-container">
+          <!-- Tab header -->
+          <div class="row widget-line header">
+            <div class="col-xs-8 col-xs-offset-1 sortable-title" ng-click="sort('account')">
+              Account Balance - {{widget.metadata.hist_parameters.period}}
+              <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+            <div class="col-xs-3 text-right sortable-title" ng-click="sort('total')">
+              Total
+              <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
           </div>
-          <div class="currency">{{getCurrency()}}</div>
-        </div>
 
-        <div class="chart-container" ng-show="widget.isHistoryMode">
-          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-          <div class="legend">{{getName()}}</div>
+          <!-- Groups of statements with their accounts -->
+          <div class="row lines-group" ng-repeat="statement in summary" >
+            <div class="col-xs-12">
+
+              <!-- Statements lines -->
+              <div class="row widget-line" style="background-color: {{ getSelectLineColor(statement) }}" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(statement)" style="cursor: pointer;">
+                  <i class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{statement.name | titleize}}</strong>
+                </div>
+                <div class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{ getLastBalance(statement) | mnoCurrency : statement.currency }}</strong>
+                </div>
+              </div>
+
+              <!-- Accounts lines -->
+              <div class="row" collapse="isCollapsed(statement)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(account)" ng-repeat="account in statement.accounts" style="background-color: {{ getSelectLineColor(account) }}" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{account.name}}
+                    </div>
+                    <div class="col-xs-4 text-right">
+                      {{ getLastBalance(account) | mnoCurrency : account.currency }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
-    </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
+
+        <div ng-show="hasElements()">
+
+          <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Account Balance</h4>
+          <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()"/>
+
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+            <div ng-show="selectedElements.length < 2" class="legend">{{selectedElements[0].name | titleize}}</div>
+          </div>
+
+          <div ng-show="selectedElements.length < 2" class="widget-lines-container sheet">
+
+            <!-- Not mobile -->
+            <div class="row">
+              <span ng-repeat="date in dates track by $index" class="hidden-xs">
+                <!-- Separator every 4 items -->
+                <div ng-if="$index % 4 == 0 && $index > 0" class="clearfix dashed"></div>
+
+                <div class="col-sm-3 text-center">
+                  <!-- Date -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12">
+                      {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                    </div>
+                  </div>
+                  <!-- Amount + currency -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12" ng-class="getClassColor(selectedElements[0].balances[$index])">
+                      {{selectedElements[0].balances[$index] | mnoCurrency : selectedElements[0].currency}}
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+
+            <!-- Mobile -->
+            <div ng-repeat="date in dates track by $index" class="row widget-line visible-xs">
+              <!-- Date -->
+              <div class="col-xs-6">
+                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+              </div>
+              <!-- Amount + currency -->
+              <div class="col-xs-6 text-right" ng-class="getClassColor(selectedElements[0].balances[$index])">
+                {{selectedElements[0].balances[$index] | mnoCurrency : selectedElements[0].currency}}
+              </div>
+            </div>
+          </div>
+
+          <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
+            <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
+              <div class="col-xs-7 text-left">
+                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+                {{element.name | titleize}}
+              </div>
+              <div class="col-xs-5 text-right">
+                <i ng-class="getClassColor(getAmount(element))">
+                  {{getLastBalance(element) | mnoCurrency : element.currency}}
+                </i>
+              </div>
+            </div>
+          </div>
+
+        <div ng-hide="hasElements()" class="no-element">
+          Select one or several employee(s) or category(ies) to display the corresponding summary.
+        </div>
+
+      </div>
+
+    </div>
   </div>
 
 </div>
