@@ -12,10 +12,10 @@ var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 module.factory('settings', function () {
   return {
     // Credentials and endpoints
-    mno_url: 'https://uat.maestrano.io',
-    impac_url: 'http://api-impac-uat.maestrano.io',
-    api_key: '',
-    api_secret: '',
+    mno_url: 'http://localhost:3000',
+    impac_url: 'http://localhost:4000',
+    api_key: '0584ec5b081e396768366bf5913e4b4213597d555445ca31f37da018a7820cab',
+    api_secret: '98f97c01-5405-4561-8988-0dd62a978a83',
 
     // Stub widget templates - add new widgets!
     //------------------------------------------------
