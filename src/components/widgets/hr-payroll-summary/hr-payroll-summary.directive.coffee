@@ -37,7 +37,10 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
               foundElem ||= _.find(statement.employees, (employee)->
-                sElem.id == employee.id
+                if employee.id
+                  sElem.id == employee.id
+                else
+                  sElem.name == employee.name
               ) if statement.employees?
             )
 
@@ -154,6 +157,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
 
@@ -207,7 +213,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           currency: 'hide'
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
