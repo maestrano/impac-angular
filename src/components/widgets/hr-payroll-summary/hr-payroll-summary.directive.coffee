@@ -37,7 +37,10 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
               foundElem ||= _.find(statement.employees, (employee)->
-                sElem.id == employee.id
+                if employee.id
+                  sElem.id == employee.id
+                else
+                  sElem.name == employee.name
               ) if statement.employees?
             )
 

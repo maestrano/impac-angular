@@ -33,11 +33,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
           foundElem = w.content.receivables if sElem.name == "aged_receivables" && !foundElem
 
           foundElem = _.find(w.content.payables.suppliers, (supplier)->
-            supplier.id == sElem.id
+            if supplier.id
+              sElem.id == supplier.id
+            else
+              sElem.name == supplier.name
           ) if !foundElem
 
           foundElem = _.find(w.content.receivables.customers, (customer)->
-            customer.id == sElem.id
+            if customer.id
+              sElem.id == customer.id
+            else
+              sElem.name == customer.name
           ) if !foundElem
 
           $scope.selectedElements.push(foundElem) if foundElem

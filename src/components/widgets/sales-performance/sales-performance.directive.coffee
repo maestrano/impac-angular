@@ -39,7 +39,10 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
               foundElem ||= _.find(statement.accounts, (account)->
-                sElem.id == account.id
+                if account.id
+                  sElem.id == account.id
+                else
+                  sElem.name == account.name
               ) if statement.accounts?
             )
 

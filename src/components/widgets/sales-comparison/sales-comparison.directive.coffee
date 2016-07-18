@@ -59,7 +59,10 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
           if !foundElem
             angular.forEach(w.content.sales_comparison, (statement) ->
               foundElem ||= _.find(statement.sales, (sale)->
-                sElem.id == sale.id
+                if sale.id
+                  sElem.id == sale.id
+                else
+                  sElem.name == sale.name
               ) if statement.sales?
             )
 
