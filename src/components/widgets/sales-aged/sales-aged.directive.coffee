@@ -18,7 +18,7 @@ module.controller('WidgetSalesAgedCtrl', ($scope, $q, ChartFormatterSvc, $filter
     $scope.datesPickerDeferred.promise
   ]
 
-  $scope.datesPickerTemplate = "<span><from-date> to <to-date></span>"
+  $scope.datesPickerTemplate = "<span><from-date> to <to-date> <apply></span>"
 
   # Widget specific methods
   # --------------------------------------
