@@ -1,10 +1,10 @@
-<h5>Time period selection</h5>
+<h5 translate>impac.widget.settings.time_period.title</h5>
 <div class="settings time-period" ng-if="timePeriodSetting">
 
   <!-- Time range -->
   <div class="row">
     <div class="col-xs-12">
-      <strong>Time Range:</strong>
+      <strong translate>impac.widget.settings.time_period.time_range</strong>
       <div setting-time-presets parent-widget="timePeriodSetting" deferred="::timePresetsDeferred" on-select="applyPreset(histParams)" presets="presets" on-choose-dates="useDatesPicker()" on-choose-period="useTimeSlider()" hist-params="histParams" reset-promise="resetPreset.promise" />
     </div>
   </div>
@@ -26,15 +26,15 @@
   <!-- Chart interval -->
   <div class="row">
     <div class="col-xs-12">
-      <strong>Chart Interval:</strong>
-      <select ng-model="timePeriodSetting.period" ng-options="titleize(p) for p in periods" ng-change="updateSettings()" />
+      <strong translate>impac.widget.settings.time_period.chart_interval</strong>
+      <select ng-model="timePeriodSetting.period" ng-options="period.value as period.label for period in periods" ng-change="updateSettings()" />
     </div>
   </div>
 
   <!-- Info -->
   <div class="row text-center">
     <div class="col-xs-12">
-      <i>Note: Chart is limited to {{ maxNumberOfPeriods }} intervals</i>
+      <i translate="impac.widget.settings.time_period.chart_note" translate-values="{nbOfPeriods: maxNumberOfPeriods}"></i>
     </div>
   </div>
 </div>
