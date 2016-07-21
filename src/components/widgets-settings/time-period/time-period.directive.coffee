@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -9,7 +9,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       histParams: '=?'
     },
     template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
-    
+
     link: (scope) ->
       w = scope.parentWidget
 
@@ -32,14 +32,26 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       scope.resetPreset = $q.defer()
 
-      scope.periods = [
-        "DAILY"
-        "WEEKLY"
-        "MONTHLY"
-        "QUARTERLY"
-        "YEARLY"
-        # "FYEARLY"
-      ]
+      # translate periods into the current language and add a key
+      $translate(["impac.widget.settings.time_period.period.daily",
+        "impac.widget.settings.time_period.period.weekly",
+        "impac.widget.settings.time_period.period.monthly",
+        "impac.widget.settings.time_period.period.quarterly",
+        "impac.widget.settings.time_period.period.yearly",
+        "impac.widget.settings.time_period.period.days",
+        "impac.widget.settings.time_period.period.weeks",
+        "impac.widget.settings.time_period.period.months",
+        "impac.widget.settings.time_period.period.quarters",
+        "impac.widget.settings.time_period.period.years"]).then(
+        (translations) ->
+          scope.periods = [
+            {label: translations["impac.widget.settings.time_period.period.daily"], plural: translations["impac.widget.settings.time_period.period.days"], value: "DAILY" },
+            {label: translations["impac.widget.settings.time_period.period.weekly"], plural: translations["impac.widget.settings.time_period.period.weeks"], value: "WEEKLY" },
+            {label: translations["impac.widget.settings.time_period.period.monthly"], plural: translations["impac.widget.settings.time_period.period.months"], value: "MONTHLY" },
+            {label: translations["impac.widget.settings.time_period.period.quarterly"], plural: translations["impac.widget.settings.time_period.period.quarters"], value: "QUARTERLY" },
+            {label: translations["impac.widget.settings.time_period.period.yearly"], plural: translations["impac.widget.settings.time_period.period.years"], value: "YEARLY" }
+          ]
+      )
       scope.maxNumberOfPeriods = 20
 
       # If the app has defined custom presets, will be passed to presets directive
@@ -62,7 +74,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         histParams = sourceSetting.toMetadata().hist_parameters if sourceSetting?
         histParams.period = getPeriod()
         histParams.mode = scope.histParams.mode if scope.histParams? && scope.histParams.mode?
-        metadata = 
+        metadata =
           hist_parameters: histParams
 
         return metadata
@@ -94,7 +106,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       initPeriod = (histParams=null)->
         histParams = scope.histParams unless histParams?
-        if histParams? && histParams.period? && _.contains(scope.periods, histParams.period)
+        if histParams? && histParams.period? && _.find(scope.periods, (period) -> period.value == histParams.period)
           scope.timePeriodSetting.period = angular.copy(histParams.period)
         else
           scope.timePeriodSetting.period = "MONTHLY"
@@ -128,8 +140,8 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
             pattern = /([a-z])/
             newLetter = pattern.exec(tr)[1]
             scope.timePeriodSetting.period = angular.copy(_.find(scope.periods, (p) ->
-              p.slice(0,1).toLowerCase() == newLetter
-            ))
+              p.value.slice(0,1).toLowerCase() == newLetter
+            ).value)
             # Update time-range
             scope.timePeriodSetting.timeRange = tr
 
@@ -186,8 +198,9 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
           sourceSetting = getSetting('dates-picker')
           to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
 
-        periodWord = getPeriod().toLowerCase().replace('ly','') + 's'
-        periodWord = 'days' if getPeriod() == 'DAILY'
+#          console.log "THIS IS THE END" + getPeriod()
+        currentPeriod = getPeriod()
+        periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
 
         return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
 

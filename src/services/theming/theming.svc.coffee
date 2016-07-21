@@ -45,8 +45,8 @@ angular
         parentElementId: ''
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
-        mainMessage: 'Data not found'
-        linkMessage: 'Are you missing an app?'
+        mainMessage: 'impac.data_not_found_config.main_message'
+        linkMessage: 'impac.data_not_found_config.link_message'
         linkUrl: '/apps'
         linkTarget: '_blank'
         linkUrlCallback: null
@@ -92,11 +92,11 @@ angular
       widgetSettings:
         histModeChoser:
           currentLabels:
-            pnl: "Total period"
-            bls: "Balance"
-            default: "Current"
-          todayPrefixes: 
-            bls: "Live"
+            pnl: "impac.widget.theming.hist.pnl"
+            bls: "impac.widget.theming.hist.bls"
+            default: "impac.widget.theming.hist.default"
+          todayPrefixes:
+            bls: "impac.widget.theming.hist.bls.live"
         timePeriod:
           showSlider: true
 
