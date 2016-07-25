@@ -3,6 +3,7 @@
   "workspace.title":                              "IMPAC! DEVELOPER WORKSPACE",
   "impac.common.action.cancel":                   "Cancel",
   "impac.common.action.save":                     "Save",
+  "impac.common.action.delete":                   "Delete",
   "impac.common.title.widget.settings.title":     "Widget settings",
   "impac.common.measure.unit.days":               "{QTY, plural, =0{day} one{day} other{days}}",
   "impac.common.measure.unit.percentage":         "%",
@@ -54,6 +55,16 @@
   "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
 
   "impac.widget.settings.organizations.select_companies": "Select Companies",
+
+  "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
+  "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
+  "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
+  "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
+  "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
+  "impac.widget.common.top_buttons.info_popup.delete": "Delete widget",
+  "impac.widget.common.top_buttons.info_popup.edit": "Edit widget",
+  "impac.widget.common.top_buttons.info_popup.refresh": "Refresh widget",
+  "impac.widget.common.top_buttons.info_popup.info": "Widget info",
 
   "impac.widget.common.time_period_info.to":      "As at {dateTo}",
   "impac.widget.common.time_period_info.from_to": "From {dateFrom} to {dateTo}",
