@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-slider',[])
 
-module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) ->
+module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -10,7 +10,7 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
       onUse: '&?'
     },
     template: $templateCache.get('widgets-settings/time-slider.tmpl.html'),
-    
+
     link: (scope) ->
       w = scope.parentWidget
 
@@ -40,18 +40,18 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
         tr = scope.timeRange
         scope.numberOfPeriods = moment().month()
         return scope.numberOfPeriods unless tr?
-          
+
         nPattern = /^-?([0-9]{1,2})[a-z]?$/
         n = nPattern.exec(tr)
         scope.numberOfPeriods = parseInt(n[1]) if (n? && n[1] && parseInt(n[1]))
-        
+
         return scope.numberOfPeriods
 
       initPeriod = ->
         tr = scope.timeRange
         scope.period = "m"
         return "m" unless tr?
-          
+
         pPattern = /^-?[0-9]{0,2}([a-z])$/
         p = pPattern.exec(tr)
         period = _.find(PERIODS, (authPeriod) -> (p? && (p[1] == authPeriod)) )
@@ -96,14 +96,23 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
 
       scope.formatPeriod = ->
         n = getNumberOfPeriods()
-        
-        number = ""
-        word = getPeriodWord()
+        period = getPeriod()
+        # Translate the periods
+        period_translation = 'impac.common.period.period_in_words.last_x_'
+        switch period
+          when "d" then period_translation += "days"
+          when "w" then period_translation += "weeks"
+          when "m" then period_translation += "months"
+          when "q" then period_translation += "quarters"
+          when "y" then period_translation += "years"
+          when "f" then period_translation += "financial_years"
         if n > 1
-          number = "#{n}"
-          word = "#{word}s"
+          $translate(period_translation + '.other', {count: n}).then((translation) -> scope.last_x_period = translation)
+        else
+          $translate(period_translation + '.one').then((translation) -> scope.last_x_period = translation)
+        return
 
-        return [number,word].join(' ')
+      scope.formatPeriod()
 
       scope.formatDate = (aDate) ->
         return aDate.format('Do MMM YYYY')
@@ -125,7 +134,6 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
 
       scope.toDate = ->
         return moment()
-
 
       w.settings.push(setting)
 

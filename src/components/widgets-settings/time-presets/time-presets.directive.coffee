@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-presets',[])
 
-module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, ImpacUtilities, ImpacTheming) ->
+module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, ImpacUtilities, ImpacTheming, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -32,43 +32,63 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
 
         # Default presets
         toDate = moment().format('YYYY-MM-DD')
-        scope.presets ||= [
-          { label: 'Calendar year to date', value:
-              from: moment().startOf('year').format('YYYY-MM-DD')
-              to: toDate,
-              period: 'MONTHLY'
-          }
-          {
-            label: 'Financial year to date', value:
-              from: fyStartDate
-              to: toDate,
-              period: 'MONTHLY'
-          }
-          {
-            label: 'Previous financial year', value:
-              from: prevFyStartDate
-              to: prevFyEndDate,
-              period: 'MONTHLY'
-          }
-          {
-            label: 'Last 6 months', value:
-              time_range: '-6m'
-              to: toDate
-          }
-          {
-            label: 'Last 4 quarters', value:
-              time_range: '-4q'
-              to: toDate
-          }
-          {
-            label: 'Last 4 weeks', value:
-              time_range: '-4w'
-              to: toDate
-          }
-        ]
 
-        scope.presets.unshift({ label: 'Choose period...', value: 'choose-period' }) if angular.isDefined(scope.onChooseDates) && showSlider()
-        scope.presets.unshift({ label: 'Choose dates...', value: 'choose-dates' }) if angular.isDefined(scope.onChooseDates)
+        $translate(['impac.common.period.preset_in_words.calendar_year_to_date',
+                    'impac.common.period.preset_in_words.financial_year_to_date',
+                    'impac.common.period.preset_in_words.previous_financial_year',
+                    'impac.common.period.preset_in_words.last_6_months',
+                    'impac.common.period.preset_in_words.last_4_quarters',
+                    'impac.common.period.preset_in_words.last_4_weeks',
+                    'impac.common.period.preset_in_words.choose_period',
+                    'impac.common.period.preset_in_words.choose_dates']).then(
+          (translations) ->
+            scope.presets ||= [
+              {
+                label: translations['impac.common.period.preset_in_words.calendar_year_to_date']
+                value:
+                  from: moment().startOf('year').format('YYYY-MM-DD')
+                  to: toDate,
+                  period: 'MONTHLY'
+              }
+              {
+                label: translations['impac.common.period.preset_in_words.financial_year_to_date']
+                value:
+                  from: fyStartDate
+                  to: toDate,
+                  period: 'MONTHLY'
+              }
+              {
+                label: translations['impac.common.period.preset_in_words.previous_financial_year']
+                value:
+                  from: prevFyStartDate
+                  to: prevFyEndDate,
+                  period: 'MONTHLY'
+              }
+              {
+                label: translations['impac.common.period.preset_in_words.last_6_months']
+                value:
+                  time_range: '-6m'
+                  to: toDate
+              }
+              {
+                label: translations['impac.common.period.preset_in_words.last_4_quarters']
+                value:
+                  time_range: '-4q'
+                  to: toDate
+              }
+              {
+                label: translations['impac.common.period.preset_in_words.last_4_weeks']
+                value:
+                  time_range: '-4w'
+                  to: toDate
+              }
+            ]
+
+            scope.presets.unshift({ label: translations['impac.common.period.preset_in_words.choose_period'], value: 'choose-period' }) if angular.isDefined(scope.onChooseDates) && showSlider()
+            scope.presets.unshift({ label: translations['impac.common.period.preset_in_words.choose_dates'], value: 'choose-dates' }) if angular.isDefined(scope.onChooseDates)
+
+        )
+
       )
 
       if scope.resetPromise?
