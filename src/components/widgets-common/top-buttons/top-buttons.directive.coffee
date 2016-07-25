@@ -20,6 +20,9 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
         $scope.isDeletePopoverLoading = false
     )
 
+  $scope.toggleDeleteMode = ->
+    $scope.showConfirmDelete = !$scope.showConfirmDelete
+
   $scope.toggleEditMode = ->
     if !w.isLoading
       if w.isEditMode
