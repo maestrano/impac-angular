@@ -53,6 +53,8 @@
   "impac.widget.settings.dates_picker.to": "To",
   "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
 
+  "impac.widget.settings.organizations.select_companies": "Select Companies",
+
   "impac.widget.common.time_period_info.to":      "As at {dateTo}",
   "impac.widget.common.time_period_info.from_to": "From {dateFrom} to {dateTo}",
   "impac.widget.theming.hist.default":            "Current",
