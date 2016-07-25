@@ -16,6 +16,7 @@ module.factory('settings', function () {
     impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: '',
+    org_uid: '', // First organisations if unspecified
 
     // -----------------------------------------------
     // Kpis configurations
@@ -120,7 +121,7 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   // Link core callbacks required for impac-angular lib to run.
   ImpacLinking.linkData({
     organizations: function () {
-      return getOrganizations();
+      return getOrganizations(settings.org_uid);
     },
     user: function () {
       return getUser();
@@ -133,11 +134,14 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     impacTitleLogo: 'assets/impac-logo.png'
   });
 
-  function getOrganizations() {
+  function getOrganizations(orgUid) {
     var deferred = $q.defer();
     getUserData().then(function (user) {
       var orgs = (user.organizations || []);
-      deferred.resolve({ organizations: orgs, currentOrgId: (orgs[0].id || null) });
+      var orga = orgs.find(function(orga) { return orga.uid == orgUid });
+      var orgId = (orga && orga.id) || orgs[0].id || null;
+
+      deferred.resolve({ organizations: orgs, currentOrgId: orgId });
     }, function (err) {
       deferred.reject(err);
     });
