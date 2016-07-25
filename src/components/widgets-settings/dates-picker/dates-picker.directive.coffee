@@ -39,10 +39,10 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       scope.template ||= """
       <div style="display: flex; flex-wrap: wrap;">
         <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
-          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">From</span> <from-date style="flex-grow: 2;">
+          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;" translate>impac.widget.settings.dates_picker.from</span> <from-date style="flex-grow: 2;">
         </div>
         <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
-          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">To</span> <to-date style="flex-grow: 2;">
+          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;" translate>impac.widget.settings.dates_picker.to</span> <to-date style="flex-grow: 2;">
         </div>
       </div>
       """
