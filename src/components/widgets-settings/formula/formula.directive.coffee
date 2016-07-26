@@ -15,9 +15,8 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
   setting.initialize = ->
     if w.metadata? && w.metadata.formula?
       w.formula = w.metadata.formula
-      $timeout () ->
-        evaluateFormula()
-        setting.isInitialized = true
+      evaluateFormula()
+      setting.isInitialized = true
     else
       w.formula = ""
 
@@ -38,6 +37,7 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
     evaluateFormula()
 
   evaluateFormula = ->
+    w.evaluatedFormulaHist = []
     str = angular.copy(w.formula)
     legend = angular.copy(w.formula)
     i=1
@@ -48,15 +48,18 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
       i++
     )
 
-    # Guard against injection
-    if (!str.match(authorized_regex))
-      w.isFormulaCorrect = false
-      w.evaluatedFormula = "invalid expression"
+    w.evaluatedFormula = applyFormula(str)
 
-    try
-      w.evaluatedFormula = eval(str).toFixed(2)
-    catch e
-      w.evaluatedFormula = "invalid expression"
+    if w.selectedAccounts? && firstAcc = w.selectedAccounts[0]
+      for j in [1...firstAcc.balances.length-1] by 1
+        i=1
+        str = angular.copy(w.formula)
+        angular.forEach(w.selectedAccounts, (account) ->
+          balancePattern = "\\{#{i}\\}"
+          str = str.replace(new RegExp(balancePattern, 'g'), " #{account.balances[j]} ")
+          i++
+        )
+        w.evaluatedFormulaHist.push applyFormula(str)
 
     if !w.evaluatedFormula? || w.evaluatedFormula == "invalid expression" || w.evaluatedFormula == "Infinity" || w.evaluatedFormula == "-Infinity"
       w.isFormulaCorrect = false
@@ -65,13 +68,25 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
       w.legend = legend
       w.isFormulaCorrect = true
 
+  applyFormula = (str) ->
+    # Guard against injection
+    if (!str.match(authorized_regex))
+      evaluatedFormula = "invalid expression"
+
+    try
+      evaluatedFormula = eval(str).toFixed(2)
+    catch e
+      evaluatedFormula = "invalid expression"
+
+    return evaluatedFormula
+
   formatFormula = ->
     if !w.formula.match(/\//g) && w.selectedAccounts?
       if firstAcc = w.selectedAccounts[0]
         if currency = firstAcc.currency
           w.evaluatedFormula = $filter('mnoCurrency')(w.evaluatedFormula, currency)
 
-  w.settings.push(setting)
+  # w.settings.push(setting)
 
   # Setting is ready: trigger load content
   # ------------------------------------
