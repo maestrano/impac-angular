@@ -139,6 +139,11 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         return scope.usedSetting
 
       scope.updateSettings = ->
+        if scope.usedSetting == 'time-slider'
+          scope.resetPreset.notify('choose-period')
+        else if scope.usedSetting == 'dates-picker'
+          scope.resetPreset.notify('choose-dates')
+
         updateTimeRangePeriod()
         updateFromDate()
 
@@ -169,12 +174,10 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       scope.useTimeSlider = ->
         scope.usedSetting = 'time-slider'
-        scope.resetPreset.notify('choose-period')
         scope.updateSettings()
 
       scope.useDatesPicker = ->
         scope.usedSetting = 'dates-picker'
-        scope.resetPreset.notify('choose-dates')
         scope.updateSettings()
 
       scope.getMinDate = (toDate=undefined) ->
