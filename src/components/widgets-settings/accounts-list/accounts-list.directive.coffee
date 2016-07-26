@@ -33,9 +33,8 @@ module.controller('SettingAccountsListCtrl', ($scope, $timeout, ImpacWidgetsSvc)
 
     if w.content? && !_.isEmpty(w.content.complete_list)
       w.remainingAccounts = angular.copy(w.content.complete_list)
-      $timeout () ->
-        restoreSavedAccounts()
-        setting.isInitialized = true
+      restoreSavedAccounts()
+      setting.isInitialized = true
 
   setting.toMetadata = ->
     return { accounts_list: _.map(w.selectedAccounts, ((acc) -> acc.uid)) } if setting.isInitialized
