@@ -1,25 +1,36 @@
 <div class="top-buttons">
   <div class="top-buttons-wrapper">
 
-    <button class="btn top-button btn-info" ng-if="hasInfo()" ng-click="onToggleInfoPanel()">
-      <i class="fa fa-info-circle"></i>
-      <span class="text-hide">Widget info</span>
+    <div ng-hide="isInfoPanelDisplayed">
+
+      <button class="btn top-button btn-info" ng-if="hasInfo()" ng-click="onToggleInfoPanel()">
+        <i class="fa fa-info-circle"></i>
+        <span class="text-hide">Widget info</span>
+      </button>
+
+
+      <button class="btn top-button btn-refresh" ng-click="onRefresh({refreshCache: true})">
+        <i class="fa fa-refresh"></i>
+        <span class="text-hide">Refresh widget</span>
+      </button>
+
+      <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-show="parentWidget.hasEditAbility" ng-class="{'edit-mode': parentWidget.isEditMode}">
+        <i class="fa fa-cog fa-lg"></i>
+        <span class="text-hide">Edit widget</span>
+      </button>
+
+      <button class="btn top-button btn-close" ng-click="showConfirmDelete = !showConfirmDelete" ng-show="parentWidget.hasDeleteAbility">
+        <i class="fa fa-times-circle-o fa-lg"></i>
+        <span class="text-hide">Delete widget</span>
+      </button>
+
+    </div>
+
+    <button class="btn top-button btn-close-info" ng-click="onToggleInfoPanel()" ng-show="isInfoPanelDisplayed" >
+      <i class="fa fa-times-circle"></i>
+      <span class="text-hide">Close info</span>
     </button>
 
-    <button class="btn top-button btn-refresh" ng-click="onRefresh({refreshCache: true})">
-      <i class="fa fa-refresh"></i>
-      <span class="text-hide">Refresh widget</span>
-    </button>
-
-    <button class="btn top-button btn-edit" ng-click="toggleEditMode()" ng-show="parentWidget.hasEditAbility" ng-class="{'edit-mode': parentWidget.isEditMode}">
-      <i class="fa fa-cog fa-lg"></i>
-      <span class="text-hide">Edit widget</span>
-    </button>
-
-    <button class="btn top-button btn-close" ng-click="showConfirmDelete = !showConfirmDelete" ng-show="parentWidget.hasDeleteAbility">
-      <i class="fa fa-times-circle-o fa-lg"></i>
-      <span class="text-hide">Delete widget</span>
-    </button>
   </div>
 
   <div class="confirm-delete-popover" ng-show="showConfirmDelete">

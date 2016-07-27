@@ -8,4 +8,19 @@
   .row.astericks-info {
     margin-top: 15px;
   }
+
+  .options {
+    width: 200px;
+    margin: auto;
+    padding-bottom: 8px;
+    border-bottom: solid 1px #e6e6e6;
+    .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+    a {
+      .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+      text-transform: @impac-widget-hist-text-transform;
+      &.active {
+        color: @impac-widget-link-color;
+      }
+    }
+  }
 }

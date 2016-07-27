@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $q, $templateCache, $filter, ImpacWidgetsSvc, ChartFormatterSvc) ->
 
   w = $scope.widget
 
@@ -9,11 +9,17 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
   $scope.orgDeferred = $q.defer()
   $scope.accountsListDeferred = $q.defer()
   $scope.formulaDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.accountsListDeferred.promise
     $scope.formulaDeferred.promise
+    $scope.timePeriodDeferred
+    $scope.histModeDeferred.promise
+    $scope.chartDeferred.promise
   ]
 
 
@@ -64,7 +70,6 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     w.formula = angular.copy(newFormula)
     w.moveAccountToAnotherList(account,w.selectedAccounts,w.remainingAccounts,false)
 
-
   # Modal management
   # --------------------------------------
   $scope.formulaModal = $scope.$new()
@@ -90,27 +95,54 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
         $scope.initSettings()
     )
 
-  # Reload the accounts lists on organizations list change
-  $scope.reloadAccountsLists = (orgs) ->
-    # Refresh the settings only if some orgs are selected
-    if orgs? && _.some(_.values(orgs))
-      ImpacWidgetsSvc.updateWidgetSettings(w)
-
   $scope.formulaModal.cancel = ->
     $scope.initSettings()
     $scope.formulaModal.close()
 
   $scope.formulaModal.proceed = ->
+    w.format()
     ImpacWidgetsSvc.updateWidgetSettings(w,false)
     $scope.formulaModal.close()
 
   $scope.formulaModal.close = ->
     $scope.formulaModal.instance.close()
 
+  # Reload the accounts lists on organizations list change
+  $scope.reloadAccountsLists = (orgs) ->
+    # Refresh the settings only if some orgs are selected
+    if orgs? && _.some(_.values(orgs))
+      ImpacWidgetsSvc.updateWidgetSettings(w)
+
   # Open the modal on toggleEditMode()
   $scope.$watch (-> w.isEditMode), (result, prev) ->
     $scope.formulaModal.open() if result && !prev
 
+  # Chart formating function
+  # --------------------------------------
+  $scope.drawTrigger = $q.defer()
+  w.format = ->
+    if $scope.isDataFound && w.isHistoryMode
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      dates = _.map w.content.dates, (date) ->
+        $filter('mnoDate')(date, period)
+
+      all_values_are_positive = true
+      angular.forEach(w.selectedAccounts, (acc) ->
+        angular.forEach(acc.balances, (balance) ->
+          all_values_are_positive &&= balance >= 0
+        )
+      )
+      lineData = [{ title: '', labels: dates, values: w.evaluatedFormulaHist }]
+      lineOptions = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false,
+        # currency: ""
+      }
+      chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
+
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

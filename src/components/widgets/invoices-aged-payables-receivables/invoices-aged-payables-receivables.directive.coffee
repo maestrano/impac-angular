@@ -18,6 +18,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'customer'
 
   # Widget specific methods
   # --------------------------------------
@@ -25,6 +27,10 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     if $scope.isDataFound = angular.isDefined(w.content) && (!_.isEmpty(w.content.payables) || !_.isEmpty(w.content.receivables)) && !_.isEmpty(w.content.dates)
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
+      $scope.isCumulativeMode = if angular.isDefined(w.metadata.isCumulativeMode)
+        w.metadata.isCumulativeMode
+      else
+        true
 
       if w.metadata.selectedElements
         $scope.selectedElements = []
@@ -33,17 +39,24 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
           foundElem = w.content.receivables if sElem.name == "aged_receivables" && !foundElem
 
           foundElem = _.find(w.content.payables.suppliers, (supplier)->
-            supplier.id == sElem.id
+            if supplier.id
+              sElem.id == supplier.id
+            else
+              sElem.name == supplier.name
           ) if !foundElem
 
           foundElem = _.find(w.content.receivables.customers, (customer)->
-            customer.id == sElem.id
+            if customer.id
+              sElem.id == customer.id
+            else
+              sElem.name == customer.name
           ) if !foundElem
 
           $scope.selectedElements.push(foundElem) if foundElem
         )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index) if index?
@@ -68,6 +81,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return "current #{period}"
     else return "current month"
 
+  $scope.getOldestInvoice = (element) ->
+    idx = _.findIndex(element.totals, (invoice, index) ->
+      return index if invoice > 0
+    )
+    return w.content.dates[idx]
+
+  $scope.toggleChartMode = (mode) ->
+    return if ($scope.isCumulativeMode && mode == 'cumulative') || (!$scope.isCumulativeMode && mode =='perMonth')
+    $scope.isCumulativeMode = !$scope.isCumulativeMode
+    w.format()
+    ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -126,6 +150,36 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  sortBy = (data, getElem) ->
+    data.sort (a, b) ->
+      res = if getElem(a) > getElem(b) then 1
+      else if getElem(a) < getElem(b) then -1
+      else 0
+      res *= -1 unless $scope.ascending
+      return res
+
+  sortData = ->
+    if $scope.sortedColumn == 'customer'
+      sortBy(w.content.payables.suppliers, (el) -> el.name )
+      sortBy(w.content.receivables.customers, (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getTotalSum(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getTotalSum(el) )
+    else if $scope.sortedColumn == 'invoice'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getOldestInvoice(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getOldestInvoice(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
   # Chart formating function
@@ -145,7 +199,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)
-        inputData.push({title: data.name, labels: dates, values: data.totals})
+
+        values = if $scope.isCumulativeMode
+          cumulative_totals = []
+          sElem.totals.reduce((a,b,i) ->
+            cumulative_totals[i] = a+b
+          , 0)
+          cumulative_totals
+        else
+          data.totals
+
+        inputData.push({title: data.name, labels: dates, values: values})
 
         angular.forEach(data.totals, (value) ->
           all_values_are_positive &&= value >= 0
@@ -176,6 +240,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   w.settings.push(unCollapsedSetting)
 
+
   selectedElementsSetting = {}
   selectedElementsSetting.initialized = false
 
@@ -187,6 +252,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   w.settings.push(selectedElementsSetting)
 
+
+  cumulativeModeSetting = {}
+  cumulativeModeSetting.initialized = false
+
+  cumulativeModeSetting.initialize = ->
+    cumulativeModeSetting.initialized = true
+
+  cumulativeModeSetting.toMetadata = ->
+    {isCumulativeMode: $scope.isCumulativeMode}
+
+  w.settings.push(cumulativeModeSetting)
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
