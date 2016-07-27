@@ -10,12 +10,14 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.chartModeDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
+    $scope.chartModeDeferred.promise
   ]
 
   $scope.ascending = true
@@ -189,7 +191,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)
-        inputData.push({title: data.name, labels: dates, values: data.totals})
+
+        values = if w.isCumulativeMode
+          cumulative_totals = []
+          sElem.totals.reduce((a,b,i) ->
+            cumulative_totals[i] = a+b
+          , 0)
+          cumulative_totals
+        else
+          data.totals
+
+        inputData.push({title: data.name, labels: dates, values: values})
 
         angular.forEach(data.totals, (value) ->
           all_values_are_positive &&= value >= 0
@@ -219,6 +231,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     {unCollapsed: $scope.unCollapsed}
 
   w.settings.push(unCollapsedSetting)
+
 
   selectedElementsSetting = {}
   selectedElementsSetting.initialized = false

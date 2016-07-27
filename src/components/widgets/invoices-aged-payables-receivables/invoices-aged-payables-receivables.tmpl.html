@@ -119,6 +119,7 @@
           <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
           <div class="chart-container">
+            <div setting-chart-mode parent-widget="widget" deferred="::chartModeDeferred" on-toggle="widget.format()"/>
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
           </div>
 
