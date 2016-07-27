@@ -119,6 +119,10 @@
           <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
           <div class="chart-container">
+            <div align="center" class="options">
+              <a ng-click="toggleChartMode('cumulative')" ng-class="isCumulativeMode ? 'active' : 'inactive'">Cumulative</a>
+              <a ng-click="toggleChartMode('perMonth')" ng-class="!isCumulativeMode ? 'active' : 'inactive'">Per month </a>
+            </div>
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
           </div>
 

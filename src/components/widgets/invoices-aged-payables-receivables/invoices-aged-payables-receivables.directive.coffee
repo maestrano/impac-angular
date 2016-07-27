@@ -27,6 +27,10 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     if $scope.isDataFound = angular.isDefined(w.content) && (!_.isEmpty(w.content.payables) || !_.isEmpty(w.content.receivables)) && !_.isEmpty(w.content.dates)
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
+      $scope.isCumulativeMode = if angular.isDefined(w.metadata.isCumulativeMode)
+        w.metadata.isCumulativeMode
+      else
+        true
 
       if w.metadata.selectedElements
         $scope.selectedElements = []
@@ -82,6 +86,12 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return index if invoice > 0
     )
     return w.content.dates[idx]
+
+  $scope.toggleChartMode = (mode) ->
+    return if ($scope.isCumulativeMode && mode == 'cumulative') || (!$scope.isCumulativeMode && mode =='perMonth')
+    $scope.isCumulativeMode = !$scope.isCumulativeMode
+    w.format()
+    ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -189,7 +199,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)
-        inputData.push({title: data.name, labels: dates, values: data.totals})
+
+        values = if $scope.isCumulativeMode
+          cumulative_totals = []
+          sElem.totals.reduce((a,b,i) ->
+            cumulative_totals[i] = a+b
+          , 0)
+          cumulative_totals
+        else
+          data.totals
+
+        inputData.push({title: data.name, labels: dates, values: values})
 
         angular.forEach(data.totals, (value) ->
           all_values_are_positive &&= value >= 0
@@ -220,6 +240,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   w.settings.push(unCollapsedSetting)
 
+
   selectedElementsSetting = {}
   selectedElementsSetting.initialized = false
 
@@ -231,6 +252,17 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   w.settings.push(selectedElementsSetting)
 
+
+  cumulativeModeSetting = {}
+  cumulativeModeSetting.initialized = false
+
+  cumulativeModeSetting.initialize = ->
+    cumulativeModeSetting.initialized = true
+
+  cumulativeModeSetting.toMetadata = ->
+    {isCumulativeMode: $scope.isCumulativeMode}
+
+  w.settings.push(cumulativeModeSetting)
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
