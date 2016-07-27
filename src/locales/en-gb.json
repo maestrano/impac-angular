@@ -72,7 +72,6 @@
   "impac.widget.common.top_buttons.info_popup.info": "Widget info",
   "impac.widget.common.time_period_info.to":      "As at {dateTo}",
   "impac.widget.common.time_period_info.from_to": "From {dateFrom} to {dateTo}",
-
   "impac.widget.theming.hist.default":            "Current",
   "impac.widget.theming.hist.default.live":       "@:impac.widget.theming.hist.default",
   "impac.widget.theming.hist.bls":                "Balance",
@@ -118,8 +117,10 @@
   "impac.widget.acc_ass_vs_liab.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.acc_ass_vs_liab.save":            "@:impac.common.action.save",
   "impac.widget.acc_ass_vs_liab.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_vs_liab.asset":           "{QTY, select, singular{ Asset} other{ Assets}}",
-  "impac.widget.acc_ass_vs_liab.liability":       "{QTY, select, singular{ Liability} other{ Liabilities}}",
+  "impac.widget.acc_ass_vs_liab.asset.one":      "@:impac.common.term.accounting.asset.one",
+  "impac.widget.acc_ass_vs_liab.asset.many":      "@:impac.common.term.accounting.asset.many",
+  "impac.widget.acc_ass_vs_liab.liability.many":  "@:impac.common.term.accounting.liability.many",
+  "impac.widget.acc_ass_vs_liab.liability.one":  "@:impac.common.term.accounting.liability.one",
 
   "impac.widget.account_balance.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.account_balance.save":            "@:impac.common.action.save",
