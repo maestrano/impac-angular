@@ -1,6 +1,6 @@
-module = angular.module('impac.components.widgets.hr-payroll-summary',[])
+module = angular.module('impac.components.widgets.hr-time-summary',[])
 
-module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetHrTimeSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 
@@ -62,9 +62,8 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getName = (element) ->
     if element? && element.name?
-      return "Total Superannuation Accruals" if element.name == "total_super"
-      return "Total Reimbursements" if element.name == "total_reimbursement"
-      return "Total Taxes" if element.name == "total_tax"
+      return "Total Leaves Accruals" if element.name == "total_leaves"
+      return "Total Time Off" if element.name == "total_timeoff"
       return element.name.replace(/_/g, " ")
 
   $scope.getTrackedField = ->
@@ -246,9 +245,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   $scope.widgetDeferred.resolve(settingsPromises)
 )
 
-module.directive('widgetHrPayrollSummary', ->
+module.directive('widgetHrTimeSummary', ->
   return {
     restrict: 'A',
-    controller: 'WidgetHrPayrollSummaryCtrl'
+    controller: 'WidgetHrTimeSummaryCtrl'
   }
 )

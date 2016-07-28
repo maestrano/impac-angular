@@ -1,0 +1,161 @@
+<div widget-hr-time-summary>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+
+    <div ng-show="(isDataFound==true)" class="row" >
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
+
+        <div class="widget-lines-container">
+
+          <!-- Tab header -->
+          <div class="row widget-line header">
+            <div class="col-xs-11 col-xs-offset-1">Time Summary - {{widget.metadata.hist_parameters.period}}</div>
+          </div>
+
+          <!-- Groups of statements with their accounts -->
+          <div class="row lines-group" ng-repeat="statement in widget.content.summary" >
+            <div class="col-xs-12">
+
+              <!-- Statements lines -->
+              <div class="row widget-line" style="background-color: {{ getSelectLineColor(statement) }}" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
+                  <i ng-show="(statement.employees && statement.employees.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getName(statement) | titleize}}</strong>
+                </div>
+                <div class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
+                </div>
+              </div>
+
+              <!-- Accounts lines -->
+              <div class="row" collapse="isCollapsed(statement)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(employee)" ng-repeat="employee in statement.employees" style="background-color: {{ getSelectLineColor(employee) }}" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{employee.name}}
+                    </div>
+                    <div class="col-xs-4 text-right">
+                      {{getLastValue(employee) | mnoCurrency : employee.currency}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
+
+        <div ng-show="hasElements()">
+
+          <h4>{{(widget.content.hist_parameters.period || "Monthly") | titleize}} Time Summary</h4>
+          <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()"/>
+
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+            <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
+          </div>
+
+          <div ng-show="selectedElements.length < 2" class="widget-lines-container">
+
+            <div ng-show="getTrackedField()" class="row widget-line header">
+              <div class="col-xs-12">{{getTrackedField()}}</div>
+            </div>
+
+            <!-- Not mobile -->
+            <div class="row">
+              <span ng-repeat="date in widget.content.dates track by $index" class="hidden-xs">
+                <!-- Separator every 4 items -->
+                <div ng-if="$index % 4 == 0 && $index > 0" class="clearfix dashed"></div>
+
+                <div class="col-sm-3 text-center">
+                  <!-- Date -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12">
+                      {{formatDate(date)}}
+                    </div>
+                  </div>
+                  <!-- Amount + currency -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                      {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+
+            <!-- Mobile -->
+            <div ng-repeat="date in widget.content.dates track by $index" class="row widget-line visible-xs">
+              <!-- Date -->
+              <div class="col-xs-6">
+                {{formatDate(date)}}
+              </div>
+              <!-- Amount + currency -->
+              <div class="col-xs-6 text-right" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+              </div>
+            </div>
+          </div>
+
+          <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
+
+            <div class="row widget-line header">
+              <div class="col-md-12">
+                <span ng-if="getTrackedField()">
+                  {{getTrackedField()}} -
+                </span>
+                <span ng-if="widget.isHistoryMode">
+                  From {{widget.content.dates[0] | date : "MMM-d"}} to {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}
+                </span>
+                <span ng-if="!widget.isHistoryMode">
+                  {{getPeriod()}}
+                </span>
+              </div>
+            </div>
+
+            <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
+              <div class="col-xs-7">
+                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+                {{getName(element) | titleize}}
+              </div>
+              <div class="col-xs-5 text-right">
+                <span ng-if="widget.isHistoryMode">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>
+                <span ng-if="!widget.isHistoryMode">{{getLastValue(element) | mnoCurrency : element.currency}}</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div ng-hide="hasElements()" class="no-element">
+          Select one or several employee(s) or category(ies) to display the corresponding summary.
+        </div>
+
+      </div>
+
+    </div>
+
+    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="widget.category" />
+  </div>
+
+</div>
