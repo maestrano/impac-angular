@@ -1,7 +1,7 @@
 <div class="settings attach-kpis">
 
   <div class="attach-kpi">
-    <h5>Attach a KPI</h5>
+    <h5>Attach an Alert</h5>
     <form name="attachKpiForm" class='attach-kpi-form'>
       <!-- <div class="row nomargin">
         <select class="form-control input-sm" ng-model="kpi.endpoint" ng-options="kpi.endpoint as formatKpiName(kpi.endpoint) for kpi in availableKpis" ng-change="selectKpi()"></select>
@@ -36,7 +36,7 @@
   </div>
 
   <div class="list-group attached-kpis" ng-show="attachedKpis.length">
-    <h5>Existing KPIs</h5>
+    <h5>Attached Alerts</h5>
     <div class="list-group-item clearfix attached-kpi" ng-repeat="kpi in attachedKpis track by $index">
       <div class="attached-kpi-name">Keep {{formatAttachedKpiTitle(kpi) | titleize}}</div>
       <div class="pull-right actions">
