@@ -1,23 +1,19 @@
 <div widget-accounts-balance-sheet>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_balance_sheets.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_balance_sheets.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_balance_sheets.save</button>
     </div>
   </div>
 
   <div ng-hide="widget.isEditMode">
 
-    <div class="no-data-block" ng-show="(isDataFound==false)">
-      No balance sheet can be generated between {{fromDate}} and {{toDate}}
-      <br />
-      Please select another period
-    </div>
+    <div class="no-data-block" ng-show="(isDataFound==false)" translate="impac.widget.account_balance_sheets.not_found" translate-values="{fromDate: fromDate, toDate: toDate}"></div>
 
     <!-- Tab header -->
     <!-- TODO: review widget-lines-container scrolling -->
@@ -72,20 +68,20 @@
               <i class="fa" ng-class="isCollapsed(category) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
             </div>
             <div class="col-sm-5 col-xs-11 text-left">
-              <strong>{{category | titleize}}</strong>
+              <strong>{{category.label}}</strong>
             </div>
             <div class="col-sm-3 col-xs-6 text-right">
-              <strong>{{widget.content.summary[category].totals[1] | mnoCurrency : widget.content.summary[category].currency}}</strong>
+              <strong>{{widget.content.summary[category.key].totals[1] | mnoCurrency : widget.content.summary[category.key].currency}}</strong>
             </div>
             <div class="col-sm-3 col-xs-6 text-right">
-              <strong>{{widget.content.summary[category].totals[0] | mnoCurrency : widget.content.summary[category].currency}}</strong>
+              <strong>{{widget.content.summary[category.key].totals[0] | mnoCurrency : widget.content.summary[category.key].currency}}</strong>
             </div>
           </div>
 
           <!-- Accounts lines -->
           <div class="row" collapse="isCollapsed(category)">
             <div class="col-xs-12">
-              <div class="row widget-line" ng-repeat="account in widget.content.summary[category].accounts" >
+              <div class="row widget-line" ng-repeat="account in widget.content.summary[category.key].accounts" >
                 <div class="col-sm-5 col-xs-11 col-xs-offset-1 text-left">
                   {{account.name | titleize}}
                 </div>
