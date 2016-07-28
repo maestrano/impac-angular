@@ -1,14 +1,14 @@
 <div widget-accounts-cash-summary>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_cash_smry.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_cash_smry.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_cash_smry.save</button>
     </div>
   </div>
 
@@ -22,22 +22,22 @@
         <div class="widget-lines-container">
         <!-- Tab header -->
           <div class="row widget-line header">
-            <div class="col-xs-5 col-xs-offset-1">Cash flow</div>
+            <div class="col-xs-5 col-xs-offset-1" translate>impac.widget.account_cash_smry.cash_flow</div>
             <div class="col-xs-3 text-right">{{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
-            <div class="col-xs-3 text-right">vs {{getPrevDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
+            <div class="col-xs-3 text-right">{{'impac.widget.account_cash_smry.vs' | translate}}{{getPrevDate() | mnoDate : widget.metadata.hist_parameters.period}}</div>
           </div>
 
           <!-- Groups of statements with their accounts -->
           <div class="row lines-group" ng-repeat="statement in widget.content.summary" ng-class="{cash: statement.name.indexOf('cash')>0}" >
             <div class="col-xs-12">
-            
+
               <!-- Statements lines -->
               <div class="row widget-line" ng-class="{selected: isSelected(statement)}" >
                 <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
                   <i ng-show="(statement.accounts && statement.accounts.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'"/>
                 </div>
                 <div class="col-xs-5" ng-click="toggleSelectedElement(statement)">
-                  <strong>{{getName(statement) | titleize}}</strong>
+                  <strong>{{statement.label | titleize}}</strong>
                 </div>
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(statement)">
                   <strong>{{getLastValue(statement) | mnoCurrency : statement.currency : false}}</strong>
@@ -63,7 +63,7 @@
                   </div>
                 </div>
               </div>
-          
+
             </div>
           </div>
 
@@ -74,11 +74,11 @@
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
 
         <div ng-show="selectedElement">
-          <h4>{{getName(selectedElement) | titleize}}</h4>
+          <h4>{{(selectedElement.label | titleize) || selectedElement.name}}</h4>
 
           <div class="chart-container">
             <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-            <div class="legend">{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Cash Flow</div>
+            <div class="legend">{{::widget.metadata.hist_parameters.period_translation}}</div>
           </div>
 
           <div class="widget-lines-container">
@@ -127,12 +127,12 @@
                 {{formatVariance(selectedElement.variances[$index])}}
               </div>
             </div>
-            
+
           </div>
         </div>
 
-        <div ng-hide="selectedElement" class="no-element">
-          Select an account or an account type to display the corresponding cash evolution.
+        <div ng-hide="selectedElement" class="no-element" translate>
+          impac.widget.account_cash_smry.select.description
         </div>
       </div>
 
