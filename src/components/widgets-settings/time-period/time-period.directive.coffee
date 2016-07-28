@@ -45,11 +45,11 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         "impac.widget.settings.time_period.period.years"]).then(
         (translations) ->
           scope.periods = [
-            {label: translations["impac.widget.settings.time_period.period.daily"], plural: translations["impac.widget.settings.time_period.period.days"], value: "DAILY" },
-            {label: translations["impac.widget.settings.time_period.period.weekly"], plural: translations["impac.widget.settings.time_period.period.weeks"], value: "WEEKLY" },
-            {label: translations["impac.widget.settings.time_period.period.monthly"], plural: translations["impac.widget.settings.time_period.period.months"], value: "MONTHLY" },
-            {label: translations["impac.widget.settings.time_period.period.quarterly"], plural: translations["impac.widget.settings.time_period.period.quarters"], value: "QUARTERLY" },
-            {label: translations["impac.widget.settings.time_period.period.yearly"], plural: translations["impac.widget.settings.time_period.period.years"], value: "YEARLY" }
+            {label: translations["impac.widget.settings.time_period.period.daily"], plural: "days", value: "DAILY" },
+            {label: translations["impac.widget.settings.time_period.period.weekly"], plural: "weeks", value: "WEEKLY" },
+            {label: translations["impac.widget.settings.time_period.period.monthly"], plural: "months", value: "MONTHLY" },
+            {label: translations["impac.widget.settings.time_period.period.quarterly"], plural: "quarters", value: "QUARTERLY" },
+            {label: translations["impac.widget.settings.time_period.period.yearly"], plural: "years", value: "YEARLY" }
           ]
       )
       scope.maxNumberOfPeriods = 20
@@ -110,7 +110,6 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
           scope.timePeriodSetting.period = angular.copy(histParams.period)
         else
           scope.timePeriodSetting.period = "MONTHLY"
-
         return scope.timePeriodSetting.period
 
       initUsedSetting = (histParams=null) ->
@@ -201,7 +200,6 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 #          console.log "THIS IS THE END" + getPeriod()
         currentPeriod = getPeriod()
         periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
-
         return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
 
 
