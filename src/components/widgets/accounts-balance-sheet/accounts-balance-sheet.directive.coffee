@@ -90,13 +90,13 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
 
   translateCategories = (categories) ->
     _.map categories, (category) ->
-        $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
-          (translation) ->
-            $scope.categories.push({label: translation, key: category})
-          (translationId) ->  # If there is no translation, keep the original
-            console.log translationId
-            $scope.categories.push({label: category.toLowerCase(), key: category})
-        )
+      $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
+        (translation) ->
+          $scope.categories.push({label: translation, key: category})
+
+        (translationId) ->  # If there is no translation, keep the original
+          $scope.categories.push({label: category.toLowerCase(), key: category})
+      )
 
 
   # Mini-settings objects
