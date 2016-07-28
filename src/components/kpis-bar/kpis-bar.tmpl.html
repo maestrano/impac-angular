@@ -45,8 +45,7 @@
     <div class="col-xs-12 col-sm-12">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
-          <div ng-repeat="kpi in kpis track by kpi.id">
-            <div impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list" />
+          <div ng-repeat="kpi in kpis track by kpi.id" impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list">
           </div>
         </div>
         <div ng-show="isAddingKpi" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
