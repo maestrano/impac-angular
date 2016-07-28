@@ -1,6 +1,6 @@
-module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
+module = angular.module('impac.components.widgets.hr-time-summary',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetHrTimeSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 
@@ -9,41 +9,23 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.orgDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
-  $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
+    $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
-    $scope.paramSelectorDeferred.promise
   ]
 
-  setAmountDisplayed = ->
-    $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
-      w.metadata && o.value == w.metadata.amount_displayed
-    ) || $scope.amountDisplayedOptions[1])
-
-  $scope.amountDisplayedOptions = [
-    {label: 'Last period', value: 'last'},
-    {label: 'Total for period', value: 'total'},
-  ]
-  setAmountDisplayed()
 
   # Widget specific methods
-  # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
 
-      $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
-
-      firstDate = $filter('mnoDate')($scope.dates[0], getPeriod())
-      lastDate = $filter('mnoDate')($scope.getLastDate(), getPeriod())
-      $scope.amountDisplayedOptions[0].label = lastDate
-      $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
-      setAmountDisplayed()
 
       if w.metadata.selectedElements
         $scope.selectedElements = []
@@ -54,12 +36,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
-              foundElem ||= _.find(statement.accounts, (account)->
-                if account.id
-                  sElem.id == account.id
+              foundElem ||= _.find(statement.employees, (employee)->
+                if employee.id
+                  sElem.id == employee.id
                 else
-                  sElem.name == account.name
-              ) if statement.accounts?
+                  sElem.name == employee.name
+              ) if statement.employees?
             )
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -70,41 +52,50 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
 
-  $scope.getLastDate = ->
-    $scope.dates[$scope.dates.length-1] if $scope.dates?
+  $scope.getLastValue = (element) ->
+    element.totals[element.totals.length - 2] if element.totals?
 
-  $scope.getPrevDate = ->
-    $scope.dates[$scope.dates.length-2] if $scope.dates?
-
-  getPeriod = ->
-    if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?
-      w.metadata.hist_parameters.period
-    else
-      'MONTHLY'
-
-  getLastAmount = (element) ->
-    _.last(element.totals) if element.totals?
-
-  getTotalAmount = (element) ->
-    _.sum(element.totals) if element.totals?
-
-  $scope.getAmount = (element) ->
-    switch $scope.amountDisplayed.value
-      when 'total'
-        getTotalAmount(element)
-      else
-        getLastAmount(element)
-
-  $scope.getClassColor = (aTotal) ->
-    if parseInt(aTotal) > 0
-      return 'positive'
-    else if parseInt(aTotal) < 0
-      return 'negative'
-    else
-      return null
+  $scope.getTotalSum = (element) ->
+    _.reduce(element.totals, (memo, num) ->
+      memo + num
+    , 0) if element.totals?
 
   $scope.getName = (element) ->
-    element.name.replace(/_/g, " ") if element? && element.name?
+    if element? && element.name?
+      return "Total Leaves Accruals" if element.name == "total_leaves"
+      return "Total Time Off" if element.name == "total_timeoff"
+      return element.name.replace(/_/g, " ")
+
+  $scope.getTrackedField = ->
+    if !_.isEmpty($scope.selectedElements) && $scope.selectedElements[0].id?
+      field = $scope.selectedElements[0].id.split('-')[0]
+      allFieldsEquals = true
+      angular.forEach($scope.selectedElements, (element)->
+        allFieldsEquals &&= (element.id && field == element.id.split('-')[0])
+      )
+
+      if allFieldsEquals
+        return $scope.getName({name: field})
+      else
+        return null
+
+  $scope.formatDate = (date) ->
+    if w.metadata? && w.metadata.hist_parameters?
+      switch w.metadata.hist_parameters.period
+        when 'DAILY'
+          return $filter('date')(date, 'dd-MMM')
+        when 'WEEKLY'
+          return $filter('date')(date, 'dd-MMM')
+        when 'MONTHLY'
+          return $filter('date')(date, 'MMM')
+        when 'QUARTERLY'
+          return $filter('date')(date, 'MMM-yy')
+        when 'YEARLY'
+          return $filter('date')(date, 'yyyy')
+        else
+          return $filter('date')(date, 'MMM')
+    else
+      return $filter('date')(date, 'MMM')
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -168,37 +159,57 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
+
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
-    if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
-      all_values_are_positive = true
+    if $scope.isDataFound && $scope.hasElements()
 
-      inputData = []
-      angular.forEach($scope.selectedElements, (sElem) ->
-        data = angular.copy(sElem)
+      if w.isHistoryMode
+        # Hist chart
+        all_values_are_positive = true
+        inputData = []
+        labels = _.map w.content.dates, (date) ->
+          if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
+            $filter('date')(date, 'yyyy')
+          else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "QUARTERLY"
+            $filter('date')(date, 'MMM-yy')
+          else if w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
+            $filter('date')(date, 'dd-MMM')
+          else
+            $filter('date')(date, 'MMM')
+        angular.forEach($scope.selectedElements, (sElem) ->
+          data = angular.copy(sElem)
+          inputData.push({title: data.name, labels: labels, values: data.totals})
 
-        period = null
-        period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-        dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
-
-        inputData.push({title: data.name, labels: dates, values: data.totals})
-
-        angular.forEach(data.totals, (value) ->
-          all_values_are_positive &&= value >= 0
+          angular.forEach(data.totals, (value) ->
+            all_values_are_positive &&= value >= 0
+          )
         )
-      )
+        options = {
+          scaleBeginAtZero: all_values_are_positive,
+          showXLabels: true,
+          datasetFill: $scope.selectedElements.length == 1,
+          pointDot: $scope.selectedElements.length == 1,
+          currency: 'hide'
+        }
+        chartData = ChartFormatterSvc.lineChart(inputData,options)
 
-      options = {
-        scaleBeginAtZero: all_values_are_positive,
-        showXLabels: true,
-        datasetFill: $scope.selectedElements.length == 1,
-        pointDot: $scope.selectedElements.length == 1,
-      }
-
-      chartData = ChartFormatterSvc.lineChart(inputData,options)
+      else
+        # Current chart
+        pieData = _.map $scope.selectedElements, (elem) ->
+          {
+            label: $filter('titleize')($scope.getName({name: elem.name})),
+            value: $scope.getLastValue(elem),
+          }
+        pieOptions = {
+          showTooltips: true,
+          percentageInnerCutout: 50,
+          tooltipFontSize: 12,
+          currency: 'hide'
+        }
+        chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
@@ -234,9 +245,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.widgetDeferred.resolve(settingsPromises)
 )
 
-module.directive('widgetAccountsProfitAndLoss', ->
+module.directive('widgetHrTimeSummary', ->
   return {
     restrict: 'A',
-    controller: 'WidgetAccountsProfitAndLossCtrl'
+    controller: 'WidgetHrTimeSummaryCtrl'
   }
 )

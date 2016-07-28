@@ -37,7 +37,10 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
               foundElem ||= _.find(statement.employees, (employee)->
-                sElem.id == employee.id
+                if employee.id
+                  sElem.id == employee.id
+                else
+                  sElem.name == employee.name
               ) if statement.employees?
             )
 
@@ -59,11 +62,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getName = (element) ->
     if element? && element.name?
-      return "Total Leaves Accruals" if element.name == "total_leaves"
       return "Total Superannuation Accruals" if element.name == "total_super"
       return "Total Reimbursements" if element.name == "total_reimbursement"
       return "Total Taxes" if element.name == "total_tax"
-      return "Total Time Off" if element.name == "total_timeoff"
       return element.name.replace(/_/g, " ")
 
   $scope.getTrackedField = ->
@@ -154,6 +155,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
 
@@ -207,7 +211,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           currency: 'hide'
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

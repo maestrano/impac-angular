@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.info-panel',[])
 
-module.directive('commonInfoPanel', ($templateCache) ->
+module.directive('commonInfoPanel', ($templateCache, $timeout) ->
   return {
     restrict: 'A'
     scope: {
@@ -8,10 +8,14 @@ module.directive('commonInfoPanel', ($templateCache) ->
       onClose: '&'
     }
     template: $templateCache.get('widgets-common/info-panel.tmpl.html')
-    
+
     link: (scope) ->
 
       w = scope.parentWidget
+
+      $timeout(->
+        angular.element(".info-panel .i-header").slideUp(2000)
+      ,2000)
 
       scope.hideInfoPanel = true
       scope.toggleInfoPanel = ->

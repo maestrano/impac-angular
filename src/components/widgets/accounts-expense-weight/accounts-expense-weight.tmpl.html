@@ -20,10 +20,17 @@
 
       <!-- The chart will remain hidden until an account is selected -->
       <div class="chart-container" ng-show="widget.selectedAccount">
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" accounting-behaviour="pnl" />
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
 
-      <div class="legend" ng-show="widget.selectedAccount">
+      <div class="legend" ng-if="widget.isHistoryMode">
+        <div class="title">
+          {{getName()}} to {{getComparator() | titleize}}
+        </div>
+      </div>
+
+      <div class="legend" ng-show="widget.selectedAccount && !widget.isHistoryMode">
         <div class="title">
           {{getName()}} to {{getComparator() | titleize}}
           <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
@@ -34,7 +41,7 @@
         </span>
       </div>
 
-      <div common-time-period-info context="forwardParams" ng-show="widget.selectedAccount" />
+      <!-- <div common-time-period-info context="forwardParams" ng-show="widget.selectedAccount" /> -->
 
     </div>
 
