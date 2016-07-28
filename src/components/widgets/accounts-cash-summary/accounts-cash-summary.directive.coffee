@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-cash-summary',[])
 
-module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -29,6 +29,17 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
 
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
+
+      _.map w.content.summary, (statement) ->
+        $translate('impac.widget.account_cash_smry.summary.' + statement.name.toLowerCase()).then(
+          (translation) ->  #Add a label field in the statement
+            statement.label = translation
+        ) if statement.name?
+
+      $translate('impac.widget.account_cash_smry.cash_flow.' + $scope.widget.metadata.hist_parameters.period.toLowerCase()).then(
+        (translation) ->
+          $scope.widget.metadata.hist_parameters.period_translation = translation
+      )
 
       if w.metadata.selectedElement
         $scope.selectedElement = _.find(w.content.summary, (statement)->
@@ -73,10 +84,6 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       return 'negative'
     else
       return null
-
-  $scope.getName = (element) ->
-    element.name.replace(/_/g, " ") if element? && element.name?
-
 
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
@@ -132,7 +139,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      inputData = {labels: dates, datasets: [{title: data.name, values: data.cash_flows}]}
+      inputData = {labels: dates, datasets: [{title: data.label, values: data.cash_flows}]}
       all_values_are_positive = true
       angular.forEach(data.cash_flows, (value) ->
         all_values_are_positive &&= value >= 0
