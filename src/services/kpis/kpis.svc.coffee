@@ -124,14 +124,21 @@ angular
           )
       )
 
+    @isRefreshing = false
     @refreshAll = ->
-      _self.load().then(->
-        for k in _self.getCurrentDashboard().kpis
-          _self.show(k).then(
-            (renderedKpi)-> # success
-            (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
-          )
-      )
+      unless _self.isRefreshing
+        _self.isRefreshing = true
+        _self.load().then(->
+          for k in _self.getCurrentDashboard().kpis
+            _self.show(k).then(
+              (renderedKpi)-> # success
+              (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
+            )
+          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          $timeout(->
+            _self.isRefreshing = false
+          , 3000)
+        )
 
 
     #====================================
