@@ -76,7 +76,11 @@
   "impac.widget.loader":                          "Your data is being retrieved...",
   "impac.widget.type.revenue_asset":              "Revenue / Asset",
   "impac.widget.currency.ratio":                  "Ratio",
-
+  "impac.widget.classification_summary.liability":"Liability",
+  "impac.widget.classification_summary.revenue":  "Revenue",
+  "impac.widget.classification_summary.expense":  "Expense",
+  "impac.widget.classification_summary.asset":    "Asset",
+  "impac.widget.classification_summary.equity":   "Equity",
   "impac.kpi.alerts.title":                       "Alerts settings",
   "impac.kpi.alerts.explanation":                 "Alert me when <strong>{name} ({element_watched})</strong> is",
   "impac.kpi.alerts.service.inapp":               "With in-app notifications",
