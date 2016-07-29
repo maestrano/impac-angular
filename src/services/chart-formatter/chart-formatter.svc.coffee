@@ -29,7 +29,7 @@ angular
     # Returns a color from the array retrieved from Maestrano Rails app (set in config files) with applying passed opacity
     @getLightenColor = (index, alpha) ->
       htmlColor = COLORS.array[index%COLORS.array.length]
-      return lightenColor(htmlColor, alpha || 0.6) if htmlColor
+      return lightenColor(htmlColor, alpha || 0.4) if htmlColor
 
     # Removes the # from an HTML color value
     cutHex = (htmlColor) ->
