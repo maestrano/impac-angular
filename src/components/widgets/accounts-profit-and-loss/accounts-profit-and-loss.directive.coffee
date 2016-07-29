@@ -48,24 +48,20 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
       setAmountDisplayed()
 
-      if w.metadata.selectedElements
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.summary, (statement)->
-            statement.name == sElem.name
-          )
 
-          if !foundElem
-            angular.forEach(w.content.summary, (statement) ->
-              foundElem ||= _.find(statement.accounts, (account)->
-                sElem.id == account.id
-              ) if statement.accounts?
-            )
+        for sElem in w.metadata.selectedElements
+          foundElem = _.find(w.content.summary, (statement) -> statement.name == sElem.name )
 
+          unless foundElem
+            for statement in w.content.summary
+              if statement.accounts?
+                foundElem ||= _.find(statement.accounts, (account) -> sElem.account_id == account.account_id )
+                
           $scope.selectedElements.push(foundElem) if foundElem
-        )
 
-      w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      w.width = 6 unless _.any($scope.selectedElements)
       sortData()
 
   $scope.getElementChartColor = (index) ->
@@ -112,8 +108,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
+        if element.account_id
+          sElem.account_id == element.account_id
         else
           sElem.name == element.name
       )
@@ -132,18 +128,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElements?
-      if _.find($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
-      )
-        return true
-      else
-        return false
-    else
-      return false
+    element? && _.any($scope.selectedElements, (sElem) ->
+      matcher = (if element.account_id? then 'account_id' else 'name')
+      sElem[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?
