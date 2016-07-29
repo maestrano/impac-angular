@@ -5,7 +5,7 @@ var path = require('path');
 var gulp = require('gulp');
 
 var conf = require('./conf');
-var bowerVersion = require('../bower.json').version;
+var bowerInfo = require('../bower.json');
 
 var $ = require('gulp-load-plugins')();
 
@@ -25,6 +25,8 @@ gulp.task('scripts', function () {
 // Scripts to run impac.version in the console (need to refresh first)
 // Needs to be called AFTER scripts due to permissions errors
 gulp.task('version', ['scripts'], function () {
-  return fs.writeFileSync(path.join(conf.paths.tmp, '/scripts', '/version.js'), '(function (module) {module["impac"] = {"version":"' + bowerVersion + '"};}).call(window, window, window["impac"]);\n');
+  var func = '(function () {console.info("' + bowerInfo.description + ' - v' + bowerInfo.version + '"); window["impac"] = {"version": "' + bowerInfo.version + '"};}).call();';
+
+  return fs.writeFileSync(path.join(conf.paths.tmp, '/scripts', '/version.js'), func);
 });
 
