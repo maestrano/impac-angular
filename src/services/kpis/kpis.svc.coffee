@@ -25,12 +25,15 @@ angular
       )
 
     @getAttachableKpis = (widgetEngine) ->
+      deferred = $q.defer()
       _self.load().then(->
-        _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+        templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
           return false unless _.isArray(kpiTemplate.attachables)
           _.includes(kpiTemplate.attachables, widgetEngine)
         )
+        deferred.resolve(templates)
       )
+      deferred.promise
 
     #====================================
     # Register Listeners
