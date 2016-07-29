@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout, $translate) ->
 
   w = $scope.parentWidget
   w.formula = ""
@@ -51,14 +51,22 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
     # Guard against injection
     if (!str.match(authorized_regex))
       w.isFormulaCorrect = false
-      w.evaluatedFormula = "invalid expression"
+      $translate('impac.widget.settings.invalid_expression').then(
+        (translation) ->
+          w.evaluatedFormula = translation
+          w.evaluatedFormula_key = "invalid_expression"
+      )
 
     try
       w.evaluatedFormula = eval(str).toFixed(2)
     catch e
-      w.evaluatedFormula = "invalid expression"
+      $translate('impac.widget.settings.invalid_expression').then(
+        (translation) ->
+          w.evaluatedFormula = translation
+          w.evaluatedFormula_key = "invalid_expression"
+      )
 
-    if !w.evaluatedFormula? || w.evaluatedFormula == "invalid expression" || w.evaluatedFormula == "Infinity" || w.evaluatedFormula == "-Infinity"
+    if !w.evaluatedFormula? || (w.evaluatedFormula_key? && w.evaluatedFormula_key == "invalid expression") || w.evaluatedFormula == "Infinity" || w.evaluatedFormula == "-Infinity"
       w.isFormulaCorrect = false
     else
       formatFormula()

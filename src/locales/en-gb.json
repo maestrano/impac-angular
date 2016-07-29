@@ -55,6 +55,7 @@
   "impac.widget.settings.chart_filters.title": "Chart filters",
   "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
+  "impac.widget.settings.invalid_expression": "invalid expression",
 
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
   "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
