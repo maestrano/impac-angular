@@ -4,14 +4,14 @@
 </div>
 
 <div ng-if="pdfMode && !widget.ticked" class="include-to-pdf title hidden-print">
-  <h6>CLICK TO INCLUDE IN PDF</h6>
+  <h6 translate>impac.widget.include_pdf</h6>
 </div>
 
 <div class="content" ng-class="templateName">
   <div ng-show="widget.isLoading" class="loader" align="center">
     <div>
       <i class="fa fa-spinner fa-pulse fa-3x"></i>
-      <p>Your data is being retrieved...</p>
+      <p translate="impac.widget.loader"></p>
     </div>
   </div>
 
