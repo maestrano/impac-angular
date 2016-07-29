@@ -58,7 +58,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
             for statement in w.content.summary
               if statement.accounts?
                 foundElem ||= _.find(statement.accounts, (account) -> sElem.account_id == account.account_id )
-                
+
           $scope.selectedElements.push(foundElem) if foundElem
 
       w.width = 6 unless _.any($scope.selectedElements)
@@ -180,7 +180,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     sortData()
 
   $scope.getSelectLineColor = (elem) ->
-    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   
 
   # Chart formating function

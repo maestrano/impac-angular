@@ -42,10 +42,11 @@
 
           <div class="row lines-group" ng-repeat="assignee in widget.content.assignees" ng-click="toggleSelectedElement(assignee)" >
             <div class="col-xs-12">
-              <div class="row widget-line" style="background-color: {{ getSelectLineColor(assignee) }}">
+              <div class="row widget-line">
                 <div class="col-xs-5">{{assignee.name | titleize}}</div>
                 <div class="col-xs-3 text-right">{{assignee.win_ratio}} %</div>
                 <div class="col-xs-4 text-right">{{assignee.total_won | mnoCurrency: widget.metadata.currency}}</div>
+                <div class="selection-tag" ng-if="isSelected(assignee)" style="background-color: {{ getSelectLineColor(assignee) }}"/>
               </div>
             </div>
           </div>

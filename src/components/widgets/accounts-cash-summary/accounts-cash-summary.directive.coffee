@@ -120,6 +120,9 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         return true
       w.width = 6 unless $scope.selectedElement?
 
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getColor(0)
+
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()

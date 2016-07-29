@@ -40,7 +40,7 @@
           <div class="row lines-group" ng-repeat="statement in widget.content.sales_comparison" >
             <div class="col-xs-12">
 
-              <div class="row widget-line" style="background-color: {{ getSelectLineColor(statement) }}" >
+              <div class="row widget-line" >
                 <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
                   <i ng-show="(statement.sales && statement.sales.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
@@ -53,11 +53,13 @@
                 <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
                   <strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong>
                 </div>
+
+                <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
               </div>
 
               <div class="row" collapse="isCollapsed(statement)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" style="background-color: {{ getSelectLineColor(sale) }}" >
+                  <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" >
                     <div class="col-xs-7 col-xs-offset-1">
                       {{sale.name}}
                     </div>
@@ -67,6 +69,8 @@
                     <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-4 text-right">
                       {{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}
                     </div>
+
+                    <div class="selection-tag" ng-if="isSelected(sale)" style="background-color: {{ getSelectLineColor(sale) }}"/>
                   </div>
                 </div>
               </div>
