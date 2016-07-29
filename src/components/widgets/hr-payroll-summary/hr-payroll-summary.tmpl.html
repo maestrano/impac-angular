@@ -23,11 +23,11 @@
 
           <!-- Tab header -->
           <div class="row widget-line header">
-            <div class="col-xs-9 col-xs-offset-1 sortable-title" ng-click="sort('employee')">
-              Payroll Summary - {{widget.metadata.hist_parameters.period}}
+            <div class="col-xs-9 sortable-title" ng-click="sort('employee')">
+              {{widget.metadata.hist_parameters.period}} Payroll Summary
               <i ng-show="sortedColumn == 'employee'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
-            <div class="col-sm-2 col-xs-4 text-right sortable-title" ng-click="sort('total')">
+            <div class="col-xs-3 text-right sortable-title" ng-click="sort('total')">
               Total
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>

@@ -20,18 +20,21 @@
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
         <div class="widget-lines-container">
+          <!-- Total mode -->
+          <div class="row widget-line header">
+            <div class="col-xs-12 text-right">
+              <span setting-param-selector parent-widget="widget" param="amount_displayed" options="amountDisplayedOptions" selected="amountDisplayed" deferred="::paramSelectorDeferred" no-reload />
+            </div>
+          </div>
+
           <!-- Tab header -->
           <div class="row widget-line header">
-            <div class="col-sm-6 col-xs-12 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
-              Account
+            <div class="col-xs-7 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
+              Accounts
               <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
-            <div class="col-xs-3 text-right">
-              <span setting-param-selector parent-widget="widget" param="amount_displayed" options="amountDisplayedOptions" selected="amountDisplayed" deferred="::paramSelectorDeferred" no-reload />
-              <!-- {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}} -->
-            </div>
-            <div class="col-sm-2 col-xs-4 text-right sortable-title" ng-click="sort('total')">
-              Total
+            <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
+              Profit/Loss
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>
