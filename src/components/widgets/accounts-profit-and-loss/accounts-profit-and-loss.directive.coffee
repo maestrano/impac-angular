@@ -20,6 +20,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.paramSelectorDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
       w.metadata && o.value == w.metadata.amount_displayed
@@ -63,6 +66,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
@@ -160,6 +164,32 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.accounts
+        sElem.accounts.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getAmount(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # <---
 
   # Chart formating function

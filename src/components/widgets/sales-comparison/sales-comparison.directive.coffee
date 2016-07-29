@@ -22,6 +22,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'sales'
 
   # Widget specific methods
   # --------------------------------------
@@ -65,7 +67,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
           $scope.selectedElements.push(foundElem) if foundElem
         )
-
+      sortData()
+      
   $scope.getLastDate = ->
     _.last(w.content.dates) if $scope.isDataFound
 
@@ -172,6 +175,30 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.sales_comparison, (sElem) ->
+      if sElem.sales
+        sElem.sales.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'sales'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getTotalForPeriod(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
   # Mini-settings
   # --------------------------------------

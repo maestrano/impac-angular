@@ -20,6 +20,8 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'employee'
 
   # Widget specific methods
   w.initContext = ->
@@ -45,6 +47,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
         )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
@@ -154,6 +157,32 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  sortEmployeesBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.employees
+        sElem.employees.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'employee'
+      sortEmployeesBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortEmployeesBy( (el) -> $scope.getLastValue(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # <---
 
 
@@ -207,7 +236,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           currency: 'hide'
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

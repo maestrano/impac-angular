@@ -13,9 +13,25 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div class="selector">
-      <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred" />
-      <span setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
+    <div class="widget-lines-container no-scroll">
+      <div class="row widget-line header">
+        <div class="col-sm-4 col-xs-8 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
+          Account
+          <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+        </div>
+        <div class="col-sm-5 col-xs-10">
+          <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred" />
+        </div>
+        <div class="col-sm-2 col-xs-4 text-right sortable-title" ng-click="sort('total')">
+          Total
+          <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+        </div>
+      </div>
+      <div class="row widget-line header">
+        <div class="col-xs-12">
+          <span setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
+        </div>
+      </div>
     </div>
 
     <div class="widget-lines-container" ng-show="(isDataFound==true)">
