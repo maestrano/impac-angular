@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-comparison',[])
 
-module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter, $timeout) ->
+module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc, $filter, $timeout, $translate) ->
 
   w = $scope.widget
 
@@ -23,23 +23,25 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   w.initContext = ->
     $scope.movedAccount = {}
     # defines the available options for params-checkboxes.directive
-    $scope.comparisonModeOptions = [{
-      id: 'compare_accounts',
-      label: 'Compare matching accounts across your companies',
-      value: false,
-      onChangeCallback: $scope.updateSettings
-    }]
-    # updates model with saved settings
-    if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
-      angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
+    $translate('impac.widget.account_comp.compare_mode_opt').then((label)->
+      $scope.comparisonModeOptions = [{
+        id: 'compare_accounts',
+        label: label,
+        value: false,
+        onChangeCallback: $scope.updateSettings
+      }]
+      # updates model with saved settings
+      if angular.isDefined(w.metadata.comparison_mode) && w.metadata.organization_ids? && w.metadata.organization_ids.length > 1
+        angular.merge $scope.comparisonModeOptions, w.metadata.comparison_mode
 
-    $scope.savedAccountsList = gatherSavedAccounts()
+      $scope.savedAccountsList = gatherSavedAccounts()
 
-    $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list) || $scope.isComparisonMode()
+      $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list) || $scope.isComparisonMode()
 
-    $scope.noComparableAccounts = $scope.isComparisonMode() && w.content? && _.isEmpty(w.content.complete_list)
+      $scope.noComparableAccounts = $scope.isComparisonMode() && w.content? && _.isEmpty(w.content.complete_list)
 
-    $scope.canSelectComparisonMode = scanAccountsForMultiOrgData()
+      $scope.canSelectComparisonMode = scanAccountsForMultiOrgData()
+    )
 
   # scans results from api to determine whether there is data for multiple organizations
   scanAccountsForMultiOrgData = ->

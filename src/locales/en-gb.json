@@ -73,6 +73,7 @@
   "impac.widget.theming.hist.bls.live":           "Live Balance",
   "impac.widget.theming.hist.pnl":                "Total period",
   "impac.widget.theming.hist.pnl.live":           "@:impac.widget.theming.hist.pnl",
+  "impac.widget.include_pdf":                     "CLICK TO INCLUDE IN PDF",
   "impac.widget.loader":                          "Your data is being retrieved...",
   "impac.widget.type.revenue_asset":              "Revenue / Asset",
   "impac.widget.currency.ratio":                  "Ratio",
