@@ -157,6 +157,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+  # <---
 
   sortEmployeesBy = (getElem) ->
     angular.forEach(w.content.summary, (sElem) ->
@@ -183,8 +184,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
       $scope.sortedColumn = col
     sortData()
 
-  # <---
-
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  
 
   # Chart formating function
   # --------------------------------------

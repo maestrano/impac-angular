@@ -44,7 +44,7 @@
             <div class="col-xs-12">
 
               <!-- Statements lines -->
-              <div class="row widget-line" ng-class="{selected: isSelected(statement)}" >
+              <div class="row widget-line" style="background-color: {{ getSelectLineColor(statement) }}" >
                 <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
                   <i ng-show="(statement.accounts && statement.accounts.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
@@ -59,7 +59,7 @@
               <!-- Accounts lines -->
               <div class="row" collapse="isCollapsed(statement)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(account)" ng-repeat="account in statement.accounts" ng-class="{selected: isSelected(account)}" >
+                  <div class="row widget-line" ng-click="toggleSelectedElement(account)" ng-repeat="account in statement.accounts" style="background-color: {{ getSelectLineColor(account) }}" >
                     <div class="col-xs-7 col-xs-offset-1">
                       {{account.name}}
                     </div>
