@@ -31,11 +31,11 @@
               Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
             </div>
           </div>
-        
+
           <div class="row lines-group" ng-repeat="statement in widget.content.sales_comparison" >
             <div class="col-xs-12">
 
-              <div class="row widget-line" ng-class="{selected: isSelected(statement)}" >
+              <div class="row widget-line" style="background-color: {{ getSelectLineColor(statement) }}" >
                 <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
                   <i ng-show="(statement.sales && statement.sales.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
@@ -52,7 +52,7 @@
 
               <div class="row" collapse="isCollapsed(statement)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" ng-class="{selected: isSelected(sale)}" >
+                  <div class="row widget-line" ng-click="toggleSelectedElement(sale)" ng-repeat="sale in statement.sales" style="background-color: {{ getSelectLineColor(sale) }}" >
                     <div class="col-xs-7 col-xs-offset-1">
                       {{sale.name}}
                     </div>
@@ -65,7 +65,7 @@
                   </div>
                 </div>
               </div>
-          
+
             </div>
           </div>
         </div>

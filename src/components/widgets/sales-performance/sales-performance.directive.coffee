@@ -39,7 +39,10 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
           if !foundElem
             angular.forEach(w.content.summary, (statement) ->
               foundElem ||= _.find(statement.accounts, (account)->
-                sElem.id == account.id
+                if account.id
+                  sElem.id == account.id
+                else
+                  sElem.name == account.name
               ) if statement.accounts?
             )
 
@@ -130,6 +133,13 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
         return false
     else
       return false
+
+  $scope.hasElements = ->
+    $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getLightenColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  # <---
 
   # Chart formating function
   # --------------------------------------
