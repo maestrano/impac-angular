@@ -41,6 +41,7 @@ module.directive('commonTopButtons', ($templateCache) ->
       parentWidget: '='
       onRefresh: '='
       onToggleInfoPanel: '&'
+      isInfoPanelDisplayed: '='
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'
