@@ -71,6 +71,11 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return "current #{period}"
     else return "current month"
 
+  $scope.getOldestInvoice = (element) ->
+    idx = _.findIndex(element.totals, (invoice, index) ->
+      return index if invoice > 0
+    )
+    return w.content.dates[idx]
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -136,6 +141,9 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     else if $scope.sortedColumn == 'total'
       sortBy(w.content.payables.suppliers, (el) -> $scope.getTotalSum(el) )
       sortBy(w.content.receivables.customers, (el) -> $scope.getTotalSum(el) )
+    else if $scope.sortedColumn == 'invoice'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getOldestInvoice(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getOldestInvoice(el) )
 
   $scope.sort = (col) ->
     if $scope.sortedColumn == col
