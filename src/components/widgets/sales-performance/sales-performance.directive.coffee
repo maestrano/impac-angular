@@ -98,10 +98,8 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
+        matcher = (if element.id? then 'id' else 'name')
+        sElem[matcher] == element[matcher]
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -118,18 +116,10 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
         ImpacWidgetsSvc.updateWidgetSettings(w, false, true)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElements?
-      if _.find($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
-      )
-        return true
-      else
-        return false
-    else
-      return false
+    element? && _.any($scope.selectedElements, (sElem) ->
+      matcher = (if element.id? then 'id' else 'name')
+      sElem[matcher] == element[matcher]
+    )
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0

@@ -94,13 +94,10 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElement?
-      if (element.id? && $scope.selectedElement.id && element.id == $scope.selectedElement.id) || (element.name == $scope.selectedElement.name)
-        return true
-      else
-        return false
-    else
-      return false
+    element? && $scope.selectedElement? && (
+      matcher = (if element.id? then 'id' else 'name')
+      $scope.selectedElement[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?

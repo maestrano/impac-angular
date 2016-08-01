@@ -108,10 +108,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.account_id
-          sElem.account_id == element.account_id
-        else
-          sElem.name == element.name
+        matcher = (if element.account_id? then 'account_id' else 'name')
+        sElem[matcher] == element[matcher]
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
