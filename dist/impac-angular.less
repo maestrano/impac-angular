@@ -233,12 +233,16 @@
 .selectable () {
   cursor: pointer;
   border: solid 1px @impac-widget-background-color;
-  &:hover {
-    color: @impac-widget-selectable-color;
+  .selection-tag {
+    display: block;
+    right: 0px;
+    margin-top: -6px;
+    width: 10px;
+    height: 29px;
+    position: absolute;
   }
-  &.selected {
-    // border: solid 1px @impac-widget-selectable-color;
-    background-color: lighten(@impac-widget-selectable-color, 22%)
+  &:hover {
+    background-color: lighten(@impac-widget-selectable-color, 22%);
   }
   &.no-select {
     cursor: auto;
@@ -1123,6 +1127,13 @@ body {
   white-space: nowrap;
   strong {
     color: @mgreen;
+  }
+}
+
+.sortable-title {
+  cursor: pointer;
+  div {
+    display: inline-block;
   }
 }
 
@@ -2035,7 +2046,11 @@ body {
       transition: all 0.28s ease-in;
       &.im-primary {
         background: #4c4749;
-        &.disabled { background: #b2b5c1; }
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
         &:hover:not(.disabled) {
           background: black;
         }
@@ -2300,9 +2315,6 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2321,6 +2333,9 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2552,6 +2567,10 @@ body {
     border-bottom: double;
   }
 
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
@@ -2635,7 +2654,7 @@ body {
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
-      max-height: 165px;
+      max-height: 145px;
   }
 }
 
@@ -2748,7 +2767,7 @@ body {
     max-height: 530px;
   }
   .right-panel .widget-lines-container {
-    max-height: 270px;
+    max-height: 250px;
   }
 }
 
@@ -2817,12 +2836,16 @@ body {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
-    max-height: 210px;
+    max-height: 170px;
+    &.no-scroll {
+      overflow: visible;
+    }
   }
   .selector {
     margin-bottom: 4px;
   }
 }
+
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
@@ -2865,30 +2888,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -2916,6 +2915,30 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
@@ -3034,7 +3057,7 @@ body {
   }
   .message {
     position: absolute;
-    top: 90px;
+    top: 75px;
     width: 70%;
     left: 15%;
     background-color: rgb(244, 248, 249);
@@ -3049,6 +3072,7 @@ body {
     }
   }
 }
+
 .analytics .widget-item {
   .editable-title {
     width: 100%;
@@ -3099,6 +3123,12 @@ body {
   // }
 }
 
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 65px;
@@ -3106,6 +3136,7 @@ body {
   width: ~"calc(100% - 48px)";
   max-height: ~"calc(100% - 90px)";
   height: 100%;
+  z-index: 100;
 
   background-color: white;
   opacity: .85;
@@ -3156,12 +3187,6 @@ body {
       .value { text-align: justify; }
     }
   }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
 }
 
 .analytics .widget-item .top-line .top-buttons {
@@ -3342,6 +3367,21 @@ body {
   }
 }
 
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -3361,21 +3401,6 @@ body {
     height: 20px;
   }
 }
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  button.btn.btn-sm {
-    line-height: 1;
-    &.date-button { margin: 0px 5px; }
-    &.btn-danger { display: none; }
-    &.btn-info { border-radius: 3px; }
-  }
-
-  .tooltip-inner { text-transform: none; }
-
-  .dropdown-menu > li > div > table { outline: none; }
-}
-
 .analytics .widget-item .content .settings.hist-mode-choser {
   max-height: 70px;
 

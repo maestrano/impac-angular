@@ -3,6 +3,14 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var pkg = require('../bower.json');
+var banner = ['/**',
+  ' * <%= pkg.name %> - <%= pkg.description %>',
+  ' * @version v<%= pkg.version %>',
+  ' * @git <%= pkg.repository.url %>',
+  ' * @license <%= pkg.license %>',
+  ' */',
+  ''].join('\n');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'del']
@@ -47,7 +55,7 @@ gulp.task('clean', function (asyncCallback) {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], asyncCallback);
 });
 
-gulp.task('build', ['scripts', 'styles', 'partials'], function() {
+gulp.task('build', ['version', 'scripts', 'styles', 'partials'], function() {
   // Source files for final dist build - NOTE: order is important.
   var buildSourceFiles = [
     path.join(conf.paths.src, 'impac-angular.prefix'),
@@ -56,7 +64,7 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     path.join(conf.paths.src, 'impac-angular.suffix'),
     path.join(conf.paths.tmp, 'scripts/**/*.js'),
     path.join(conf.paths.lib, '*.js'),
-    path.join(conf.paths.dist, 'impac-angular.css'),
+    path.join(conf.paths.dist, 'impac-angular.css')
   ];
 
   var jsFilter = $.filter(['**/*', '!**/*.css'], { restore: true });
@@ -68,12 +76,14 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     // .pipe($.sourcemaps.init())
     // .pipe($.sourcemaps.write())
     .pipe($.concat('impac-angular.js'))
+    .pipe($.header(banner, { pkg: pkg } ))  // Add details about the current version
     .pipe($.ngAnnotate())
     .pipe(gulp.dest(conf.paths.dist)) // Output impac-angular.js
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }))
     .pipe($.ngAnnotate())
     .pipe($.uglify()).on('error', conf.errorHandler('Uglify'))
     .pipe($.rename('impac-angular.min.js'))
+    .pipe($.header(banner, { pkg: pkg } ))  // Add details about the current version
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
     .pipe($.minifyCss({ processImport: false, compatibility: 'ie8' }))

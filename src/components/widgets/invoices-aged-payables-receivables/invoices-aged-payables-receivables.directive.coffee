@@ -18,6 +18,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'customer'
 
   # Widget specific methods
   # --------------------------------------
@@ -44,6 +46,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index) if index?
@@ -68,16 +71,19 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       return "current #{period}"
     else return "current month"
 
+  $scope.getOldestInvoice = (element) ->
+    idx = _.findIndex(element.totals, (invoice, index) ->
+      return index if invoice > 0
+    )
+    return w.content.dates[idx]
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
+        matcher = (if element.id? then 'id' else 'name')
+        sElem[matcher] == element[matcher]
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -94,18 +100,10 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElements?
-      if _.find($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
-      )
-        return true
-      else
-        return false
-    else
-      return false
+    element? && _.any($scope.selectedElements, (sElem) ->
+      matcher = (if element.id? then 'id' else 'name')
+      sElem[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?
@@ -127,6 +125,37 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
+
+  sortBy = (data, getElem) ->
+    data.sort (a, b) ->
+      res = if getElem(a) > getElem(b) then 1
+      else if getElem(a) < getElem(b) then -1
+      else 0
+      res *= -1 unless $scope.ascending
+      return res
+
+  sortData = ->
+    if $scope.sortedColumn == 'customer'
+      sortBy(w.content.payables.suppliers, (el) -> el.name )
+      sortBy(w.content.receivables.customers, (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getTotalSum(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getTotalSum(el) )
+    else if $scope.sortedColumn == 'invoice'
+      sortBy(w.content.payables.suppliers, (el) -> $scope.getOldestInvoice(el) )
+      sortBy(w.content.receivables.customers, (el) -> $scope.getOldestInvoice(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  
 
   # Chart formating function
   # --------------------------------------

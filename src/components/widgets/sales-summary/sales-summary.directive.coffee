@@ -25,7 +25,7 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.summary)
+    $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.summary) && ( _.sum(_.map(w.content.summary, (s) -> s.total)) > 0 )
 
     $scope.filterOptions = [
       {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},

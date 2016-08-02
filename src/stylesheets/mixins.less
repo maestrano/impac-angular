@@ -63,12 +63,16 @@
 .selectable () {
   cursor: pointer;
   border: solid 1px @impac-widget-background-color;
-  &:hover {
-    color: @impac-widget-selectable-color;
+  .selection-tag {
+    display: block;
+    right: 0px;
+    margin-top: -6px;
+    width: 10px;
+    height: 29px;
+    position: absolute;
   }
-  &.selected {
-    // border: solid 1px @impac-widget-selectable-color;
-    background-color: lighten(@impac-widget-selectable-color, 22%)
+  &:hover {
+    background-color: lighten(@impac-widget-selectable-color, 22%);
   }
   &.no-select {
     cursor: auto;

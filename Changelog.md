@@ -24,6 +24,20 @@
 
 ## Released
 
+### v1.3.11 | Week 31
+
+#### Adds
+- Improve time preset behaviour 
+- Add version console command & log (`impac.version`)
+- Drill down widgets are now sortable
+- Change in selected lines layout display
+
+#### Fixes
+- potential fix for stuck dashboard loading
+- Fix sales summary data not found condition
+
+---
+
 ### [v1.3.10](https://github.com/maestrano/impac-angular/tree/v1.3.10) (2016-07-15)
 [Full Changelog](https://github.com/maestrano/impac-angular/compare/v1.3.9...v1.3.10)
 

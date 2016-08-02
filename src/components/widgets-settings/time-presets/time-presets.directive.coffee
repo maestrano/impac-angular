@@ -83,9 +83,9 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
 
       initPreset = ->
         if scope.histParams?
-          # Find if this match an existing preset
+          # Find if this matches an existing preset
           # TODO: DRY with setting.toMetadata?
-          selectedPreset  = _.find(scope.presets, (p) ->
+          scope.selectedPreset = _.find(scope.presets, (p) ->
             _.every(p.value, (v, k) -> scope.histParams[k] == if angular.isFunction(v) then v(fyEndMonth) else v)
           )
 

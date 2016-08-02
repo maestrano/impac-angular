@@ -91,15 +91,18 @@ angular
           ImpacMainSvc.load(force).then (success) ->
             orgId = success.currentOrganization.id
 
-            $http.get(ImpacRoutes.dashboards.index(orgId)).then (dashboards) ->
-              _self.setDashboards(dashboards.data).then ->
-                _self.setCurrentDashboard()
-                _self.loadLocked=false
-                deferred.resolve(_self.config)
-                $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
+            $http.get(ImpacRoutes.dashboards.index(orgId)).then(
+              (dashboards) ->
+                _self.setDashboards(dashboards.data).then ->
+                  _self.setCurrentDashboard()
+                  deferred.resolve(_self.config)
+                  $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
+
+                .finally( -> _self.loadLocked=false )
               (error) ->
                 _self.loadLocked=false
                 deferred.reject(error)
+            )
 
             (error) ->
               $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
