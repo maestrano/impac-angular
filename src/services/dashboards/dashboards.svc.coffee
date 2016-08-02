@@ -53,6 +53,11 @@ angular
     @tick = ->
       _self.callbacks.ticked.notify()
 
+    @callbacks.dhbLoader = $q.defer()
+    @dhbLoader = ->
+      return _self.callbacks.dhbLoader.promise
+    @triggerDhbLoader = (bool=false)->
+      _self.callbacks.dhbLoader.notify(bool)
 
     #====================================
     # Context helpers (return booleans: can be called but can't be bound!)
@@ -77,6 +82,19 @@ angular
     #====================================
     # Loaders and setters
     #====================================
+
+    # Method used for reloading an already loaded dashboard, will reload it properly
+    # while also triggering the dhbLoader spinner.
+    @reload = (force=false) ->
+      deferred = $q.defer()
+      _self.triggerDhbLoader(true)
+      _self.load(force).then(
+        -> deferred.resolve()
+        -> deferred.reject()
+      ).finally(->
+        _self.triggerDhbLoader(false)
+      )
+      return deferred.promise
 
     @loadLocked=false
     @load = (force=false) ->
