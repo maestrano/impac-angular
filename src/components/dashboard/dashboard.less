@@ -208,22 +208,16 @@
 
   #dashboard-settings-panel {
     position: relative;
-    margin: 0px 2px;
-    &.in-widgets-container {
-      margin: 0;
-      padding: 0 @impac-padding-between-widgets;
-    }
+    margin-top: 5px;
     & > div {
-      display: inline-block;
-      margin-left: 5px;
-      margin-top: 5px;
+      display: flex;
+      justify-content: flex-end;
+      & > * { margin: 0px 3px; }
     }
     select {
       margin: 0;
-    }
-    .btn {
-      height: 32px;
-      padding-top: 5px;
+      height: 34px;
+      padding-top: 1px;
     }
   }
 

@@ -26,6 +26,11 @@ angular
     @getColor = (index) ->
       return COLORS.array[index%COLORS.array.length]
 
+    # Returns a color from the array retrieved from Maestrano Rails app (set in config files) with applying passed opacity
+    @getLightenColor = (index, alpha) ->
+      htmlColor = COLORS.array[index%COLORS.array.length]
+      return lightenColor(htmlColor, alpha || 0.4) if htmlColor
+
     # Removes the # from an HTML color value
     cutHex = (htmlColor) ->
       return htmlColor.replace(/#/,'')
@@ -119,7 +124,7 @@ angular
 
         enabled: false
         custom: _self.customTooltip
-      
+
       elements:
         point:
           hitRadius: 8
@@ -127,7 +132,7 @@ angular
         line:
           tension: 0
           borderWidth: 2
-      
+
       legend:
         display: false
     }

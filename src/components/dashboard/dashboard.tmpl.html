@@ -89,9 +89,11 @@
   <div id="custom-widget-selector" ng-if="customWidgetSelector.path" ng-include="customWidgetSelector.path" ng-hide="showChooseDhbMsg()"></div>
 
   <!-- Dashboard Settings - DEFAULT POSITION -->
-  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row text-right" ng-hide="pdfMode">
-    <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
-    <div dashboard-setting-currency currency="currentDhb.currency" />
+  <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row" ng-hide="pdfMode">
+    <div class="col-xs-12">
+      <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
+      <div dashboard-setting-currency currency="currentDhb.currency" />
+    </div>
   </div>
 
   <!-- Errors -->
@@ -158,9 +160,11 @@
   <!-- Widgets -->
   <div class='row' id="widgets-section" ng-hide="showNoWidgetsMsg() || showChooseDhbMsg()">
     <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->
-    <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="text-right col-md-12 in-widgets-container">
-      <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
-      <div dashboard-setting-currency currency="currentDhb.currency" />
+    <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="col-md-12 in-widgets-container">
+      <div>
+        <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
+        <div dashboard-setting-currency currency="currentDhb.currency" />
+      </div>
     </div>
     <div class="col-md-12">
       <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">

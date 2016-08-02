@@ -19,12 +19,14 @@ angular
 
       if !isConfigurationLoaded() || force
 
-        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
-          deferred.resolve(_self.config)
-          $log.info("Impac! - MainSvc: loaded (force=#{force})") 
-        ,(error) ->
-          $log.error("Impac! - MainSvc: failed to load configuration")
-          deferred.reject(error)
+        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then(
+          (results) ->
+            $log.info("Impac! - MainSvc: loaded (force=#{force})") 
+            deferred.resolve(_self.config)
+          (error) ->
+            $log.error("Impac! - MainSvc: failed to load configuration")
+            deferred.reject(error)
+        )
 
       else
         deferred.resolve(_self.config)

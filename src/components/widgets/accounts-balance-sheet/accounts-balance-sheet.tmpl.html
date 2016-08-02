@@ -23,16 +23,45 @@
     <!-- TODO: review widget-lines-container scrolling -->
     <div class="widget-lines-container no-scroll">
       <div class="row widget-line header">
-        <div class="col-sm-6 col-xs-12 text-left">Compare balances at dates:</div>
-
+        <div class="col-sm-6 col-sm-offset-6 col-xs-12">
+          <div setting-dates-picker parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="keepToday" update-on-pick="true" template="::datesPickerTemplate" />
+        </div>
+      </div>
+      <div class="row widget-line header">
+<!--         <div class="col-sm-6 col-xs-12 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
+          Account
+          <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+        </div> -->
+        <div class="col-sm-5 col-sm-offset-1 col-xs-12 text-left sortable-title" ng-click="sort('account')">
+          Accounts
+          <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+        </div>
         <div class="col-sm-6 col-xs-12">
-          <div setting-dates-picker parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" keep-today="keepToday" update-on-pick="true" bootstrap-mode="true" invert="true" />
+          <div class="row">
+            <div class="col-xs-6 text-center sortable-title" ng-click="sort('total1')">
+              Balance
+              <i ng-show="sortedColumn == 'total1'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+            <div class="col-xs-6 text-center sortable-title" ng-click="sort('total2')">
+              Balance
+              <i ng-show="sortedColumn == 'total2'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+          </div>
+
+<!--           <div class="col-sm-2 col-xs-4 text-right sortable-title" ng-click="sort('total1')">
+            Total
+            <i ng-show="sortedColumn == 'total1'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+          </div>
+          <div class="col-sm-2 col-xs-4 col-xs-offset-1 text-right sortable-title" ng-click="sort('total2')">
+            Total
+            <i ng-show="sortedColumn == 'total2'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+          </div> -->
         </div>
       </div>
     </div>
 
     <div ng-show="(isDataFound==true)" class="widget-lines-container">
-     
+
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="category in categories" >
         <div class="col-xs-12">

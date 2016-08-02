@@ -20,6 +20,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.paramSelectorDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
       w.metadata && o.value == w.metadata.amount_displayed
@@ -45,24 +48,21 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
       setAmountDisplayed()
 
-      if w.metadata.selectedElements
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.summary, (statement)->
-            statement.name == sElem.name
-          )
 
-          if !foundElem
-            angular.forEach(w.content.summary, (statement) ->
-              foundElem ||= _.find(statement.accounts, (account)->
-                sElem.id == account.id
-              ) if statement.accounts?
-            )
+        for sElem in w.metadata.selectedElements
+          foundElem = _.find(w.content.summary, (statement) -> statement.name == sElem.name )
+
+          unless foundElem
+            for statement in w.content.summary
+              if statement.accounts?
+                foundElem ||= _.find(statement.accounts, (account) -> sElem.account_id == account.account_id )
 
           $scope.selectedElements.push(foundElem) if foundElem
-        )
 
-      w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
+      w.width = 6 unless _.any($scope.selectedElements)
+      sortData()
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
@@ -108,10 +108,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
+        matcher = (if element.account_id? then 'account_id' else 'name')
+        sElem[matcher] == element[matcher]
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -128,18 +126,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElements?
-      if _.find($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
-      )
-        return true
-      else
-        return false
-    else
-      return false
+    element? && _.any($scope.selectedElements, (sElem) ->
+      matcher = (if element.account_id? then 'account_id' else 'name')
+      sElem[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?
@@ -161,6 +151,35 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
   # <---
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.accounts
+        sElem.accounts.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getAmount(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  
 
   # Chart formating function
   # --------------------------------------

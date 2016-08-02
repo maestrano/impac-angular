@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-presets',[])
 
-module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) ->
+module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, ImpacUtilities, ImpacTheming) ->
   return {
     restrict: 'A',
     scope: {
@@ -8,7 +8,10 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
       deferred: '='
       presets: '=?'
       onSelect: '&?'
-      selectedPreset: '=?selected'
+      onChooseDates: '&?'
+      onChoosePeriod: '&?'
+      histParams: '=?'
+      resetPromise: '=?'
     },
     template: $templateCache.get('widgets-settings/time-presets.tmpl.html'),
 
@@ -28,9 +31,9 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
 
       ).finally( ->
 
-        financialYearStartYear = moment().year() - 1
-        financialYearStartYear = moment().year() if moment().month() >= fyEndMonth
-        scope.financialYearStartDate = "#{financialYearStartYear}-#{fyEndMonth + 1}-01"
+        fyStartDate = ImpacUtilities.financialYearDates(fyEndMonth).start
+        prevFyStartDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).start, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD')
+        prevFyEndDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD')
 
         # Default presets
         toDate = moment().format('YYYY-MM-DD')
@@ -42,8 +45,14 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
           }
           {
             label: 'Financial year to date', value:
-              from: scope.financialYearStartDate
+              from: fyStartDate
               to: toDate,
+              period: 'MONTHLY'
+          }
+          {
+            label: 'Previous financial year', value:
+              from: prevFyStartDate
+              to: prevFyEndDate,
               period: 'MONTHLY'
           }
           {
@@ -62,24 +71,60 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout) 
               to: toDate
           }
         ]
+
+        scope.presets.unshift({ label: 'Choose period...', value: 'choose-period' }) if angular.isDefined(scope.onChooseDates) && showSlider()
+        scope.presets.unshift({ label: 'Choose dates...', value: 'choose-dates' }) if angular.isDefined(scope.onChooseDates)
       )
+
+      if scope.resetPromise?
+        scope.resetPromise.then( null, null, (key) ->
+          scope.selectedPreset = _.find( scope.presets, (p) ->
+            p.value == key
+          )
+        )
+
+      showSlider = ->
+        ImpacTheming.get().widgetSettings? && ImpacTheming.get().widgetSettings.timePeriod? && ImpacTheming.get().widgetSettings.timePeriod.showSlider
+
+      initPreset = ->
+        if scope.histParams?
+          # Find if this matches an existing preset
+          # TODO: DRY with setting.toMetadata?
+          scope.selectedPreset = _.find(scope.presets, (p) ->
+            _.every(p.value, (v, k) -> scope.histParams[k] == if angular.isFunction(v) then v(fyEndMonth) else v)
+          )
+
+          if !scope.selectedPreset? && scope.histParams.time_range? && showSlider()
+            scope.selectedPreset = scope.presets[1]
+
+        unless scope.selectedPreset?
+          scope.selectedPreset = scope.presets[0]
+
+      scope.presetSelected = ->
+        if scope.selectedPreset? && (scope.selectedPreset.value == "choose-dates")
+          scope.onChooseDates()
+        else if scope.selectedPreset? && (scope.selectedPreset.value == "choose-period")
+          scope.onChoosePeriod()
+        else
+          scope.onSelect({ histParams: scope.setting.toMetadata().hist_parameters })
 
 
       scope.setting.initialize = ->
+        initPreset()
+        scope.presetSelected()
         return true
 
       scope.setting.toMetadata = ->
         result = {}
-        _.forEach(scope.selectedPreset.value, (value, key) ->
-          if angular.isFunction(value)
-            result[key] = value(fyEndMonth)
-          else
-            result[key] = value
-        )
+        unless _.isEmpty(scope.selectedPreset.value)
+          _.forEach(scope.selectedPreset.value, (value, key) ->
+            if angular.isFunction(value)
+              result[key] = value(fyEndMonth)
+            else
+              result[key] = value
+          )
 
-        return {
-          hist_parameters: result
-        }
+        return { hist_parameters: result }
 
 
       w.settings.push(scope.setting)
