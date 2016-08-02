@@ -16,6 +16,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
     $scope.datesPickerDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+  $scope.datesPickerTemplate = "<span>from <from-date> to <to-date> <apply></span>"
 
   # Widget specific methods
   # --------------------------------------
@@ -35,6 +38,7 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
     ) || $scope.filterOptions[0])
 
     $scope.unCollapsed = w.metadata.unCollapsed || []
+    sortData()
 
   $scope.toggleCollapsed = (categoryName) ->
     if categoryName?
@@ -52,6 +56,31 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
         return false
       else
         return true
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.products
+        sElem.products.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> el.total )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
   # Mini-settings
   # --------------------------------------

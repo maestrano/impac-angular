@@ -25,6 +25,9 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     $scope.widthDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'group'
+
   # Widget specific methods
   # --------------------------------------
   hasOneOpportunity = (oppsPerSalesStage) ->
@@ -119,7 +122,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       filteredOpps = _.filter w.content.opps_per_sales_stage[$scope.selectedStatus].opps, (opportunity) ->
         return opportunity.assignee_id in assignees
       oppGroups = _.groupBy filteredOpps, 'assignee_id'
-      
+
       sortedOppGroups = []
       angular.forEach $scope.assigneesOptions, (assigneeOption) ->
         sortedOppGroups.push({ assigneeName: assigneeOption.label, opps: oppGroups[assigneeOption.value]}) if oppGroups[assigneeOption.value]
@@ -145,10 +148,35 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     currency = oppsGroup[0].amount.currency || 'AUD'
     $filter('mnoCurrency')(total, currency)
 
+  sortOppsBy = (getElem) ->
+    angular.forEach($scope.selectedOpportunities, (sElem) ->
+      if sElem.opps
+        sElem.opps.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'group'
+      sortOppsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortOppsBy( (el) -> el.amount.amount )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
   $scope.updateRightView = ->
     $scope.selectedOpportunities = $scope.getSelectedOpportunities()
     $scope.collapsed = []
+    sortData()
 
   selectedStatusSetting = {}
   selectedStatusSetting.initialized = false

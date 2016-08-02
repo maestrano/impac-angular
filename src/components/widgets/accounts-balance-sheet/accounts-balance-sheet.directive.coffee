@@ -25,6 +25,9 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
   </div>
   """
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+
   # Init dates
   # --------------------------------------
   initDates = ->
@@ -69,6 +72,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
       $scope.categories = Object.keys(w.content.summary)
 
     initDates()
+    sortData()
 
   $scope.toggleCollapsed = (categoryName) ->
     if categoryName?
@@ -86,6 +90,34 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         return false
       else
         return true
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach($scope.categories, (cat) ->
+      sElem = w.content.summary[cat]
+      if sElem.accounts
+        sElem.accounts.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total1'
+      sortAccountsBy( (el) -> el.totals[1] )
+    else if $scope.sortedColumn == 'total2'
+      sortAccountsBy( (el) -> el.totals[0] )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
 
   # Mini-settings objects

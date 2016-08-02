@@ -22,6 +22,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'sales'
 
   # Widget specific methods
   # --------------------------------------
@@ -65,7 +67,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
           $scope.selectedElements.push(foundElem) if foundElem
         )
-
+      sortData()
+      
   $scope.getLastDate = ->
     _.last(w.content.dates) if $scope.isDataFound
 
@@ -82,10 +85,8 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
+        matcher = (if element.id? then 'id' else 'name')
+        sElem[matcher] == element[matcher]
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -102,18 +103,10 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElements?
-      if _.find($scope.selectedElements, (sElem) ->
-        if element.id
-          sElem.id == element.id
-        else
-          sElem.name == element.name
-      )
-        return true
-      else
-        return false
-    else
-      return false
+    element? && _.any($scope.selectedElements, (sElem) ->
+      matcher = (if element.id? then 'id' else 'name')
+      sElem[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?
@@ -134,6 +127,9 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
   # <---
 
   # Chart formating function
@@ -172,6 +168,30 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.sales_comparison, (sElem) ->
+      if sElem.sales
+        sElem.sales.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'sales'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getTotalForPeriod(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
   # Mini-settings
   # --------------------------------------

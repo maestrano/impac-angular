@@ -18,6 +18,9 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     $scope.chartDeferred.promise
   ]
 
+  $scope.ascending = true
+  $scope.sortedColumn = 'account'
+
 
   # Widget specific methods
   # --------------------------------------
@@ -37,6 +40,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
               account.id == w.metadata.selectedElement.id
             ) if statement.accounts?
           )
+      sortData()
 
   $scope.getLastDate = ->
     $scope.dates[$scope.dates.length-1] if $scope.dates?
@@ -90,13 +94,10 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
   $scope.isSelected = (element) ->
-    if element? && $scope.selectedElement?
-      if (element.id? && $scope.selectedElement.id && element.id == $scope.selectedElement.id) || (element.name == $scope.selectedElement.name)
-        return true
-      else
-        return false
-    else
-      return false
+    element? && $scope.selectedElement? && (
+      matcher = (if element.id? then 'id' else 'name')
+      $scope.selectedElement[matcher] == element[matcher]
+    )
 
   $scope.toggleCollapsed = (element) ->
     if element? && element.name?
@@ -115,6 +116,9 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       else
         return true
       w.width = 6 unless $scope.selectedElement?
+
+  $scope.getSelectLineColor = (elem) ->
+    ChartFormatterSvc.getColor(0)
 
   # Chart formating function
   # --------------------------------------
@@ -142,6 +146,33 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.accounts
+        sElem.accounts.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getLastValue(el) )
+    else if $scope.sortedColumn == 'variance'
+      sortAccountsBy( (el) -> $scope.getLastVariance(el) )
+
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
 
   # Mini-settings
