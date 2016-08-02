@@ -53,6 +53,11 @@ angular
     @tick = ->
       _self.callbacks.ticked.notify()
 
+    @callbacks.dhbLoader = $q.defer()
+    @dhbLoader = ->
+      return _self.callbacks.dhbLoader.promise
+    @triggerDhbLoader = (bool=false)->
+      _self.callbacks.dhbLoader.notify(bool)
 
     #====================================
     # Context helpers (return booleans: can be called but can't be bound!)
