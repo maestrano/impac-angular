@@ -9,13 +9,13 @@ module.controller('WidgetSalesAgedCtrl', ($scope, $q, ChartFormatterSvc, $filter
   $scope.orgDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
-  $scope.datesPickerDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.paramSelectorDeferred.promise
     $scope.chartDeferred.promise
-    $scope.datesPickerDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
   $scope.datesPickerTemplate = "<span><from-date> to <to-date> <apply></span>"

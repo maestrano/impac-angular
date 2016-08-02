@@ -4,6 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -16,7 +17,6 @@
     <div ng-show="(isDataFound==true)" class="align-center">
       <div class="selector">
         Leads for this <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred" />
-        <div setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred" template="::datesPickerTemplate"/>
       </div>
 
       <div class="stats">

@@ -8,12 +8,12 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
-  $scope.datesPickerDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.paramSelectorDeferred.promise
-    $scope.datesPickerDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
   $scope.datesPickerTemplate = "<span><from-date> to <to-date> <apply></span>"
