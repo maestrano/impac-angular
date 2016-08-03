@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expense-weight',[])
 
-module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -29,16 +29,17 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.account_list)
     $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters
+    getComparator()
 
   $scope.getName = ->
     w.selectedAccount.name if w.selectedAccount?
 
-  $scope.getComparator = ->
+  getComparator = ->
     switch w.metadata.comparator
       when 'turnover'
-        return "turnover"
+        $translate('impac.widget.account_expense_weight.comparator.turnover').then((translation)-> $scope.comparator = translation)
       else
-        return "total expenses"
+        $translate('impac.widget.account_expense_weight.comparator.total_exp').then((translation)-> $scope.comparator = translation)
 
 
   # Chart formating function
@@ -54,7 +55,6 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
         ratios.push(ratios[0])
 
       inputData = {labels: companies, values: ratios}
-      
 
       options = {
         # scaleOverride: true,
@@ -74,7 +74,7 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
         currency: '%'
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
