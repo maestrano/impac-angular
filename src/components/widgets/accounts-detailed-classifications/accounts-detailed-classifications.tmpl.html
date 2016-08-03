@@ -1,13 +1,13 @@
 <div widget-accounts-detailed-classifications>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_det_class.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_det_class.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_det_class.save</button>
     </div>
   </div>
 
@@ -16,10 +16,9 @@
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
-        <div class="col-md-8 text-left">
-          {{widget.content.companies[0].name}} - Accounts classifications
+        <div class="col-md-8 text-left" translate="impac.widget.account_det_class.acc_classifications" translate-values="{name: widget.content.companies[0].name}">
         </div>
-        
+
         <div class="col-md-4 text-right">
           <div common-time-period-info context="forwardParams" />
         </div>
@@ -28,7 +27,7 @@
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="source in dataSource track by source.label">
         <div class="col-xs-12">
-        
+
           <!-- Statements lines -->
           <div class="row widget-line">
             <div class="col-xs-1" ng-click="toggleCollapsed(source.label)" style="cursor: pointer;">
@@ -62,4 +61,3 @@
     <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
   </div>
 </div>
-

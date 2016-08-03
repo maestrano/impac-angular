@@ -183,5 +183,6 @@
   "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
   "impac.widget.account_expense_weight.cancel":            "@:impac.common.action.cancel",
   "impac.widget.account_expense_weight.comparator.turnover": "turnover",
-  "impac.widget.account_expense_weight.comparator.total_exp": "total expenses"
+  "impac.widget.account_expense_weight.comparator.total_exp": "total expenses",
+  "impac.widget.account_expense_weight.to":                   "to"
 }
