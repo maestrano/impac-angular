@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('kpisBar', ($templateCache, $q, ImpacKpisSvc, ImpacDashboardsSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
@@ -54,6 +54,30 @@ angular
           helper: 'clone'
         }
 
+        # Retrieves KPIs date range either saved onto dashboard or a default, and applies to the
+        # settings-date-picker.
+        # ---
+        $scope.kpisDateRange = {}
+        # Promises the kpi.directive that dates have been loaded and are ready for #show().
+        $scope.kpiDatesDeferred = $q.defer()
+        # Promises this directive that the dates-picker is loaded and ready for initialize.
+        $scope.datesPickerDeferred = $q.defer()
+
+        $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
+
+          ImpacKpisSvc.getKpisDateRange().then((dates)->
+
+            $scope.kpisDateRange.from = dates.from
+            $scope.kpisDateRange.to = dates.to
+            $scope.kpisDateRange.keepToday = dates.keepToday
+
+          ).finally(->
+
+            $scope.kpiDatesDeferred.resolve()
+            settingDatesPicker.initialize()
+          )
+        )
+
         # Linked methods
         # -------------------------
         $scope.addKpi = (kpi) ->
@@ -94,6 +118,15 @@ angular
 
         $scope.isEditing = ->
           $scope.showEditMode || kpiIsEditing()
+
+        $scope.updateDhbKpisDatesRange = (dates)->
+          return unless _.isObject(dates) && !_.isEmpty(dates)
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          angular.extend dashboard.metadata, { kpis_date_range: dates }
+          ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then(->
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.updateDhbKpisDatesRange)
+          )
+
 
         # Private methods
         # -------------------------
