@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expense-weight',[])
 
-module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
 
@@ -11,6 +11,7 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   $scope.accountBackDeferred = $q.defer()
   $scope.accountFrontDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,6 +19,7 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
     $scope.accountBackDeferred
     $scope.accountFrontDeferred
     $scope.chartDeferred.promise
+    $scope.histModeDeferred.promise
   ]
 
   $scope.forwardParams = {
@@ -46,35 +48,63 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound && w.content.summary?
-      companies = _.map w.content.summary, (s) -> s.company
-      ratios = _.map w.content.summary, (s) -> s.ratio
-      # Display a line instead of a point when only 1 company
-      if companies.length == 1
-        companies.push(companies[0])
-        ratios.push(ratios[0])
+      if w.isHistoryMode
+        period = null
+        period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+        dates = _.map w.content.dates, (date) ->
+          $filter('mnoDate')(date, period)
 
-      inputData = {labels: companies, values: ratios}
-      
+        datasets = _.map w.content.summary, (s) -> { title: s.company, values: s.ratios }
 
-      options = {
-        # scaleOverride: true,
-        # scaleSteps: 4,
-        # scaleStepWidth: 25,
-        # scaleStartValue: 0,
-        scales: { yAxes: [
-          { ticks: {
-            suggestedMin: 0
-            suggestedMax: 100
-            maxTicksLimit: 5
+        all_values_are_positive = true
+        angular.forEach(w.content.summary, (s) ->
+          angular.forEach(s.ratios, (ratio) ->
+            all_values_are_positive &&= ratio >= 0
+          )
+        )
+
+        lineData =
+          labels: dates
+          datasets: datasets
+
+        lineOptions = {
+          scaleBeginAtZero: all_values_are_positive,
+          showXLabels: false,
+          currency: "(ratio)"
+        }
+        # chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
+        chartData = ChartFormatterSvc.combinedBarChart(lineData,lineOptions, false, true)
+
+      else
+        companies = _.map w.content.summary, (s) -> s.company
+        ratios = _.map w.content.summary, (s) -> s.ratio
+        # Display a line instead of a point when only 1 company
+        if companies.length == 1
+          companies.push(companies[0])
+          ratios.push(ratios[0])
+
+        inputData = {labels: companies, values: ratios}
+
+
+        options = {
+          # scaleOverride: true,
+          # scaleSteps: 4,
+          # scaleStepWidth: 25,
+          # scaleStartValue: 0,
+          scales: { yAxes: [
+            { ticks: {
+              suggestedMin: 0
+              suggestedMax: 100
+              maxTicksLimit: 5
+              }
             }
-          }
-        ]}
-        showXLabels: false
-        pointDot: false
-        currency: '%'
-      }
-      chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
+          ]}
+          showXLabels: false
+          pointDot: false
+          currency: '%'
+        }
+        chartData = ChartFormatterSvc.lineChart([inputData],options)
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
