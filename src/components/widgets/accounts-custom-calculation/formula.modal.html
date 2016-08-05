@@ -44,7 +44,7 @@
         </div>
 
         <div class='input-group' ng-show="widget.hasEditAbility">
-          <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
+          <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
         </div>
       </div>
       

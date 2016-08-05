@@ -26,7 +26,7 @@
         </div>
         <div class="col-md-6">
           <div class="input-group">
-            <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
+            <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@
 
       <div class="row" ng-show="hasAccountsSelected() && !pdfMode">
         <div class="col-xs-12 input-group add-account">
-          <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
+          <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
             <option value="" disabled selected>+ ADD ACCOUNT</option>
           </select>
         </div>
