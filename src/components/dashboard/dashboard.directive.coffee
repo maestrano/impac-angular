@@ -71,7 +71,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       (error) ->
         # on dashboard failed first load, user should not be able to access dashboard controls.
         $scope.failedDashboardLoad = true
-        $scope.isLoading=false
+        $scope.isLoading = false
+    )
+
+    ImpacDashboardsSvc.dhbLoader().then(null, null, (triggerLoad)->
+      if triggerLoad then $scope.isLoading = true else $scope.activateTimer()
     )
 
     $scope.activateTimer = ->
@@ -431,7 +435,7 @@ module.directive('impacDashboard', ($templateCache, ImpacDashboardsSvc) ->
       },
       template: $templateCache.get('dashboard/dashboard.tmpl.html'),
       controller: 'ImpacDashboardCtrl'
-      
+
       link: (scope, element) ->
         scope.pdfMode = false
         ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
