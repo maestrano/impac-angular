@@ -13,6 +13,7 @@
 - Accounts in drop-downs now grouped by classification
 - Better design for info panel
 - Expense weight widgets now have a time period selector
+- Add a `@reload()` method to dhb service. External apps (e.g mnoe instances) can now properly reload the dashboard with a loading spinner to prevent display issues.
 
 
 -------------------------------------------------------------
