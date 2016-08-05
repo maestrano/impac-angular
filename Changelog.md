@@ -2,17 +2,20 @@
 
 ## Unreleased - development in progress
 
-### v1.3.12 | Week 32
-
-#### Adds
-
-#### Fixes
-
-
 -------------------------------------------------------------
 -------------------------------------------------------------
 
 ## Released
+
+### v1.3.12 | Week 32
+
+#### Adds
+- Accounts in drop-downs now grouped by classification
+- Better design for info panel
+- Expense weight widgets now have a time period selector
+
+
+-------------------------------------------------------------
 
 ### v1.3.11 | Week 31
 
@@ -26,7 +29,8 @@
 - potential fix for stuck dashboard loading
 - Fix sales summary data not found condition
 
----
+
+-------------------------------------------------------------
 
 ### [v1.3.10](https://github.com/maestrano/impac-angular/tree/v1.3.10) (2016-07-15)
 [Full Changelog](https://github.com/maestrano/impac-angular/compare/v1.3.9...v1.3.10)
@@ -36,6 +40,8 @@
 - Fix apply button when date range changes [\#208](https://github.com/maestrano/impac-angular/pull/208) ([alexnoox](https://github.com/alexnoox))
 - Fix Date Preset auto-selection [\#207](https://github.com/maestrano/impac-angular/pull/207) ([ouranos](https://github.com/ouranos))
 
+
+-------------------------------------------------------------
 
 ### v1.3.9 | Week 27
 
