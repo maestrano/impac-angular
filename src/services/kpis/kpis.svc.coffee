@@ -104,7 +104,7 @@ angular
             else
               _self.locked = false
               return $q.resolve()
-        )
+        ).finally(-> _self.locked = false )
 
       else
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"

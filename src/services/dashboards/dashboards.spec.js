@@ -40,7 +40,7 @@ describe('<> ImpacDashboardsSvc', function () {
   // Callbacks
   // -------------------------------------------------
   it('defines some callbacks', function() {
-    expect(Object.keys(svc.callbacks).length).toEqual(5);
+    expect(Object.keys(svc.callbacks).length).toEqual(6);
     expect(typeof svc.callbacks.dashboardChanged.$$state).toBeDefined();
     expect(typeof svc.callbacks.widgetAdded.$$state).toBeDefined();
   });

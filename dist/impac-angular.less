@@ -2315,6 +2315,9 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2333,9 +2336,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2360,6 +2360,18 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -2380,18 +2392,6 @@ body {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
   }
 }
 
@@ -2518,30 +2518,16 @@ body {
 
 
 .analytics .widget-item .content.accounts-expense-weight {
-  [common-time-period-info] {
-    margin-top: 5px;
-  }
-
   .legend {
     text-align: left;
     max-height: 115px;
 
     .title {
       text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
     }
   }
-}
-
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
+  .chart-container {
+    max-height: 125px;
   }
 }
 
@@ -2559,6 +2545,18 @@ body {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
+  }
+}
+
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -2709,14 +2707,6 @@ body {
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
-
-  .widget-lines-container {
-    max-height: 238px;
-  }
-}
-
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -2761,6 +2751,14 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
+  }
+}
+
 .analytics .widget-item .content.sales-comparison {
   .drill-down-widget();
   .widget-lines-container {
@@ -2822,16 +2820,16 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -3123,28 +3121,23 @@ body {
   // }
 }
 
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .info-panel {
   position: absolute;
-  top: 65px;
-  left: 24px;
-  width: ~"calc(100% - 48px)";
-  max-height: ~"calc(100% - 90px)";
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
   height: 100%;
   z-index: 100;
 
   background-color: white;
-  opacity: .85;
   border: dotted 1px #B7CDCE;
 
   display: flex;
   flex-direction: column;
   font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
 
   &:hover { opacity: 1; }
 
@@ -3187,6 +3180,12 @@ body {
       .value { text-align: justify; }
     }
   }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
 }
 
 .analytics .widget-item .top-line .top-buttons {
@@ -3367,21 +3366,6 @@ body {
   }
 }
 
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  button.btn.btn-sm {
-    line-height: 1;
-    &.date-button { margin: 0px 5px; }
-    &.btn-danger { display: none; }
-    &.btn-info { border-radius: 3px; }
-  }
-
-  .tooltip-inner { text-transform: none; }
-
-  .dropdown-menu > li > div > table { outline: none; }
-}
-
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -3401,6 +3385,21 @@ body {
     height: 20px;
   }
 }
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
 .analytics .widget-item .content .settings.hist-mode-choser {
   max-height: 70px;
 
