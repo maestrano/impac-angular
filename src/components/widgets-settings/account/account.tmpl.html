@@ -1,4 +1,4 @@
 <h5 ng-if="showLabel">{{label}}</h5>
 <div class="input-group settings select-account">
-	<select ng-model="parentWidget.selectedAccount" ng-change="onAccountSelected()" ng-options="formatLabel(account) for account in parentWidget.content.account_list track by account.uid" class="form-control" />
+	<select ng-model="parentWidget.selectedAccount" ng-change="onAccountSelected()" ng-options="formatLabel(account) group by account.classification for account in parentWidget.content.account_list track by account.uid" class="form-control" />
 </div>

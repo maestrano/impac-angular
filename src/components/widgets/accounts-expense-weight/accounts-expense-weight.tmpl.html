@@ -18,23 +18,24 @@
       <!-- Will be hidden once an account is selected -->
       <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an expense account' on-account-selected="updateSettings()" deferred="::accountFrontDeferred" />
 
-      <!-- The chart will remain hidden until an account is selected -->
-      <div class="chart-container" ng-show="widget.selectedAccount">
-        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-      </div>
+      <div ng-show="widget.selectedAccount">
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" accounting-behaviour="pnl" />
 
-      <div class="legend" ng-show="widget.selectedAccount">
-        <div class="title">
-          {{getName()}} to {{getComparator() | titleize}}
-          <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
+        <div class="chart-container">
+          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
-        <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
-          <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
-          <br />
-        </span>
-      </div>
 
-      <div common-time-period-info context="forwardParams" ng-show="widget.selectedAccount" />
+        <div class="legend">
+          <div class="title">
+            {{getName()}} to {{getComparator() | titleize}}
+            <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
+          </div>
+          <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
+            <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
+            <br />
+          </span>
+        </div>
+      </div>
 
     </div>
 
