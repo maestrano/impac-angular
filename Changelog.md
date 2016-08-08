@@ -5,11 +5,8 @@
 ### feature/kpis-rework
 
 #### Adds
-- Attach KPI's & Alerts onto widgets: adds a `settings-attach-kpi` widgets-settings component.
-
-### feature/alerting
-
-#### Adds
+- KPIs & KPIs Bar complete redesign, featuring results in phrases, drag & drop, icons, less form inputs, mass save edit, and a date picker for data within a date range!
+- Attach KPIs onto widgets: adds a `settings-attach-kpi` widgets-settings component.
 - In-app push notification (Pusher WebSockets) & Email alerts when KPI targets are met.
 
 #### Config changes
