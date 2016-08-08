@@ -149,6 +149,7 @@ angular
               (renderedKpi)-> # success
               (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
             )
+        ).finally(->
           # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
           $timeout(->
             _self.isRefreshing = false

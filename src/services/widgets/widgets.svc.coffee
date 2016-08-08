@@ -131,6 +131,7 @@ angular
               # TODO: better error management
               (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
             )
+        ).finally(->
           # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
           $timeout(->
             _self.isRefreshing = false
