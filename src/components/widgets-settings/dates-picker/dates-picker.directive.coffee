@@ -10,7 +10,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       toDate: '=to'
       keepToday: '='
       onUse: '&?'
-      onChangeCb: '&?'
+      onChangeCb: '&?onChange'
       minDate: '=?'
       updateOnPick: '=?'
       template: '=?'
