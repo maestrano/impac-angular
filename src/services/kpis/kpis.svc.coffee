@@ -25,10 +25,28 @@ angular
       )
 
     @getAttachableKpis = (widgetEngine) ->
+      deferred = $q.defer()
       _self.load().then(->
-        _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+        templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
           return false unless _.isArray(kpiTemplate.attachables)
           _.includes(kpiTemplate.attachables, widgetEngine)
+        )
+        deferred.resolve(templates)
+      )
+      deferred.promise
+
+    @getKpisDateRange = ->
+      _self.load().then(->
+        kpisDateRange = _self.getCurrentDashboard().metadata.kpis_hist_parameters
+        return kpisDateRange unless _.isEmpty(kpisDateRange) || !_.isObject(kpisDateRange)
+        ImpacMainSvc.load().then( (config) ->
+          fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month) || 6
+          fyDates = ImpacUtilities.financialYearDates(fyEndMonth)
+          {
+            from: moment(fyDates.end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD'),
+            to: moment().format('YYYY-MM-DD'),
+            keepToday: true
+          }
         )
       )
 
@@ -121,14 +139,22 @@ angular
           )
       )
 
+    @isRefreshing = false
     @refreshAll = ->
-      _self.load().then(->
-        for k in _self.getCurrentDashboard().kpis
-          _self.show(k).then(
-            (renderedKpi)-> # success
-            (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
-          )
-      )
+      unless _self.isRefreshing
+        _self.isRefreshing = true
+        _self.load().then(->
+          for k in _self.getCurrentDashboard().kpis
+            _self.show(k).then(
+              (renderedKpi)-> # success
+              (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
+            )
+        ).finally(->
+          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          $timeout(->
+            _self.isRefreshing = false
+          , 3000)
+        )
 
 
     #====================================
@@ -209,49 +235,52 @@ angular
           params.extra_params = kpi.extra_params if kpi.extra_params?
           params.extra_watchables = kpi.extra_watchables if kpi.extra_watchables?
 
-          # TODO make it editable!
-          angular.extend params.metadata, {
-            hist_parameters:
-              from: ImpacUtilities.financialYearDates(fy_end_month).start
-              to: moment().format('YYYY-MM-DD')
-              period: 'MONTHLY'
-          }
+          # Retrieve datesRange from dashboard or default.
+          _self.getKpisDateRange().then((dates)->
 
-          switch kpi.source
-            when 'impac'
-              host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
-            when 'local'
-              host = ImpacRoutes.kpis.local()
+            angular.extend params.metadata, {
+              hist_parameters:
+                from: dates.from
+                to: dates.to
+                period: 'MONTHLY'
+            }
 
-          url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
+            switch kpi.source
+              when 'impac'
+                host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
+              when 'local'
+                host = ImpacRoutes.kpis.local()
 
-          $http.get(url).then(
-            (response) ->
-              # When no target has been defined
-              if response.data.error && response.data.error.code == 422
-                # TODO force edit mode
-                return false
-              else
-                kpiResp = response.data.kpi
-                # Calculation
-                # angular.extend kpi.data, kpiResp.calculation
-                kpi.data = kpiResp.calculation
+            url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-                # Configuration
-                # When the kpi initial configuration is partial, we update it with what the API has picked by default
-                updatedConfig = kpiResp.configuration || {}
-                missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-                angular.extend kpi, _.pick(updatedConfig, missingParams)
+            $http.get(url).then(
+              (response) ->
+                # When no target has been defined
+                if response.data.error && response.data.error.code == 422
+                  # TODO force edit mode
+                  return false
+                else
+                  kpiResp = response.data.kpi
+                  # Calculation
+                  # angular.extend kpi.data, kpiResp.calculation
+                  kpi.data = kpiResp.calculation
 
-                # Layout
-                # angular.extend kpi.layout, kpiResp.layout
-                kpi.layout = kpiResp.layout
+                  # Configuration
+                  # When the kpi initial configuration is partial, we update it with what the API has picked by default
+                  updatedConfig = kpiResp.configuration || {}
+                  missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+                  angular.extend kpi, _.pick(updatedConfig, missingParams)
 
-                return kpi
+                  # Layout
+                  # angular.extend kpi.layout, kpiResp.layout
+                  kpi.layout = kpiResp.layout
 
-            (err) ->
-              $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
-              err
+                  return kpi
+
+              (err) ->
+                $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
+                err
+            )
           )
         ->
           $log.error 'Impac! - KpisSvc: Service not initialized'

@@ -118,17 +118,25 @@ angular
             return $q.reject(null)
         )
 
+    @isRefreshing = false
     @refreshAll = (refreshCache=false) ->
-      _self.load().then( ->
-        currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-        for w in currentDhb.widgets
-          w.isLoading = true
-          _self.show(w, refreshCache).then(
-            (renderedWidget) -> renderedWidget.isLoading = false
-            # TODO: better error management
-            (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
-          )
-      )
+      unless _self.isRefreshing
+        _self.isRefreshing = true
+        _self.load().then( ->
+          currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+          for w in currentDhb.widgets
+            w.isLoading = true
+            _self.show(w, refreshCache).then(
+              (renderedWidget) -> renderedWidget.isLoading = false
+              # TODO: better error management
+              (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
+            )
+        ).finally(->
+          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          $timeout(->
+            _self.isRefreshing = false
+          , 3000)
+        )
 
     # ====================================
     # CRUD methods

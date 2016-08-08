@@ -12,7 +12,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
-  $scope.attachKpisDeferred = $q.defer()
+  # $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -21,7 +21,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
-    $scope.attachKpisDeferred.promise
+    # $scope.attachKpisDeferred.promise
   ]
 
   $scope.kpiExtraParams = {}
@@ -64,7 +64,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   w.format = ->
     if $scope.isDataFound && w.selectedAccount?
       # Defines available kpi extra params for the attach-kpi's directive.
-      $scope.kpiExtraParams.account = angular.copy(w.selectedAccount)
+      # $scope.kpiExtraParams.account = angular.copy(w.selectedAccount)
 
       data = angular.copy(w.selectedAccount)
       datesSource = data.dates || w.content.dates # w.content.dates should not be used. Placed here in case of frontend hitting old API

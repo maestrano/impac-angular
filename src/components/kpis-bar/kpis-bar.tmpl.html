@@ -45,13 +45,18 @@
     <div class="col-xs-12 col-sm-12">
       <div class="row">
         <div ui-sortable="sortableOptions" ng-model="kpis">
-          <div ng-repeat="kpi in kpis track by kpi.id" impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list">
+          <div ng-repeat="kpi in kpis track by kpi.id" impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list" load-ready="kpiDatesDeferred">
           </div>
         </div>
         <div ng-show="isAddingKpi" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
           <i class="fa fa-2x fa-spin fa-refresh"></i>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row" ng-show="isEditing() && kpis.length">
+    <div class="dates-picker-container">
+      <div setting-dates-picker from="kpisDateRange.from" to="kpisDateRange.to" keep-today="kpisDateRange.keepToday" on-change="kpisBarUpdateDates" deferred="datesPickerDeferred"/>
     </div>
   </div>
 </div>

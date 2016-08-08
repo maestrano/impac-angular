@@ -7,21 +7,14 @@ angular
         onDelete: '&'
         kpi: '='
         editMode: '='
+        loadReady: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
       controller: ($scope) ->
-        # Load
+        # Private Methods
         # -------------------------
-        $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
-        $scope.possibleExtraParams = []
-        $scope.targets = {}
-        $scope.possibleTargets = [
-          { label: 'below', mode: 'min' }
-          { label: 'over', mode: 'max' }
-        ]
-
-        unless $scope.kpi.static
+        fetchKpiData = ->
           ImpacKpisSvc.show($scope.kpi).then( (renderedKpi) ->
             angular.extend $scope.kpi, renderedKpi
 
@@ -47,13 +40,34 @@ angular
             $scope.displayEditSettings() if watchablesWithoutTargets
           )
 
-
         onUpdateSettingsCb = (force)-> $scope.updateSettings() if $scope.kpi.isEditing || force
 
+        onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
+
+        # Load
+        # -------------------------
+        $scope.kpiTemplates = ImpacKpisSvc.getKpisTemplates()
+        $scope.possibleExtraParams = []
+        $scope.targets = {}
+        $scope.possibleTargets = [
+          { label: 'below', mode: 'min' }
+          { label: 'over', mode: 'max' }
+        ]
+
+        $scope.kpi.isLoading = true
+        $scope.loadReady.promise.then(->
+
+          fetchKpiData() unless $scope.kpi.static
+        ).finally(->
+          $scope.kpi.isLoading = false
+        )
+
         ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateDates , onUpdateDatesCb)
 
         $scope.$on('$destroy', ()->
           ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+          ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateDates, onUpdateDatesCb)
         )
 
         # Linked methods
