@@ -1,3 +1,5 @@
+# TODO: dates-picker should be a common component. Template compiling should be revised.
+
 module = angular.module('impac.components.widgets-settings.dates-picker',[])
 
 module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) ->
@@ -5,7 +7,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
     restrict: 'A',
     scope: {
       parentWidget: '=?'
-      deferred: '=?'
+      deferred: '='
       fromDate: '=from'
       toDate: '=to'
       keepToday: '='
@@ -138,6 +140,6 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       # Setting is ready: trigger load content
       # ------------------------------------
-      scope.deferred.resolve(setting) if scope.deferred
+      scope.deferred.resolve(setting)
   }
 )
