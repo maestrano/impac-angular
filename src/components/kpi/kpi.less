@@ -39,7 +39,7 @@
   }
 
   &.editing {
-    min-height: @kpi-max-height + 80px;
+    min-height: @kpi-max-height + @kpi-editing-max-height;
   }
 
   &:hover { cursor: default; }
@@ -78,7 +78,7 @@
   .kpi-content {
     max-height: @kpi-max-height - 5px;
     &.editing {
-      min-height: @kpi-max-height + 75px;
+      min-height: @kpi-max-height + @kpi-editing-max-height - @kpi-content-editing-height-buffer;
       .scrollable();
     }
   }
