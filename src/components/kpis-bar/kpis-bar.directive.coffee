@@ -122,7 +122,7 @@ angular
         $scope.kpisBarUpdateDates = (dates)->
           return unless _.isObject(dates) && !_.isEmpty(dates)
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-          angular.extend dashboard.metadata, { kpis_date_range: dates }
+          angular.merge dashboard.metadata, { kpis_hist_parameters: dates }
           ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then(->
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateDates)
           )

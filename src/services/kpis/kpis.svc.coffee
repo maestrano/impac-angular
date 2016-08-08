@@ -37,7 +37,7 @@ angular
 
     @getKpisDateRange = ->
       _self.load().then(->
-        kpisDateRange = _self.getCurrentDashboard().metadata.kpis_date_range
+        kpisDateRange = _self.getCurrentDashboard().metadata.kpis_hist_parameters
         return kpisDateRange unless _.isEmpty(kpisDateRange) || !_.isObject(kpisDateRange)
         ImpacMainSvc.load().then( (config) ->
           fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month) || 6
