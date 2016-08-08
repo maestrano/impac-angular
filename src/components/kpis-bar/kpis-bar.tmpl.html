@@ -56,7 +56,7 @@
   </div>
   <div class="row" ng-show="isEditing() && kpis.length">
     <div class="dates-picker-container">
-      <div setting-dates-picker from="kpisDateRange.from" to="kpisDateRange.to" keep-today="kpisDateRange.keepToday" on-change="updateDhbKpisDatesRange" deferred="datesPickerDeferred"/>
+      <div setting-dates-picker from="kpisDateRange.from" to="kpisDateRange.to" keep-today="kpisDateRange.keepToday" on-change="kpisBarUpdateDates" deferred="datesPickerDeferred"/>
     </div>
   </div>
 </div>

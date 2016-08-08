@@ -119,12 +119,12 @@ angular
         $scope.isEditing = ->
           $scope.showEditMode || kpiIsEditing()
 
-        $scope.updateDhbKpisDatesRange = (dates)->
+        $scope.kpisBarUpdateDates = (dates)->
           return unless _.isObject(dates) && !_.isEmpty(dates)
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
           angular.extend dashboard.metadata, { kpis_date_range: dates }
           ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then(->
-            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.updateDhbKpisDatesRange)
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateDates)
           )
 
 

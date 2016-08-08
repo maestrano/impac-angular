@@ -63,11 +63,11 @@ angular
         )
 
         ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
-        ImpacEvents.registerCb(IMPAC_EVENTS.updateDhbKpisDatesRange , onUpdateDatesCb)
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateDates , onUpdateDatesCb)
 
         $scope.$on('$destroy', ()->
           ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
-          ImpacEvents.deregisterCb(IMPAC_EVENTS.updateDhbKpisDatesRange, onUpdateDatesCb)
+          ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateDates, onUpdateDatesCb)
         )
 
         # Linked methods
