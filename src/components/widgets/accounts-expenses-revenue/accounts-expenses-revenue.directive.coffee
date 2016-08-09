@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expenses-revenue',[])
 
-module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -19,7 +19,13 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
     $scope.chartDeferred.promise
     $scope.paramsCheckboxesDeferred.promise
   ]
-
+  $translate(['impac.widget.account_expenses_revenue.show_net_profit','impac.widget.account_expenses_revenue.net_profit','impac.widget.account_expenses_revenue.expenses','impac.widget.account_expenses_revenue.revenue']).then(
+    (translations)->
+      $scope.show_net_profit = translations["impac.widget.account_expenses_revenue.show_net_profit"]
+      $scope.net_profit = translations["impac.widget.account_expenses_revenue.net_profit"]
+      $scope.expenses = translations["impac.widget.account_expenses_revenue.expenses"]
+      $scope.revenue = translations["impac.widget.account_expenses_revenue.revenue"]
+    )
 
   # Widget specific methods
   # --------------------------------------
@@ -28,7 +34,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
     $scope.displayOptions = [{
       id: 'show_net_profit',
-      label: 'Show net profit',
+      label: $scope.show_net_profit,
       value: false,
       onChangeCallback: $scope.toggleDisplayNetProfit
     }]
@@ -64,8 +70,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         if $scope.isNetProfitDisplayed
           datasets = [
-            {title: "Net Profit (#{$scope.getCurrency()})", values: w.content.values.net_profit },
-          ]
+            {title: $scope.net_profit + " (#{$scope.getCurrency()})", values: w.content.values.net_profit },
+            ]
           all_values_are_positive = true
           angular.forEach(w.content.values.net_profit, (value) ->
             all_values_are_positive &&= value >= 0
@@ -73,8 +79,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         else
           datasets = [
-            {title: "Expenses (#{$scope.getCurrency()})", values: w.content.values.expenses },
-            {title: "Revenue (#{$scope.getCurrency()})", values: w.content.values.revenue },
+            {title: $scope.expenses + " (#{$scope.getCurrency()})", values: w.content.values.expenses },
+            {title: $scope.revenue + " (#{$scope.getCurrency()})", values: w.content.values.revenue },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.expenses, (value) ->
@@ -86,7 +92,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         lineData =
           labels: dates
-          datasets: datasets 
+          datasets: datasets
 
         lineOptions = {
           scaleBeginAtZero: all_values_are_positive,
@@ -97,15 +103,15 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
       else
         pieData = [
-          { label: "Expenses (#{$scope.getCurrency()})", value: $scope.getCurrentExpenses() },
-          { label: "Revenue (#{$scope.getCurrency()})", value: $scope.getCurrentRevenue() },
+          { label: $scope.expenses + " (#{$scope.getCurrency()})", value: $scope.getCurrentExpenses() },
+          { label: $scope.revenue + " (#{$scope.getCurrency()})", value: $scope.getCurrentRevenue() },
         ]
         pieOptions = {
           tooltipFontSize: 12,
           percentageInnerCutout: 0,
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions, true)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
