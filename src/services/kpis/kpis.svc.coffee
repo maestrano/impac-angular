@@ -76,7 +76,7 @@ angular
       unless _self.locked
         _self.locked = true
 
-        return ImpacDashboardsSvc.load(force).then(
+        return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
           ->
             if _.isEmpty(_self.getKpisTemplates()) || force
 
