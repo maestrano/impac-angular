@@ -7,7 +7,7 @@
         <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
       </div>
       <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
-        <span class="caption">{{kpi.layout.text.caption}}</span>
+        <span class="caption" tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
         <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})" tooltip-placement="bottom" tooltip-append-to-body="false">
           <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})</span>
         </span>
