@@ -192,5 +192,13 @@
   "impac.widget.account_expenses_revenue.expenses":           "Expenses",
   "impac.widget.account_expenses_revenue.revenue":            "Revenue",
   "impac.widget.account_expenses_revenue.net_profit":         "Net Profit",
-  "impac.widget.account_expenses_revenue.show_net_profit":    "Show net profit"
+  "impac.widget.account_expenses_revenue.show_net_profit":    "Show net profit",
+
+  "impac.widget.accounts_payable_receivable.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_payable_receivable.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.accounts_payable_receivable.save":            "@:impac.common.action.save",
+  "impac.widget.accounts_payable_receivable.acc_receivable":  "Accounts Receivable",
+  "impac.widget.accounts_payable_receivable.acc_payable":     "Accounts Payable",
+  "impac.widget.accounts_payable_receivable.payable":         "Payable",
+  "impac.widget.accounts_payable_receivable.receivable":      "Receivable"
 }
