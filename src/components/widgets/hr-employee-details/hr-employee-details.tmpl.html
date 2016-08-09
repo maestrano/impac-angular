@@ -1,13 +1,13 @@
 <div widget-hr-employee-details>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.hr_employee_details.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_employee_details.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_employee_details.save</button>
     </div>
   </div>
 
@@ -21,57 +21,57 @@
 
         <div class="details-container">
           <div class="row">
-            <div class="col-md-4"><label>Job Title</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.job_title</label></div>
             <div class="col-md-8"><pre>{{getEmployee().job_title || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Company</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.company</label></div>
             <div class="col-md-8"><pre>{{getEmployee().company || getSingleCompanyName()}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Phone</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.phone</label></div>
             <div class="col-md-8"><pre>{{getEmployee().phone || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Email</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.email</label></div>
             <div class="col-md-8"><pre>{{getEmployee().email || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Date of birth</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.date_birth</label></div>
             <div class="col-md-8"><pre>{{getEmployee().dob || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Gender</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.gender</label></div>
             <div class="col-md-8"><pre>{{getEmployee().gender || "-" }}</pre></div>
           </div>
         </div>
       </div>
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
-        <div class="legend">Salary calculation period: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" /></div>
+        <div class="legend"><span translate>impac.widget.hr_employee_details.sal_cal_period</span>: <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" /></div>
         <div class="details-container">
           <div class="row">
-            <div class="col-md-4"><label>Salary</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.salary</label></div>
             <div class="col-md-8"><pre>{{getEmployee().salary || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Address</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.address</label></div>
             <div class="col-md-8"><pre>{{formatAddress(getEmployee().address) || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Job location</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.job_location</label></div>
             <div class="col-md-8"><pre>{{getEmployee().location || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Supervisor</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.supervisor</label></div>
             <div class="col-md-8"><pre>{{getEmployee().supervisor || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Status</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.status</label></div>
             <div class="col-md-8"><pre>{{getEmployee().employment_status || "-" }}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Note</label></div>
+            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.note</label></div>
             <div class="col-md-8"><pre>{{getEmployee().note || "-" }}</pre></div>
           </div>
         </div>

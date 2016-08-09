@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-employee-details',[])
 
-module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
+module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -18,6 +18,18 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
     $scope.paramSelectorDeferred2.promise
   ]
 
+  $translate([
+    'impac.widget.hr_employee_details.yearly',
+    'impac.widget.hr_employee_details.monthly',
+    'impac.widget.hr_employee_details.weekly',
+    'impac.widget.hr_employee_details.hourly']).then(
+    (translations)->
+      $scope.yearly = translations["impac.widget.hr_employee_details.yearly"]
+      $scope.monthly = translations["impac.widget.hr_employee_details.monthly"]
+      $scope.weekly = translations["impac.widget.hr_employee_details.weekly"]
+      $scope.hourly = translations["impac.widget.hr_employee_details.hourly"]
+    )
+
 
   # Widget specific methods
   # --------------------------------------
@@ -25,10 +37,10 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.employees)
 
       $scope.periodOptions = [
-        {label: 'Yearly', value: 'yearly'},
-        {label: 'Monthly', value: 'monthly'},
-        {label: 'Weekly', value: 'weekly'},
-        {label: 'Hourly', value: 'hourly'}
+        {label: $scope.yearly, value: 'yearly'},
+        {label: $scope.monthly, value: 'monthly'},
+        {label: $scope.weekly, value: 'weekly'},
+        {label: $scope.hourly, value: 'hourly'}
       ]
       if w.metadata && w.metadata.period
         $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
