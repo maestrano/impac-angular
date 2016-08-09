@@ -77,14 +77,14 @@ angular
         _self.locked = true
 
         return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
-          ->
+          (results)->
             if _.isEmpty(_self.getKpisTemplates()) || force
 
               # clear array
               _.remove _self.config.kpisTemplates, (-> true)
 
               orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
-              ssoSessionId = _self.getSsoSessionId()
+              ssoSessionId = results[0].sso_session
 
               params =
                 metadata:
