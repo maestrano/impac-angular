@@ -11,6 +11,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramsCheckboxesDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,6 +19,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramsCheckboxesDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
 

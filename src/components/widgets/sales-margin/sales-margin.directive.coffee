@@ -11,6 +11,7 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
   $scope.histModeDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,6 +19,7 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
     $scope.histModeDeferred.promise
     $scope.paramSelectorDeferred.promise
     $scope.chartDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
 

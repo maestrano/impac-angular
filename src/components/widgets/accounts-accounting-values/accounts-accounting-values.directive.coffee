@@ -10,12 +10,14 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
 

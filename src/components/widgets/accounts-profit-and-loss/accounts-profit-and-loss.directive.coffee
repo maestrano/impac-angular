@@ -11,6 +11,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,6 +19,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
   setAmountDisplayed = ->
