@@ -16,11 +16,21 @@
       </div>
     </div>
 
-    <div class="edit">
-      <div setting-organizations parent-widget="widget" class="part" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+    <div class="row edit">
+      <div class="col-xs-6">
+        <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" update-on-pick="true" />
+      </div>
+      <div class="col-xs-6">
+        <div setting-organizations parent-widget="widget" class="part" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+      </div>
+      <div class="col-xs-6">
+        <div class="part text-center">
+          <button class="btn btn-warning" ng-click="saveTimeRange()">Apply Time period</button>
+        </div>
+      </div>
     </div>
 
-    <p>Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: ({1} + {2}) / {3})</p>
+    <p>Create a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the standard operators (example: ({1} + {2}) / {3})</p>
 
     <div class='row'>
       <div ng-show="widget.isLoading" class='col-md-6 loader' align="center">
@@ -47,10 +57,10 @@
           <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
         </div>
       </div>
-      
+
       <div ng-hide="widget.isLoading" class='col-md-6'>
         <p>Type your formula just below:</p>
-        <input class='form-control' ng-model="widget.formula">
+        <input class='form-control' ng-model="widget.formula" placeholder="1000 + 1500">
 
         <p>Result: {{widget.evaluatedFormula}}</p>
         <p>Legend: {{widget.legend}}</p>
@@ -67,7 +77,7 @@
           Save
         </button>
       </div>
-      
+
     </div>
   </div>
 </div>
