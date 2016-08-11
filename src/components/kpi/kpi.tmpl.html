@@ -27,7 +27,7 @@
       <form name="kpi{{kpi.id}}SettingsForm">
         <!-- watchables -->
         <div ng-repeat="watchable in kpi.watchables track by $index">
-          <div class="real-value">Current {{watchable}}: {{kpi.data[watchable].value}} {{kpi.data[watchable].unit}}</div>
+          <div class="real-value" ng-show="kpi.data">Current {{watchable}}: {{kpi.data[watchable].value}} {{kpi.data[watchable].unit}}</div>
           <!-- targets -->
           <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
             <!-- target -->
