@@ -1,32 +1,20 @@
 module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout, $log) ->
 
   w = $scope.parentWidget
-  w.formula = ""
-
-  # # Only authorize mathematical expressions
-  authorized_regex = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$")
 
   setting = {}
   setting.key = "formula"
   setting.isInitialized = false
 
   setting.initialize = ->
-    if w.metadata? && w.metadata.formula?
-      w.formula = w.metadata.formula
-      $timeout () ->
-        evaluateFormula()
-        setting.isInitialized = true
-    else
-      w.formula = ""
+    w.formula = (w.metadata? && w.metadata.formula) || ""
+    evaluate(w.formula)
+    setting.isInitialized = true
 
   setting.toMetadata = ->
-    evaluateFormula()
-    if w.isFormulaCorrect
-      return { formula: w.formula }
-    else
-      return { formula: "" }
+    { formula: (w.isFormulaCorrect && w.formula) || "" }
 
   getFormula = ->
     return w.formula
@@ -34,42 +22,91 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
   w.formatAmount = (anAccount) ->
     return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
 
-  $scope.$watch getFormula, (e) ->
-    evaluateFormula()
+  $scope.$watch getFormula, (formula) ->
+    evaluate(formula)
 
-  evaluateFormula = ->
-    str = angular.copy(w.formula)
-    legend = angular.copy(w.formula)
-    i=1
-    angular.forEach(w.selectedAccounts, (account) ->
-      balancePattern = "\\{#{i}\\}"
-      str = str.replace(new RegExp(balancePattern, 'g'), " #{account.current_balance_no_format} ")
-      legend = legend.replace(new RegExp(balancePattern, 'g'), account.name)
-      i++
-    )
 
-    # Guard against injection
-    if (!str.match(authorized_regex))
-      w.isFormulaCorrect = false
-      w.evaluatedFormula = "invalid expression"
+  # Returns an array of formula strings of same dimension as arraySample
+  initialFormulas = (formulaString, arraySample) ->
+    formulasArray = _.map arraySample, (e) ->
+      formulaString
 
-    try
-      w.evaluatedFormula = eval(str).toFixed(2)
-    catch e
-      w.evaluatedFormula = "invalid expression"
+  # Replaces the account index by a replacement value (balance, name...) in the formula string
+  interpolateIndexesInFormula = (formulaString, replacement, accountIndex) ->
+    balancePattern = "\\{#{accountIndex}\\}"
+    formulaString.replace(new RegExp(balancePattern, 'g'), " #{replacement} ")
 
-    if !w.evaluatedFormula? || w.evaluatedFormula == "invalid expression" || w.evaluatedFormula == "Infinity" || w.evaluatedFormula == "-Infinity"
-      w.isFormulaCorrect = false
+  # Recursive - Replaces all the accounts indexes by all their balances in all the formulas strings in the array
+  interpolateAllAccountsBalances = (formulasArray, accounts, accountIndex=1) ->
+    unless accountIndex > accounts.length
+      balanceIndex=0
+      newFormulasArray = _.map formulasArray, (formulaString) ->
+        balance = accounts[accountIndex-1].balances[balanceIndex]
+        balanceIndex++
+        interpolateIndexesInFormula(formulaString, balance, accountIndex)
+
+      interpolateAllAccountsBalances(newFormulasArray, accounts, accountIndex+1)
+
     else
-      formatFormula()
-      w.legend = legend
-      w.isFormulaCorrect = true
+      formulasArray
 
-  formatFormula = ->
-    if !w.formula.match(/\//g) && w.selectedAccounts?
-      if firstAcc = w.selectedAccounts[0]
-        if currency = firstAcc.currency
-          w.evaluatedFormula = $filter('mnoCurrency')(w.evaluatedFormula, currency)
+  # Recursive - Replaces all the accounts indexes by their names in the given formula string
+  interpolateAllAccountsNames = (formulaString, accounts, accountIndex=1) ->
+    unless accountIndex > accounts.length
+      name = accounts[accountIndex-1].name
+      newFormula = interpolateIndexesInFormula(formulaString, name, accountIndex)
+      interpolateAllAccountsNames(newFormula, accounts, accountIndex+1)
+    
+    else
+      formulaString
+
+  applyFormulas = (formulasArray) ->
+    _.map formulasArray, (formula) ->
+      applyFormula(formula)
+
+  # Check if the formula is valid and calculates its result
+  applyFormula = (formula) ->
+    # Guard against injection: Only authorize mathematical expressions
+    authorized_regex = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$")
+    return false unless formula.match(authorized_regex)
+    try eval(formula).toFixed(2)
+    catch e then false
+
+  # Apply a formula to an array of accounts for each period interval, and outputs the results array
+  calculationResults = (formulasString, arraySample, accounts) ->
+    init = initialFormulas(formulasString, arraySample)
+    interpolated = interpolateAllAccountsBalances(init, accounts)
+    applyFormulas(interpolated)
+
+  isResultValid = (result) ->
+    result && isFinite(result)
+
+  # Format a result with a currency when relevant
+  formatResult = (formulaString, result, currency) ->
+    if !isResultValid(result)
+      "invalid expression"
+    else if (formulaString.match(/\//) || !currency)
+      result
+    else
+      $filter('mnoCurrency')(result, currency)
+
+  # evaluates the current result and history of results
+  # TODO: should directly modify w object. use callbacks instead
+  evaluate = (formula) ->
+    unless _.isEmpty(formula) || _.isEmpty(w.content.dates)
+      accounts = w.selectedAccounts || []
+      currency = !_.isEmpty(accounts) && accounts[0].currency
+
+      w.evaluatedFormulaHist = calculationResults(formula, w.content.dates, accounts)
+      w.legend = interpolateAllAccountsNames(formula, accounts)
+
+      # TODO: Accounting behaviours? => if some PNL accounts are selected, only the last results will be displayed anyway...
+      currentResult = _.last(w.evaluatedFormulaHist)
+      w.evaluatedFormula = formatResult(formula, currentResult, currency)
+      w.isFormulaCorrect = isResultValid(currentResult)
+    
+    else
+      w.isFormulaCorrect = false  
 
   w.settings.push(setting)
 
