@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, $q, ImpacKpisSvc, ImpacDashboardsSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacDashboardsSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
@@ -8,7 +8,7 @@ angular
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
-      controller: ($scope, $timeout, $log) ->
+      controller: ($scope, $log) ->
         # Load
         # -------------------------
         $scope.availableKpis = {
@@ -108,13 +108,21 @@ angular
           _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
           initAvailableKpis()
 
+        $scope.toggleEditModeLock = false
         $scope.toggleEditMode = ->
+          return if $scope.toggleEditModeLock
+          $scope.toggleEditModeLock = true
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarToggleSettings)
           if (kpiIsEditing() && !$scope.showEditMode)
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings)
           else
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings, f) if (f = $scope.showEditMode)
             $scope.showEditMode = !$scope.showEditMode
           $scope.availableKpis.toggle() unless $scope.availableKpis.hide || $scope.showEditMode
+          # prevents spam clicking, and works with kpi show/edit annimation.
+          $timeout(->
+            $scope.toggleEditModeLock = false
+          , 450)
 
         $scope.isEditing = ->
           $scope.showEditMode || kpiIsEditing()

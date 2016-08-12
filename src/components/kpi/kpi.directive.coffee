@@ -11,7 +11,7 @@ angular
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
-      controller: ($scope) ->
+      controller: ($scope, $element) ->
         # Private Methods
         # -------------------------
         fetchKpiData = ->
@@ -42,7 +42,19 @@ angular
 
         onUpdateSettingsCb = (force)-> $scope.updateSettings() if $scope.kpi.isEditing || force
 
+        onToggleSettingsCb = -> animateKpiPanels()
+
         onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
+
+        animateKpiPanels = ()->
+          element = angular.element($element).find('.kpi-content')
+          return unless element
+          # Hides kpi-content while ngShow/ngHide is switching
+          element.animate({opacity: 0}, 0)
+          # Makes it reappear after switching
+          $timeout ->
+            element.animate({opacity: 1}, 150)
+          , 200
 
         # Load
         # -------------------------
@@ -63,6 +75,7 @@ angular
         )
 
         ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarToggleSettings, onToggleSettingsCb)
         ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateDates , onUpdateDatesCb)
 
         $scope.$on('$destroy', ()->

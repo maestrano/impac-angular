@@ -9,5 +9,6 @@ module.constant('IMPAC_EVENTS',
   impacNotificationsLoad: 'impac-notifications-load'
   addOrRemoveAlerts: 'add-or-remove-alerts'
   kpisBarUpdateSettings: 'on-kpis-bar-update-settings'
+  kpisBarToggleSettings: 'on-kpis-bar-toggle-settings'
   kpisBarUpdateDates: 'on-kpis-bar-update-dates'
 )
