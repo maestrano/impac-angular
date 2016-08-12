@@ -4,7 +4,7 @@
     <button type="button" class="add-kpis im-fab im-primary" ng-click="(availableKpis.list.length > 0) && availableKpis.toggle()" ng-class="{disabled: (availableKpis.list.length == 0)}">
       <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.hide, 'fa-minus': !availableKpis.hide}"></i></a>
     </button>
-    <button type="button" class="edit-kpis im-fab im-primary" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
+    <button type="button" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock }" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
       <a href=""><i class="fa" ng-class="{ 'fa-cog': !isEditing(), 'fa-floppy-o': isEditing() }"></i></a>
     </button>
   </div>
