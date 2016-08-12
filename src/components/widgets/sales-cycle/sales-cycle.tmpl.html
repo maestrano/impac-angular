@@ -17,7 +17,13 @@
     <div ng-show="(isDataFound==true)" class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">
-        <span>Your sales cycle represents how much time your leads stay set to each status</span>
+      </div>
+      <div class="title" tooltip={{chartTitle}}>{{chartTitle}}</div>
+      <div class="legend">
+        <span ng-repeat="valuePair in pieData">
+          <span style="font-weight: bold; color: {{getEntityColor(valuePair)}};">{{valuePair.label}}</span>: {{valuePair.value | mnoCurrency : getCurrency()}}
+          <br />
+        </span>
       </div>
     </div>
 

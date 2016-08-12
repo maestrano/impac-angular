@@ -16,8 +16,12 @@
   <div align="center" ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)" class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      <span class="title">{{widget.content.legend}}</span>
       <div class="legend">
-        <span>{{widget.content.legend}}</span>
+        <span ng-repeat="valuePair in widget.content.summary">
+          <span style="font-weight: bold; color: {{getEntityColor(valuePair)}};">{{valuePair.name}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}
+          <br />
+        </span>
       </div>
     </div>
     <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />

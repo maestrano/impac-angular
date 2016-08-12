@@ -1,5 +1,5 @@
 <div widget-accounts-assets-summary>
-      
+
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
 
@@ -14,9 +14,9 @@
   <div ng-hide="widget.isEditMode">
     <div ng-show="(isDataFound==true)" class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
+      <div class="title" ng-hide="widget.metadata.organization_ids.length==1">{{classification}} repartition</div>
       <div class="legend">
-        <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
-        <div class="title" ng-hide="widget.metadata.organization_ids.length==1">{{classification}} repartition</div>
         <span ng-repeat="valuePair in dataSource">
           <span style="font-weight: bold; color: {{getAccountColor(valuePair)}};">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}
           <br />

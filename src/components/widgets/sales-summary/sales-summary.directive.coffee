@@ -51,9 +51,9 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      pieData = _.map w.content.summary, (entity) ->
+      $scope.pieData = _.map w.content.summary, (entity) ->
         if entity.company
-          label = "#{entity.code || entity.name || entity.location || entity.industry || entity.customer} (#{entity.company})"
+          label = "#{entity.code || entity.name || entity.location || entity.industry || entity.customer}"
         else
           label = entity.code || entity.name || entity.location || entity.industry || entity.customer
         {
@@ -65,11 +65,13 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
         tooltipFontSize: 12,
       }
       angular.merge(pieOptions, {currency: 'hide'}) if $scope.filter.value.indexOf('quantity') > -1
-      chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
+      chartData = ChartFormatterSvc.pieChart($scope.pieData, pieOptions)
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
+  $scope.getEntityColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf($scope.pieData, elem)) if $scope.isDataFound
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

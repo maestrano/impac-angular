@@ -42,10 +42,12 @@ module.controller('WidgetInvoicesSummaryCtrl', ($scope, $q, ChartFormatterSvc) -
         tooltipFontSize: 12,
       }
       chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
+  $scope.getEntityColor = (elem) ->
+    ChartFormatterSvc.getColor(_.indexOf(w.content.summary, elem)) if $scope.isDataFound
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
