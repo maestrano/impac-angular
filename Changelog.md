@@ -2,7 +2,13 @@
 
 ## Unreleased - development in progress
 
-### feature/kpis-rework
+
+-------------------------------------------------------------
+-------------------------------------------------------------
+
+## Released
+
+### v1.4.0.rc1 | Week 32
 
 #### Adds
 - KPIs & KPIs Bar complete redesign, featuring results in phrases, drag & drop, icons, less form inputs, mass save edit, and a date picker for data within a date range!
@@ -17,9 +23,6 @@
 ```
 
 -------------------------------------------------------------
--------------------------------------------------------------
-
-## Released
 
 ### v1.3.12 | Week 32
 
