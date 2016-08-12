@@ -5,6 +5,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
     restrict: 'A',
     scope: {
       widgetEngine: '='
+      widgetWidth: '='
       onDisplayAlerts: '&'
     },
     link: (scope, element) ->
@@ -22,9 +23,11 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
         image.onerror = ->
           $log.warn("Missing data-not-found image for #{scope.widgetEngine}")
+          debugger
+          image.src = 'images/widget_bg_width_' + scope.widgetWidth + '.png'
+          console.log("image.src ---> "+image.src)
           image.remove() if image?
 
-        image.src = dir + scope.widgetEngine + '.png'
 
       hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
       scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))

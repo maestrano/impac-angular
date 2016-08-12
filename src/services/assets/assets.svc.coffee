@@ -8,7 +8,7 @@ angular
     #=======================================
     # parent app should host images, configure this provider to provide relative img paths.
     paths =
-      dataNotFound: null,
+      dataNotFound: '',
       impacTitleLogo: null,
       impacDashboardBackground: null,
       noWarning: false
