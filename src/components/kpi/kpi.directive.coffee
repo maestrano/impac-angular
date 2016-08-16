@@ -86,6 +86,7 @@ angular
         # Linked methods
         # -------------------------
         $scope.addTargetToWatchable = (watchable)->
+          return if _.has($scope.targets, watchable)
           (newTarget = {})[$scope.getTargetPlaceholder(watchable).mode] = ''
           ($scope.targets[watchable] ||= []).push(newTarget)
 
