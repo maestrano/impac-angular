@@ -112,18 +112,16 @@
       <!-- First Time Dashboard Creation -->
       <div class="ng-hide" ng-show='showChooseDhbMsg()'>
         <div class='hidden-xs'>
-          <div class='spacer4'></div>
-          <div class="row">
+          <div class="row top-buffer-4">
             <div class="col-md-8 col-md-offset-2">
-              <div class="testimonial promo-dark">
+              <div class="info-text">
                 <p><b>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
                 <p>{{dhbErrorsConfig.firstTimeCreated.second}}</p>
               </div>
             </div>
           </div>
-          <div class='spacer2'></div>
         </div>
-        <div class="align-center">
+        <div class="align-center top-buffer-2">
           <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Create a Dashboard!</button>
         </div>
       </div>
@@ -131,18 +129,16 @@
       <!-- Empty Dashboard -->
       <div class="ng-hide" ng-show='showNoWidgetsMsg()'>
         <div class='hidden-xs'>
-          <div class='spacer4'></div>
-          <div class="row">
+          <div class="row top-buffer-4">
             <div class="col-md-8 col-md-offset-2">
-              <div class="testimonial promo-dark">
+              <div class="info-text">
                 <p><b>{{dhbErrorsConfig.empty.first}}</b></p>
                 <p>{{dhbErrorsConfig.empty.second}}</p>
               </div>
             </div>
           </div>
-          <div class="spacer2"></div>
         </div>
-        <div class="align-center">
+        <div class="align-center top-buffer-2">
           <button ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Add a new Widget</button>
         </div>
       </div>
@@ -151,6 +147,7 @@
 
   <!-- First Time Dashboard Creation -->
   <div class="row text-center" ng-show='showChooseDhbMsg()'>
+    <img class="bg" ng-src="{{dhbBackground}}">
     <div class="spacer2 hidden-xs"></div>
     <div class='col-md-8 col-md-offset-2'>
       <p class="text-muted"><small><em>{{dhbErrorsConfig.firstTimeCreated.note}}</em></small></p>
