@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $timeout, $modal, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('impacKpi', ($log, $timeout, $modal, $templateCache, $sce, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'EA'
       scope: {
@@ -102,6 +102,11 @@ angular
 
         $scope.hasValidTargets = ->
           ImpacKpisSvc.validateKpiTargets($scope.targets)
+
+        # Prevent displaying text characters before expresses are loaded.
+        $scope.buildEphasis = (kpi)->
+          return unless kpi && kpi.layout && kpi.layout.text && kpi.data && kpi.watchables.length
+          $sce.trustAsHtml("<strong>#{kpi.layout.text.emphasis}</strong> - <span class=\"real-value\">(#{kpi.data[kpi.watchables[0]].value} #{kpi.data[kpi.watchables[0]].unit})</span>")
 
         $scope.updateSettings = ->
           params = {}
