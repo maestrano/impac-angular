@@ -25,6 +25,10 @@ angular
             # If the template contains extra params we add it to the KPI
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
+              # Init the extra params select boxes with the first param
+              _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
+                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id
+              )
 
             watchablesWithoutTargets = false
             _.forEach($scope.kpi.watchables, (watchable)->
