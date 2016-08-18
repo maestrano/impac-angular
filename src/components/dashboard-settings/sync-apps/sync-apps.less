@@ -1,7 +1,11 @@
 .analytics .dashboard-settings.sync-apps {
-  span {
+  .show-status {
     margin-right: 5px;
     color: @impac-widget-text-color-medium;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
   .caution-btn {
     i { color: @fluroorange; font-size: 16px; }
@@ -11,7 +15,7 @@
   }
 
   .popover {
-    max-width: 500px;
+    max-width: 550px;
     .connector {
       padding: 4px 13px;
       &.add-seperator { border-bottom: 1px solid #ccc; }
@@ -29,6 +33,15 @@
       &.remove-seperator { border: 0; }
     }
   }
+
+  .badge { float: right; margin-left: 8px; }
+  .success .badge { background-color: @green; }
+  .pending .badge { background-color: @fluroorange; }
+  .running .badge { background-color: @fluroorange; }
+  .error .badge { background-color: @pink; }
+  .failed .badge { background-color: @pink; }
+  .unknown .badge { background-color: @pink; }
+  .disconnected .badge { background-color: @pink; }
 }
 
 #sync-apps-modal {
@@ -44,26 +57,53 @@
   .modal-list-item {
     border-bottom: 1px solid #ccc;
     padding: 10px;
-    cursor: pointer;
 
-    &:hover {
-      background-color: #ccc;
+    .badge { float: right; }
+    &.success .badge { background-color: @green; }
+    &.pending .badge { background-color: @fluroorange; }
+    &.running .badge { background-color: @fluroorange; }
+    &.error .badge { background-color: @pink; }
+    &.failed .badge { background-color: @pink; }
+    &.unknown .badge { background-color: @pink; }
+    &.disconnected .badge { background-color: @pink; }
+
+    .message {
+      p { margin: 0; }
+      padding: 3px;
+      border-radius: 2px;
+      margin-left: 31px;
+      margin-top: 9px;
+    }
+
+    &.success .message { background-color: rgba(0, 255, 55, 0.08); }
+    &.pending .message { background-color: rgba(255, 118, 0, 0.08); }
+    &.running .message { background-color: rgba(255, 118, 0, 0.08); }
+    &.error .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.failed .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.unknown .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.disconnected .message { background-color: rgba(255, 0, 0, 0.08); }
+
+    &.with-message {
+      cursor: pointer;
+      &:hover {
+        background-color: #ccc;
+      }
     }
   }
   .modal-footer {
     border: 0;
   }
-  .message {
-    p { margin: 0 }
-    padding: 3px;
-    border-radius: 2px;
-    margin-left: 31px;
-    margin-top: 9px;
-    &.error { background-color: rgba(255, 0, 0, 0.08); }
-    &.warn { background-color: rgba(255, 118, 0, 0.08); }
-    &.success { background-color: rgba(0, 255, 55, 0.08); }
-    &.reduced-margin-top { margin-top: 2px }
-  }
+  // .message {
+  //   p { margin: 0 }
+  //   padding: 3px;
+  //   border-radius: 2px;
+  //   margin-left: 31px;
+  //   margin-top: 9px;
+  //   &.error { background-color: rgba(255, 0, 0, 0.08); }
+  //   &.warn { background-color: rgba(255, 118, 0, 0.08); }
+  //   &.success { background-color: rgba(0, 255, 55, 0.08); }
+  //   &.reduced-margin-top { margin-top: 2px }
+  // }
   .fa { padding: 0px 10px; }
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
