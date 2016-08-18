@@ -119,11 +119,6 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     }
   });
 
-  // Link Impac! Assets
-  ImpacAssets.configure({
-    impacTitleLogo: 'assets/impac-logo.png'
-  });
-
   function getOrganizations() {
     return $http.get(settings.mno_url + '/api/v2/impac/organizations')
       .then(function (response) {

@@ -28,7 +28,7 @@
           <div class="row widget-line header">
             <div class="col-xs-12">Average price range</div>
           </div>
-          
+
           <div class="row widget-line" ng-repeat="range in widget.content.ranges">
             <div class="col-xs-2">
               <i class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

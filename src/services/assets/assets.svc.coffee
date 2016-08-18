@@ -9,9 +9,8 @@ angular
     # parent app should host images, configure this provider to provide relative img paths.
     paths =
       dataNotFound: '',
-      impacTitleLogo: null,
-      impacDashboardBackground: null,
-      noWarning: false
+      impacTitleLogo: 'dist/images/impac-title-logo.png',
+      impacDashboardBackground: 'dist/images/impac-dashboard-background.png',
 
     #=======================================
     # Public methods available in config
@@ -26,13 +25,7 @@ angular
       # Public methods available as service
       #=======================================
       service.get = (key) ->
-        path = ''
-        msg = 'impac-angular warning: There are missing assets (' + key + '), please refer to the including assets section in the docs.'
-        if paths[key]?
-          path = paths[key]
-        else
-          $log.warn(msg) unless paths.noWarning
-        return path
+        paths[key]
 
       return service
     # inject service dependencies here, and declare in _$get function args.
