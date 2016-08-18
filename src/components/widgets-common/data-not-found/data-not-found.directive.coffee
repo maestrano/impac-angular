@@ -12,9 +12,18 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       scope.content = ImpacTheming.get().dataNotFoundConfig
       baseDir       = ImpacAssets.get('dataNotFound')
       usingDefaults = false
+      imagePath     = ''
       image         = _.find(element.children().first().children(), (elem) -> elem.id == 'not-found-bg')
 
-      imagePath     = ''
+      image.onerror = ->
+        missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.widgetEngine
+        $log.warn("Missing data-not-found image for #{missingImageLocationMsg}")
+        image.remove() if image?
+
+      displayDefaultImage = ->
+        usingDefaults = true
+        imagePath = 'dist/images/widget-bg-width-' + scope.widgetWidth + '.png'
+        image.src = imagePath
 
       # When providing custom images
       if scope.widgetEngine and baseDir.length > 0
@@ -26,17 +35,16 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
         imagePath = dir + scope.widgetEngine + '.png'
 
+        # Check if custom image has been provided, if not, display default.
+        $http.get(imagePath).then(
+          -> image.src = imagePath
+          -> displayDefaultImage()
+        )
+
       # When providing no custom images, uses library defaults.
       else
-        usingDefaults = true
-        imagePath = 'dist/images/widget-bg-width-' + scope.widgetWidth + '.png'
+        displayDefaultImage()
 
-      image.onerror = ->
-        missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.widgetEngine
-        $log.warn("Missing data-not-found image for #{missingImageLocationMsg}")
-        image.remove() if image?
-
-      image.src = imagePath
 
       hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
       scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.widgetEngine.match(/.*accounts\/.*/))
