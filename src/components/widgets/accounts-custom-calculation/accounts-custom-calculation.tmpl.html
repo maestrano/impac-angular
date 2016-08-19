@@ -7,8 +7,13 @@
   <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
     <a href="" ng-click="formulaModal.open()">Create a custom calculation</a>
   </h3>
-  
-  <div class="price" ng-show="widget.isFormulaCorrect">
+  <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()"  accounting-behaviour="{{getBehaviour()}}" ng-show="widget.isFormulaCorrect"/>
+
+  <div class="chart-container" ng-show="widget.isHistoryMode && widget.isFormulaCorrect">
+    <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+  </div>
+
+  <div class="price" ng-show="!widget.isHistoryMode && widget.isFormulaCorrect">
     {{widget.evaluatedFormula}}
   </div>
   <div class="legend" ng-show="widget.isFormulaCorrect">
