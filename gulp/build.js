@@ -50,12 +50,23 @@ gulp.task('partials', function () {
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
 });
 
+gulp.task('images', function () {
+  return gulp.src([
+    path.join(conf.paths.src, '/images/**/*')
+  ]).pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/images/')));
+});
+
 // Clean up  the tmp and build directory
 gulp.task('clean', function (asyncCallback) {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], asyncCallback);
 });
 
-gulp.task('build', ['version', 'scripts', 'styles', 'partials'], function() {
+gulp.task('build', ['version', 'scripts', 'styles', 'images', 'partials'], function() {
   // Source files for final dist build - NOTE: order is important.
   var buildSourceFiles = [
     path.join(conf.paths.src, 'impac-angular.prefix'),

@@ -19,7 +19,7 @@
       <div class="chart-container">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
-        
+
       <div class="legend" ng-if="widget.isHistoryMode">
         <span ng-hide="isNetProfitDisplayed">
           <span class="negative2">Expenses</span> -
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

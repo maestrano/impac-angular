@@ -30,10 +30,14 @@ Impac!™ frontend library can be included in any project based on the Maestrano
 ---
 ### Installation
 
-Install nodejs:
+Install nodejs on Ubuntu:
 ```
   curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
   sudo apt-get install -y nodejs npm
+```
+Install nodejs on Mac (with homebrew):
+```
+  brew install node
 ```
 
 Install the project's dependencies:
@@ -110,30 +114,23 @@ _usage_: Retrieving organizations and current organization id.
 
 #### Impac Assets Provider (assets.svc.coffee)
 
-Provides impac-angular with paths for static assets hosted by the parent application.
+Provides impac-angular with paths for custom static assets hosted by the parent application. Note Impac Angular will provide defaults for these.
 
 ##### options
 **dataNotFound**<br>
 _type_: String<br>
-_default_: `null`<br>
+_default_: `''`<br>
 _usage_: Relative path to a directive containing screenshots that are displayed as a background-image for widgets when the "data not found" case is met. The files in this directory need to be organised & named to match the widget engine path. See [Impac! API docs](http://maestrano.github.io/impac/), go to a widget and look at the **engine** value (e.g `accounts/accounting_values/turnover`).
 
 **impacTitleLogo**<br>
 _type_: String<br>
-_default_: `null`<br>
+_default_: `'dist/images/impac-title-logo.png'`<br>
 _usage_: Relative image path to the title logo
 
 **impacDashboardBackground**<br>
 _type_: String<br>
-_default_: `null`<br>
+_default_: `'dist/images/impac-dashboard-background.png'`<br>
 _usage_: Relative image path to default dashboard background
-
-**noWarning**<br>
-_type_: Boolean<br>
-_default_: `false`<br>
-_usage_: Whether to log a warning message or not if an asset is not found
-
-
 
 ##### Example
 
@@ -143,8 +140,9 @@ angular
   .config( (ImpacAssetsProvider) ->
 
     paths =
+      # Directory with your custom widget data not found images (which must be named accordingly).
       dataNotFound: 'images/impac/data_not_found',
-      noWarning: true
+      impacTitleLogo: 'images/impac/your-impac-title-logo.png'
 
     ImpacAssetsProvider.configure(paths)
   )
