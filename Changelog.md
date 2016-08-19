@@ -10,6 +10,12 @@
 ### v1.3.13 | Week 33
 
 #### Adds
+- Impac Angular now provides default images.
+- Impac Angular less variables to customise no widgets / dhb message styles without overriding.
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Refactor formula settings
+- Added hist mode to custom calculation widget
+- Gulp default task changed to `gulp serve`, added `gulp build:dist` task
 
 #### Fixes
 

@@ -4,6 +4,7 @@ var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
 var pkg = require('../bower.json');
+var run = require('run-sequence');
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -102,4 +103,11 @@ gulp.task('build', ['version', 'scripts', 'styles', 'images', 'partials'], funct
     .pipe(cssFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
+});
+
+// Run clean first to ensure all only current src files are included in dist (especially relevant for images)
+gulp.task('build:dist', ['clean'], function (callback) {
+  run(['build'], function () {
+    callback();
+  });
 });
