@@ -10,8 +10,15 @@
 ### v1.3.13 | Week 33
 
 #### Adds
+- Impac Angular now provides default images.
+- Impac Angular less variables to customise no widgets / dhb message styles without overriding.
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Refactor formula settings
+- Added hist mode to custom calculation widget
 
 #### Fixes
+- Remove bootstrap spacer divs from impac-angular; improves dashboard layout for parent applications.
+- Fix balance sheet display bug
 
 -------------------------------------------------------------
 
