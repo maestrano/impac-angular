@@ -39,7 +39,7 @@ Now you should an api key, api secret, and an organization associated to your Us
   ```
   
 3. There a few ways to prepare & launch the Impac Developer Workspace..
-  1. Run `gulp serve`, this will inject dependencies, serve impac-angular, and **live reload** on change.
+  1. Run `gulp` or `gulp serve`, this will inject dependencies, serve impac-angular, and **live reload** on change.
   2. Run `gulp serve:noreload`, if rebuilding the library on every change is using too much cpu - **you will need to run `gulp workspace` and refresh the page after every change**
   2. Run `gulp workspace` to build and inject dependencies, the open the `workspace/index.html` file in a browser - **you will need to run `gulp workspace` and refresh the page after every change**
 
@@ -296,7 +296,7 @@ You want to make the generator better? Of course. See the [README](./generators/
     );
   ```
 
-7. Rebuild via `gulp serve` or `gulp workspace`, and then you should be able to add your new widget to a dashboard!
+7. Rebuild via `gulp` or `gulp serve` or `gulp workspace`, and then you should be able to add your new widget to a dashboard!
 
 #### How-to: Create a setting
 ---
@@ -453,9 +453,10 @@ To run tests, first build impac-angular with `gulp build`. Then run `gulp test`.
 
 #### Gulp tasks
 
-- `gulp serve` will spin up a server, wiredep `workspace/index.html`, run a `gulp build`, and start a watch that will trigger build when any  `workspace/` or `src/` files change.
+- `gulp` or `gulp serve` will spin up a server, wiredep `workspace/index.html`, run a `gulp build`, and start a watch that will trigger build when any  `workspace/` or `src/` files change.
 - `gulp serve:noreload` do the same as above, but without the watch task.
 - `gulp build` will build all `/dist` files.
+- `gulp build:dist` will run a `gulp clean` first, then build all `/dist` files, ensure only the current src files are included in dist (especially relevant for images).
 - `gulp workspace` will inject all dependencies with wiredep, and run a `gulp build`.
 - `gulp test` will run unit-tests on `dist/impac-angular.js` and `dist/impac-angular.min.js`
 

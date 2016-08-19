@@ -287,6 +287,7 @@ To run tests, first build impac-angular with `gulp build`. Then run `gulp test`.
 #### Build tasks
 
 Running `gulp build` will build all /dist files.
+Running `gulp build:dist` will run a `gulp clean` first, then build all `/dist` files, ensure only the current src files are included in dist (especially relevant for images).
 
 ### Bugs, Refactor and Improvements
 
