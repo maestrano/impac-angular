@@ -18,11 +18,12 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       image.onerror = ->
         missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.widgetEngine
         $log.warn("Missing data-not-found image for #{missingImageLocationMsg}")
+
         image.remove() if image?
 
       displayDefaultImage = ->
         usingDefaults = true
-        imagePath = 'dist/images/widget-bg-width-' + scope.widgetWidth + '.png'
+        imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.widgetWidth + '.png'
         image.src = imagePath
 
       # When providing custom images

@@ -6,17 +6,22 @@ angular
     #=======================================
     # Private Defaults
     #=======================================
-    # parent app should host images, configure this provider to provide relative img paths.
+    # Parent apps can provide custom images, or use the default images by providing
+    # a defaultImagesPath of which is the parent apps responsibility to make publically available.
+    # See the README.md for more information on this.
     paths =
-      dataNotFound: '',
-      impacTitleLogo: 'dist/images/impac-title-logo.png',
-      impacDashboardBackground: 'dist/images/impac-dashboard-background.png',
+      dataNotFound: ''
+      defaultImagesPath: '/images'
+      impacTitleLogo: ':default/impac-title-logo.png'
+      impacDashboardBackground: ':default/impac-dashboard-background.png'
 
     #=======================================
     # Public methods available in config
     #=======================================
     provider.configure = (configOptions) ->
       angular.extend(paths, configOptions)
+      # For images with impac-angular defaults, inject the provided default images path.
+      _.forIn(paths, (v, k)-> paths[k] = v.replace(':default', paths.defaultImagesPath))
 
     #=======================================
     _$get = ($log) ->
