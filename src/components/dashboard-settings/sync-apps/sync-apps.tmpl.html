@@ -2,11 +2,12 @@
 <div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
   <span class="show-status" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
+    <i class="fa fa-info" /> 
     <span class="ng-hide" ng-show="isSyncing">
       Syncing...
     </span>
     <span ng-hide="isSyncing">
-      <i class="fa fa-info" /> Show sync status
+      Show sync status
     </span>
   </span>
 

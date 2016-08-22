@@ -119,7 +119,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           #     last_sync_date (DateTime)
           #   is_syncing (Bool)
           # -----------------------------
-          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 3000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 10000, smart: true})
           scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
       )
 
