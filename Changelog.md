@@ -7,6 +7,25 @@
 
 ## Released
 
+### v1.3.13 | Week 33
+
+#### Adds
+- Impac Angular now provides default images.
+- Impac Angular less variables to customise no widgets / dhb message styles without overriding.
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Gulp default task changed to `gulp serve`, added `gulp build:dist` task
+
+#### Fixes
+- Remove bootstrap spacer divs from impac-angular; improves dashboard layout for parent applications.
+
+#### Config changes
+- In ImpacAssets.configure, to setup default images path (see README.md for more info):
+```
+  defaultImagesPath: '/dist/images'
+```
+
+-------------------------------------------------------------
+
 ### v1.3.12 | Week 32
 
 #### Adds

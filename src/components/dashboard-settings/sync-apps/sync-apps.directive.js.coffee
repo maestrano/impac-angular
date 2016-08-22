@@ -27,12 +27,15 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           # The connectors we will use for error management
           scope.failedConnectors = []
           scope.disconnectedConnectors = []
+          scope.disabledConnectors = []
           scope.successfulConnectors = []
           for c in responseData.connectors
             if c.status == "FAILED"
               scope.failedConnectors.push angular.copy(c)
             else if c.status == "DISCONNECTED"
               scope.disconnectedConnectors.push angular.copy(c)
+            else if c.status == "DISABLED"
+              scope.disabledConnectors.push angular.copy(c)
             else if c.status == "SUCCESS"
               scope.successfulConnectors.push angular.copy(c)
 
@@ -52,7 +55,6 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             refreshDashboard()
           else
             scope.isSyncing = true
-
       # Refreshes the widgets and display the modal if needed
       refreshDashboard = ->
         scope.syncingPoller.stop()
@@ -62,7 +64,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         ImpacWidgetsSvc.refreshAll(true)
 
         # Opens the modal if errors are present
-        unless (_.isEmpty(scope.failedConnectors) && _.isEmpty(scope.disconnectedConnectors))
+        unless (scope.noErrors())
           scope.triggerSyncAlertsModal()
 
         # Blocks the dashboard refresh until next click on "synchronize"
@@ -96,7 +98,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           scope.syncStatus = "#{descriptor} is partially synced."
         else
           scope.syncStatus = "#{descriptor} is not synced."
-
+#
       #====================================
       # Scope methods
       #====================================
@@ -118,6 +120,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             $log.error 'Unable to sync apps', err
             scope.isSyncing = false
         )
+      scope.noErrors = ->
+        (_.isEmpty(scope.failedConnectors) && _.isEmpty(scope.disconnectedConnectors) && _.isEmpty(scope.disabledConnectors))
 
       scope.formatStatus = (connector, modalDisplay=false) ->
         return unless connector
@@ -134,6 +138,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
               status = if modalDisplay then "Previous sync #{date}" else "is not synced - previous sync #{date}"
             when 'DISCONNECTED'
               status = if modalDisplay then "Previous sync #{date}" else "is not connected - previous sync #{date}"
+            when 'DISABLED'
+               status = if modalDisplay then "Previous sync #{date}" else "synchronisation is disabled - previous sync #{date}"
             # "RUNNING" case should imply isSyncing==true...
 
         else
@@ -144,7 +150,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
               status = if modalDisplay then "Never synced" else "is not synced - never synced"
             when 'DISCONNECTED'
               status = if modalDisplay then "Not connected" else "is not synced - not connected"
-            # Any other case would be buggy...
+            when 'DISABLED'
+               status = if modalDisplay then "Synchronization disabled" else "synchronisation is disabled"
 
         status = if modalDisplay then "#{status}" else "<strong>#{name}</strong> #{status}"
         status = $sce.trustAsHtml(status) unless _.isEmpty(status) || _.isEmpty(name)
@@ -159,6 +166,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           controller: ($scope, connectors, methods) ->
             $scope.failedConnectors = connectors.failed
             $scope.disconnectedConnectors = connectors.disconnected
+            $scope.disabledConnectors = connectors.disabled
             $scope.successfulConnectors = connectors.successful
             $scope.formatStatus = methods.formatStatus
             $scope.expandListItemOnClick = (e) ->
@@ -174,7 +182,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
               modalInstance.close()
           resolve:
             connectors: ->
-              {disconnected: scope.disconnectedConnectors, failed: scope.failedConnectors, successful: scope.successfulConnectors}
+              {disconnected: scope.disconnectedConnectors, disabled: scope.disabledConnectors, failed: scope.failedConnectors, successful: scope.successfulConnectors}
             methods: ->
               {formatStatus: scope.formatStatus}
         })

@@ -6,7 +6,7 @@
     {{syncStatus}}
   </span>
 
-  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="(failedConnectors.length || disconnectedConnectors.length) && !isSyncing">
+  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="!noErrors() && !isSyncing">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
@@ -44,6 +44,12 @@
       </div>
       <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index"  ng-click="expandListItemOnClick($event)">
         <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is not connected. Please connect to sync.
+        <div class="message warn ng-hide">
+          <p>{{formatStatus(connector, true)}}</p>
+        </div>
+      </div>
+      <div class="modal-list-item" ng-repeat="connector in disabledConnectors track by $index"  ng-click="expandListItemOnClick($event)">
+        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> synchronisation is disabled. Please go in App settings to enable synchronisation.
         <div class="message warn ng-hide">
           <p>{{formatStatus(connector, true)}}</p>
         </div>

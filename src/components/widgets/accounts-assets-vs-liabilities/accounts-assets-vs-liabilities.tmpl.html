@@ -1,5 +1,5 @@
 <div widget-accounts-assets-vs-liabilities>
-      
+
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
 
@@ -16,7 +16,7 @@
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend" style="max-height: 115px;">
         <div class="title">
-          <i class="fa fa-circle" style="color: {{assetsColor}};"> Assets</i> | 
+          <i class="fa fa-circle" style="color: {{assetsColor}};"> Assets</i> |
           <i class="fa fa-circle" style="color: {{liabilitiesColor}};"> Liabilities</i>
         </div>
         <div class="row">
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

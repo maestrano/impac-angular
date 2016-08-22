@@ -30,10 +30,14 @@ Impac!™ frontend library can be included in any project based on the Maestrano
 ---
 ### Installation
 
-Install nodejs:
+Install nodejs on Ubuntu:
 ```
   curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
   sudo apt-get install -y nodejs npm
+```
+Install nodejs on Mac (with homebrew):
+```
+  brew install node
 ```
 
 Install the project's dependencies:
@@ -110,30 +114,29 @@ _usage_: Retrieving organizations and current organization id.
 
 #### Impac Assets Provider (assets.svc.coffee)
 
-Provides impac-angular with paths for static assets hosted by the parent application.
+Provides impac-angular with paths for custom images hosted by the parent application. The Impac Angular library will provide default images for these, although you must configure the `defaultImagesPath` accordly to the parent apps project structure. 
+Assets within `bower_components` are not publically accessible by browsers, so for this you will need a gulp/grunt/whatever task to build `bower_components` images into places like `/public/images`, or `dist/images`, or maybe the default `defaultImagesPath` of `/images` will work in your parent app.
 
 ##### options
 **dataNotFound**<br>
 _type_: String<br>
-_default_: `null`<br>
-_usage_: Relative path to a directive containing screenshots that are displayed as a background-image for widgets when the "data not found" case is met. The files in this directory need to be organised & named to match the widget engine path. See [Impac! API docs](http://maestrano.github.io/impac/), go to a widget and look at the **engine** value (e.g `accounts/accounting_values/turnover`).
+_default_: `''`<br>
+_usage_: Relative path to a directory containing screenshots that are displayed as a background-image for widgets when the "data not found" case is met. The files in this directory need to be organised & named to match the widget engine path. See [Impac! API docs](http://maestrano.github.io/impac/), go to a widget and look at the **engine** value (e.g `accounts/accounting_values/turnover`). You don't have to provide all images, you could provide images for some select widgets, impac-angular will display the default image if a custom one is not found.
+
+**defaultImagesPath**<br>
+_type_: String<br>
+_default_: `'/images'`<br>
+_usage_: Path where impac-angular's provided images are being stored so the browser can access them in the parent app. 
 
 **impacTitleLogo**<br>
 _type_: String<br>
-_default_: `null`<br>
-_usage_: Relative image path to the title logo
+_default_: `'/images/impac-title-logo.png'`<br>
+_usage_: Relative image path to a custom branding title logo, which is displayed above the dashboard. The default will be an impac title logo.
 
 **impacDashboardBackground**<br>
 _type_: String<br>
-_default_: `null`<br>
-_usage_: Relative image path to default dashboard background
-
-**noWarning**<br>
-_type_: Boolean<br>
-_default_: `false`<br>
-_usage_: Whether to log a warning message or not if an asset is not found
-
-
+_default_: `'/images/impac-dashboard-background.png'`<br>
+_usage_: Relative image path to a custom dashboard background image, which is displayed when the user has no dashboard or no widgets. The default will display a image of a demo dashboard in Maestrano branding / theming.
 
 ##### Example
 
@@ -143,8 +146,12 @@ angular
   .config( (ImpacAssetsProvider) ->
 
     paths =
+      # Directory with your custom widget data not found images (which must be named accordingly).
       dataNotFound: 'images/impac/data_not_found',
-      noWarning: true
+      # Maybe your apps builds bower_components images into `dist/images/`.
+      defaultImagesPath: 'dist/images',
+      # Path to a custom image you want to provide impac angular with.
+      impacTitleLogo: 'dist/images/your-aweosme-impac-title-logo.png'
 
     ImpacAssetsProvider.configure(paths)
   )
@@ -289,6 +296,7 @@ To run tests, first build impac-angular with `gulp build`. Then run `gulp test`.
 #### Build tasks
 
 Running `gulp build` will build all /dist files.
+Running `gulp build:dist` will run a `gulp clean` first, then build all `/dist` files, ensure only the current src files are included in dist (especially relevant for images).
 
 ### Bugs, Refactor and Improvements
 
