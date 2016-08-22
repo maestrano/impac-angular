@@ -49,7 +49,7 @@
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(widget.content.payables)">
                   <strong>{{getTotalSum(widget.content.payables) | mnoCurrency : widget.content.payables.currency}}</strong>
                 </div>
-                
+
                 <div class="selection-tag" ng-if="isSelected(widget.content.payables)" style="background-color: {{ getSelectLineColor(widget.content.payables) }}"/>
               </div>
 
@@ -67,7 +67,7 @@
                         {{getOldestInvoice(supplier) | mnoDate : widget.metadata.hist_parameters.period}}
                       </span>
                     </div>
-                    
+
                     <div class="selection-tag" ng-if="isSelected(supplier)" style="background-color: {{ getSelectLineColor(supplier) }}"/>
                   </div>
                 </div>
@@ -90,7 +90,7 @@
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(widget.content.receivables)">
                   <strong>{{getTotalSum(widget.content.receivables) | mnoCurrency : widget.content.receivables.currency}}</strong>
                 </div>
-                
+
                 <div class="selection-tag" ng-if="isSelected(widget.content.receivables)" style="background-color: {{ getSelectLineColor(widget.content.receivables) }}"/>
               </div>
 
@@ -108,7 +108,7 @@
                         {{getOldestInvoice(customer) | mnoDate : widget.metadata.hist_parameters.period}}
                       </span>
                     </div>
-                    
+
                     <div class="selection-tag" ng-if="isSelected(customer)" style="background-color: {{ getSelectLineColor(customer) }}"/>
                   </div>
                 </div>
@@ -211,7 +211,7 @@
 
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

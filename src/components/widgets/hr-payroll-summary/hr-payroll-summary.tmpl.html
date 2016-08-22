@@ -48,7 +48,7 @@
                 <div class="col-xs-4 text-right" ng-click="toggleSelectedElement(statement)">
                   <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
                 </div>
-                
+
                 <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
               </div>
 
@@ -62,7 +62,7 @@
                     <div class="col-xs-4 text-right">
                       {{getLastValue(employee) | mnoCurrency : employee.currency}}
                     </div>
-                    
+
                     <div class="selection-tag" ng-if="isSelected(employee)" style="background-color: {{ getSelectLineColor(employee) }}"/>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
 
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

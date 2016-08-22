@@ -30,7 +30,7 @@
         <!-- Time worked activities -->
         <div class="row lines-group" >
           <div class="col-xs-12">
-          
+
             <!-- Time worked -->
             <div class="row widget-line" >
               <div class="col-xs-1" ng-click="toggleCollapsed('total_time_worked')" style="cursor: pointer;">
@@ -43,7 +43,7 @@
                 <strong>{{getEmployeeTimeWorked()}} h</strong>
               </div>
             </div>
-          
+
             <!-- Activities lines / TODO -->
             <div class="row" collapse="isCollapsed('total_time_worked')">
               <div class="col-xs-12">
@@ -54,14 +54,14 @@
                 </div>
               </div>
             </div>
-          
+
           </div>
         </div>
 
         <!-- Time off activities -->
         <div class="row lines-group" >
           <div class="col-xs-12">
-          
+
             <!-- Time off -->
             <div class="row widget-line" >
               <div class="col-xs-1" ng-click="toggleCollapsed('total_time_of')" style="cursor: pointer;">
@@ -95,7 +95,7 @@
 
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

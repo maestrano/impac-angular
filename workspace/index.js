@@ -100,6 +100,11 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     }
   });
 
+  // Link Impac! Assets
+  ImpacAssets.configure({
+    defaultImagesPath: '/dist/images',
+  })
+
   // Configure the ImpacDeveloper service options.
   ImpacDeveloper.configure({
     status: true,
@@ -117,11 +122,6 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
         email: 'developer@maestrano.com'
       });
     }
-  });
-
-  // Link Impac! Assets
-  ImpacAssets.configure({
-    impacTitleLogo: 'assets/impac-logo.png'
   });
 
   function getOrganizations() {

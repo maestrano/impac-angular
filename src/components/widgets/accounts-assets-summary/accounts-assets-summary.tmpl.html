@@ -1,5 +1,5 @@
 <div widget-accounts-assets-summary>
-      
+
   <div ng-show="widget.isEditMode" class="edit">
     <h4>Widget settings</h4>
 
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>
