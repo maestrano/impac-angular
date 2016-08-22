@@ -4,7 +4,8 @@
   "version": "1.4.0-rc1",
   "main": [
     "dist/impac-angular.js",
-    "dist/impac-angular.less"
+    "dist/impac-angular.less",
+    "dist/images/**/*"
   ],
   "ignore": [
     "test",

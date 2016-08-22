@@ -54,7 +54,7 @@
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(statement)" ng-class="getVarianceClassColor(getLastVariance(statement))">
                   <strong>{{getLastVariance(statement)}}</strong>
                 </div>
-                
+
                 <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
               </div>
 
@@ -71,7 +71,7 @@
                     <div class="col-xs-3 text-right" ng-class="getVarianceClassColor(getLastVariance(account))">
                       {{getLastVariance(account)}}
                     </div>
-                    
+
                     <div class="selection-tag" ng-if="isSelected(account)" style="background-color: {{ getSelectLineColor(account) }}"/>
                   </div>
                 </div>
@@ -151,7 +151,7 @@
 
     </div>
 
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
   </div>
 
 </div>

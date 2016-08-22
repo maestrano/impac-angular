@@ -112,6 +112,11 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     }
   });
 
+  // Link Impac! Assets
+  ImpacAssets.configure({
+    defaultImagesPath: '/dist/images',
+  })
+
   // Configure the ImpacDeveloper service options.
   ImpacDeveloper.configure({
     status: true,
@@ -127,11 +132,6 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
       return getUser();
     },
     pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
-  });
-
-  // Link Impac! Assets
-  ImpacAssets.configure({
-    impacTitleLogo: 'assets/impac-logo.png'
   });
 
   function getOrganizations(orgUid) {
