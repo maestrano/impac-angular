@@ -152,6 +152,8 @@
 @kpi-background-color:                         white;
 @kpi-triggered-border-bottom:                  4px solid @brand-danger;
 @kpi-max-height:                               95px;
+@kpi-editing-max-height:                       90px; // height to be added to the @kpi-max-height when in editing mode.
+@kpi-content-editing-height-buffer:            5px; // height to be minused from the @kpi-editing-max-height to even the kpi height and the kpi content height.
 // Kpi top-line
 @kpi-top-line-background-color:                grey;
 @kpi-top-line-triggered-background-color:      black;
@@ -1843,7 +1845,7 @@ body {
   }
 
   &.editing {
-    min-height: @kpi-max-height + 60px;
+    min-height: @kpi-max-height + @kpi-editing-max-height;
   }
 
   &:hover { cursor: default; }
@@ -1882,7 +1884,7 @@ body {
   .kpi-content {
     max-height: @kpi-max-height - 5px;
     &.editing {
-      min-height: @kpi-max-height + 50px;
+      min-height: @kpi-max-height + @kpi-editing-max-height - @kpi-content-editing-height-buffer;
       .scrollable();
     }
   }
@@ -1893,6 +1895,20 @@ body {
     // small fix for iphone 6 and smaller
     @media screen and (max-width: 380px) {
       padding: 10px 3px;
+    }
+
+    .emphasis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .real-value { color: #676767; }
+    }
+
+    .caption {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .kpi-text {
@@ -1940,11 +1956,17 @@ body {
       }
     }
 
+    .real-value {
+      text-transform: uppercase;
+      font-size: 10px;
+      text-align: center;
+    }
+
     .im-button.alert-caption {
       text-align: center;
       font-size: 11px;
       width: 81%;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
     }
@@ -2025,6 +2047,12 @@ body {
       padding-left: 20px;
       padding-right: 20px;
     }
+
+    .kpi.add {
+      .kpi-show .caption {
+        white-space: inherit;
+      }
+    }
   }
 
   .title-actions {
@@ -2093,6 +2121,10 @@ body {
       color: #4f5959;
       box-shadow: 0px 1px 3px -1px;
     }
+    .no-kpi-templates {
+      color: #afadb5;
+      font-weight: 500;
+    }
   }
 
   .add-bar {
@@ -2104,6 +2136,17 @@ body {
     align-items: center;
     justify-content: center;
     min-height: @kpi-max-height + 20px;
+  }
+
+  .dates-picker-container {
+    width: 40%;
+    margin: 0 auto;
+
+    .sdp-from-label,
+    .sdp-to-label {
+      text-transform: uppercase;
+      font-weight: 400;
+    }
   }
 }
 
@@ -2315,9 +2358,6 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2336,6 +2376,9 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2360,18 +2403,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -2392,6 +2423,18 @@ body {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 
@@ -2531,6 +2574,18 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
+  }
+}
+
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -2545,18 +2600,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
-  }
-}
-
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -2707,6 +2750,14 @@ body {
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
+  }
+}
+
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -2751,14 +2802,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
-
-  .widget-lines-container {
-    max-height: 238px;
-  }
-}
-
 .analytics .widget-item .content.sales-comparison {
   .drill-down-widget();
   .widget-lines-container {
@@ -2820,16 +2863,19 @@ body {
   }
 }
 
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-leads-list {
   .simple-list-widget();
   .widget-lines-container {
     .scrollable(scroll);
   }
 }
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
 }
-
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -2844,9 +2890,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -2886,6 +2929,30 @@ body {
   }
 }
 
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -2913,30 +2980,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
@@ -3182,12 +3225,6 @@ body {
   }
 }
 
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -3252,6 +3289,12 @@ body {
     }
   }
 
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
 }
 
 .analytics .widget-item .content .settings.select-account {
