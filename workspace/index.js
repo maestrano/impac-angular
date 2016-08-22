@@ -13,10 +13,17 @@ module.factory('settings', function () {
   return {
     // Credentials and endpoints
     mno_url: 'https://uat.maestrano.io',
-    impac_url: 'http://api-impac-uat.maestrano.io',
+    impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: '',
+    org_uid: '', // First organisations if unspecified
 
+    // -----------------------------------------------
+    // Kpis configurations
+    // -----------------------------------------------
+    // Change this to `true` to force kpi's to allow multiple watchables, instead of
+    // using the mno_hub kpis#discover action maps kpis to have single watchables per kpi.
+    multiple_watchables_mode: false,
     // Stub widget templates - add new widgets!
     //------------------------------------------------
     // Widget templates are stored on Maestrano API, stub your
@@ -74,11 +81,16 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   }
 
   // Configure the ImpacRoutes service options.
-  ImpacRoutes.configureRoutes({
+  var routesConfig = {
     mnoHub: settings.mno_url + '/api/v2',
     impacPrefix: '/impac',
-    impacApi: settings.impac_url + '/api'
-  });
+    impacApi: settings.impac_url + '/api',
+    kpis: {
+      index: settings.mno_url + '/api/v2/impac/kpis'
+    }
+  };
+  if (settings.multiple_watchables_mode) { delete routesConfig.kpis; }
+  ImpacRoutes.configureRoutes(routesConfig);
 
   // Configure the ImpacTheming service options.
   ImpacTheming.configure({
@@ -100,6 +112,11 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     }
   });
 
+  // Link Impac! Assets
+  ImpacAssets.configure({
+    defaultImagesPath: '/dist/images',
+  })
+
   // Configure the ImpacDeveloper service options.
   ImpacDeveloper.configure({
     status: true,
@@ -109,26 +126,42 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   // Link core callbacks required for impac-angular lib to run.
   ImpacLinking.linkData({
     organizations: function () {
-      return getOrganizations();
+      return getOrganizations(settings.org_uid);
     },
     user: function () {
-      return $q.when({
-        name: 'Developer',
-        email: 'developer@maestrano.com'
-      });
-    }
+      return getUser();
+    },
+    pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
   });
 
-  // Link Impac! Assets
-  ImpacAssets.configure({
-    impacTitleLogo: 'assets/impac-logo.png'
-  });
+  function getOrganizations(orgUid) {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      var orgs = (user.organizations || []);
+      var orga = orgs.find(function(orga) { return orga.uid == orgUid });
+      var orgId = (orga && orga.id) || orgs[0].id || null;
 
-  function getOrganizations() {
-    return $http.get(settings.mno_url + '/api/v2/impac/organizations')
+      deferred.resolve({ organizations: orgs, currentOrgId: orgId });
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUser() {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      deferred.resolve(user);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUserData() {
+    return $http.get(settings.mno_url + '/api/v2/current_user')
       .then(function (response) {
-        var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+        return response.data;
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);

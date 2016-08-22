@@ -11,7 +11,7 @@ angular
       mnoHub: '/api/v2'
       impacPrefix: '/impac'
       impacApi: 'http://localhost:4000/api'
-      
+
       dashboards:
         index: null
         show: null
@@ -156,6 +156,15 @@ angular
             "#{service.kpis.create(dashboard_id)}/#{id}"
 
         local: -> defaults.kpis.local
+
+        alerts:
+          index: () ->
+            "#{defaults.mnoHub}/impac/alerts"
+          create: (kpi_id) ->
+            "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
+
+          delete: (alert_id) ->
+            "#{defaults.mnoHub}/impac/alerts/#{alert_id}"
 
       service.organizations =
         appInstancesSync: (uid) ->

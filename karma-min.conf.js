@@ -37,6 +37,8 @@ module.exports = function(config) {
       'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+      'bower_components/pusher/dist/pusher.js',
+      'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scenario/angular-scenario.js',
       /* endinject */

@@ -1,18 +1,26 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
-# ====================================
-# Getters
-# ====================================
+    # ====================================
+    # Getters
+    # ====================================
     # Simply forward the getter for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
 
 
-# ====================================
-# Load and initialize
-# ====================================
+    # ====================================
+    # Register Listeners
+    # ====================================
+    ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, (notification) ->
+      _self.refreshAll(true)
+    )
+
+
+    # ====================================
+    # Load and initialize
+    # ====================================
     @load = (force=false) ->
       if !_self.getSsoSessionId()? || force
         $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)])
@@ -48,8 +56,8 @@ angular
 
       widget.isLoading = true if needContentReload
       meta = _.reduce(
-        _.map( widget.settings, (set) -> set.toMetadata() ), 
-        (result={}, setMeta) -> 
+        _.map( widget.settings, (set) -> set.toMetadata() ),
+        (result={}, setMeta) ->
           angular.merge(result, setMeta)
       )
 
@@ -110,21 +118,29 @@ angular
             return $q.reject(null)
         )
 
+    @isRefreshing = false
     @refreshAll = (refreshCache=false) ->
-      _self.load().then( ->
-        currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-        for w in currentDhb.widgets
-          w.isLoading = true
-          _self.show(w, refreshCache).then(
-            (renderedWidget) -> renderedWidget.isLoading = false
-            # TODO: better error management
-            (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
-          )
-      )
+      unless _self.isRefreshing
+        _self.isRefreshing = true
+        _self.load().then( ->
+          currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+          for w in currentDhb.widgets
+            w.isLoading = true
+            _self.show(w, refreshCache).then(
+              (renderedWidget) -> renderedWidget.isLoading = false
+              # TODO: better error management
+              (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
+            )
+        ).finally(->
+          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          $timeout(->
+            _self.isRefreshing = false
+          , 3000)
+        )
 
-# ====================================
-# CRUD methods
-# ====================================
+    # ====================================
+    # CRUD methods
+    # ====================================
 
     @show = (widget, refreshCache=false) ->
       deferred = $q.defer()
@@ -237,7 +253,7 @@ angular
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
             request.then(
-              (success) -> 
+              (success) ->
                 angular.extend widget, success.data
                 deferred.resolve(widget)
               (error) ->

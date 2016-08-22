@@ -1,15 +1,18 @@
+# TODO: dates-picker should be a common component. Template compiling should be revised.
+
 module = angular.module('impac.components.widgets-settings.dates-picker',[])
 
 module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) ->
   return {
     restrict: 'A',
     scope: {
-      parentWidget: '='
+      parentWidget: '=?'
       deferred: '='
       fromDate: '=from'
       toDate: '=to'
       keepToday: '='
       onUse: '&?'
+      onChangeCb: '&?onChange'
       minDate: '=?'
       updateOnPick: '=?'
       template: '=?'
@@ -39,20 +42,20 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       scope.template ||= """
       <div style="display: flex; flex-wrap: wrap;">
         <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
-          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">From</span> <from-date style="flex-grow: 2;">
+          <span class="sdp-from-label" style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">From</span> <from-date style="flex-grow: 2;">
         </div>
         <div style="display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;">
-          <span style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">To</span> <to-date style="flex-grow: 2;">
+          <span class="sdp-to-label" style="padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;">To</span> <to-date style="flex-grow: 2;">
         </div>
       </div>
       """
       fromDateHtml = """
-      <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="showApplyButton()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
         {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
       </button>
       """
       toDateHtml = """
-      <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="showApplyButton()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
       </button>
       """
@@ -109,6 +112,17 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
             keep_today: isToToday()
         }
 
+      scope.onChange = ->
+        scope.showApplyButton()
+        scope.onChangeCb()(buildDates()) if scope.onChangeCb()
+
+      buildDates = ->
+        {
+          from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
+          to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
+          keepToday: isToToday()
+        }
+
       scope.showApplyButton = ->
         if scope.updateOnPick
           scope.applyChanges()
@@ -122,7 +136,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       scope.showTitle = ->
         element.hasClass('part')
 
-      w.settings.push(setting)
+      w.settings.push(setting) if w
 
       # Setting is ready: trigger load content
       # ------------------------------------

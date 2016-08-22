@@ -1,21 +1,63 @@
-<div class="row kpis">
-  <div class="title-actions col-xs-4 col-sm-2">
-    <div ng-click="toggleAvailableKpis()"><a href=""><i class="fa fa-plus"></i> Attach KPI</a></div>
+<div class="kpis" ng-class="{'empty': (kpis.length == 0), 'hidden-print': (kpis.length == 0)}">
 
-    <div class="available-kpis-container" collapse="hideAvailableKpis">
-      <div ng-repeat="kpi in availableKpis" class="available-kpi" ng-init="kpi.element_watched = kpi.watchables[0]">
-        <span class="kpi-name">{{formatKpiName(kpi.endpoint)}}</span>
-        <button class="btn btn-sm btn-info" ng-click="addKpi(kpi)">+ Attach</button>
-        <select class="form-control-static input-sm" ng-model="kpi.element_watched" ng-options="watchable for watchable in kpi.watchables"></select>
-      </div>
-    </div>
-
-    <div ng-click="toggleEditMode()"><a href=""><i class="fa fa-cog"></i> Edit KPI Settings</a></div>
+  <div class="title-actions">
+    <button type="button" class="add-kpis im-fab im-primary" ng-click="(availableKpis.list.length > 0) && availableKpis.toggle()" ng-class="{disabled: (availableKpis.list.length == 0)}">
+      <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.hide, 'fa-minus': !availableKpis.hide}"></i></a>
+    </button>
+    <button type="button" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock }" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
+      <a href=""><i class="fa" ng-class="{ 'fa-cog': !isEditing(), 'fa-floppy-o': isEditing() }"></i></a>
+    </button>
   </div>
 
-  <impac-kpi class="col-xs-4 col-sm-2" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis" ng-repeat="kpi in kpis track by kpi.id"></impac-kpi>
+  <div class="row title" ng-if="kpis.length == 0 && availableKpis.hide">
+    <span class="badge">New!</span>
+    <div class="col-xs-12 text-center">
+      <a href="#/" ng-click="availableKpis.toggle()" ng-hide="(availableKpis.list.length == 0)">
+        You can now attach KPIs to your dashboard
+      </a>
+      <span class="no-kpi-templates" ng-show="(availableKpis.list.length == 0)">No KPIs are available for your dashboard</span>
+    </div>
+  </div>
 
-  <div ng-show="isAddingKPI" class="col-xs-2 kpi-loader">
-    <i class="fa fa-2x fa-spin fa-refresh"></i>
+  <div class="row add-bar" collapse="availableKpis.hide">
+    <div class="col-xs-12 col-sm-12">
+      <div class="row">
+        <div ng-repeat="kpi in availableKpis.list track by $index" class="impac-kpi col-xs-6 col-sm-4 col-md-3" ng-click="addKpi(kpi)">
+          <div class="kpi add" ng-hide="(availableKpis.list.length == 0)">
+            <div class="top-line ui-sortable-handle"></div>
+            <div class="kpi-content">
+              <div class="kpi-show row nomargin nopadding">
+                <div class="col-xs-3 col-sm-3 kpi-icon">
+                  <i class="fa fa-2x fa-plus"></i>
+                </div>
+                <div class="col-xs-9 col-sm-9 kpi-text">
+                  <span class="caption"><strong>{{kpi.name}}</strong></span>
+                  <span class="emphasis">Add to dashboard</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <div class="row">
+        <div ui-sortable="sortableOptions" ng-model="kpis">
+          <div ng-repeat="kpi in kpis track by kpi.id" impac-kpi class="impac-kpi col-xs-6 col-sm-4 col-md-3" kpi="kpi" on-delete="removeKpi(kpi.id)" edit-mode="showEditMode" available-kpis="availableKpis.list" load-ready="kpiDatesDeferred">
+          </div>
+        </div>
+        <div ng-show="isAddingKpi" class="col-xs-6 col-sm-4 col-md-3 kpi-loader">
+          <i class="fa fa-2x fa-spin fa-refresh"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-show="isEditing() && kpis.length">
+    <div class="dates-picker-container">
+      <div setting-dates-picker from="kpisDateRange.from" to="kpisDateRange.to" keep-today="kpisDateRange.keepToday" on-change="kpisBarUpdateDates" deferred="datesPickerDeferred"/>
+    </div>
   </div>
 </div>

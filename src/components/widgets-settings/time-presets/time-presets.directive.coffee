@@ -24,12 +24,7 @@ module.directive('settingTimePresets', ($templateCache, ImpacMainSvc, $timeout, 
       scope.financialYearEndMonth = 6
       fyEndMonth = scope.financialYearEndMonth
 
-      ImpacMainSvc.load().then( (config) ->
-
-        if config? && config.currentOrganization? && parseInt(config.currentOrganization.financial_year_end_month)
-          fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month)
-
-      ).finally( ->
+      ImpacMainSvc.load().then( -> fyEndMonth = ImpacMainSvc.getFinancialYearEndMonth() ).finally( ->
 
         fyStartDate = ImpacUtilities.financialYearDates(fyEndMonth).start
         prevFyStartDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).start, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD')

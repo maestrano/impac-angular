@@ -2,10 +2,46 @@
 
 ## Unreleased - development in progress
 
+
 -------------------------------------------------------------
 -------------------------------------------------------------
 
 ## Released
+
+### v1.4.0-rc1 | Week 32
+
+#### Adds
+- KPIs & KPIs Bar complete redesign, featuring results in phrases, drag & drop, icons, less form inputs, mass save edit, and a date picker for data within a date range!
+- Attach KPIs onto widgets: adds a `settings-attach-kpi` widgets-settings component.
+- In-app push notification (Pusher WebSockets) & Email alerts when KPI targets are met.
+
+#### Config changes
+- Optional Pusher ImpacLinking configuration (ImpacLinking)
+
+```
+  pusher_key: 'pusher-key-goes-here'
+```
+
+-------------------------------------------------------------
+
+### v1.3.13 | Week 33
+
+#### Adds
+- Impac Angular now provides default images.
+- Impac Angular less variables to customise no widgets / dhb message styles without overriding.
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Gulp default task changed to `gulp serve`, added `gulp build:dist` task
+
+#### Fixes
+- Remove bootstrap spacer divs from impac-angular; improves dashboard layout for parent applications.
+
+#### Config changes
+- In ImpacAssets.configure, to setup default images path (see README.md for more info):
+```
+  defaultImagesPath: '/dist/images'
+```
+
+-------------------------------------------------------------
 
 ### v1.3.12 | Week 32
 
@@ -134,6 +170,7 @@
 
 #### Adds
 - Common directive "time-period-info" to display selected time period
+- KPIs target selection is now mandatory, added loading spinner for data fetching.
 - time-period-info added to hist-mode choser and some widgets
 - time-presets can now be defined in ThemingSvc
 - Better UI for widget Team performance

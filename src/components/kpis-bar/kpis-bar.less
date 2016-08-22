@@ -1,54 +1,128 @@
 .analytics kpis-bar > .kpis {
-  padding: 10px 0px;
-  min-height: 145px;
-  overflow: hidden;
+  position: relative;
+  padding: 15px;
+  min-height: @kpi-max-height + 30px;
+  // overflow: hidden;
+  background-color: @kpis-bar-background-color;
+  box-shadow: @kpis-bar-box-shadow;
 
-  .available-kpis-container {
-    text-align: left;
-    position: absolute;
-    z-index: 15;
-    background-color: @impac-widget-background-color;
-    width: 500px;
-    max-height: 115px;
-    box-shadow: 0px 3px 12px -4px;
+  &.empty { min-height: 50px; }
 
-    .scrollable();
+  transition: all .2s ease-in;
+  @media screen and (min-width: 725px) {
+    padding: 0 60px;
+  }
+  @media screen and (max-width: 675px) {
+    margin-top: 18px;
+  }
 
-    .available-kpi {
-      border-bottom: solid 1px #D8DBDB;
-      padding: 4px;
-      padding-left: 8px;
-      height: 38px;
+  .impac-kpi {
+    .column-gutter(5px);
 
-      span.kpi-name {
-        padding-top: 5px;
-        display: inline-block;
-      }
+    @media screen and (min-width: 1200px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
 
-      .form-control-static, .btn.btn-sm.btn-info {
-        float: right;
-        min-height: 30px;
-        height: 30px;
-        float: right;
-        margin-left: 3px;
-        margin-top: 0px;
-        font-weight: bold;
+    .kpi.add {
+      .kpi-show .caption {
+        white-space: inherit;
       }
     }
   }
 
   .title-actions {
-    .title {
-      margin-top: 10px;
-      font-weight: 700;
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
     }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: -27px;
+        bottom: 0;
+      }
+    }
+    button.im-fab.edit-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: 20px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .title {
+    .text-center {
+      line-height: 3;
+      font-variant: small-caps;
+      font-size: larger;
+    }
+    .badge {
+      position: absolute;
+      top: 8px;
+      left: -10px;
+      background-color: #d1e55c;
+      color: #4f5959;
+      box-shadow: 0px 1px 3px -1px;
+    }
+    .no-kpi-templates {
+      color: #afadb5;
+      font-weight: 500;
+    }
+  }
+
+  .add-bar {
+    border-bottom: dashed 1px;
   }
 
   .kpi-loader {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 135px;
+    min-height: @kpi-max-height + 20px;
+  }
+
+  .dates-picker-container {
+    width: 40%;
+    margin: 0 auto;
+
+    .sdp-from-label,
+    .sdp-to-label {
+      text-transform: uppercase;
+      font-weight: 400;
+    }
   }
 }
 
@@ -57,3 +131,5 @@
   // color: @light-black;
   padding: 5px 0px;
 }
+
+.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }

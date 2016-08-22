@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, ImpacKpisSvc) ->
+  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacDashboardsSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
@@ -8,15 +8,25 @@ angular
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
-      controller: ($scope, $timeout, $log) ->
-        $scope.hideAvailableKpis = true
+      controller: ($scope, $log) ->
+        # Load
+        # -------------------------
+        $scope.availableKpis = {
+          hide: true,
+          toggle: ->
+            $scope.availableKpis.hide = !$scope.availableKpis.hide
+        }
         $scope.showKpisExpanded = false
+        # All kpis edit panels are shown
         $scope.showEditMode = false
-        $scope.isAddingKPI = false
+        $scope.isAddingKpi = false
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
-        $scope.availableKpis = ImpacKpisSvc.getKpisTemplates()
+        ImpacKpisSvc.load().then ->
+          initAvailableKpis()
+          # QUICK FIX - see kpi.svc method for comments.
+          _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
 
         # $scope.keyStats = [
         #   { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },
@@ -26,27 +36,119 @@ angular
         #   { name: 'Super', data: { value: '479023', unit: 'AUD' }, static: true}
         # ]
 
-        $scope.toggleAvailableKpis = ->
-          $scope.hideAvailableKpis = !$scope.hideAvailableKpis
+        $scope.sortableOptions = {
+          stop: ->
+            ids = _.pluck $scope.kpis, 'id'
+            ImpacKpisSvc.updateKpisOrder(ids)
+          cursorAt:
+            left: 100
+            top: 20
+          opacity: 0.5
+          delay: 150
+          tolerance: 'pointer'
+          cursor: "move"
+          revert: 250
+          # only the top-line with title will provide the handle to drag/drop kpis
+          handle: ".top-line"
+          cancel: ".unsortable"
+          helper: 'clone'
+        }
 
-        $scope.formatKpiName = (endpoint) ->
-          endpoint_splitted = endpoint.split('/')
-          name = endpoint_splitted[0] + ' | ' + endpoint_splitted.slice(1,endpoint_splitted.length).join(' ')
-          name = name.replace('_', ' ')
-          return name
+        # Retrieves KPIs date range either saved onto dashboard or a default, and applies to the
+        # settings-date-picker.
+        # ---
+        $scope.kpisDateRange = {}
+        # Promises the kpi.directive that dates have been loaded and are ready for #show().
+        $scope.kpiDatesDeferred = $q.defer()
+        # Promises this directive that the dates-picker is loaded and ready for initialize.
+        $scope.datesPickerDeferred = $q.defer()
 
+        $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
+
+          ImpacKpisSvc.getKpisDateRange().then((dates)->
+
+            $scope.kpisDateRange.from = dates.from
+            $scope.kpisDateRange.to = dates.to
+            $scope.kpisDateRange.keepToday = dates.keepToday
+
+          ).finally(->
+
+            $scope.kpiDatesDeferred.resolve()
+            settingDatesPicker.initialize()
+          )
+        )
+
+        # Linked methods
+        # -------------------------
         $scope.addKpi = (kpi) ->
-          $scope.isAddingKPI = true
-          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched).then(
+          return if $scope.isAddingKpi
+          $scope.isAddingKpi = true
+
+          kpi.element_watched = kpi.watchables[0]
+
+          # Removes element watched from the available watchables array and saves the rest as
+          # extra watchabes.
+          # TODO: mno & impac should be change to deal with `watchables`, instead
+          # of element_watched, and extra_watchables. The first element of watchables should be
+          # considered the primary watchable, a.k.a element_watched.
+          opts = {}
+          opts.extra_watchables = _.filter(kpi.watchables, (w)-> w != kpi.element_watched)
+
+          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, opts).then(
             (success) ->
               $scope.kpis.push(success)
             (error) ->
               $log.error("Impac Kpis bar can't add a kpi", error)
-          ).finally(-> $scope.isAddingKPI = false)
+          ).finally(->
+            initAvailableKpis()
+            $scope.isAddingKpi = false
+          )
 
-        $scope.removeKpi = (kpiId) -> _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
+        $scope.removeKpi = (kpiId) ->
+          _.remove $scope.kpis, (kpi) -> kpi.id == kpiId
+          initAvailableKpis()
 
+        $scope.toggleEditModeLock = false
         $scope.toggleEditMode = ->
-          $scope.showEditMode = !$scope.showEditMode
+          return if $scope.toggleEditModeLock
+          $scope.toggleEditModeLock = true
+          ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarToggleSettings)
+          if (kpiIsEditing() && !$scope.showEditMode)
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings)
+          else
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings, f) if (f = $scope.showEditMode)
+            $scope.showEditMode = !$scope.showEditMode
+          $scope.availableKpis.toggle() unless $scope.availableKpis.hide || $scope.showEditMode
+          # prevents spam clicking, and works with kpi show/edit annimation.
+          $timeout(->
+            $scope.toggleEditModeLock = false
+          , 450)
+
+        $scope.isEditing = ->
+          $scope.showEditMode || kpiIsEditing()
+
+        $scope.kpisBarUpdateDates = (dates)->
+          return unless _.isObject(dates) && !_.isEmpty(dates)
+          dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+          angular.merge dashboard.metadata, { kpis_hist_parameters: dates }
+          ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then(->
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateDates)
+          )
+
+
+        # Private methods
+        # -------------------------
+        kpiIsEditing = ->
+          _.includes(_.map($scope.kpis, (kpi)-> kpi.isEditing), true)
+
+        initAvailableKpis = ->
+          $scope.availableKpis.list = _.select(ImpacKpisSvc.getKpisTemplates(), (k) ->
+            _.isEmpty(k.attachables) &&
+            _.isEmpty(_.select($scope.kpis, (existingKpi) ->
+              existingKpi.endpoint == k.endpoint && existingKpi.element_watched == k.watchables[0]
+            ))
+          )
+          $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
+
     }
   )

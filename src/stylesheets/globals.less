@@ -98,6 +98,16 @@ body {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // --- Common adjustments
+  // ---------------------------------------------------------------------------
+  .nopadding {
+    padding: 0;
+  }
+
+  .nomargin {
+    margin: 0;
+  }
 
   // ---------------------------------------------------------------------------
   // --- Custom elements
@@ -254,4 +264,18 @@ body {
   div {
     display: inline-block;
   }
+}
+
+// ---------------------------------------------------------------------------
+// --- Bootstrap overrides
+// ---------------------------------------------------------------------------
+
+.has-error .form-control {
+  border-color: @brand-danger;
+  &:focus { border-color: @brand-danger }
+}
+
+.has-success .form-control {
+  border-color: @brand-success;
+  &:focus { border-color: @brand-success }
 }

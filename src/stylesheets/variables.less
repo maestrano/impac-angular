@@ -46,6 +46,20 @@
 @impac-positive2:                #3fc4ff;     // lighter colors used for payables-receivables
 @impac-negative2:                #1de9b6;     // lighter colorsused for payables-receivables
 
+// Spacers
+//----------------------------------------
+@top-buffer-height: @grid-gutter-width/2; // bootstrap variable
+.top-buffer-1 { margin-top: @top-buffer-height; }
+.top-buffer-2 { margin-top: 2*@top-buffer-height; }
+.top-buffer-3 { margin-top: 3*@top-buffer-height; }
+.top-buffer-4 { margin-top: 4*@top-buffer-height; }
+.top-buffer-5 { margin-top: 5*@top-buffer-height; }
+.top-buffer-6 { margin-top: 6*@top-buffer-height; }
+.top-buffer-7 { margin-top: 7*@top-buffer-height; }
+.top-buffer-8 { margin-top: 8*@top-buffer-height; }
+.top-buffer-9 { margin-top: 9*@top-buffer-height; }
+.top-buffer-10 { margin-top: 10*@top-buffer-height; }
+
 // Dashboard
 //--------------------------------------
 @impac-dashboard-padding-top:                   50px;
@@ -58,6 +72,12 @@
 @impac-dashboard-title-label-create-color:      white;
 @impac-dashboard-source-color:                  @impac-dashboard-title-label-color;
 @impac-dashboard-buttons-border-radius:         4px;
+
+//Info-text
+@impac-dashboard-info-text-color:               white;
+@impac-dashboard-info-text-background-color:    rgba(23,38,45, 0.7);
+@impac-dashboard-info-text-font-size:           25px;
+@impac-dashboard-info-text-font-weight:         300;
 
 // Dashboard Selector
   // Tabs
@@ -142,3 +162,30 @@
 // Sales break-even
 @impac-widget-sales-break-even-bg:             rgb(25,40,49);
 @impac-widget-sales-break-even-text-color:     #1de9b6;
+
+// KPIs
+//--------------------------------------
+// Kpi bar
+@kpis-bar-background-color:                    white;
+@kpis-bar-box-shadow:                          0px 1px 8px -4px;
+// Kpi
+@kpi-background-color:                         white;
+@kpi-triggered-border-bottom:                  4px solid @brand-danger;
+@kpi-max-height:                               95px;
+@kpi-editing-max-height:                       90px; // height to be added to the @kpi-max-height when in editing mode.
+@kpi-content-editing-height-buffer:            5px; // height to be minused from the @kpi-editing-max-height to even the kpi height and the kpi content height.
+// Kpi top-line
+@kpi-top-line-background-color:                grey;
+@kpi-top-line-triggered-background-color:      black;
+@kpi-top-line-height:                          7px;
+@kpi-top-line-box-shadow:                      none;
+// kpi content
+@kpi-text-color:                               grey;
+@kpi-text-triggered-color:                     black;
+@kpi-icon-color:                               grey;
+@kpi-icon-triggered-color:                     black;
+// kpi settings
+@kpi-settings-focus-color:                     @mblue;
+@kpi-settings-error-color:                     @brand-danger;
+@kpi-settings-remove-background:               #4c4749;
+@kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);

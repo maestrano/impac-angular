@@ -1,15 +1,28 @@
 angular
   .module('impac.services.main', [])
-  .service 'ImpacMainSvc', ($q, $log, $timeout, ImpacLinking) ->
+  .service 'ImpacMainSvc', ($q, $log, $timeout, ImpacLinking, ImpacNotifications) ->
 
     _self = @
+
+# ====================================
+# Getters
+# ====================================
     @config = 
       organizations: []
       currentOrganization: {}
       userData: {}
       currencies: ["USD","AUD","CAD","CNY","EUR","GBP","HKD","INR","JPY","NZD","SGD","PHP","AED","IDR"]
 
+    @getSsoSessionId = ->
+      _self.config.userData.sso_session
 
+    @getFinancialYearEndMonth = ->
+      parseInt(_self.config.currentOrganization.financial_year_end_month)
+
+
+# ====================================
+# Load and initialize
+# ====================================
     isConfigurationLoaded = ->
       return !( _.isEmpty(_self.config.organizations) || _.isEmpty(_self.config.currentOrganization || _.isEmpty(_self.config.userData)) )
 
@@ -19,14 +32,13 @@ angular
 
       if !isConfigurationLoaded() || force
 
-        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then(
-          (results) ->
-            $log.info("Impac! - MainSvc: loaded (force=#{force})") 
-            deferred.resolve(_self.config)
-          (error) ->
-            $log.error("Impac! - MainSvc: failed to load configuration")
-            deferred.reject(error)
-        )
+        $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
+          ImpacNotifications.load()
+          deferred.resolve(_self.config)
+          $log.info("Impac! - MainSvc: loaded (force=#{force})") 
+        ,(error) ->
+          $log.error("Impac! - MainSvc: failed to load configuration")
+          deferred.reject(error)
 
       else
         deferred.resolve(_self.config)
@@ -126,10 +138,6 @@ angular
         ), 1000
 
       return deferred.promise
-
-
-    @getSsoSessionId = ->
-      _self.config.userData.sso_session
 
 
 # =====================================================

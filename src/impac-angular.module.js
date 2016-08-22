@@ -7,13 +7,17 @@
 angular.module('maestrano.impac',
   [
     'impac.config',
+    'impac.run',
+    'impac.constant',
     'impac.services',
     'impac.filters',
     'impac.components',
     // EXTERNAL DEPENDENCIES //
+    'ngMessages',
     'ui.sortable',
     'ui.bootstrap',
-    'emguo.poller'
+    'emguo.poller',
+    'toastr'
   ]);
 
 /*
@@ -27,6 +31,7 @@ angular.module('impac.components',
     'impac.components.kpis-bar',
     'impac.components.kpi',
     'impac.components.chart',
+    'impac.components.alerts-config',
     'impac.components.widget',
     'impac.components.widgets',
     'impac.components.widgets-settings',
@@ -103,7 +108,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-period',
     'impac.components.widgets-settings.time-presets',
     'impac.components.widgets-settings.time-slider',
-    'impac.components.widgets-settings.width'
+    'impac.components.widgets-settings.width',
+    'impac.components.widgets-settings.attach-kpis'
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -139,6 +145,10 @@ angular.module('impac.services',
     'impac.services.dashboards',
     'impac.services.widgets',
     'impac.services.developer',
+    'impac.services.pusher',
+    'impac.services.alerts',
+    'impac.services.notifications',
+    'impac.services.events',
   ]
 );
 /*

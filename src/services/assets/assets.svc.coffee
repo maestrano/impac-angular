@@ -6,18 +6,22 @@ angular
     #=======================================
     # Private Defaults
     #=======================================
-    # parent app should host images, configure this provider to provide relative img paths.
+    # Parent apps can provide custom images, or use the default images by providing
+    # a defaultImagesPath of which is the parent apps responsibility to make publically available.
+    # See the README.md for more information on this.
     paths =
-      dataNotFound: null,
-      impacTitleLogo: null,
-      impacDashboardBackground: null,
-      noWarning: false
+      dataNotFound: ''
+      defaultImagesPath: '/images'
+      impacTitleLogo: ':default/impac-title-logo.png'
+      impacDashboardBackground: ':default/impac-dashboard-background.png'
 
     #=======================================
     # Public methods available in config
     #=======================================
     provider.configure = (configOptions) ->
       angular.extend(paths, configOptions)
+      # For images with impac-angular defaults, inject the provided default images path.
+      _.forIn(paths, (v, k)-> paths[k] = v.replace(':default', paths.defaultImagesPath))
 
     #=======================================
     _$get = ($log) ->
@@ -26,13 +30,7 @@ angular
       # Public methods available as service
       #=======================================
       service.get = (key) ->
-        path = ''
-        msg = 'impac-angular warning: There are missing assets (' + key + '), please refer to the including assets section in the docs.'
-        if paths[key]?
-          path = paths[key]
-        else
-          $log.warn(msg) unless paths.noWarning
-        return path
+        paths[key]
 
       return service
     # inject service dependencies here, and declare in _$get function args.
