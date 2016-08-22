@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $timeout, $sce) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, $timeout, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $sce) ->
   return {
     restrict: 'A',
     scope: {
@@ -119,10 +119,10 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           #     last_sync_date (DateTime)
           #   is_syncing (Bool)
           # -----------------------------
-          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 5000, smart: true})
+          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 3000, smart: true})
           scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
-          scope.syncingPoller.start()
       )
+
 
       # Removes the poller when the directive is destroyed (eg: when we switch from the impac dashboard to another js route)
       scope.$on("$destroy", -> (scope.syncingPoller.stop() && scope.syncingPoller.remove()) if scope.syncingPoller )
