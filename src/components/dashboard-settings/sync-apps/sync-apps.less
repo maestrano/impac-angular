@@ -8,8 +8,12 @@
     }
     .fa.fa-info { margin-right: 2px; }
   }
-  .caution-btn {
-    i { color: @fluroorange; font-size: 16px; }
+  .status-btn {
+    i {
+      font-size: 16px;
+      &.fa-exclamation-triangle { color: @fluroorange; }
+      &.fa-check { color: @green; }
+    }
     display: inline-block;
     cursor: pointer;
     padding: 5px 7px 5px 0px;
