@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-slider',[])
 
-module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) ->
+module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, ImpacUtilities) ->
   return {
     restrict: 'A',
     scope: {
@@ -73,14 +73,7 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
           return initPeriod()
 
       getPeriodWord = ->
-        period = getPeriod()
-        switch period
-          when "d" then return "day"
-          when "w" then return "week"
-          when "m" then return "month"
-          when "q" then return "quarter"
-          when "y" then return "year"
-          when "f" then return "financial year"
+        return ImpacUtilities.getPeriodWord(getPeriod())
 
       getNumberOfPeriods = ->
         if scope.numberOfPeriods?
@@ -93,17 +86,8 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc) -
         p = getPeriod()
         return "-#{n}#{p}"
 
-
       scope.formatPeriod = ->
-        n = getNumberOfPeriods()
-        
-        number = ""
-        word = getPeriodWord()
-        if n > 1
-          number = "#{n}"
-          word = "#{word}s"
-
-        return [number,word].join(' ')
+        return ImpacUtilities.formatPeriod(getNumberOfPeriods(), getPeriod())
 
       scope.formatDate = (aDate) ->
         return aDate.format('Do MMM YYYY')
