@@ -15,8 +15,10 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
     $scope.paramSelectorDeferred.promise
   ]
 
-  $scope.forwardParams = {
-    accountingBehaviour: 'bls'
+  # Configure the commonTimePeriodInfo directive
+  $scope.timePeriodInfoParams = {
+    accountingBehaviour: 'pnl'
+    histParams: {}
   }
 
   # Widget specific methods
