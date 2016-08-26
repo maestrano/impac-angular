@@ -17,13 +17,24 @@
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
-        <div class="col-md-7 text-left sortable-title" ng-click="sort('account')">
-          {{widget.content.companies[0].name}} - Accounts classifications
+        <div class="col-md-6 text-left">
+          {{widget.content.companies[0].name}}
+        </div>
+
+        <div class="col-md-6 text-right">
+          <div common-time-period-info context="timePeriodInfoParams" />
+        </div>
+      </div>
+
+      <!-- Sorting sub-header (contains sorting) -->
+      <div ng-hide="multiEntity" class="row widget-line header sorting">
+        <div class="col-md-6 text-left sortable-title" ng-click="sort('account')">
+          Account Classifications
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
 
-        <div class="col-md-5 text-right sortable-title" ng-click="sort('total')">
-          <div common-time-period-info context="timePeriodInfoParams" />
+        <div class="col-md-6 text-right sortable-title" ng-click="sort('total')">
+          Amounts
           <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
       </div>
