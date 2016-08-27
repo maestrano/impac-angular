@@ -50,6 +50,14 @@ angular
 
         onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
 
+        applyPlaceholderValues = ->
+          _.forEach($scope.kpi.watchables, (watchable)->
+            data = $scope.getTargetPlaceholder(watchable)
+            (target = {})[data.mode] = data.value
+            $scope.targets[watchable] = [target]
+          )
+          $scope.updateSettings(true)
+
         animateKpiPanels = ()->
           element = angular.element($element).find('.kpi-content')
           return unless element
@@ -108,11 +116,12 @@ angular
           return unless kpi && kpi.layout && kpi.layout.text && kpi.data && kpi.watchables.length
           $sce.trustAsHtml("<strong>#{kpi.layout.text.emphasis}</strong> - <span class=\"real-value\">(#{kpi.data[kpi.watchables[0]].value} #{kpi.data[kpi.watchables[0]].unit})</span>")
 
-        $scope.updateSettings = ->
+        $scope.updateSettings = (force)->
           params = {}
           touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]) && form.$dirty
           hasValidTargets = $scope.hasValidTargets()
-          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets
+
+          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets || force
 
           params.targets = $scope.targets
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
@@ -125,9 +134,12 @@ angular
           , 200
 
         $scope.cancelUpdateSettings = (hasValidTargets)->
-          return $scope.deleteKpi() unless hasValidTargets
-          # Update is cancelled, reset the targets to the last saved values stored on the kpi.
-          $scope.targets = angular.copy($scope.kpi.targets)
+          if _.isEmpty $scope.kpi.targets
+            # Uses the kpi templates placeholder recommendations as values
+            applyPlaceholderValues()
+          else
+            # Update is cancelled, reset the targets to the last saved values stored on the kpi.
+            $scope.targets = angular.copy($scope.kpi.targets)
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
