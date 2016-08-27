@@ -75,6 +75,12 @@
       top: 30px;
       right: -15px;
       z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
       @media screen and (max-width: 675px) {
         top: -35px;
         right: 20px;
