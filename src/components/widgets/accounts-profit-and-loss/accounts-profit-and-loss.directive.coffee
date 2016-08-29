@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities) ->
 
   w = $scope.widget
 
@@ -42,10 +42,17 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
-      firstDate = $filter('mnoDate')($scope.dates[0], getPeriod())
-      lastDate = $filter('mnoDate')($scope.getLastDate(), getPeriod())
-      $scope.amountDisplayedOptions[0].label = lastDate
-      $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
+      # Dates for settings param selector display
+      if w.metadata && (histParams = w.metadata.hist_parameters)
+
+        dates = ImpacUtilities.selectedTimeRange(histParams)
+
+        firstDate = $filter('mnoDate')(dates.from, getPeriod())
+        lastDate = $filter('mnoDate')(dates.to, getPeriod())
+
+        $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
+        $scope.amountDisplayedOptions[0].label = lastDate
+
       setAmountDisplayed()
 
       unless _.isEmpty(w.metadata.selectedElements)
@@ -66,12 +73,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
-
-  $scope.getLastDate = ->
-    $scope.dates[$scope.dates.length-1] if $scope.dates?
-
-  $scope.getPrevDate = ->
-    $scope.dates[$scope.dates.length-2] if $scope.dates?
 
   getPeriod = ->
     if w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period?

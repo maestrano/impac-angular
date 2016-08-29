@@ -6,6 +6,7 @@ angular
 
     _       = $window._
     moment  = $window.moment
+    _self   = @
 
     # Find the min & max dates from an array of dates.
     # Mostly used for setting date pickers default to the min &
@@ -19,15 +20,38 @@ angular
       maxDate = _.max _.map(dates, (d) -> moment(d))
       return [minDate.startOf('day').toDate(), maxDate.startOf('day').toDate()]
 
-    getPeriodWord = (period) ->
+    ###
+    #   @param {string} Word representation of a period symbol
+    #   @returns {string} A time period word
+    ###
+    @getPeriodWord = (period) ->
       switch period
         when "d" then return "day"
         when "w" then return "week"
         when "m" then return "month"
         when "q" then return "quarter"
         when "y" then return "year"
+        when "f" then return "financial year"
 
-    # Determines the start and end dates of a selected time period, based on the metadata passed
+    ###
+    #   @param {string} numberOfPeriods e.g "4"
+    #   @param {string} period e.g "w"
+    #   @returns {string} number and word formatted for reading e.g "4 weeks"
+    ###
+    @formatPeriod = (numberOfPeriods="", period="") ->
+      if numberOfPeriods > 1
+        number = "#{numberOfPeriods}"
+        word = "#{_self.getPeriodWord(period)}s"
+      return [number,word].join(' ')
+
+    ###
+    #   Determines the start and end dates of a selected time period, based on the metadata passed.
+    #   @param {Object} histParams - Historical data
+    #   @param {string} histParams.from - The "from" Date
+    #   @param {string} histParams.to - The "to" Date
+    #   @param {string} histParams.time_range - Shorthand of an amount of time periods.
+    #   @returns {Object} Object containing formatted "to" and "from" dates.
+    ###
     @selectedTimeRange = (histParams) ->
       # Default is Calendar YTD
       toDate = moment().format('YYYY-MM-DD')
@@ -45,7 +69,7 @@ angular
           n = histParams.time_range.match(/\d/g) && parseInt(histParams.time_range.match(/\d/g).join(''))
           period = histParams.time_range.match(/[a-z]/) && histParams.time_range.match(/[a-z]/)[0]
 
-          word = getPeriodWord(period)
+          word = _self.getPeriodWord(period)
           if period == "w"
             fromDate = moment().subtract(n, word).startOf('isoweek').format('YYYY-MM-DD')
           else
@@ -61,10 +85,10 @@ angular
     @financialYearDates = (fYearEndMonth) ->
       startYear = moment().year() - 1
       startYear = moment().year() if moment().month() >= fYearEndMonth
-      
+
       start = moment("#{startYear}-#{fYearEndMonth + 1}-01", 'YYYY-MM-DD')
       end = angular.copy(start).add(1, 'year').subtract(1, 'day')
-      
+
       resultHash = {
         start: start.format('YYYY-MM-DD')
         end: end.format('YYYY-MM-DD')
