@@ -24,6 +24,16 @@
 
 -------------------------------------------------------------
 
+### v1.3.14 | Week 34
+
+#### Fixes
+- Modify PnL date display
+- Add time period selection to "detailed account class" widget, and improve sortable headers display
+
+-------------------------------------------------------------
+
+## Released
+
 ### v1.3.13 | Week 33
 
 #### Adds
