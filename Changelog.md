@@ -6,6 +6,21 @@
 -------------------------------------------------------------
 -------------------------------------------------------------
 
+### v1.4.0 | Week 35
+
+#### Adds
+- Improved KPI save settings logic
+- Kpis bar save button highlighted
+
+#### Fixes
+- Update workspace mno_url to uat.maestrano.io
+- Removed KPI loading spinner, fixing display glitches
+- Fix available KPIs not reseting upon changing dashboard
+- Fix kpi extra params de-selecting default on date picker change
+- Fix duplicate targets being added on kpi date change
+
+-------------------------------------------------------------
+
 ## Released
 
 ### v1.4.0-rc1 | Week 32
