@@ -80,10 +80,10 @@ angular
 
         $scope.kpi.isLoading = true
         $scope.loadReady.promise.then(->
-
-          fetchKpiData() unless $scope.kpi.static
-        ).finally(->
-          $scope.kpi.isLoading = false
+          unless $scope.kpi.static
+            fetchKpiData().finally(-> $scope.kpi.isLoading = false)
+          else
+            $scope.kpi.isLoading = false
         )
 
         ImpacEvents.registerCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
