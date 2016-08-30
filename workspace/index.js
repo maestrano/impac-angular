@@ -13,9 +13,10 @@ module.factory('settings', function () {
   return {
     // Credentials and endpoints
     mno_url: 'https://uat.maestrano.io',
-    impac_url: 'http://api-impac-uat.maestrano.io',
+    impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: '',
+    org_uid: '', // First organisations if unspecified
 
     // Stub widget templates - add new widgets!
     //------------------------------------------------
@@ -83,7 +84,7 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   // Configure the ImpacTheming service options.
   ImpacTheming.configure({
     dhbKpisConfig: {
-      enableKpis: true
+      enableKpis: false
     },
     dhbConfig: {
       showDhbHeading: true,
@@ -114,21 +115,41 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
   // Link core callbacks required for impac-angular lib to run.
   ImpacLinking.linkData({
     organizations: function () {
-      return getOrganizations();
+      return getOrganizations(settings.org_uid);
     },
     user: function () {
-      return $q.when({
-        name: 'Developer',
-        email: 'developer@maestrano.com'
-      });
+      return getUser();
     }
   });
 
-  function getOrganizations() {
-    return $http.get(settings.mno_url + '/api/v2/impac/organizations')
+  function getOrganizations(orgUid) {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      var orgs = (user.organizations || []);
+      var orga = orgs.find(function(orga) { return orga.uid == orgUid });
+      var orgId = (orga && orga.id) || orgs[0].id || null;
+
+      deferred.resolve({ organizations: orgs, currentOrgId: orgId });
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUser() {
+    var deferred = $q.defer();
+    getUserData().then(function (user) {
+      deferred.resolve(user);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+  function getUserData() {
+    return $http.get(settings.mno_url + '/api/v2/current_user')
       .then(function (response) {
-        var organizations = (response.data || []);
-        return { organizations: organizations, currentOrgId: (organizations[0].id || null) };
+        return response.data;
       }, function () {
         var msg = 'Unable to retrieve Organizations';
         fail(msg);
