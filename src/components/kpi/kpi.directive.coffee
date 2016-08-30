@@ -25,6 +25,10 @@ angular
             # If the template contains extra params we add it to the KPI
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
+              # Init the extra params select boxes with the first param
+              _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
+                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id
+              )
 
             watchablesWithoutTargets = false
             _.forEach($scope.kpi.watchables, (watchable)->
@@ -45,6 +49,14 @@ angular
         onToggleSettingsCb = -> animateKpiPanels()
 
         onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
+
+        applyPlaceholderValues = ->
+          _.forEach($scope.kpi.watchables, (watchable)->
+            data = $scope.getTargetPlaceholder(watchable)
+            (target = {})[data.mode] = data.value
+            $scope.targets[watchable] = [target]
+          )
+          $scope.updateSettings(true)
 
         animateKpiPanels = ()->
           element = angular.element($element).find('.kpi-content')
@@ -86,6 +98,7 @@ angular
         # Linked methods
         # -------------------------
         $scope.addTargetToWatchable = (watchable)->
+          return if _.has($scope.targets, watchable)
           (newTarget = {})[$scope.getTargetPlaceholder(watchable).mode] = ''
           ($scope.targets[watchable] ||= []).push(newTarget)
 
@@ -98,11 +111,16 @@ angular
         $scope.hasValidTargets = ->
           ImpacKpisSvc.validateKpiTargets($scope.targets)
 
-        $scope.updateSettings = ->
+        $scope.hasContent = ->
+          return true if $scope.isEditing()
+          $scope.kpi && $scope.kpi.layout && $scope.kpi.data
+
+        $scope.updateSettings = (force)->
           params = {}
           touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]) && form.$dirty
           hasValidTargets = $scope.hasValidTargets()
-          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets
+
+          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets || force
 
           params.targets = $scope.targets
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
@@ -115,9 +133,12 @@ angular
           , 200
 
         $scope.cancelUpdateSettings = (hasValidTargets)->
-          return $scope.deleteKpi() unless hasValidTargets
-          # Update is cancelled, reset the targets to the last saved values stored on the kpi.
-          $scope.targets = angular.copy($scope.kpi.targets)
+          if _.isEmpty $scope.kpi.targets
+            # Uses the kpi templates placeholder recommendations as values
+            applyPlaceholderValues()
+          else
+            # Update is cancelled, reset the targets to the last saved values stored on the kpi.
+            $scope.targets = angular.copy($scope.kpi.targets)
           # smoother delete transition
           $timeout ->
             $scope.hideEditSettings()
