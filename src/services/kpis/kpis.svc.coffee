@@ -196,6 +196,8 @@ angular
     # Target placeholders are suggestions defined in Impac API for a targets mode, value &
     # unit depending on the watchable. Impac Angular forces the mode & unit, and suggests the
     # value in the target input placeholder.
+    # NOTE: target placeholders are recommendations for a single target, by watchable. Multiple
+    # targets placeholders are currently not supported.
     @getKpiTargetPlaceholder = (kpiEndpoint, kpiWatchable) ->
       templ = _self.getKpiTemplate(kpiEndpoint, kpiWatchable)
       ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}

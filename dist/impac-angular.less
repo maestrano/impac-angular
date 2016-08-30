@@ -1299,6 +1299,42 @@ body {
   * { transition: none !important; }
 }
 
+// NOTE: Do not add styles for the default button or custom injected buttonHtml here.
+//       the parent stylesheet of which this directive is embedded within should
+//       contain the styles.
+
+// Modal kpis alerts settings
+.kpi-alerts-settings {
+  .modal-header { font-size: 20px; }
+
+  .modal-body {
+    line-height: 2;
+
+    ul { margin-top: 10px; }
+
+    ul > li.list-group-item {
+      list-style: none;
+      padding: 6px 15px;
+      color: @impac-widget-text-color-medium;
+      user-select: none;
+
+      &.active {
+        color: @mblue;
+        font-weight: bold;
+        background-color: transparent;
+        border-color: #c4caca;
+      }
+
+      &:hover { cursor: pointer; }
+    }
+
+    .fa.fa-toggle-on, .fa.fa-toggle-off {
+      font-size: 17px;
+      margin-right: 8px;
+    }
+  }
+}
+
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
@@ -1604,42 +1640,6 @@ body {
 }
 
 
-// NOTE: Do not add styles for the default button or custom injected buttonHtml here.
-//       the parent stylesheet of which this directive is embedded within should
-//       contain the styles.
-
-// Modal kpis alerts settings
-.kpi-alerts-settings {
-  .modal-header { font-size: 20px; }
-
-  .modal-body {
-    line-height: 2;
-
-    ul { margin-top: 10px; }
-
-    ul > li.list-group-item {
-      list-style: none;
-      padding: 6px 15px;
-      color: @impac-widget-text-color-medium;
-      user-select: none;
-
-      &.active {
-        color: @mblue;
-        font-weight: bold;
-        background-color: transparent;
-        border-color: #c4caca;
-      }
-
-      &:hover { cursor: pointer; }
-    }
-
-    .fa.fa-toggle-on, .fa.fa-toggle-off {
-      font-size: 17px;
-      margin-right: 8px;
-    }
-  }
-}
-
 #module__dashboard-selector {
   a {
     font-weight: normal;
@@ -1833,6 +1833,148 @@ body {
   }
   ////////
 }
+
+.analytics kpis-bar > .kpis {
+  position: relative;
+  padding: 15px;
+  min-height: @kpi-max-height + 30px;
+  // overflow: hidden;
+  background-color: @kpis-bar-background-color;
+  box-shadow: @kpis-bar-box-shadow;
+
+  &.empty { min-height: 50px; }
+
+  transition: all .2s ease-in;
+  @media screen and (min-width: 725px) {
+    padding: 0 60px;
+  }
+  @media screen and (max-width: 675px) {
+    margin-top: 18px;
+  }
+
+  .impac-kpi {
+    .column-gutter(5px);
+
+    @media screen and (min-width: 1200px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .kpi.add {
+      .kpi-show .caption {
+        white-space: inherit;
+      }
+    }
+  }
+
+  .title-actions {
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: -27px;
+        bottom: 0;
+      }
+    }
+    button.im-fab.edit-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: 20px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .title {
+    .text-center {
+      line-height: 3;
+      font-variant: small-caps;
+      font-size: larger;
+    }
+    .badge {
+      position: absolute;
+      top: 8px;
+      left: -10px;
+      background-color: #d1e55c;
+      color: #4f5959;
+      box-shadow: 0px 1px 3px -1px;
+    }
+    .no-kpi-templates {
+      color: #afadb5;
+      font-weight: 500;
+    }
+  }
+
+  .add-bar {
+    border-bottom: dashed 1px;
+  }
+
+  .kpi-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: @kpi-max-height + 20px;
+  }
+
+  .dates-picker-container {
+    width: 40%;
+    margin: 0 auto;
+
+    .sdp-from-label,
+    .sdp-to-label {
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+  }
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  // color: @light-black;
+  padding: 5px 0px;
+}
+
+.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
 
 .analytics .impac-kpi .kpi {
   position: relative;
@@ -2052,142 +2194,6 @@ body {
   min-height: 80px;
 }
 
-.analytics kpis-bar > .kpis {
-  position: relative;
-  padding: 15px;
-  min-height: @kpi-max-height + 30px;
-  // overflow: hidden;
-  background-color: @kpis-bar-background-color;
-  box-shadow: @kpis-bar-box-shadow;
-
-  &.empty { min-height: 50px; }
-
-  transition: all .2s ease-in;
-  @media screen and (min-width: 725px) {
-    padding: 0 60px;
-  }
-  @media screen and (max-width: 675px) {
-    margin-top: 18px;
-  }
-
-  .impac-kpi {
-    .column-gutter(5px);
-
-    @media screen and (min-width: 1200px) {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    .kpi.add {
-      .kpi-show .caption {
-        white-space: inherit;
-      }
-    }
-  }
-
-  .title-actions {
-    margin-bottom: 12px;
-    @media screen and (max-width: 675px) {
-      position: relative;
-    }
-
-    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
-
-    a { color: white; }
-
-    button.im-fab.add-kpis,
-    button.im-fab.edit-kpis {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      transition: all 0.28s ease-in;
-      &.im-primary {
-        background: #4c4749;
-        &.disabled {
-          background: #b2b5c1;
-          cursor: not-allowed;
-          a { cursor: not-allowed; }
-        }
-        &:hover:not(.disabled) {
-          background: black;
-        }
-      }
-    }
-
-    button.im-fab.add-kpis {
-      top: -15px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -35px;
-        right: -27px;
-        bottom: 0;
-      }
-    }
-    button.im-fab.edit-kpis {
-      top: 30px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -35px;
-        right: 20px;
-        bottom: 0;
-      }
-    }
-  }
-
-  .title {
-    .text-center {
-      line-height: 3;
-      font-variant: small-caps;
-      font-size: larger;
-    }
-    .badge {
-      position: absolute;
-      top: 8px;
-      left: -10px;
-      background-color: #d1e55c;
-      color: #4f5959;
-      box-shadow: 0px 1px 3px -1px;
-    }
-    .no-kpi-templates {
-      color: #afadb5;
-      font-weight: 500;
-    }
-  }
-
-  .add-bar {
-    border-bottom: dashed 1px;
-  }
-
-  .kpi-loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: @kpi-max-height + 20px;
-  }
-
-  .dates-picker-container {
-    width: 40%;
-    margin: 0 auto;
-
-    .sdp-from-label,
-    .sdp-to-label {
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-  }
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  // color: @light-black;
-  padding: 5px 0px;
-}
-
-.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
-
 .widget-item {
   transition: width 0.3s;
   padding: @impac-padding-between-widgets;
@@ -2306,14 +2312,14 @@ body {
   }
 }
 
+.analytics .dashboard-settings.pdf-mode {
+}
+
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -2388,221 +2394,6 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item .content .data-not-found {
-  text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
-  }
-  .message {
-    position: absolute;
-    top: 75px;
-    width: 70%;
-    left: 15%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
-    border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
-    a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-}
-
-.analytics .widget-item {
-  .editable-title {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-    height: 22px;
-  }
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-  // }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-    white-space: normal;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -2648,6 +2439,18 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -2668,18 +2471,6 @@ body {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
   }
 }
 
@@ -2800,6 +2591,10 @@ body {
 
   .time-period-info {
     text-align: right;
+  }
+
+  .widget-line.header.sorting  {
+    border-bottom: 1px solid #ccc;
   }
 }
 
@@ -3112,6 +2907,12 @@ body {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -3126,12 +2927,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-leads-list {
-  .simple-list-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-  }
-}
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
@@ -3702,4 +3497,218 @@ body {
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item .content .data-not-found {
+  text-align: center;
+  font-size: 18px;
+  color: @impac-widget-text-color;
+  img {
+    opacity: 0.8;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    // fix for mobile, prevents images from extended the width of the widget.
+    max-width: 100%;
+  }
+  .message {
+    position: absolute;
+    top: 75px;
+    width: 70%;
+    left: 15%;
+    background-color: rgb(244, 248, 249);
+    padding: 10px 0px;
+    border-radius: 4px;
+    border: solid 1px @impac-widget-borders-color;
+    a {
+      color: @impac-widget-link-color;
+      display: block;
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
+}
+
+.analytics .widget-item {
+  .editable-title {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 22px;
+  }
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+  // }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+    white-space: normal;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+
 }

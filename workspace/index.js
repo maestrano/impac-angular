@@ -12,7 +12,7 @@ var module = angular.module('impacWorkspace', ['maestrano.impac', 'toastr']);
 module.factory('settings', function () {
   return {
     // Credentials and endpoints
-    mno_url: 'https://uat.maestrano.io',
+    mno_url: 'https://get-uat.maestrano.io',
     impac_url: 'https://api-impac-uat.maestrano.io',
     api_key: '',
     api_secret: '',

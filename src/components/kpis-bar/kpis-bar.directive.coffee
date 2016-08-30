@@ -25,8 +25,16 @@ angular
         # -------------------------------------
         ImpacKpisSvc.load().then ->
           initAvailableKpis()
-          # QUICK FIX - see kpi.svc method for comments.
-          _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
+          buildKpiWatchables()
+
+        # Reload available KPIs on dashboard change
+        ImpacDashboardsSvc.dashboardChanged().then(null, null, ->
+          # Wait for the next digest cycle so the updated $scope.kpis has been propogated.
+          $timeout(->
+            initAvailableKpis()
+            buildKpiWatchables()
+          )
+        )
 
         # $scope.keyStats = [
         #   { name: 'Interest', data: { value: '-15.30', unit: '%' }, static: true },
@@ -149,6 +157,10 @@ angular
             ))
           )
           $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
+
+        # QUICK FIX - see kpi.svc method for comments.
+        buildKpiWatchables = ->
+          _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
 
     }
   )
