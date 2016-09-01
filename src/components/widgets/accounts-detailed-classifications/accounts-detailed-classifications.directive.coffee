@@ -6,17 +6,18 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  # $scope.paramSelecterDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    # $scope.paramSelecterDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
-  $scope.forwardParams = {
-    accountingBehaviour: 'bls'
+  # Configure the commonTimePeriodInfo directive
+  $scope.timePeriodInfoParams = {
+    accountingBehaviour: 'pnl'
+    histParams: {}
   }
-
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
@@ -27,6 +28,7 @@ module.controller('WidgetAccountsDetailedClassificationsCtrl', ($scope, $q, Impa
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.companies)
 
     if $scope.isDataFound
+      $scope.timePeriodInfoParams.histParams = w.metadata && w.metadata.hist_parameters
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       if w.content.companies.length == 1

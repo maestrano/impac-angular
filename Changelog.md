@@ -7,6 +7,25 @@
 
 ## Released
 
+### v1.3.15 | Week 35
+
+#### Adds
+
+#### Fixes
+- Workspace is now compatible with KPIs & Alerting across the APIs
+- Update Workspace mno_url to `get-uat.maestrano.io`
+
+
+-------------------------------------------------------------
+
+### v1.3.14 | Week 34
+
+#### Fixes
+- Modify PnL date display
+- Add time period selection to "detailed account class" widget, and improve sortable headers display
+
+-------------------------------------------------------------
+
 ### v1.3.13 | Week 33
 
 #### Adds
