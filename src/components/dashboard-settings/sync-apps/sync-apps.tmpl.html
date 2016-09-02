@@ -1,25 +1,44 @@
 <!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
 <div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
-  <span ng-show="isSyncing">Syncing...</span>
-  <span ng-hide="isSyncing" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom">
-    {{syncStatus}}
-  </span>
+  <span class="show-status" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
+    <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" /> 
+    <span class="ng-hide" ng-show="isSyncing">
+      Syncing...
+    </span>
+    <span ng-hide="isSyncing">
+      Show sync status
+    </span>
+  </span> 
 
-  <div class="caution-btn" ng-click="triggerSyncAlertsModal()" ng-show="!noErrors() && !isSyncing">
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="hasError && !isSyncing">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="!hasError && !isSyncing">
+    <i class="fa fa-check"></i>
+  </div>
+
   <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
-    <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }"></i>
+    <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }" />
   </button>
 
 </div>
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ 'add-seperator': !$last }">
-    <span ng-bind-html="formatStatus(connector)"></span>
+  <div class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
+    <div class="badge">{{connector.status}}</div>
+    <strong>{{connector.name}}</strong> -
+    <span ng-switch="connector.status">
+      <span ng-switch-when="SUCCESS">Synced at {{connector.formatted_date}}.</span>
+      <span ng-switch-when="PENDING">Sync will run in a few minutes.</span>
+      <span ng-switch-when="RUNNING">Syncing in progress...</span>
+      <span ng-switch-when="ERROR">Sync failed. Please contact support.</span>
+      <span ng-switch-when="DISCONNECTED">Please link your application.</span>
+      <span ng-switch-when="UNKNOWN">Couldn't retrieve sync status.</span>
+    </span>
+    <!-- <span ng-if="connector.formatted_date"> - Synced at {{connector.formatted_date}}</span> -->
   </div>
   <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
     <p>All {{realtimeSyncing ? '' : 'other'}} applications are synced in real-time.</p>
@@ -30,34 +49,24 @@
 <script type="text/ng-template" id="alerts.tmpl.html">
   <div id="sync-apps-modal">
     <div class="modal-header">
-      <h4 class="modal-title">Synchronization alerts</h4>
+      <h4 class="modal-title">Synchronization status</h4>
     </div>
     <div class="modal-list">
-      <div class="modal-list-item" ng-repeat="connector in failedConnectors track by $index"  ng-click="expandListItemOnClick($event, $first)">
-        <i class="fa fa-times error"></i><strong>{{connector.name}}</strong> sync failed.
-        <div class="message error ng-hide" ng-if="connector.message">
+      <div class="modal-list-item" ng-class="{'{{connector.status.toLowerCase()}}': true, 'with-message': connector.message}" ng-repeat="connector in connectors track by $index" ng-click="expandListItemOnClick(connector)">
+        <div class="badge">{{connector.status}}</div>
+        <div class="text-left">
+          <strong>{{connector.name}}</strong> -
+          <span ng-switch="connector.status">
+            <span ng-switch-when="SUCCESS">Synced at {{connector.formatted_date}}.</span>
+            <span ng-switch-when="PENDING">Sync will run in a few minutes.</span>
+            <span ng-switch-when="RUNNING">Syncing in progress...</span>
+            <span ng-switch-when="ERROR">Sync failed. Please contact support.</span>
+            <span ng-switch-when="DISCONNECTED">Please link your application.</span>
+            <span ng-switch-when="UNKNOWN">Couldn't retrieve sync status.</span>
+          </span>
+        </div>
+        <div class="message ng-hide" ng-show="connector.showMessage">
           <p>{{connector.message}}</p>
-        </div>
-        <div class="message error ng-hide reduced-margin-top">
-          <p>{{formatStatus(connector, true)}}</p>
-        </div>
-      </div>
-      <div class="modal-list-item" ng-repeat="connector in disconnectedConnectors track by $index"  ng-click="expandListItemOnClick($event)">
-        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> is not connected. Please connect to sync.
-        <div class="message warn ng-hide">
-          <p>{{formatStatus(connector, true)}}</p>
-        </div>
-      </div>
-      <div class="modal-list-item" ng-repeat="connector in disabledConnectors track by $index"  ng-click="expandListItemOnClick($event)">
-        <i class="fa fa-minus warn"></i><strong>{{connector.name}}</strong> synchronisation is disabled. Please go in App settings to enable synchronisation.
-        <div class="message warn ng-hide">
-          <p>{{formatStatus(connector, true)}}</p>
-        </div>
-      </div>
-      <div class="modal-list-item" ng-repeat="connector in successfulConnectors track by $index"  ng-click="expandListItemOnClick($event)">
-        <i class="fa fa-check success"></i><strong>{{connector.name}}</strong> is synced!
-        <div class="message success ng-hide">
-          <p>{{formatStatus(connector, true)}}</p>
         </div>
       </div>
     </div>
