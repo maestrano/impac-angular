@@ -10,10 +10,11 @@
 ### v1.3.15 | Week 35
 
 #### Adds
+- Update Workspace mno_url to `get-uat.maestrano.io`
+- New UI for sync statuses display
 
 #### Fixes
 - Workspace is now compatible with KPIs & Alerting across the APIs
-- Update Workspace mno_url to `get-uat.maestrano.io`
 
 
 -------------------------------------------------------------
