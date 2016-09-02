@@ -6,6 +6,16 @@
 -------------------------------------------------------------
 -------------------------------------------------------------
 
+## Released
+
+### v1.4.1 | Week 35
+
+#### Adds
+- Merge v1.3.15
+
+
+-------------------------------------------------------------
+
 ### v1.4.0 | Week 35
 
 #### Adds
@@ -19,9 +29,8 @@
 - Fix kpi extra params de-selecting default on date picker change
 - Fix duplicate targets being added on kpi date change
 
--------------------------------------------------------------
 
-## Released
+-------------------------------------------------------------
 
 ### v1.4.0-rc1 | Week 32
 
@@ -37,6 +46,19 @@
   pusher_key: 'pusher-key-goes-here'
 ```
 
+
+-------------------------------------------------------------
+
+### v1.3.15 | Week 35
+
+#### Adds
+- Update Workspace mno_url to `get-uat.maestrano.io`
+- New UI for sync statuses display
+
+#### Fixes
+- Workspace is now compatible with KPIs & Alerting across the APIs
+
+
 -------------------------------------------------------------
 
 ### v1.3.14 | Week 34
@@ -45,9 +67,8 @@
 - Modify PnL date display
 - Add time period selection to "detailed account class" widget, and improve sortable headers display
 
--------------------------------------------------------------
 
-## Released
+-------------------------------------------------------------
 
 ### v1.3.13 | Week 33
 
