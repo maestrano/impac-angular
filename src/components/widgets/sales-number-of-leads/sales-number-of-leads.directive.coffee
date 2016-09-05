@@ -8,10 +8,12 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
 
