@@ -14,6 +14,15 @@
 
 #### Fixes
 
+#### Config changes
+- Ability to enable/disable alerts via `ImpacTheming.configure` (default is false)
+
+```javascript
+  alertsConfig: {
+    enableAlerts: true
+  }
+```
+
 
 -------------------------------------------------------------
 
