@@ -60,9 +60,10 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
     element.duration + 'd'
 
   $scope.noDates = ->
-    return false unless $scope.selectedElement
-    stages = $scope.selectedElement.stages
-    stages.length = 1 && stages[0].date_range.length == 1
+    return true unless $scope.selectedElement
+    return true unless $scope.selectedElement.stages[0]
+    return true unless $scope.selectedElement.stages[0].date_range
+    return $scope.selectedElement.stages.length == 1 && $scope.selectedElement.stages[0].date_range.length == 1
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
