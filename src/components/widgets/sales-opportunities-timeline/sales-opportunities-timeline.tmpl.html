@@ -1,0 +1,92 @@
+<div widget-sales-opportunities-timeline>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4>Widget settings</h4>
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-params-picker options="statusOptions" has-reach="hasReach" param="sales_stage_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+
+    <div ng-show="(isDataFound==true)" class="row" >
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
+
+        <div class="widget-lines-container">
+
+          <!-- Tab header -->
+          <div class="row widget-line header">
+            <div class="col-xs-8 sortable-title" ng-click="sort('opportunity')">
+              Opportunity Timeline
+              <i ng-show="sortedColumn == 'opportunity'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+            <div class="col-xs-2 text-right sortable-title" ng-click="sort('total')">
+              Total
+              <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+          </div>
+
+          <!-- Groups of statements with their accounts -->
+          <div class="row lines-group" ng-repeat="statement in widget.content.opportunities" >
+            <div class="col-xs-12">
+              <div class="row widget-line" ng-click="toggleSelectedElement(statement)">
+                <div class="col-xs-8">{{statement.name}}</div>
+                <div class="col-xs-2 text-right">{{getDuration(statement)}}</div>
+                <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor() }}"/>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
+
+        <div ng-show="selectedElement">
+
+          <h4>{{selectedElement.name | titleize}}</h4>
+          <div ng-show="noDates()">
+            No dates to display
+          </div>
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+          </div>
+
+          <div class="widget-lines-container">
+            <div class="row widget-line" ng-repeat="element in selectedElement.stages track by $index">
+              <div class="col-xs-1">
+                <i class="fa fa-circle" style="color: {{getElementChartColor($index)}}" />
+              </div>
+              <div class="col-xs-5">
+                {{element.stage | titleize}}
+              </div>
+              <div class="col-xs-4 text-right">
+                {{getDateRange(element)}}
+              </div>
+              <div class="col-xs-2 text-right">
+                <i>{{getDuration(element)}}</i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div ng-hide="selectedElement" class="no-element">
+          Select one or several employee(s) or category(ies) to display the corresponding summary.
+        </div>
+
+      </div>
+
+    </div>
+
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
+
+  </div>
+
+</div>
