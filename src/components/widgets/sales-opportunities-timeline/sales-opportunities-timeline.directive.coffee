@@ -7,15 +7,13 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.paramsPickerDeferred1 = $q.defer()
-  $scope.paramsPickerDeferred2 = $q.defer()
+  $scope.paramsPickerDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    $scope.paramsPickerDeferred1.promise
-    $scope.paramsPickerDeferred2.promise
+    $scope.paramsPickerDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
   ]
@@ -28,6 +26,9 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.opportunities)
       dhb = ImpacDashboardsSvc.getCurrentDashboard()
       sales_stage_selection = w.metadata.sales_stage_selection || dhb.metadata.sales_stage_selection || { values: [] }
+
+      # Parameter which define showing 'Apply to all similar widgets' checkbox
+      $scope.hasReach = true;
 
       if w.metadata.selectedElement
         $scope.selectedElement = _.find(w.content.opportunities, (element)->
@@ -49,6 +50,19 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
 
   $scope.getSelectLineColor = ->
     ChartFormatterSvc.getColor(0)
+
+  $scope.getDateRange = (element) ->
+    return '' unless element.date_range
+    element.date_range.join(' to ')
+
+  $scope.getDuration = (element) ->
+    return '' if element.duration == 0
+    element.duration + 'd'
+
+  $scope.noDates = ->
+    return false unless $scope.selectedElement
+    stages = $scope.selectedElement.stages
+    stages.length = 1 && stages[0].date_range.length == 1
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -75,11 +89,13 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
 
   # <---
 
+  # Sorts opportunities using the passed function, that gets the data of the column being sorted, sames as at view
   sortOpportunitiesBy = (getElem) ->
     w.content.opportunities.sort (a, b) ->
       res = if getElem(a) > getElem(b) then 1
       else if getElem(a) < getElem(b) then -1
       else 0
+      # Invert if ascending
       res *= -1 unless $scope.ascending
       return res
 
@@ -87,9 +103,7 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
     if $scope.sortedColumn == 'opportunity'
       sortOpportunitiesBy( (el) -> el.name )
     else if $scope.sortedColumn == 'total'
-      sortOpportunitiesBy( (el) -> el.total_duration )
-    else if $scope.sortedColumn == 'avg'
-      sortOpportunitiesBy( (el) -> el.avg_duration )
+      sortOpportunitiesBy( (el) -> el.duration )
 
   $scope.sort = (col) ->
     if $scope.sortedColumn == col
@@ -99,9 +113,6 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
       $scope.sortedColumn = col
     sortData()
 
-  $scope.filterBySalesStage = (element) ->
-    if _.find($scope.statusOptions, (status)-> status.label == element.status && status. selected) then true else false
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
@@ -109,7 +120,7 @@ module.controller('WidgetSalesOpportunitiesTimelineCtrl', ($scope, $q, ChartForm
     if $scope.isDataFound && $scope.selectedElement
       pieData = _.map $scope.selectedElement.stages, (elem) ->
         {
-          label: $filter('titleize')(elem.status),
+          label: $filter('titleize')(elem.stage),
           value: elem.duration
         }
       pieOptions = {
