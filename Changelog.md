@@ -11,6 +11,7 @@
 ### v1.4.2 | Week 35
 
 #### Adds
+- Ability to customise routes for Alerts via the ImpacRoutes service
 
 #### Fixes
 
