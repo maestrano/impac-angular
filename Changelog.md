@@ -11,8 +11,18 @@
 ### v1.4.2 | Week 35
 
 #### Adds
+- Ability to customise routes for Alerts via the ImpacRoutes service
 
 #### Fixes
+
+#### Config changes
+- Ability to enable/disable alerts via `ImpacTheming.configure` (default is false)
+
+```javascript
+  alertsConfig: {
+    enableAlerts: true
+  }
+```
 
 
 -------------------------------------------------------------
