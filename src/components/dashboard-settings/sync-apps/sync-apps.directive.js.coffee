@@ -14,6 +14,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       scope.isSyncing = false
       scope.realtimeSyncing = false
       scope.hasError = false
+      scope.modalOpened = false
       # unused?
       # syncAppsThemingConfig = ImpacTheming.get().dhbSettings.syncApps
 
@@ -86,21 +87,25 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         $http.post(ImpacRoutes.organizations.appInstancesSync(scope.orgUID)).then( (resp) -> processAppInstancesSync(resp.data) )
 
       scope.triggerSyncAlertsModal = ->
-        modalInstance = $modal.open({
-          animation: true
-          size: 'md'
-          templateUrl: 'alerts.tmpl.html'
-          appendTo: angular.element('impac-dashboard')
-          controller: ($scope, connectors) ->
-            $scope.connectors = connectors
-            $scope.expandListItemOnClick = (connector) ->
-              return unless connector.message
-              connector.showMessage = !!!connector.showMessage
-            $scope.ok = ->
-              modalInstance.close()
-          resolve:
-            connectors: -> scope.connectors
-        })
+        unless scope.modalOpened
+          modalInstance = $modal.open({
+            animation: true
+            size: 'md'
+            templateUrl: 'alerts.tmpl.html'
+            appendTo: angular.element('impac-dashboard')
+            controller: ($scope, connectors) ->
+              $scope.connectors = connectors
+              $scope.expandListItemOnClick = (connector) ->
+                return unless connector.message
+                connector.showMessage = !!!connector.showMessage
+              $scope.ok = ->
+                modalInstance.close()
+            resolve:
+              connectors: -> scope.connectors
+          })
+
+          modalInstance.opened.then(-> scope.modalOpened = true)
+          modalInstance.result.then(-> scope.modalOpened = false)
 
 
       #====================================
