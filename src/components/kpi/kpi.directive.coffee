@@ -177,5 +177,9 @@ angular
         $scope.resetTargetInputPlaceholder = (watchable, targetIndex)->
           $scope["#{watchable}TargetPlaceholder#{targetIndex}"] = ''
 
+        $scope.onKeyPress = (keyEvent) ->
+          if keyEvent.which == 13
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpiPressEnterButton)
+
     }
   )
