@@ -11,4 +11,5 @@ module.constant('IMPAC_EVENTS',
   kpisBarUpdateSettings: 'on-kpis-bar-update-settings'
   kpisBarToggleSettings: 'on-kpis-bar-toggle-settings'
   kpisBarUpdateDates: 'on-kpis-bar-update-dates'
+  kpiPressEnterButton: 'on-kpi-press-enter-button'
 )
