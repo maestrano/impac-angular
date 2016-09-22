@@ -34,7 +34,7 @@ angular
       for key, value of optional_links
         link = configData[key]
         unless link?
-          console.error("impac-angular linking.svc: No #{key} is configured, Alerts are disabled.")
+          console.warn("impac-angular linking.svc: No #{key} is configured, Alerts are disabled.")
         else
           optional_links[key] = link
 
