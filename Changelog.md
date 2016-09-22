@@ -12,6 +12,7 @@
 
 #### Adds
 - Ability to customise routes for Alerts via the ImpacRoutes service
+- IMPAC-344: Autofocus KPI Target input field on add
 
 #### Fixes
 - IMPAC-362: only one instance of sync statuses modal to be displayed at once
