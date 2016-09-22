@@ -105,7 +105,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           })
 
           modalInstance.opened.then(-> scope.modalOpened = true)
-          modalInstance.result.then(-> scope.modalOpened = false)
+          modalInstance.result.finally(-> scope.modalOpened = false)
 
 
       #====================================
