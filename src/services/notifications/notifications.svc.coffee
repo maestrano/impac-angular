@@ -1,6 +1,6 @@
 angular
   .module('impac.services.notifications', [])
-  .service('ImpacNotifications', ($log, Pusher, ImpacEvents, IMPAC_EVENTS, toastr)->
+  .service('ImpacNotifications', ($log, Pusher, ImpacTheming, ImpacEvents, IMPAC_EVENTS, toastr)->
 
     _self = @
 
@@ -26,6 +26,9 @@ angular
     # Load the notifications service by retrieving all alerts for the current user,
     # and initializing the Pusher service.
     @load = () ->
+
+      return unless ImpacTheming.get().alertsConfig.enableAlerts
+
       ImpacEvents.notifyCallbacks(IMPAC_EVENTS.impacNotificationsLoad, (alerts)->
 
         pusher = Pusher.init()

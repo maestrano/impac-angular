@@ -123,7 +123,6 @@ angular
 
         $scope.toggleEditModeLock = false
         $scope.toggleEditMode = ->
-          console.log 'toggleEditMode'
           return if $scope.toggleEditModeLock
           $scope.toggleEditModeLock = true
           ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarToggleSettings)

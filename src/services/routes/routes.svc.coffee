@@ -37,6 +37,11 @@ angular
         # retrieve local kpis data
         local: null
 
+      alerts:
+        index: null
+        create: null
+        del: null
+
       organizations:
         appInstancesSync: null
 
@@ -159,12 +164,20 @@ angular
 
         alerts:
           index: () ->
-            "#{defaults.mnoHub}/impac/alerts"
+            if defaults.alerts.index
+              defaults.alerts.index
+            else
+              "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts"
           create: (kpi_id) ->
-            "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
-
-          delete: (alert_id) ->
-            "#{defaults.mnoHub}/impac/alerts/#{alert_id}"
+            if defaults.alerts.create
+              defaults.alerts.create.replace(':kpi_id', kpi_id)
+            else
+              "#{defaults.mnoHub}#{defaults.impacPrefix}/kpis/#{kpi_id}/alerts"
+          delete: (id) ->
+            if defaults.alerts.del
+              defaults.alerts.del.replace(':id', id)
+            else
+              "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts/#{id}"
 
       service.organizations =
         appInstancesSync: (uid) ->
