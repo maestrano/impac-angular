@@ -97,6 +97,9 @@ module.run(function ($log, $q, $http, ImpacLinking, ImpacAssets, ImpacRoutes, Im
     dhbKpisConfig: {
       enableKpis: true
     },
+    alertsConfig: {
+      enableAlerts: true
+    },
     dhbConfig: {
       showDhbHeading: true,
       dhbHeadingText: 'Your business at a glance, in real-time'
