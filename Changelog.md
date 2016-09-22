@@ -8,6 +8,27 @@
 
 ## Released
 
+### v1.4.2 | Week 38
+
+#### Adds
+- Ability to customise routes for Alerts via the ImpacRoutes service
+- IMPAC-344: Autofocus KPI Target input field on add
+
+#### Fixes
+- IMPAC-362: only one instance of sync statuses modal to be displayed at once
+
+#### Config changes
+- Ability to enable/disable alerts via `ImpacTheming.configure` (default is false)
+
+```javascript
+  alertsConfig: {
+    enableAlerts: true
+  }
+```
+
+
+-------------------------------------------------------------
+
 ### v1.4.1 | Week 35
 
 #### Adds
