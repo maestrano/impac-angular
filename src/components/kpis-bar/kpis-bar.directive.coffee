@@ -86,6 +86,11 @@ angular
           )
         )
 
+        onKpiPressButtonCb = ->
+          $scope.toggleEditMode()
+
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, onKpiPressButtonCb)
+
         # Linked methods
         # -------------------------
         $scope.addKpi = (kpi) ->
@@ -161,6 +166,7 @@ angular
         # QUICK FIX - see kpi.svc method for comments.
         buildKpiWatchables = ->
           _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
+
 
     }
   )
