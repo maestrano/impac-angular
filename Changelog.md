@@ -12,6 +12,7 @@
 
 #### Adds
 - IMPAC-333: Show/Hide KPIs bar
+- IMPAC-343: Save KPIs on enter keydown
 
 #### Fixes
 
