@@ -1,6 +1,6 @@
 <div class="kpis" ng-class="{'empty': (kpis.length == 0), 'hidden-print': (kpis.length == 0)}">
 
-  <div class="title-actions">
+  <div class="actions">
     <button type="button" class="toggle-show-content im-fab im-primary" ng-click="toggleShowContent()">
       <a href=""><i class="fa" ng-class="{ 'fa-chevron-up': showContent, 'fa-chevron-down': !showContent }"></i></a>
     </button>
@@ -15,7 +15,6 @@
   </div>
 
   <div class="content">
-
     <div class="row title" ng-if="kpis.length == 0 && availableKpis.hide">
       <span class="badge">New!</span>
       <div class="col-xs-12 text-center">

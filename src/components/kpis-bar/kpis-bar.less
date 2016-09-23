@@ -1,6 +1,6 @@
 .analytics kpis-bar > .kpis {
   position: relative;
-  .title-actions {
+  .actions {
     margin-bottom: 12px;
     @media screen and (max-width: 675px) {
       position: relative;
@@ -52,6 +52,7 @@
         bottom: 0;
       }
     }
+
     button.im-fab.edit-kpis {
       top: 75px;
       right: -15px;
@@ -78,25 +79,24 @@
 
   .content {
     padding: 15px;
-    // overflow: hidden;
     background-color: @kpis-bar-background-color;
     box-shadow: @kpis-bar-box-shadow;
 
     &.empty { min-height: 50px; }
-
-    // transition: all .2s ease-in;
-    @media screen and (min-width: 725px) {
-      padding: 0 60px;
-    }
 
     .show-dashboard {
       padding: 0px 0 @kpi-max-height + 30px;
       display: block;
     }
 
-    @media screen and (max-width: 675px) {
-      margin-top: 18px;
+    @media screen and (min-width: 725px) {
+      padding: 0 60px 5px 60px;
     }
+
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
+
     .impac-kpi {
       .column-gutter(5px);
 
@@ -163,8 +163,7 @@
 
 .analytics kpis-bar > .key-stats {
   background-color: white;
-  // color: @light-black;
   padding: 5px 0px;
 }
 
-.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
