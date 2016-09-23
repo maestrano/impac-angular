@@ -11,6 +11,7 @@
 ### v1.4.3 | Week 39
 
 #### Adds
+- IMPAC-333: Show/Hide KPIs bar
 
 #### Fixes
 
