@@ -87,10 +87,7 @@ angular
           )
         )
 
-        onKpiPressButtonCb = ->
-          $scope.toggleEditMode()
-
-        ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, onKpiPressButtonCb)
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, -> $scope.toggleEditMode())
 
         # Linked methods
         # -------------------------
