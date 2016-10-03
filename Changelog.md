@@ -14,7 +14,13 @@
 - IMPAC-333: Show/Hide KPIs bar
 - IMPAC-343: Save KPIs on enter keydown
 
-#### Fixes
+#### Config changes
+- Ability to configure optional data via a new method in the ImpacLinkingSvc.
+
+```javascript
+  // Allows the optional linked data to be configured after inital app bootstrap, or even re-configured.
+  ImpacLinkingSvc.linkOptionalData({pusher_key: '1234'})
+```
 
 
 -------------------------------------------------------------
