@@ -33,11 +33,11 @@ angular
           throw new TypeError("impac-angular linking.svc: #{key} should be a Function.")
         required_links[key] = link
       # Link optional data
-      provider.linkOptionalData(configData)
+      provider.linkOptionalData(configData, false)
       return true
 
     # Ability to link/re-link optional data only.
-    provider.linkOptionalData = (configData) ->
+    provider.linkOptionalData = (configData, logs=true) ->
       warnings = {
         pusher_key: ', Alerts are disabled!'
       }
@@ -47,6 +47,7 @@ angular
           console.warn("impac-angular linking.svc: No #{key} is configured" + warnings[key] || "")
         else
           optional_links[key] = link
+          console.log("impac-angular linking.svc: #{key} successfully configured") if logs
       return true
 
     #=======================================
