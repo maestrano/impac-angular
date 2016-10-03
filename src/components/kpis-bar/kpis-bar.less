@@ -1,37 +1,6 @@
 .analytics kpis-bar > .kpis {
   position: relative;
-  padding: 15px;
-  min-height: @kpi-max-height + 30px;
-  // overflow: hidden;
-  background-color: @kpis-bar-background-color;
-  box-shadow: @kpis-bar-box-shadow;
-
-  &.empty { min-height: 50px; }
-
-  transition: all .2s ease-in;
-  @media screen and (min-width: 725px) {
-    padding: 0 60px;
-  }
-  @media screen and (max-width: 675px) {
-    margin-top: 18px;
-  }
-
-  .impac-kpi {
-    .column-gutter(5px);
-
-    @media screen and (min-width: 1200px) {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    .kpi.add {
-      .kpi-show .caption {
-        white-space: inherit;
-      }
-    }
-  }
-
-  .title-actions {
+  .actions {
     margin-bottom: 12px;
     @media screen and (max-width: 675px) {
       position: relative;
@@ -42,7 +11,8 @@
     a { color: white; }
 
     button.im-fab.add-kpis,
-    button.im-fab.edit-kpis {
+    button.im-fab.edit-kpis,
+    button.im-fab.toggle-show-content {
       position: absolute;
       width: 40px;
       height: 40px;
@@ -61,7 +31,7 @@
       }
     }
 
-    button.im-fab.add-kpis {
+    button.im-fab.toggle-show-content {
       top: -15px;
       right: -15px;
       z-index: 10;
@@ -71,8 +41,20 @@
         bottom: 0;
       }
     }
-    button.im-fab.edit-kpis {
+
+    button.im-fab.add-kpis {
       top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -35px;
+        right: 20px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.edit-kpis {
+      top: 75px;
       right: -15px;
       z-index: 10;
       &.editing {
@@ -83,59 +65,98 @@
       }
       @media screen and (max-width: 675px) {
         top: -35px;
-        right: 20px;
+        right: 67px;
         bottom: 0;
       }
     }
   }
 
-  .title {
-    .text-center {
-      line-height: 3;
-      font-variant: small-caps;
-      font-size: larger;
-    }
-    .badge {
-      position: absolute;
-      top: 8px;
-      left: -10px;
-      background-color: #d1e55c;
-      color: #4f5959;
-      box-shadow: 0px 1px 3px -1px;
-    }
-    .no-kpi-templates {
-      color: #afadb5;
-      font-weight: 500;
-    }
+  .content-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
-  .add-bar {
-    border-bottom: dashed 1px;
-  }
+  .content {
+    padding: 15px;
+    background-color: @kpis-bar-background-color;
+    box-shadow: @kpis-bar-box-shadow;
 
-  .kpi-loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: @kpi-max-height + 20px;
-  }
+    @media screen and (min-width: 725px) {
+      padding: 0 60px;
+    }
 
-  .dates-picker-container {
-    width: 40%;
-    margin: 0 auto;
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
 
-    .sdp-from-label,
-    .sdp-to-label {
-      text-transform: uppercase;
-      font-weight: 400;
+    .impac-kpi {
+      .column-gutter(5px);
+
+      @media screen and (min-width: 1200px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .kpi.add {
+        .kpi-show .caption {
+          white-space: inherit;
+        }
+      }
+    }
+
+
+    .title {
+      .text-center {
+        line-height: 3;
+        font-variant: small-caps;
+        font-size: larger;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        background-color: #d1e55c;
+        color: #4f5959;
+        box-shadow: 0px 1px 3px -1px;
+      }
+      .no-kpi-templates {
+        color: #afadb5;
+        font-weight: 500;
+      }
+    }
+
+    .add-bar {
+      border-bottom: dashed 1px;
+    }
+
+    .kpi-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: @kpi-max-height + 20px;
+    }
+
+    .dates-picker-container {
+      width: 40%;
+      margin: 0 auto;
+
+      .sdp-from-label,
+      .sdp-to-label {
+        text-transform: uppercase;
+        font-weight: 400;
+      }
     }
   }
+}
+
+.analytics kpis-bar {
+  display: block;
 }
 
 .analytics kpis-bar > .key-stats {
   background-color: white;
-  // color: @light-black;
   padding: 5px 0px;
 }
 
-.analytics.pdf-mode kpis-bar > .kpis .title-actions { display: none; }
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }

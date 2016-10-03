@@ -8,7 +8,7 @@ angular
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
-      controller: ($scope, $log) ->
+      controller: ($scope, $log, $element) ->
         # Load
         # -------------------------
         $scope.availableKpis = {
@@ -20,6 +20,7 @@ angular
         # All kpis edit panels are shown
         $scope.showEditMode = false
         $scope.isAddingKpi = false
+        $scope.showContent = true
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------
@@ -86,6 +87,8 @@ angular
           )
         )
 
+        ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, -> $scope.toggleEditMode())
+
         # Linked methods
         # -------------------------
         $scope.addKpi = (kpi) ->
@@ -143,6 +146,11 @@ angular
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateDates)
           )
 
+        $scope.toggleShowContent = ->
+          $scope.showContent = !$scope.showContent
+          animateKpiBarPanel()
+          return true
+
 
         # Private methods
         # -------------------------
@@ -161,6 +169,11 @@ angular
         # QUICK FIX - see kpi.svc method for comments.
         buildKpiWatchables = ->
           _.forEach($scope.kpis, (kpi)-> ImpacKpisSvc.buildKpiWatchables(kpi))
+
+        animateKpiBarPanel = ()->
+          elements = angular.element($element).find('.kpis .content, .kpis .content-buttons')
+          return unless elements
+          elements.slideToggle(500)
 
     }
   )
