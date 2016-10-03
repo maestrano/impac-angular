@@ -23,7 +23,8 @@ angular
     # Public methods available in config
     #=======================================
     # Iterates over default links object and assigns values from configData with strict checking.
-    provider.linkData = (configData)  ->
+    provider.linkData = (configData) ->
+      # Link required data
       for key, value of required_links
         link = configData[key]
         unless link?
@@ -31,12 +32,23 @@ angular
         if typeof link != 'function'
           throw new TypeError("impac-angular linking.svc: #{key} should be a Function.")
         required_links[key] = link
+      # Link optional data
+      provider.linkOptionalData(configData, false)
+      return true
+
+    # Ability to link/re-link optional data only.
+    provider.linkOptionalData = (configData, logs=true) ->
+      warnings = {
+        pusher_key: ', Alerts are disabled!'
+      }
       for key, value of optional_links
         link = configData[key]
         unless link?
-          console.warn("impac-angular linking.svc: No #{key} is configured, Alerts are disabled.")
+          console.warn("impac-angular linking.svc: No #{key} is configured" + warnings[key] || "")
         else
           optional_links[key] = link
+          console.log("impac-angular linking.svc: #{key} successfully configured") if logs
+      return true
 
     #=======================================
     _$get = ($q) ->

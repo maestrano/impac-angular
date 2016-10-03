@@ -3,26 +3,24 @@
   <div mno-star-wizard=true modal-open='starWizardModal.value'></div>
 
   <!-- Title and Dashboard selection -->
-  <div id="head-title">
-    <div class="row" id="dashboard-heading" ng-if="showDhbHeading">
-      <div class="col-xs-12">
-        <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()" ng-class="{'pdf-mode': pdfMode}" />
-        <br />
-        <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode">Change logo</button>
-        <input type="file" style="display:none" id="fileInput" name="filedata"/>
-      </div>
-
-      <div class="col-xs-12">
-        <div class="caption">{{dhbHeadingText}}</div>
-      </div>
+  <div class="row" id="dashboard-heading" ng-if="showDhbHeading">
+    <div class="col-xs-12">
+      <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()" ng-class="{'pdf-mode': pdfMode}" />
+      <br />
+      <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode">Change logo</button>
+      <input type="file" style="display:none" id="fileInput" name="filedata"/>
     </div>
 
-    <!-- Impac KPI's -->
-    <kpis-bar ng-if="showKpisBar()" kpis="currentDhb.kpis"></kpis-bar>
-
-    <!-- Dashboards selection/creation/deletion -->
-    <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
+    <div class="col-xs-12">
+      <div class="caption">{{dhbHeadingText}}</div>
+    </div>
   </div>
+
+  <!-- Impac KPI's -->
+  <kpis-bar ng-if="showKpisBar()" kpis="currentDhb.kpis"></kpis-bar>
+
+  <!-- Dashboards selection/creation/deletion -->
+  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
 
   <div id="sub-menu" collapse="!showSubMenu">
     <i class="fa fa-times" ng-click="hideSubMenu()" />
