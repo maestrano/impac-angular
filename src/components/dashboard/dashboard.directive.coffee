@@ -213,7 +213,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       $scope.forceShowWidgetSelector = value
 
     $scope.showWidgetSelector = ->
-      $scope.forceShowWidgetSelector || (ImpacDashboardsSvc.isCurrentDashboardEmpty() && !$scope.customWidgetSelector.path)
+      ImpacDashboardsSvc.isThereADashboard() && ($scope.forceShowWidgetSelector || ImpacDashboardsSvc.isCurrentDashboardEmpty())
 
     # Custom widgets selector
     # --------------------------
