@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-380] Hide widgets selector on dashboard deletion
 
 
 -------------------------------------------------------------
