@@ -279,8 +279,16 @@
 }
 
 // dashboard failed to load message.
-.analytics.load-failed p {
-  font-size: 22px;
+.analytics.load-failed {
+
+  p { font-size: 22px; }
+
+  .second-msg {
+    p {
+      color: @brand-danger;
+      font-size: 14px;
+    }
+  }
 }
 
 // Tooltips are append to body
