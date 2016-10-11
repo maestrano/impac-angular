@@ -11,9 +11,24 @@
 ### v1.4.4 | Week 40
 
 #### Adds
+- [IMPAC-370] Improved failed dashboard load message.
 
 #### Fixes
-- [IMPAC-380] Hide widgets selector on dashboard deletion
+- [IMPAC-380] Hide widgets selector on dashboard deletion.
+- KPIs bar action buttons position issues on small screens.
+
+#### Config changes
+- Ability to provide custom messages for the dashboard failed error case in the ImpacTheming service.
+
+```javascript
+dhbErrorsConfig: {
+  failed: {
+    first: 'Oops, failed to load Impac!...'
+    // Displays after 3 "retry" attempts.
+    second: 'Unable to load, please contact support or try again later.'
+  }
+}
+```
 
 
 -------------------------------------------------------------
