@@ -1,6 +1,12 @@
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
+
+  // Default small screen behaviour to allow for the common use of top-bars
+  @media screen and (max-width: 992px) {
+    padding-top: @impac-dashboard-sm-padding-top;
+  }
+
   &.pdf-mode { padding-top: 20px; }
 
   &.show-dhb {
