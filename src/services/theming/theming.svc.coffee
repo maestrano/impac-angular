@@ -64,8 +64,8 @@ angular
           first: 'Now it\'s time to select the metrics you want to see!'
           second: 'Add widgets to your dashboard to help make an Impac!™ to your business.'
         failed:
-          first: 'Oops, failed to load Impac!...'
-          second: 'Unable to load, please contact support or try again later.'
+          first: 'Ooops! Something went wrong, can you please refresh your dashboard?'
+          second: 'Unable to load your dashboard, please contact support or try again later.'
 
       dhbSubMenuConfig:
         myobMessage:
