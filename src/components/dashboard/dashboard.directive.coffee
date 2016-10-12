@@ -65,16 +65,30 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # In other apps, calling this method should be enough to force a complete reload on Impac! contents
     $scope.isLoading = true
     $scope.failedDashboardLoad = false
-    ImpacDashboardsSvc.load(true).then(
-      (success) ->
-        $scope.activateTimer()
-        $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
-      (error) ->
-        # on dashboard failed first load, user should not be able to access dashboard controls.
-        $scope.failedDashboardLoad = true
-        $scope.isLoading = false
-    )
 
+    dhbLoadSuccess = (success) ->
+      $scope.activateTimer()
+      $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+
+    dhbLoadError = (error) ->
+      # on dashboard failed first load, user should not be able to access dashboard controls.
+      $scope.failedDashboardLoad = true
+      $scope.isLoading = false
+
+    ImpacDashboardsSvc.load(true).then(dhbLoadSuccess, dhbLoadError)
+
+    # failed load reloader
+    # -------------------------------------
+    count = 0
+    $scope.displaySecondMsg = false
+    $scope.reloadDashboard = ->
+      count++
+      $scope.displaySecondMsg = true if count >= 3
+      ImpacDashboardsSvc.reload(true).then(dhbLoadSuccess, dhbLoadError)
+
+
+    # Loader spinner notify trigger
+    # -------------------------------------
     ImpacDashboardsSvc.dhbLoader().then(null, null, (triggerLoad)->
       if triggerLoad then $scope.isLoading = true else $scope.activateTimer()
     )
