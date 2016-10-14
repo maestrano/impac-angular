@@ -16,6 +16,7 @@
 #### Fixes
 - [IMPAC-380] Hide widgets selector on dashboard deletion.
 - KPIs bar action buttons position issues on small screens.
+- Various error handlers in kpi.svc not rejecting promises 
 
 #### Config changes
 - Ability to provide custom messages for the dashboard failed error case in the ImpacTheming service.
