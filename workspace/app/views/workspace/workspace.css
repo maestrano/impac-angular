@@ -3,29 +3,28 @@ body {
   background-color: #E6EDEE;
 }
 
-#workspace-header {
+#workspace .workspace-header {
+  position: relative;
   text-align: center;
   background-color: black;
   color: white;
   font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-#workspace-header h1 {
+#workspace .workspace-header h1 {
   margin: 0;
   padding: 15px 40px;
 }
 
-#workspace-dashboard {
+#workspace .workspace-header button {
+  position: absolute;
+  right: 70px;
+  bottom: 17px;
+}
+
+#workspace .workspace-dashboard {
   margin: 0 auto;
   width: 91%;
-}
-
-footer#workspace-footer {
-  padding: 20px 40px;
-}
-
-footer#workspace-footer p {
-  margin: 0;
 }
 
 /* IMPAC OVERRIDES */
