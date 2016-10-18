@@ -11,7 +11,7 @@
         <div class="form-group">
           <input name="password" type="password" class="form-control" placeholder="Password" ng-model="vm.creds.password" required>
         </div>
-        <button ng-click="vm.login()" ng-keyup="($event.keyCode == 13 && vm.login())" ng-disabled="!vm.workspaceLoginForm.$valid">LOGIN</button>
+        <button class="btn btn-default" ng-click="vm.login()" ng-keyup="($event.keyCode == 13 && vm.login())" ng-disabled="!vm.workspaceLoginForm.$valid">LOGIN</button>
       </form>
     </div>
   </div>
