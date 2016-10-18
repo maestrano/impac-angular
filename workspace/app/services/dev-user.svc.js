@@ -26,6 +26,17 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
     );
   };
 
+  this.getCurrentOrganization = function() {
+    var deferred = $q.defer();
+    _self.getOrganizations(settings.org_uid).then(function (response) {
+      currentOrg = _.find(response.organizations, function (org) {
+        return org.id == response.currentOrgId;
+      });
+      deferred.notify(currentOrg);
+    });
+    return deferred.promise;
+  };
+
   // Get organizations with the currentOrgId from workspace settings
   this.getOrganizations = function(orgUid) {
     return _self.getUserData().then(

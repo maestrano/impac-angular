@@ -34,6 +34,20 @@ body {
   bottom: 17px;
 }
 
+#workspace .workspace-header .current-org {
+  position: absolute;
+  top: 13px;
+  left: 75px;
+}
+#workspace .workspace-header .current-org td,
+#workspace .workspace-header .current-org th {
+  padding: 0px 10px;
+}
+
+#workspace .workspace-header .current-org .current-org-results {
+  color: #74dd74;
+}
+
 #workspace .workspace-login {
   font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

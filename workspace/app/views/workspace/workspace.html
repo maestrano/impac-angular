@@ -1,9 +1,26 @@
 <div id="workspace">
   <div class="workspace-header hidden-print">
+    <div class="current-org" ng-if="main.currentOrganization.uid">
+      <table>
+        <thead>
+          <tr>
+            <th>UID</th>
+            <th>Name</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="current-org-results">
+            <td>{{main.currentOrganization.uid || '-'}}</td>
+            <td>{{main.currentOrganization.name || '-'}}</td>
+            <td>{{main.currentOrganization.current_user_role || '-'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h1>IMPAC! DEVELOPER WORKSPACE</h1>
     <button class="btn btn-default" ng-click="main.logout()" ng-show="main.isAuthenticated()">LOG OUT</button>
   </div>
 
   <div ui-view></div>
 </div>
-

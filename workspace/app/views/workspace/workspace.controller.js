@@ -1,13 +1,18 @@
-angular.module('impacWorkspace').controller('WorkspaceController', function ($state, DevUser) {
+angular.module('impacWorkspace').controller('WorkspaceController', function ($scope, $state, DevUser) {
   main = this;
 
-  main.isAuthenticated = function () {
-    return DevUser.isAuthenticated();
-  };
+  main.isAuthenticated = DevUser.isAuthenticated;
+
+  main.currentOrganization = {};
+
+  $scope.$on('devise:login', function () {
+    setCurrentOrganization();
+  });
 
   main.logout = function () {
     DevUser.logout().then(
       function () {
+        main.currentOrganization = {};
         $state.go('workspace.login');
       },
       function (error) {
@@ -15,6 +20,12 @@ angular.module('impacWorkspace').controller('WorkspaceController', function ($st
       }
     );
   };
+
+  function setCurrentOrganization() {
+    DevUser.getCurrentOrganization().then(null, null, function(org) {
+      main.currentOrganization = org;
+    });
+  }
 
   return main;
 
