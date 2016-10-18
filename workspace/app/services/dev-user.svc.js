@@ -8,8 +8,8 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
   this.isAuthenticated = Auth.isAuthenticated;
 
   this.getUserData = function() {
-    return $http.get(settings.mno_url + '/current_user')
-      .then(function (response) {
+    return $http.get(settings.mno_url + '/current_user').then(
+      function (response) {
         var user = (response.data && response.data.current_user);
         if (!user.logged_in) {
           return $q.reject();
@@ -19,27 +19,32 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
         var msg = 'Unable to retrieve Organizations';
         _self.fail(msg, error);
         return $q.reject(msg);
-      });
+      }
+    );
   };
 
   this.getOrganizations = function(orgUid) {
-    return _self.getUserData().then(function (user) {
-      var orgs = (user.organizations || []);
-      var orga = orgs.find(function(orga) { return orga.uid == orgUid });
-      var orgId = (orga && orga.id) || orgs[0].id || null;
+    return _self.getUserData().then(
+      function (user) {
+        var orgs = (user.organizations || []);
+        var orga = orgs.find(function(orga) { return orga.uid == orgUid });
+        var orgId = (orga && orga.id) || orgs[0].id || null;
 
-      return { organizations: orgs, currentOrgId: orgId };
-    }, function (err) {
-      return $q.reject(err);
-    });
+        return { organizations: orgs, currentOrgId: orgId };
+      }, function (err) {
+        return $q.reject(err);
+      }
+    );
   };
 
   this.getUser = function() {
-    return _self.getUserData().then(function (user) {
-      return user;
-    }, function (err) {
-      return $q.reject(err);
-    });
+    return _self.getUserData().then(
+      function (user) {
+        return user;
+      }, function (err) {
+        return $q.reject(err);
+      }
+    );
   };
 
   this.fail = function (msg, error) {

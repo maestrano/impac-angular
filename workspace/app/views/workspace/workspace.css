@@ -1,6 +1,18 @@
-/* WORKSPACE */
+html, body {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   background-color: #E6EDEE;
+}
+
+#workspace {
+  height: 100%;
 }
 
 #workspace .workspace-header {
@@ -20,6 +32,10 @@ body {
   position: absolute;
   right: 70px;
   bottom: 17px;
+}
+
+#workspace .workspace-login {
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #workspace .workspace-dashboard {

@@ -61,11 +61,6 @@ module.config(function (AuthProvider) {
 // -------------------------------------------------------
 module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, settings) {
 
-  // Check  have been provided
-  if (!settings.email || !settings.password) {
-    DevUser.fail('Missing login credentials!');
-  }
-
   // Configure ImpacRoutes
   // -------------------------------------------------------
   var mnoHub = settings.mno_url;

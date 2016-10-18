@@ -2,16 +2,13 @@
 // Impac Workspace Settings
 // -------------------------------------------------------
 // Provide important configurations for the impacWorkspace.
+// TODO: create a /settings page for this.
 angular.module('impacWorkspace').factory('settings', function () {
   return {
     // Credentials and endpoints
     mno_url: '/mnoe/jpi/v1', // rename to mnoe_url
     impac_url: 'http://localhost:4000',
-    // TODO: build login form
-    email: 'xaun.lopez@maestrano.com',
-    password: 'Test1234',
     org_uid: '', // First organisations if unspecified
-
     // -----------------------------------------------
     // Kpis configurations
     // -----------------------------------------------

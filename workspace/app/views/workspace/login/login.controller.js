@@ -1,16 +1,19 @@
-angular.module('impacWorkspace').controller('LoginController', function ($state, DevUser, settings) {
+angular.module('impacWorkspace').controller('LoginController', function ($scope, $state, DevUser, settings) {
   vm = this;
 
   if (DevUser.isAuthenticated()) {
     $state.go('workspace.impac');
   }
 
+  vm.creds = { email: '', password: '' };
+
   vm.login = function () {
-    DevUser.login({email: settings.email, password: settings.password}).then(
+    DevUser.login(vm.creds).then(
       function () {
         $state.go('workspace.impac');
-      }, function (error) {
-        DevUser.fail('Unable to login', error);
+      }, function (response) {
+        var msg = (response.data && response.data.error) || 'Unable to login';
+        DevUser.fail(msg, response);
       }
     );
   };

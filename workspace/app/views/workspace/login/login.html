@@ -1,4 +1,18 @@
-<div id="workspace-login">
-  <p>Login Controller</p>
-  <button ng-click="vm.login()">LOG IN!</button>
+<div class="workspace-login">
+  <div class="login-box-container">
+    <div class="login-box-title">
+      <h2>Sign In</h2>
+    </div>
+    <div class="login-box">
+      <form name="vm.workspaceLoginForm">
+        <div class="form-group">
+          <input name="email" type="email" class="form-control" placeholder="Email" ng-model="vm.creds.email" required>
+        </div>
+        <div class="form-group">
+          <input name="password" type="password" class="form-control" placeholder="Password" ng-model="vm.creds.password" required>
+        </div>
+        <button ng-click="vm.login()" ng-keyup="($event.keyCode == 13 && vm.login())" ng-disabled="!vm.workspaceLoginForm.$valid">LOGIN</button>
+      </form>
+    </div>
+  </div>
 </div>
