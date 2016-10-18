@@ -3,10 +3,13 @@
 angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, Auth, settings, toastr) {
   _self = this;
 
+  // Angular Devise methods exposed via this service
   this.login = Auth.login;
   this.logout = Auth.logout;
   this.isAuthenticated = Auth.isAuthenticated;
+  this.currentUser = Auth.currentUser;
 
+  // Get logged in user & organizations from mno-hub
   this.getUserData = function() {
     return $http.get(settings.mno_url + '/current_user').then(
       function (response) {
@@ -23,6 +26,7 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
     );
   };
 
+  // Get organizations with the currentOrgId from workspace settings
   this.getOrganizations = function(orgUid) {
     return _self.getUserData().then(
       function (user) {
@@ -47,6 +51,7 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
     );
   };
 
+  // Logging and Toastr notifications method
   this.fail = function (msg, error) {
     if (error == null) { error = ''; }
     $log.error('Develop Workspace Error: ' + msg, error);

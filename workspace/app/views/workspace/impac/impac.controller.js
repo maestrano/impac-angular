@@ -1,11 +1,11 @@
 angular.module('impacWorkspace').controller('ImpacController', function ($state, DevUser) {
   vm = this;
 
-  vm.showImpac = DevUser.isAuthenticated();
+  vm.showImpac = DevUser.isAuthenticated;
 
-  if (!vm.showImpac) {
+  DevUser.currentUser().then(null, function () {
     $state.go('workspace.login');
-  }
+  });
 
   return vm;
 });

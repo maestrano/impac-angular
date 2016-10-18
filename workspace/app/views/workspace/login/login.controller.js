@@ -1,8 +1,13 @@
-angular.module('impacWorkspace').controller('LoginController', function ($scope, $state, DevUser, settings) {
+angular.module('impacWorkspace').controller('LoginController', function ($state, DevUser, settings) {
   vm = this;
+
 
   if (DevUser.isAuthenticated()) {
     $state.go('workspace.impac');
+  } else {
+    DevUser.currentUser().then(function () {
+      $state.go('workspace.impac');
+    });
   }
 
   vm.creds = { email: '', password: '' };
