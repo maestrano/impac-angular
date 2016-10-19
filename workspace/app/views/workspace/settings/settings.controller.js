@@ -3,6 +3,7 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
 
   vm.settings = DevSettings.defaults();
   vm.settings.orgUid = main.currentOrganization.uid || '';
+  vm.settings.widgetsTemplates = JSON.stringify(vm.settings.widgetsTemplates, undefined, 4)
   vm.updateError = '';
 
   DevUser.currentUser().then(null, function () {
@@ -40,12 +41,12 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
   function validateJson () {
     var json = document.getElementById('widgets-templates-textarea').value;
     try {
-      var obj = JSON.parse(json);
+      var array = JSON.parse(json);
     } catch (e) {
       vm.updateError = 'Invalid JSON for Widgets Templates';
       return false;
     }
-    vm.settings.widgetsTemplates = [obj];
+    vm.settings.widgetsTemplates = array;
     return true;
   }
 
