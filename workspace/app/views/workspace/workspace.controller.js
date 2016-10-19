@@ -1,4 +1,4 @@
-angular.module('impacWorkspace').controller('WorkspaceController', function ($scope, $state, DevUser) {
+angular.module('impacWorkspace').controller('WorkspaceController', function ($scope, $state, DevUser, DevSettings) {
   main = this;
 
   main.isAuthenticated = DevUser.isAuthenticated;
@@ -8,6 +8,14 @@ angular.module('impacWorkspace').controller('WorkspaceController', function ($sc
   $scope.$on('devise:login', function () {
     setCurrentOrganization();
   });
+
+  $scope.$on('updated-providers', function () {
+    setCurrentOrganization();
+  });
+
+  main.settings = function () {
+    $state.go('workspace.settings');
+  };
 
   main.logout = function () {
     DevUser.logout().then(
@@ -22,8 +30,10 @@ angular.module('impacWorkspace').controller('WorkspaceController', function ($sc
   };
 
   function setCurrentOrganization() {
-    DevUser.getCurrentOrganization().then(null, null, function(org) {
+    defaults = DevSettings.defaults();
+    DevUser.getCurrentOrganization(defaults.orgUid, defaults.mnoeUrl).then(null, null, function(org) {
       main.currentOrganization = org;
+      $scope.$broadcast('current-org-uid', org.uid)
     });
   }
 

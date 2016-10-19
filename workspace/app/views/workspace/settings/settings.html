@@ -1,0 +1,41 @@
+<div class="workspace-settings">
+  <div class="settings-box-container">
+    <div class="settings-box-title">
+      <h2>Workspace Settings</h2>
+    </div>
+    <div class="settings-box">
+      <form name="workspaceSettingsForm">
+        <div class="form-group">
+          <label for="mnoeUrl">Impac! Express URL</label>
+          <input name="mnoeUrl" type="text" class="form-control" ng-model="vm.settings.mnoeUrl">
+        </div>
+        <div class="form-group">
+          <label for="impacUrl">Impac! API URL</label>
+          <input name="impacUrl" type="text" class="form-control" ng-model="vm.settings.impacUrl">
+        </div>
+        <div class="form-group">
+          <label for="organization">Organization UID (defaults to first)</label>
+          <select name="organization" class="form-control" ng-model="vm.settings.orgUid" ng-options="uid for uid in vm.availableOrgUids"></select>
+        </div>
+        <div class="form-group">
+          <label for="widgetsTemplates">Add Widgets Templates</label>
+          <textarea name="widgetsTemplates" id="widgets-templates-textarea" class="form-control" ng-model="vm.settings.widgetsTemplates" placeholder="Enter Valid JSON"></textarea>
+        </div>
+        <div class="checkbox">
+          <label for="multipleWatchableMode">
+            <input type="checkbox" name="multipleWatchableMode" ng-model="vm.settings.multipleWatchableMode">
+            Multiple Watchables Mode
+          </label>
+        </div>
+        <div class="settings-actions">
+          <button class="btn btn-warning btn-block update" ng-click="vm.update()">Update</button>
+          <button class="btn btn-default btn-block back" ng-click="vm.back()">Back</button>
+          <button class="btn btn-danger btn-block back" ng-click="vm.resetDefaults()">Reset Defaults</button>
+        </div>
+        <div class="settings-error" ng-if="vm.updateError">
+          <p>{{vm.updateError}}</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,25 +1,34 @@
 <div id="workspace">
-  <div class="workspace-header hidden-print">
-    <div class="current-org" ng-if="main.currentOrganization.uid">
-      <table>
-        <thead>
-          <tr>
-            <th>UID</th>
-            <th>Name</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="current-org-results">
-            <td>{{main.currentOrganization.uid || '-'}}</td>
-            <td>{{main.currentOrganization.name || '-'}}</td>
-            <td>{{main.currentOrganization.current_user_role || '-'}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="workspace-header hidden-print row">
+    <div class="col-xs-12 col-sm-4">
+      <div class="current-org" ng-if="main.currentOrganization.uid">
+        <table>
+          <thead>
+            <tr>
+              <th>UID</th>
+              <th>Name</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="current-org-results">
+              <td>{{main.currentOrganization.uid || '-'}}</td>
+              <td>{{main.currentOrganization.name || '-'}}</td>
+              <td>{{main.currentOrganization.current_user_role || '-'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <h1>IMPAC! DEVELOPER WORKSPACE</h1>
-    <button class="btn btn-default" ng-click="main.logout()" ng-show="main.isAuthenticated()">LOG OUT</button>
+    <div class="col-xs-12 col-sm-4 workspace-title">
+      <h1>IMPAC! DEVELOPER WORKSPACE</h1>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <div class="workspace-actions">
+        <button class="btn btn-default" ng-click="main.settings()" ng-show="main.isAuthenticated()">SETTINGS</button>
+        <button class="btn btn-default" ng-click="main.logout()" ng-show="main.isAuthenticated()">LOG OUT</button>
+      </div>
+    </div>
   </div>
 
   <div ui-view></div>

@@ -1,4 +1,4 @@
-angular.module('impacWorkspace').controller('LoginController', function ($state, DevUser, settings) {
+angular.module('impacWorkspace').controller('LoginController', function ($state, DevUser) {
   vm = this;
 
 

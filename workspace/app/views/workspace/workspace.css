@@ -17,28 +17,32 @@ body {
 
 #workspace .workspace-header {
   position: relative;
-  text-align: center;
   background-color: black;
   color: white;
+  min-width: 100%;
+  min-height: 70px;
   font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-#workspace .workspace-header h1 {
-  margin: 0;
-  padding: 15px 40px;
+#workspace .workspace-header .workspace-title {
+  text-align: center;
 }
 
-#workspace .workspace-header button {
-  position: absolute;
-  right: 70px;
-  bottom: 17px;
+#workspace .workspace-header h1 {
+  margin: 15px 0 0 0;
+  font-size: 32px;
+}
+
+#workspace .workspace-header .workspace-actions {
+  text-align: right;
+  margin: 17px 60px 10px 0px;
 }
 
 #workspace .workspace-header .current-org {
-  position: absolute;
-  top: 13px;
-  left: 75px;
+  margin-top: 14px;
+  margin-left: 70px;
 }
+
 #workspace .workspace-header .current-org td,
 #workspace .workspace-header .current-org th {
   padding: 0px 10px;
@@ -46,10 +50,6 @@ body {
 
 #workspace .workspace-header .current-org .current-org-results {
   color: #74dd74;
-}
-
-#workspace .workspace-login {
-  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #workspace .workspace-dashboard {

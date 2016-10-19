@@ -1,16 +1,20 @@
-.workspace-login .login-box-container {
+#workspace .workspace-login {
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#workspace .workspace-login .login-box-container {
   text-align: center;
   margin-top: 100px;
 }
 
-.workspace-login .login-box {
+#workspace .workspace-login .login-box {
   width: 360px;
   margin: auto;
   padding: 10px 20px 20px 20px;
   border-radius: 3px;
 }
 
-.workspace-login .login-box-title {
+#workspace .workspace-login .login-box-title {
   color: rgb(117, 129, 146);
   margin-bottom: 15px;
   text-transform: uppercase;
