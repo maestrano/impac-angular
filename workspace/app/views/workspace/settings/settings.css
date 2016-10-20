@@ -14,6 +14,14 @@
   border-radius: 3px;
 }
 
+#workspace .workspace-settings .settings-box .double-section-header {
+  margin: 0;
+}
+
+#workspace .workspace-settings .settings-box .double-section-item label {
+  color: rgb(117, 129, 146);
+}
+
 #workspace .workspace-settings .settings-box .checkbox {
   text-align: left;
   margin-left:10px;
@@ -36,4 +44,13 @@
 #workspace .workspace-settings .settings-error {
   margin-top: 20px;
   color: red;
+}
+
+#workspace .workspace-settings .col-sm-7,
+#workspace .workspace-settings .col-xs-7 {
+  padding-right: 2px;
+}
+#workspace .workspace-settings .col-sm-5,
+#workspace .workspace-settings .col-xs-5 {
+  padding-left: 0;
 }

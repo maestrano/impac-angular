@@ -11,7 +11,8 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
 
   // Get logged in user & organizations from mno-hub
   this.getUserData = function(mnoeUrl) {
-    return $http.get(mnoeUrl + '/current_user').then(
+    var url = mnoeUrl.host + mnoeUrl.base + '/current_user';
+    return $http.get(url).then(
       function (response) {
         var user = (response.data && response.data.current_user);
         if (!user.logged_in) {

@@ -8,8 +8,14 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
 
   var DEFAULTS = {
     // Credentials and endpoints
-    mnoeUrl: '/mnoe/jpi/v1',
-    impacUrl: 'http://localhost:4000',
+    mnoeUrl: {
+      host: '',
+      base: '/mnoe/jpi/v1'
+    },
+    impacUrl: {
+      host: 'http://localhost:4000',
+      base: '/api'
+    },
     orgUid: '', // First organisations if unspecified
     // -----------------------------------------------
     // Kpis configurations
@@ -47,31 +53,31 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
     return _self._defaults = angular.copy(DEFAULTS);
   }
 
-
   // NOTE: this will be refactored a lot when mnoe routes are added as default
   // in impac-angular.
+  // TODO: add routes settings to #/settings, 'basic' & 'advance' tabs could be good.
   this.buildRoutesConfig = function (mnoeUrl, impacUrl, multipleWatchableMode) {
     var routesConfig = {
-      mnoHub: mnoeUrl,
+      mnoHub: mnoeUrl.host + mnoeUrl.base,
       impacPrefix: "/impac",
-      impacApi: impacUrl + "/api",
+      impacApi: impacUrl.host + impacUrl.base,
       dashboards: {
-        index: mnoeUrl + "/impac/dashboards"
+        index: mnoeUrl.host + mnoeUrl.base + "/impac/dashboards"
       },
       widgets: {
-        index: mnoeUrl + "/impac/widgets",
-        create: mnoeUrl + "/impac/dashboards/:dashboard_id/widgets"
+        index: mnoeUrl.host + mnoeUrl.base + "/impac/widgets",
+        create: mnoeUrl.host + mnoeUrl.base + "/impac/dashboards/:dashboard_id/widgets"
       },
       kpis: {
-        index: mnoeUrl + "/impac/kpis",
-        create: mnoeUrl + "/impac/dashboards/:dashboard_id/kpis",
-        update: mnoeUrl + "/impac/kpis/:id",
-        del: mnoeUrl + "/impac/kpis/:id"
+        index: mnoeUrl.host + mnoeUrl.base + "/impac/kpis",
+        create: mnoeUrl.host + mnoeUrl.base + "/impac/dashboards/:dashboard_id/kpis",
+        update: mnoeUrl.host + mnoeUrl.base + "/impac/kpis/:id",
+        del: mnoeUrl.host + mnoeUrl.base + "/impac/kpis/:id"
       },
       alerts: {
-        index: mnoeUrl + "/impac/alerts",
-        create: mnoeUrl + "/impac/kpis/:kpi_id/alerts",
-        del: mnoeUrl + "/impac/alerts/:id"
+        index: mnoeUrl.host + mnoeUrl.base + "/impac/alerts",
+        create: mnoeUrl.host + mnoeUrl.base + "/impac/kpis/:kpi_id/alerts",
+        del: mnoeUrl.host + mnoeUrl.base + "/impac/alerts/:id"
       }
     }
     // Removes custom index path, defaulting kpi discovery to impac api, where KPIs with
