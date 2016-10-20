@@ -9,6 +9,10 @@ angular.module('impacWorkspace').controller('WorkspaceController', function ($sc
     setCurrentOrganization();
   });
 
+  $scope.$on('devise:new-registration', function() {
+    setCurrentOrganization();
+  });
+
   $scope.$on('updated-providers', function () {
     setCurrentOrganization();
   });

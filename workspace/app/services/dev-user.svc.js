@@ -10,6 +10,7 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
   // ------
   this.login = Auth.login;
   this.logout = Auth.logout;
+  this.register = Auth.register;
   this.isAuthenticated = Auth.isAuthenticated;
   this.currentUser = Auth.currentUser;
 
