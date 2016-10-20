@@ -1,13 +1,13 @@
 // -------------------------------------------------------
 // Impac Workspace Settings
+// --------
+// Providing Impac! Angular defaults and configuration abilities.
 // -------------------------------------------------------
-// Provide important configurations for the impacWorkspace.
-// TODO: create a /settings page for this.
 angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoutes, ImpacLinking, ImpacDeveloper, DevUser) {
   var _self = this;
 
   var DEFAULTS = {
-    // Credentials and endpoints
+    // API Endpoints
     mnoeUrl: {
       host: '',
       base: '/mnoe/jpi/v1'
@@ -16,7 +16,8 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
       host: 'http://localhost:4000',
       base: '/api'
     },
-    orgUid: '', // First organisations if unspecified
+    // Selected Organization - first organisations if unspecified
+    orgUid: '',
     // -----------------------------------------------
     // Kpis configurations
     // -----------------------------------------------
@@ -94,6 +95,7 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
       user: function () {
         return DevUser.getUser(mnoeUrl);
       },
+      // TODO: add pusher key to advance settings on #/settings.
       pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
     }
   }
