@@ -100,7 +100,6 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
   };
 
   this.updateProviders = function (data) {
-    console.log('data: ', data)
     ImpacRoutes.configureRoutes(_self.buildRoutesConfig(data.mnoeUrl, data.impacUrl, data.multipleWatchableMode));
     ImpacLinking.linkData(_self.buildLinkingConfig(data.orgUid, data.mnoeUrl));
     ImpacDeveloper.configure(_self.buildDeveloperConfig(data.widgetsTemplates));

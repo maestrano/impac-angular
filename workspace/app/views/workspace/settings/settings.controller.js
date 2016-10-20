@@ -3,7 +3,7 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
 
   vm.settings = DevSettings.defaults();
   vm.settings.orgUid = main.currentOrganization.uid || '';
-  vm.settings.widgetsTemplates = JSON.stringify(vm.settings.widgetsTemplates, undefined, 4)
+  vm.settings.widgetsTemplates = displayWidgetTemplates(vm.settings.widgetsTemplates);
   vm.updateError = '';
 
   DevUser.currentUser().then(null, function () {
@@ -23,7 +23,7 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
   });
 
   vm.update = function () {
-    if (validateJson() == false) { return; }
+    if (!validateWidgetTemplatesJson()) { return; }
     DevSettings.updateProviders(vm.settings);
     $scope.$emit('updated-providers');
     $state.go('workspace.impac');
@@ -38,8 +38,9 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
     vm.settings.orgUid = main.currentOrganization.uid || '';
   }
 
-  function validateJson () {
+  function validateWidgetTemplatesJson () {
     var json = document.getElementById('widgets-templates-textarea').value;
+    if (!json.length) { json = '[]'; }
     try {
       var array = JSON.parse(json);
     } catch (e) {
@@ -48,6 +49,10 @@ angular.module('impacWorkspace').controller('SettingsController', function ($sco
     }
     vm.settings.widgetsTemplates = array;
     return true;
+  }
+
+  function displayWidgetTemplates (templates) {
+    return templates.length ? JSON.stringify(templates, undefined, 4) : '';
   }
 
   return vm;
