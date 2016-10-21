@@ -53,8 +53,10 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     return classes.join(' ')
 
   ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
-    # if w.expanded is defined, the width directive will handle the display
-    unless angular.isDefined(w.expanded)
+    # Save whether the widget is expanded
+    w.initiallyExpanded = (angular.isDefined(w.isExpanded) && w.isExpanded())
+    # unless the widget is expanded, extend widget to full width for pdf display.
+    unless w.initiallyExpanded
       w.initialWidth = w.width
       w.width = 12
     $scope.pdfMode = true
@@ -65,8 +67,8 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
     $scope.pdfMode = false
     $scope.widget.hasEditAbility = true
-    # if w.expanded is defined, the width directive will handle the display
-    unless angular.isDefined(w.expanded)
+    # unless the widget is expanded, reset width to initial width.
+    unless angular.isDefined(w.isExpanded) && w.isExpanded()
       w.width = w.initialWidth
   )
 
