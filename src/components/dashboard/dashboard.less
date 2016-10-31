@@ -1,6 +1,12 @@
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
+
+  // Default small screen behaviour to allow for the common use of top-bars
+  @media screen and (max-width: 992px) {
+    padding-top: @impac-dashboard-sm-padding-top;
+  }
+
   &.pdf-mode { padding-top: 20px; }
 
   &.show-dhb {
@@ -46,6 +52,7 @@
     color: @impac-dashboard-widget-selector-text-color;
     padding: 0px 45px 10px 45px;
     margin: 10px -45px;
+    border-radius: 3px;
 
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
@@ -272,8 +279,16 @@
 }
 
 // dashboard failed to load message.
-.analytics.load-failed p {
-  font-size: 22px;
+.analytics.load-failed {
+
+  p { font-size: 22px; }
+
+  .second-msg {
+    p {
+      color: @brand-danger;
+      font-size: 14px;
+    }
+  }
 }
 
 // Tooltips are append to body

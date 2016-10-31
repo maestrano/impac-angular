@@ -184,10 +184,16 @@
   </div>
 </div>
 
-<div class="analytics load-failed" ng-show="failedDashboardLoad">
+<div class="analytics load-failed" ng-show="!isLoading && failedDashboardLoad">
   <div class="row">
     <div class="col-md-12 text-center" style="margin-top: 200px;">
-      <p>Oops, failed to load Impac Angular...</p>
+      <p>{{dhbErrorsConfig.failed.first}}</p>
+      <div class="second-msg" ng-if="displaySecondMsg">
+        <p>{{dhbErrorsConfig.failed.second}}</p>
+      </div>
+      <a href="" ng-click="reloadDashboard()">
+        <button type="button" class="btn btn-default">Refresh</button>
+      </a>
     </div>
   </div>
 </div>
