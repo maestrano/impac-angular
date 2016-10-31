@@ -87,7 +87,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         $http.post(ImpacRoutes.organizations.appInstancesSync(scope.orgUID)).then( (resp) -> processAppInstancesSync(resp.data) )
 
       scope.triggerSyncAlertsModal = ->
-        unless scope.modalOpened
+        unless scope.modalOpened || _.isEmpty(scope.connectors)
           modalInstance = $modal.open({
             animation: true
             size: 'md'

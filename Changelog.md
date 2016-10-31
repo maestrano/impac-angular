@@ -8,6 +8,36 @@
 
 ## Released
 
+### v1.4.4 | Week 40
+
+#### Adds
+- [IMPAC-370] Improved failed dashboard load message.
+
+#### Fixes
+- [IMPAC-385] prevent empty sync status modal opening
+- [IMPAC-385] width of the widget is not saved + refactored widget expand width toggle logic
+- [IMPAC-374] prevent widgets being printed in settings mode
+- [IMPAC-380] Hide widgets selector on dashboard deletion.
+- Fixes for Dashboard & KPI action button positioning on smaller screens
+- KPIs bar action buttons position issues on small screens.
+- Various error handlers in kpi.svc not rejecting promises 
+
+#### Config changes
+- Ability to provide custom messages for the dashboard failed error case in the ImpacTheming service.
+
+```javascript
+dhbErrorsConfig: {
+  failed: {
+    first: 'Oops, failed to load Impac!...'
+    // Displays after 3 "retry" attempts.
+    second: 'Unable to load, please contact support or try again later.'
+  }
+}
+```
+
+
+-------------------------------------------------------------
+
 ### v1.4.3 | Week 39
 
 #### Adds

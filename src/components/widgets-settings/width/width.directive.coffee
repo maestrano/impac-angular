@@ -17,6 +17,7 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
 
   # ------------------------------------
 
+  # Animation to improve widget resize effect.
   hideOnResize = (elements) ->
     return unless (elements && elements.length > 0)
     # Hides elems in content
@@ -29,15 +30,13 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
     , 300
 
   w.toggleExpanded = (save) ->
-    if typeof(save) == 'undefined'
-      save = true
-
+    save = true unless save?
     $scope.expanded = !$scope.expanded
-    # false because we want to resize the widget without waiting for the response from the dashboarding API
+    # false "needContentReload" param because we want to resize the widget without waiting
+    # for the response from the dashboarding API.
     ImpacWidgetsSvc.updateWidgetSettings(w,false,true) if save
-
     hideOnResize($scope.contentElements)
-
+    # Expands widget width to the maximum or minimum possible for the specific widget.
     if $scope.expanded
       w.width = parseInt($scope.max)
     else
@@ -59,16 +58,13 @@ module.controller('SettingWidthCtrl', ($scope, $element, $timeout, $log, ImpacWi
       newWidth = $scope.min
     return { width: parseInt(newWidth) }
 
-  $scope.pdfMode = false
   ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
     $scope.pdfMode = true
-    $scope.initiallyExpanded = $scope.expanded
-    # Expand the widget if it's not already the case
-    w.toggleExpanded(false) unless $scope.expanded
+    $scope.initiallyExpanded = !!$scope.expanded
+    w.toggleExpanded(false) unless $scope.initiallyExpanded
   )
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
     $scope.pdfMode = false
-    # Reduce the widget if it wasn't expanded initially
     w.toggleExpanded(false) unless $scope.initiallyExpanded
   )
 

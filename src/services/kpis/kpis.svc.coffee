@@ -115,8 +115,9 @@ angular
 
                   $log.info("Impac! - KpisSvc: loaded (force=#{force})")
 
-                (error) ->
-                  $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', error)
+                (err) ->
+                  $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
+                  $q.reject(err)
               ).finally(-> _self.locked = false )
 
             else
@@ -255,7 +256,7 @@ angular
 
             url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-            $http.get(url).then(
+            return $http.get(url).then(
               (response) ->
                 # When no target has been defined
                 if response.data.error && response.data.error.code == 422
@@ -281,12 +282,12 @@ angular
 
               (err) ->
                 $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
-                err
+                $q.reject(err)
             )
           )
         ->
           $log.error 'Impac! - KpisSvc: Service not initialized'
-          {error: { message: 'Impac! - KpisSvc: Service is not initialized' }}
+          $q.reject({error: { message: 'Impac! - KpisSvc: Service is not initialized' }})
       ).finally ( -> kpi.isLoading = false )
 
     @create = (source, endpoint, elementWatched, opts={}) ->
@@ -314,10 +315,10 @@ angular
               kpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
-              err
+              $q.reject(err)
           )
         ->
-          { error: {message: 'Impac! - KpisSvc: Service is not initialized'} }
+          $q.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
       )
 
     @update = (kpi, params) ->
@@ -355,7 +356,7 @@ angular
             res
           (err)->
             $log.error("Impac! KpisSvc: Unable to delete KPI #{kpi.id}", err)
-            err
+            $q.reject(err)
         )
       )
 

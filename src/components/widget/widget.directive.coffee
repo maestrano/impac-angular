@@ -21,17 +21,16 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
       )
   )
 
-
   $scope.showWidget = (refreshCache=false) ->
     w.isLoading ||= true
     ImpacWidgetsSvc.show(w, refreshCache).then(
       (updatedWidget) ->
         #TODO: Accessibility should be treated differently (in service?)
         if $scope.isAccessibility
-          w.initialWidth = w.width
+          $scope.initialWidth = w.width
           w.width = 12
-        else if w.initialWidth
-          w.width = w.initialWidth
+        else if $scope.initialWidth
+          w.width = $scope.initialWidth
 
     ).finally( ->
       w.isLoading = false
@@ -53,10 +52,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     return classes.join(' ')
 
   ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
-    # if w.expanded is defined, the width directive will handle the display
-    unless angular.isDefined(w.expanded)
-      w.initialWidth = w.width
-      w.width = 12
     $scope.pdfMode = true
     w.ticked = true unless angular.isDefined(w.ticked)
     $scope.widget.hasEditAbility = false
@@ -64,9 +59,6 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
     $scope.pdfMode = false
     $scope.widget.hasEditAbility = true
-    # if w.expanded is defined, the width directive will handle the display
-    unless angular.isDefined(w.expanded)
-      w.width = w.initialWidth
   )
 
   $scope.tick = ->
