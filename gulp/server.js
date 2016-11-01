@@ -28,15 +28,6 @@ function browserSyncInit(baseDir, browser) {
     routes: routes
   };
 
-  /*
-   * You can add a proxy to your backend by uncommenting the line below.
-   * You just have to configure a context which will we redirected and the target url.
-   * Example: $http.get('/users') requests will be automatically proxified.
-   *
-   * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.9.0/README.md
-   */
-  server.middleware = proxyMiddleware(['/auth', '/mnoe'], { target: 'http://localhost:7000' });
-
   $.browserSync.instance = $.browserSync.init({
     port: 7001,
     startPath: '/',

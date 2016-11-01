@@ -48,18 +48,19 @@ module.config(function ($stateProvider, $urlRouterProvider) {
 // --
 // Configure Angular Devise paths for mno-enterprise.
 // -------------------------------------------------------
-module.config(function (AuthProvider) {
+module.config(function (AuthProvider, DevSettingsProvider) {
+  var mnoeHostUrl = DevSettingsProvider.$get().defaults().mnoeUrl.host;
   // Customize login
   AuthProvider.loginMethod('POST');
-  AuthProvider.loginPath('mnoe/auth/users/sign_in.json');
+  AuthProvider.loginPath(mnoeHostUrl + '/mnoe/auth/users/sign_in.json');
 
   // Customize logout
   AuthProvider.logoutMethod('DELETE');
-  AuthProvider.logoutPath('mnoe/auth/users/sign_out.json');
+  AuthProvider.logoutPath(mnoeHostUrl + '/mnoe/auth/users/sign_out.json');
 
   // Customize register
   AuthProvider.registerMethod('POST');
-  AuthProvider.registerPath('mnoe/auth/users');
+  AuthProvider.registerPath(mnoeHostUrl + '/mnoe/auth/users');
 });
 
 // --

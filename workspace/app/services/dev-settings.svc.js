@@ -9,7 +9,7 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
   var DEFAULTS = {
     // API Endpoints
     mnoeUrl: {
-      host: '',
+      host: 'http://localhost:7000',
       base: '/mnoe/jpi/v1'
     },
     impacUrl: {
