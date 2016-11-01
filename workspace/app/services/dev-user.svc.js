@@ -17,18 +17,19 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
   // MnoExpress User & Organization retrieval
   // ------
   this.getUserData = function(mnoeUrl) {
+    var errMsg = 'Unable to retrieve User data';
     var url = mnoeUrl.host + mnoeUrl.base + '/current_user';
     return $http.get(url).then(
       function (response) {
         var user = (response.data && response.data.current_user);
         if (!user.logged_in) {
-          return $q.reject();
+          _self.fail(errMsg);
+          return $q.reject(errMsg);
         }
         return user || {};
       }, function (error) {
-        var msg = 'Unable to retrieve Organizations';
-        _self.fail(msg, error);
-        return $q.reject(msg);
+        _self.fail(errMsg, error);
+        return $q.reject(errMsg);
       }
     );
   };
