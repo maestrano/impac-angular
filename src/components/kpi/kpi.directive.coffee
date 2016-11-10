@@ -112,9 +112,14 @@ angular
           ImpacKpisSvc.validateKpiTargets($scope.targets)
 
         $scope.hasContent = ->
-          # kpi first edit mode will have "no content", but content div should not be hidden.
-          return true if $scope.isEditing()
           !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
+
+        $scope.showKpiContent = ->
+          # Newly added kpis start in edit mode (draft) and will have "no content".
+          !$scope.kpi.isLoading && ($scope.hasContent() || $scope.kpi.is_draft)
+
+        $scope.showKpiDataNotFound = ->
+          !$scope.kpi.isLoading && !$scope.hasContent() && !$scope.kpi.is_draft
 
         $scope.updateSettings = (force)->
           params = {}

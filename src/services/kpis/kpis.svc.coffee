@@ -260,7 +260,10 @@ angular
               (response) ->
                 # When no target has been defined
                 if response.data.error && response.data.error.code == 422
-                  # TODO force edit mode
+                  # TODO: this can be removed when Impac! API returns layout config for draft
+                  # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
+                  # considered in draft mode.
+                  kpi.is_draft = true
                   return false
                 else
                   kpiResp = response.data.kpi
@@ -344,7 +347,10 @@ angular
           ,(err) ->
             $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
             $q.reject(err)
-      ).finally( -> kpi.isLoading = false)
+      ).finally( ->
+        kpi.isLoading = false
+        kpi.is_draft = false
+      )
 
 
     @delete = (kpi) ->
