@@ -62,6 +62,9 @@
       </div>
     </div>
   </div>
+  <div ng-hide="kpi.isLoading || hasContent()">
+    <div common-data-not-found is-kpi="true" widget-engine="::kpi.endpoint"/>
+  </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-if="(kpi.isLoading || !hasContent())">
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
   </div>
