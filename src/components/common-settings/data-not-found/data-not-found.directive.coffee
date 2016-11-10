@@ -7,7 +7,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       isKpi: '=?'
       engine: '='
       widgetWidth: '=?'
-      onDisplayAlerts: '&?' # remove opt
+      onDisplayAlerts: '&?'
     },
     link: (scope, element) ->
       scope.content     = ImpacTheming.get().dataNotFoundConfig
@@ -51,13 +51,12 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
       load = ->
         # When providing custom images for widgets
-        console.log('loading... isKpi? ', scope.isKpi)
         if scope.isKpi
           # TODO: implement custom KPI data not found image.
           # return loadCustomKpiImage() if kpiImgProvided()
         else
           hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
-          scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.engine.match(/.*accounts\/.*/))
+          scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.engine.match(/.*accounts\/.*/) && angular.isDefined(scope.onDisplayAlerts))
           return loadCustomWidgetImage() if widgetImgsBaseDirProvided()
         scope.hasCallbackUrl = scope.content.linkUrlCallback?
         # When providing no custom images, uses library defaults.
