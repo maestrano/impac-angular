@@ -1,7 +1,7 @@
 <div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !kpi.isLoading), 'editing': isEditing() }">
-  <div class="content-container" ng-hide="(kpi.isLoading || !hasContent())">
+  <div class="content-container" ng-hide="kpi.isLoading">
     <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }"></div>
-    <div class="kpi-content" ng-class="{ 'editing': isEditing() }">
+    <div class="kpi-content" ng-show="showKpiContent()" ng-class="{ 'editing': isEditing() }">
       <!-- SHOW -->
       <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
         <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
@@ -61,9 +61,7 @@
 
       </div>
     </div>
-  </div>
-  <div ng-hide="kpi.isLoading || hasContent()">
-    <div common-data-not-found is-kpi="true" widget-engine="::kpi.endpoint"/>
+    <div common-data-not-found ng-show="showKpiDataNotFound()" is-kpi="true" widget-engine="::kpi.endpoint"/>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-if="(kpi.isLoading || !hasContent())">
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
