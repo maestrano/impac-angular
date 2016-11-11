@@ -116,10 +116,10 @@ angular
 
         $scope.showKpiContent = ->
           # Newly added kpis start in edit mode (draft) and will have "no content".
-          !$scope.kpi.isLoading && ($scope.hasContent() || $scope.kpi.is_draft)
+          !$scope.kpi.isLoading && ($scope.hasContent() || $scope.kpi.isDraft)
 
         $scope.showKpiDataNotFound = ->
-          !$scope.kpi.isLoading && !$scope.hasContent() && !$scope.kpi.is_draft
+          !$scope.kpi.isLoading && !$scope.hasContent() && !$scope.kpi.isDraft
 
         $scope.updateSettings = (force)->
           params = {}
