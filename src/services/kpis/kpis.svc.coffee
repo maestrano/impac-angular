@@ -263,7 +263,7 @@ angular
                   # TODO: this can be removed when Impac! API returns layout config for draft
                   # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
                   # considered in draft mode.
-                  kpi.is_draft = true
+                  kpi.isDraft = true
                   return false
                 else
                   kpiResp = response.data.kpi
@@ -349,7 +349,7 @@ angular
             $q.reject(err)
       ).finally( ->
         kpi.isLoading = false
-        kpi.is_draft = false
+        kpi.isDraft = false
       )
 
 
