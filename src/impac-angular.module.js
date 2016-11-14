@@ -36,7 +36,7 @@ angular.module('impac.components',
     'impac.components.widgets',
     'impac.components.widgets-settings',
     'impac.components.widgets-common',
-    'impac.components.common-settings',
+    'impac.components.common',
     'impac.components.templates'
   ]
 );
@@ -129,9 +129,9 @@ angular.module('impac.components.widgets-common',
     'impac.components.widgets-common.autofocus'
   ]
 );
-angular.module('impac.components.common-settings',
+angular.module('impac.components.common',
   [
-    'impac.components.common-settings.data-not-found'
+    'impac.components.common.data-not-found'
   ]
 );
 /*
