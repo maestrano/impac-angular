@@ -1,4 +1,4 @@
-module = angular.module('impac.components.common-settings.data-not-found',[])
+module = angular.module('impac.components.common.data-not-found',[])
 
 module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets, ImpacTheming, ImpacMainSvc) ->
   return {
@@ -27,7 +27,6 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
           imagePath = ImpacAssets.get('defaultImagesPath') + '/kpi-bg.png'
         else
           imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.widgetWidth + '.png'
-        console.log('using defaults.. ', imagePath)
         image.src = imagePath
 
       # Custom widget images are provided with a directory of images.
@@ -64,6 +63,6 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
       load()
 
-    template: $templateCache.get('common-settings/data-not-found.tmpl.html'),
+    template: $templateCache.get('common/data-not-found.tmpl.html'),
   }
 )
