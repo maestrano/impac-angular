@@ -61,7 +61,14 @@
 
       </div>
     </div>
-    <div common-data-not-found ng-show="showKpiDataNotFound()" is-kpi="true" widget-engine="::kpi.endpoint"/>
+    <!-- Data not found display -->
+    <div class="kpi-no-data" ng-show="showKpiDataNotFound()">
+        <!-- Remove KPI -->
+        <button type="button" ng-show="isEditing()" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <div common-data-not-found is-kpi="true" widget-engine="::kpi.endpoint"/>
+    </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-if="(kpi.isLoading || !hasContent())">
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
