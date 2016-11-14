@@ -199,8 +199,6 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         else if scope.usedSetting? && scope.isDatesPickerUsed()
           sourceSetting = getSetting('dates-picker')
           to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
-
-#          console.log "THIS IS THE END" + getPeriod()
         currentPeriod = getPeriod()
         periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
         return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
