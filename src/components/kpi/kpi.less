@@ -138,8 +138,6 @@
 
   .kpi-edit {
 
-    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
-
     a { color: white; }
 
     .kpi-name {
@@ -191,6 +189,11 @@
     .btn.btn-xs {
       margin-top: 4px;
     }
+  }
+
+  .kpi-edit,
+  .kpi-no-data {
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
   }
 
   button.kpi-remove.im-fab.im-warn {
