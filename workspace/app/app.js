@@ -7,7 +7,8 @@ var module = angular.module('impacWorkspace', [
   'maestrano.impac',
   'toastr',
   'Devise',
-  'ui.router'
+  'ui.router',
+  'ngCookies'
 ]);
 
 // --
@@ -48,22 +49,39 @@ module.config(function ($stateProvider, $urlRouterProvider) {
 // --
 // Configure Angular Devise paths for mno-enterprise.
 // -------------------------------------------------------
-module.config(function (AuthProvider) {
+module.config(function (AuthProvider, DevSettingsProvider) {
+  var mnoeHostUrl = DevSettingsProvider.$get().defaults().mnoeUrl.host;
   // Customize login
   AuthProvider.loginMethod('POST');
-  AuthProvider.loginPath('mnoe/auth/users/sign_in.json');
+  AuthProvider.loginPath(mnoeHostUrl + '/mnoe/auth/users/sign_in.json');
 
   // Customize logout
   AuthProvider.logoutMethod('DELETE');
-  AuthProvider.logoutPath('mnoe/auth/users/sign_out.json');
+  AuthProvider.logoutPath(mnoeHostUrl + '/mnoe/auth/users/sign_out.json');
 
   // Customize register
   AuthProvider.registerMethod('POST');
-  AuthProvider.registerPath('mnoe/auth/users');
+  AuthProvider.registerPath(mnoeHostUrl + '/mnoe/auth/users');
 });
 
 // --
-// Impac! Angular Provider Service Configurations
+// Configure Angular $http to apply XSRF Token headers to CORS requests.
+// -------------------------------------------------------
+module.constant('CSRF', {
+  "headerTokenKey": 'X-XSRF-TOKEN',
+  "cookieTokenKey": 'XSRF-TOKEN'
+});
+module.config(function($httpProvider) {
+  // Allow "credentialed" requests that are aware of HTTP cookies and HTTP
+  // Authentication information.
+  $httpProvider.defaults.withCredentials = true;
+});
+module.run(function($http, DevSession) {
+  DevSession.create();
+});
+
+// --
+// Impac! Angular Provider Service Configurations.
 // -------------------------------------------------------
 module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
 
