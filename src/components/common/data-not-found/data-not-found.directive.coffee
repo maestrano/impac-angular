@@ -14,7 +14,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       widgetImgsBaseDir = ImpacAssets.get('dataNotFound')
       usingDefaults     = false
       imagePath         = ''
-      image             = _.find(element.children().first().children(), (elem) -> elem.id == 'not-found-bg')
+      image             = element.find('.data-not-found #not-found-bg')[0]
 
       image.onerror = ->
         missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.engine
