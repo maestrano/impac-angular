@@ -1,4 +1,4 @@
-angular.module('impacWorkspace').controller('WorkspaceController', function ($scope, $state, DevUser, DevSettings) {
+angular.module('impacWorkspace').controller('WorkspaceController', function ($scope, $state, DevUser, DevSettings, DevSession) {
   main = this;
 
   main.isAuthenticated = DevUser.isAuthenticated;
@@ -11,6 +11,14 @@ angular.module('impacWorkspace').controller('WorkspaceController', function ($sc
 
   $scope.$on('devise:new-registration', function() {
     setCurrentOrganization();
+  });
+
+  $scope.$on('devise:new-session', function () {
+    DevSession.update();
+  });
+
+  $scope.$on('devise:logout', function () {
+    DevSession.update();
   });
 
   $scope.$on('updated-providers', function () {

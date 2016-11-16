@@ -7,7 +7,8 @@ var module = angular.module('impacWorkspace', [
   'maestrano.impac',
   'toastr',
   'Devise',
-  'ui.router'
+  'ui.router',
+  'ngCookies'
 ]);
 
 // --
@@ -64,7 +65,23 @@ module.config(function (AuthProvider, DevSettingsProvider) {
 });
 
 // --
-// Impac! Angular Provider Service Configurations
+// Configure Angular $http to apply XSRF Token headers to CORS requests.
+// -------------------------------------------------------
+module.constant('CSRF', {
+  "headerTokenKey": 'X-XSRF-TOKEN',
+  "cookieTokenKey": 'XSRF-TOKEN'
+});
+module.config(function($httpProvider) {
+  // Allow "credentialed" requests that are aware of HTTP cookies and HTTP
+  // Authentication information.
+  $httpProvider.defaults.withCredentials = true;
+});
+module.run(function($http, DevSession) {
+  DevSession.create();
+});
+
+// --
+// Impac! Angular Provider Service Configurations.
 // -------------------------------------------------------
 module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
 
