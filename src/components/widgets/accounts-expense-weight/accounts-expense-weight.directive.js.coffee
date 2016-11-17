@@ -38,9 +38,9 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   $scope.getComparator = ->
     switch w.metadata.comparator
       when 'turnover'
-        return "turnover"
+        $translate("impac.widget.account_expense_weight.comparator.turnover").then((comparator)-> return comparator)
       else
-        return "total expenses"
+        $translate("impac.widget.account_expense_weight.comparator.total_exp").then((comparator)-> return comparator)
 
 
   # Chart formating function

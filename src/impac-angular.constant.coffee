@@ -17,7 +17,8 @@ module.constant('IMPAC_EVENTS',
 module.constant('LOCALES', {
   'locales': [
     { id: 'en-gb', name: 'English (GB)' }
+    { id: 'zh-HK', name: 'Chinese (HK)' }
   ],
-  'preferredLanguage': 'en-gb',
+  'preferredLanguage': 'zh-HK',
   'fallbackLanguage': 'en-gb'
 })

@@ -1,14 +1,14 @@
 <div widget-accounts-detailed-classifications>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_det_class.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_det_class.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_det_class.save</button>
     </div>
   </div>
 
@@ -17,8 +17,8 @@
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
-        <div class="col-md-6 text-left">
-          {{widget.content.companies[0].name}}
+        <div class="col-md-6 text-left"  translate="impac.widget.account_det_class.acc_classifications" translate-values="{name: widget.content.companies[0].name}">
+
         </div>
 
         <div class="col-md-6 text-right">
