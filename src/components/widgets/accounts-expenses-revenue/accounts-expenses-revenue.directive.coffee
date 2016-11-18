@@ -86,7 +86,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         lineData =
           labels: dates
-          datasets: datasets 
+          datasets: datasets
 
         lineOptions = {
           scaleBeginAtZero: all_values_are_positive,
@@ -105,7 +105,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
           percentageInnerCutout: 0,
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions, true)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

@@ -1,7 +1,7 @@
 
 # Impac! Angular constants module
 # ---------------------------------------------
-module = angular.module('impac.constant', [])
+module = angular.module('impac.constant')
 
 # To facilitate the ImpacEvents service in defining event keys.
 module.constant('IMPAC_EVENTS',
@@ -13,3 +13,12 @@ module.constant('IMPAC_EVENTS',
   kpisBarUpdateDates: 'on-kpis-bar-update-dates'
   kpiPressEnterButton: 'on-kpi-press-enter-button'
 )
+
+module.constant('LOCALES', {
+  'locales': [
+    { id: 'en-gb', name: 'English (GB)' }
+    { id: 'zh-HK', name: 'Chinese (HK)' }
+  ],
+  'preferredLanguage': 'zh-HK',
+  'fallbackLanguage': 'en-gb'
+})

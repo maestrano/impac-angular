@@ -1,7 +1,7 @@
 <div widget-accounts-balance>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_balance.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-account parent-widget="widget" on-account-selected="updateKpiExtraParams('account', widget.selectedAccount)" class="part" deferred="::accountBackDeferred" />
@@ -10,8 +10,8 @@
     <!-- <div setting-attach-kpis parent-widget="widget" attached-kpis="widget.kpis" widget-engine="widget.category" widget-id="widget.id" extra-params="kpiExtraParams" class="part" deferred="::attachKpisDeferred" /> -->
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_balance.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_balance.save</button>
     </div>
   </div>
 

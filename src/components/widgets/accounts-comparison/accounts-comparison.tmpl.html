@@ -2,13 +2,13 @@
   <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" accounts-list="savedAccountsList"/>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.account_comp.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_comp.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.account_comp.save</button>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
       <!-- end -->
       <div ng-hide="hasAccountsSelected() || noComparableAccounts" class="row">
         <div class="col-xs-12">
-          <h5>Select the accounts you wish to compare.</h5>
+          <h5 translate>impac.widget.account_comp.account.select</h5>
         </div>
         <div class="col-md-6">
           <div class="input-group">
@@ -32,7 +32,7 @@
       </div>
       <!-- error: when there are no comparable accounts matched -->
       <div ng-show="isComparisonMode() && noComparableAccounts" class="row comparable-error">
-        <div class="col-xs-12"><h5>No comparable accounts found.</h5></div>
+        <div class="col-xs-12"><h5 translate>impac.widget.account_comp.account.not_found</h5></div>
       </div>
 
       <div class="row" ng-show="hasAccountsSelected()">
@@ -85,7 +85,7 @@
       <div class="row" ng-show="hasAccountsSelected() && !pdfMode">
         <div class="col-xs-12 input-group add-account">
           <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
-            <option value="" disabled selected>+ ADD ACCOUNT</option>
+            <option value="" disabled selected translate>impac.widget.account_comp.account.add</option>
           </select>
         </div>
       </div>

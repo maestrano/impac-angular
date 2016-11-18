@@ -6,7 +6,6 @@
 //*************************************************************************/
 angular.module('maestrano.impac',
   [
-    'impac.config',
     'impac.run',
     'impac.constant',
     'impac.services',
@@ -14,10 +13,12 @@ angular.module('maestrano.impac',
     'impac.components',
     // EXTERNAL DEPENDENCIES //
     'ngMessages',
+    'ngMessageFormat',
     'ui.sortable',
     'ui.bootstrap',
     'emguo.poller',
-    'toastr'
+    'toastr',
+    'pascalprecht.translate'
   ]);
 
 /*
@@ -164,11 +165,6 @@ angular.module('impac.filters',
   ]
 );
 /*
-** CONFIG
+** CONSTANT
 */
-angular.module('impac.config', []).config(['$httpProvider',
-  function ($httpProvider) {
-    $httpProvider.defaults.headers.common['Accept'] = 'application/json';
-    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
-  }
-]);
+angular.module('impac.constant', []);

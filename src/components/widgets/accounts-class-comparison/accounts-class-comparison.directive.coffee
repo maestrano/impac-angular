@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-class-comparison', [])
-module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc) ->
+module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -31,9 +31,10 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
         klass = summary.classification
         {
           label: _.capitalize(klass.toLowerCase())
+          labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
-        # return { label: _.capitalize(summary.toLowerCase()), value: summary }
+      # return { label: _.capitalize(summary.toLowerCase()), value: summary }
 
       if !$scope.selectedClassification
         $scope.selectedClassification = angular.copy(_.find $scope.classifications, {

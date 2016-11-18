@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-assets-liability-summary', [])
-module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
   # Define settings
@@ -18,22 +18,31 @@ module.controller('WidgetAccountsAssetsLiabilitySummaryCtrl', ($scope, $q, Chart
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
-    #TODO: No .pluralize() in angular?
-    switch (w.metadata.classification || 'asset').toLowerCase()
-      when 'liability'
-        $scope.classification = "Liabilities"
-      else
-        $scope.classification = "Assets"
 
-    $scope.accountsOptions = [
-      { label: 'Assets Accounts', value: 'ASSET' },
-      { label: 'Liability Accounts', value: 'LIABILITY' }
-    ]
+    # Initialize the classification to ASSET
+    if !w.metadata.classification
+      w.metadata.classification = "ASSET"
 
-    if !$scope.selectedAccountsOption
-      $scope.selectedAccountsOption = angular.copy(_.find($scope.accountsOptions, {
-        value: w.metadata.classification || 'ASSET'
-      }))
+    # Pluralize and translate classification (Liability -> Liabilities ...)
+    $translate('impac.widget.acc_ass_liab_smry.' + w.metadata.classification.toLowerCase() + '.many').then((result) ->
+      $scope.classification = result
+    )
+
+    # Translate account options
+    $translate(['impac.widget.acc_ass_liab_smry.accounts.asset', 'impac.widget.acc_ass_liab_smry.accounts.liability']).then(
+      (translation) ->
+        # label: "Asset Accounts", value: "ASSET"
+        $scope.accountsOptions = [
+          { label: translation['impac.widget.acc_ass_liab_smry.accounts.asset'], value: 'ASSET' },
+          { label: translation['impac.widget.acc_ass_liab_smry.accounts.liability'], value: 'LIABILITY' }
+        ]
+
+        if !$scope.selectedAccountsOption
+          $scope.selectedAccountsOption = angular.copy(_.find($scope.accountsOptions, {
+            value: w.metadata.classification
+          }))
+    )
+
 
     if $scope.isDataFound
       if w.metadata.organization_ids.length > 1

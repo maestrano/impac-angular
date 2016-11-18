@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.time-period-info',[])
-module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
+module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $translate) ->
   return {
     restrict: 'A'
     scope: {
@@ -8,6 +8,7 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
     template: $templateCache.get('widgets-common/time-period-info.tmpl.html')
 
     link: (scope, element) ->
+
       getBehaviour = ->
         context = scope.context
         if angular.isFunction(context.accountingBehaviour)
@@ -15,12 +16,15 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
         else
           context.accountingBehaviour
 
-      scope.getDateInfo = ->
+      getDateInfo = ->
+        _self = this
         context = scope.context
         dates = ImpacUtilities.selectedTimeRange(context.histParams)
         if getBehaviour() == 'bls'
-          return "As at #{dates.to}"
+           $translate('impac.widget.common.time_period_info.to', {dateTo: "#{dates.to}"}).then((label) -> scope.date = label)
         else
-          return "From #{dates.from} to #{dates.to}"
+          $translate('impac.widget.common.time_period_info.from_to', {dateFrom: "#{dates.from}", dateTo: "#{dates.to}"}).then((label) -> scope.date = label)
+
+      getDateInfo()
   }
 )

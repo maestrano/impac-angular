@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, $translate) ->
 
   w = $scope.widget
 
@@ -69,7 +69,9 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
-      $scope.categories = Object.keys(w.content.summary)
+
+      $scope.categories = []
+      translateCategories(Object.keys(w.content.summary))
 
     initDates()
     sortData()
@@ -90,6 +92,16 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         return false
       else
         return true
+
+  translateCategories = (categories) ->
+    _.map categories, (category) ->
+      $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
+        (translation) ->
+          $scope.categories.push({label: translation, key: category})
+
+        (translationId) ->  # If there is no translation, keep the original
+          $scope.categories.push({label: category.toLowerCase(), key: category})
+      )
 
   sortAccountsBy = (getElem) ->
     angular.forEach($scope.categories, (cat) ->

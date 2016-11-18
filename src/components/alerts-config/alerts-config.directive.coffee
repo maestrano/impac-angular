@@ -1,5 +1,5 @@
 module = angular.module('impac.components.alerts-config', [])
-module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc, ImpacMainSvc) ->
+module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc, ImpacMainSvc, $translate) ->
 
   return {
     restrict: 'EA'
@@ -16,17 +16,30 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $compile(alertsConfig.contents())(scope)
 
     controller: ($scope) ->
-      $scope.alerts = {
-        inapp:
-          service: 'inapp'
-          label: "With in-app notifications"
-        email:
-          service: 'email'
-          label: "By sending me an email"
-      }
 
       ImpacMainSvc.load().then(
-        (config) -> $scope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
+        (config) ->
+          $scope.alerts = {
+            inapp:
+              service: 'inapp'
+            email:
+              service: 'email'
+          }
+
+          # Translate the alerts labels
+          $translate('impac.kpi.alerts.service.inapp').then((label) ->
+              $scope.alerts.inapp.label = label
+            )
+          if (config.userData? && config.userData.email)
+            # Custom "Send an email at @email"
+            $translate('impac.kpi.alerts.service.email', { EMAIL: 'hasEmail', email: config.userData.email }).then((label) ->
+                $scope.alerts.email.label = label
+              )
+          else
+            # Default "Send an email"
+            $translate('impac.kpi.alerts.service.email').then((label) ->
+                $scope.alerts.email.label = label
+              )
       )
 
       $scope.save = (alerts) ->
