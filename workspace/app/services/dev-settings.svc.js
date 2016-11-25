@@ -13,7 +13,7 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
       base: '/mnoe/jpi/v1'
     },
     impacUrl: {
-      host: 'http://localhost:4000',
+      host: 'https://api-impac-uat.maestrano.io',
       base: '/api'
     },
     // Selected Organization - first organisations if unspecified
