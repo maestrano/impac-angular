@@ -11,6 +11,8 @@ var $ = require('gulp-load-plugins')({
   pattern: ['browser-*']
 });
 
+var proxyMiddleware = require('http-proxy-middleware');
+
 function browserSyncInit(baseDir, browser) {
   browser = browser === undefined ? 'default' : browser;
 
