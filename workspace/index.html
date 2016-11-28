@@ -10,7 +10,11 @@
   <!-- endbower -->
   <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="../dist/impac-angular.css">
-  <link rel="stylesheet" href="index.css">
+  <!-- inject:css -->
+  <link rel="stylesheet" href="app/views/workspace/workspace.css">
+  <link rel="stylesheet" href="app/views/workspace/login/login.css">
+  <link rel="stylesheet" href="app/views/workspace/settings/settings.css">
+  <!-- endinject -->
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
@@ -19,19 +23,7 @@
 </head>
 <body ng-app="impacWorkspace">
 
-  <div id="workspace-header" class="hidden-print">
-    <h1 translate>workspace.title</h1>
-  </div>
-
-  <div id="workspace-dashboard" class="container">
-    <impac-dashboard></impac-dashboard>
-  </div>
-
-  <footer id="workspace-footer"  class="hidden-print">
-    <div>
-      <p></p>
-    </div>
-  </footer>
+  <div ui-view></div>
 
   <!-- bower:js -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -48,6 +40,10 @@
   <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
   <script src="../bower_components/pusher/dist/web/pusher.js"></script>
   <script src="../bower_components/angular-messages/angular-messages.js"></script>
+  <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
+  <script src="../bower_components/angular-scenario/angular-scenario.js"></script>
+  <script src="../bower_components/AngularDevise/lib/devise.js"></script>
+  <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="../bower_components/angular-translate/angular-translate.js"></script>
   <script src="../bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
   <script src="../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
@@ -60,7 +56,16 @@
   <script src="../bower_components/angular-message-format/angular-message-format.min.js"></script>
   <!-- endbower -->
 
-  <script src="index.js"></script>
+  <!-- inject:js -->
+  <script src="app/app.js"></script>
+  <script src="app/services/dev-session.svc.js"></script>
+  <script src="app/services/dev-settings.svc.js"></script>
+  <script src="app/services/dev-user.svc.js"></script>
+  <script src="app/views/workspace/workspace.controller.js"></script>
+  <script src="app/views/workspace/impac/impac.controller.js"></script>
+  <script src="app/views/workspace/login/login.controller.js"></script>
+  <script src="app/views/workspace/settings/settings.controller.js"></script>
+  <!-- endinject -->
   <script src="../dist/impac-angular.js"></script>
 </body>
 </html>

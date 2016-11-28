@@ -1,0 +1,28 @@
+#workspace .workspace-login {
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#workspace .workspace-login .login-box-container {
+  text-align: center;
+  margin-top: 100px;
+}
+
+#workspace .workspace-login .login-box {
+  width: 360px;
+  margin: auto;
+  padding: 10px 20px 20px 20px;
+  border-radius: 3px;
+}
+
+#workspace .workspace-login .login-box-actions a {
+  color: rgb(117, 129, 146);
+}
+#workspace .workspace-login .login-box-actions a:hover {
+  color: black;
+}
+
+#workspace .workspace-login .login-box-title {
+  color: rgb(117, 129, 146);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}

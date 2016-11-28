@@ -1,4 +1,5 @@
 # provider for configuring http endpoints.
+# TODO: REFACTOR THIS FOR MNOE AS DEFAULT + REVISE BASE PATHS DEFAULTS.
 angular
   .module('impac.services.routes', [])
   .provider('ImpacRoutes', () ->
