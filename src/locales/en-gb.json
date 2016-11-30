@@ -31,6 +31,20 @@
   "impac.common.period.preset_in_words.last_4_weeks": "Last 4 weeks",
   "impac.common.period.preset_in_words.choose_period": "Choose period...",
   "impac.common.period.preset_in_words.choose_dates": "Choose dates...",
+  "impac.common.label.job_title":     "Job Title",
+  "impac.common.label.company":       "Company",
+  "impac.common.label.phone":         "Phone",
+  "impac.common.label.email":         "Email",
+  "impac.common.label.date_of_birth": "Date of birth",
+  "impac.common.label.gender":        "Gender",
+  "impac.common.label.salary":        "Salary",
+  "impac.common.label.address":       "Address",
+  "impac.common.label.job_location":  "Job location",
+  "impac.common.label.supervisor":    "Supervisor",
+  "impac.common.label.status":        "Status",
+  "impac.common.label.employee":      "Employee",
+  "impac.common.label.title":         "Title",
+  "impac.common.label.note":          "Note",
 
 
   "impac.data_not_found_config.main_message":     "Data not found",
@@ -41,6 +55,7 @@
   "impac.widget.settings.time_period.time_range": "Time Range:",
   "impac.widget.settings.time_period.chart_interval": "Chart Interval:",
   "impac.widget.settings.time_period.chart_note": "Note: Chart is limited to {nbOfPeriods} intervals:",
+  "impac.widget.settings.time_period.period.hourly": "HOURLY",
   "impac.widget.settings.time_period.period.daily": "DAILY",
   "impac.widget.settings.time_period.period.weekly": "WEEKLY",
   "impac.widget.settings.time_period.period.monthly": "MONTHLY",
@@ -187,5 +202,15 @@
   "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
   "impac.widget.account_expense_weight.cancel":            "@:impac.common.action.cancel",
   "impac.widget.account_expense_weight.comparator.turnover": "turnover",
-  "impac.widget.account_expense_weight.comparator.total_exp": "total expenses"
+  "impac.widget.account_expense_weight.comparator.total_exp": "total expenses",
+
+  "impac.widget.accounts_profit_and_loss.settings.title":       "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_profit_and_loss.save":                 "@:impac.common.action.save",
+  "impac.widget.accounts_profit_and_loss.cancel":               "@:impac.common.action.cancel",
+  "impac.widget.accounts_profit_and_loss.accounts":             "Accounts",
+  "impac.widget.accounts_profit_and_loss.prof_loss":            "Profit/Loss",
+  "impac.widget.accounts_profit_and_loss.prof_and_loss":        "Profit and Loss",
+  "impac.widget.accounts_profit_and_loss.no_elements_selected": "Select one or several account(s) or account(s) type(s) to display the corresponding PnL.",
+  "impac.widget.accounts_profit_and_loss.last_period":          "Last period",
+  "impac.widget.accounts_profit_and_loss.total_for_period":     "Total for period"
 }

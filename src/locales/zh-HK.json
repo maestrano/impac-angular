@@ -31,6 +31,20 @@
   "impac.common.period.preset_in_words.last_4_weeks": "最近4周",
   "impac.common.period.preset_in_words.choose_period": "你好 你好...",
   "impac.common.period.preset_in_words.choose_dates": "你好 你好...",
+  "impac.common.label.job_title":     "Job Title",
+  "impac.common.label.company":       "Company",
+  "impac.common.label.phone":         "Phone",
+  "impac.common.label.email":         "Email",
+  "impac.common.label.date_of_birth": "Date of birth",
+  "impac.common.label.gender":        "Gender",
+  "impac.common.label.salary":        "Salary",
+  "impac.common.label.address":       "Address",
+  "impac.common.label.job_location":  "Job location",
+  "impac.common.label.supervisor":    "Supervisor",
+  "impac.common.label.status":        "Status",
+  "impac.common.label.employee":      "Employee",
+  "impac.common.label.title":         "Title",
+  "impac.common.label.note":          "Note",
 
 
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
@@ -41,6 +55,7 @@
   "impac.widget.settings.time_period.time_range": "你好 你好:",
   "impac.widget.settings.time_period.chart_interval": "你好 你好:",
   "impac.widget.settings.time_period.chart_note": "你好: 你好 你好 你好 你好 {nbOfPeriods} 你好:",
+  "impac.widget.settings.time_period.period.hourly": "你好",
   "impac.widget.settings.time_period.period.daily": "你好",
   "impac.widget.settings.time_period.period.weekly": "你好",
   "impac.widget.settings.time_period.period.monthly": "你好",
@@ -187,5 +202,15 @@
   "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
   "impac.widget.account_expense_weight.cancel":            "@:impac.common.action.cancel",
   "impac.widget.account_expense_weight.comparator.turnover": "你好",
-  "impac.widget.account_expense_weight.comparator.total_exp": "你好 你好"
+  "impac.widget.account_expense_weight.comparator.total_exp": "你好 你好",
+
+  "impac.widget.accounts_profit_and_loss.settings.title":       "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_profit_and_loss.save":                 "@:impac.common.action.save",
+  "impac.widget.accounts_profit_and_loss.cancel":               "@:impac.common.action.cancel",
+  "impac.widget.accounts_profit_and_loss.accounts":             "你好",
+  "impac.widget.accounts_profit_and_loss.prof_loss":            "你好/你好",
+  "impac.widget.accounts_profit_and_loss.prof_and_loss":        "你好 你好 你好",
+  "impac.widget.accounts_profit_and_loss.no_elements_selected": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
+  "impac.widget.accounts_profit_and_loss.last_period":          "你好 你好",
+  "impac.widget.accounts_profit_and_loss.total_for_period":     "你好 你好 你好"
 }
