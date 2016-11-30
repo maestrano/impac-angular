@@ -49,6 +49,7 @@
   "impac.common.label.title":         "你好",
   "impac.common.label.note":          "你好",
   "impac.common.label.age_range":     "你好 你好",
+  "impac.common.label.salary_range":  "你好 你好",
   "impac.common.text.from":           "你好",
   "impac.common.text.to":             "你好",
 
@@ -299,5 +300,12 @@
   "impac.widget.hr_timesheets.total_off":            "你好 你好 你好",
   "impac.widget.hr_timesheets.activities_not_found": "你好 你好 你好 你好",
   "impac.widget.hr_timesheets.from":                 "@:impac.common.text.from",
-  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to"
+  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to",
+
+  "impac.widget.hr_workforce_summary.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_workforce_summary.save":            "@:impac.common.action.save",
+  "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_workforce_summary.total_workforce": "你好 你好",
+  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
+  "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好"
 }

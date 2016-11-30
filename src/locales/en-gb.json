@@ -49,6 +49,7 @@
   "impac.common.label.title":         "Title",
   "impac.common.label.note":          "Note",
   "impac.common.label.age_range":     "Age Range",
+  "impac.common.label.salary_range":  "Salary Range",
   "impac.common.text.from":           "From",
   "impac.common.text.to":             "to",
 
@@ -299,5 +300,12 @@
   "impac.widget.hr_timesheets.total_off":            "Total Time Off",
   "impac.widget.hr_timesheets.activities_not_found": "Activities detail not found",
   "impac.widget.hr_timesheets.from":                 "@:impac.common.text.from",
-  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to"
+  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to",
+
+  "impac.widget.hr_workforce_summary.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_workforce_summary.save":            "@:impac.common.action.save",
+  "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_workforce_summary.total_workforce": "Total Workforce",
+  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
+  "impac.widget.hr_workforce_summary.legend.with":     "with known salary"
 }
