@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-payable-receivable',[])
 
-module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -44,11 +44,6 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      lineData = [
-        {title: "Payable", labels: dates, values: w.content.values.payables },
-        {title: "Receivable", labels: dates, values: w.content.values.receivables },
-      ]
-
       all_values_are_positive = true
       for value in w.content.values.payables
         all_values_are_positive &&= value >= 0
@@ -59,10 +54,23 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
-      chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
-      
-      # calls chart.draw()
-      $scope.drawTrigger.notify(chartData)
+
+      # translate lineData titles
+      $translate([
+        'impac.widget.accounts_payable_receivable.payable',
+        'impac.widget.accounts_payable_receivable.receivable']).then(
+        (translation) ->
+          lineData = [
+            {title: translation['impac.widget.accounts_payable_receivable.payable'], labels: dates, values: w.content.values.payables },
+            {title: translation['impac.widget.accounts_payable_receivable.receivable'], labels: dates, values: w.content.values.receivables },
+          ]
+
+          # init chartData after transletion chages
+          chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
+
+          # calls chart.draw()
+          $scope.drawTrigger.notify(chartData)
+      )
 
 
   # Widget is ready: can trigger the "wait for settigns to be ready"

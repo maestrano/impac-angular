@@ -212,5 +212,13 @@
   "impac.widget.accounts_profit_and_loss.prof_and_loss":        "Profit and Loss",
   "impac.widget.accounts_profit_and_loss.no_elements_selected": "Select one or several account(s) or account(s) type(s) to display the corresponding PnL.",
   "impac.widget.accounts_profit_and_loss.last_period":          "Last period",
-  "impac.widget.accounts_profit_and_loss.total_for_period":     "Total for period"
+  "impac.widget.accounts_profit_and_loss.total_for_period":     "Total for period",
+
+  "impac.widget.accounts_payable_receivable.settings.title":    "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_payable_receivable.save":              "@:impac.common.action.save",
+  "impac.widget.accounts_payable_receivable.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.accounts_payable_receivable.receivables.title": "Accounts Receivable",
+  "impac.widget.accounts_payable_receivable.payables.title":    "Accounts Payable",
+  "impac.widget.accounts_payable_receivable.payable":           "Payable",
+  "impac.widget.accounts_payable_receivable.receivable":        "Receivable",
 }

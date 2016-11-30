@@ -1,14 +1,14 @@
 <div widget-accounts-payable-receivable>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.accounts_payable_receivable.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.accounts_payable_receivable.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.accounts_payable_receivable.save</button>
     </div>
   </div>
 
@@ -18,15 +18,15 @@
 
       <div ng-hide="widget.isHistoryMode">
         <div class="receivable">
-          <h3>Accounts Receivable</h3>
+          <h3 translate>impac.widget.accounts_payable_receivable.receivables.title</h3>
           <div class="price positive2">
-             {{getCurrentReceivable() | mnoCurrency : getCurrency() : false}}
+            {{getCurrentReceivable() | mnoCurrency : getCurrency() : false}}
           </div>
           <div class="currency">{{getCurrency()}}</div>
         </div>
 
         <div class="payable">
-          <h3>Accounts Payable</h3>
+          <h3 translate>impac.widget.accounts_payable_receivable.payables.title</h3>
           <div class="price negative2">
             {{getCurrentPayable() | mnoCurrency : getCurrency() : false}}
           </div>
@@ -37,8 +37,8 @@
       <div class="chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="drawTrigger.promise" deferred="chartDeferred"></div>
         <div class="legend">
-          <span class="negative2">Payable</span> -
-          <span class="positive2">Receivable</span>
+          <span class="negative2" translate>impac.widget.accounts_payable_receivable.payable</span> -
+          <span class="positive2" translate>impac.widget.accounts_payable_receivable.receivable</span>
         </div>
       </div>
     </div>

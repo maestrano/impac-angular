@@ -212,5 +212,13 @@
   "impac.widget.accounts_profit_and_loss.prof_and_loss":        "你好 你好 你好",
   "impac.widget.accounts_profit_and_loss.no_elements_selected": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
   "impac.widget.accounts_profit_and_loss.last_period":          "你好 你好",
-  "impac.widget.accounts_profit_and_loss.total_for_period":     "你好 你好 你好"
+  "impac.widget.accounts_profit_and_loss.total_for_period":     "你好 你好 你好",
+
+  "impac.widget.accounts_payable_receivable.settings.title":    "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_payable_receivable.save":              "@:impac.common.action.save",
+  "impac.widget.accounts_payable_receivable.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.accounts_payable_receivable.receivables.title": "你好 你好",
+  "impac.widget.accounts_payable_receivable.payables.title":    "你好 你好",
+  "impac.widget.accounts_payable_receivable.payable":           "你好",
+  "impac.widget.accounts_payable_receivable.receivable":        "你好",
 }
