@@ -307,5 +307,17 @@
   "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_workforce_summary.total_workforce": "你好 你好",
   "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-  "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好"
+  "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好",
+
+  "impac.widget.invoices-receivables.settings.title":                "@:impac.common.title.widget.settings.title",
+  "impac.widget.invoices-receivables.save":                          "@:impac.common.action.save",
+  "impac.widget.invoices-receivables.cancel":                        "@:impac.common.action.cancel",
+  "impac.widget.invoices-receivables.payables_and_receivables":      "你好 & 你好",
+  "impac.widget.invoices-receivables.total":                         "你好",
+  "impac.widget.invoices-receivables.oldest":                        "你好",
+  "impac.widget.invoices-receivables.aged_payables":                 "你好 你好",
+  "impac.widget.invoices-receivables.aged_receivables":              "你好 你好",
+  "impac.widget.invoices-receivables.aged_payables_and_receivables": "你好 你好 你好 你好",
+  "impac.widget.invoices-receivables.your_opening_balance":          "* 你好 你好-你好 你好 你好 你好/你好 你好 你好 你好 你好.",
+  "impac.widget.invoices-receivables.select_accounts":               "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好/你好 你好(s)."
 }

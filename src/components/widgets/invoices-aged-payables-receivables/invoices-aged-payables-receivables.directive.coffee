@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-aged-payables-receivables',[])
 
-module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log, $filter, ChartFormatterSvc, ImpacWidgetsSvc) ->
+module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log, $filter, ChartFormatterSvc, ImpacWidgetsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -216,6 +216,12 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   w.settings.push(selectedElementsSetting)
 
+  # translate
+  periodName = if ($scope.widget.content.hist_parameters && $scope.widget.content.hist_parameters.period) then $scope.widget.content.hist_parameters.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

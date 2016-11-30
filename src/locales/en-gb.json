@@ -307,5 +307,17 @@
   "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_workforce_summary.total_workforce": "Total Workforce",
   "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-  "impac.widget.hr_workforce_summary.legend.with":     "with known salary"
+  "impac.widget.hr_workforce_summary.legend.with":     "with known salary",
+
+  "impac.widget.invoices-receivables.settings.title":                "@:impac.common.title.widget.settings.title",
+  "impac.widget.invoices-receivables.save":                          "@:impac.common.action.save",
+  "impac.widget.invoices-receivables.cancel":                        "@:impac.common.action.cancel",
+  "impac.widget.invoices-receivables.payables_and_receivables":      "Payables & Receivables",
+  "impac.widget.invoices-receivables.total":                         "Total",
+  "impac.widget.invoices-receivables.oldest":                        "Oldest",
+  "impac.widget.invoices-receivables.aged_payables":                 "Aged Payables",
+  "impac.widget.invoices-receivables.aged_receivables":              "Aged Receivables",
+  "impac.widget.invoices-receivables.aged_payables_and_receivables": "Aged Payables and Receivables",
+  "impac.widget.invoices-receivables.your_opening_balance":          "* Your opening-balance of receivables and/or payables for this period.",
+  "impac.widget.invoices-receivables.select_accounts":               "Select one or several account(s) or category(ies) to display the payables/receivables evolution(s)."
 }
