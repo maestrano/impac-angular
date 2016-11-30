@@ -1,13 +1,13 @@
 <div widget-invoices-list>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4 translate>impac.widget.invoices-list.settings.title</h4>
+    <h4 translate>impac.widget.invoices_list.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices-list.cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices-list.save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices_list.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices_list.save</button>
     </div>
   </div>
 
@@ -16,14 +16,14 @@
     <!-- Header line -->
     <tr class="widget-line header">
       <td>{{entityTypeCap}}</td>
-      <td translate>impac.widget.invoices-list.paid</td>
-      <td translate>impac.widget.invoices-list.due</td>
-      <td translate>impac.widget.invoices-list.invoiced</td>
+      <td translate>impac.widget.invoices_list.paid</td>
+      <td translate>impac.widget.invoices_list.due</td>
+      <td translate>impac.widget.invoices_list.invoiced</td>
     </tr>
 
     <!-- Data not found line -->
     <tr class="widget-line" ng-show="(isDataFound==false)">
-      <td translate translate-values="{orderBy: orderBy, entityType: entityType}">impac.widget.invoices-list.no_invoice</td>
+      <td translate translate-values="{orderBy: orderBy, entityType: entityType}">impac.widget.invoices_list.no_invoice</td>
     </tr>
     
     <!-- Content lines -->

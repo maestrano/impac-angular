@@ -1,14 +1,14 @@
 <div widget-invoices-aged-payables-receivables>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4 translate>impac.widget.invoices-receivables.settings.title</h4>
+    <h4 translate>impac.widget.invoices_receivables.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices-receivables.cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices-receivables.save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices_receivables.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices_receivables.save</button>
     </div>
   </div>
 
@@ -22,15 +22,15 @@
 
           <div class="row widget-line header">
             <div class="col-xs-6 sortable-title" ng-click="sort('customer')">
-              {{'impac.widget.invoices-receivables.payables_and_receivables' | translate}}
+              {{'impac.widget.invoices_receivables.payables_and_receivables' | translate}}
               <i ng-show="sortedColumn == 'customer'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-3 text-right sortable-title" ng-click="sort('total')">
-              {{'impac.widget.invoices-receivables.total' | translate}}
+              {{'impac.widget.invoices_receivables.total' | translate}}
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-3 text-right sortable-title" ng-click="sort('invoice')">
-              {{'impac.widget.invoices-receivables.oldest' | translate}}
+              {{'impac.widget.invoices_receivables.oldest' | translate}}
               <i ng-show="sortedColumn == 'invoice'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>
@@ -44,7 +44,7 @@
                   <i ng-show="(widget.content.payables.suppliers && widget.content.payables.suppliers.length)" class="fa" ng-class="isCollapsed(widget.content.payables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
                 <div class="col-xs-5" ng-click="toggleSelectedElement(widget.content.payables)">
-                  <strong translate>impac.widget.invoices-receivables.aged_payables</strong>
+                  <strong translate>impac.widget.invoices_receivables.aged_payables</strong>
                 </div>
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(widget.content.payables)">
                   <strong>{{getTotalSum(widget.content.payables) | mnoCurrency : widget.content.payables.currency}}</strong>
@@ -85,7 +85,7 @@
                   <i ng-show="(widget.content.receivables.customers && widget.content.receivables.customers.length)" class="fa" ng-class="isCollapsed(widget.content.receivables) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
                 </div>
                 <div class="col-xs-5" ng-click="toggleSelectedElement(widget.content.receivables)">
-                  <strong translate>impac.widget.invoices-receivables.aged_receivables</strong>
+                  <strong translate>impac.widget.invoices_receivables.aged_receivables</strong>
                 </div>
                 <div class="col-xs-3 text-right" ng-click="toggleSelectedElement(widget.content.receivables)">
                   <strong>{{getTotalSum(widget.content.receivables) | mnoCurrency : widget.content.receivables.currency}}</strong>
@@ -124,7 +124,7 @@
 
         <div ng-show="hasElements()">
 
-          <h4>{{::period_translation | titleize}} {{'impac.widget.invoices-receivables.aged_payables_and_receivables' | translate}}</h4>
+          <h4>{{::period_translation | titleize}} {{'impac.widget.invoices_receivables.aged_payables_and_receivables' | translate}}</h4>
 
           <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
@@ -171,7 +171,7 @@
 
             <div class="row astericks-info">
               <div class="col-xs-12">
-                <p><i translate>impac.widget.invoices-receivables.your_opening_balance</i></p>
+                <p><i translate>impac.widget.invoices_receivables.your_opening_balance</i></p>
               </div>
             </div>
           </div>
@@ -196,14 +196,14 @@
 
             <div class="row astericks-info">
               <div class="col-xs-12">
-                <p><i translate>impac.widget.invoices-receivables.your_opening_balance</i></p>
+                <p><i translate>impac.widget.invoices_receivables.your_opening_balance</i></p>
               </div>
             </div>
           </div>
 
         </div>
 
-        <div ng-hide="hasElements()" class="no-element" translate>impac.widget.invoices-receivables.select_accounts</div>
+        <div ng-hide="hasElements()" class="no-element" translate>impac.widget.invoices_receivables.select_accounts</div>
 
       </div>
 
