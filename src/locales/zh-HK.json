@@ -283,5 +283,10 @@
   "impac.widget.hr_salaries_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_salaries_summary.average_rate":    "你好 你好 你好",
   "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
-  "impac.widget.hr_salaries_summary.legend.with":     "你好 你好 你好"
+  "impac.widget.hr_salaries_summary.legend.with":     "你好 你好 你好",
+
+  "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
+  "impac.widget.hr_superannuation_accruals.cancel":                 "@:impac.common.action.cancel",
+  "impac.widget.hr_superannuation_accruals.superannuation_balance": "你好 你好"
 }

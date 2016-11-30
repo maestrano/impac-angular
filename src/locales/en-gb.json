@@ -283,5 +283,10 @@
   "impac.widget.hr_salaries_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_salaries_summary.average_rate":    "Average Salary Rate",
   "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-  "impac.widget.hr_salaries_summary.legend.with":     "with known salary"
+  "impac.widget.hr_salaries_summary.legend.with":     "with known salary",
+
+  "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
+  "impac.widget.hr_superannuation_accruals.cancel":                 "@:impac.common.action.cancel",
+  "impac.widget.hr_superannuation_accruals.superannuation_balance": "Superannuation Balance"
 }
