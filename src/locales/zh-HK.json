@@ -237,5 +237,16 @@
   "impac.widget.hr_employee_details.label.supervisor":    "@:impac.common.label.supervisor",
   "impac.widget.hr_employee_details.label.status":        "@:impac.common.label.status",
   "impac.widget.hr_employee_details.label.note":          "@:impac.common.label.note",
-  "impac.widget.hr_employee_details.legend":              "你好 你好 你好:"
+  "impac.widget.hr_employee_details.legend":              "你好 你好 你好:",
+
+  "impac.widget.hr_employees_list.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_employees_list.save":            "@:impac.common.action.save",
+  "impac.widget.hr_employees_list.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_employees_list.label.company":   "@:impac.common.label.company",
+  "impac.widget.hr_employees_list.label.employee":  "@:impac.common.label.employee",
+  "impac.widget.hr_employees_list.label.title":     "@:impac.common.label.title",
+  "impac.widget.hr_employees_list.label.phone":     "@:impac.common.label.phone",
+  "impac.widget.hr_employees_list.label.salary":    "@:impac.common.label.salary",
+  "impac.widget.hr_employees_list.legend.average":  " - 你好 你好 你好",
+  "impac.widget.hr_employees_list.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}"
 }

@@ -1,13 +1,13 @@
 <div widget-hr-employees-list>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.hr_employees_list.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_employees_list.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_employees_list.save</button>
     </div>
   </div>
 
@@ -16,16 +16,16 @@
     <div ng-show="(isDataFound==true)" >
 
       <div class="legend">
-        <strong>{{widget.content.total.employees}}</strong> employee{{widget.content.total.employees > 1 ? "s" : null}} - Average salary rate (<span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>
+        <strong>{{widget.content.total.employees}}</strong> <span translate="impac.widget.hr_employees_list.legend.employee" translate-values="{num_employee: widget.content.total.employees}"></span> {{'impac.widget.hr_employees_list.legend.average' | translate}} (<span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>
       </div>
 
       <div class="widget-lines-container">
         <div class="row widget-line header">
-          <div class="col-sm-2">Company</div>
-          <div class="col-sm-3">Employee</div>
-          <div class="col-sm-2">Title</div>
-          <div class="col-sm-3">Phone</div>
-          <div class="col-sm-2">Salary</div>
+          <div class="col-sm-2" translate>impac.widget.hr_employees_list.label.company</div>
+          <div class="col-sm-3" translate>impac.widget.hr_employees_list.label.employee</div>
+          <div class="col-sm-2" translate>impac.widget.hr_employees_list.label.title</div>
+          <div class="col-sm-3" translate>impac.widget.hr_employees_list.label.phone</div>
+          <div class="col-sm-2" translate>impac.widget.hr_employees_list.label.salary</div>
         </div>
         <div class="row widget-line" ng-repeat="employee in widget.content.employees" >
           <div class="col-sm-2">{{employee.company || getSingleCompanyName()}}</div>
