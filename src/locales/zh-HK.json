@@ -49,6 +49,8 @@
   "impac.common.label.title":         "你好",
   "impac.common.label.note":          "你好",
   "impac.common.label.age_range":     "你好 你好",
+  "impac.common.text.from":           "你好",
+  "impac.common.text.to":             "你好",
 
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
   "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
@@ -268,9 +270,9 @@
   "impac.widget.hr_payroll_summary.save":            "@:impac.common.action.save",
   "impac.widget.hr_payroll_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_payroll_summary.payroll_summary": "你好 你好",
-  "impac.widget.hr_payroll_summary.from": "你好",
-  "impac.widget.hr_payroll_summary.to": "你好",
-  "impac.widget.hr_payroll_summary.no_elements": "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好 你好.",
+  "impac.widget.hr_payroll_summary.from":            "@:impac.common.text.from",
+  "impac.widget.hr_payroll_summary.to":              "@:impac.common.text.to",
+  "impac.widget.hr_payroll_summary.no_elements":     "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好 你好.",
 
   "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
@@ -288,5 +290,14 @@
   "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
   "impac.widget.hr_superannuation_accruals.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.hr_superannuation_accruals.superannuation_balance": "你好 你好"
+  "impac.widget.hr_superannuation_accruals.superannuation_balance": "你好 你好",
+
+  "impac.widget.hr_timesheets.settings.title":       "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_timesheets.save":                 "@:impac.common.action.save",
+  "impac.widget.hr_timesheets.cancel":               "@:impac.common.action.cancel",
+  "impac.widget.hr_timesheets.total_worked":         "你好 你好 你好",
+  "impac.widget.hr_timesheets.total_off":            "你好 你好 你好",
+  "impac.widget.hr_timesheets.activities_not_found": "你好 你好 你好 你好",
+  "impac.widget.hr_timesheets.from":                 "@:impac.common.text.from",
+  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to"
 }
