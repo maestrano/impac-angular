@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-employees-list',[])
 
-module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
+module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate) ->
 
   w = $scope.widget
 
