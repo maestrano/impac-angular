@@ -48,7 +48,7 @@
   "impac.common.label.employee":      "Employee",
   "impac.common.label.title":         "Title",
   "impac.common.label.note":          "Note",
-
+  "impac.common.label.age_range":     "Age Range",
 
   "impac.data_not_found_config.main_message":     "Data not found",
   "impac.data_not_found_config.link_message":     "Are you missing an app?",
@@ -276,5 +276,12 @@
   "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
   "impac.widget.hr_payroll_taxes.cancel":         "@:impac.common.action.cancel",
   "impac.widget.hr_payroll_taxes.legend":         "Taxes upon workforce costs",
-  "impac.widget.hr_payroll_taxes.payroll_taxes":  "Payroll Taxes"
+  "impac.widget.hr_payroll_taxes.payroll_taxes":  "Payroll Taxes",
+
+  "impac.widget.hr_salaries_summary.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_salaries_summary.save":            "@:impac.common.action.save",
+  "impac.widget.hr_salaries_summary.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_salaries_summary.average_rate":    "Average Salary Rate",
+  "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
+  "impac.widget.hr_salaries_summary.legend.with":     "with known salary"
 }
