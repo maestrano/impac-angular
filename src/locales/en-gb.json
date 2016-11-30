@@ -4,6 +4,9 @@
   "impac.common.action.cancel":                   "Cancel",
   "impac.common.action.save":                     "Save",
   "impac.common.action.delete":                   "Delete",
+  "impac.common.action.calendar.left":            "prev",
+  "impac.common.action.calendar.center":          "title",
+  "impac.common.action.calendar.right":           "next",
   "impac.common.title.widget.settings.title":     "Widget settings",
   "impac.common.measure.unit.days":               "{QTY, plural, =0{day} one{day} other{days}}",
   "impac.common.measure.unit.percentage":         "%",
@@ -253,8 +256,11 @@
   "impac.widget.hr_leaves_balance.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_leaves_balance.save":            "@:impac.common.action.save",
   "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_leaves_balance.vacation_leaves": "Vacation leaves",
   "impac.widget.hr_leaves_balance.sick_leaves":     "Sick leaves",
-  "impac.widget.hr_leaves_balance.balance":         "balance"
+  "impac.widget.hr_leaves_balance.balance":         "balance",
+
+  "impac.widget.hr_leaves_schedule.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_leaves_schedule.save":            "@:impac.common.action.save",
+  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel"
 }

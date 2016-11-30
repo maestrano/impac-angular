@@ -4,6 +4,9 @@
   "impac.common.action.cancel":                   "你好",
   "impac.common.action.save":                     "你好",
   "impac.common.action.delete":                   "你好",
+  "impac.common.action.calendar.left":            "你好",
+  "impac.common.action.calendar.center":          "你好",
+  "impac.common.action.calendar.right":           "你好",
   "impac.common.title.widget.settings.title":     "你好 你好",
   "impac.common.measure.unit.days":               "{QTY, plural, =0{你好} one{你好} other{你好}}",
   "impac.common.measure.unit.percentage":         "%",
@@ -253,8 +256,11 @@
   "impac.widget.hr_leaves_balance.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_leaves_balance.save":            "@:impac.common.action.save",
   "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_leaves_balance.vacation_leaves": "你好 你好",
   "impac.widget.hr_leaves_balance.sick_leaves":     "你好 你好",
-  "impac.widget.hr_leaves_balance.balance":         "你好"
+  "impac.widget.hr_leaves_balance.balance":         "你好",
+
+  "impac.widget.hr_leaves_schedule.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_leaves_schedule.save":            "@:impac.common.action.save",
+  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel"
 }

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-leaves-schedule',[])
 
-module.controller('WidgetHrLeavesScheduleCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetHrLeavesScheduleCtrl', ($scope, $q, ChartFormatterSvc, $tranlate) ->
 
   w = $scope.widget
 
@@ -68,8 +68,19 @@ module.directive('widgetComponentCalendar', ->
       scope.$watch getEvents, (events) ->
         if events.length > 0
           element.fullCalendar('destroy')
-          angular.extend(calendarOptions, {events: scope.events})
-          element.fullCalendar(calendarOptions)
+
+          $translate([
+            "impac.common.action.calendar.left",
+            "impac.common.action.calendar.center",
+            "impac.common.action.calendar.right"]).then(
+            (translations) ->
+              calendarOptions.header.left = translations["impac.common.action.calendar.left"]
+              calendarOptions.header.center = translations["impac.common.action.calendar.center"]
+              calendarOptions.header.right = translations["impac.common.action.calendar.right"]
+
+              angular.extend(calendarOptions, {events: scope.events})
+              element.fullCalendar(calendarOptions)
+          )
       ,true
   }
 )
