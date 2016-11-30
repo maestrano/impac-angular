@@ -319,5 +319,16 @@
   "impac.widget.invoices-receivables.aged_receivables":              "Aged Receivables",
   "impac.widget.invoices-receivables.aged_payables_and_receivables": "Aged Payables and Receivables",
   "impac.widget.invoices-receivables.your_opening_balance":          "* Your opening-balance of receivables and/or payables for this period.",
-  "impac.widget.invoices-receivables.select_accounts":               "Select one or several account(s) or category(ies) to display the payables/receivables evolution(s)."
+  "impac.widget.invoices-receivables.select_accounts":               "Select one or several account(s) or category(ies) to display the payables/receivables evolution(s).",
+
+  "impac.widget.invoices-list.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.invoices-list.save":           "@:impac.common.action.save",
+  "impac.widget.invoices-list.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.invoices-list.paid":           "Paid",
+  "impac.widget.invoices-list.due":            "Due",
+  "impac.widget.invoices-list.invoiced":       "Invoiced",
+  "impac.widget.invoices-list.no_invoice":     "No {orderBy}invoice found for your {entityType}",
+  "impac.widget.invoices-list.total_paid":     "- Total paid",
+  "impac.widget.invoices-list.total_due":      "- Total due",
+  "impac.widget.invoices-list.total_invoiced": "- Total invoiced"
 }

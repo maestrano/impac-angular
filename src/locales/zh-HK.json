@@ -319,5 +319,16 @@
   "impac.widget.invoices-receivables.aged_receivables":              "你好 你好",
   "impac.widget.invoices-receivables.aged_payables_and_receivables": "你好 你好 你好 你好",
   "impac.widget.invoices-receivables.your_opening_balance":          "* 你好 你好-你好 你好 你好 你好/你好 你好 你好 你好 你好.",
-  "impac.widget.invoices-receivables.select_accounts":               "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好/你好 你好(s)."
+  "impac.widget.invoices-receivables.select_accounts":               "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好/你好 你好(s).",
+
+  "impac.widget.invoices-list.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.invoices-list.save":           "@:impac.common.action.save",
+  "impac.widget.invoices-list.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.invoices-list.paid":           "你好",
+  "impac.widget.invoices-list.due":            "你好",
+  "impac.widget.invoices-list.invoiced":       "你好",
+  "impac.widget.invoices-list.no_invoice":     "你好 {orderBy}你好 你好 你好 你好 {entityType}",
+  "impac.widget.invoices-list.total_paid":     "- 你好 你好",
+  "impac.widget.invoices-list.total_due":      "- 你好 你好",
+  "impac.widget.invoices-list.total_invoiced": "- 你好 你好"
 }
