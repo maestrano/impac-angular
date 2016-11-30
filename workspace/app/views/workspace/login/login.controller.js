@@ -39,5 +39,11 @@ angular.module('impacWorkspace').controller('LoginController', function ($state,
     );
   };
 
+  vm.onFormKeyup = function ($event) {
+    if ($event.keyCode == 13) {
+      vm.showRegisterForm ? vm.register() : vm.login();
+    }
+  };
+
   return vm;
 });
