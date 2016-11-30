@@ -221,4 +221,21 @@
   "impac.widget.accounts_payable_receivable.payables.title":    "Accounts Payable",
   "impac.widget.accounts_payable_receivable.payable":           "Payable",
   "impac.widget.accounts_payable_receivable.receivable":        "Receivable",
+
+  "impac.widget.hr_employee_details.settings.title":      "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_employee_details.save":                "@:impac.common.action.save",
+  "impac.widget.hr_employee_details.cancel":              "@:impac.common.action.cancel",
+  "impac.widget.hr_employee_details.label.job_title":     "@:impac.common.label.job_title",
+  "impac.widget.hr_employee_details.label.company":       "@:impac.common.label.company",
+  "impac.widget.hr_employee_details.label.phone":         "@:impac.common.label.phone",
+  "impac.widget.hr_employee_details.label.email":         "@:impac.common.label.email",
+  "impac.widget.hr_employee_details.label.date_of_birth": "@:impac.common.label.date_of_birth",
+  "impac.widget.hr_employee_details.label.gender":        "@:impac.common.label.gender",
+  "impac.widget.hr_employee_details.label.salary":        "@:impac.common.label.salary",
+  "impac.widget.hr_employee_details.label.address":       "@:impac.common.label.address",
+  "impac.widget.hr_employee_details.label.job_location":  "@:impac.common.label.job_location",
+  "impac.widget.hr_employee_details.label.supervisor":    "@:impac.common.label.supervisor",
+  "impac.widget.hr_employee_details.label.status":        "@:impac.common.label.status",
+  "impac.widget.hr_employee_details.label.note":          "@:impac.common.label.note",
+  "impac.widget.hr_employee_details.legend":              "Salary calculation period:"
 }
