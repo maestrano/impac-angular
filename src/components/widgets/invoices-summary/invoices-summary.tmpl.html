@@ -1,15 +1,15 @@
 <div widget-invoices-summary>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.invoices-summary.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-dates-picker parent-widget="widget" class="part" from="(widget.metadata.hist_parameters.from || defaultFrom)" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
     <div setting-chart-filters parent-widget="widget" class="part" deferred="::chartFiltersDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices-summary.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices-summary.save</button>
     </div>
   </div>
 

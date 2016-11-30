@@ -330,5 +330,9 @@
   "impac.widget.invoices-list.no_invoice":     "No {orderBy}invoice found for your {entityType}",
   "impac.widget.invoices-list.total_paid":     "- Total paid",
   "impac.widget.invoices-list.total_due":      "- Total due",
-  "impac.widget.invoices-list.total_invoiced": "- Total invoiced"
+  "impac.widget.invoices-list.total_invoiced": "- Total invoiced",
+
+  "impac.widget.invoices-summary.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.invoices-summary.save":           "@:impac.common.action.save",
+  "impac.widget.invoices-summary.cancel":         "@:impac.common.action.cancel"
 }
