@@ -248,5 +248,13 @@
   "impac.widget.hr_employees_list.label.phone":     "@:impac.common.label.phone",
   "impac.widget.hr_employees_list.label.salary":    "@:impac.common.label.salary",
   "impac.widget.hr_employees_list.legend.average":  " - 你好 你好 你好",
-  "impac.widget.hr_employees_list.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}"
+  "impac.widget.hr_employees_list.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
+
+  "impac.widget.hr_leaves_balance.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_leaves_balance.save":            "@:impac.common.action.save",
+  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_leaves_balance.vacation_leaves": "你好 你好",
+  "impac.widget.hr_leaves_balance.sick_leaves":     "你好 你好",
+  "impac.widget.hr_leaves_balance.balance":         "你好"
 }
