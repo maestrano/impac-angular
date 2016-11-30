@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-payroll-taxes',[])
 
-module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -59,11 +59,15 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $f
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
-      chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
-      # calls chart.draw()
-      $scope.drawTrigger.notify(chartData)
+      # translate
+      $translate('impac.widget.hr_payroll_taxes.payroll_taxes').then((result) ->
+        inputData.title = result
 
+        chartData = ChartFormatterSvc.lineChart([inputData],options)
+
+        # calls chart.draw()
+        $scope.drawTrigger.notify(chartData)
+      )
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

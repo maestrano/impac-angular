@@ -1,14 +1,14 @@
 <div widget-hr-payroll-taxes>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.hr_payroll_taxes.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_payroll_taxes.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_payroll_taxes.save</button>
     </div>
   </div>
 
@@ -19,12 +19,12 @@
       <div ng-hide="widget.isHistoryMode" class="current">
         <div class="price">{{getCurrentPrice() | mnoCurrency : getCurrency() : false}}</div>
         <div class="currency">{{getCurrency()}}</div>
-        <div class="legend">Taxes upon workforce costs<br />{{getPeriod()}}</div>
+        <div class="legend">{{'impac.widget.hr_payroll_taxes.legend' | translate}}<br />{{getPeriod()}}</div>
       </div>
 
       <div class="history chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-        <div class="legend">Taxes upon workforce costs</div>
+        <div class="legend">{{'impac.widget.hr_payroll_taxes.legend' | translate}}</div>
       </div>
     </div>
 

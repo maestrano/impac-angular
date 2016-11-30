@@ -270,5 +270,11 @@
   "impac.widget.hr_payroll_summary.payroll_summary": "Payroll Summary",
   "impac.widget.hr_payroll_summary.from": "From",
   "impac.widget.hr_payroll_summary.to": "to",
-  "impac.widget.hr_payroll_summary.no_elements": "Select one or several employee(s) or category(ies) to display the corresponding summary."
+  "impac.widget.hr_payroll_summary.no_elements": "Select one or several employee(s) or category(ies) to display the corresponding summary.",
+
+  "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
+  "impac.widget.hr_payroll_taxes.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.hr_payroll_taxes.legend":         "Taxes upon workforce costs",
+  "impac.widget.hr_payroll_taxes.payroll_taxes":  "Payroll Taxes"
 }
