@@ -262,5 +262,13 @@
 
   "impac.widget.hr_leaves_schedule.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_leaves_schedule.save":            "@:impac.common.action.save",
-  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel"
+  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel",
+
+  "impac.widget.hr_payroll_summary.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.hr_payroll_summary.save":            "@:impac.common.action.save",
+  "impac.widget.hr_payroll_summary.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.hr_payroll_summary.payroll_summary": "你好 你好",
+  "impac.widget.hr_payroll_summary.from": "你好",
+  "impac.widget.hr_payroll_summary.to": "你好",
+  "impac.widget.hr_payroll_summary.no_elements": "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好 你好."
 }
