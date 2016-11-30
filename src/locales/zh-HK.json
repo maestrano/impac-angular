@@ -334,5 +334,14 @@
 
   "impac.widget.invoices_summary.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_summary.save":           "@:impac.common.action.save",
-  "impac.widget.invoices_summary.cancel":         "@:impac.common.action.cancel"
+  "impac.widget.invoices_summary.cancel":         "@:impac.common.action.cancel",
+
+  "impac.widget.sales_aged.settings.title":      "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_aged.save":                "@:impac.common.action.save",
+  "impac.widget.sales_aged.cancel":              "@:impac.common.action.cancel",
+  "impac.widget.sales_aged.from":                "@:impac.common.text.from",
+  "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
+  "impac.widget.sales_aged.value_sold_taxes":    "你好 你好 (你好. 你好)",
+  "impac.widget.sales_aged.value_sold_no_taxes": "你好 你好 (你好. 你好)",
+  "impac.widget.sales_aged.quantity_sold":       "你好 你好"
 }
