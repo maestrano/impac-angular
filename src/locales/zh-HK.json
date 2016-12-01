@@ -424,5 +424,12 @@
   "impac.widget.sales_growth.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
   "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
   "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_growth.select_product":           "你好 你好"
+  "impac.widget.sales_growth.select_product":           "你好 你好",
+
+  "impac.widget.sales_leads_funnel.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_leads_funnel.save":           "@:impac.common.action.save",
+  "impac.widget.sales_leads_funnel.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_leads_funnel.legend.your_leads": "你好 你好 你好 你好 你好",
+  "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
+  "impac.widget.sales_leads_funnel.select_a_status":   "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好"
 }
