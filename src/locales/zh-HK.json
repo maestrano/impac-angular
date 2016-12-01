@@ -502,5 +502,17 @@
   "impac.widget.sales_performance.total_won":          "你好 你好 :",
   "impac.widget.sales_performance.forecast":           "你好",
   "impac.widget.sales_performance.closed_won":         "你好 你好",
-  "impac.widget.sales_performance.closed_lost":        "你好 你好"
+  "impac.widget.sales_performance.closed_lost":        "你好 你好",
+
+  "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
+  "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
+  "impac.widget.sales_turnover.average_price":    "你好 你好 你好",
+  "impac.widget.sales_turnover.of_your_revenue":  "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
+  "impac.widget.sales_turnover.and":              "你好",
+  "impac.widget.sales_turnover.gross_revenue":    "你好 你好 (你好. 你好)",
+  "impac.widget.sales_turnover.net_revenue":      "你好 你好 (你好. 你好)",
+  "impac.widget.sales_turnover.analysis.less":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
+  "impac.widget.sales_turnover.analysis.must":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
+  "impac.widget.sales_turnover.analysis.revenue": "你好 你好 你好 你好 你好 你好 你好 你好 你好."
 }

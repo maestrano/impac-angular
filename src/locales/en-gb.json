@@ -502,5 +502,17 @@
   "impac.widget.sales_performance.total_won":          "Total won :",
   "impac.widget.sales_performance.forecast":           "Forecast",
   "impac.widget.sales_performance.closed_won":         "Closed Won",
-  "impac.widget.sales_performance.closed_lost":        "Closed Lost"
+  "impac.widget.sales_performance.closed_lost":        "Closed Lost",
+
+  "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
+  "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
+  "impac.widget.sales_turnover.average_price":    "Average price range",
+  "impac.widget.sales_turnover.of_your_revenue":  "of your revenue comes from products sold at an average price between",
+  "impac.widget.sales_turnover.and":              "and",
+  "impac.widget.sales_turnover.gross_revenue":    "Gross revenue (incl. taxes)",
+  "impac.widget.sales_turnover.net_revenue":      "Net revenue (excl. taxes)",
+  "impac.widget.sales_turnover.analysis.less":    "Your less expensive products bring you most of your revenue.",
+  "impac.widget.sales_turnover.analysis.must":    "Your most expensive products bring you most of your revenue.",
+  "impac.widget.sales_turnover.analysis.revenue": "Your revenue is balanced between your different products segments."
 }
