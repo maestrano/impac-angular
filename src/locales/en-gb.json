@@ -480,5 +480,13 @@
   "impac.widget.sales_number_of_leads.save":           "@:impac.common.action.save",
   "impac.widget.sales_number_of_leads.cancel":         "@:impac.common.action.cancel",
   "impac.widget.sales_number_of_leads.leads_for_this": "Leads for this",
-  "impac.widget.sales_number_of_leads.leads_in_total": "leads in total"
+  "impac.widget.sales_number_of_leads.leads_in_total": "leads in total",
+
+  "impac.widget.sales_funnel.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_funnel.save":           "@:impac.common.action.save",
+  "impac.widget.sales_funnel.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_funnel.legend":         "Your opportunities, sorted by sales stage",
+  "impac.widget.sales_funnel.select_a_sales": "Select a sales stage to display a list of the corresponding opportunities",
+  "impac.widget.sales_funnel.assignees_opportunities": "Assignees / Opportunities",
+  "impac.widget.sales_funnel.assignees_opportunities": "Potential per assignee"
 }
