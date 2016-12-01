@@ -448,5 +448,13 @@
   "impac.widget.sales_list.quantity_sold":            "@:impac.common.quantity_sold",
   "impac.widget.sales_list.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
   "impac.widget.sales_list.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased"
+  "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased",
+
+  "impac.widget.sales_margin.settings.title":           "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_margin.save":                     "@:impac.common.action.save",
+  "impac.widget.sales_margin.cancel":                   "@:impac.common.action.cancel",
+  "impac.widget.sales_margin.total_sold_and_purchased": "你好 你好 - 你好 你好",
+  "impac.widget.sales_margin.including_taxes":          "你好 你好",
+  "impac.widget.sales_margin.excluding_taxes":          "你好 你好",
+  "impac.widget.sales_margin.gross_margin":             "你好 你好"
 }
