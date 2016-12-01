@@ -426,10 +426,14 @@
   "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
   "impac.widget.sales_growth.select_product":           "SELECT PRODUCT",
 
-  "impac.widget.sales_leads_funnel.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_leads_funnel.save":           "@:impac.common.action.save",
-  "impac.widget.sales_leads_funnel.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_leads_funnel.settings.title":    "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_leads_funnel.save":              "@:impac.common.action.save",
+  "impac.widget.sales_leads_funnel.cancel":            "@:impac.common.action.cancel",
   "impac.widget.sales_leads_funnel.legend.your_leads": "Your leads sales funnel from",
   "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
-  "impac.widget.sales_leads_funnel.select_a_status":   "Select a status to display a list of the corresponding leads"
+  "impac.widget.sales_leads_funnel.select_a_status":   "Select a status to display a list of the corresponding leads",
+
+  "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
+  "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel"
 }
