@@ -405,5 +405,10 @@
   "impac.widget.sales_cycle.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_cycle.save":             "@:impac.common.action.save",
   "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_cycle.your_sales_cycle": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好"
+  "impac.widget.sales_cycle.your_sales_cycle": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
+
+  "impac.widget.sales_forecast.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_forecast.save":           "@:impac.common.action.save",
+  "impac.widget.sales_forecast.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_forecast.projection_on":  "你好 你好 你好 你好 6 你好"
 }

@@ -405,5 +405,10 @@
   "impac.widget.sales_cycle.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_cycle.save":             "@:impac.common.action.save",
   "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_cycle.your_sales_cycle": "Your sales cycle represents how much time your leads stay set to each status"
+  "impac.widget.sales_cycle.your_sales_cycle": "Your sales cycle represents how much time your leads stay set to each status",
+
+  "impac.widget.sales_forecast.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_forecast.save":           "@:impac.common.action.save",
+  "impac.widget.sales_forecast.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_forecast.projection_on":  "Projection on the next 6 months"
 }
