@@ -343,5 +343,19 @@
   "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
   "impac.widget.sales_aged.value_sold_taxes":    "你好 你好 (你好. 你好)",
   "impac.widget.sales_aged.value_sold_no_taxes": "你好 你好 (你好. 你好)",
-  "impac.widget.sales_aged.quantity_sold":       "你好 你好"
+  "impac.widget.sales_aged.quantity_sold":       "你好 你好",
+
+  "impac.widget.sales_break_even.settings.title":         "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_break_even.save":                   "@:impac.common.action.save",
+  "impac.widget.sales_break_even.cancel":                 "@:impac.common.action.cancel",
+  "impac.widget.sales_break_even.from":                   "@:impac.common.text.from",
+  "impac.widget.sales_break_even.to":                     "@:impac.common.text.to",
+  "impac.widget.sales_break_even.title.sales":            "你好 你好 你好",
+  "impac.widget.sales_break_even.title.projection":       "你好 你好 你好-你好",
+  "impac.widget.sales_break_even.target":                 "你好",
+  "impac.widget.sales_break_even.your_sales":             "你好 你好 你好 你好 你好 你好 你好:",
+  "impac.widget.sales_break_even.projected_date":         "你好 你好:",
+  "impac.widget.sales_break_even.opportunities_to_close": "你好 你好 你好:",
+  "impac.widget.sales_break_even.eligible_opportunities": "你好 你好",
+  "impac.widget.sales_break_even.click_to_define":        "你好 你好 你好 你好 你好 你好"
 }

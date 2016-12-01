@@ -343,5 +343,19 @@
   "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
   "impac.widget.sales_aged.value_sold_taxes":    "value sold (incl. taxes)",
   "impac.widget.sales_aged.value_sold_no_taxes": "value sold (excl. taxes)",
-  "impac.widget.sales_aged.quantity_sold":       "quantity sold"
+  "impac.widget.sales_aged.quantity_sold":       "quantity sold",
+
+  "impac.widget.sales_break_even.settings.title":         "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_break_even.save":                   "@:impac.common.action.save",
+  "impac.widget.sales_break_even.cancel":                 "@:impac.common.action.cancel",
+  "impac.widget.sales_break_even.from":                   "@:impac.common.text.from",
+  "impac.widget.sales_break_even.to":                     "@:impac.common.text.to",
+  "impac.widget.sales_break_even.title.sales":            "Sales to Date",
+  "impac.widget.sales_break_even.title.projection":       "Projection to Break-Even",
+  "impac.widget.sales_break_even.target":                 "Target",
+  "impac.widget.sales_break_even.your_sales":             "Your sales already exceed your target by:",
+  "impac.widget.sales_break_even.projected_date":         "Projected date:",
+  "impac.widget.sales_break_even.opportunities_to_close": "Opportunities to close:",
+  "impac.widget.sales_break_even.eligible_opportunities": "eligible opportunities",
+  "impac.widget.sales_break_even.click_to_define":        "Click to define your sales target"
 }
