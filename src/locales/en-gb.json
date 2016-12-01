@@ -62,6 +62,9 @@
   "impac.common.value_sold_taxes":    "value sold (incl. taxes)",
   "impac.common.value_sold_no_taxes": "value sold (excl. taxes)",
   "impac.common.quantity_sold":       "quantity sold",
+  "impac.common.value_purchased_taxes":    "value purchased (incl. taxes)",
+  "impac.common.value_purchased_no_taxes": "value purchased (excl. taxes)",
+  "impac.common.quantity_purchased":       "quantity purchased",
 
   "impac.data_not_found_config.main_message":     "Data not found",
   "impac.data_not_found_config.link_message":     "Are you missing an app?",
@@ -410,5 +413,16 @@
   "impac.widget.sales_forecast.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_forecast.save":           "@:impac.common.action.save",
   "impac.widget.sales_forecast.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_forecast.projection_on":  "Projection on the next 6 months"
+  "impac.widget.sales_forecast.projection_on":  "Projection on the next 6 months",
+
+  "impac.widget.sales_growth.settings.title":           "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_growth.save":                     "@:impac.common.action.save",
+  "impac.widget.sales_growth.cancel":                   "@:impac.common.action.cancel",
+  "impac.widget.sales_growth.value_sold_taxes":         "@:impac.common.value_sold_taxes",
+  "impac.widget.sales_growth.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
+  "impac.widget.sales_growth.quantity_sold":            "@:impac.common.quantity_sold",
+  "impac.widget.sales_growth.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
+  "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
+  "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
+  "impac.widget.sales_growth.select_product":           "SELECT PRODUCT"
 }

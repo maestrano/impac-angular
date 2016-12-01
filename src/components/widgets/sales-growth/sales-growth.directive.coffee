@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-growth',[])
 
-module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -38,18 +38,34 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
         o.value == w.content.product
       ) || {label: "SELECT PRODUCT", value: -1})
 
-      $scope.filterOptions = [
-        {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
-        {label: 'value sold (excl. taxes)', value: 'net_value_sold'},
-        {label: 'quantity sold', value: 'quantity_sold'},
-        {label: 'value purchased (incl. taxes)', value: 'gross_value_purchased'},
-        {label: 'value purchased (excl. taxes)', value: 'net_value_purchased'},
-        {label: 'quantity purchased', value: 'quantity_purchased'},
-      ]
-      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        o.value == w.content.filter
-      ) || $scope.filterOptions[0])
+      $translate('impac.widget.sales_growth.select_product').then((result) ->
+        $scope.product = angular.copy(_.find($scope.productOptions, (o) ->
+          o.value == w.content.product
+        ) || {label: result, value: -1})
+      )
+      
+      $translate([
+        'impac.widget.sales_growth.value_sold_taxes',
+        'impac.widget.sales_growth.value_sold_no_taxes',
+        'impac.widget.sales_growth.quantity_sold',
+        'impac.widget.sales_growth.value_purchased_taxes',
+        'impac.widget.sales_growth.value_purchased_no_taxes',
+        'impac.widget.sales_growth.quantity_purchased']).then(
+          (translations) ->
+            $scope.periodOptions = [
+              {label: translations['impac.widget.sales_growth.value_sold_taxes'], value: 'gross_value_sold'},
+              {label: translations['impac.widget.sales_growth.value_sold_no_taxes'], value: 'net_value_sold'},
+              {label: translations['impac.widget.sales_growth.quantity_sold'], value: 'quantity_sold'},
+              {label: translations['impac.widget.sales_growth.value_purchased_taxes'], value: 'gross_value_purchased'},
+              {label: translations['impac.widget.sales_growth.value_purchased_no_taxes'], value: 'net_value_purchased'},
+              {label: translations['impac.widget.sales_growth.quantity_purchased'], value: 'quantity_purchased'}
+            ]
 
+            $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+              o.value == w.content.filter
+            ) || $scope.filterOptions[0])
+        )
+      
       $scope.isDataQuantity = $scope.filter.value.match('quantity')
 
   $scope.getSelectedProduct = ->
