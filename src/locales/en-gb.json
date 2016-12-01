@@ -514,5 +514,16 @@
   "impac.widget.sales_turnover.net_revenue":      "Net revenue (excl. taxes)",
   "impac.widget.sales_turnover.analysis.less":    "Your less expensive products bring you most of your revenue.",
   "impac.widget.sales_turnover.analysis.must":    "Your most expensive products bring you most of your revenue.",
-  "impac.widget.sales_turnover.analysis.revenue": "Your revenue is balanced between your different products segments."
+  "impac.widget.sales_turnover.analysis.revenue": "Your revenue is balanced between your different products segments.",
+
+  "impac.widget.sales_summary.settings.title":           "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_summary.save":                     "@:impac.common.action.save",
+  "impac.widget.sales_summary.cancel":                   "@:impac.common.action.cancel",
+  "impac.widget.sales_summary.no_data_found":            "No data found in this time range<br/> Please select another one",
+  "impac.widget.sales_summary.value_sold_taxes":         "@:impac.common.value_sold_taxes",
+  "impac.widget.sales_summary.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
+  "impac.widget.sales_summary.quantity_sold":            "@:impac.common.quantity_sold",
+  "impac.widget.sales_summary.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
+  "impac.widget.sales_summary.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
+  "impac.widget.sales_summary.quantity_purchased":       "@:impac.common.quantity_purchased"
 }

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-summary',[])
 
-module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -26,25 +26,33 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.summary) && ( _.sum(_.map(w.content.summary, (s) -> s.total)) > 0 )
+    
+    $translate([
+      'impac.widget.sales_summary.value_sold_taxes',
+      'impac.widget.sales_summary.value_sold_no_taxes',
+      'impac.widget.sales_summary.quantity_sold',
+      'impac.widget.sales_summary.value_purchased_taxes',
+      'impac.widget.sales_summary.value_purchased_no_taxes',
+      'impac.widget.sales_summary.quantity_purchased']).then(
+      (translations) ->
+        $scope.filterOptions = [
+          {label: translations['impac.widget.sales_summary.value_sold_taxes'], value: 'gross_value_sold'},
+          {label: translations['impac.widget.sales_summary.value_sold_no_taxes'], value: 'net_value_sold'},
+          {label: translations['impac.widget.sales_summary.quantity_sold'], value: 'quantity_sold'},
+          {label: translations['impac.widget.sales_summary.value_purchased_taxes'], value: 'gross_value_purchased'},
+          {label: translations['impac.widget.sales_summary.value_purchased_no_taxes'], value: 'net_value_purchased'},
+          {label: translations['impac.widget.sales_summary.quantity_purchased'], value: 'quantity_purchased'}
+        ]
+        $scope.filterOptions = [
+          $scope.filterOptions[0],
+          $scope.filterOptions[1],
+          $scope.filterOptions[2]
+        ] if w.metadata.criteria == "customer"
 
-    $scope.filterOptions = [
-      {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
-      {label: 'value sold (excl. taxes)', value: 'net_value_sold'},
-      {label: 'quantity sold', value: 'quantity_sold'},
-      {label: 'value purchased (incl. taxes)', value: 'gross_value_purchased'},
-      {label: 'value purchased (excl. taxes)', value: 'net_value_purchased'},
-      {label: 'quantity purchased', value: 'quantity_purchased'},
-    ]
-    $scope.filterOptions = [
-      $scope.filterOptions[0],
-      $scope.filterOptions[1],
-      $scope.filterOptions[2]
-    ] if w.metadata.criteria == "customer"
-
-    $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-      o.value == w.metadata.filter
-    ) || $scope.filterOptions[0])
-
+        $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+            o.value == w.metadata.filter
+          ) || $scope.filterOptions[0])
+    )
 
   # Chart formating function
   # --------------------------------------
