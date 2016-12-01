@@ -400,5 +400,10 @@
   "impac.widget.sales_customer_details.label.total_paid":     "@:impac.common.label.total_paid",
   "impac.widget.sales_customer_details.label.total_due":      "@:impac.common.label.total_due",
   "impac.widget.sales_customer_details.from":                 "@:impac.common.text.from",
-  "impac.widget.sales_customer_details.to":                   "@:impac.common.text.to"
+  "impac.widget.sales_customer_details.to":                   "@:impac.common.text.to",
+
+  "impac.widget.sales_cycle.settings.title":   "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_cycle.save":             "@:impac.common.action.save",
+  "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
+  "impac.widget.sales_cycle.your_sales_cycle": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好"
 }
