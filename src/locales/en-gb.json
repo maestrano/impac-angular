@@ -86,6 +86,11 @@
   "impac.widget.settings.time_period.period.months": "MONTHS",
   "impac.widget.settings.time_period.period.quarters": "QUARTERS",
   "impac.widget.settings.time_period.period.years": "YEARS",
+  "impac.widget.settings.time_period.period.year":    "year",
+  "impac.widget.settings.time_period.period.quarter": "quarter",
+  "impac.widget.settings.time_period.period.month":   "month",
+  "impac.widget.settings.time_period.period.week":    "week",
+  "impac.widget.settings.time_period.period.day":     "day",
   "impac.widget.settings.dates_picker.title": "Time range",
   "impac.widget.settings.dates_picker.from": "From",
   "impac.widget.settings.dates_picker.to": "To",
@@ -469,5 +474,11 @@
   "impac.widget.sales_net_sales.average_amount":   "Average amount",
   "impac.widget.sales_net_sales.volume":           "Volume",
   "impac.widget.sales_net_sales.tmpl.last_hours":  "Last :hours:h",
-  "impac.widget.sales_net_sales.tmpl.last_days":   "Last :days: days"
+  "impac.widget.sales_net_sales.tmpl.last_days":   "Last :days: days",
+
+  "impac.widget.sales_number_of_leads.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_number_of_leads.save":           "@:impac.common.action.save",
+  "impac.widget.sales_number_of_leads.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_number_of_leads.leads_for_this": "Leads for this",
+  "impac.widget.sales_number_of_leads.leads_in_total": "leads in total"
 }
