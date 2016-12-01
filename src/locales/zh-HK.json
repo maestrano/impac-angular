@@ -488,5 +488,19 @@
   "impac.widget.sales_funnel.legend":         "你好 你好, 你好 你好 你好 你好",
   "impac.widget.sales_funnel.select_a_sales": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.widget.sales_funnel.assignees_opportunities": "你好 / 你好",
-  "impac.widget.sales_funnel.assignees_opportunities": "你好 你好 你好"
+  "impac.widget.sales_funnel.assignees_opportunities": "你好 你好 你好",
+
+  "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_performance.save":               "@:impac.common.action.save",
+  "impac.widget.sales_performance.cancel":             "@:impac.common.action.cancel",
+  "impac.widget.sales_performance.from":               "@:impac.common.text.from",
+  "impac.widget.sales_performance.to":                 "@:impac.common.text.to",
+  "impac.widget.sales_performance.win_ratio":          "你好 你好",
+  "impac.widget.sales_performance.total_won":          "你好 你好",
+  "impac.widget.sales_performance.select_an_employee": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好/你好.",
+  "impac.widget.sales_performance.pick_the_status":    "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好' 你好 '你好 你好' 你好 你好 你好 你好.",
+  "impac.widget.sales_performance.total_won":          "你好 你好 :",
+  "impac.widget.sales_performance.forecast":           "你好",
+  "impac.widget.sales_performance.closed_won":         "你好 你好",
+  "impac.widget.sales_performance.closed_lost":        "你好 你好"
 }

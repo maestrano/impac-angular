@@ -488,5 +488,19 @@
   "impac.widget.sales_funnel.legend":         "Your opportunities, sorted by sales stage",
   "impac.widget.sales_funnel.select_a_sales": "Select a sales stage to display a list of the corresponding opportunities",
   "impac.widget.sales_funnel.assignees_opportunities": "Assignees / Opportunities",
-  "impac.widget.sales_funnel.assignees_opportunities": "Potential per assignee"
+  "impac.widget.sales_funnel.assignees_opportunities": "Potential per assignee",
+
+  "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_performance.save":               "@:impac.common.action.save",
+  "impac.widget.sales_performance.cancel":             "@:impac.common.action.cancel",
+  "impac.widget.sales_performance.from":               "@:impac.common.text.from",
+  "impac.widget.sales_performance.to":                 "@:impac.common.text.to",
+  "impac.widget.sales_performance.win_ratio":          "Win ratio",
+  "impac.widget.sales_performance.total_won":          "Total won",
+  "impac.widget.sales_performance.select_an_employee": "Select an employee or team to display the corresponding opportunities won/lost.",
+  "impac.widget.sales_performance.pick_the_status":    "Pick the status that should be considered as 'Closed Won' and 'Closed Lost' in your widget settings.",
+  "impac.widget.sales_performance.total_won":          "Total won :",
+  "impac.widget.sales_performance.forecast":           "Forecast",
+  "impac.widget.sales_performance.closed_won":         "Closed Won",
+  "impac.widget.sales_performance.closed_lost":        "Closed Lost"
 }
