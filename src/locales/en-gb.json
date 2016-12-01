@@ -456,5 +456,18 @@
   "impac.widget.sales_margin.total_sold_and_purchased": "Total sold - Total purchased",
   "impac.widget.sales_margin.including_taxes":          "Including taxes",
   "impac.widget.sales_margin.excluding_taxes":          "Excluding taxes",
-  "impac.widget.sales_margin.gross_margin":             "Gross margin"
+  "impac.widget.sales_margin.gross_margin":             "Gross margin",
+
+  "impac.widget.sales_net_sales.settings.title":   "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_net_sales.save":             "@:impac.common.action.save",
+  "impac.widget.sales_net_sales.cancel":           "@:impac.common.action.cancel",
+  "impac.widget.sales_net_sales.title.sales":      "Sales",
+  "impac.widget.sales_net_sales.title.returns":    "Returns",
+  "impac.widget.sales_net_sales.title.net_result": "Net Result",
+  "impac.widget.sales_net_sales.no_transaction":   "No transaction found for this time range<br/> Please select another one",
+  "impac.widget.sales_net_sales.total_amount":     "Total amount",
+  "impac.widget.sales_net_sales.average_amount":   "Average amount",
+  "impac.widget.sales_net_sales.volume":           "Volume",
+  "impac.widget.sales_net_sales.tmpl.last_hours":  "Last :hours:h",
+  "impac.widget.sales_net_sales.tmpl.last_days":   "Last :days: days"
 }

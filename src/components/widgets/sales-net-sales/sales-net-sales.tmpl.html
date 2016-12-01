@@ -1,13 +1,13 @@
 <div widget-sales-net-sales>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_net_sales.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_net_sales.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_net_sales.save</button>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
 
       <div class="row text-center values">
         <div class="value-container col-md-3 col-md-offset-0 col-xs-10 col-xs-offset-2">
-          <div class="title">Sales</div>
+          <div class="title" translate>impac.widget.sales_net_sales.title.sales</div>
           <div class="value-box">
             {{ getValue('sales') }}
           </div>
@@ -33,7 +33,7 @@
           <span>{{ sign('minus') }}</span>
         </div>
         <div class="value-container col-md-3 col-xs-10">
-          <div class="title">Returns</div>
+          <div class="title" translate>impac.widget.sales_net_sales.title.returns</div>
           <div class="value-box">
             {{ getValue('returns') }}
           </div>
@@ -42,7 +42,7 @@
           <span>{{ sign('equal') }}</span>
         </div>
         <div class="value-container col-md-4 col-xs-10">
-          <div class="title">Net Result</div>
+          <div class="title" translate>impac.widget.sales_net_sales.title.net_result</div>
           <div class="value-box">
             {{ getValue('net_result') }}
           </div>
@@ -52,7 +52,7 @@
   </div>
 
   <div class="data-not-found" ng-show="(isDataFound==false)">
-    <div class="message">No transaction found for this time range<br/> Please select another one</div>
+    <div class="message" translate>impac.widget.sales_net_sales.no_transaction</div>
   </div>
 
 </div>

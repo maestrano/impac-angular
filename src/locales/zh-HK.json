@@ -456,5 +456,18 @@
   "impac.widget.sales_margin.total_sold_and_purchased": "你好 你好 - 你好 你好",
   "impac.widget.sales_margin.including_taxes":          "你好 你好",
   "impac.widget.sales_margin.excluding_taxes":          "你好 你好",
-  "impac.widget.sales_margin.gross_margin":             "你好 你好"
+  "impac.widget.sales_margin.gross_margin":             "你好 你好",
+
+  "impac.widget.sales_net_sales.settings.title":   "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_net_sales.save":             "@:impac.common.action.save",
+  "impac.widget.sales_net_sales.cancel":           "@:impac.common.action.cancel",
+  "impac.widget.sales_net_sales.title.sales":      "你好",
+  "impac.widget.sales_net_sales.title.returns":    "你好",
+  "impac.widget.sales_net_sales.title.net_result": "你好 你好",
+  "impac.widget.sales_net_sales.no_transaction":   "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
+  "impac.widget.sales_net_sales.total_amount":     "你好 你好",
+  "impac.widget.sales_net_sales.average_amount":   "你好 你好",
+  "impac.widget.sales_net_sales.volume":           "你好",
+  "impac.widget.sales_net_sales.tmpl.last_hours":  "你好 :hours:你好",
+  "impac.widget.sales_net_sales.tmpl.last_days":   "你好 :days: 你好"
 }
