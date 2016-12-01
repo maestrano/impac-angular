@@ -435,5 +435,18 @@
 
   "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
-  "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel"
+  "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel",
+
+  "impac.widget.sales_list.settings.title":           "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_list.save":                     "@:impac.common.action.save",
+  "impac.widget.sales_list.cancel":                   "@:impac.common.action.cancel",
+  "impac.widget.sales_list.products":                 "Products",
+  "impac.widget.sales_list.total":                    "Total",
+  "impac.widget.sales_list.no_data_found":            "No data found for this time range<br/> Please select another one",
+  "impac.widget.sales_list.value_sold_taxes":         "@:impac.common.value_sold_taxes",
+  "impac.widget.sales_list.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
+  "impac.widget.sales_list.quantity_sold":            "@:impac.common.quantity_sold",
+  "impac.widget.sales_list.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
+  "impac.widget.sales_list.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
+  "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased"
 }
