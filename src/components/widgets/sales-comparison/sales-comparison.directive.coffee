@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-comparison',[])
 
-module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc, ImpacWidgetsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -32,24 +32,39 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     if $scope.isDataFound
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
-      $scope.filterOptions = [
-        {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
-        {label: 'value sold (excl. taxes)', value: 'net_value_sold'},
-        {label: 'quantity sold', value: 'quantity_sold'},
-      ]
-      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        w.metadata && w.metadata.filter == o.value
-      ) || $scope.filterOptions[0])
+      $translate([
+        'impac.widget.sales_comparison.value_sold_taxes',
+        'impac.widget.sales_comparison.value_sold_no_taxes',
+        'impac.widget.sales_comparison.quantity_sold']).then(
+          (translations) ->
+            $scope.filterOptions = [
+              {label: translations['impac.widget.sales_comparison.value_sold_taxes'], value: 'gross_value_sold'},
+              {label: translations['impac.widget.sales_comparison.value_sold_no_taxes'], value: 'net_value_sold'},
+              {label: translations['impac.widget.sales_comparison.quantity_sold'], value: 'quantity_sold'}
+            ]
 
-      $scope.criteriaOptions = [
-        {label: 'products', value: 'default'},
-        {label: 'locations', value: 'location'},
-        {label: 'industries', value: 'industry'},
-        {label: 'customers', value: 'customer'},
-      ]
-      $scope.criteria = angular.copy(_.find($scope.criteriaOptions, (o) ->
-        w.metadata && w.metadata.criteria == o.value
-      ) || $scope.criteriaOptions[0])
+            $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+              w.metadata && w.metadata.filter == o.value
+            ) || $scope.filterOptions[0])
+        )
+      
+      $translate([
+        'impac.widget.sales_comparison.criteria_opt.products',
+        'impac.widget.sales_comparison.criteria_opt.locations',
+        'impac.widget.sales_comparison.criteria_opt.industries',
+        'impac.widget.sales_comparison.criteria_opt.customers']).then(
+        (translations) ->
+          $scope.filterOptions = [
+            {label: translations['impac.widget.sales_comparison.criteria_opt.products'], value: 'default'},
+            {label: translations['impac.widget.sales_comparison.criteria_opt.locations'], value: 'location'},
+            {label: translations['impac.widget.sales_comparison.criteria_opt.industries'], value: 'industry'},
+            {label: translations['impac.widget.sales_comparison.criteria_opt.customers'], value: 'customer'}
+          ]
+
+          $scope.criteria = angular.copy(_.find($scope.criteriaOptions, (o) ->
+            w.metadata && w.metadata.criteria == o.value
+          ) || $scope.criteriaOptions[0])
+        )
 
       if w.metadata.selectedElements
         $scope.selectedElements = []

@@ -52,6 +52,9 @@
   "impac.common.label.salary_range":  "你好 你好",
   "impac.common.text.from":           "你好",
   "impac.common.text.to":             "你好",
+  "impac.common.value_sold_taxes":    "你好 你好 (你好. 你好)",
+  "impac.common.value_sold_no_taxes": "你好 你好 (你好. 你好)",
+  "impac.common.quantity_sold":       "你好 你好",
 
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
   "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
@@ -341,9 +344,9 @@
   "impac.widget.sales_aged.cancel":              "@:impac.common.action.cancel",
   "impac.widget.sales_aged.from":                "@:impac.common.text.from",
   "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
-  "impac.widget.sales_aged.value_sold_taxes":    "你好 你好 (你好. 你好)",
-  "impac.widget.sales_aged.value_sold_no_taxes": "你好 你好 (你好. 你好)",
-  "impac.widget.sales_aged.quantity_sold":       "你好 你好",
+  "impac.widget.sales_aged.value_sold_taxes":    "@:impac.common.value_sold_taxes",
+  "impac.widget.sales_aged.value_sold_no_taxes": "@:impac.common.value_sold_no_taxes",
+  "impac.widget.sales_aged.quantity_sold":       "@:impac.common.quantity_sold",
 
   "impac.widget.sales_break_even.settings.title":         "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_break_even.save":                   "@:impac.common.action.save",
@@ -357,5 +360,22 @@
   "impac.widget.sales_break_even.projected_date":         "你好 你好:",
   "impac.widget.sales_break_even.opportunities_to_close": "你好 你好 你好:",
   "impac.widget.sales_break_even.eligible_opportunities": "你好 你好",
-  "impac.widget.sales_break_even.click_to_define":        "你好 你好 你好 你好 你好 你好"
+  "impac.widget.sales_break_even.click_to_define":        "你好 你好 你好 你好 你好 你好",
+
+  "impac.widget.sales_comparison.settings.title":          "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_comparison.save":                    "@:impac.common.action.save",
+  "impac.widget.sales_comparison.cancel":                  "@:impac.common.action.cancel",
+  "impac.widget.sales_comparison.legend.compare_by":       "你好 你好:",
+  "impac.widget.sales_comparison.legend.see":              "你好:",
+  "impac.widget.sales_comparison.total_sales_from":        "你好 你好 你好",
+  "impac.widget.sales_comparison.to":                      "@:impac.common.text.to",
+  "impac.widget.sales_comparison.total":                   "你好",
+  "impac.widget.sales_comparison.select_sales_category":   "你好 你好 你好 你好 你好 你好(ies) 你好 你好 你好 你好 你好.",
+  "impac.widget.sales_comparison.value_sold_taxes":        "@:impac.common.value_sold_taxes",
+  "impac.widget.sales_comparison.value_sold_no_taxes":     "@:impac.common.value_sold_no_taxes",
+  "impac.widget.sales_comparison.quantity_sold":           "@:impac.common.quantity_sold",
+  "impac.widget.sales_comparison.criteria_opt.products":   "你好",
+  "impac.widget.sales_comparison.criteria_opt.locations":  "你好",
+  "impac.widget.sales_comparison.criteria_opt.industries": "你好",
+  "impac.widget.sales_comparison.criteria_opt.customers":  "你好"
 }
