@@ -9,7 +9,6 @@ angular
     defaults =
       # base paths
       mnoHub: 'http://localhost:7000/mnoe/jpi/v1'
-      impacPrefix: '/impac'
       impacApi: 'http://localhost:4000/api'
 
       dashboards:
@@ -62,7 +61,7 @@ angular
           if defaults.dashboards.index
             defaults.dashboards.index.replace(':organization_id', orgId)
           else
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/dashboards"
+            "#{defaults.mnoHub}/impac/dashboards"
 
         create: (orgId=null)->
           if defaults.dashboards.create
@@ -74,7 +73,7 @@ angular
           if defaults.dashboards.show
             defaults.dashboards.show.replace(':id', id)
           else
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/dashboards/#{id}"
+            "#{defaults.mnoHub}/impac/dashboards/#{id}"
 
         update: (id) ->
           if defaults.dashboards.update
@@ -92,7 +91,7 @@ angular
           if defaults.widgets.index
             defaults.widgets.index.replace(':dashboard_id', dashboard_id)
           else
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/widgets"
+            "#{defaults.mnoHub}/impac/widgets"
 
         show: (dashboard_id, id) ->
           if defaults.widgets.show
@@ -143,13 +142,13 @@ angular
           if defaults.kpis.update
             defaults.kpis.update.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/kpis/#{id}"
+            "#{defaults.mnoHub}/impac/kpis/#{id}"
 
         delete: (dashboard_id, id) ->
           if defaults.kpis.del
             defaults.kpis.del.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{defaults.mnoHub}#{defaults.impacPrefix}/kpis/#{id}"
+            "#{defaults.mnoHub}/impac/kpis/#{id}"
 
         local: -> defaults.kpis.local
 
@@ -158,17 +157,17 @@ angular
             if defaults.alerts.index
               defaults.alerts.index
             else
-              "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts"
+              "#{defaults.mnoHub}/impac/alerts"
           create: (kpi_id) ->
             if defaults.alerts.create
               defaults.alerts.create.replace(':kpi_id', kpi_id)
             else
-              "#{defaults.mnoHub}#{defaults.impacPrefix}/kpis/#{kpi_id}/alerts"
+              "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
           delete: (id) ->
             if defaults.alerts.del
               defaults.alerts.del.replace(':id', id)
             else
-              "#{defaults.mnoHub}#{defaults.impacPrefix}/alerts/#{id}"
+              "#{defaults.mnoHub}/impac/alerts/#{id}"
 
       service.organizations =
         appInstancesSync: (uid) ->
