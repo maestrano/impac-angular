@@ -151,7 +151,11 @@
   "impac.kpi.alerts.target":                      "{TARGET, select, below{你好} over{你好} other{}} {value} {unit}",
   "impac.kpi.alerts.cancel":                      "@:impac.common.action.cancel",
   "impac.kpi.alerts.save":                        "@:impac.common.action.save",
-
+  "impac.kpi.current":                            "你好",
+  "impac.kpi.kpi_target_require":                 "@:impac.widget.settings.attach_kpis.kpi_target_require",
+  "impac.kpi.kpi_target_number":                  "@:impac.widget.settings.attach_kpis.kpi_target_number",
+  "impac.kpi.over":                               "@:impac.widget.settings.attach_kpis.over",
+  "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
 
   "impac.widget.accounting_values.turnover.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.accounting_values.turnover.save":           "@:impac.common.action.save",
