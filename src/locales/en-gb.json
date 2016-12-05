@@ -100,8 +100,8 @@
   "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
   "impac.widget.settings.account.label": "Account to monitor",
-  "impac.widget.settings.accounting-behaviour.balance_sheet": "Balance Sheet",
-  "impac.widget.settings.accounting-behaviour.p_and_l": "P&L",
+  "impac.widget.settings.accounting_behaviour.balance_sheet": "Balance Sheet",
+  "impac.widget.settings.accounting_behaviour.p_and_l": "P&L",
 
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
   "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
