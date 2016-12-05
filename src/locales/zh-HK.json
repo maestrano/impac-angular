@@ -65,6 +65,8 @@
   "impac.common.value_purchased_taxes":    "你好 你好 (你好. 你好)",
   "impac.common.value_purchased_no_taxes": "你好 你好 (你好. 你好)",
   "impac.common.quantity_purchased":       "你好 你好",
+  "impac.common.reduce":                   "你好",
+  "impac.common.expand":                   "你好",
 
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
   "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
@@ -102,6 +104,9 @@
   "impac.widget.settings.account.label": "你好 你好 你好",
   "impac.widget.settings.accounting_behaviour.balance_sheet": "你好 你好",
   "impac.widget.settings.accounting_behaviour.p_and_l": "你好 & 你好",
+
+  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
+  "impac.widget.settings.width.expand": "@:impac.common.expand",
 
   "impac.widget.settings.attach_kpis.attach_an_alert":    "你好 你好 你好",
   "impac.widget.settings.attach_kpis.keep_the":           "你好 你好",

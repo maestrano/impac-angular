@@ -65,6 +65,8 @@
   "impac.common.value_purchased_taxes":    "value purchased (incl. taxes)",
   "impac.common.value_purchased_no_taxes": "value purchased (excl. taxes)",
   "impac.common.quantity_purchased":       "quantity purchased",
+  "impac.common.reduce":                   "reduce",
+  "impac.common.expand":                   "expand",
 
   "impac.data_not_found_config.main_message":     "Data not found",
   "impac.data_not_found_config.link_message":     "Are you missing an app?",
@@ -112,6 +114,9 @@
   "impac.widget.settings.attach_kpis.keep":               "Keep",
   "impac.widget.settings.attach_kpis.over":               "over",
   "impac.widget.settings.attach_kpis.below":              "below",
+
+  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
+  "impac.widget.settings.width.expand": "@:impac.common.expand",
 
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
   "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
