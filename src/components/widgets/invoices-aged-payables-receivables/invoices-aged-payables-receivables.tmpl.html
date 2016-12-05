@@ -63,7 +63,7 @@
                       {{getTotalSum(supplier) | mnoCurrency : supplier.currency}}
                     </div>
                     <div class="col-xs-3 text-right">
-                      <span tooltip="Oldest invoice: {{getOldestInvoice(supplier)}}" tooltip-placement="left">
+                      <span tooltip="{{'impac.widget.invoices_receivables.tooltip.oldest_invoice' | translate}} {{getOldestInvoice(supplier)}}" tooltip-placement="left">
                         {{getOldestInvoice(supplier) | mnoDate : widget.metadata.hist_parameters.period}}
                       </span>
                     </div>
@@ -104,7 +104,7 @@
                       <span>{{getTotalSum(customer) | mnoCurrency : customer.currency}}</span>
                     </div>
                     <div class="col-xs-3 text-right">
-                      <span tooltip="Oldest invoice: {{getOldestInvoice(customer)}}" tooltip-placement="left">
+                      <span tooltip="{{'impac.widget.invoices_receivables.tooltip.oldest_invoice' | translate}} {{getOldestInvoice(customer)}}" tooltip-placement="left">
                         {{getOldestInvoice(customer) | mnoDate : widget.metadata.hist_parameters.period}}
                       </span>
                     </div>

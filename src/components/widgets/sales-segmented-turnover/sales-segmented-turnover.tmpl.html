@@ -45,7 +45,7 @@
       </div>
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
-        <i class="fa fa-info-circle" style="float: left;" tooltip="This widget segments your revenue by products average price range and propose an analysis of its composition" />
+        <i class="fa fa-info-circle" style="float: left;" tooltip="{{'impac.widget.sales_turnover.tooltip.widget_segment' | translate}}" />
         <h3 style="margin: 25px 10px; text-align: center;">{{getMaxRange().percentage.toFixed()}}% {{'impac.widget.sales_turnover.of_your_revenue' | translate}} {{getMaxRange().label.split('-')[0] | mnoCurrency : widget.content.currency}} {{'impac.widget.sales_turnover.and' | translate}} {{getMaxRange().label.split('-')[1] | mnoCurrency : widget.content.currency}}.</h3>
         <div class='analysis hidden-md' ng-init="getAnalysis()">{{::analysisTranslate}}</div>
       </div>

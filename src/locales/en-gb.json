@@ -364,6 +364,7 @@
   "impac.widget.invoices_receivables.aged_payables_and_receivables": "Aged Payables and Receivables",
   "impac.widget.invoices_receivables.your_opening_balance":          "* Your opening-balance of receivables and/or payables for this period.",
   "impac.widget.invoices_receivables.select_accounts":               "Select one or several account(s) or category(ies) to display the payables/receivables evolution(s).",
+  "impac.widget.invoices_receivables.tooltip.oldest_invoice":        "Oldest invoice:",
 
   "impac.widget.invoices_list.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_list.save":           "@:impac.common.action.save",
@@ -456,6 +457,7 @@
   "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
   "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
   "impac.widget.sales_growth.select_product":           "SELECT PRODUCT",
+  "impac.widget.sales_growth.tooltip.total_for_period": "total for last period",
 
   "impac.widget.sales_leads_funnel.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_leads_funnel.save":              "@:impac.common.action.save",
@@ -541,6 +543,7 @@
   "impac.widget.sales_turnover.analysis.less":    "Your less expensive products bring you most of your revenue.",
   "impac.widget.sales_turnover.analysis.must":    "Your most expensive products bring you most of your revenue.",
   "impac.widget.sales_turnover.analysis.revenue": "Your revenue is balanced between your different products segments.",
+  "impac.widget.sales_turnover.tooltip.widget_segment": "This widget segments your revenue by products average price range and propose an analysis of its composition",
 
   "impac.widget.sales_summary.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_summary.save":                     "@:impac.common.action.save",

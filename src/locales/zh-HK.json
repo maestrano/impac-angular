@@ -364,6 +364,7 @@
   "impac.widget.invoices_receivables.aged_payables_and_receivables": "你好 你好 你好 你好",
   "impac.widget.invoices_receivables.your_opening_balance":          "* 你好 你好-你好 你好 你好 你好/你好 你好 你好 你好 你好.",
   "impac.widget.invoices_receivables.select_accounts":               "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好/你好 你好(s).",
+  "impac.widget.invoices_receivables.tooltip.oldest_invoice":        "你好 你好:",
 
   "impac.widget.invoices_list.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_list.save":           "@:impac.common.action.save",
@@ -456,6 +457,7 @@
   "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
   "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
   "impac.widget.sales_growth.select_product":           "你好 你好",
+  "impac.widget.sales_growth.tooltip.total_for_period": "你好 你好 你好 你好",
 
   "impac.widget.sales_leads_funnel.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_leads_funnel.save":              "@:impac.common.action.save",
@@ -541,6 +543,7 @@
   "impac.widget.sales_turnover.analysis.less":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
   "impac.widget.sales_turnover.analysis.must":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
   "impac.widget.sales_turnover.analysis.revenue": "你好 你好 你好 你好 你好 你好 你好 你好 你好.",
+  "impac.widget.sales_turnover.tooltip.widget_segment": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
 
   "impac.widget.sales_summary.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_summary.save":                     "@:impac.common.action.save",
