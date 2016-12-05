@@ -1,13 +1,13 @@
 <div class="modal-header">
   <div class="close" type="button" ng-click="instance.close()" >×</div>
-  <h3>Suggest a widget</h3>
+  <h3 translate>impac.dashboard.widget_suggestion.suggest_a_widget</h3>
 </div>
 
 <div class="modal-body">
 
   <div class="row">
     <div class="col-md-6">
-      <label>What would you name your widget?</label><br />
+      <label translate>impac.dashboard.widget_suggestion.widget_name</label><br />
       <input type="text" ng-model="widgetDetails.name" ng-disabled="isLoading" />
     </div>
     <div class="col-md-6">
@@ -20,7 +20,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <label>What kind of information would your widget display?</label><br/>
+      <label translate>impac.dashboard.widget_suggestion.kind_of_information</label><br/>
       <textarea ng-model="widgetDetails.description" ng-disabled="isLoading" />
     </div>
   </div>
@@ -29,15 +29,13 @@
 
   <div class="row" collapse="!onSuccess">
     <div class="col-md-12 text-center">
-      <h3 class="thanks-message">{{userName | titleize}}, thanks a lot for helping us improve Impac!&trade;</h3>
+      <h3 class="thanks-message">{{userName | titleize}}, <span translate="impac.dashboard.widget_suggestion.helping"></span></h3>
     </div>
   </div>
 
   <div class="row" ng-show="error">
     <div class="col-md-12 text-center">
-      <h5 style="color: red;">
-        Unable to send suggestions request, please try again or contact technical support.
-      </h5>
+      <h5 style="color: red;" translate>impac.dashboard.widget_suggestion.unable_to_send</h5>
     </div>
   </div>
 
@@ -46,10 +44,10 @@
 <div class="modal-footer">
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading">Cancel</button>
+      <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading" translate>impac.dashboard.widget_suggestion.cancel</button>
       <button class="btn btn-info" ng-click="proceed()" ng-disabled="!(widgetDetails.name && widgetDetails.category && widgetDetails.description) || isLoading">
         <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
-        Send your suggestion
+        {{'impac.dashboard.widget_suggestion.send_your_suggestion' | translate}}
       </button>
     </div>
   </div>

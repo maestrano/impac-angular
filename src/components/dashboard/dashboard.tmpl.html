@@ -7,7 +7,7 @@
     <div class="col-xs-12">
       <img ng-src="{{impacTitleLogo}}" ng-click="!pdfMode || triggerUpload()" ng-class="{'pdf-mode': pdfMode}" />
       <br />
-      <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode">Change logo</button>
+      <button class="btn btn-sm btn-default hidden-print" ng-click="triggerUpload()" ng-if="pdfMode" translate>impac.dashboard.change_logo</button>
       <input type="file" style="display:none" id="fileInput" name="filedata"/>
     </div>
 
@@ -27,10 +27,9 @@
 
     <!-- Displayed to MYOB Essentials Users -->
     <div id="myob-message" ng-if="hasMyobEssentialsOnly && myobMessageConfig.show" class="alert alert-warning">
-      <h3>It looks like you are using MYOB Essentials...</h3>
-      <p>Unfortunately, all the information required by Impac! is not exposed by MYOB Essentials API <strong>yet</strong>.
-      Consequently, most of the accounting widgets provided by Impac! won't find a valid source of data to display their content.</p>
-      <p>Maybe you should consider switching to <a href="http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948" target="_blank">MYOB AccountRight</a>, the other MYOB accounting solution?</p>
+      <h3 translate>impac.dashboard.it_looks_like</h3>
+      <p translate="impac.dashboard.unfortunately_information"></p>
+      <p>{{'impac.dashboard.myob_message.part_1' | translate}} <a href="http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948" target="_blank">{{'impac.dashboard.myob_message.part_2' | translate}}</a> {{'impac.dashboard.myob_message.part_3' | translate}}</p>
       <p align="right" ng-if="myobMessageConfig.appLink.show"><a ng-href="{{myobMessageConfig.appLink.url}}" target="_blank">{{myobMessageConfig.appLink.text}}</a></p>
     </div>
   </div>
@@ -39,21 +38,19 @@
   <div id="widget-selector" collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
       <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
-      <span class="badge confirmation">Widget added!</span>
-      Select the widgets you want to add to your dashboard.
+      <span class="badge confirmation" translate>impac.dashboard.widget_added</span>
+      {{'impac.dashboard.select_the_widgets' | translate}}
     </div>
 
     <div class="row top-container">
       <div class="col-md-3 categories">
-        <div class="row header">
-          All categories
-        </div>
+        <div class="row header" translate>impac.dashboard.all_categories</div>
         <div class="row lines">
           <div class="col-md-12" style="padding: 3px 12px;">
-            <p ng-click="selectCategory('accounts')" ng-class="isCategorySelected('accounts') ? 'selected' : none">Accounting</p>
-            <p ng-click="selectCategory('invoices')" ng-class="isCategorySelected('invoices') ? 'selected' : none">Invoicing</p>
-            <p ng-click="selectCategory('hr')" ng-class="isCategorySelected('hr') ? 'selected' : none">HR / Payroll</p>
-            <p ng-click="selectCategory('sales')" ng-class="isCategorySelected('sales') ? 'selected' : none">Sales</p>
+            <p ng-click="selectCategory('accounts')" ng-class="isCategorySelected('accounts') ? 'selected' : none" translate>impac.dashboard.accounting</p>
+            <p ng-click="selectCategory('invoices')" ng-class="isCategorySelected('invoices') ? 'selected' : none" translate>impac.dashboard.invoicing</p>
+            <p ng-click="selectCategory('hr')" ng-class="isCategorySelected('hr') ? 'selected' : none" translate>impac.dashboard.hr_or_payroll</p>
+            <p ng-click="selectCategory('sales')" ng-class="isCategorySelected('sales') ? 'selected' : none" translate>impac.dashboard.sales</p>
           </div>
         </div>
 
@@ -78,7 +75,7 @@
 
     <div class="bottom" ng-if="widgetSuggestionModal.config.apiPath">
       <span class="suggestion">
-        Can't find the widget you're looking for? <a ng-click="widgetSuggestionModal.open()">Give us your suggestions here!</a>
+        {{'impac.dashboard.can_not_find' | translate}} <a ng-click="widgetSuggestionModal.open()">{{'impac.dashboard.give_us' | translate}}</a>
       </span>
     </div>
   </div>
@@ -120,7 +117,7 @@
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Create a Dashboard!</button>
+          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> {{'impac.dashboard.create_a_dashboard' | translate}}</button>
         </div>
       </div>
 
@@ -137,7 +134,7 @@
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <button ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> Add a new Widget</button>
+          <button ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> {{'impac.dashboard.add_new_widget' | translate}}</button>
         </div>
       </div>
     </div>
@@ -168,7 +165,7 @@
         <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
         <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
           <div class="col-md-6 widget-item add-chart">
-            <div class="a-content">+ chart</div>
+            <div class="a-content" translate>impac.dashboard.plus_chart</div>
           </div>
         </div>
       </div>
@@ -192,7 +189,7 @@
         <p>{{dhbErrorsConfig.failed.second}}</p>
       </div>
       <a href="" ng-click="reloadDashboard()">
-        <button type="button" class="btn btn-default">Refresh</button>
+        <button type="button" class="btn btn-default" translate>impac.dashboard.refresh</button>
       </a>
     </div>
   </div>
