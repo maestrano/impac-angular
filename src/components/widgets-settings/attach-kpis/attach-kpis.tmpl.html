@@ -1,7 +1,7 @@
 <div class="settings attach-kpis">
 
   <div class="attach-kpi">
-    <h5>Attach an Alert</h5>
+    <h5 translate>impac.widget.settings.attach_kpis.attach_an_alert</h5>
     <form name="attachKpiForm" class='attach-kpi-form'>
       <!-- <div class="row nomargin">
         <select class="form-control input-sm" ng-model="kpi.endpoint" ng-options="kpi.endpoint as formatKpiName(kpi.endpoint) for kpi in availableKpis" ng-change="selectKpi()"></select>
@@ -13,7 +13,7 @@
       </div> -->
       <div class="row nomargin kpi-description">
         <!-- TODO: support for multiple extra params, and watchables. -->
-        Keep the {{elementWatched}} <span ng-if="showExtraParam">of {{extraParams[selectedParam].name}}</span>:
+        {{'impac.widget.settings.attach_kpis.keep_the' | translate}} {{elementWatched}} <span ng-if="showExtraParam">{{'impac.widget.settings.attach_kpis.of' | translate}} {{extraParams[selectedParam].name}}</span>:
       </div>
       <div class="row nomargin">
         <div class="col-xs-5 nopadding">
@@ -24,8 +24,8 @@
           <!-- TODO: return possible units from API? -->
           <!-- <span class="form-control-feedback" aria-hidden="true">{{kpi.data.unit}}</span> -->
           <div class="error-messages limit" ng-messages="attachKpiForm.limitValue.$error">
-            <span ng-message="required">KPI target is required</span>
-            <span ng-message="pattern">KPI target must be a number</span>
+            <span ng-message="required" translate>impac.widget.settings.attach_kpis.kpi_target_require</span>
+            <span ng-message="pattern" translate>impac.widget.settings.attach_kpis.kpi_target_number</span>
           </div>
         </div>
         <div class="col-xs-2 nopadding">
@@ -36,9 +36,9 @@
   </div>
 
   <div class="list-group attached-kpis" ng-show="attachedKpis.length">
-    <h5>Attached Alerts</h5>
+    <h5 translate>impac.widget.settings.attach_kpis.attached_alerts</h5>
     <div class="list-group-item clearfix attached-kpi" ng-repeat="kpi in attachedKpis track by $index">
-      <div class="attached-kpi-name">Keep {{formatAttachedKpiTitle(kpi) | titleize}}</div>
+      <div class="attached-kpi-name">{{'impac.widget.settings.attach_kpis.keep' | translate}} {{formatAttachedKpiTitle(kpi) | titleize}}</div>
       <div class="pull-right actions">
         <alerts-config kpi="kpi"></alerts-config>
         <div class="remove-attached-kpi" ng-click="deleteKpi(kpi)">
