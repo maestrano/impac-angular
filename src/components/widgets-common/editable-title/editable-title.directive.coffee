@@ -16,7 +16,7 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc, ImpacDash
       if $scope.pdfMode
         return ''
       else
-        tooltipText = $translate.invoke('impac.widget.editable_title.tooltip_text');
+        tooltipText = $translate.instant('impac.widget.editable_title.tooltip_text');
         return w.name + if w.hasEditAbility then ' ' + tooltipText else ''
 
     ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
