@@ -531,5 +531,7 @@
   "impac.widget.sales_opportunities.save":                   "@:impac.common.action.save",
   "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
   "impac.widget.sales_opportunities.total_potential":        "你好 你好:",
-  "impac.widget.sales_opportunities.eligible_opportunities": "你好 你好"
+  "impac.widget.sales_opportunities.eligible_opportunities": "你好 你好",
+
+  "impac.widget.editable_title.tooltip_text": "(你好 你好 你好 你好)",
 }

@@ -531,5 +531,7 @@
   "impac.widget.sales_opportunities.save":                   "@:impac.common.action.save",
   "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
   "impac.widget.sales_opportunities.total_potential":        "Total potential:",
-  "impac.widget.sales_opportunities.eligible_opportunities": "eligible opportunities"
+  "impac.widget.sales_opportunities.eligible_opportunities": "eligible opportunities",
+
+  "impac.widget.editable_title.tooltip_text": "(click to edit name)",
 }
