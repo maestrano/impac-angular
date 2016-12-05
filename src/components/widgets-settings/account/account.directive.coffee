@@ -38,7 +38,7 @@ module.controller('SettingAccountCtrl', ($scope, $filter) ->
   $scope.deferred.resolve($scope.parentWidget)
 )
 
-module.directive('settingAccount', ($templateCache) ->
+module.directive('settingAccount', ($templateCache, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -50,7 +50,7 @@ module.directive('settingAccount', ($templateCache) ->
     },
 
     link: (scope, element) ->
-      scope.label = "Account to monitor" if !scope.label
+      scope.label = $translate.instant('impac.widgets-settings.account.label') if !scope.label
 
     ,template: $templateCache.get('widgets-settings/account.tmpl.html'),
     controller: 'SettingAccountCtrl'
