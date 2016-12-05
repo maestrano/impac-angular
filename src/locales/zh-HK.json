@@ -100,6 +100,8 @@
   "impac.widget.settings.chart_filters.filter_number": "你好 你好 {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "你好 你好 {percentage}% {entityType}",
   "impac.widget.settings.account.label": "你好 你好 你好",
+  "impac.widget.settings.accounting-behaviour.balance_sheet": "你好 你好",
+  "impac.widget.settings.accounting-behaviour.p_and_l": "你好 & 你好",
 
   "impac.dashboard_selector.delete_widget.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好?",
   "impac.widget.common.top_buttons.delete.title": "你好 你好 你好 你好 你好 你好 你好 你好?",
