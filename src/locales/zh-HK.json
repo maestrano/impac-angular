@@ -616,5 +616,13 @@
   "impac.dashboard.widget_suggestion.helping":              "你好 你好 你好 你好 你好 你好 你好 你好!&trade;",
   "impac.dashboard.widget_suggestion.unable_to_send":       "你好 你好 你好 你好 你好, 你好 你好 你好 你好 你好 你好 你好.",
   "impac.dashboard.widget_suggestion.cancel":               "@:impac.common.action.cancel",
-  "impac.dashboard.widget_suggestion.send_your_suggestion": "你好 你好 你好"
+  "impac.dashboard.widget_suggestion.send_your_suggestion": "你好 你好 你好",
+
+  "impac.widget.accounts_expenses_revenue.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_expenses_revenue.save":            "@:impac.common.action.save",
+  "impac.widget.accounts_expenses_revenue.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.accounts_expenses_revenue.expenses":        "你好",
+  "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
+  "impac.widget.accounts_expenses_revenue.net_profit":      "你好 你好",
+  "impac.widget.accounts_expenses_revenue.show_net_profit": "你好 你好 你好"
 }

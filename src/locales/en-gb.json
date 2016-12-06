@@ -616,5 +616,13 @@
   "impac.dashboard.widget_suggestion.helping":              "thanks a lot for helping us improve Impac!&trade;",
   "impac.dashboard.widget_suggestion.unable_to_send":       "Unable to send suggestions request, please try again or contact technical support.",
   "impac.dashboard.widget_suggestion.cancel":               "@:impac.common.action.cancel",
-  "impac.dashboard.widget_suggestion.send_your_suggestion": "Send your suggestion"
+  "impac.dashboard.widget_suggestion.send_your_suggestion": "Send your suggestion",
+
+  "impac.widget.accounts_expenses_revenue.settings.title":  "@:impac.common.title.widget.settings.title",
+  "impac.widget.accounts_expenses_revenue.save":            "@:impac.common.action.save",
+  "impac.widget.accounts_expenses_revenue.cancel":          "@:impac.common.action.cancel",
+  "impac.widget.accounts_expenses_revenue.expenses":        "Expenses",
+  "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
+  "impac.widget.accounts_expenses_revenue.net_profit":      "Net Profit",
+  "impac.widget.accounts_expenses_revenue.show_net_profit": "Show net profit"
 }
