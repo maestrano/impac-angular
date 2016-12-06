@@ -1,6 +1,6 @@
 <div class="modal-header">
   <div class="close" type="button" ng-click="instance.close()" >×</div>
-  <h3>Delete Dashboard</h3>
+  <h3 translate>impac.dashboard_selector.delete.delete_dashboard</h3>
 </div>
 
 <div class="modal-body">
@@ -23,10 +23,10 @@
 <div class="modal-footer">
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading" ng-disabled="isLoading">Cancel</button>
+      <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading" ng-disabled="isLoading" translate>impac.dashboard_selector.delete.cancel</button>
       <button class="btn btn-danger" ng-click="proceed()" ng-disabled="isLoading">
         <i class="fa fa-spinner fa-pulse loader" ng-if="isLoading"></i>
-        Delete
+        {{'impac.dashboard_selector.delete.delete' | translate}}
       </button>
     </div>
   </div>

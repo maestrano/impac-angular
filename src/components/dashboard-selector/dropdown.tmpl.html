@@ -5,7 +5,7 @@
       {{currentDhb.full_name}}
     </h1>
     <p class="data-source-label">
-      <small><b>Source:</b> {{organizationsNames()}}</small>
+      <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>
     </p>
   </div>
 
@@ -16,27 +16,27 @@
           {{currentDhb.full_name}}
           <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
         </div>
-        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
+        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
       </h4>
 
       <div ng-show="showDashboardsDropdown" class='dashboard-select hidden-print'>
         <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
           <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
-          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
+          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
         </div>
 
-        <div ng-show="showCreateDashboardButton" class="option create" ng-click="onCreateDashboard()"><i class="fa fa-plus" /> Create Dashboard</div>
+        <div ng-show="showCreateDashboardButton" class="option create" ng-click="onCreateDashboard()"><i class="fa fa-plus" /> {{'impac.dashboard_selector.dropdown.create_dashboard' | translate}}</div>
       </div>
 
       <div ng-if="showChangeDashboardNameBox" class="change-name">
-        <p>Change dashboard name:</p>
+        <p translate>impac.dashboard_selector.dropdown.change_dashboard_name</p>
         <input type="text" class="form-control" id="changeDhbNameInput" ng-model="dashboardToChange.name" ng-keyup="checkAndUpdateDashboardName($event)"/>
-        <button class="btn btn-sm btn-default" ng-click="hideChangeDashboardNameBox()">Cancel</button>
-        <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="updateDashboardName()">Confirm</button>
+        <button class="btn btn-sm btn-default" ng-click="hideChangeDashboardNameBox()" translate>impac.dashboard_selector.dropdown.cancel</button>
+        <button class="btn btn-sm btn-success" style="margin-left: 10px" ng-click="updateDashboardName()" translate>impac.dashboard_selector.dropdown.confirm</button>
       </div>
 
       <p class="data-source-label">
-        <small><b>Source:</b> {{organizationsNames()}}</small>
+        <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>
       </p>
     </div>
   </div>
@@ -48,13 +48,13 @@
   <div class='actions-panel hidden-print' ng-class="{'col-md-3': pdfMode, 'col-md-6': !pdfMode}">
     <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector" ng-hide="pdfMode"><span class='fa fa-wheelchair'></span></button>
 
-    <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> Add Widget</button>
+    <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.dropdown.add_widget' | translate}}</button>
 
-    <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> Create Dashboard</button>
+    <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> {{'impac.dashboard_selector.dropdown.create_dashboard' | translate}}</button>
 
     <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
-    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
+    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="{{'impac.dashboard_selector.dropdown.tooltip' | translate}}" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
   </div>
 
 </div>
