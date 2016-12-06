@@ -174,6 +174,7 @@
   "impac.kpi_bar.you_can_now":                    "你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.kpi_bar.no_kpis":                        "你好 你好 你好 你好 你好 你好 你好",
   "impac.kpi_bar.add_to_dashboard":               "你好 你好 你好",
+  "impac.kpi_bar.new":                            "你好!",
 
   "impac.widget.accounting_values.turnover.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.accounting_values.turnover.save":           "@:impac.common.action.save",
