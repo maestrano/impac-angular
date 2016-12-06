@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-forecast',[])
 
-module.controller('WidgetSalesForecastCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesForecastCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -56,7 +56,7 @@ module.controller('WidgetSalesForecastCtrl', ($scope, $q, ChartFormatterSvc, $fi
         $filter('mnoDate')(aDate, period)
 
       inputData = [{
-        title: 'Sales Performance',
+        title: $translate.instant('impac.widget.sales_forecast.sales_performance'),
         labels: formattedDates,
         values: w.content.totals
       }]

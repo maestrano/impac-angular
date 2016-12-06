@@ -62,11 +62,11 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getName = (element) ->
     if element? && element.name?
-      return "Total Leaves Accruals" if element.name == "total_leaves"
-      return "Total Superannuation Accruals" if element.name == "total_super"
-      return "Total Reimbursements" if element.name == "total_reimbursement"
-      return "Total Taxes" if element.name == "total_tax"
-      return "Total Time Off" if element.name == "total_timeoff"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_leaves') if element.name == "total_leaves"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_superannuation') if element.name == "total_super"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_reimbursements') if element.name == "total_reimbursement"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_taxes') if element.name == "total_tax"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_time_off') if element.name == "total_timeoff"
       return element.name.replace(/_/g, " ")
 
   $scope.getTrackedField = ->

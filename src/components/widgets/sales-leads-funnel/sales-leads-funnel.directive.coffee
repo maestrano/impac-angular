@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -86,11 +86,11 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
     nameLineArray.push("</strong>")
 
     tooltip.push(nameLineArray.join(' '))
-    tooltip.push("Status: #{$filter('titleize')(aLead.lead_status)}")
-    tooltip.push("Organization: #{$filter('titleize')(aLead.organization)}") if aLead.organization
+    tooltip.push($translate.instant('impac.widget.sales_leads_funnel.status') + " #{$filter('titleize')(aLead.lead_status)}")
+    tooltip.push($translate.instant('impac.widget.sales_leads_funnel.organization') + " #{$filter('titleize')(aLead.organization)}") if aLead.organization
 
     if aLead.opportunities
-      tooltip.push("<strong>Opportunities:</strong>")
+      tooltip.push("<strong>" + $translate.instant('impac.widget.sales_leads_funnel.opportunities') + "</strong>")
       angular.forEach aLead.opportunities, (opp) ->
         oppLineArray = []
         oppLineArray.push("##{opp.code}") if opp.code

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-leaves-schedule',[])
 
-module.controller('WidgetHrLeavesScheduleCtrl', ($scope, $q, ChartFormatterSvc, $tranlate) ->
+module.controller('WidgetHrLeavesScheduleCtrl', ($scope, $q, ChartFormatterSvc) ->
 
   w = $scope.widget
 
@@ -43,7 +43,7 @@ module.directive('widgetHrLeavesSchedule', ->
   }
 )
 
-module.directive('widgetComponentCalendar', ->
+module.directive('widgetComponentCalendar', ($tranlate)->
   return {
     scope: {
       events: '=ngModel'
@@ -54,9 +54,9 @@ module.directive('widgetComponentCalendar', ->
 
       calendarOptions = {
         header: {
-          left: "prev",
-          center: "title",
-          right: "next",
+          left: $tranlate.instant('impac.common.action.calendar.left'),
+          center: $tranlate.instant('impac.common.action.calendar.center'),
+          right: $tranlate.instant('impac.common.action.calendar.right')
         },
         contentHeight: 204,
         # aspectRatio: 3,

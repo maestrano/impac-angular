@@ -318,6 +318,11 @@
   "impac.widget.hr_payroll_summary.from":            "@:impac.common.text.from",
   "impac.widget.hr_payroll_summary.to":              "@:impac.common.text.to",
   "impac.widget.hr_payroll_summary.no_elements":     "Select one or several employee(s) or category(ies) to display the corresponding summary.",
+  "impac.widget.hr_payroll_summary.total_leaves":         "Total Leaves Accruals",
+  "impac.widget.hr_payroll_summary.total_superannuation": "Total Superannuation Accruals",
+  "impac.widget.hr_payroll_summary.total_reimbursements": "Total Reimbursements",
+  "impac.widget.hr_payroll_summary.total_taxes":          "Total Taxes",
+  "impac.widget.hr_payroll_summary.total_time_off":       "Total Time Off",
 
   "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
@@ -442,10 +447,11 @@
   "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
   "impac.widget.sales_cycle.your_sales_cycle": "Your sales cycle represents how much time your leads stay set to each status",
 
-  "impac.widget.sales_forecast.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_forecast.save":           "@:impac.common.action.save",
-  "impac.widget.sales_forecast.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_forecast.projection_on":  "Projection on the next 6 months",
+  "impac.widget.sales_forecast.settings.title":    "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_forecast.save":              "@:impac.common.action.save",
+  "impac.widget.sales_forecast.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.sales_forecast.projection_on":     "Projection on the next 6 months",
+  "impac.widget.sales_forecast.sales_performance": "Sales Performance",
 
   "impac.widget.sales_growth.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_growth.save":                     "@:impac.common.action.save",
@@ -465,10 +471,16 @@
   "impac.widget.sales_leads_funnel.legend.your_leads": "Your leads sales funnel from",
   "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
   "impac.widget.sales_leads_funnel.select_a_status":   "Select a status to display a list of the corresponding leads",
+  "impac.widget.sales_leads_funnel.status":            "Status:",
+  "impac.widget.sales_leads_funnel.organization":      "Organization:",
+  "impac.widget.sales_leads_funnel.opportunities":     "Opportunities:",
 
   "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
   "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_leads_list.status":         "@:impac.widget.sales_leads_funnel.status",
+  "impac.widget.sales_leads_list.organization":   "@:impac.widget.sales_leads_funnel.organization",
+  "impac.widget.sales_leads_list.opportunities":  "@:impac.widget.sales_leads_funnel.opportunities",
 
   "impac.widget.sales_list.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_list.save":                     "@:impac.common.action.save",
@@ -561,6 +573,7 @@
   "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
   "impac.widget.sales_opportunities.total_potential":        "Total potential:",
   "impac.widget.sales_opportunities.eligible_opportunities": "eligible opportunities",
+  "impac.widget.sales_opportunities.proba":                  "proba",
 
   "impac.widget.editable_title.tooltip_text": "(click to edit name)",
 

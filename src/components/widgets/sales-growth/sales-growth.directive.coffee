@@ -36,7 +36,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
 
       $scope.product = angular.copy(_.find($scope.productOptions, (o) ->
         o.value == w.content.product
-      ) || {label: "SELECT PRODUCT", value: -1})
+      ) || {label: $translate.instant('impac.widget.sales_growth.select_product'), value: -1})
 
       $translate('impac.widget.sales_growth.select_product').then((result) ->
         $scope.product = angular.copy(_.find($scope.productOptions, (o) ->

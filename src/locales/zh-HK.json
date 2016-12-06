@@ -318,6 +318,11 @@
   "impac.widget.hr_payroll_summary.from":            "@:impac.common.text.from",
   "impac.widget.hr_payroll_summary.to":              "@:impac.common.text.to",
   "impac.widget.hr_payroll_summary.no_elements":     "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好 你好.",
+  "impac.widget.hr_payroll_summary.total_leaves":         "你好 你好 你好",
+  "impac.widget.hr_payroll_summary.total_superannuation": "你好 你好 你好",
+  "impac.widget.hr_payroll_summary.total_reimbursements": "你好 你好",
+  "impac.widget.hr_payroll_summary.total_taxes":          "你好 你好",
+  "impac.widget.hr_payroll_summary.total_time_off":       "你好 你好 你好",
 
   "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
@@ -442,10 +447,11 @@
   "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
   "impac.widget.sales_cycle.your_sales_cycle": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
 
-  "impac.widget.sales_forecast.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_forecast.save":           "@:impac.common.action.save",
-  "impac.widget.sales_forecast.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_forecast.projection_on":  "你好 你好 你好 你好 6 你好",
+  "impac.widget.sales_forecast.settings.title":    "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_forecast.save":              "@:impac.common.action.save",
+  "impac.widget.sales_forecast.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.sales_forecast.projection_on":     "你好 你好 你好 你好 6 你好",
+  "impac.widget.sales_forecast.sales_performance": "你好 你好",
 
   "impac.widget.sales_growth.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_growth.save":                     "@:impac.common.action.save",
@@ -465,10 +471,16 @@
   "impac.widget.sales_leads_funnel.legend.your_leads": "你好 你好 你好 你好 你好",
   "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
   "impac.widget.sales_leads_funnel.select_a_status":   "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
+  "impac.widget.sales_leads_funnel.status":            "你好:",
+  "impac.widget.sales_leads_funnel.organization":      "你好:",
+  "impac.widget.sales_leads_funnel.opportunities":     "你好:",
 
   "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
   "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_leads_list.status":         "@:impac.widget.sales_leads_funnel.status",
+  "impac.widget.sales_leads_list.organization":   "@:impac.widget.sales_leads_funnel.organization",
+  "impac.widget.sales_leads_list.opportunities":  "@:impac.widget.sales_leads_funnel.opportunities",
 
   "impac.widget.sales_list.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_list.save":                     "@:impac.common.action.save",
@@ -561,6 +573,7 @@
   "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
   "impac.widget.sales_opportunities.total_potential":        "你好 你好:",
   "impac.widget.sales_opportunities.eligible_opportunities": "你好 你好",
+  "impac.widget.sales_opportunities.proba":                  "你好",
 
   "impac.widget.editable_title.tooltip_text": "(你好 你好 你好 你好)",
 
