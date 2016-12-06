@@ -627,6 +627,10 @@
   "impac.dashboard.add_new_widget":            "Add a new Widget",
   "impac.dashboard.plus_chart":                "+ chart",
   "impac.dashboard.refresh":                   "Refresh",
+  "impac.dashboard.category_name.accounting":    "Accounting",
+  "impac.dashboard.category_name.invoicing":     "Invoicing",
+  "impac.dashboard.category_name.hr_or_payroll": "HR / Payroll",
+  "impac.dashboard.category_name.sales":         "Sales",
 
   "impac.dashboard.widget_suggestion.suggest_a_widget":     "Suggest a widget",
   "impac.dashboard.widget_suggestion.widget_name":          "What would you name your widget?",

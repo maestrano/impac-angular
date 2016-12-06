@@ -627,6 +627,10 @@
   "impac.dashboard.add_new_widget":            "你好 你好 你好 你好",
   "impac.dashboard.plus_chart":                "+ 你好",
   "impac.dashboard.refresh":                   "你好",
+  "impac.dashboard.category_name.accounting":    "你好",
+  "impac.dashboard.category_name.invoicing":     "你好",
+  "impac.dashboard.category_name.hr_or_payroll": "你好 / 你好",
+  "impac.dashboard.category_name.sales":         "你好",
 
   "impac.dashboard.widget_suggestion.suggest_a_widget":     "你好 你好 你好",
   "impac.dashboard.widget_suggestion.widget_name":          "你好 你好 你好 你好 你好 你好?",
