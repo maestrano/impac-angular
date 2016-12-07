@@ -254,6 +254,11 @@
   "impac.widget.account_class_comp.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_class_comp.save":              "@:impac.common.action.save",
   "impac.widget.account_class_comp.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.account_class_comp.klass.liability":    "liability",
+  "impac.widget.account_class_comp.klass.asset":        "asset",
+  "impac.widget.account_class_comp.klass.expense":      "expense",
+  "impac.widget.account_class_comp.klass.revenue":      "revenue",
+  "impac.widget.account_class_comp.klass.equity":       "equity",
 
   "impac.widget.account_comp.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_comp.save":              "@:impac.common.action.save",

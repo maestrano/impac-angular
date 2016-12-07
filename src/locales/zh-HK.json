@@ -254,6 +254,11 @@
   "impac.widget.account_class_comp.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_class_comp.save":              "@:impac.common.action.save",
   "impac.widget.account_class_comp.cancel":            "@:impac.common.action.cancel",
+  "impac.widget.account_class_comp.klass.liability":    "你好",
+  "impac.widget.account_class_comp.klass.asset":        "你好",
+  "impac.widget.account_class_comp.klass.expense":      "你好",
+  "impac.widget.account_class_comp.klass.revenue":      "你好",
+  "impac.widget.account_class_comp.klass.equity":       "你好",
 
   "impac.widget.account_comp.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_comp.save":              "@:impac.common.action.save",

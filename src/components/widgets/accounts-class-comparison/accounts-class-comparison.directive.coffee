@@ -23,6 +23,13 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
 
   # Widget specific methods
   # --------------------------------------
+  
+  translate = (word) ->
+    word = word.toLowerCase()
+    translation = $translate.instant('impac.widget.account_class_comp.klass.' + word)
+    return if ~translation.indexOf('impac.widget.account_class_comp.klass') then _.capitalize(word) else translation
+
+
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
     if $scope.isDataFound
@@ -30,7 +37,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
       $scope.classifications = _.map w.content.summary, (summary) ->
         klass = summary.classification
         {
-          label: _.capitalize(klass.toLowerCase())
+          label: translate(klass)
           labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
