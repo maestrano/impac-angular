@@ -383,8 +383,9 @@
   "impac.widget.hr_workforce_summary.save":            "@:impac.common.action.save",
   "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
   "impac.widget.hr_workforce_summary.total_workforce": "你好 你好",
-  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
+  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
   "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好",
+  "impac.widget.hr_workforce_summary.filter":          "你好:",
 
   "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",

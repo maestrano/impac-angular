@@ -385,6 +385,7 @@
   "impac.widget.hr_workforce_summary.total_workforce": "Total Workforce",
   "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
   "impac.widget.hr_workforce_summary.legend.with":     "with known salary",
+  "impac.widget.hr_workforce_summary.filter":          "Filter:",
 
   "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",
