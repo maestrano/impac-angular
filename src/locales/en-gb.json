@@ -120,6 +120,10 @@
   "impac.widget.settings.width.reduce": "@:impac.common.reduce",
   "impac.widget.settings.width.expand": "@:impac.common.expand",
 
+  "impac.widget.settings.params-picker.description": "The selected criteria will be displayed in this order (drag/drop to modify):",
+  "impac.widget.settings.params-picker.apply_to_all": "Apply to all similar widgets",
+  "impac.widget.settings.params-picker.status_selection": "STATUS SELECTION",
+
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
   "impac.dashboard_selector.bootstrap_tabs.add_widget": "Add Widget",
   "impac.dashboard_selector.bootstrap_tabs.source": "Source:",

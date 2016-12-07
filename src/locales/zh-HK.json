@@ -107,9 +107,6 @@
   "impac.widget.settings.accounting_behaviour.balance_sheet": "你好 你好",
   "impac.widget.settings.accounting_behaviour.p_and_l": "你好 & 你好",
 
-  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
-  "impac.widget.settings.width.expand": "@:impac.common.expand",
-
   "impac.widget.settings.attach_kpis.attach_an_alert":    "你好 你好 你好",
   "impac.widget.settings.attach_kpis.keep_the":           "你好 你好",
   "impac.widget.settings.attach_kpis.of":                 "你好",
@@ -119,6 +116,13 @@
   "impac.widget.settings.attach_kpis.keep":               "你好",
   "impac.widget.settings.attach_kpis.over":               "你好",
   "impac.widget.settings.attach_kpis.below":              "你好",
+
+  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
+  "impac.widget.settings.width.expand": "@:impac.common.expand",
+
+  "impac.widget.settings.params-picker.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 (你好/你好 你好 你好):",
+  "impac.widget.settings.params-picker.apply_to_all": "你好 你好 你好 你好 你好",
+  "impac.widget.settings.params-picker.status_selection": "你好 你好",
 
   "impac.dashboard_selector.delete_widget.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好?",
   "impac.dashboard_selector.bootstrap_tabs.add_widget": "你好 你好",
