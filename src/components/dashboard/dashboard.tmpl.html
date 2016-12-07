@@ -110,8 +110,8 @@
           <div class="row top-buffer-4">
             <div class="col-md-8 col-md-offset-2">
               <div class="info-text">
-                <p><b>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
-                <p>{{dhbErrorsConfig.firstTimeCreated.second}}</p>
+                <p><b translate>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
+                <p translate>{{dhbErrorsConfig.firstTimeCreated.second}}</p>
               </div>
             </div>
           </div>
@@ -127,8 +127,8 @@
           <div class="row top-buffer-4">
             <div class="col-md-8 col-md-offset-2">
               <div class="info-text">
-                <p><b>{{dhbErrorsConfig.empty.first}}</b></p>
-                <p>{{dhbErrorsConfig.empty.second}}</p>
+                <p><b translate>{{dhbErrorsConfig.empty.first}}</b></p>
+                <p translate>{{dhbErrorsConfig.empty.second}}</p>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@
     <img class="bg" ng-src="{{impacDashboardBackground}}">
     <div class="spacer2 hidden-xs"></div>
     <div class='col-md-8 col-md-offset-2'>
-      <p class="text-muted"><small><em>{{dhbErrorsConfig.firstTimeCreated.note}}</em></small></p>
+      <p class="text-muted"><small><em translate>{{dhbErrorsConfig.firstTimeCreated.note}}</em></small></p>
     </div>
   </div>
 
@@ -184,9 +184,9 @@
 <div class="analytics load-failed" ng-show="!isLoading && failedDashboardLoad">
   <div class="row">
     <div class="col-md-12 text-center" style="margin-top: 200px;">
-      <p>{{dhbErrorsConfig.failed.first}}</p>
+      <p translate>{{dhbErrorsConfig.failed.first}}</p>
       <div class="second-msg" ng-if="displaySecondMsg">
-        <p>{{dhbErrorsConfig.failed.second}}</p>
+        <p translate>{{dhbErrorsConfig.failed.second}}</p>
       </div>
       <a href="" ng-click="reloadDashboard()">
         <button type="button" class="btn btn-default" translate>impac.dashboard.refresh</button>

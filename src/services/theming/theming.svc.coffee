@@ -57,15 +57,15 @@ angular
       # options for configuring the dhb errors messages.
       dhbErrorsConfig:
         firstTimeCreated:
-          first: 'It\'s time to add a reporting dashboard!'
-          second: 'In 2 clicks, you\'ll be able to visualize how your business is performing.'
-          note: 'Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.'
+          first: 'impac.widget.common.error_config.first_time_created'
+          second: 'impac.widget.common.error_config.first_time_created'
+          note: 'impac.widget.common.error_config.first_time_created'
         empty:
-          first: 'Now it\'s time to select the metrics you want to see!'
-          second: 'Add widgets to your dashboard to help make an Impac!™ to your business.'
+          first: 'impac.widget.common.error_config.empty'
+          second: 'impac.widget.common.error_config.empty'
         failed:
-          first: 'Ooops! Something went wrong, can you please refresh your dashboard?'
-          second: 'Unable to load your dashboard, please contact support or try again later.'
+          first: 'impac.widget.common.error_config.failed'
+          second: 'impac.widget.common.error_config.failed'
 
       dhbSubMenuConfig:
         myobMessage:
