@@ -364,6 +364,7 @@
   "impac.widget.hr_salaries_summary.average_rate":    "Average Salary Rate",
   "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
   "impac.widget.hr_salaries_summary.legend.with":     "with known salary",
+  "impac.widget.hr_salaries_summary.filter":          "Filter:",
 
   "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
@@ -385,7 +386,7 @@
   "impac.widget.hr_workforce_summary.total_workforce": "Total Workforce",
   "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
   "impac.widget.hr_workforce_summary.legend.with":     "with known salary",
-  "impac.widget.hr_workforce_summary.filter":          "Filter:",
+  "impac.widget.hr_workforce_summary.filter":          "@:impac.widget.hr_salaries_summary.filter",
 
   "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",
@@ -578,7 +579,7 @@
   "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
   "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_turnover.filter":           "Filter:",
+  "impac.widget.sales_turnover.filter":           "@:impac.widget.hr_salaries_summary.filter",
   "impac.widget.sales_turnover.average_price":    "Average price range",
   "impac.widget.sales_turnover.of_your_revenue":  "of your revenue comes from products sold at an average price between",
   "impac.widget.sales_turnover.and":              "and",

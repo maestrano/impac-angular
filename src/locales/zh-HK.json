@@ -364,6 +364,7 @@
   "impac.widget.hr_salaries_summary.average_rate":    "你好 你好 你好",
   "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
   "impac.widget.hr_salaries_summary.legend.with":     "你好 你好 你好",
+  "impac.widget.hr_salaries_summary.filter":          "你好:",
 
   "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
   "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
@@ -385,7 +386,7 @@
   "impac.widget.hr_workforce_summary.total_workforce": "你好 你好",
   "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
   "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好",
-  "impac.widget.hr_workforce_summary.filter":          "你好:",
+  "impac.widget.hr_workforce_summary.filter":          "@:impac.widget.hr_salaries_summary.filter",
 
   "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",
@@ -578,7 +579,7 @@
   "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
   "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_turnover.filter":           "你好:",
+  "impac.widget.sales_turnover.filter":           "@:impac.widget.hr_salaries_summary.filter",
   "impac.widget.sales_turnover.average_price":    "你好 你好 你好",
   "impac.widget.sales_turnover.of_your_revenue":  "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.widget.sales_turnover.and":              "你好",
