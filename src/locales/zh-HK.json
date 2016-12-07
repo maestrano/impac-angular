@@ -228,6 +228,8 @@
   "impac.widget.account_balance_sheets.asset":           "你好",
   "impac.widget.account_balance_sheets.liability":       "好你好",
   "impac.widget.account_balance_sheets.equity":          "你好好",
+  "impac.widget.account_balance_sheets.accounts":        "你好",
+  "impac.widget.account_balance_sheets.balance":         "你好",
 
   "impac.widget.account_cash_smry.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_cash_smry.save":              "@:impac.common.action.save",

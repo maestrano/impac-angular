@@ -228,6 +228,8 @@
   "impac.widget.account_balance_sheets.asset":           "Asset",
   "impac.widget.account_balance_sheets.liability":       "Liability",
   "impac.widget.account_balance_sheets.equity":          "Equity",
+  "impac.widget.account_balance_sheets.accounts":        "Accounts",
+  "impac.widget.account_balance_sheets.balance":         "Balance",
 
   "impac.widget.account_cash_smry.settings.title":        "@:impac.common.title.widget.settings.title",
   "impac.widget.account_cash_smry.save":                  "@:impac.common.action.save",
