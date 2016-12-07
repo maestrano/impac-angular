@@ -217,7 +217,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   w.settings.push(selectedElementsSetting)
 
   # translate
-  periodName = if ($scope.widget.content.hist_parameters && $scope.widget.content.hist_parameters.period) then $scope.widget.content.hist_parameters.period.toLowerCase() else 'monthly'
+  periodName = if ($scope.widget.content && $scope.widget.content.hist_parameters && $scope.widget.content.hist_parameters.period) then $scope.widget.content.hist_parameters.period.toLowerCase() else 'monthly'
   $translate('impac.widget.settings.time_period.period.' + periodName).then(
     (translation) ->
       $scope.period_translation = _.capitalize(translation.toLowerCase())
