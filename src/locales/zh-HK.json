@@ -273,6 +273,8 @@
   "impac.widget.account_det_class.save":              "@:impac.common.action.save",
   "impac.widget.account_det_class.cancel":            "@:impac.common.action.cancel",
   "impac.widget.account_det_class.acc_classifications":            "{name} - 你好 你好",
+  "impac.widget.account_det_class.account_classifications":        "你好 你好",
+  "impac.widget.account_det_class.amounts":                        "你好",
 
   "impac.widget.account_expense_weight.settings.title":    "@:impac.common.title.widget.settings.title",
   "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
