@@ -6,9 +6,9 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred"></div>
 
-    <div setting-params-picker options="closedWonOptions" param="closed_won_selection" parent-widget="widget" class="part" deferred="::paramsWinsPickerDeferred" description="Pick the status that should be considered as 'Closed Won'"></div>
+    <div setting-params-picker options="closedWonOptions" param="closed_won_selection" parent-widget="widget" class="part" deferred="::paramsWinsPickerDeferred" description="{{'impac.widget.sales_performance.description.pick_the_status' | translate}}"></div>
 
-    <div setting-params-picker options="closedLostOptions" param="closed_lost_selection" parent-widget="widget" class="part" deferred="::paramsLostsPickerDeferred" description="Pick the status that should be considered as 'Closed Lost'"></div>
+    <div setting-params-picker options="closedLostOptions" param="closed_lost_selection" parent-widget="widget" class="part" deferred="::paramsLostsPickerDeferred" description="{{'impac.widget.sales_performance.description.pick_the_status_lost' | translate}}"></div>
 
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" ></div>
 

@@ -580,6 +580,8 @@
   "impac.widget.sales_performance.forecast":           "你好",
   "impac.widget.sales_performance.closed_won":         "你好 你好",
   "impac.widget.sales_performance.closed_lost":        "你好 你好",
+  "impac.widget.sales_performance.description.pick_the_status": "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好'",
+  "impac.widget.sales_performance.description.pick_the_status_lost": "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好'",
 
   "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_turnover.save":             "@:impac.common.action.save",

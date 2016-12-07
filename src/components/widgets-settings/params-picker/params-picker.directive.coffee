@@ -52,11 +52,8 @@ module.directive('settingParamsPicker', ($templateCache, $translate) ->
     },
     link: (scope, elements, attrs) ->
       paramText = $translate.instant('impac.widget.settings.params-picker.' + scope.param)
-      paramText = if ~paramText.indexOf('impac.widget.settings.params-picker') then scope.param.replace(/_/g,' ') else paramText
       
-      scope.formattedParam = paramText
-      console.log(scope.param)
-#      scope.formattedParam = scope.param.replace(/_/g,' ')
+      scope.formattedParam = if ~paramText.indexOf('impac.widget.settings.params-picker') then scope.param.replace(/_/g,' ') else paramText
       scope.description = $translate.instant('impac.widget.settings.params-picker.description') unless scope.description?
     template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
     controller: 'SettingParamsPickerCtrl'

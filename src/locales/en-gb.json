@@ -580,6 +580,8 @@
   "impac.widget.sales_performance.forecast":           "Forecast",
   "impac.widget.sales_performance.closed_won":         "Closed Won",
   "impac.widget.sales_performance.closed_lost":        "Closed Lost",
+  "impac.widget.sales_performance.description.pick_the_status": "Pick the status that should be considered as 'Closed Won'",
+  "impac.widget.sales_performance.description.pick_the_status_lost": "Pick the status that should be considered as 'Closed Lost'",
 
   "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
