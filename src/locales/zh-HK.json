@@ -409,6 +409,8 @@
   "impac.widget.invoices_list.total_paid":     "- 你好 你好",
   "impac.widget.invoices_list.total_due":      "- 你好 你好",
   "impac.widget.invoices_list.total_invoiced": "- 你好 你好",
+  "impac.widget.invoices_list.limit_entries_label.creditors": "你好",
+  "impac.widget.invoices_list.limit_entries_label.debtors":   "你好",
 
   "impac.widget.invoices_summary.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_summary.save":           "@:impac.common.action.save",

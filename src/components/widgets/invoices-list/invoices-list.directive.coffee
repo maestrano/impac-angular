@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-list',[])
 
-module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities) ->
+module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities, $translate) ->
 
   w = $scope.widget
 
@@ -23,9 +23,9 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities
 
     if $scope.isDataFound && $scope.orderBy=='due '
       if $scope.entityType=='suppliers'
-        $scope.limitEntriesLabel = 'creditors'
+        $scope.limitEntriesLabel = $translate.instant('impac.widget.invoices_list.limit_entries_label.creditors')
       else
-        $scope.limitEntriesLabel = 'debtors'
+        $scope.limitEntriesLabel = $translate.instant('impac.widget.invoices_list.limit_entries_label.debtors')
 
     if w.metadata? && w.metadata.limit_entries?
       $scope.limitEntriesSelected = w.metadata.limit_entries

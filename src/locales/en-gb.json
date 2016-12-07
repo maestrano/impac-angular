@@ -409,6 +409,8 @@
   "impac.widget.invoices_list.total_paid":     "- Total paid",
   "impac.widget.invoices_list.total_due":      "- Total due",
   "impac.widget.invoices_list.total_invoiced": "- Total invoiced",
+  "impac.widget.invoices_list.limit_entries_label.creditors": "creditors",
+  "impac.widget.invoices_list.limit_entries_label.debtors":   "debtors",
 
   "impac.widget.invoices_summary.settings.title": "@:impac.common.title.widget.settings.title",
   "impac.widget.invoices_summary.save":           "@:impac.common.action.save",
