@@ -14,6 +14,7 @@ angular
         $scope.availableKpis = {
           hide: true,
           toggle: ->
+            return false unless $scope.availableKpis.list && $scope.availableKpis.list.length
             $scope.availableKpis.hide = !$scope.availableKpis.hide
         }
         $scope.showKpisExpanded = false
@@ -150,6 +151,10 @@ angular
           $scope.showContent = !$scope.showContent
           animateKpiBarPanel()
           return true
+
+        $scope.hasKpiAvailability = ->
+          return false unless (availableKpisList = $scope.availableKpis.list)
+          availableKpisList.length || $scope.kpis.length || !$scope.availableKpis.hide
 
 
         # Private methods

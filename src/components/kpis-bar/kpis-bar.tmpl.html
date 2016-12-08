@@ -5,7 +5,7 @@
       <a href=""><i class="fa" ng-class="{ 'fa-chevron-up': showContent, 'fa-chevron-down': !showContent }"></i></a>
     </button>
     <div class="content-buttons">
-      <button type="button" class="add-kpis im-fab im-primary" ng-click="(availableKpis.list.length > 0) && availableKpis.toggle()" ng-class="{ disabled: (availableKpis.list.length == 0) }" ng-if="availableKpis.list.length > 0 || !availableKpis.hide">
+      <button type="button" class="add-kpis im-fab im-primary" ng-click="availableKpis.toggle()" ng-class="{ disabled: (availableKpis.list.length == 0) }" ng-if="hasKpiAvailability()">
         <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.hide, 'fa-minus': !availableKpis.hide}"></i></a>
       </button>
       <button type="button" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock, 'editing':isEditing() }" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
