@@ -2,90 +2,19 @@
 
 #### Developer Account & Authentication
 
-First things first, creating an authenticated developer account.
+##### Steps to get an Impac! Workspace loaded:
 
-1. Go to [uat.maestrano.io](https://uat.maestrano.io) and create an account.
-2. Go to "My Account"
-3. Then expand the "Developer" section
-4. Click on "Register"
-
-Now you should an api key, api secret, and an organization associated to your User on the UAT environment.
-
-
-#### Workspace
-
-##### Steps to get impac loaded:
-
-Temporary instructions to get Impac! Angular running for development:
-
-1. Create an account on http://impac-mnoe-uat.maestrano.io.
-2. Fork impac-express (https://github.com/maestrano/impac-express) and clone it to your local machine
-3. In the impac-express project, modify config/settings/development.yml as follow: 
-
-  ```ruby
-  impac:
-    protocol: https
-    host: api-impac-uat.maestrano.io
-  mno:
-    protocol: https
-    host: api-hub-uat.maestrano.io
-  ```
-4. In the impac-express project, create config/application.yml as follow: 
-
-  ```ruby
-  # Tenant Credentials
-  tenant_id: c6b44271-7334-0134-8df7-35f23abf243c 
-  tenant_key: 4Vcpt_2GnCfhlyBYbN_bUQ
-
-  # Emailing platform
-  SPARKPOST_API_KEY: changeme
-
-  # Rails secret key
-  SECRET_KEY_BASE: e48e21d80b2943c1872f69fb3cf4f8a8c24bc9fa3abdc14549df2dc181d46bfb5698271fb4bc1511e45ba0633ef02b494985b67f6e418182014f95a5e600f808
-
-  # Google Tag Manager
-  google_tag_container: GTM-TH3MLB
-  ```
-5. Build and start the impac-express project: 
-
-  ```bash
-  bundle install
-  foreman start
-  ```
-6. Fork impac-angular (https://github.com/maestrano/impac-angular) and clone it to your local machine. _Note this method for running impac-angular is only valid from versions >= 1.4.5_.
-7. In the impac-angular project, modify workspace/app/services/dev-settings.svc.js as follow: 
-
-  ```javascript
-   var DEFAULTS = {
-      // API Endpoints
-      mnoeUrl: {
-        host: 'http://localhost:7000',
-        base: '/mnoe/jpi/v1'
-      },
-      impacUrl: {
-        host: 'https://api-impac-uat.maestrano.io',
-        base: '/api'
-      }
-      ...
-  ```
-8. build and start the impac-angular project
-  
-  ```bash
-  npm install
-  bower install
-  gulp
-  ```
-9. A new tab with the Developer Workspace will open in your browser, log-in with the email/password you've created at step 1.
-10. You should be able to start coding in the project impac-angular: just saving any .coffee or .html file will automatically reload your Developer Workspace, applying your code.
-11. To populate the Widgets and KPIs with data, integrate an ﻿App! I recommend Xero.
-
-Note: Coming in a patch version soon you will be able to skip steps 2. to 5.
+1. Fork impac-angular (https://github.com/maestrano/impac-angular) and clone it to your local machine. _Note this method for running impac-angular is only valid from versions >= 1.4.5_.
+2. Run `bower install`, `npm install` to ensure you have all the required dependencies.
+3. Run `gulp serve` or just `gulp`.
+4. A new tab with the Developer Workspace served will open in your browser, just **create an account or log in!**
+5. Check your emails, and **confirm your account**.
+6. You should be able to start coding in the project impac-angular: just saving any .coffee or .html file will automatically reload your Developer Workspace, applying your code.
+7. To populate the Widgets and KPIs with data, integrate an ﻿App! We recommend generating a demo account with Xero.
 
 ##### Workspace Architecture
 
 The workspace environment works by loading a parent angular module, which depends on impac-angular ( 'impacWorkspace' ). This allows us to configure impac-angular's services as required. 
-
-Take a look at the `workspace/index.js` file and you'll see default configurations of impac-angular's provider services to enable the workspace to run. 
 
 For more information on the configurations available on impac-angular's provider services see [README.md](./README.md) **Impac Angular Providers & Services** section.
 
@@ -93,12 +22,9 @@ For more information on the configurations available on impac-angular's provider
 angular.module('impacWorkspace', ['maestrano.impac']);
 ```
 
-The `workspace/index.js` file is then loaded into `workspace/index.html` via `<script>` tags, followed by the `/dist/impac-angular.js` file.. along with all other bower and npm dependencies injected via gulp 'wiredep'.
+The `/workspace` directory serves as a mini angular app, that each file is loaded into `workspace/index.html` via `<script>` tags, followed by the `/dist/impac-angular.js` file.. along with all other bower and npm dependencies injected via gulp 'wiredep'.
 
-```html
-<script src="index.js"></script>
-<script src="../dist/impac-angular.js"></script>
-```
+Then the `/workspace/index.html` is served to the browser and the `/workspace` and `/src` directory are watched for changes.
 
 #### Impac Ecosystem Architecture 
 

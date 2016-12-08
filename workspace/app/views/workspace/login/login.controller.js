@@ -22,7 +22,7 @@ angular.module('impacWorkspace').controller('LoginController', function ($state,
       function () {
         $state.go('workspace.impac');
       }, function (response) {
-        var msg = (response.data && response.data.error) || 'Unable to login :(';
+        var msg = (response.data && response.data.error) || 'View developer console for details';
         DevUser.fail(msg, response);
       }
     );
@@ -33,11 +33,16 @@ angular.module('impacWorkspace').controller('LoginController', function ($state,
       function (res) {
         console.log(res);
         $state.go('workspace.impac');
-      }, function (err) {
-        var msg = (response.data && response.data.error) || 'Unable to sign up :(';
-        DevUser.fail(msg, response);
+      }, function (response) {
+        DevUser.fail('View developer console for details', response);
       }
     );
+  };
+
+  vm.onFormKeyup = function ($event) {
+    if ($event.keyCode == 13) {
+      vm.showRegisterForm ? vm.register() : vm.login();
+    }
   };
 
   return vm;

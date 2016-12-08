@@ -11,6 +11,8 @@
 ### v1.4.5 | Week 44
 
 #### Adds
+- Developer Workspace improved for mnoe api plus login, create account & settings configurations features.
+- ImpacRoutes service to use mnoe api as default
 
 #### Fixes
 
