@@ -2,53 +2,19 @@
 
 #### Developer Account & Authentication
 
-First things first, creating an authenticated developer account.
+##### Steps to get an Impac! Workspace loaded:
 
-1. Go to [uat.maestrano.io](https://uat.maestrano.io) and create an account.
-2. Go to "My Account"
-3. Then expand the "Developer" section
-4. Click on "Register"
-
-Now you should an api key, api secret, and an organization associated to your User on the UAT environment.
-
-
-#### Workspace
-
-##### Steps to get impac loaded:
-
-1. Terminal commands to load dependancies
-  ```
-  npm install
-  bower install
-  ```
-  
-2. Configuring with credentials & launching workspace
-  - Add your api_key & api_secret to the settings factory in the `workspace/index.js` file
-
-  ```javascript
-  module.factory('settings', function () {
-    return {
-      // Credentials and endpoints
-      mno_url: 'https://uat.maestrano.io',
-      impac_url: 'https://api-impac-uat.maestrano.io',
-      api_key: 'YOUR_KEY',
-      api_secret: 'YOUR_SECRET',
-      ...
-    }
-  });
-  ```
-  
-3. There a few ways to prepare & launch the Impac Developer Workspace..
-  1. Run `gulp` or `gulp serve`, this will inject dependencies, serve impac-angular, and **live reload** on change.
-  2. Run `gulp serve:noreload`, if rebuilding the library on every change is using too much cpu - **you will need to run `gulp workspace` and refresh the page after every change**
-  2. Run `gulp workspace` to build and inject dependencies, the open the `workspace/index.html` file in a browser - **you will need to run `gulp workspace` and refresh the page after every change**
-
+1. Fork impac-angular (https://github.com/maestrano/impac-angular) and clone it to your local machine. _Note this method for running impac-angular is only valid from versions >= 1.4.5_.
+2. Run `bower install`, `npm install` to ensure you have all the required dependencies.
+3. Run `gulp serve` or just `gulp`.
+4. A new tab with the Developer Workspace served will open in your browser, just **create an account or log in!**
+5. Check your emails, and **confirm your account**.
+6. You should be able to start coding in the project impac-angular: just saving any .coffee or .html file will automatically reload your Developer Workspace, applying your code.
+7. To populate the Widgets and KPIs with data, integrate an ﻿App! We recommend generating a demo account with Xero.
 
 ##### Workspace Architecture
 
 The workspace environment works by loading a parent angular module, which depends on impac-angular ( 'impacWorkspace' ). This allows us to configure impac-angular's services as required. 
-
-Take a look at the `workspace/index.js` file and you'll see default configurations of impac-angular's provider services to enable the workspace to run. 
 
 For more information on the configurations available on impac-angular's provider services see [README.md](./README.md) **Impac Angular Providers & Services** section.
 
@@ -56,12 +22,9 @@ For more information on the configurations available on impac-angular's provider
 angular.module('impacWorkspace', ['maestrano.impac']);
 ```
 
-The `workspace/index.js` file is then loaded into `workspace/index.html` via `<script>` tags, followed by the `/dist/impac-angular.js` file.. along with all other bower and npm dependencies injected via gulp 'wiredep'.
+The `/workspace` directory serves as a mini angular app, that each file is loaded into `workspace/index.html` via `<script>` tags, followed by the `/dist/impac-angular.js` file.. along with all other bower and npm dependencies injected via gulp 'wiredep'.
 
-```html
-<script src="index.js"></script>
-<script src="../dist/impac-angular.js"></script>
-```
+Then the `/workspace/index.html` is served to the browser and the `/workspace` and `/src` directory are watched for changes.
 
 #### Impac Ecosystem Architecture 
 

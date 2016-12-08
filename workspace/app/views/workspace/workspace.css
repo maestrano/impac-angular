@@ -1,0 +1,63 @@
+html, body {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #E6EDEE;
+}
+
+#workspace {
+  height: 100%;
+}
+
+#workspace .workspace-header {
+  position: relative;
+  background-color: black;
+  color: white;
+  min-width: 100%;
+  min-height: 70px;
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#workspace .workspace-header .workspace-title {
+  text-align: center;
+}
+
+#workspace .workspace-header h1 {
+  margin: 15px 0 0 0;
+  font-size: 32px;
+}
+
+#workspace .workspace-header .workspace-actions {
+  text-align: right;
+  margin: 17px 60px 10px 0px;
+}
+
+#workspace .workspace-header .current-org {
+  margin-top: 14px;
+  margin-left: 70px;
+}
+
+#workspace .workspace-header .current-org td,
+#workspace .workspace-header .current-org th {
+  padding: 0px 10px;
+}
+
+#workspace .workspace-header .current-org .current-org-results {
+  color: #74dd74;
+}
+
+#workspace .workspace-dashboard {
+  margin: 0 auto;
+  width: 91%;
+}
+
+/* IMPAC OVERRIDES */
+.analytics {
+  margin: 0;
+}

@@ -1,0 +1,56 @@
+#workspace .workspace-settings {
+  font-family: 'Share Tech Mono', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#workspace .workspace-settings .settings-box-container {
+  text-align: center;
+  margin-top: 100px;
+}
+
+#workspace .workspace-settings .settings-box {
+  width: 360px;
+  margin: auto;
+  padding: 10px 20px 20px 20px;
+  border-radius: 3px;
+}
+
+#workspace .workspace-settings .settings-box .double-section-header {
+  margin: 0;
+}
+
+#workspace .workspace-settings .settings-box .double-section-item label {
+  color: rgb(117, 129, 146);
+}
+
+#workspace .workspace-settings .settings-box .checkbox {
+  text-align: left;
+  margin-left:10px;
+}
+
+#workspace .workspace-settings .settings-box .settings-actions {
+  margin-top: 30px;
+}
+
+#workspace .workspace-settings .settings-box-container .settings-box .form-group {
+  text-align: left;
+}
+
+#workspace .workspace-settings .settings-box-title {
+  color: rgb(117, 129, 146);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#workspace .workspace-settings .settings-error {
+  margin-top: 20px;
+  color: red;
+}
+
+#workspace .workspace-settings .col-sm-7,
+#workspace .workspace-settings .col-xs-7 {
+  padding-right: 2px;
+}
+#workspace .workspace-settings .col-sm-5,
+#workspace .workspace-settings .col-xs-5 {
+  padding-left: 0;
+}

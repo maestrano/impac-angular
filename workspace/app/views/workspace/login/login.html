@@ -1,0 +1,30 @@
+<div class="workspace-login">
+  <div class="login-box-container">
+    <div class="login-box-title">
+      <h2>Sign In</h2>
+    </div>
+    <div class="login-box">
+      <form name="vm.workspaceLoginForm">
+        <div class="form-group">
+          <input name="email" type="email" class="form-control" placeholder="Email" ng-model="vm.creds.email" ng-keyup="vm.onFormKeyup($event)" required>
+        </div>
+        <div class="form-group">
+          <input name="password" type="password" class="form-control" placeholder="Password" ng-model="vm.creds.password" ng-keyup="vm.onFormKeyup($event)" required>
+        </div>
+        <div class="form-group" ng-show="vm.showRegisterForm">
+          <input name="company" type="text" class="form-control" placeholder="Company" ng-model="vm.creds.company" ng-keyup="vm.onFormKeyup($event)" ng-required="vm.showRegisterForm">
+        </div>
+        <div class="login-box-actions">
+          <div ng-hide="vm.showRegisterForm">
+            <button class="btn btn-warning btn-block" ng-click="vm.login()" ng-disabled="!vm.workspaceLoginForm.$valid">LOGIN</button>
+            <a href="" class="btn" ng-click="vm.toggleRegisterForm()">Don't have an account? Sign up.</a>
+          </div>
+          <div ng-show="vm.showRegisterForm">
+            <button class="btn btn-warning btn-block" ng-click="vm.register()" ng-disabled="!vm.workspaceLoginForm.$valid">SIGN UP!</button>
+            <button style="margin-top: 5px"; class="btn btn-default btn-block" ng-click="vm.toggleRegisterForm()">BACK</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
