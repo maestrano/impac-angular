@@ -14,6 +14,7 @@
 
 #### Fixes
 - [IMPAC-374] Re-fix widgets being printed in settings mode
+- Fix Add KPIs button incorrect behaviour
 
 
 -------------------------------------------------------------
