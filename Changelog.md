@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-374] Re-fix widgets being printed in settings mode
 
 
 -------------------------------------------------------------

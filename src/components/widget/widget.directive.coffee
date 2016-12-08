@@ -55,6 +55,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     $scope.pdfMode = true
     w.ticked = true unless angular.isDefined(w.ticked)
     $scope.widget.hasEditAbility = false
+    $scope.initSettings()
   )
   ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
     $scope.pdfMode = false
