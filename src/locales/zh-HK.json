@@ -124,6 +124,10 @@
   "impac.widget.settings.params-picker.apply_to_all": "你好 你好 你好 你好 你好",
   "impac.widget.settings.params-picker.status_selection": "你好 你好",
 
+  "impac.widget.settings.limit_entries.top":     "你好",
+  "impac.widget.settings.limit_entries.display": "你好",
+  "impac.widget.settings.limit_entries.entries": "你好",
+
   "impac.dashboard_selector.delete_widget.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好?",
   "impac.dashboard_selector.bootstrap_tabs.add_widget": "你好 你好",
   "impac.dashboard_selector.bootstrap_tabs.source": "你好:",

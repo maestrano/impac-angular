@@ -124,6 +124,10 @@
   "impac.widget.settings.params-picker.apply_to_all": "Apply to all similar widgets",
   "impac.widget.settings.params-picker.status_selection": "STATUS SELECTION",
 
+  "impac.widget.settings.limit_entries.top":     "Top",
+  "impac.widget.settings.limit_entries.display": "Display",
+  "impac.widget.settings.limit_entries.entries": "entries",
+
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
   "impac.dashboard_selector.bootstrap_tabs.add_widget": "Add Widget",
   "impac.dashboard_selector.bootstrap_tabs.source": "Source:",
