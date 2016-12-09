@@ -22,11 +22,9 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
         image.remove() if image?
 
       displayDefaultImage = ->
+        return if scope.isKpi
         usingDefaults = true
-        if scope.isKpi
-          imagePath = ImpacAssets.get('defaultImagesPath') + '/kpi-bg.png'
-        else
-          imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.widgetWidth + '.png'
+        imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.widgetWidth + '.png'
         image.src = imagePath
 
       # Custom widget images are provided with a directory of images.
@@ -50,16 +48,13 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
       load = ->
         # When providing custom images for widgets
-        if scope.isKpi
-          # TODO: implement custom KPI data not found image.
-          # return loadCustomKpiImage() if kpiImgProvided()
-        else
+        unless scope.isKpi
           hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
           scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.engine.match(/.*accounts\/.*/) && angular.isDefined(scope.onDisplayAlerts))
           return loadCustomWidgetImage() if widgetImgsBaseDirProvided()
-        scope.hasCallbackUrl = scope.content.linkUrlCallback?
-        # When providing no custom images, uses library defaults.
-        displayDefaultImage()
+          scope.hasCallbackUrl = scope.content.linkUrlCallback?
+          # When providing no custom images, uses library defaults.
+          displayDefaultImage()
 
       load()
 
