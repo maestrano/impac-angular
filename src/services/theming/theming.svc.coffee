@@ -57,15 +57,15 @@ angular
       # options for configuring the dhb errors messages.
       dhbErrorsConfig:
         firstTimeCreated:
-          first: 'impac.widget.common.error_config.first_time_created'
-          second: 'impac.widget.common.error_config.first_time_created'
-          note: 'impac.widget.common.error_config.first_time_created'
+          first: 'impac.widget.common.error_config.first_time_created.first'
+          second: 'impac.widget.common.error_config.first_time_created.second'
+          note: 'impac.widget.common.error_config.first_time_created.note'
         empty:
-          first: 'impac.widget.common.error_config.empty'
-          second: 'impac.widget.common.error_config.empty'
+          first: 'impac.widget.common.error_config.empty.first'
+          second: 'impac.widget.common.error_config.empty.second'
         failed:
-          first: 'impac.widget.common.error_config.failed'
-          second: 'impac.widget.common.error_config.failed'
+          first: 'impac.widget.common.error_config.failed.first'
+          second: 'impac.widget.common.error_config.failed.second'
 
       dhbSubMenuConfig:
         myobMessage:
