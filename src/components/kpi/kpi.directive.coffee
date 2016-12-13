@@ -27,7 +27,7 @@ angular
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
               # Init the extra params select boxes with the first param
               _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
-                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id
+                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
               )
 
             watchablesWithoutTargets = false
