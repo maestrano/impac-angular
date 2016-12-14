@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expense-weight',[])
 
-module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -38,9 +38,9 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
   $scope.getComparator = ->
     switch w.metadata.comparator
       when 'turnover'
-        $translate("impac.widget.account_expense_weight.comparator.turnover").then((comparator)-> return comparator)
+        $translate.instant("impac.widget.account_expense_weight.comparator.turnover")
       else
-        $translate("impac.widget.account_expense_weight.comparator.total_exp").then((comparator)-> return comparator)
+        $translate.instant("impac.widget.account_expense_weight.comparator.total_exp")
 
 
   # Chart formating function
