@@ -182,7 +182,7 @@ You want to make the generator better? Of course. See the [README](./generators/
 
       </div>
       <!-- data not found -->
-      <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" widget-engine="::widget.category" widget-width="::widget.width"/>
+      <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width"/>
     </div>
   </div>
   ```

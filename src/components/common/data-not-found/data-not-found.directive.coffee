@@ -4,9 +4,9 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
   return {
     restrict: 'A',
     scope: {
-      isKpi: '=?'
-      engine: '='
-      widgetWidth: '=?'
+      noImage: '=?'
+      endpoint: '='
+      width: '=?'
       onDisplayAlerts: '&?'
     },
     link: (scope, element) ->
@@ -17,19 +17,19 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
       image             = element.find('.data-not-found #not-found-bg')[0]
 
       image.onerror = ->
-        missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.engine
+        missingImageLocationMsg = if usingDefaults then 'library defaults' else scope.endpoint
         $log.warn("Missing data-not-found image for #{missingImageLocationMsg}")
         image.remove() if image?
 
       displayDefaultImage = ->
-        return if scope.isKpi
+        return if scope.noImage || !scope.width
         usingDefaults = true
-        imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.widgetWidth + '.png'
+        imagePath = ImpacAssets.get('defaultImagesPath') + '/widget-bg-width-' + scope.width + '.png'
         image.src = imagePath
 
       # Custom widget images are provided with a directory of images.
       widgetImgsBaseDirProvided = ->
-        scope.engine && widgetImgsBaseDir.length > 0
+        scope.endpoint && widgetImgsBaseDir.length > 0
 
       loadCustomWidgetImage = ->
         # checks for trailing slash and corrects.
@@ -38,7 +38,7 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
         then dir.concat('/').join('')
         else dir.join('')
 
-        imagePath = dir + scope.engine + '.png'
+        imagePath = dir + scope.endpoint + '.png'
 
         # Check if custom image has been provided, if not, display default.
         $http.get(imagePath).then(
@@ -48,9 +48,9 @@ module.directive('commonDataNotFound', ($templateCache, $log, $http, ImpacAssets
 
       load = ->
         # When providing custom images for widgets
-        unless scope.isKpi
+        unless scope.noImage
           hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
-          scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.engine.match(/.*accounts\/.*/) && angular.isDefined(scope.onDisplayAlerts))
+          scope.showAlertsTrigger = (hasMyobEssentialsOnly && scope.endpoint.match(/.*accounts\/.*/) && angular.isDefined(scope.onDisplayAlerts))
           return loadCustomWidgetImage() if widgetImgsBaseDirProvided()
           scope.hasCallbackUrl = scope.content.linkUrlCallback?
           # When providing no custom images, uses library defaults.

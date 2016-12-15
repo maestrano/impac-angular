@@ -67,7 +67,7 @@
       <button type="button" ng-show="isEditing()" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
-      <div common-data-not-found is-kpi="true" widget-engine="::kpi.endpoint"/>
+      <div common-data-not-found no-image="true" endpoint="::kpi.endpoint"/>
     </div>
   </div>
   <div class="col-xs-2 kpi-data-loader loader" ng-if="isLoading()">
