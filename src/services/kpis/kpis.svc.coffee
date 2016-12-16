@@ -260,7 +260,10 @@ angular
               (response) ->
                 # When no target has been defined
                 if response.data.error && response.data.error.code == 422
-                  # TODO force edit mode
+                  # TODO: this can be removed when Impac! API returns layout config for draft
+                  # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
+                  # considered in draft mode.
+                  kpi.isDraft = true
                   return false
                 else
                   kpiResp = response.data.kpi
@@ -323,7 +326,7 @@ angular
 
     @update = (kpi, params) ->
       kpi.isLoading = true
-      _self.load().then(
+      _self.load().then(->
 
         filtered_params = {}
         filtered_params.name = params.name if params.name?
@@ -334,21 +337,26 @@ angular
         url = ImpacRoutes.kpis.update(_self.getCurrentDashboard().id, kpi.id)
 
         if !_.isEmpty filtered_params
-          $http.put(url, {kpi: params}).then (success) ->
-            # Alerts can be created by default on kpi#update (dashboard.kpis), check for
-            # new alerts and register them with Pusher.
-            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-            angular.extend(kpi, success.data)
-            _self.buildKpiWatchables(kpi)
-            _self.show(kpi)
-          ,(err) ->
-            $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
-            $q.reject(err)
-      ).finally( -> kpi.isLoading = false)
+          $http.put(url, {kpi: params}).then(
+            (success) ->
+              # Alerts can be created by default on kpi#update (dashboard.kpis), check for
+              # new alerts and register them with Pusher.
+              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+              angular.extend(kpi, success.data)
+              _self.buildKpiWatchables(kpi)
+              _self.show(kpi)
+            (err) ->
+              $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
+              $q.reject(err)
+          )
+      ).finally(->
+        kpi.isLoading = false
+        kpi.isDraft = false
+      )
 
 
     @delete = (kpi) ->
-      _self.load().then(
+      _self.load().then(->
         url = ImpacRoutes.kpis.delete(_self.getCurrentDashboard().id, kpi.id)
         $http.delete(url).then(
           (res)->
