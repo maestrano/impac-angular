@@ -678,5 +678,18 @@
   "impac.widget.accounts_expenses_revenue.expenses":        "Expenses",
   "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
   "impac.widget.accounts_expenses_revenue.net_profit":      "Net Profit",
-  "impac.widget.accounts_expenses_revenue.show_net_profit": "Show net profit"
+  "impac.widget.accounts_expenses_revenue.show_net_profit": "Show net profit",
+
+  "impac.widget.sales_new_vs_existing.settings.title":     "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_new_vs_existing.save":               "@:impac.common.action.save",
+  "impac.widget.sales_new_vs_existing.cancel":             "@:impac.common.action.cancel",
+  "impac.widget.sales_new_vs_existing.new_customers":      "New Customers:",
+  "impac.widget.sales_new_vs_existing.existing_customers": "Existing Customers:",
+  "impac.widget.sales_new_vs_existing.total":              "Total:",
+  "impac.widget.sales_new_vs_existing.no_data_found":      "No data found for this time range<br/> Please select another one",
+  "impac.widget.sales_new_vs_existing.customers":          "Customers",
+  "impac.widget.sales_new_vs_existing.total_sales":        "Total Sales",
+  "impac.widget.sales_new_vs_existing.transactions":       "Transactions",
+  "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "Last :hours:h",
+  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "Last :days: days"
 }

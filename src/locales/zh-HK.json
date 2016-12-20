@@ -678,5 +678,18 @@
   "impac.widget.accounts_expenses_revenue.expenses":        "你好",
   "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
   "impac.widget.accounts_expenses_revenue.net_profit":      "你好 你好",
-  "impac.widget.accounts_expenses_revenue.show_net_profit": "你好 你好 你好"
+  "impac.widget.accounts_expenses_revenue.show_net_profit": "你好 你好 你好",
+
+  "impac.widget.sales_new_vs_existing.settings.title":     "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_new_vs_existing.save":               "@:impac.common.action.save",
+  "impac.widget.sales_new_vs_existing.cancel":             "@:impac.common.action.cancel",
+  "impac.widget.sales_new_vs_existing.new_customers":      "你好 你好:",
+  "impac.widget.sales_new_vs_existing.existing_customers": "你好 你好:",
+  "impac.widget.sales_new_vs_existing.total":              "你好:",
+  "impac.widget.sales_new_vs_existing.no_data_found":      "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
+  "impac.widget.sales_new_vs_existing.customers":          "你好",
+  "impac.widget.sales_new_vs_existing.total_sales":        "你好 你好",
+  "impac.widget.sales_new_vs_existing.transactions":       "你好",
+  "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "你好 :hours:你好",
+  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "你好 :days: 你好"
 }
