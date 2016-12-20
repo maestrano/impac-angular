@@ -691,5 +691,19 @@
   "impac.widget.sales_new_vs_existing.total_sales":        "你好 你好",
   "impac.widget.sales_new_vs_existing.transactions":       "你好",
   "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "你好 :hours:你好",
-  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "你好 :days: 你好"
+  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "你好 :days: 你好",
+
+  "impac.widget.sales_top_customers.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_top_customers.save":           "@:impac.common.action.save",
+  "impac.widget.sales_top_customers.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_top_customers.no_sales":       "你好 你好 你好 你好 你好 你好 你好",
+  "impac.widget.sales_top_customers.customer_name":  "你好 你好",
+  "impac.widget.sales_top_customers.top":            "你好 - :number:",
+  "impac.widget.sales_top_customers.total_sales":    "你好 你好",
+  "impac.widget.sales_top_customers.transactions":   "你好",
+  "impac.widget.sales_top_customers.avg_sales":      "你好 你好",
+  "impac.widget.sales_top_customers.last_sale":      "你好 你好",
+  "impac.widget.sales_top_customers.show":           "你好",
+  "impac.widget.sales_top_customers.hide":           "你好",
+  "impac.widget.sales_top_customers.details":        "你好"
 }

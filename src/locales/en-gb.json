@@ -691,5 +691,19 @@
   "impac.widget.sales_new_vs_existing.total_sales":        "Total Sales",
   "impac.widget.sales_new_vs_existing.transactions":       "Transactions",
   "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "Last :hours:h",
-  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "Last :days: days"
+  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "Last :days: days",
+
+  "impac.widget.sales_top_customers.settings.title": "@:impac.common.title.widget.settings.title",
+  "impac.widget.sales_top_customers.save":           "@:impac.common.action.save",
+  "impac.widget.sales_top_customers.cancel":         "@:impac.common.action.cancel",
+  "impac.widget.sales_top_customers.no_sales":       "No sales data found for your customers",
+  "impac.widget.sales_top_customers.customer_name":  "Customer name",
+  "impac.widget.sales_top_customers.top":            "TOP - :number:",
+  "impac.widget.sales_top_customers.total_sales":    "Total sales",
+  "impac.widget.sales_top_customers.transactions":   "Transactions",
+  "impac.widget.sales_top_customers.avg_sales":      "Avg sales",
+  "impac.widget.sales_top_customers.last_sale":      "Last sale",
+  "impac.widget.sales_top_customers.show":           "Show",
+  "impac.widget.sales_top_customers.hide":           "Hide",
+  "impac.widget.sales_top_customers.details":        "details"
 }
