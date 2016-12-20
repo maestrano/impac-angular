@@ -1,15 +1,15 @@
 <!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
 <div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
-  <span class="show-status" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
-    <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" /> 
+  <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
+    <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
     <span class="ng-hide" ng-show="isSyncing">
       Syncing...
     </span>
     <span ng-hide="isSyncing">
       Show sync status
     </span>
-  </span> 
+  </span>
 
   <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="hasError && !isSyncing">
     <i class="fa fa-exclamation-triangle"></i>
@@ -19,7 +19,7 @@
     <i class="fa fa-check"></i>
   </div>
 
-  <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
+  <button id="sync" class="btn btn-primary" ng-click="synchronize()" uib-tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
     <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }" />
   </button>
 

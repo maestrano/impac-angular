@@ -16,13 +16,13 @@
           {{currentDhb.full_name}}
           <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
         </div>
-        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
+        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
       </h4>
 
       <div ng-show="showDashboardsDropdown" class='dashboard-select hidden-print'>
         <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
           <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
-          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
+          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="Change name" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
         </div>
 
         <div ng-show="showCreateDashboardButton" class="option create" ng-click="onCreateDashboard()"><i class="fa fa-plus" /> Create Dashboard</div>
@@ -54,7 +54,7 @@
 
     <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
-    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
+    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" uib-tooltip="Delete Dashboard" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
   </div>
 
 </div>

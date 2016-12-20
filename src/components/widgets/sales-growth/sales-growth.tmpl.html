@@ -26,8 +26,8 @@
       </div>
 
       <div ng-show="product.value != -1" class="legend text-center">{{getSelectedProduct().displayName}}</div>
-      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" tooltip="total for last period">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
-      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" tooltip="total for last period">{{getCurrentValue()}}</div>
+      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" uib-tooltip="total for last period">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
+      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" uib-tooltip="total for last period">{{getCurrentValue()}}</div>
 
     </div>
 
