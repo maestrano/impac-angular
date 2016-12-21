@@ -16,8 +16,7 @@ module.exports = function(config) {
       // 'karma-mocha',
       // 'karma-chai',
       // 'karma-sinon-chai',
-      'karma-chrome-launcher',
-      'karma-phantomjs-launcher',
+      'karma-firefox-launcher',
       'karma-mocha-reporter',
       'karma-jasmine'
     ],
@@ -27,20 +26,23 @@ module.exports = function(config) {
       /* inject:bower */
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
+      'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-xeditable/dist/js/xeditable.js',
+      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/Chart.js/Chart.js',
+      'bower_components/Chart.js/dist/Chart.js',
       'bower_components/lodash/lodash.js',
       'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
-      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
-      'bower_components/pusher/dist/pusher.js',
-      'bower_components/angular-messages/angular-messages.js',
+      'bower_components/pusher/dist/web/pusher.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scenario/angular-scenario.js',
+      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/AngularDevise/lib/devise.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
       /* endinject */
       'dist/impac-angular.min.js',
       'src/**/*.spec.js'
@@ -83,7 +85,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Firefox'],
 
 
     // Continuous Integration mode

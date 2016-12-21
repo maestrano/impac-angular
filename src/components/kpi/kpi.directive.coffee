@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $timeout, $modal, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('impacKpi', ($log, $timeout, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'EA'
       scope: {
