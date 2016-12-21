@@ -93,6 +93,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
             size: 'md'
             templateUrl: 'alerts.tmpl.html'
             appendTo: angular.element('impac-dashboard')
+            openedClass: 'sync-modal-opened' # prevent use of default
             controller: ($scope, connectors) ->
               $scope.connectors = connectors
               $scope.expandListItemOnClick = (connector) ->
