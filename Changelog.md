@@ -8,6 +8,18 @@
 
 ## Released
 
+### v1.5.0-rc1 | Week 51
+
+#### Adds
+- Upgrades Angular to v1.6
+- Upgrades Angular Bootstrap to v2.3
+
+#### Fixes
+- Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+
+
+-------------------------------------------------------------
+
 ### v1.4.6 | Week 49
 
 #### Adds
