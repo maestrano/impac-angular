@@ -17,7 +17,7 @@
 
       <div class="widget-lines-container">
 
-        <div class="row lines-group widget-line" ng-repeat="lead in widget.content.leads" tooltip-trigger="mouseenter" tooltip-placement="top" uib-tooltip-html="leadDescriptionTooltips[$index]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+        <div class="row lines-group widget-line" ng-repeat="lead in widget.content.leads" uib-tooltip-html="leadDescriptionTooltips[$index]" tooltip-placement="top" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
           <div class="col-sm-7">
             {{lead.first_name | titleize}} {{lead.last_name | titleize}}
             <span ng-show="lead.organization">({{lead.organization}})</span>
