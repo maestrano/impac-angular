@@ -16,9 +16,7 @@ module.exports = function(config) {
       // 'karma-mocha',
       // 'karma-chai',
       // 'karma-sinon-chai',
-      'karma-chrome-launcher',
-      // PhantomJS < 2.0 incompatible with Angular > 1.5.0
-      // 'karma-phantomjs-launcher',
+      'karma-firefox-launcher',
       'karma-mocha-reporter',
       'karma-jasmine'
     ],
@@ -84,7 +82,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Firefox'],
 
 
     // Continuous Integration mode
