@@ -41,11 +41,11 @@ angular
         pdfModeEnabled: false
       # kpis options
       dhbKpisConfig:
-        enableKpis: false
+        enableKpis: true
         parentElementId: ''
       # alert notifications options
       alertsConfig:
-        enableAlerts: false
+        enableAlerts: true
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
         mainMessage: 'Data not found'
@@ -101,7 +101,7 @@ angular
             pnl: "Total period"
             bls: "Balance"
             default: "Current"
-          todayPrefixes: 
+          todayPrefixes:
             bls: "Live"
         timePeriod:
           showSlider: true
