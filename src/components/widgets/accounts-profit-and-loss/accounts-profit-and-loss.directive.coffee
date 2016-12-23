@@ -191,6 +191,13 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
+
+  periodName = if ($scope.widget.metadata.hist_parameters && $scope.widget.metadata.hist_parameters.period) then $scope.widget.metadata.hist_parameters.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
+  
   w.format = ->
     if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
       all_values_are_positive = true
@@ -252,13 +259,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
-
-  periodName = if ($scope.widget.metadata.hist_parameters && $scope.widget.metadata.hist_parameters.period) then $scope.widget.metadata.hist_parameters.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
-
 )
 
 module.directive('widgetAccountsProfitAndLoss', ->
