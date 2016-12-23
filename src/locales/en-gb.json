@@ -629,6 +629,7 @@
   "impac.widget.sales_opportunities.proba":                  "proba",
 
   "impac.widget.editable_title.tooltip_text": "(click to edit name)",
+  "impac.widget.editable_title.incorrect_name": "Incorrect name",
 
   "impac.dashboard.create.create_new_dashboard":      "Create New Dashboard",
   "impac.dashboard.create.name":                      "Name",

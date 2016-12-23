@@ -7,7 +7,7 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc, ImpacDash
     $scope.updateName = ->
       if w.name.length == 0
         w.name = w.originalName
-        return "Incorrect name"
+        return $translate.instant('impac.widget.editable_title.incorrect_name');
       else
         data = { name: w.name }
         ImpacWidgetsSvc.update(w,data)
