@@ -619,6 +619,7 @@
   "impac.widget.sales_summary.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
   "impac.widget.sales_summary.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
   "impac.widget.sales_summary.quantity_purchased":       "@:impac.common.quantity_purchased",
+  "impac.widget.sales_summary.to":                       "@:impac.common.text.to",
 
   "impac.widget.sales_opportunities.settings.title":         "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_opportunities.save":                   "@:impac.common.action.save",
