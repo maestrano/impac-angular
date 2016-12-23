@@ -68,19 +68,8 @@ module.directive('widgetComponentCalendar', ($tranlate)->
       scope.$watch getEvents, (events) ->
         if events.length > 0
           element.fullCalendar('destroy')
-
-          $translate([
-            "impac.common.action.calendar.left",
-            "impac.common.action.calendar.center",
-            "impac.common.action.calendar.right"]).then(
-            (translations) ->
-              calendarOptions.header.left = translations["impac.common.action.calendar.left"]
-              calendarOptions.header.center = translations["impac.common.action.calendar.center"]
-              calendarOptions.header.right = translations["impac.common.action.calendar.right"]
-
-              angular.extend(calendarOptions, {events: scope.events})
-              element.fullCalendar(calendarOptions)
-          )
+          angular.extend(calendarOptions, {events: scope.events})
+          element.fullCalendar(calendarOptions)
       ,true
   }
 )
