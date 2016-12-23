@@ -49,16 +49,16 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         )
       
       $translate([
-        'impac.widget.sales_comparison.criteria_opt.products',
-        'impac.widget.sales_comparison.criteria_opt.locations',
-        'impac.widget.sales_comparison.criteria_opt.industries',
-        'impac.widget.sales_comparison.criteria_opt.customers']).then(
+        'impac.widget.sales_comparison.criteriaOptions.products',
+        'impac.widget.sales_comparison.criteriaOptions.locations',
+        'impac.widget.sales_comparison.criteriaOptions.industries',
+        'impac.widget.sales_comparison.criteriaOptions.customers']).then(
         (translations) ->
           $scope.filterOptions = [
-            {label: translations['impac.widget.sales_comparison.criteria_opt.products'], value: 'default'},
-            {label: translations['impac.widget.sales_comparison.criteria_opt.locations'], value: 'location'},
-            {label: translations['impac.widget.sales_comparison.criteria_opt.industries'], value: 'industry'},
-            {label: translations['impac.widget.sales_comparison.criteria_opt.customers'], value: 'customer'}
+            {label: translations['impac.widget.sales_comparison.criteriaOptions.products'], value: 'default'},
+            {label: translations['impac.widget.sales_comparison.criteriaOptions.locations'], value: 'location'},
+            {label: translations['impac.widget.sales_comparison.criteriaOptions.industries'], value: 'industry'},
+            {label: translations['impac.widget.sales_comparison.criteriaOptions.customers'], value: 'customer'}
           ]
 
           $scope.criteria = angular.copy(_.find($scope.criteriaOptions, (o) ->
