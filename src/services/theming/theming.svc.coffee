@@ -73,7 +73,7 @@ angular
           appLink:
             show: true
             url: '#/marketplace'
-            text: '>> Check this app on our marketplace'
+            text: 'impac.widget.common.sub_menu_config.check_this_app'
 
       # options for the widget selector panel.
       widgetSelectorConfig:

@@ -160,6 +160,7 @@
   "impac.widget.common.error_config.empty.second": "Add widgets to your dashboard to help make an Impac!™ to your business.",
   "impac.widget.common.error_config.failed.first": "Ooops! Something went wrong, can you please refresh your dashboard?",
   "impac.widget.common.error_config.failed.second": "Unable to load your dashboard, please contact support or try again later.",
+  "impac.widget.common.sub_menu_config.check_this_app": ">> Check this app on our marketplace",
   "impac.widget.theming.hist.default":            "Current",
   "impac.widget.theming.hist.default.live":       "@:impac.widget.theming.hist.default",
   "impac.widget.theming.hist.bls":                "Balance",
