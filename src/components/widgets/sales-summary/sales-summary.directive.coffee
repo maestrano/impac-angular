@@ -20,7 +20,7 @@ module.controller('WidgetSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc, $tra
     $scope.chartDeferred.promise
   ]
 
-  $scope.datesPickerTemplate = "<span><from-date> to <to-date> <apply></span>"
+  $scope.datesPickerTemplate = "<span><from-date>" + $translate.instant('impac.widget.sales_summary.to') + " <to-date> <apply></span>"
 
   # Widget specific methods
   # --------------------------------------
