@@ -71,8 +71,7 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-
-      inputData = {title: "Gross margin", labels: dates, values: values}
+      inputData = {title: $translate.instant('impac.widget.sales_margin.gross_margin'), labels: dates, values: values}
       all_values_are_positive = true
       angular.forEach(values, (value) ->
         all_values_are_positive &&= value >= 0
@@ -82,14 +81,10 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
 
-      $translate('impac.widget.sales_margin.gross_margin').then((result) ->
-        inputData.title = result
-        chartData = ChartFormatterSvc.lineChart([inputData],options)
-
-        # calls chart.draw()
-        $scope.drawTrigger.notify(chartData)
-      )
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
