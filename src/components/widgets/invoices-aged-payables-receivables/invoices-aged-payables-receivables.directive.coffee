@@ -160,6 +160,13 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
+
+  periodName = if ($scope.widget.content && $scope.widget.content.hist_parameters && $scope.widget.content.hist_parameters.period) then $scope.widget.content.hist_parameters.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
+  
   w.format = ->
     if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
 
@@ -215,13 +222,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     {selectedElements: $scope.selectedElements}
 
   w.settings.push(selectedElementsSetting)
-
-  # translate
-  periodName = if ($scope.widget.content && $scope.widget.content.hist_parameters && $scope.widget.content.hist_parameters.period) then $scope.widget.content.hist_parameters.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
