@@ -18,7 +18,7 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
-  $scope.datesPickerTemplate = "<span>from <from-date> to <to-date> <apply></span>"
+  $scope.datesPickerTemplate = "<span>" + $translate.instant('impac.widget.sales_list.from') + "<from-date> " + $translate.instant('impac.widget.sales_list.to') + " <to-date> <apply></span>"
 
   # Widget specific methods
   # --------------------------------------

@@ -541,6 +541,8 @@
   "impac.widget.sales_list.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
   "impac.widget.sales_list.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
   "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased",
+  "impac.widget.sales_list.from":                     "@:impac.common.text.from",
+  "impac.widget.sales_list.to":                       "@:impac.common.text.to",
 
   "impac.widget.sales_margin.settings.title":           "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_margin.save":                     "@:impac.common.action.save",
