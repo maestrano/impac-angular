@@ -49,7 +49,7 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $f
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      inputData = {title: "Payroll Taxes", labels: dates, values: w.content.total_tax}
+      inputData = {title: $translate.instant('impac.widget.hr_payroll_taxes.payroll_taxes'), labels: dates, values: w.content.total_tax}
       all_values_are_positive = true
       angular.forEach(w.content.total_tax, (value) ->
         all_values_are_positive &&= value >= 0
@@ -59,15 +59,10 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $f
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: false,
       }
-      # translate
-      $translate('impac.widget.hr_payroll_taxes.payroll_taxes').then((result) ->
-        inputData.title = result
+      chartData = ChartFormatterSvc.lineChart([inputData],options)
 
-        chartData = ChartFormatterSvc.lineChart([inputData],options)
-
-        # calls chart.draw()
-        $scope.drawTrigger.notify(chartData)
-      )
+      # calls chart.draw()
+      $scope.drawTrigger.notify(chartData)
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
