@@ -27,8 +27,6 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc
         'impac.widget.settings.time_period.period.week',
         'impac.widget.settings.time_period.period.day']).then(
           (translations) ->
-            debugger;
-            console.log('debugger');
             $scope.periodOptions = [
               {label: translations['impac.widget.settings.time_period.period.year'], value: 'YEARLY'},
               {label: translations['impac.widget.settings.time_period.period.quarter'], value: 'QUARTERLY'},
