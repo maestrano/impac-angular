@@ -721,5 +721,8 @@
   "impac.widget.alerts_config.over":  "over",
   "impac.widget.alerts_config.below": "below",
 
-  "impac.components.currency.choose_currency": "Choose currency..."
+  "impac.components.currency.choose_currency": "Choose currency...",
+
+  "impac.components.pdf_mode.print":  "Print",
+  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel"
 }
