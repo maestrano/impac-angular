@@ -710,5 +710,7 @@
   "impac.widget.sales_top_customers.last_sale":      "Last sale",
   "impac.widget.sales_top_customers.show":           "Show",
   "impac.widget.sales_top_customers.hide":           "Hide",
-  "impac.widget.sales_top_customers.details":        "details"
+  "impac.widget.sales_top_customers.details":        "details",
+
+  "impac.widget.info_panel.information":  "Information on widget"
 }

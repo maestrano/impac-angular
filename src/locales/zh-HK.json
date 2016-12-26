@@ -710,5 +710,7 @@
   "impac.widget.sales_top_customers.last_sale":      "你好 你好",
   "impac.widget.sales_top_customers.show":           "你好",
   "impac.widget.sales_top_customers.hide":           "你好",
-  "impac.widget.sales_top_customers.details":        "你好"
+  "impac.widget.sales_top_customers.details":        "你好",
+
+  "impac.widget.info_panel.information": "你好 你好 你好"
 }
