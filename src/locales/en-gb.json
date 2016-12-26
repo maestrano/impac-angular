@@ -724,5 +724,19 @@
   "impac.components.currency.choose_currency": "Choose currency...",
 
   "impac.components.pdf_mode.print":  "Print",
-  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel"
+  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel",
+
+  "impac.components.sync_apps.syncing":                   "Syncing...",
+  "impac.components.sync_apps.show_sync_status":          "Show sync status",
+  "impac.components.sync_apps.tooltip.sync_data":         "Sync data and refresh dashboard",
+  "impac.components.sync_apps.status.synced_at":          "Synced at",
+  "impac.components.sync_apps.status.sync_will_run":      "Sync will run in a few minutes.",
+  "impac.components.sync_apps.status.syncing_in_progres": "Syncing in progress...",
+  "impac.components.sync_apps.status.sync_failed":        "Sync failed. Please contact support.",
+  "impac.components.sync_apps.status.please_link":        "Please link your application.",
+  "impac.components.sync_apps.status.could_not_retrieve": "Couldn't retrieve sync status.",
+  "impac.components.sync_apps.all":                       "All",
+  "impac.components.sync_apps.applications_are_synced":   "applications are synced in real-time.",
+  "impac.components.sync_apps.synchronization_status":    "Synchronization status",
+  "impac.components.sync_apps.ok":                        "OK"
 }

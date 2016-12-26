@@ -724,5 +724,19 @@
   "impac.components.currency.choose_currency": "你好 你好...",
 
   "impac.components.pdf_mode.print":  "你好",
-  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel"
+  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel",
+
+  "impac.components.sync_apps.syncing":                   "你好...",
+  "impac.components.sync_apps.show_sync_status":          "你好 你好 你好",
+  "impac.components.sync_apps.tooltip.sync_data":         "你好 你好 你好 你好 你好",
+  "impac.components.sync_apps.status.synced_at":          "你好 你好",
+  "impac.components.sync_apps.status.sync_will_run":      "你好 你好 你好 你好 你好 你好 你好.",
+  "impac.components.sync_apps.status.syncing_in_progres": "你好 你好 你好...",
+  "impac.components.sync_apps.status.sync_failed":        "你好 你好. 你好 你好 你好.",
+  "impac.components.sync_apps.status.please_link":        "你好 你好 你好 你好.",
+  "impac.components.sync_apps.status.could_not_retrieve": "你好'你好 你好 你好 你好.",
+  "impac.components.sync_apps.all":                       "你好",
+  "impac.components.sync_apps.applications_are_synced":   "你好 你好 你好 你好 你好-你好.",
+  "impac.components.sync_apps.synchronization_status":    "你好 你好",
+  "impac.components.sync_apps.ok":                        "你好"
 }
