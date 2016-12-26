@@ -712,5 +712,9 @@
   "impac.widget.sales_top_customers.hide":           "Hide",
   "impac.widget.sales_top_customers.details":        "details",
 
-  "impac.widget.info_panel.information":  "Information on widget"
+  "impac.widget.info_panel.information": "Information on widget",
+
+  "impac.widget.formula.invalid_expression": "invalid expression",
+  "impac.widget.formula.infinity":           "Infinity",
+  "impac.widget.formula.minus_infinity":     "-Infinity"
 }
