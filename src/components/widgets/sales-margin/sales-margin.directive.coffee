@@ -30,7 +30,7 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
       'impac.widget.sales_margin.including_taxes',
       'impac.widget.sales_margin.excluding_taxes']).then(
         (translations) ->
-          $scope.periodOptions = [
+          $scope.filterOptions = [
             {label: translations['impac.widget.sales_margin.including_taxes'], value: 'gross_margin'},
             {label: translations['impac.widget.sales_margin.excluding_taxes'], value: 'net_margin'}
           ]
