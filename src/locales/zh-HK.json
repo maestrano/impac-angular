@@ -716,5 +716,8 @@
 
   "impac.widget.formula.invalid_expression": "你好 你好",
   "impac.widget.formula.infinity":           "你好",
-  "impac.widget.formula.minus_infinity":     "-你好"
+  "impac.widget.formula.minus_infinity":     "-你好",
+
+  "impac.widget.alerts_config.over":  "over",
+  "impac.widget.alerts_config.below": "below"
 }

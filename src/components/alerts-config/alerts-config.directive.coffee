@@ -56,9 +56,9 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         result = []
 
         if watchableTargets[0].max?
-          result.push("over", watchableTargets[0].max)
+          result.push($translate.instant('impac.widget.alerts_config.over'), watchableTargets[0].max)
         else if watchableTargets[0].min
-          result.push("below", watchableTargets[0].min)
+          result.push($translate.instant('impac.widget.alerts_config.below'), watchableTargets[0].min)
 
         result.push(kpi.data[kpi.element_watched].unit) if kpi.data?
 
