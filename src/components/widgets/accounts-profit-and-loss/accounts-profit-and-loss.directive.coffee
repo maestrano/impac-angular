@@ -192,7 +192,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
 
-  periodName = if ($scope.widget.metadata.hist_parameters && $scope.widget.metadata.hist_parameters.period) then $scope.widget.metadata.hist_parameters.period.toLowerCase() else 'monthly'
+  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
   $translate('impac.widget.settings.time_period.period.' + periodName).then(
     (translation) ->
       $scope.period_translation = _.capitalize(translation.toLowerCase())
