@@ -719,5 +719,7 @@
   "impac.widget.formula.minus_infinity":     "-Infinity",
 
   "impac.widget.alerts_config.over":  "over",
-  "impac.widget.alerts_config.below": "below"
+  "impac.widget.alerts_config.below": "below",
+
+  "impac.components.currency.choose_currency": "Choose currency..."
 }

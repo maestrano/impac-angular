@@ -718,6 +718,8 @@
   "impac.widget.formula.infinity":           "你好",
   "impac.widget.formula.minus_infinity":     "-你好",
 
-  "impac.widget.alerts_config.over":  "over",
-  "impac.widget.alerts_config.below": "below"
+  "impac.widget.alerts_config.over":  "你好",
+  "impac.widget.alerts_config.below": "你好",
+
+  "impac.components.currency.choose_currency": "你好 你好..."
 }
