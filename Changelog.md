@@ -13,6 +13,7 @@
 #### Adds
 - [IMPAC-345] KPI loading spinner
 - [IMPAC-342] KPI "data not found" display for no data, Impac! down & tenant disabled.
+- [IMPAC-411] KPI's bar is disabled unless current_user contains a `kpi_enabled: true` property, as well as being enabled via the ImpacTheming service.
 
 #### Fixes
 - [IMPAC-374] Re-fix widgets being printed in settings mode.
