@@ -27,7 +27,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
   translate = (word) ->
     word = word.toLowerCase()
     translation = $translate.instant('impac.widget.account_class_comp.klass.' + word)
-    return if ~translation.indexOf('impac.widget.account_class_comp.klass') then _.capitalize(word) else translation
+    return if _.includes(translation, 'impac.widget.account_class_comp.klass') then _.capitalize(word) else translation
 
 
   w.initContext = ->
