@@ -41,12 +41,12 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
           w.metadata && w.metadata.filter == o.value
         ) || $scope.filterOptions[0])
-      
+
       $scope.criteriaOptions = [
-        {label: $translate.instant('impac.widget.sales_comparison.criteriaOptions.products'), value: 'default'},
-        {label: $translate.instant('impac.widget.sales_comparison.criteriaOptions.locations'), value: 'location'},
-        {label: $translate.instant('impac.widget.sales_comparison.criteriaOptions.industries'), value: 'industry'},
-        {label: $translate.instant('impac.widget.sales_comparison.criteriaOptions.customers'), value: 'customer'}
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.products'), value: 'default'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.locations'), value: 'location'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.industries'), value: 'industry'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.customers'), value: 'customer'}
       ]
 
       $scope.criteria = angular.copy(_.find($scope.criteriaOptions, (o) ->
@@ -70,7 +70,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
           $scope.selectedElements.push(foundElem) if foundElem
         )
       sortData()
-      
+
   $scope.getLastDate = ->
     _.last(w.content.dates) if $scope.isDataFound
 
