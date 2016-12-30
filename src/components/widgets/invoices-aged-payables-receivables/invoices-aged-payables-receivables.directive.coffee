@@ -21,6 +21,12 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   $scope.ascending = true
   $scope.sortedColumn = 'customer'
 
+  periodName = if (c = $scope.widget.content) && (c.hist_parameters && c.hist_parameters.period) then c.hist_parameters.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -155,18 +161,11 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  
+
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
-
-  periodName = if (c = $scope.widget.content) && (c.hist_parameters && c.hist_parameters.period) then c.hist_parameters.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
-  
   w.format = ->
     if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
 

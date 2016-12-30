@@ -40,6 +40,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       setAmountDisplayed()
   )
 
+  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -186,18 +192,11 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  
+
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
-
-  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
-  
   w.format = ->
     if $scope.isDataFound && $scope.selectedElements? && $scope.selectedElements.length > 0
       all_values_are_positive = true

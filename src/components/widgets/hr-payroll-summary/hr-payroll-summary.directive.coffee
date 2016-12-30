@@ -23,6 +23,12 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   $scope.ascending = true
   $scope.sortedColumn = 'employee'
 
+  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
+
   # Widget specific methods
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
@@ -176,18 +182,11 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  
+
 
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
-
-  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
-  
   w.format = ->
     if $scope.isDataFound && $scope.hasElements()
 
