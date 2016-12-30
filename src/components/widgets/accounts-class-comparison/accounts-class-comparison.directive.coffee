@@ -33,20 +33,17 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
     if $scope.isDataFound
-
-      $scope.classifications = _.map w.content.summary, (summary) ->
+      $scope.classifications = _.map(w.content.summary, (summary) ->
         klass = summary.classification
         {
           label: translate(klass)
           labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
-      # return { label: _.capitalize(summary.toLowerCase()), value: summary }
-
-      if !$scope.selectedClassification
-        $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
-          value: w.metadata.classification || $scope.classifications[0].value
-        })
+      )
+      $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
+        value: w.metadata.classification || $scope.classifications[0].value
+      })
 
   $scope.getTotals = ->
     amount = _.find(w.content.summary, (sum) ->
