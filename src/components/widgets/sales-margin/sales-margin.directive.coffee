@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-margin',[])
 
-module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -26,16 +26,20 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
   w.initContext = ->
     $scope.isDataFound = w.content? && w.content.margins? && w.content.dates?
 
-    $scope.filterOptions = [
-      {label: 'Including taxes', value: 'gross_margin'},
-      {label: 'Excluding taxes', value: 'net_margin'}
-    ]
+    $translate([
+      'impac.widget.sales_margin.including_taxes',
+      'impac.widget.sales_margin.excluding_taxes']).then(
+        (translations) ->
+          $scope.filterOptions = [
+            {label: translations['impac.widget.sales_margin.including_taxes'], value: 'gross_margin'},
+            {label: translations['impac.widget.sales_margin.excluding_taxes'], value: 'net_margin'}
+          ]
 
-    if w.metadata? && w.metadata.filter=="net_margin"
-      $scope.filter = angular.copy $scope.filterOptions[1]
-    else
-      $scope.filter = angular.copy $scope.filterOptions[0]
-
+          if w.metadata? && w.metadata.filter=="net_margin"
+            $scope.filter = angular.copy $scope.filterOptions[1]
+          else
+            $scope.filter = angular.copy $scope.filterOptions[0]
+      )
   $scope.getTotalMargin = ->
     if $scope.isDataFound
       if w.metadata? && w.metadata.filter=="net_margin"
@@ -67,7 +71,7 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
       dates = _.map w.content.dates, (date) ->
         $filter('mnoDate')(date, period)
 
-      inputData = {title: "Gross margin", labels: dates, values: values}
+      inputData = {title: $translate.instant('impac.widget.sales_margin.gross_margin'), labels: dates, values: values}
       all_values_are_positive = true
       angular.forEach(values, (value) ->
         all_values_are_positive &&= value >= 0
@@ -78,10 +82,9 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
         showXLabels: false,
       }
       chartData = ChartFormatterSvc.lineChart([inputData],options)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
-
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

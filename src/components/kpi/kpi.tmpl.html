@@ -28,7 +28,7 @@
         <form name="kpi{{kpi.id}}SettingsForm">
           <!-- watchables -->
           <div ng-repeat="watchable in kpi.watchables track by $index">
-            <div class="real-value" ng-show="kpi.data">Current {{watchable}}: {{kpi.data[watchable].value}} {{kpi.data[watchable].unit}}</div>
+            <div class="real-value" ng-show="kpi.data">{{'impac.kpi.current' | translate}} {{watchable}}: {{kpi.data[watchable].value}} {{kpi.data[watchable].unit}}</div>
             <!-- targets -->
             <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
               <!-- target -->
@@ -37,8 +37,8 @@
               <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit(watchable)}}</span>
               <!-- target error messages -->
               <div ng-messages="getFormTargetValueInput(watchable, $index).$error" class="im-messages">
-                <span ng-message="required">KPI target is required</span>
-                <span ng-message="pattern">KPI target must be a number</span>
+                <span ng-message="required" translate>impac.kpi.kpi_target_require</span>
+                <span ng-message="pattern" translate>impac.kpi.kpi_target_number</span>
               </div>
             </div>
           </div>

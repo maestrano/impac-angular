@@ -23,23 +23,27 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
 
   # Widget specific methods
   # --------------------------------------
+  
+  translate = (word) ->
+    word = word.toLowerCase()
+    translation = $translate.instant('impac.widget.account_class_comp.klass.' + word)
+    return if _.includes(translation, 'impac.widget.account_class_comp.klass') then _.capitalize(word) else translation
+
+
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
     if $scope.isDataFound
-
-      $scope.classifications = _.map w.content.summary, (summary) ->
+      $scope.classifications = _.map(w.content.summary, (summary) ->
         klass = summary.classification
         {
-          label: _.capitalize(klass.toLowerCase())
+          label: translate(klass)
           labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
-      # return { label: _.capitalize(summary.toLowerCase()), value: summary }
-
-      if !$scope.selectedClassification
-        $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
-          value: w.metadata.classification || $scope.classifications[0].value
-        })
+      )
+      $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
+        value: w.metadata.classification || $scope.classifications[0].value
+      })
 
   $scope.getTotals = ->
     amount = _.find(w.content.summary, (sum) ->

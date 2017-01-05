@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-top-customers',[])
 
-module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtilities) ->
+module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtilities, $translate) ->
 
   w = $scope.widget
 
@@ -16,27 +16,31 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
     $scope.paramSelectorDeferred.promise
   ]
 
+  topTmpl = $translate.instant('impac.widget.sales_top_customers.top')
+
   $scope.limitEntriesOptions = [
-    { label: 'TOP - 5', value: 5 }
-    { label: 'TOP - 10', value: 10 }
-    { label: 'TOP - 25', value: 25 }
-    { label: 'TOP - 50', value: 50 }
-    { label: 'TOP - 100', value: 100 }
+    {label: topTmpl.replace(':number:', 5), value: 5},
+    {label: topTmpl.replace(':number:', 10), value: 10},
+    {label: topTmpl.replace(':number:', 25), value: 25},
+    {label: topTmpl.replace(':number:', 50), value: 50},
+    {label: topTmpl.replace(':number:', 100), value: 100}
   ]
+
   $scope.limitEntriesSelected = angular.copy(_.find($scope.limitEntriesOptions, (o) ->
-    w.metadata? && (o.value == w.metadata.limit_entries)
-  ) || $scope.limitEntriesOptions[3] )
+      w.metadata? && (o.value == w.metadata.limit_entries)
+    ) || $scope.limitEntriesOptions[3] )
 
   $scope.headerOptions = [
-    { label: 'Total sales', value: 'total_sales', minified: 'total' }
-    { label: 'Transactions', value: 'transactions', minified: '# tr' }
-    { label: 'Avg sales', value: 'avg_sales', minified: 'avg' }
-    { label: 'Last sale', value: 'last_sale', minified: 'last' }
+    {label: $translate.instant('impac.widget.sales_top_customers.total_sales'), value: 'total_sales', minified: 'total'},
+    {label: $translate.instant('impac.widget.sales_top_customers.transactions'), value: 'transactions', minified: '# tr'},
+    {label: $translate.instant('impac.widget.sales_top_customers.avg_sales'), value: 'avg_sales', minified: 'avg'},
+    {label: $translate.instant('impac.widget.sales_top_customers.last_sale'), value: 'last_sale', minified: 'last'}
   ]
+
   $scope.headerSelected = angular.copy(_.find($scope.headerOptions, (o) ->
-    w.metadata? && (w.metadata.header == o.value)
-  ) || $scope.headerOptions[0] )
-  
+      w.metadata? && (w.metadata.header == o.value)
+    ) || $scope.headerOptions[0] )
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->

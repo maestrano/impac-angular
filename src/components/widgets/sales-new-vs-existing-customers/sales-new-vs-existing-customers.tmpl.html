@@ -1,13 +1,13 @@
 <div widget-sales-new-vs-existing-customers>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_new_vs_existing.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_new_vs_existing.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_new_vs_existing.save</button>
     </div>
   </div>
 
@@ -28,21 +28,21 @@
 
     <div class="legend" ng-show="(isDataFound==true)">
       <div class="row positive2">
-        <div class="col-xs-7 text-left">New Customers:</div>
+        <div class="col-xs-7 text-left" translate>impac.widget.sales_new_vs_existing.new_customers</div>
         <div class="col-xs-5 text-right">{{getValue('new')}}</div>
       </div>
       <div class="row negative2">
-        <div class="col-xs-7 text-left">Existing Customers:</div>
+        <div class="col-xs-7 text-left" translate>impac.widget.sales_new_vs_existing.existing_customers</div>
         <div class="col-xs-5 text-right">{{getValue('existing')}}</div>
       </div>
       <div class="row total">
-        <div class="col-xs-7 text-left">Total:</div>
+        <div class="col-xs-7 text-left" translate>impac.widget.sales_new_vs_existing.total</div>
         <div class="col-xs-5 text-right">{{getValue('total')}}</div>
       </div>
     </div>
 
     <div class="data-not-found" ng-show="(isDataFound==false)">
-      <div class="message">No data found for this time range<br/> Please select another one</div>
+      <div class="message" translate>impac.widget.sales_new_vs_existing.no_data_found</div>
     </div>
 
   </div>

@@ -19,6 +19,6 @@ module.constant('LOCALES', {
     { id: 'en-gb', name: 'English (GB)' }
     { id: 'zh-HK', name: 'Chinese (HK)' }
   ],
-  'preferredLanguage': 'zh-HK',
-  'fallbackLanguage': 'en-gb'
+  'preferredLanguage': 'en-gb',
+  'fallbackLanguage': 'zh-HK'
 })

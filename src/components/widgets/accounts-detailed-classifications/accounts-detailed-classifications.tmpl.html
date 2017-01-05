@@ -29,12 +29,12 @@
       <!-- Sorting sub-header (contains sorting) -->
       <div ng-hide="multiEntity" class="row widget-line header sorting">
         <div class="col-md-6 text-left sortable-title" ng-click="sort('account')">
-          Account Classifications
+          {{'impac.widget.account_det_class.account_classifications' | translate}}
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
 
         <div class="col-md-6 text-right sortable-title" ng-click="sort('total')">
-          Amounts
+          {{'impac.widget.account_det_class.amounts' | translate}}
           <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
       </div>

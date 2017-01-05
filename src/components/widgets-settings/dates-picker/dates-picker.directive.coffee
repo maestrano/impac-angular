@@ -59,7 +59,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
       </button>
       """
-      applyHtml = """<button class="btn btn-sm btn-success" tooltip="Apply changes" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
+      applyHtml = """<button class="btn btn-sm btn-success" tooltip="{{'impac.widget.settings.dates_picker.tooltip.apply_changes' | translate}}" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
         <i class="fa fa-check"/>
       </button>
       """

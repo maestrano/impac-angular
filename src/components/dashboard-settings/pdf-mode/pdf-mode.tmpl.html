@@ -7,8 +7,8 @@
 
   <div ng-show="pdfMode">
     <button ng-click="print()" class='btn btn-info' ng-disabled="allNotTicked">
-      <span class='fa fa-print' /> Print
+      <span class='fa fa-print' /> {{'impac.components.pdf_mode.print' | translate}}
     </button>
-    <button ng-click="toggle()" class='btn btn-default'>Cancel</button>
+    <button ng-click="toggle()" class='btn btn-default' translate>impac.components.pdf_mode.cancel</button>
   </div>
 </div>

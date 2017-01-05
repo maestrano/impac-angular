@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, $translate) ->
 
     #====================================
     # Initialization
@@ -261,13 +261,13 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       if $scope.selectedCategory?
         switch $scope.selectedCategory
           when 'accounts'
-            return 'Accounting'
+            return $translate.instant('impac.dashboard.category_name.accounting')
           when 'invoices'
-            return 'Invoicing'
+            return $translate.instant('impac.dashboard.category_name.invoicing')
           when 'hr'
-            return 'HR / Payroll'
+            return $translate.instant('impac.dashboard.category_name.hr_or_payroll')
           when 'sales'
-            return 'Sales'
+            return $translate.instant('impac.dashboard.category_name.sales')
           else
             return false
       else

@@ -1,13 +1,13 @@
 <div widget-hr-leaves-balance>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate="">impac.widget.hr_leaves_balance.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred"/>
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_leaves_balance.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_leaves_balance.save</button>
     </div>
   </div>
 
@@ -17,10 +17,10 @@
 
       <div setting-param-selector parent-widget="widget" param="employee_id" options="employeesOptions" selected="selectedEmployee" class="employee-name" deferred="::paramSelectorDeferred" />
 
-      <h3>{{getEmployee().leaves[0].name || 'Vacation leaves'}} balance</h3>
+      <h3>{{vacationLeaves_translation}} {{'impac.widget.hr_leaves_balance.balance' | translate}}</h3>
       <div class="balance">{{(getEmployee().leaves[0].units || 0) | mnoCurrency : (getEmployee().leaves[0].type_of_units || 'h')}}</div>
 
-      <h3>{{getEmployee().leaves[1].name || 'Sick leaves'}} balance</h3>
+      <h3>{{sickLeaves_translation}} {{'impac.widget.hr_leaves_balance.balance' | translate}}</h3>
       <div class="balance">{{(getEmployee().leaves[1].units || 0) | mnoCurrency : (getEmployee().leaves[1].type_of_units || 'h')}}</div>
 
     </div>

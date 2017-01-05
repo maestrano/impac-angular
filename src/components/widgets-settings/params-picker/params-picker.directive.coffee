@@ -39,7 +39,7 @@ module.controller('SettingParamsPickerCtrl', ($scope) ->
   $scope.deferred.resolve($scope.parentWidget)
 )
 
-module.directive('settingParamsPicker', ($templateCache) ->
+module.directive('settingParamsPicker', ($templateCache, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -51,8 +51,9 @@ module.directive('settingParamsPicker', ($templateCache) ->
       description: '@'
     },
     link: (scope, elements, attrs) ->
-      scope.formattedParam = scope.param.replace(/_/g,' ')
-      scope.description = "The selected criteria will be displayed in this order (drag/drop to modify):" unless scope.description?
+      paramText = $translate.instant('impac.widget.settings.params-picker.' + scope.param)
+      scope.formattedParam = if _.includes(paramText, 'impac.widget.settings.params-picker') then scope.param.replace(/_/g,' ') else paramText
+      scope.description = $translate.instant('impac.widget.settings.params-picker.description') unless scope.description?
     template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
     controller: 'SettingParamsPickerCtrl'
   }

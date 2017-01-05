@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-workforce-summary',[])
 
-module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -26,25 +26,41 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && w.content.summary? && !_.isEmpty(w.content.summary.data)
 
-      $scope.periodOptions = [
-        {label: 'Yearly', value: 'yearly'},
-        {label: 'Monthly', value: 'monthly'},
-        {label: 'Weekly', value: 'weekly'},
-        {label: 'Hourly', value: 'hourly'}
-      ]
-      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.content.total.period.toLowerCase()
-      ) || $scope.periodOptions[0])
+      $translate([
+        "impac.widget.settings.time_period.period.yearly",
+        "impac.widget.settings.time_period.period.monthly",
+        "impac.widget.settings.time_period.period.weekly",
+        "impac.widget.settings.time_period.period.hourly"]).then(
+        (translations) ->
+          $scope.periodOptions = [
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.yearly"].toLowerCase()), value: "yearly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"].toLowerCase()), value: "monthly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"].toLowerCase()), value: "weekly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"].toLowerCase()), value: "hourly"}
+          ]
+    
+          $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+              o.value == w.content.total.period.toLowerCase()
+            ) || $scope.periodOptions[0])
+      )
 
-      $scope.filterOptions = [
-        {label: 'Gender', value: 'gender'},
-        {label: 'Age Range', value: 'age_range'},
-        {label: 'Salary Range', value: 'salary_range'},
-        {label: 'Job Title', value: 'job_title'},
-      ]
-      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        o.value == w.content.summary.filter
-      ) || $scope.filterOptions[0])
+      $translate([
+        "impac.common.label.gender",
+        "impac.common.label.age_range",
+        "impac.common.label.salary_range",
+        "impac.common.label.job_title"]).then(
+        (translations) ->
+          $scope.filterOptions = [
+            {label: translations["impac.common.label.gender"], value: "gender"},
+            {label: translations["impac.common.label.age_range"], value: "age_range"},
+            {label: translations["impac.common.label.salary_range"], value: "salary_range"},
+            {label: translations["impac.common.label.job_title"], value: "job_title"},
+          ]
+  
+          $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+              o.value == w.content.summary.filter
+            ) || $scope.filterOptions[0])
+      )
 
   $scope.getTotalWorkforce = ->
     w.content.total.amount if $scope.isDataFound

@@ -29,17 +29,17 @@
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div> -->
         <div class="col-sm-5 col-sm-offset-1 col-xs-12 text-left sortable-title" ng-click="sort('account')">
-          Accounts
+          {{'impac.widget.account_balance_sheets.accounts' | translate}}
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
         <div class="col-sm-6 col-xs-12">
           <div class="row">
             <div class="col-xs-6 text-center sortable-title" ng-click="sort('total1')">
-              Balance
+              {{'impac.widget.account_balance_sheets.balance' | translate}}
               <i ng-show="sortedColumn == 'total1'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-6 text-center sortable-title" ng-click="sort('total2')">
-              Balance
+              {{'impac.widget.account_balance_sheets.balance' | translate}}
               <i ng-show="sortedColumn == 'total2'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>

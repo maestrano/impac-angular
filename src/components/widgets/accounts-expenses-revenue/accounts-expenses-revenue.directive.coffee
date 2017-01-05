@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expenses-revenue',[])
 
-module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -28,7 +28,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
     $scope.displayOptions = [{
       id: 'show_net_profit',
-      label: 'Show net profit',
+      label: $translate.instant('impac.widget.accounts_expenses_revenue.show_net_profit'),
       value: false,
       onChangeCallback: $scope.toggleDisplayNetProfit
     }]
@@ -64,7 +64,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         if $scope.isNetProfitDisplayed
           datasets = [
-            {title: "Net Profit (#{$scope.getCurrency()})", values: w.content.values.net_profit },
+            {title: $translate.instant('impac.widget.accounts_expenses_revenue.net_profit') + " (#{$scope.getCurrency()})", values: w.content.values.net_profit },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.net_profit, (value) ->
@@ -73,8 +73,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
         else
           datasets = [
-            {title: "Expenses (#{$scope.getCurrency()})", values: w.content.values.expenses },
-            {title: "Revenue (#{$scope.getCurrency()})", values: w.content.values.revenue },
+            {title: $translate.instant('impac.widget.accounts_expenses_revenue.expenses') + " (#{$scope.getCurrency()})", values: w.content.values.expenses },
+            {title: $translate.instant('impac.widget.accounts_expenses_revenue.revenue') + " (#{$scope.getCurrency()})", values: w.content.values.revenue },
           ]
           all_values_are_positive = true
           angular.forEach(w.content.values.expenses, (value) ->
@@ -97,8 +97,8 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
 
       else
         pieData = [
-          { label: "Expenses (#{$scope.getCurrency()})", value: $scope.getCurrentExpenses() },
-          { label: "Revenue (#{$scope.getCurrency()})", value: $scope.getCurrentRevenue() },
+          { label: $translate.instant('impac.widget.accounts_expenses_revenue.expenses') + " (#{$scope.getCurrency()})", value: $scope.getCurrentExpenses() },
+          { label: $translate.instant('impac.widget.accounts_expenses_revenue.revenue') + " (#{$scope.getCurrency()})", value: $scope.getCurrentRevenue() },
         ]
         pieOptions = {
           tooltipFontSize: 12,

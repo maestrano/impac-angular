@@ -1,14 +1,14 @@
 <div widget-sales-segmented-turnover>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_turnover.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_turnover.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_turnover.save</button>
     </div>
   </div>
 
@@ -18,7 +18,7 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred"></div>
 
-        <div class="selector">Filter: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred"/></div>
+        <div class="selector">{{'impac.widget.sales_turnover.filter' | translate}} <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred"/></div>
         <div class="chart-container">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>
@@ -26,7 +26,7 @@
         <div class="widget-lines-container">
 
           <div class="row widget-line header">
-            <div class="col-xs-12">Average price range</div>
+            <div class="col-xs-12" translate>impac.widget.sales_turnover.average_price</div>
           </div>
 
           <div class="row widget-line" ng-repeat="range in widget.content.ranges">
@@ -45,9 +45,9 @@
       </div>
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
-        <i class="fa fa-info-circle" style="float: left;" tooltip="This widget segments your revenue by products average price range and propose an analysis of its composition" />
-        <h3 style="margin: 25px 10px; text-align: center;">{{getMaxRange().percentage.toFixed()}}% of your revenue comes from products sold at an average price between {{getMaxRange().label.split('-')[0] | mnoCurrency : widget.content.currency}} and {{getMaxRange().label.split('-')[1] | mnoCurrency : widget.content.currency}}.</h3>
-        <div class='analysis hidden-md' >{{getAnalysis()}}</div>
+        <i class="fa fa-info-circle" style="float: left;" tooltip="{{'impac.widget.sales_turnover.tooltip.widget_segment' | translate}}" />
+        <h3 style="margin: 25px 10px; text-align: center;">{{getMaxRange().percentage.toFixed()}}% {{'impac.widget.sales_turnover.of_your_revenue' | translate}} {{getMaxRange().label.split('-')[0] | mnoCurrency : widget.content.currency}} {{'impac.widget.sales_turnover.and' | translate}} {{getMaxRange().label.split('-')[1] | mnoCurrency : widget.content.currency}}.</h3>
+        <div class='analysis hidden-md' ng-init="getAnalysis()">{{::analysisTranslate}}</div>
       </div>
     </div>
 

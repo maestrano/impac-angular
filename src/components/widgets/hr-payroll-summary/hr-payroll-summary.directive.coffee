@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-payroll-summary',[])
 
-module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc) ->
+module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -22,6 +22,12 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.ascending = true
   $scope.sortedColumn = 'employee'
+
+  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
 
   # Widget specific methods
   w.initContext = ->
@@ -62,11 +68,11 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getName = (element) ->
     if element? && element.name?
-      return "Total Leaves Accruals" if element.name == "total_leaves"
-      return "Total Superannuation Accruals" if element.name == "total_super"
-      return "Total Reimbursements" if element.name == "total_reimbursement"
-      return "Total Taxes" if element.name == "total_tax"
-      return "Total Time Off" if element.name == "total_timeoff"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_leaves') if element.name == "total_leaves"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_superannuation') if element.name == "total_super"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_reimbursements') if element.name == "total_reimbursement"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_taxes') if element.name == "total_tax"
+      return $translate.instant('impac.widget.hr_payroll_summary.total_time_off') if element.name == "total_timeoff"
       return element.name.replace(/_/g, " ")
 
   $scope.getTrackedField = ->
@@ -176,7 +182,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  
+
 
   # Chart formating function
   # --------------------------------------
@@ -256,7 +262,6 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     {selectedElements: $scope.selectedElements}
 
   w.settings.push(selectedElementsSetting)
-
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

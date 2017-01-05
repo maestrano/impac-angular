@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout, $translate) ->
 
   w = $scope.parentWidget
   w.formula = ""
@@ -64,6 +64,14 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
       formatFormula()
       w.legend = legend
       w.isFormulaCorrect = true
+      w.evaluatedFormulaTranslate = translateEvaluatedFormula(w.evaluatedFormula);
+
+  translateEvaluatedFormula = (formula) ->
+    switch formula
+      when 'invalid expression' then return $translate.instant('impac.widget.formula.invalid_expression')
+      when 'Infinity'           then return $translate.instant('impac.widget.formula.infinity')
+      when '-Infinity'          then return $translate.instant('impac.widget.formula.minus_infinity')
+      else return formula
 
   formatFormula = ->
     if !w.formula.match(/\//g) && w.selectedAccounts?

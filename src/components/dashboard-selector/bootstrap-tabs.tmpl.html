@@ -5,7 +5,7 @@
       {{currentDhb.full_name}}
     </h1>
     <p class="data-source-label">
-      <small><b>Source:</b> {{organizationsNames()}}</small>
+      <small><b translate>impac.dashboard_selector.bootstrap_tabs.source</b> {{organizationsNames()}}</small>
     </p>
   </div>
 
@@ -35,7 +35,7 @@
   <div class='buttons-bar hidden-print' ng-class="{'col-md-3': pdfMode, 'col-sm-4': !pdfMode}">
     <div class='actions-panel'>
       <button ng-if='isAccessibilityEnabled && !pdfMode' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-wheelchair'></span></button>
-      <button ng-if="isAddWidgetEnabled && isThereADashboard() && !pdfMode" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> Add Widget</button>
+      <button ng-if="isAddWidgetEnabled && isThereADashboard() && !pdfMode" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.bootstrap_tabs.add_widget' | translate}}</button>
 
       <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
