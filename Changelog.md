@@ -19,7 +19,7 @@
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - [IMPAC-374] Re-fix widgets being printed in settings mode.
 - Fix Add KPIs button being hidden / disabled at incorrect cases.
-- [IMPAC-338] Fix "invoices list", "sales leads funnel" & "sales leads list" widget's tooltip hover displays.
+- [IMPAC-388] Fix "invoices list", "sales leads funnel" & "sales leads list" widget's tooltip hover displays.
 - Fix broken error handling for dashboard.svc load method, causing dashboard loading spinner to run endlessly if the ImpacLinking service required methods reject.
 
 
