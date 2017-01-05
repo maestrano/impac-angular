@@ -1,6 +1,6 @@
 angular
 .module('impac.components.dashboard-selector', [])
-.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) ->
+.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities, ImpacEvents, IMPAC_EVENTS) ->
   return {
     restrict: 'E'
     scope: {
@@ -37,7 +37,8 @@ angular
         # make sure the dropdown disappears
         $timeout ->
           $scope.$apply ->
-            ImpacDashboardsSvc.setCurrentDashboard(dhbId)
+            isDhbChanged = ImpacDashboardsSvc.setCurrentDashboard(dhbId)
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.changeDashboard) if isDhbChanged
             $scope.onSelectDashboard()
             $scope.isLoading = false
         , 50
