@@ -74,20 +74,21 @@ angular
         # Promises this directive that the dates-picker is loaded and ready for initialize.
         $scope.datesPickerDeferred = $q.defer()
 
-        initDatesPicker = ->
-          $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
-            ImpacKpisSvc.getKpisDateRange().then((dates)->
-              $scope.kpisDateRange.from = dates.from
-              $scope.kpisDateRange.to = dates.to
-              $scope.kpisDateRange.keepToday = dates.keepToday
-            ).finally(->
-              $scope.kpiDatesDeferred.resolve()
-              settingDatesPicker.initialize()
-            )
-          )
-        initDatesPicker()
+        $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
 
-        ImpacEvents.registerCb(IMPAC_EVENTS.changeDashboard, -> initDatesPicker())
+          ImpacKpisSvc.getKpisDateRange().then((dates)->
+
+            $scope.kpisDateRange.from = dates.from
+            $scope.kpisDateRange.to = dates.to
+            $scope.kpisDateRange.keepToday = dates.keepToday
+
+          ).finally(->
+
+            $scope.kpiDatesDeferred.resolve()
+            settingDatesPicker.initialize()
+          )
+        )
+
         ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, -> $scope.toggleEditMode())
 
         # Linked methods
