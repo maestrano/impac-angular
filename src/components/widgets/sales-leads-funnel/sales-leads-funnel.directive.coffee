@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, $sce, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
 
   w = $scope.widget
 
@@ -63,6 +63,7 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
       $scope.selectedStatus = null
     else
       $scope.selectedStatus = aStatus
+      $scope.setLeadTooltipsIsLocked = false
 
     if !w.isExpanded() && $scope.selectedStatus
       # will trigger updateSettings(false)
@@ -75,33 +76,46 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.getSelectedLeads = ->
     if $scope.isDataFound && $scope.selectedStatus
-      return w.content.leads_per_status[$scope.selectedStatus].leads
+      leads = w.content.leads_per_status[$scope.selectedStatus].leads
+      setLeadDescriptionTooltips(leads) unless $scope.setLeadTooltipsIsLocked
+      return leads
 
-  $scope.getLeadDescription = (aLead) ->
-    tooltip = []
+  # Gather leads tooltips and prepare as safe html for angular-bootstrap tooltip directive.
+  # NOTE: returning the safe HTML directly causes digest cycle stack overflow as the objects
+  # created by $sce are never identicle.
+  $scope.leadDescriptionTooltips = {}
+  setLeadDescriptionTooltips = (leads) ->
+    # Clear previously selected leadDescription items.
+    $scope.leadDescriptionTooltips = {}
+    # Also prevents digest cycle stack overflow as getSelectedLeads is run on each cycle.
+    $scope.setLeadTooltipsIsLocked = true
+    _.each(leads, (aLead, index)->
+      tooltip = []
 
-    nameLineArray = ["<strong>"]
-    nameLineArray.push($filter('titleize')(aLead.first_name)) if aLead.first_name
-    nameLineArray.push($filter('titleize')(aLead.last_name)) if aLead.last_name
-    nameLineArray.push("</strong>")
+      nameLineArray = ["<strong>"]
+      nameLineArray.push($filter('titleize')(aLead.first_name)) if aLead.first_name
+      nameLineArray.push($filter('titleize')(aLead.last_name)) if aLead.last_name
+      nameLineArray.push("</strong>")
 
-    tooltip.push(nameLineArray.join(' '))
-    tooltip.push("Status: #{$filter('titleize')(aLead.lead_status)}")
-    tooltip.push("Organization: #{$filter('titleize')(aLead.organization)}") if aLead.organization
+      tooltip.push(nameLineArray.join(' '))
+      tooltip.push("Status: #{$filter('titleize')(aLead.lead_status)}")
+      tooltip.push("Organization: #{$filter('titleize')(aLead.organization)}") if aLead.organization
 
-    if aLead.opportunities
-      tooltip.push("<strong>Opportunities:</strong>")
-      angular.forEach aLead.opportunities, (opp) ->
-        oppLineArray = []
-        oppLineArray.push("##{opp.code}") if opp.code
-        oppLineArray.push("#{opp.name}") if opp.name
-        # TODO currency
-        oppLineArray.push($filter('mnoCurrency')(opp.amount.total_amount, "USD", false)) if opp.amount
-        oppLineArray.push("#{opp.probability}%") if opp.probability
-        oppLineArray.push("#{opp.sales_stage}") if opp.sales_stage
-        tooltip.push(oppLineArray.join(' - '))
+      if aLead.opportunities
+        tooltip.push("<strong>Opportunities:</strong>")
+        _.each(aLead.opportunities, (opp) ->
+          oppLineArray = []
+          oppLineArray.push("##{opp.code}") if opp.code
+          oppLineArray.push("#{opp.name}") if opp.name
+          # TODO currency
+          oppLineArray.push($filter('mnoCurrency')(opp.amount.total_amount, "USD", false)) if opp.amount
+          oppLineArray.push("#{opp.probability}%") if opp.probability
+          oppLineArray.push("#{opp.sales_stage}") if opp.sales_stage
+          tooltip.push(oppLineArray.join(' - '))
+        )
 
-    return tooltip.join("<br />")
+      $scope.leadDescriptionTooltips[index] = $sce.trustAsHtml(tooltip.join("<br />"))
+    )
 
 
   selectedStatusSetting = {}

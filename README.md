@@ -78,9 +78,9 @@ The Provider Service allows the parent app to pass data to impac-angular by  usi
 
 #### Impac Linking Provider (linking.svc.coffee)
 
-Provides impac-angular with core data that it needs to run. This providers configuration is **required** and an error with be thrown if the below configurations have not been given.
+Provides impac-angular with core data that it needs to run. This providers required configurations are **required**, and therefore an error with be thrown if they have not been given.
 
-##### options
+##### required options
 **user**<br>
 _type_: Function<br>
 _return_: Promise -> { sso_session: ssoSession, ... }<br>
@@ -90,6 +90,11 @@ _usage_: Retrieving user details & sso_session key for authenticating querys to 
 _type_: Function<br>
 _return_: Promise -> { organizations: [ userOrgs, ... ], currentOrgId: currentOrgId }<br>
 _usage_: Retrieving organizations and current organization id.
+
+##### optional options
+**pusher_key**:<br>
+_type_: String<br>
+_usage_: Configure Impac! Angular with a [Pusher.com](https://pusher.com/) client key (enables websocket Alerting).
 
 #### Example
 
@@ -104,9 +109,13 @@ _usage_: Retrieving organizations and current organization id.
       data =
           user: ImpacConfig.getUserData
           organizations: ImpacConfig.getOrganizations
+          pusher_key: 'my-pusher-key'
 
       ImpacLinkingProvider.linkData(data)
 
+      # BELOW IS AN EXAMPLE OF A SECONDARY WAY TO CONFIGURE THE PUSHER KEY, 
+      # SHOULD IT NEED TO BE CONFIGURED AT A LATER STAGE THE IN APP BOOTSTRAP.
+      ImpacLinkingProvider.linkOptionalData({ pusher_key: 'my-pusher-key' })
     )
   )
 

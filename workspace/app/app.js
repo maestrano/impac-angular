@@ -95,12 +95,6 @@ module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, Impac
   // Configure ImpacTheming - aesthetic and feature customisations across the app
   // -------------------------------------------------------
   ImpacTheming.configure({
-    dhbKpisConfig: {
-      enableKpis: true
-    },
-    alertsConfig: {
-      enableAlerts: true
-    },
     dhbConfig: {
       showDhbHeading: true,
       dhbHeadingText: 'Your business at a glance, in real-time'
