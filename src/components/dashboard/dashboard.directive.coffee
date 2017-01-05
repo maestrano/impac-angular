@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
 
     #====================================
     # Initialization
@@ -126,7 +126,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self.model = { name: '' }
       self.errors = ''
       self.isLoading = false
-      self.instance = $modal.open(self.config)
+      self.instance = $uibModal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
         self.locked = true
@@ -368,7 +368,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       ImpacMainSvc.loadUserData().then((user) ->
         self.userName = user.name
       )
-      self.instance = $modal.open(self.config)
+      self.instance = $uibModal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
         self.locked = true

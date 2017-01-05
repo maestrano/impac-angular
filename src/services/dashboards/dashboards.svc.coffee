@@ -266,7 +266,7 @@ angular
 
         deferred.resolve(success.data)
       ,(error) ->
-        $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{opts}")
+        $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{angular.toJson(opts)}")
         deferred.reject(error)
 
       return deferred.promise

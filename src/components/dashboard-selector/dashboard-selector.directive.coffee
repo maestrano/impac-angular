@@ -1,6 +1,6 @@
 angular
 .module('impac.components.dashboard-selector', [])
-.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $modal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) ->
+.directive('dashboardSelector', ($log, $compile, $templateCache, $http, $timeout, $uibModal, ImpacTheming, ImpacDashboardsSvc, ImpacMainSvc, ImpacUtilities) ->
   return {
     restrict: 'E'
     scope: {
@@ -102,7 +102,7 @@ angular
 
         self.errors = ''
         self.isLoading = false
-        self.instance = $modal.open(self.config)
+        self.instance = $uibModal.open(self.config)
 
         self.instance.rendered.then (onRender) ->
           self.locked = true
