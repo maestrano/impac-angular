@@ -76,7 +76,7 @@ angular
       _self.isThereADashboard() && _.isEmpty(_self.config.currentDashboard.widgets)
 
     @areKpisEnabled = ->
-      ImpacTheming.get().dhbKpisConfig.enableKpis
+      ImpacTheming.get().dhbKpisConfig.enableKpis && ImpacMainSvc.userIsKpiEnabled()
 
 
     #====================================
@@ -106,43 +106,39 @@ angular
 
         if (needConfigurationLoad() || force)
 
-          ImpacMainSvc.load(force).then (success) ->
-            orgId = success.currentOrganization.id
+          ImpacMainSvc.load(force).then(
+            (success)->
+              orgId = success.currentOrganization.id
 
-            $http.get(ImpacRoutes.dashboards.index(orgId)).then(
-              (dashboards) ->
-                _self.setDashboards(dashboards.data).then ->
-                  _self.setCurrentDashboard()
-                  deferred.resolve(_self.config)
-                  $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
+              $http.get(ImpacRoutes.dashboards.index(orgId)).then(
+                (dashboards)->
+                  _self.setDashboards(dashboards.data).then(->
+                    _self.setCurrentDashboard()
+                    deferred.resolve(_self.config)
+                    $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
 
-                .finally( -> _self.loadLocked=false )
-              (error) ->
-                _self.loadLocked=false
-                deferred.reject(error)
-            )
-
-            (error) ->
-              $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
+                  ).finally( -> _self.loadLocked=false )
+                (error)->
+                  $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
+                  _self.loadLocked=false
+                  deferred.reject(error)
+              )
+            (error)->
+              $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
               _self.loadLocked=false
               deferred.reject(error)
-
-          (error) ->
-            $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
-            _self.loadLocked=false
-            deferred.reject(error)
-
+          )
         else
           _self.loadLocked=false
           deferred.resolve(_self.config)
-
       else
-        $log.warn "Impac! - DashboardsSvc: Load locked. Trying again in 1s"
-        $timeout (-> _self.load(force).then(
-          (success) -> deferred.resolve(success)
-          (errors) -> deferred.reject(errors)
+        $log.warn("Impac! - DashboardsSvc: Load locked. Trying again in 1s")
+        $timeout(->
+          _self.load(force).then(
+            (success) -> deferred.resolve(success)
+            (errors) -> deferred.reject(errors)
           )
-        ), 1000
+        , 1000)
 
       return deferred.promise
 

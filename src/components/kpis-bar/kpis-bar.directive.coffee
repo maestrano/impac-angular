@@ -12,9 +12,11 @@ angular
         # Load
         # -------------------------
         $scope.availableKpis = {
-          hide: true,
+          kpiSelectorHidden: true,
           toggle: ->
-            $scope.availableKpis.hide = !$scope.availableKpis.hide
+            return false unless $scope.hasKpiAvailability()
+            $scope.availableKpis.kpiSelectorHidden = !$scope.availableKpis.kpiSelectorHidden
+          list: []
         }
         $scope.showKpisExpanded = false
         # All kpis edit panels are shown
@@ -129,7 +131,7 @@ angular
           else
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpisBarUpdateSettings, f) if (f = $scope.showEditMode)
             $scope.showEditMode = !$scope.showEditMode
-          $scope.availableKpis.toggle() unless $scope.availableKpis.hide || $scope.showEditMode
+          $scope.availableKpis.toggle() unless $scope.availableKpis.kpiSelectorHidden || $scope.showEditMode
           # prevents spam clicking, and works with kpi show/edit annimation.
           $timeout(->
             $scope.toggleEditModeLock = false
@@ -151,6 +153,8 @@ angular
           animateKpiBarPanel()
           return true
 
+        $scope.hasKpiAvailability = ->
+          $scope.availableKpis.list.length
 
         # Private methods
         # -------------------------
@@ -164,7 +168,7 @@ angular
               existingKpi.endpoint == k.endpoint && existingKpi.element_watched == k.watchables[0]
             ))
           )
-          $scope.availableKpis.hide = true if _.isEmpty($scope.availableKpis.list)
+          $scope.availableKpis.kpiSelectorHidden = true if _.isEmpty($scope.availableKpis.list)
 
         # QUICK FIX - see kpi.svc method for comments.
         buildKpiWatchables = ->

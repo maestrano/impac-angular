@@ -1,4 +1,5 @@
-.analytics .widget-item .content .data-not-found {
+.analytics .widget-item .content .data-not-found,
+.analytics .kpi .data-not-found {
   text-align: center;
   font-size: 18px;
   color: @impac-widget-text-color;
@@ -14,9 +15,10 @@
   }
   .message {
     position: absolute;
-    top: 75px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70%;
-    left: 15%;
     background-color: rgb(244, 248, 249);
     padding: 10px 0px;
     border-radius: 4px;
@@ -27,5 +29,13 @@
       font-size: 16px;
       font-weight: normal;
     }
+  }
+}
+
+.analytics .kpi .data-not-found {
+  .message {
+    width: 100%;
+    font-size: 16px;
+    a { font-size: 14px; }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "impac-angular",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "author": {
     "name": "Cesar Tonnoir",
     "email": "it@maestrano.com"
@@ -48,6 +48,6 @@
     "wrench": "^1.5.8"
   },
   "engines": {
-    "node": "~5.6.0"
+    "node": ">=5.6.0 <7.0"
   }
 }

@@ -27,7 +27,7 @@ angular
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
               # Init the extra params select boxes with the first param
               _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
-                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id
+                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
               )
 
             watchablesWithoutTargets = false
@@ -112,8 +112,17 @@ angular
           ImpacKpisSvc.validateKpiTargets($scope.targets)
 
         $scope.hasContent = ->
-          return true if $scope.isEditing()
-          $scope.kpi && $scope.kpi.layout && $scope.kpi.data
+          !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
+
+        $scope.showKpiContent = ->
+          # Newly added kpis start in edit mode (draft) and will have "no content".
+          !$scope.isLoading() && ($scope.hasContent() || $scope.kpi.isDraft)
+
+        $scope.isDataNotFound = ->
+          !$scope.hasContent() && !$scope.kpi.isDraft
+
+        $scope.isLoading = ->
+          $scope.kpi.isLoading
 
         $scope.updateSettings = (force)->
           params = {}

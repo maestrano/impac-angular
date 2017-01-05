@@ -5,8 +5,8 @@
       <a href=""><i class="fa" ng-class="{ 'fa-chevron-up': showContent, 'fa-chevron-down': !showContent }"></i></a>
     </button>
     <div class="content-buttons">
-      <button type="button" class="add-kpis im-fab im-primary" ng-click="(availableKpis.list.length > 0) && availableKpis.toggle()" ng-class="{ disabled: (availableKpis.list.length == 0) }" ng-if="kpis.length > 0 || !availableKpis.hide">
-        <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.hide, 'fa-minus': !availableKpis.hide}"></i></a>
+      <button type="button" class="add-kpis im-fab im-primary" ng-click="availableKpis.toggle()" ng-class="{ disabled: !hasKpiAvailability() }">
+        <a href=""><i class="fa" ng-class="{'fa-plus': availableKpis.kpiSelectorHidden, 'fa-minus': !availableKpis.kpiSelectorHidden}"></i></a>
       </button>
       <button type="button" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock, 'editing':isEditing() }" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
         <a href=""><i class="fa" ng-class="{ 'fa-cog': !isEditing(), 'fa-floppy-o': isEditing() }"></i></a>
@@ -15,17 +15,17 @@
   </div>
 
   <div class="content">
-    <div class="row title" ng-if="kpis.length == 0 && availableKpis.hide">
+    <div class="row title" ng-if="kpis.length == 0 && availableKpis.kpiSelectorHidden">
       <span class="badge">New!</span>
       <div class="col-xs-12 text-center">
-        <a href="" class="show-dashboard" ng-click="availableKpis.toggle()" ng-hide="(availableKpis.list.length == 0)">
+        <a href="" class="show-dashboard" ng-click="availableKpis.toggle()" ng-show="hasKpiAvailability()">
           You can now attach KPIs to your dashboard
         </a>
-        <span class="no-kpi-templates" ng-show="(availableKpis.list.length == 0)">No KPIs are available for your dashboard</span>
+        <span class="no-kpi-templates" ng-hide="hasKpiAvailability()">No KPIs are available for your dashboard</span>
       </div>
     </div>
 
-    <div class="row add-bar" collapse="availableKpis.hide">
+    <div class="row add-bar" collapse="availableKpis.kpiSelectorHidden">
       <div class="col-xs-12 col-sm-12">
         <div class="row">
           <div ng-repeat="kpi in availableKpis.list track by $index" class="impac-kpi col-xs-6 col-sm-4 col-md-3" ng-click="addKpi(kpi)">
