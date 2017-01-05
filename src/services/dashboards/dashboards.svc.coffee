@@ -76,7 +76,7 @@ angular
       _self.isThereADashboard() && _.isEmpty(_self.config.currentDashboard.widgets)
 
     @areKpisEnabled = ->
-      ImpacTheming.get().dhbKpisConfig.enableKpis
+      ImpacTheming.get().dhbKpisConfig.enableKpis && ImpacMainSvc.userIsKpiEnabled()
 
 
     #====================================

@@ -1,7 +1,7 @@
 {
   "name": "impac-angular",
   "description": "Impac! Front-End Library",
-  "version": "1.5.0-rc1",
+  "version": "1.5.0",
   "main": [
     "dist/impac-angular.js",
     "dist/impac-angular.less",
@@ -27,25 +27,28 @@
     "angular-bootstrap": "~2.3.0",
     "angular-ui-sortable": "~0.16.0",
     "angular-xeditable": "~0.5.0",
-    "angular-toastr": "^1.7.0",
+    "angular-toastr": "~1.7.0",
     "bootstrap": "~3.3.5",
     "Chart.js": "~2.1.4",
     "lodash": "~3.10.1",
     "components-font-awesome": "~4.5.0",
     "angular-poller": "~0.4.5",
-    "moment": "^2.11.2",
+    "moment": "~2.11.2",
     "pusher": "^3.0.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.6.0",
     "angular-scenario": "~1.6.0",
     "angular-cookies": "~1.6.0",
-    "AngularDevise": "angular-devise#^1.3.0",
+    "AngularDevise": "angular-devise#~1.3.0",
     "angular-ui-router": "~0.3.1"
   },
-  "license": "Copyright 2015 Maestrano Pty Ltd",
+  "license": "Copyright 2017 Maestrano Pty Ltd",
   "repository": {
     "type": "git",
     "url": "git://github.com/maestrano/impac-angular.git"
+  },
+  "resolutions": {
+    "angular": "~1.6.0"
   }
 }

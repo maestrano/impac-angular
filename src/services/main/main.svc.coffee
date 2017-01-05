@@ -19,6 +19,9 @@ angular
     @getFinancialYearEndMonth = ->
       parseInt(_self.config.currentOrganization.financial_year_end_month)
 
+    @userIsKpiEnabled = ->
+      _self.config.userData.kpi_enabled
+
 
 # ====================================
 # Load and initialize

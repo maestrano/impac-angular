@@ -30,7 +30,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # kpis
     # -------------------------------------
     $scope.showKpisBar = ->
-      ImpacTheming.get().dhbKpisConfig.enableKpis && ImpacDashboardsSvc.isThereADashboard()
+      ImpacDashboardsSvc.areKpisEnabled() && ImpacDashboardsSvc.isThereADashboard()
 
     # messages
     # -------------------------------------
