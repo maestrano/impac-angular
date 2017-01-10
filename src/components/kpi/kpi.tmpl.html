@@ -48,7 +48,7 @@
               <!-- extra param selection -->
               <select name="extraParam" ng-model="kpi.extra_params[param]" ng-options="value.id as value.label for value in paramValues">
               </select>
-              <label for="extraParam" class="im-control-label">Select {{param | titleize}}</label>
+              <label for="extraParam" class="im-control-label">{{'impac.kpi.extra_param_label.verb' | translate}} {{param | titleize}}</label>
               <i class="im-bar"></i>
             </div>
           </div>
