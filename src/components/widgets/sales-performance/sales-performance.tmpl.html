@@ -71,7 +71,7 @@
                 <div class="col-xs-4 text-right">{{selectedElement.total_won | mnoCurrency: widget.metadata.currency}}</div>
               </div>
 
-              <div collapse="collapsedAll">
+              <div uib-collapse="collapsedAll">
                 <div class="row lines-group" ng-init="collapsedForecast=false" ng-hide="selectedElement.opps.forecast.length == 0" >
                   <div class="col-xs-12">
                     <div class="row widget-line" ng-click="collapsedForecast=!collapsedForecast">
@@ -83,7 +83,7 @@
                       </div>
                     </div>
 
-                    <div class="row" collapse="collapsedForecast">
+                    <div class="row" uib-collapse="collapsedForecast">
                       <div class="col-xs-12">
                         <div class="row widget-line no-select" ng-repeat="opp in selectedElement.opps.forecast" >
                           <div class="col-xs-4">{{opp.name}}</div>
@@ -107,7 +107,7 @@
                       </div>
                     </div>
 
-                    <div class="row" collapse="collapsedWon">
+                    <div class="row" uib-collapse="collapsedWon">
                       <div class="col-xs-12">
                         <div class="row widget-line no-select" ng-repeat="opp in selectedElement.opps.won">
                           <div class="col-xs-6">{{opp.name}}</div>
@@ -130,7 +130,7 @@
                       </div>
                     </div>
 
-                    <div class="row" collapse="collapsedLost">
+                    <div class="row" uib-collapse="collapsedLost">
                       <div class="col-xs-12">
                         <div class="row widget-line no-select" ng-repeat="opp in selectedElement.opps.lost" >
                           <div class="col-xs-6">{{opp.name}}</div>
@@ -148,6 +148,6 @@
         </div>
       </div>
     </div>
-    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" widget-width="::widget.width"></div>
+    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.category" width="::widget.width"></div>
   </div>
 </div>

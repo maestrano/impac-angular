@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div class="row widget-line sub-line" collapse="transactionsCollapsed">
+        <div class="row widget-line sub-line" uib-collapse="transactionsCollapsed">
           <div class="col-xs-4" ng-repeat="field in getRemainingFields() track by $index" ng-class="{'text-center': ($index==1), 'text-right': ($index==2)}" >
             <i ng-if="field.showCurrency">{{field.label}}: {{field.getValue(entity) | mnoCurrency : entity.currency}}</i>
             <i ng-if="!field.showCurrency">{{field.label}}: {{field.getValue(entity)}}</i>

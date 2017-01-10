@@ -1,15 +1,15 @@
-<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !kpi.isLoading), 'editing': isEditing() }">
-  <div class="content-container" ng-hide="(kpi.isLoading || !hasContent())">
+<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !isLoading()), 'editing': isEditing() }">
+  <div class="content-container" ng-hide="isLoading()">
     <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }"></div>
-    <div class="kpi-content" ng-class="{ 'editing': isEditing() }">
+    <div class="kpi-content" ng-show="showKpiContent()" ng-class="{ 'editing': isEditing() }">
       <!-- SHOW -->
       <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
         <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
           <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
         </div>
         <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
-          <span class="caption" tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
-          <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})" tooltip-placement="bottom" tooltip-append-to-body="false">
+          <span class="caption" uib-tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
+          <span class="emphasis" uib-tooltip="{{kpi.layout.text.emphasis}} - ({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})" tooltip-placement="bottom" tooltip-append-to-body="false">
             <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})</span>
           </span>
         </div>
@@ -61,8 +61,16 @@
 
       </div>
     </div>
+    <!-- Data not found display -->
+    <div class="kpi-no-data" ng-if="isDataNotFound()">
+      <!-- Remove KPI -->
+      <button type="button" ng-show="isEditing()" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+      <div common-data-not-found no-image="true" endpoint="::kpi.endpoint"/>
+    </div>
   </div>
-  <!-- <div class="col-xs-2 kpi-data-loader loader" ng-show="(kpi.isLoading || !hasContent())">
+  <div class="col-xs-2 kpi-data-loader loader" ng-if="isLoading()">
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
-  </div> -->
+  </div>
 </div>

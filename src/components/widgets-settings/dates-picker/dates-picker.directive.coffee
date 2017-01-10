@@ -50,16 +50,16 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       </div>
       """
       fromDateHtml = """
-      <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" uib-datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
         {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
       </button>
       """
       toDateHtml = """
-      <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
+      <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" uib-datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
         {{ calendarTo.value | date : 'yyyy-MM-dd' }}
       </button>
       """
-      applyHtml = """<button class="btn btn-sm btn-success" tooltip="{{'impac.widget.settings.dates_picker.tooltip.apply_changes' | translate}}" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
+      applyHtml = """<button class="btn btn-sm btn-success" uib-tooltip="{{'impac.widget.settings.dates_picker.tooltip.apply_changes' | translate}}" ng-show="changed && !parentWidget.isEditMode" ng-click="applyChanges()" ng-focus="onUse()" >
         <i class="fa fa-check"/>
       </button>
       """

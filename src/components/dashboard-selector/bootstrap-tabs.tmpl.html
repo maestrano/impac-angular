@@ -10,26 +10,26 @@
   </div>
 
   <div class="buttons-bar col-sm-8" ng-show="isThereADashboard() && !pdfMode">
-    <tabset type="{{selectorType}}">
-      <tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
-        <tab-heading>
+    <uib-tabset type="{{selectorType}}">
+      <uib-tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
+        <uib-tab-heading>
           {{dhb.full_name}}
           <a href="" class="close-link" ng-if="isDeleteDhbEnabled">
             <i class="fa fa-times" ng-click="deleteDashboardModal.open()"></i>
           </a>
-        </tab-heading>
-      </tab>
-      <tab ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()">
-        <tab-heading>
+        </uib-tab-heading>
+      </uib-tab>
+      <uib-tab ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()">
+        <uib-tab-heading>
           <a href=""><i class="fa fa-wheelchair"></i></a>
-        </tab-heading>
-      </tab>
-      <tab ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()">
-        <tab-heading>
+        </uib-tab-heading>
+      </uib-tab>
+      <uib-tab ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()">
+        <uib-tab-heading>
           <a href="">+</a>
-        </tab-heading>
-      </tab>
-    </tabset>
+        </uib-tab-heading>
+      </uib-tab>
+    </uib-tabset>
   </div>
 
   <div class='buttons-bar hidden-print' ng-class="{'col-md-3': pdfMode, 'col-sm-4': !pdfMode}">

@@ -8,6 +8,34 @@
 
 ## Released
 
+### v1.5.0-rc1 | 2017 - Week 1
+
+#### Adds
+- Upgrades Angular to v1.6
+- Upgrades Angular Bootstrap to v2.3
+
+#### Fixes
+- Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+
+
+-------------------------------------------------------------
+
+### v1.4.6 | Week 49
+
+#### Adds
+- [IMPAC-345] KPI loading spinner
+- [IMPAC-342] KPI "data not found" display for no data, Impac! down & tenant disabled.
+- [IMPAC-411] KPI's bar is disabled unless current_user contains a `kpi_enabled: true` property, as well as being enabled via the ImpacTheming service.
+
+#### Fixes
+- [IMPAC-374] Re-fix widgets being printed in settings mode.
+- Fix Add KPIs button being hidden / disabled at incorrect cases.
+- [IMPAC-388] Fix "invoices list", "sales leads funnel" & "sales leads list" widget's tooltip hover displays.
+- Fix broken error handling for dashboard.svc load method, causing dashboard loading spinner to run endlessly if the ImpacLinking service required methods reject.
+
+
+-------------------------------------------------------------
+
 ### v1.4.5 | Week 44
 
 #### Adds

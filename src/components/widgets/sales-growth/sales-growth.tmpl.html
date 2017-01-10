@@ -26,12 +26,12 @@
       </div>
 
       <div ng-show="product.value != -1" class="legend text-center">{{getSelectedProduct().displayName}}</div>
-      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
-      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue()}}</div>
+      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" uib-tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
+      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" uib-tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue()}}</div>
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found widget-engine="::widget.category" widget-width="::widget.width"/>
+    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.category" width="::widget.width"/>
   </div>
 
 </div>

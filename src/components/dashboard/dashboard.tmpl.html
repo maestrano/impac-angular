@@ -22,7 +22,7 @@
   <!-- Dashboards selection/creation/deletion -->
   <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
 
-  <div id="sub-menu" collapse="!showSubMenu">
+  <div id="sub-menu" uib-collapse="!showSubMenu">
     <i class="fa fa-times" ng-click="hideSubMenu()" />
 
     <!-- Displayed to MYOB Essentials Users -->
@@ -35,7 +35,7 @@
   </div>
 
   <!-- Widgets selection container -->
-  <div id="widget-selector" collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
+  <div id="widget-selector" uib-collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
       <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
       <span class="badge confirmation" translate>impac.dashboard.widget_added</span>
@@ -67,7 +67,7 @@
         </div>
         <div class="row lines">
           <div class="col-md-4" ng-repeat="widgetPattern in getWidgetsForSelectedCategory()" style="padding: 0px 8px;">
-            <p ng-click="addWidget(widgetPattern.path, widgetPattern.metadata)" tooltip="{{widgetPattern.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetPattern.icon}}" /> {{widgetPattern.name}} <i class="fa fa-plus-circle" /></p>
+            <p ng-click="addWidget(widgetPattern.path, widgetPattern.metadata)" uib-tooltip="{{widgetPattern.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetPattern.icon}}" /> {{widgetPattern.name}} <i class="fa fa-plus-circle" /></p>
           </div>
         </div>
       </div>

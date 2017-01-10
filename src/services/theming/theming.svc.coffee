@@ -41,11 +41,11 @@ angular
         pdfModeEnabled: false
       # kpis options
       dhbKpisConfig:
-        enableKpis: false
+        enableKpis: true
         parentElementId: ''
       # alert notifications options
       alertsConfig:
-        enableAlerts: false
+        enableAlerts: true
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
         mainMessage: 'impac.data_not_found_config.main_message'

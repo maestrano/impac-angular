@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.invoices-list',[])
 
-module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities, $translate) ->
+module.controller('WidgetInvoicesListCtrl', ($scope, $q, $sce, $filter, ImpacUtilities, $translate) ->
 
   w = $scope.widget
 
@@ -35,6 +35,7 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities
       datesRange = ImpacUtilities.getDatesRange(dates)
       $scope.defaultFrom = $filter('date')(datesRange[0], 'yyyy-MM-dd')
       $scope.defaultTo = $filter('date')(datesRange[1], 'yyyy-MM-dd')
+      initInvoicesTooltips(w.content.entities)
 
 
   # No need to put this under initContext because it won't change after a settings update
@@ -46,26 +47,29 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $filter, ImpacUtilities
     # returned by Impac!: "total_something"
     $scope.orderBy = _.last(w.metadata.order_by.split('_')).concat(" ")
 
-  $scope.getInvoices = (entity) ->
-    # Returns the invoices for a given customer/supplier
-    tooltip = ["<strong>" + entity.name + "</strong>"]
-    count=1
-    angular.forEach(entity.invoices, (i) ->
+  # Gather invoice tooltips and prepare as safe html for angular-bootstrap tooltip directive.
+  # NOTE: returning the safe HTML directly causes digest cycle stack overflow as the objects
+  # created by $sce are never identicle.
+  $scope.invoiceTooltips = {}
+  initInvoicesTooltips = (entities) ->
+    _.each(entities, (entity)->
+      # invoices list as html for a given customer/supplier
+      tooltip = ["<strong>" + entity.name + "</strong>"]
+      count = 1
+      _.each(entity.invoices, (i) ->
 
-      if (i.transaction_no != "")
-        txn = " (" + i.transaction_no + ")"
-      else
-        txn = ""
+        txn = if i.transaction_no != "" then " (" + i.transaction_no + ")" else ""
 
-      if (i.tooltip_status == "partially paid")
-        paid = " (" + $filter('mnoCurrency')(i.paid,i.currency,true) + " over " + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
-      else
-        paid = " (" + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
+        if (i.tooltip_status == "partially paid")
+          paid = " (" + $filter('mnoCurrency')(i.paid,i.currency,true) + " over " + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
+        else
+          paid = " (" + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
 
-      tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid)
-      count++
+        tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid)
+        count++
+      )
+      $scope.invoiceTooltips[entity.id] = $sce.trustAsHtml(tooltip.join("<br />"))
     )
-    return tooltip.join("<br />")
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"

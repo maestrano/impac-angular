@@ -1,5 +1,5 @@
 module = angular.module('impac.components.alerts-config', [])
-module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc, ImpacMainSvc, $translate) ->
+module.directive('alertsConfig', ($uibModal, $templateCache, $compile, ImpacKpisSvc, ImpacMainSvc) ->
 
   return {
     restrict: 'EA'
@@ -76,6 +76,6 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         for alert in $scope.kpi.alerts
           $scope.alerts[alert.service].active = true
 
-        $scope.modal = $modal.open(alertsSettingsModal.options)
+        $scope.modal = $uibModal.open(alertsSettingsModal.options)
   }
 )

@@ -36,6 +36,7 @@ angular.module('impac.components',
     'impac.components.widgets',
     'impac.components.widgets-settings',
     'impac.components.widgets-common',
+    'impac.components.common',
     'impac.components.templates'
   ]
 );
@@ -121,12 +122,16 @@ angular.module('impac.components.dashboard-settings',
 );
 angular.module('impac.components.widgets-common',
   [
-    'impac.components.widgets-common.data-not-found',
     'impac.components.widgets-common.editable-title',
     'impac.components.widgets-common.info-panel',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
     'impac.components.widgets-common.autofocus'
+  ]
+);
+angular.module('impac.components.common',
+  [
+    'impac.components.common.data-not-found'
   ]
 );
 /*
