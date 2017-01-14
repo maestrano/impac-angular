@@ -14,7 +14,7 @@
 
 #### Fixes
 - [IMPAC-421] Fix kpis bar dates picker initialization
-
+- Add guarding for account-class-comparison getTotals method
 
 -------------------------------------------------------------
 
