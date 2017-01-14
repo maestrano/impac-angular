@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-421] Fix kpis bar dates picker initialization
 
 
 -------------------------------------------------------------
