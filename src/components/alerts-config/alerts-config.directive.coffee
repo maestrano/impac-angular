@@ -25,8 +25,12 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
           label: "By sending me an email"
       }
 
+      $scope.currentOrgMembers = []
+
       ImpacMainSvc.load().then(
-        (config) -> $scope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
+        (config) ->
+          $scope.currentOrgMembers = config.currentOrgMembers
+          $scope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
       )
 
       $scope.save = (alerts) ->
