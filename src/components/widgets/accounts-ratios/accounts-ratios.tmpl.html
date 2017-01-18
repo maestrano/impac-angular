@@ -21,40 +21,68 @@
     <!-- Data found -->
     <div ng-show="(isDataFound==true)">
 
-      <!-- Ratio detail -->
-      <div class="col-md-6">
-        <div class="member">
-          <div class="price">
-            {{ getTotal('numerator') }}
-          </div>
-
-          <div class="currency">
-          {{ widget.content.layout.numerator }}
-          </div>
+      <!-- Ratio details -->
+      <div class="col-md-6 left-panel" ng-class="{simulation: simulationMode}">
+        <div class="legend" ng-if="simulationMode">
+          Each offset will be applied to the {{ intervalCount }} interval{{ intervalCount > 1 ? 's' : '' }}
         </div>
 
-        <div class="separator" />
+        <div class="member">
+          <div class="price" ng-if="!simulationMode">
+            {{ totalNumerator | mnoCurrency : widget.content.layout.currency }}
+          </div>
+
+          <div class="price" ng-if="simulationMode">
+            {{ calculatedNumerator | mnoCurrency : widget.content.layout.currency }}
+          </div>
+
+          <div class="legend">
+            {{ widget.content.layout.numerator }}
+          </div>
+
+          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::numeratorOffsetsDeferred" offsets-key='numerator' initial-offsets='widget.metadata.offset.numerator' currency='widget.content.layout.currency' interval-count='intervalCount' apply-to-intervals="isPnl" />
+        </div>
+
+        <div class="center-block separator" />
 
         <div class="member">
-          <div class="price">
-            {{ getTotal('denominator') }}
+          <div class="price" ng-if="!simulationMode">
+            {{ totalDenominator | mnoCurrency : widget.content.layout.currency }}
           </div>
 
-          <div class="currency">
+          <div class="price" ng-if="simulationMode">
+            {{ calculatedDenominator | mnoCurrency : widget.content.layout.currency }}
+          </div>
+
+          <div class="legend">
             {{ widget.content.layout.denominator }}
           </div>
+
+          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::denominatorOffsetsDeferred" offsets-key='denominator' initial-offsets='widget.metadata.offset.denominator' currency='widget.content.layout.currency' interval-count='intervalCount' apply-to-intervals="isPnl" />
+        </div>
+
+        <div class="text-center">
+          <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
+            Cancel
+          </button>
+          <button class="btn btn-sm btn-default" ng-if="!simulationMode" ng-click="toggleSimulationMode()" title="Add custom offsets to the ratio calculation">
+            <i class="fa fa-pencil-square-o" />
+            Simulation
+          </button>
+          <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
+            Save
+          </button>
         </div>
       </div>
 
       <!-- Current value / Chart -->
-      <div class="col-md-6">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
+      <div class="col-md-6 right-panel">
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{widget.content.layout.accounting_behaviour}}" />
 
         <div ng-hide="widget.isHistoryMode" class="current">
           <div class="price">
-             {{ widget.content.calculation.ratio.average | mnoCurrency : 'ratio' }}
+             {{ totalRatio | mnoCurrency : '(ratio)' : false }}
           </div>
-          <div class="currency">(ratio)</div>
           <div class="legend">{{ widget.content.layout.ratio }}</div>
         </div>
 

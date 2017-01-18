@@ -1,17 +1,30 @@
 .analytics .widget-item .content.accounts-ratios {
-  // component specific styles
-  // -------------------------
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
 
-  .member {
-    .currency {
-      font-style: italic;
-      font-size: 12px;
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
     }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
   }
 
-  .separator {
-    margin-top: 30px;
-    border-bottom: solid 1px #9ba6a7;
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
   }
-
 }

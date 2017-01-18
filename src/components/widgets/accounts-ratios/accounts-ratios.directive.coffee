@@ -8,26 +8,59 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, ChartFormatt
 
   # Define settings
   # --------------------------------------
-  $scope.orgDeferred = $q.defer();
-  $scope.chartDeferred = $q.defer();
+  $scope.orgDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
+  $scope.numeratorOffsetsDeferred = $q.defer()
+  $scope.denominatorOffsetsDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
     $scope.chartDeferred.promise,
     $scope.timePeriodDeferred.promise,
-    $scope.histModeDeferred.promise
+    $scope.histModeDeferred.promise,
+    $scope.numeratorOffsetsDeferred.promise,
+    $scope.denominatorOffsetsDeferred.promise
   ]
 
-  $scope.getTotal = (member) ->
-    total = _.sum(w.content.calculation[member].totals)
-    $filter('mnoCurrency')(total, w.content.currency)
+  $scope.totalRatio = 0
+  $scope.totalNumerator = 0
+  $scope.totalDenominator = 0
+  $scope.calculatedNumerator = 0
+  $scope.calculatedDenominator = 0
+  $scope.simulationMode = false
+  $scope.intervalCount = 0
+  $scope.isPnl = false
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content?
+    if $scope.isDataFound
+      $scope.intervalCount = _.size(w.content.layout.dates)
+
+      if w.content.layout.accounting_behaviour == 'pnl'
+        $scope.totalRatio = w.content.calculation.ratio.average
+        $scope.totalNumerator = _.sum(w.content.calculation.numerator.totals)
+        $scope.totalDenominator = _.sum(w.content.calculation.denominator.totals)
+        $scope.calculatedNumerator = _.sum(w.content.calculation.numerator.values)
+        $scope.calculatedDenominator = _.sum(w.content.calculation.denominator.values)
+        $scope.isPnl = true
+      else
+        $scope.totalRatio = _.last(w.content.calculation.ratio.totals)
+        $scope.totalNumerator = _.last(w.content.calculation.numerator.totals)
+        $scope.totalDenominator = _.last(w.content.calculation.denominator.totals)
+        $scope.calculatedNumerator = _.last(w.content.calculation.numerator.values)
+        $scope.calculatedDenominator = _.last(w.content.calculation.denominator.values)
+
+  $scope.toggleSimulationMode = (init = false)->
+    $scope.initSettings() if init
+    $scope.simulationMode = !$scope.simulationMode
+
+  $scope.saveSimulation = ->
+    $scope.updateSettings()
+    $scope.toggleSimulationMode()
 
 
   # Chart formating function
@@ -45,7 +78,7 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, ChartFormatt
 
       # inputData = {title: data.type, labels: dates, values: data.values}
       inputData = {labels: dates, datasets: [{title: data.layout.ratio, values: data.calculation.ratio.totals}]}
-      options = { currency: data.currency }
+      options = { currency: 'hide' }
 
       chartData = ChartFormatterSvc.combinedBarChart(inputData, options, false)
       
