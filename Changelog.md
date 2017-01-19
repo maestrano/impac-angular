@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-420] Fix sync-apps poller on change organisation
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - Add guarding for account-class-comparison getTotals method
 
