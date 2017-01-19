@@ -22,6 +22,7 @@
 - [IMPAC-420] Fix sync-apps poller on change organisation
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - [IMPAC-440] fix aged payables & receivables sorting bugs
+- [IMPAC-463] No KPIs data when changing to multi-organisation w/ shared dashboard(remove ng-repeat "track by" for kpis)
 - Add guarding for account-class-comparison getTotals method
 - Formatting of the "real_value" on KPIs
 
