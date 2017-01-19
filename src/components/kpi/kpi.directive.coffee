@@ -176,6 +176,13 @@ angular
         $scope.getTargetPlaceholder = (watchable)->
           ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, watchable)
 
+        $scope.getRealValue = ->
+          kpi = $scope.kpi
+          return "" if _.isEmpty(kpi.data)
+          value = kpi.data[kpi.watchables[0]].value
+          unit = kpi.data[kpi.watchables[0]].unit
+          [value, unit].join(' ').trim()
+
         # Add / remove placeholder for impac-material nice-ness.
         $scope.bindTargetInputPlaceholder = (watchable, targetIndex)->
           $scope["#{watchable}TargetPlaceholder#{targetIndex}"] ||= ''
