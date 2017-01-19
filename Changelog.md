@@ -11,16 +11,17 @@
 ### v1.4.7 | Week 3
 
 #### Adds
-- [IMPAC-456] New KPI: Debt Service Ratio
-- [IMPAC-462] New KPI: Current Ratio
 - [IMPAC-453] New Widget: Debt Service Ratio
+- [IMPAC-456] New KPI: Debt Service Ratio
 - [IMPAC-460] New Widget: Current Ratio
+- [IMPAC-462] New KPI: Current Ratio
 - New setting: Offsets - Allows to set metadata[:offset] as a Hash of arrays
 - Can now inject text before/after caption of common-time-period-info
 
 #### Fixes
-- [IMPAC-440] fix aged payables & receivables sorting bugs
+- [IMPAC-420] Fix sync-apps poller on change organisation
 - [IMPAC-421] Fix kpis bar dates picker initialization
+- [IMPAC-440] fix aged payables & receivables sorting bugs
 - Add guarding for account-class-comparison getTotals method
 - Formatting of the "real_value" on KPIs
 
