@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-440] fix aged payables & receivables sorting bugs
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - Add guarding for account-class-comparison getTotals method
 
