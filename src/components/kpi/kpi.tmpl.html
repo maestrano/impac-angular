@@ -9,8 +9,8 @@
         </div>
         <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
           <span class="caption" tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
-          <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})" tooltip-placement="bottom" tooltip-append-to-body="false">
-            <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{kpi.data[kpi.watchables[0]].value}} {{kpi.data[kpi.watchables[0]].unit}})</span>
+          <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})" tooltip-placement="bottom" tooltip-append-to-body="false">
+            <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{ getRealValue() }})</span>
           </span>
         </div>
       </div>
@@ -28,7 +28,7 @@
         <form name="kpi{{kpi.id}}SettingsForm">
           <!-- watchables -->
           <div ng-repeat="watchable in kpi.watchables track by $index">
-            <div class="real-value" ng-show="kpi.data">Current {{watchable}}: {{kpi.data[watchable].value}} {{kpi.data[watchable].unit}}</div>
+            <div class="real-value" ng-show="kpi.data">Current {{watchable}}: {{ getRealValue() }}</div>
             <!-- targets -->
             <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
               <!-- target -->
