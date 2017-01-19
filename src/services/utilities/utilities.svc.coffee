@@ -25,6 +25,7 @@ angular
     #   @returns {string} A time period word
     ###
     @getPeriodWord = (period) ->
+      return '' unless angular.isDefined(period)
       switch period.toLowerCase().slice(0,1)
         when "d" then return "day"
         when "w" then return "week"

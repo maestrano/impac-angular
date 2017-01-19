@@ -29,6 +29,7 @@ module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
           scope.offsets.push offsetValue
         scope.offsetFormula = ""
         scope.periodWord = ImpacUtilities.getPeriodWord(scope.period)
+        scope.placeholder = placeholder()
 
       setting.toMetadata = ->
         metadata = { offset: {} }
@@ -45,10 +46,13 @@ module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
 
       scope.addOffsetOnEnter = (event) ->
         scope.addOffset() if event.keyCode == 13
+        
+      placeholder = ->
+        period = scope.period.charAt(0).toUpperCase() + scope.period.slice(1).toLowerCase()
+        "#{period} adjustment"
 
       computedFormula = ->
         eval(scope.offsetFormula) if scope.offsetFormula.match(authorized_regex)
-
 
 
       w.settings.push(setting) if w

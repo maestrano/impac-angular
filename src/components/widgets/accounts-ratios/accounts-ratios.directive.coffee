@@ -32,7 +32,7 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, ChartFormatt
   $scope.simulationMode = false
   $scope.intervalsCount = 0
   $scope.isPnl = false
-  $scope.forwardParams = { histParams: w.metadata.hist_parameters }
+  $scope.periodInfoContext = {}
 
   # Prefix for period indicator in simulation mode
   getPrefix = (behaviour) ->
@@ -53,8 +53,9 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, ChartFormatt
       $scope.endDate = _.last(w.content.layout.dates)
 
       behaviour = w.content.layout.accounting_behaviour
-      $scope.forwardParams.accountingBehaviour = behaviour
-      $scope.forwardParams.injectBefore = getPrefix(behaviour)
+      $scope.periodInfoContext.histParams = w.metadata.hist_parameters
+      $scope.periodInfoContext.accountingBehaviour = behaviour
+      $scope.periodInfoContext.injectBefore = getPrefix(behaviour)
 
       if behaviour == 'pnl'
         $scope.totalRatio = w.content.calculation.ratio.average
