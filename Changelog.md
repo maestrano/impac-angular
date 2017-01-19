@@ -19,6 +19,7 @@
 - Can now inject text before/after caption of common-time-period-info
 
 #### Fixes
+- [IMPAC-440] fix aged payables & receivables sorting bugs
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - Add guarding for account-class-comparison getTotals method
 - Formatting of the "real_value" on KPIs
