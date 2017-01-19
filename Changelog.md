@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-463] No KPIs data when changing to multi-organisation w/ shared dashboard(remove ng-repeat "track by" for kpis)
 - [IMPAC-421] Fix kpis bar dates picker initialization
 - Add guarding for account-class-comparison getTotals method
 
