@@ -23,9 +23,7 @@
 
       <!-- Ratio details -->
       <div class="col-md-6 left-panel" ng-class="{simulation: simulationMode}">
-        <div class="legend" ng-if="simulationMode">
-          Each offset will be applied to the {{ intervalCount }} interval{{ intervalCount > 1 ? 's' : '' }}
-        </div>
+        <div common-time-period-info ng-if="simulationMode" context="forwardParams" />
 
         <div class="member">
           <div class="price" ng-if="!simulationMode">
@@ -40,7 +38,7 @@
             {{ widget.content.layout.numerator }}
           </div>
 
-          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::numeratorOffsetsDeferred" offsets-key='numerator' initial-offsets='widget.metadata.offset.numerator' currency='widget.content.layout.currency' interval-count='intervalCount' apply-to-intervals="isPnl" />
+          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::numeratorOffsetsDeferred" offsets-key='numerator' initial-offsets='widget.metadata.offset.numerator' currency='widget.content.layout.currency' intervals-count='intervalsCount' show-intervals-mult="isPnl" period='widget.metadata.hist_parameters.period' />
         </div>
 
         <div class="center-block separator" />
@@ -58,7 +56,7 @@
             {{ widget.content.layout.denominator }}
           </div>
 
-          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::denominatorOffsetsDeferred" offsets-key='denominator' initial-offsets='widget.metadata.offset.denominator' currency='widget.content.layout.currency' interval-count='intervalCount' apply-to-intervals="isPnl" />
+          <div setting-offsets ng-show='simulationMode' parent-widget="widget" deferred="::denominatorOffsetsDeferred" offsets-key='denominator' initial-offsets='widget.metadata.offset.denominator' currency='widget.content.layout.currency' intervals-count='intervalsCount' show-intervals-mult="isPnl" period='widget.metadata.hist_parameters.period' />
         </div>
 
         <div class="text-center">
@@ -77,7 +75,7 @@
 
       <!-- Current value / Chart -->
       <div class="col-md-6 right-panel">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{widget.content.layout.accounting_behaviour}}" />
+        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{widget.content.layout.accounting_behaviour}}" end-date="endDate" />
 
         <div ng-hide="widget.isHistoryMode" class="current">
           <div class="price">

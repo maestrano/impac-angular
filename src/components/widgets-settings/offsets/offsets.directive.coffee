@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.offsets',[])
 
-module.directive('settingOffsets', ($templateCache) ->
+module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
   return {
     restrict: 'A',
     scope: {
@@ -9,8 +9,9 @@ module.directive('settingOffsets', ($templateCache) ->
       offsetsKey: '@'
       initialOffsets: '='
       currency: '='
-      intervalCount: '='
-      applyToIntervals: '='
+      intervalsCount: '='
+      period: '='
+      showIntervalsMult: '='
     },
     template: $templateCache.get('widgets-settings/offsets.tmpl.html'),
     
@@ -27,6 +28,7 @@ module.directive('settingOffsets', ($templateCache) ->
         for offsetValue in (scope.initialOffsets || [])
           scope.offsets.push offsetValue
         scope.offsetFormula = ""
+        scope.periodWord = ImpacUtilities.getPeriodWord(scope.period)
 
       setting.toMetadata = ->
         metadata = { offset: {} }
