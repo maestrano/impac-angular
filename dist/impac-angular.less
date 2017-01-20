@@ -2392,14 +2392,14 @@ body {
   }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -2905,6 +2905,24 @@ body {
 
 }
 
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -3053,9 +3071,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content .settings.width {
   float: right;
   font-size: 14px;
@@ -3069,6 +3084,9 @@ body {
       margin-right: -3px;
     }
   }
+}
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
 }
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
@@ -3101,6 +3119,17 @@ body {
 }
 
 
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+
+  .price {
+    .center-bold(0px);
+  }
+}
+
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -3121,17 +3150,6 @@ body {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-
-  .price {
-    .center-bold(0px);
   }
 }
 
@@ -3326,6 +3344,37 @@ body {
   }
 
   .row.widget-line.header > [class*='col-'] { position: static; }
+}
+
+.analytics .widget-item .content.accounts-ratios {
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
+
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
+    }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
+  }
+
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
+  }
 }
 
 .analytics .widget-item .content.hr-employee-details {
