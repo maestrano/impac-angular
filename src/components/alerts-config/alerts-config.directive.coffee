@@ -16,30 +16,33 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $compile(alertsConfig.contents())(scope)
 
     controller: ($scope) ->
+      $scope.members = []
+
       $scope.alerts = {
         inapp:
           service: 'inapp'
           label: "With in-app notifications"
         email:
           service: 'email'
-          label: "By sending me an email"
+          label: "By sending me an email at:"
       }
-
-      $scope.currentOrgMembers = []
 
       ImpacMainSvc.load().then(
         (config) ->
-          $scope.currentOrgMembers = config.currentOrgMembers
-          $scope.alerts.email.label += " at: #{config.userData.email}" if (config.userData? && config.userData.email)
+          $scope.members = config.currentOrgMembers
       )
 
       $scope.save = (alerts) ->
+        $scope.alerts.email.recipients = $scope.members.map( (recipient) -> recipient.id )
         ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
         $scope.modal.close()
         $scope.afterSaveCallback() if $scope.afterSaveCallback
 
       $scope.toggleAlert = (alert) ->
         alert.active = !alert.active
+
+      $scope.toggleRecipient = (member) ->
+        member.active = !member.active
 
       $scope.translateTarget = (kpi) ->
         watchableTargets = kpi.targets[kpi.element_watched] if kpi.targets

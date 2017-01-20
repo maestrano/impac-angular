@@ -14,6 +14,10 @@
         {{alert.label}}
       </li>
 
+      <li class="list-group-item" ng-repeat="member in members" ng-show="alerts.email.active" ng-class="{active: member.active}" ng-click="toggleRecipient(member)">
+        <i class="fa" ng-class="member.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
+        {{member.email}}
+      </li>
     </ul>
   </div>
 
