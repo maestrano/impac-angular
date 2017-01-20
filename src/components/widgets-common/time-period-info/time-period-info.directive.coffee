@@ -9,18 +9,25 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
 
     link: (scope, element) ->
       getBehaviour = ->
-        context = scope.context
-        if angular.isFunction(context.accountingBehaviour)
-          context.accountingBehaviour()
-        else
-          context.accountingBehaviour
+        if angular.isFunction(scope.context.accountingBehaviour) then scope.context.accountingBehaviour() else scope.context.accountingBehaviour
+
+      getInjectBefore = ->
+        return '' unless angular.isDefined(scope.context.injectBefore)
+        if angular.isFunction(scope.context.injectBefore) then scope.context.injectBefore() else scope.context.injectBefore
+
+      getInjectAfter = ->
+        return '' unless angular.isDefined(scope.context.injectAfter)
+        if angular.isFunction(scope.context.injectAfter) then scope.context.injectAfter() else scope.context.injectAfter
 
       scope.getDateInfo = ->
-        context = scope.context
-        dates = ImpacUtilities.selectedTimeRange(context.histParams)
+        dates = ImpacUtilities.selectedTimeRange(scope.context.histParams)
         if getBehaviour() == 'bls'
-          return "As at #{dates.to}"
+          return yieldCaption("As at #{dates.to}")
         else
-          return "From #{dates.from} to #{dates.to}"
+          return yieldCaption("From #{dates.from} to #{dates.to}")
+
+      yieldCaption = (caption) ->
+        if getInjectBefore().length > 0 then caption = caption.toLowerCase()
+        [getInjectBefore(),caption,getInjectAfter()].join(' ')
   }
 )

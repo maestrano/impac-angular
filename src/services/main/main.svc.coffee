@@ -22,6 +22,14 @@ angular
     @userIsKpiEnabled = ->
       _self.config.userData.kpi_enabled
 
+#====================================
+# Callbacks
+#====================================
+    @callbacks = {}
+
+    @callbacks.organizationChanged = $q.defer()
+    @organizationChanged = ->
+      return _self.callbacks.organizationChanged.promise
 
 # ====================================
 # Load and initialize
@@ -83,10 +91,12 @@ angular
       if _self.config.organizations? && _self.config.organizations.length > 0
         _self.config.currentOrganization = _self.config.organizations[0]
         $log.info("Impac! - MainSvc: first organization set as current by default")
+        _self.callbacks.organizationChanged.notify(_self.config.currentOrganization)
         return true
       else
-        _self.config.currentOrganization = {}
         $log.error("Impac! - MainSvc: cannot set default current organization")
+        _self.config.currentOrganization = {}
+        _self.callbacks.organizationChanged.notify(false)
         return {error: {code: 400, message: "cannot set default current organization"}}
 
     @setCurrentOrganization = (id=null) ->
@@ -95,6 +105,7 @@ angular
 
         if !_.isEmpty(fetchedOrg)
           _self.config.currentOrganization = fetchedOrg
+          _self.callbacks.organizationChanged.notify(_self.config.currentOrganization)
           return true
         else
           $log.error("Impac! - MainSvc: organization: #{id} not found in organizations list")
