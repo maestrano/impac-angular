@@ -111,25 +111,38 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       #====================================
       # Directive Load and Destroy
       #====================================
-      ImpacMainSvc.load().then(
-        (config) ->
-          scope.orgUID = config.currentOrganization.uid
+      # Initialise a poller with the latest current org.
+      initPoller = ->
+        destroyPoller()
+        ImpacMainSvc.load().then(
+          (config) ->
+            scope.orgUID = config.currentOrganization.uid
 
-          # Returns:
-          # -----------------------------
-          # data:
-          #   connectors[]:
-          #     name (String)
-          #     status ('SUCCESS' | 'RUNNING' | 'FAILED' | 'DISCONNECTED')
-          #     last_sync_date (DateTime)
-          #   is_syncing (Bool)
-          # -----------------------------
-          scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 10000, smart: true})
-          scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
+            # Returns:
+            # -----------------------------
+            # data:
+            #   connectors[]:
+            #     name (String)
+            #     status ('SUCCESS' | 'RUNNING' | 'FAILED' | 'DISCONNECTED')
+            #     last_sync_date (DateTime)
+            #   is_syncing (Bool)
+            # -----------------------------
+            scope.syncingPoller = poller.get(ImpacRoutes.organizations.appInstancesSync(scope.orgUID), {delay: 10000, smart: true})
+            scope.syncingPoller.promise.then(null, null, (response) -> processAppInstancesSync(response.data) )
+        )
+      # Stops & removes current poller instance.
+      destroyPoller = ->
+        scope.syncingPoller.stop() && scope.syncingPoller.remove() if scope.syncingPoller
+
+
+      initPoller()
+
+      # Re-init poller on organization change.
+      ImpacMainSvc.organizationChanged().then(null, null, (organization)->
+        initPoller() if organization
       )
 
-
       # Removes the poller when the directive is destroyed (eg: when we switch from the impac dashboard to another js route)
-      scope.$on("$destroy", -> (scope.syncingPoller.stop() && scope.syncingPoller.remove()) if scope.syncingPoller )
+      scope.$on("$destroy", destroyPoller)
   }
 )
