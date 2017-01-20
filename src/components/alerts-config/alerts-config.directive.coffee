@@ -33,7 +33,7 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       )
 
       $scope.save = (alerts) ->
-        $scope.alerts.email.recipients = $scope.members.map( (recipient) -> recipient.id )
+        $scope.alerts.email.recipients = $scope.members
         ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
         $scope.modal.close()
         $scope.afterSaveCallback() if $scope.afterSaveCallback
