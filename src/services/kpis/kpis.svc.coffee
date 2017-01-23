@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming) ->
 
     _self = @
 
@@ -36,6 +36,7 @@ angular
       deferred.promise
 
     @getKpisDateRange = ->
+      return $q.reject('Kpis dates picker disabled') unless ImpacTheming.get().dhbKpisConfig.enableDatesPicker
       _self.load().then(->
         kpisDateRange = _self.getCurrentDashboard().metadata.kpis_hist_parameters
         return kpisDateRange unless _.isEmpty(kpisDateRange) || !_.isObject(kpisDateRange)
@@ -43,7 +44,7 @@ angular
           fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month) || 6
           fyDates = ImpacUtilities.financialYearDates(fyEndMonth)
           {
-            from: moment(fyDates.end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD'),
+            from: fyDates.start,
             to: moment().format('YYYY-MM-DD'),
             keepToday: true
           }
@@ -238,55 +239,44 @@ angular
           params.extra_params = kpi.extra_params if kpi.extra_params?
           params.extra_watchables = kpi.extra_watchables if kpi.extra_watchables?
 
-          # Retrieve datesRange from dashboard or default.
-          _self.getKpisDateRange().then((dates)->
+          switch kpi.source
+            when 'impac'
+              host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
+            when 'local'
+              host = ImpacRoutes.kpis.local()
 
-            angular.extend params.metadata, {
-              hist_parameters:
-                from: dates.from
-                to: dates.to
-                period: 'MONTHLY'
-            }
+          url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-            switch kpi.source
-              when 'impac'
-                host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
-              when 'local'
-                host = ImpacRoutes.kpis.local()
+          return $http.get(url).then(
+            (response) ->
+              # When no target has been defined
+              if response.data.error && response.data.error.code == 422
+                # TODO: this can be removed when Impac! API returns layout config for draft
+                # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
+                # considered in draft mode.
+                kpi.isDraft = true
+                return false
+              else
+                kpiResp = response.data.kpi
+                # Calculation
+                # angular.extend kpi.data, kpiResp.calculation
+                kpi.data = kpiResp.calculation
 
-            url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
+                # Configuration
+                # When the kpi initial configuration is partial, we update it with what the API has picked by default
+                updatedConfig = kpiResp.configuration || {}
+                missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+                angular.extend kpi, _.pick(updatedConfig, missingParams)
 
-            return $http.get(url).then(
-              (response) ->
-                # When no target has been defined
-                if response.data.error && response.data.error.code == 422
-                  # TODO: this can be removed when Impac! API returns layout config for draft
-                  # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
-                  # considered in draft mode.
-                  kpi.isDraft = true
-                  return false
-                else
-                  kpiResp = response.data.kpi
-                  # Calculation
-                  # angular.extend kpi.data, kpiResp.calculation
-                  kpi.data = kpiResp.calculation
+                # Layout
+                # angular.extend kpi.layout, kpiResp.layout
+                kpi.layout = kpiResp.layout
 
-                  # Configuration
-                  # When the kpi initial configuration is partial, we update it with what the API has picked by default
-                  updatedConfig = kpiResp.configuration || {}
-                  missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-                  angular.extend kpi, _.pick(updatedConfig, missingParams)
+                return kpi
 
-                  # Layout
-                  # angular.extend kpi.layout, kpiResp.layout
-                  kpi.layout = kpiResp.layout
-
-                  return kpi
-
-              (err) ->
-                $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
-                $q.reject(err)
-            )
+            (err) ->
+              $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
+              $q.reject(err)
           )
         ->
           $log.error 'Impac! - KpisSvc: Service not initialized'
@@ -304,21 +294,27 @@ angular
               currency: _self.getCurrentDashboard().currency
           }
 
-          angular.extend params, opts
+          # Retrieve datesRange from dashboard or default.
+          _self.getKpisDateRange().then( (dates) ->
+            params.metadata = {} unless params.metadata?
+            params.metadata.hist_parameters = dates
+          ).finally( ->
+            angular.extend params, opts
 
-          url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
+            url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
-          $http.post(url, {kpi: params}).then(
-            (success) ->
-              # Alerts can be created by default on kpi#create (widget.kpis), check for
-              # new alerts and register them with Pusher.
-              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-              kpi = success.data
-              _self.buildKpiWatchables(kpi)
-              kpi
-            (err) ->
-              $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
-              $q.reject(err)
+            $http.post(url, {kpi: params}).then(
+              (success) ->
+                # Alerts can be created by default on kpi#create (widget.kpis), check for
+                # new alerts and register them with Pusher.
+                ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+                kpi = success.data
+                _self.buildKpiWatchables(kpi)
+                kpi
+              (err) ->
+                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                $q.reject(err)
+            )
           )
         ->
           $q.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
