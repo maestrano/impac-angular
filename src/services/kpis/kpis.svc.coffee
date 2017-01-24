@@ -284,6 +284,7 @@ angular
       ).finally ( -> kpi.isLoading = false )
 
     @create = (source, endpoint, elementWatched, opts={}) ->
+      deferred = $q.defer()
       _self.load().then(
         ->
           params = {
@@ -310,15 +311,16 @@ angular
                 ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
                 kpi = success.data
                 _self.buildKpiWatchables(kpi)
-                kpi
+                deferred.resolve(kpi)
               (err) ->
                 $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
-                $q.reject(err)
+                deferred.reject(err)
             )
           )
         ->
-          $q.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
+          deferred.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
       )
+      return deferred.promise
 
     @update = (kpi, params) ->
       kpi.isLoading = true
