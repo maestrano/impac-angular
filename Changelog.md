@@ -14,6 +14,7 @@
 
 
 #### Fixes
+- [IMPAC-338] KPIs with extra_param do not update kpi "current value" on selection in the edit mode pane
 
 
 -------------------------------------------------------------
