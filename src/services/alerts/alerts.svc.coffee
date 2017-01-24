@@ -54,6 +54,10 @@
     @create = (kpiId, params)->
       $http.post(ImpacRoutes.kpis.alerts.create(kpiId), params)
 
+    @update = (alertId, params)->
+      debugger;
+      $http.put(ImpacRoutes.kpis.alerts.update(alertId), params)
+
     @delete = (alertId)->
       $http.delete(ImpacRoutes.kpis.alerts.delete(alertId))
 
