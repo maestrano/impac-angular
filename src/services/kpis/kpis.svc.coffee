@@ -385,7 +385,9 @@ angular
       promises = []
 
       for alert in alertsToCreate
-        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']), recipients: alert.recipients })
+        alertHash = { alert: _.pick(alert, ['service']) }
+        alertHash.alert.recipients = alert.recipients if alert.service == 'email'
+        promises.push ImpacAlerts.create(kpi.id, alertHash)
 
       for alert in alertsToDelete
         promises.push ImpacAlerts.delete(alert.id)
