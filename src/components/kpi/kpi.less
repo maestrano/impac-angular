@@ -196,7 +196,22 @@
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
   }
 
-  button.kpi-remove.im-fab.im-warn {
+  button.kpi-info-in-settings.im-fab.im-warn {
+    position: absolute;
+    top: -12px;
+    right: 13px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
+      background-color: @mblue;
+    }
+  }
+
+  button.kpi-remove.im-fab.im-warn
+   {
     position: absolute;
     top: -12px;
     right: -11px;
@@ -206,6 +221,21 @@
     background: @kpi-settings-remove-background;
     &:hover {
       background: @kpi-settings-remove-background-hover;
+    }
+  }
+
+  button.kpi-info.im-fab.im-warn
+   {
+    position: absolute;
+    top: -12px;
+    right: -11px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
+      background-color: @mblue;
     }
   }
 
