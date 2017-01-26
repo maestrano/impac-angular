@@ -9,16 +9,36 @@
 
     <ul class="list-group">
 
-      <li class="list-group-item" ng-repeat="alert in alerts" ng-class="{active: alert.active}" ng-click="toggleAlert(alert)">
-        <i class="fa" ng-class="alert.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
-        {{alert.label}}
+      <li class="list-group-item" ng-repeat="alert in alerts" ng-class="{active: alert.active}">
+        <div ng-click="toggleAlert(alert)">
+          <i class="fa" ng-class="alert.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
+          {{alert.label}}
+        </div>
+
+        <ul class="list-group recipients-list" ng-show="showRecipientList(alert)">
+
+          <li class="list-group-item" ng-repeat="member in members" ng-show="member.active" ng-click="toggleRecipient(member)">
+            {{member.email}}
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </li>
+
+        </ul>
+
+        <input class="recipient-search" placeholder="Email" ng-show="showRecipientList(alert)" ng-model="search.text" ng-keypress="onKeyPress($event)"/>
+
+        <ul class="list-group recipients-list available" ng-show="showRecipientList(alert)">
+
+          <li class="list-group-item" ng-repeat="member in members | filter:search.text" ng-hide="member.active" ng-click="toggleRecipient(member)">
+            {{member.email}}
+          </li>
+
+        </ul>
       </li>
 
-      <li class="list-group-item" ng-repeat="member in members" ng-show="alerts.email.active" ng-class="{active: member.active}" ng-click="toggleRecipient(member)">
-        <i class="fa" ng-class="member.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
-        {{member.email}}
-      </li>
     </ul>
+
   </div>
 
   <div class="modal-footer text-right">
