@@ -292,11 +292,7 @@ describe('<> ImpacDashboardsSvc', function () {
       svc.setWidgetsTemplates(array);
       expect(svc.config.widgetsTemplates).toEqual(array);
     });
-
-    describe('when the widgetTemplates object is already defined', function() {
-      sharedBehaviorForKeepOriginal(array);
-    });
-
+    
     describe('when :array is not defined', function() {
       sharedBehaviorForKeepOriginal();
     });

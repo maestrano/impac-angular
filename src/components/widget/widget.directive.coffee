@@ -91,7 +91,7 @@ module.directive('impacWidget', ($templateCache) ->
 
       #=======================================
       # DYNAMIC WIDGET TEMPLATE LOADING
-      # widget category and metadata.template data sent from Maestrano db.
+      # widget template retrieved from Impac! API
       #=======================================
       scope.widgetContentTemplate = ->
         # impac-angular component template name
@@ -100,7 +100,7 @@ module.directive('impacWidget', ($templateCache) ->
 
         # backward compatibility for old widgets
         else
-          splittedPath = angular.copy(scope.widget.category).split('/')
+          splittedPath = angular.copy(scope.widget.endpoint).split('/')
           # remove any number of path extensions beyond length > 2. (eg: accounting_values is a template used by several different widgets)
           splittedPath.length = 2
           scope.templateName = splittedPath.join("-").replace(/_/g, '-')

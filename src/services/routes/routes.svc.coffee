@@ -93,11 +93,11 @@ angular
           else
             "#{defaults.mnoHub}/impac/widgets"
 
-        show: (dashboard_id, id) ->
+        show: (endpoint, dashboard_id, id) ->
           if defaults.widgets.show
-            defaults.widgets.show.replace(':dashboard_id', dashboard_id).replace(':id', id)
+            defaults.widgets.show.replace(':endpoint', endpoint).replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{defaults.impacApi}/v1/get_widget"
+            "#{defaults.impacApi}/v1/widgets/#{endpoint}"
 
         create: (dashboard_id) ->
           if defaults.widgets.create
@@ -118,6 +118,8 @@ angular
             "#{service.widgets.index(dashboard_id)}/#{id}"
 
         suggest: -> defaults.widgets.suggest
+
+        templates: -> "#{defaults.impacApi}/v1/widgets"
 
       service.kpis =
         index: (dashboard_id) ->

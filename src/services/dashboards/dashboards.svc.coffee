@@ -110,6 +110,7 @@ angular
             (success)->
               orgId = success.currentOrganization.id
 
+              # Retrieve dashboards
               $http.get(ImpacRoutes.dashboards.index(orgId)).then(
                 (dashboards)->
                   _self.setDashboards(dashboards.data).then(->
@@ -117,19 +118,32 @@ angular
                     deferred.resolve(_self.config)
                     $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
 
-                  ).finally( -> _self.loadLocked=false )
+                  ).finally( -> _self.loadLocked = false )
                 (error)->
                   $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
                   _self.loadLocked=false
                   deferred.reject(error)
               )
+
+              # Retrieve widgets templates
+              $http.get(ImpacRoutes.widgets.templates()).then(
+                (response) ->
+                  _self.setWidgetsTemplates(response.data.widgets)
+                  _self.loadLocked = false
+
+                (error) ->
+                  $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", ImpacRoutes.widgets.templates())
+                  _self.loadLocked = false
+                  deferred.reject(error)
+              )
+
             (error)->
               $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
-              _self.loadLocked=false
+              _self.loadLocked = false
               deferred.reject(error)
           )
         else
-          _self.loadLocked=false
+          _self.loadLocked = false
           deferred.resolve(_self.config)
       else
         $log.warn("Impac! - DashboardsSvc: Load locked. Trying again in 1s")
@@ -147,7 +161,6 @@ angular
       if _self.config.dashboards? && _self.config.dashboards.length > 0
         $log.info("Impac! - DashboardsSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
-        _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
         _self.initializeActiveTabs()
         _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
         return true
@@ -163,7 +176,6 @@ angular
 
         if !_.isEmpty(fetchedDhb)
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
-          _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
           _self.initializeActiveTabs()
           _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
           return true
@@ -195,16 +207,19 @@ angular
       )
 
 
-    @setWidgetsTemplates = (templatesArray) ->
-      # Will be filled only once
-      return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
+    @setWidgetsTemplates = (srcTemplates) ->
+      return false if _.isEmpty(srcTemplates)
+      srcTemplates = ImpacDeveloper.stubWidgetsTemplates(srcTemplates) if ImpacDeveloper.isEnabled()
 
-      templatesArray = ImpacDeveloper.stubWidgetsTemplates(templatesArray) if ImpacDeveloper.isEnabled()
+      # Shortcut reference
+      dstTemplates = _self.config.widgetsTemplates
 
-      for template in templatesArray
-        _self.config.widgetsTemplates.push template
+      # Clears the existing templates list without removing the reference
+      dstTemplates.length = 0
+      for template in srcTemplates
+        dstTemplates.push template
 
-      return true
+      return dstTemplates
 
     @initializeActiveTabs = ->
       for dhb in _self.config.dashboards

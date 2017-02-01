@@ -5,8 +5,8 @@ describe('<> ImpacDeveloper Provider', function () {
   var $rootScope, ImpacDeveloper, provider = {};
 
   var stubbedTemplates = [
-    {name: 'widget template 1', path: 'foo/engine'},
-    {name: 'widget template 2', path: 'foo/engine', metadata: { template: 'awesome/template' }}
+    {name: 'widget template 1', endpoint: 'foo/engine'},
+    {name: 'widget template 2', endpoint: 'foo/engine', metadata: { template: 'awesome/template' }}
   ];
 
   function configureProvider(options) {
@@ -76,14 +76,14 @@ describe('<> ImpacDeveloper Provider', function () {
     });
 
     it('returns the correct templates', function () {
-      expect(ImpacDeveloper.findTemplate({ path: 'foo/engine' })).toEqual(stubbedTemplates[0]);
-      expect(ImpacDeveloper.findTemplate({ path: 'foo/engine', metadata: { template: 'awesome/template', some: 'opts' } })).toEqual(stubbedTemplates[1]);
-      expect(ImpacDeveloper.findTemplate({ name: 'widget template 1', path: 'foo/engine'}, ['path'])).toEqual(stubbedTemplates[0]);
+      expect(ImpacDeveloper.findTemplate({ endpoint: 'foo/engine' })).toEqual(stubbedTemplates[0]);
+      expect(ImpacDeveloper.findTemplate({ endpoint: 'foo/engine', metadata: { template: 'awesome/template', some: 'opts' } })).toEqual(stubbedTemplates[1]);
+      expect(ImpacDeveloper.findTemplate({ name: 'widget template 1', endpoint: 'foo/engine'}, ['path'])).toEqual(stubbedTemplates[0]);
     });
   });
 
   describe('service.isWidgetStubbed', function () {
-    var widget = { name: 'widget 1', widget_category: 'foo/engine', width: 3 };
+    var widget = { name: 'widget 1', endpoint: 'foo/engine', width: 3 };
 
     beforeEach(function () {
       configureProvider({widgetsTemplates: stubbedTemplates});
@@ -98,7 +98,7 @@ describe('<> ImpacDeveloper Provider', function () {
 
   describe('service.createWidgetStub', function () {
     var dashboard = { data_sources: [{uid: 'org-a123'}, {uid: 'org-b456'}], currency: 'AUD' };
-    var widget = { widget_category: 'foo/engine', metadata: { template: 'awesome/template' } };
+    var widget = { endpoint: 'foo/engine', metadata: { template: 'awesome/template' } };
     beforeEach(function () {
       configureProvider({widgetsTemplates: stubbedTemplates});
       spyOn(ImpacDeveloper, 'findTemplate').and.returnValue(stubbedTemplates[1]);
@@ -112,7 +112,7 @@ describe('<> ImpacDeveloper Provider', function () {
       $rootScope.$apply();
       expect(ImpacDeveloper.findTemplate).toHaveBeenCalledWith(widget);
       expect(response.data.name).toEqual(stubbedTemplates[1].name);
-      expect(response.data.category).toEqual(stubbedTemplates[1].path);
+      expect(response.data.endpoint).toEqual(stubbedTemplates[1].endpoint);
       expect(response.data.metadata).toEqual({
         template: stubbedTemplates[1].metadata.template,
         organization_ids: ['org-a123', 'org-b456'],
@@ -122,7 +122,7 @@ describe('<> ImpacDeveloper Provider', function () {
   });
 
   describe('service.updateWidgetStub', function () {
-    var widget = { name: 'widget template 2', category: 'foo/engine', metadata: { template: 'awesome/template' } };
+    var widget = { name: 'widget template 2', endpoint: 'foo/engine', metadata: { template: 'awesome/template' } };
     var dataToUpdate = { 'name': 'new widget name', metadata: { new_setting: 'setting' } };
     beforeEach(function () {
       configureProvider({widgetsTemplates: stubbedTemplates});

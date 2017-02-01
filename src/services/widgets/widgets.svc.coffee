@@ -9,7 +9,6 @@ angular
     # Simply forward the getter for objects that remain stored in other services
     @getSsoSessionId = ImpacMainSvc.getSsoSessionId
 
-
     # ====================================
     # Register Listeners
     # ====================================
@@ -152,16 +151,18 @@ angular
             deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
 
           else
-            data =
+            params =
               owner: widget.owner
               sso_session: _self.getSsoSessionId()
               metadata: widget.metadata
-              engine: widget.category
-            data.refresh_cache = true if refreshCache
+
+            params.refresh_cache = true if refreshCache
 
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+            route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
+            url = [route, decodeURIComponent( $.param(params) )].join('?')
 
-            $http.post(ImpacRoutes.widgets.show(dashboard.id, widget.id), data).then(
+            $http.get(url).then(
               (success) ->
                 # Pushes new content to widget
                 content = success.data.content || {}
@@ -199,19 +200,18 @@ angular
       return deferred.promise
 
 
-    @create = (opts) ->
+    @create = (params) ->
       deferred = $q.defer()
 
       _self.load().then(
         ->
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-          data = { widget: opts }
 
           # form a http request or a stubbed request which returns a promise.
-          if ImpacDeveloper.isWidgetStubbed(data.widget)
-            request = ImpacDeveloper.createWidgetStub(data.widget, dashboard)
+          if ImpacDeveloper.isWidgetStubbed(params)
+            request = ImpacDeveloper.createWidgetStub(params, dashboard)
           else
-            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), data)
+            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), params)
 
           request.then(
             (success) ->
