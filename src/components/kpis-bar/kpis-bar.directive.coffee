@@ -76,10 +76,13 @@ angular
 
         initDatesPicker = ->
           $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
-            ImpacKpisSvc.getKpisDateRange().then((dates)->
-              $scope.kpisDateRange.from = dates.from
-              $scope.kpisDateRange.to = dates.to
-              $scope.kpisDateRange.keepToday = dates.keepToday
+            ImpacKpisSvc.getKpisDateRange().then(
+              (dates)->
+                $scope.kpisDateRange.from = dates.from
+                $scope.kpisDateRange.to = dates.to
+                $scope.kpisDateRange.keepToday = dates.keepToday
+              ->
+                $scope.hideDatesPicker = true
             ).finally(->
               $scope.kpiDatesDeferred.resolve()
               settingDatesPicker.initialize()
@@ -157,6 +160,9 @@ angular
 
         $scope.hasKpiAvailability = ->
           $scope.availableKpis.list.length
+
+        $scope.showDatesPicker = ->
+          $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
 
         # Private methods
         # -------------------------
