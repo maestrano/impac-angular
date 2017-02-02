@@ -43,9 +43,8 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       )
 
       $scope.save = (alerts) ->
-        recipients = $scope.members.filter((member) -> member.active)
-        $scope.alerts.email.recipient_ids = recipients.map((recipient) -> recipient.id)
-        _.forEach(recipients, (recipient) -> $scope.toggleRecipient(recipient)) if !$scope.alerts.email.active
+        $scope.alerts.email.recipients = $scope.members.filter((member) -> member.active)
+        _.forEach($scope.alerts.email.recipients, (recipient) -> $scope.toggleRecipient(recipient)) if !$scope.alerts.email.active
         ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
         $scope.modal.close()
         $scope.afterSaveCallback() if $scope.afterSaveCallback

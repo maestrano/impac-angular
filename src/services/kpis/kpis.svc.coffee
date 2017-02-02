@@ -387,7 +387,7 @@ angular
         existingAlert = _.find(kpi.alerts, (kpi_alert) -> kpi_alert.service == alert.service)
         return false if alert.service == "inapp" || !existingAlert
         existingRecipientIds = existingAlert.recipients.map((recipient) -> recipient.id).sort()
-        updatedRecipientIds = alert.recipient_ids.sort()
+        updatedRecipientIds = alert.recipients.map((recipient) -> recipient.id).sort()
         recipientChange = false
         recipientChange = true if updatedRecipientIds.length != existingRecipientIds.length || "#{existingRecipientIds}" != "#{updatedRecipientIds}"
         alert.id = existingAlert.id
@@ -398,14 +398,14 @@ angular
 
       for alert in alertsToCreate
         alertHash = { alert: _.pick(alert, ['service']) }
-        alertHash.alert.recipient_ids = alert.recipient_ids if alert.service == 'email'
+        alertHash.alert.recipients = alert.recipients if alert.service == 'email'
         promises.push ImpacAlerts.create(kpi.id, alertHash)
 
       for alert in alertsToDelete
         promises.push ImpacAlerts.delete(alert.id)
 
       for alert in alertsToUpdate
-        promises.push ImpacAlerts.update(alert.id, {alert: _.pick(alert, ['service', 'recipient_ids'])})
+        promises.push ImpacAlerts.update(alert.id, {alert: _.pick(alert, ['service', 'recipients'])})
 
       return $q.all(promises).then(
         (success) ->
