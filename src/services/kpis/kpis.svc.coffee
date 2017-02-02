@@ -388,10 +388,10 @@ angular
         return false if alert.service == "inapp" || !existingAlert
         existingRecipientIds = existingAlert.recipients.map((recipient) -> recipient.id).sort()
         updatedRecipientIds = alert.recipient_ids.sort()
-        recipient_change = false
-        recipient_change = true if recipient_ids.length != existingRecipientIds.length || "#{existingRecipientIds}" != "#{updatedRecipientIds}"
+        recipientChange = false
+        recipientChange = true if updatedRecipientIds.length != existingRecipientIds.length || "#{existingRecipientIds}" != "#{updatedRecipientIds}"
         alert.id = existingAlert.id
-        alert.active && recipient_change
+        alert.active && recipientChange
       )
 
       promises = []
