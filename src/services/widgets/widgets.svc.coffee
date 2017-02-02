@@ -151,18 +151,17 @@ angular
             deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
 
           else
-            params =
-              owner: widget.owner
-              sso_session: _self.getSsoSessionId()
-              metadata: widget.metadata
-
+            params = { metadata: widget.metadata }
             params.refresh_cache = true if refreshCache
 
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
             route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
             url = [route, decodeURIComponent( $.param(params) )].join('?')
 
-            $http.get(url).then(
+            authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
+            config = { headers: {'Authorization': authHeader } }
+
+            $http.get(url, config).then(
               (success) ->
                 # Pushes new content to widget
                 content = success.data.content || {}
