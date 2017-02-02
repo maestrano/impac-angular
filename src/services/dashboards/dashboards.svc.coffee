@@ -126,7 +126,14 @@ angular
               )
 
               # Retrieve widgets templates
-              $http.get(ImpacRoutes.widgets.templates()).then(
+              url = 
+                if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear
+                  fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+                  "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
+                else
+                  ImpacRoutes.widgets.templates()
+
+              $http.get(url).then(
                 (response) ->
                   _self.setWidgetsTemplates(response.data.widgets)
                   _self.loadLocked = false
