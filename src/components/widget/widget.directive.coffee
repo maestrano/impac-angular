@@ -67,7 +67,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     ImpacDashboardsSvc.tick()
 )
 
-module.directive('impacWidget', ($templateCache) ->
+module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
   return {
     restrict: 'A',
     scope: {
@@ -89,31 +89,8 @@ module.directive('impacWidget', ($templateCache) ->
       scope.widget.hasDeleteAbility = true
       # <--
 
-      #=======================================
-      # DYNAMIC WIDGET TEMPLATE LOADING
-      # widget template retrieved from Impac! API
-      #=======================================
-      scope.widgetContentTemplate = ->
-        # impac-angular component template name
-        if scope.widget.metadata && scope.widget.metadata.template
-          scope.templateName = scope.widget.metadata.template.replace(/\/|_/g, '-')
-
-        # backward compatibility for old widgets
-        else
-          splittedPath = angular.copy(scope.widget.endpoint).split('/')
-          # remove any number of path extensions beyond length > 2. (eg: accounting_values is a template used by several different widgets)
-          splittedPath.length = 2
-          scope.templateName = splittedPath.join("-").replace(/_/g, '-')
-
-        # url for retreiving widget templates from angular $templateCache service.
-        templatePath = 'widgets/' + scope.templateName + '.tmpl.html'
-
-        if scope.isAccessibility
-          if $templateCache.get('widgets/' + scope.templateName + '.accessible.tmpl.html')
-            templatePath = 'widgets/' + scope.templateName + '.accessible.tmpl.html'
-          scope.templateName = scope.templateName + ' accessible'
-
-        return templatePath
+      scope.cssClass = ImpacUtilities.fetchWidgetCssClass(scope.widget)
+      scope.templatePath = ImpacUtilities.fetchWidgetTemplatePath(scope.widget)
 
       scope.showInfoPanel = false
       scope.isInfoPanelDisplayed = ->

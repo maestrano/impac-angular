@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -206,7 +206,6 @@ angular
           $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
 
-
     @setWidgetsTemplates = (srcTemplates) ->
       return false if _.isEmpty(srcTemplates)
       srcTemplates = ImpacDeveloper.stubWidgetsTemplates(srcTemplates) if ImpacDeveloper.isEnabled()
@@ -216,8 +215,9 @@ angular
 
       # Clears the existing templates list without removing the reference
       dstTemplates.length = 0
+      # Builds the templates list, omitting the widgets that aren't implemented in the library
       for template in srcTemplates
-        dstTemplates.push template
+        dstTemplates.push template if ImpacUtilities.fetchWidgetTemplatePath(template)
 
       return dstTemplates
 
