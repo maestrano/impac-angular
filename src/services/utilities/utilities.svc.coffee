@@ -140,7 +140,7 @@ angular
 
     # Retrieves the widget content css class name based on metadata or endpoint
     @fetchWidgetCssClass = (widget) ->
-      return false unless endpoint = (widget.metadata.template || widget.endpoint)
+      return false unless endpoint = ((widget.metadata && widget.metadata.template) || widget.endpoint)
       # 'accounts/accounting_values/ebitda' => ['accounts','accounting_values']
       templateNameArray = endpoint.split('/').slice(0,2)
       # ['accounts','accounting_values'] => 'accounts-accounting-values'

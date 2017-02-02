@@ -278,7 +278,7 @@ describe('<> ImpacDashboardsSvc', function () {
   });
 
   describe('#setWidgetsTemplates(:array)', function() {
-    var array = ['template1', 'template2'];
+    var array = [{ endpoint: 'accounts/balance' }, 'template1', 'template2'];
 
     function sharedBehaviorForKeepOriginal(anArray) {
       it('does not change the original widgetTemplates object', function() {
@@ -288,9 +288,9 @@ describe('<> ImpacDashboardsSvc', function () {
       });
     };
 
-    it('saves the templates array in the service', function() {
+    it('saves the implemented widgets templates in the service', function() {
       svc.setWidgetsTemplates(array);
-      expect(svc.config.widgetsTemplates).toEqual(array);
+      expect(svc.config.widgetsTemplates).toEqual([{ endpoint: 'accounts/balance' }]);
     });
     
     describe('when :array is not defined', function() {
@@ -298,7 +298,7 @@ describe('<> ImpacDashboardsSvc', function () {
     });
 
     describe('when ImpacDeveloper is enabled', function () {
-      var stubbedWidgetTemplate = ['template 3']
+      var stubbedWidgetTemplate = [{ endpoint: 'accounts/comparison' }]
       beforeEach(function () {
         spyOn(ImpacDeveloper, 'isEnabled').and.callFake(function () {
           return true
@@ -309,7 +309,7 @@ describe('<> ImpacDashboardsSvc', function () {
       it('retrieves and applies stubbed widgets templates', function () {
         svc.setWidgetsTemplates(array);
         expect(ImpacDeveloper.stubWidgetsTemplates).toHaveBeenCalledWith(array);
-        expect(svc.config.widgetsTemplates).toEqual(array.concat(stubbedWidgetTemplate));
+        expect(svc.config.widgetsTemplates).toEqual([{ endpoint: 'accounts/balance' }].concat(stubbedWidgetTemplate));
       });
     });
   });
