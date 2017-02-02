@@ -10,14 +10,14 @@
     <ul class="list-group">
 
       <li class="list-group-item" ng-repeat="alert in alerts" ng-class="{active: alert.active}">
-        <div ng-click="toggleAlert(alert)">
+        <div class="alert-toggle" ng-click="toggleAlert(alert)">
           <i class="fa" ng-class="alert.active ? 'fa-toggle-on' : 'fa-toggle-off'" />
           {{alert.label}}
         </div>
 
         <ul class="list-group recipients-list" ng-show="showRecipientList(alert)">
 
-          <li class="list-group-item" ng-repeat="member in members" ng-show="member.active" ng-click="toggleRecipient(member)">
+          <li class="list-group-item" ng-repeat="member in members track by member.id" ng-if="member.active" ng-click="toggleRecipient(member)">
             {{member.email}}
             <button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -26,11 +26,11 @@
 
         </ul>
 
-        <input class="recipient-search" placeholder="Email" ng-show="showRecipientList(alert)" ng-model="search.text" ng-keypress="onKeyPress($event)"/>
+        <input class="recipient-search" placeholder="Add Recipients By Member Email" ng-show="showRecipientList(alert)" ng-model="recipientSearch.text" ng-keydown="onAddRecipientsKeyPress($event)" ng-focus="onRecipientSearchFocus()"/>
 
-        <ul class="list-group recipients-list available" ng-show="showRecipientList(alert)">
+        <ul class="list-group recipients-list available" ng-show="showAvailableRecipients(alert)">
 
-          <li class="list-group-item" ng-repeat="member in members | filter:search.text" ng-hide="member.active" ng-click="toggleRecipient(member)">
+          <li class="list-group-item" ng-class="member == selectedMember ? 'active' : ''" ng-repeat="member in members | filter:recipientSearch.text as filteredMembers" ng-if="!member.active" ng-click="toggleRecipient(member)">
             {{member.email}}
           </li>
 

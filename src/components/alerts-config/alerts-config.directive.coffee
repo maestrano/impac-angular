@@ -16,7 +16,7 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $compile(alertsConfig.contents())(scope)
 
     controller: ($scope) ->
-      $scope.members = [{email: "example@maestrano.io"},{email: "example@maestrano.io"},{email: "example@maestrano.io"},{email: "example@maestrano.io"}]
+      $scope.members = []
 
       $scope.alerts = {
         inapp:
@@ -27,25 +27,25 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
           label: "By sending me an email to:"
       }
 
-      $scope.search = { text: "" }
+      $scope.recipientSearch = { text: "", focus: false }
 
       ImpacMainSvc.load().then(
         (config) ->
           $scope.members = config.currentOrgMembers
           #Sets current state of recipients for email alerts
-          email_alert = _.filter($scope.kpi.alerts, (alert) -> alert.service == 'email')[0]
-          if email_alert
-            email_recipients = email_alert.recipients.map((recipient) -> recipient.id)
-            for member in $scope.members
-              member.active = true if email_recipients.includes(member.id)
+          emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
+          if emailAlert
+            emailAlertRecipients = emailAlert.recipients.map((recipient) -> recipient.id)
+            _.forEach($scope.members, (member) -> member.active = true if emailAlertRecipients.includes(member.id))
           else
-            _.filter($scope.members, (member) -> member.email == config.userData.email)[0].active = true
+            defaultActiveMember = _.find($scope.members, (member) -> member.email == config.userData.email) || $scope.members[0]
+            defaultActiveMember.active = true if defaultActiveMember
       )
 
       $scope.save = (alerts) ->
-        members = $scope.members.filter((member) -> member.active)
-        $scope.alerts.email.recipient_ids = members.map((member) -> member.id)
-        members.forEach((member) -> $scope.toggleRecipient(member)) if !$scope.alerts.email.active
+        recipients = $scope.members.filter((member) -> member.active)
+        $scope.alerts.email.recipient_ids = recipients.map((recipient) -> recipient.id)
+        _.forEach(recipients, (recipient) -> $scope.toggleRecipient(recipient)) if !$scope.alerts.email.active
         ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
         $scope.modal.close()
         $scope.afterSaveCallback() if $scope.afterSaveCallback
@@ -53,8 +53,8 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $scope.toggleAlert = (alert) ->
         alert.active = !alert.active
 
-      $scope.toggleRecipient = (member) ->
-        member.active = !member.active if _.filter($scope.members, (member) -> member.active).length > 1 || !member.active
+      $scope.toggleRecipient = (recipient) ->
+        recipient.active = !recipient.active if !recipient.active || _.filter($scope.members, (recipient) -> recipient.active).length > 1
 
       $scope.translateTarget = (kpi) ->
         watchableTargets = kpi.targets[kpi.element_watched] if kpi.targets
@@ -87,12 +87,33 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $scope.showRecipientList = (alert) ->
         alert.active && alert.service == 'email'
 
-      $scope.onKeyPress = (event) ->
+      $scope.onAddRecipientsKeyPress = (event) ->
+        availableInactiveRecipients = _.filter(this.filteredMembers, (member) -> !member.active)
+        recipient = _.find(availableInactiveRecipients, (member) -> member.email == $scope.recipientSearch.text)
+        memberIndex = 0
         if event.which == 13
-          recipient = _.filter($scope.members, (member) -> member.email == $scope.search.text)[0]
-          if recipient && !recipient.active
+          if $scope.selectedMember
+            $scope.selectedMember.active = true
+            $scope.selectedMember = null
+          if recipient
             recipient.active = true
-            $scope.search.text = ""
+            $scope.recipientSearch.text = ""
+        else if event.which == 40 && availableInactiveRecipients.length > 0
+          memberIndex = _.indexOf(availableInactiveRecipients, $scope.selectedMember) + 1 if $scope.selectedMember
+          memberIndex = 0 unless memberIndex < availableInactiveRecipients.length
+          $scope.selectedMember = availableInactiveRecipients[memberIndex]
+        else if event.which == 38 && availableInactiveRecipients.length > 0
+          memberIndex = _.indexOf(availableInactiveRecipients, $scope.selectedMember) - 1 if $scope.selectedMember
+          memberIndex = availableInactiveRecipients.length - 1 if memberIndex < 0
+          $scope.selectedMember = availableInactiveRecipients[memberIndex]
+        else
+          $scope.selectedMember = null
+
+      $scope.onRecipientSearchFocus = -> $scope.recipientSearch.focus = true
+
+      $scope.showAvailableRecipients = (alert) ->
+        return false unless this.filteredMembers
+        $scope.showRecipientList(alert) && $scope.recipientSearch.focus && _.filter(this.filteredMembers, (member) -> !member.active).length > 0
 
   }
 )

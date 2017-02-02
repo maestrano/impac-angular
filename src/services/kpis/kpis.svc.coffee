@@ -384,15 +384,13 @@ angular
 
       # Update existing alerts that have been modified
       alertsToUpdate = _.filter(alerts, (alert) ->
-        active_alert = _.filter(kpi.alerts, (kpi_alert) -> kpi_alert.service == alert.service)[0]
-        return false if alert.service == "inapp" || !active_alert
-        active_ids = active_alert.recipients.map((recipient) -> recipient.id).sort() if active_alert
-        recipient_ids = alert.recipient_ids.sort()
+        existingAlert = _.find(kpi.alerts, (kpi_alert) -> kpi_alert.service == alert.service)
+        return false if alert.service == "inapp" || !existingAlert
+        existingRecipientIds = existingAlert.recipients.map((recipient) -> recipient.id).sort()
+        updatedRecipientIds = alert.recipient_ids.sort()
         recipient_change = false
-        recipient_change = true if recipient_ids.length != active_ids.length
-        for i in [0...recipient_ids.length]
-          recipient_change = true if recipient_ids[i] != active_ids[i]
-        alert.id = active_alert.id
+        recipient_change = true if recipient_ids.length != existingRecipientIds.length || "#{existingRecipientIds}" != "#{updatedRecipientIds}"
+        alert.id = existingAlert.id
         alert.active && recipient_change
       )
 
