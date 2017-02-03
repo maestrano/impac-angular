@@ -136,6 +136,19 @@
     }
   }
 
+  .popover {
+    max-width: 300px !important;
+    width: 300px !important;
+    height: 300px !important;
+  }
+  .kpi-info-panel {
+    height:240px;
+    width: 280px;
+    max-width: 280px;
+    max-height: 280px;
+    overflow-y:scroll;
+  }
+
   .kpi-edit {
 
     a { color: white; }
@@ -202,11 +215,11 @@
     right: 13px;
     width: 22px;
     height: 22px;
-    font-size: 13px;
+    font-size: 14px;
     background: @kpi-settings-remove-background;
     &:hover {
       background: @kpi-settings-remove-background-hover;
-      background-color: @mblue;
+      background-color: @kpi-settings-focus-color;
     }
   }
 
@@ -231,11 +244,11 @@
     right: -11px;
     width: 22px;
     height: 22px;
-    font-size: 13px;
+    font-size: 14px;
     background: @kpi-settings-remove-background;
     &:hover {
       background: @kpi-settings-remove-background-hover;
-      background-color: @mblue;
+      background-color: @kpi-settings-focus-color;
     }
   }
 
@@ -248,3 +261,4 @@
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
 }
+

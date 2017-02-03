@@ -158,6 +158,26 @@ angular
         $scope.hasKpiAvailability = ->
           $scope.availableKpis.list.length
 
+
+        # Information kpi
+        # ------------------------
+        $scope.dynamicPopover = {
+          templateUrl: $templateCache.get('kpis-bar/kpis-bar-info-panel.tmpl.html'),
+          title: 'Information'
+        }
+
+        $scope.mouseOn = false
+        $scope.hoverIn = ->
+          $scope.mouseOn = true
+
+        $scope.isOpen = false
+        $scope.hoverOut = ->
+          $scope.isOpen = false
+          $scope.mouseOn = false
+
+        $scope.isInfoShown = ->
+          ($scope.isEditing() && $scope.kpis.length > 0) || ((($scope.showContent && !$scope.availableKpis.kpiSelectorHidden) || $scope.kpis.length > 0 ) && $scope.mouseOn )
+
         # Private methods
         # -------------------------
         kpiIsEditing = ->

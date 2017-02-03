@@ -1,7 +1,6 @@
 <div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !isLoading()), 'editing': isEditing() }" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
   <div class="content-container" ng-hide="isLoading()">
     <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }"></div>
-    <div kpi-info-panel ng-show="isInfoPanelDisplayed()" on-close="toggleInfoPanel()" on-toggle-info-panel="toggleInfoPanel()" kpi="kpi"/>
     <div class="kpi-content" ng-show="showKpiContent()" ng-class="{ 'editing': isEditing() }">
       <!-- SHOW -->
       <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
@@ -15,12 +14,10 @@
           </span>
         </div>
         <!-- Info KPI -->
-        <div class="kpi-edit">
-          <div ng-show="isInfoShown()">
-            <button type="button" class='kpi-info im-fab im-warn' ng-click="toggleInfoPanel()">
+        <div ng-show="isInfoShown()">
+            <button type="button" class='kpi-info im-fab im-warn' popover-template="dynamicPopover.templateUrl" popover-is-open="isOpen" popover-title="{{dynamicPopover.title}}" popover-placement="right" >
               <i class="fa fa-info-circle" aria-hidden="true"></i>
             </button>
-          </div>
         </div>
       </div>
       <!-- EDIT -->
@@ -64,7 +61,7 @@
         </form>
 
         <!-- Info KPI -->
-        <button type="button" class="kpi-info-in-settings im-fab im-warn" ng-click="toggleInfoPanel()">
+        <button type="button" class="kpi-info-in-settings im-fab im-warn" popover-template="dynamicPopover.templateUrl" popover-is-open="isOpen" popover-title="{{dynamicPopover.title}}" popover-placement="right" popover-append-to-body="false">
           <i class="fa fa-info-circle" aria-hidden="true"></i>
         </button>
         <!-- Remove KPI -->

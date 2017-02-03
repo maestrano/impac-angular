@@ -148,6 +148,35 @@
       }
     }
   }
+
+  .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+  button.kpi-bar-info-panel-open.im-fab.im-warn
+   {
+    position: absolute;
+    font-size: 19px;
+    top: -20px;
+    left: -20px;
+    width: 35px;
+    height: 35px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
+      background-color: @mblue;
+    }
+  }
+  .popover {
+    max-width: 500px !important;
+    width: 500px !important;
+    height: 300px !important;
+  }
+  .kpi-bar-info-panel {
+    height:240px;
+    width: 480px;
+    max-width: 480px;
+    max-height: 280px;
+    overflow-y:scroll;
+  }
 }
 
 .analytics kpis-bar {
@@ -160,3 +189,4 @@
 }
 
 .analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
+

@@ -116,7 +116,7 @@ angular
 
         $scope.showKpiContent = ->
           # Newly added kpis start in edit mode (draft) and will have "no content".
-          !$scope.isLoading() && ($scope.hasContent() || $scope.kpi.isDraft) && !$scope.showInfoPanel
+          !$scope.isLoading() && ($scope.hasContent() || $scope.kpi.isDraft)
 
         $scope.isDataNotFound = ->
           !$scope.hasContent() && !$scope.kpi.isDraft
@@ -161,7 +161,7 @@ angular
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
         $scope.isEditing = ->
-          ($scope.kpi.isEditing || $scope.editMode) && !$scope.showInfoPanel
+          $scope.kpi.isEditing || $scope.editMode
 
         $scope.kpi.isInfoButtonShown = false
         $scope.isInfoShown = ->
@@ -169,16 +169,16 @@ angular
 
         $scope.hoverIn = ->
           $scope.kpi.isInfoButtonShown = true
-
+        
+        $scope.isOpen = false
         $scope.hoverOut = ->
+          $scope.isOpen = false
           $scope.kpi.isInfoButtonShown = false
 
-        $scope.showInfoPanel = false
-        $scope.isInfoPanelDisplayed = ->
-          $scope.showInfoPanel
-
-        $scope.toggleInfoPanel = ->
-          $scope.showInfoPanel = !$scope.showInfoPanel
+        $scope.dynamicPopover = {
+          templateUrl: $templateCache.get('kpi/kpi-info-panel.tmpl.html'),
+          title: 'Information'
+        }
 
         $scope.getFormTargetValueInput = (watchable, targetIndex)->
           $scope["kpi#{$scope.kpi.id}SettingsForm"]["#{watchable}TargetValue#{targetIndex}"]

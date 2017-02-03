@@ -30,7 +30,6 @@ angular.module('impac.components',
     'impac.components.dashboard-settings',
     'impac.components.kpis-bar',
     'impac.components.kpi',
-    'impac.components.kpi-common',
     'impac.components.chart',
     'impac.components.alerts-config',
     'impac.components.widget',
@@ -121,11 +120,6 @@ angular.module('impac.components.dashboard-settings',
     'impac.components.dashboard-settings.currency',
     'impac.components.dashboard-settings.pdf-mode',
     'impac.components.dashboard-settings.sync-apps'
-  ]
-);
-angular.module('impac.components.kpi-common',
-  [
-    'impac.components.kpi-common.kpi-info-panel'
   ]
 );
 angular.module('impac.components.widgets-common',

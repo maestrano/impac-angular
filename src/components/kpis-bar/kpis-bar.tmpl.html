@@ -1,5 +1,7 @@
-<div class="kpis" ng-class="{'empty': (kpis.length == 0), 'hidden-print': (kpis.length == 0)}">
-
+<div class="kpis" ng-class="{'empty': (kpis.length == 0), 'hidden-print': (kpis.length == 0)}" ng-mouseleave="hoverOut()" ng-mouseover="hoverIn()">
+  <button type="button" class='kpi-bar-info-panel-open im-fab im-warn' popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" popover-placement="right" popover-is-open="isOpen" ng-show="isInfoShown()">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+  </button>
   <div class="actions">
     <button type="button" class="toggle-show-content im-fab im-primary" ng-click="toggleShowContent()">
       <a href=""><i class="fa" ng-class="{ 'fa-chevron-up': showContent, 'fa-chevron-down': !showContent }"></i></a>
