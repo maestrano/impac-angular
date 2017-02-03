@@ -76,10 +76,13 @@ angular
 
         initDatesPicker = ->
           $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
-            ImpacKpisSvc.getKpisDateRange().then((dates)->
-              $scope.kpisDateRange.from = dates.from
-              $scope.kpisDateRange.to = dates.to
-              $scope.kpisDateRange.keepToday = dates.keepToday
+            ImpacKpisSvc.getKpisDateRange().then(
+              (dates)->
+                $scope.kpisDateRange.from = dates.from
+                $scope.kpisDateRange.to = dates.to
+                $scope.kpisDateRange.keepToday = dates.keepToday
+              ->
+                $scope.hideDatesPicker = true
             ).finally(->
               $scope.kpiDatesDeferred.resolve()
               settingDatesPicker.initialize()
@@ -159,6 +162,7 @@ angular
           $scope.availableKpis.list.length
 
 
+
         # Information kpi
         # ------------------------
         $scope.dynamicPopover = {
@@ -177,6 +181,10 @@ angular
 
         $scope.isInfoShown = ->
           ($scope.isEditing() && $scope.kpis.length > 0) || ((($scope.showContent && !$scope.availableKpis.kpiSelectorHidden) || $scope.kpis.length > 0 ) && $scope.mouseOn )
+
+        $scope.showDatesPicker = ->
+          $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
+
 
         # Private methods
         # -------------------------

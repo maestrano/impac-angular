@@ -14,6 +14,8 @@
 
 
 #### Fixes
+- [IMPAC-329] Better KPIs dates management: API driven defaults
+- [IMPAC-338] KPIs with extra_param do not update kpi "current value" on selection in the edit mode pane
 
 
 -------------------------------------------------------------

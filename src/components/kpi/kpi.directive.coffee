@@ -124,6 +124,9 @@ angular
         $scope.isLoading = ->
           $scope.kpi.isLoading
 
+        $scope.updateExtraParam = ->
+          $scope.updateSettings(true)
+
         $scope.updateSettings = (force)->
           params = {}
           touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]) && form.$dirty
