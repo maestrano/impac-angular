@@ -8,6 +8,15 @@
 
 ## Released
 
+### v1.5.0-rc3 | 2017 - Week 5
+
+#### Adds
+
+#### Fixes
+- [IMPAC-465] Fix dates picker positioning
+
+-------------------------------------------------------------
+
 ### v1.5.0-rc2 | 2017 - Week 3
 - add v1.4.7 changes
 
