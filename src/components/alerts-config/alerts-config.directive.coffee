@@ -32,18 +32,19 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       ImpacMainSvc.load().then(
         (config) ->
           $scope.members = config.currentOrgMembers
+          debugger;
           #Sets current state of recipients for email alerts
           emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
-          if emailAlert
+          if emailAlert && $scope.members
             emailAlertRecipients = emailAlert.recipients.map((recipient) -> recipient.id)
             _.forEach($scope.members, (member) -> member.active = true if emailAlertRecipients.includes(member.id))
-          else
+          else if $scope.members
             defaultActiveMember = _.find($scope.members, (member) -> member.email == config.userData.email) || $scope.members[0]
             defaultActiveMember.active = true if defaultActiveMember
       )
 
       $scope.save = (alerts) ->
-        $scope.alerts.email.recipients = $scope.members.filter((member) -> member.active)
+        $scope.alerts.email.recipients = $scope.members.filter((member) -> member.active) if $scope.members
         _.forEach($scope.alerts.email.recipients, (recipient) -> $scope.toggleRecipient(recipient)) if !$scope.alerts.email.active
         ImpacKpisSvc.saveAlerts($scope.kpi, alerts)
         $scope.modal.close()
