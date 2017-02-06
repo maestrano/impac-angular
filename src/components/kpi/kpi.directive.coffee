@@ -161,7 +161,10 @@ angular
           ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
 
         $scope.isTriggered = ->
-          $scope.kpi.layout? && $scope.kpi.layout.triggered
+          ($scope.kpi.layout? && $scope.kpi.layout.triggered)
+
+        $scope.showTriggeredState = ->
+          $scope.isTriggered() && !$scope.isEditing() && !$scope.isLoading()
 
         $scope.isEditing = ->
           $scope.kpi.isEditing || $scope.editMode
@@ -172,7 +175,7 @@ angular
 
         $scope.hoverIn = ->
           $scope.kpi.isInfoButtonShown = true
-        
+
         $scope.isOpen = false
         $scope.hoverOut = ->
           $scope.isOpen = false

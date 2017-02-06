@@ -1,13 +1,13 @@
-<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': (kpi.layout.triggered && !isEditing() && !isLoading()), 'editing': isEditing() }" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+<div class="kpi" ng-class="{ 'static': kpi.static, 'triggered': showTriggeredState(), 'editing': isEditing() }" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
   <div class="content-container" ng-hide="isLoading()">
-    <div class="top-line" ng-class="{ 'triggered': kpi.layout.triggered }"></div>
+    <div class="top-line" ng-class="{ 'triggered': showTriggeredState() }"></div>
     <div class="kpi-content" ng-show="showKpiContent()" ng-class="{ 'editing': isEditing() }">
       <!-- SHOW -->
       <div class="kpi-show row nomargin nopadding" ng-hide="isEditing()">
-        <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': kpi.layout.triggered }">
+        <div class="col-xs-3 col-sm-3 kpi-icon" ng-class="{ 'triggered': showTriggeredState() }">
           <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
         </div>
-        <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
+        <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': showTriggeredState() }">
           <span class="caption" tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
           <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})" tooltip-placement="bottom" tooltip-append-to-body="false">
             <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{ getRealValue() }})</span>

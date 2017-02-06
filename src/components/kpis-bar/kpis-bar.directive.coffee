@@ -143,7 +143,7 @@ angular
           , 450)
 
         $scope.isEditing = ->
-          $scope.showEditMode || kpiIsEditing()
+          ($scope.showEditMode || kpiIsEditing()) && $scope.hasKpis()
 
         $scope.kpisBarUpdateDates = (dates)->
           return unless _.isObject(dates) && !_.isEmpty(dates)
@@ -158,8 +158,18 @@ angular
           animateKpiBarPanel()
           return true
 
+        $scope.hasContent = ->
+          $scope.showContent && $scope.hasKpis()
+
         $scope.hasKpiAvailability = ->
           $scope.availableKpis.list.length
+
+        $scope.hasKpis = ->
+          $scope.kpis.length
+
+        $scope.isKpiSelectorHidden = ->
+          $scope.availableKpis.kpiSelectorHidden
+
 
         # Information kpi
         # ------------------------
@@ -173,10 +183,10 @@ angular
           $scope.mouseOn = false
 
         $scope.isInfoShown = ->
-          ($scope.isEditing() && $scope.kpis.length > 0) || ((($scope.showContent && !$scope.availableKpis.kpiSelectorHidden) || $scope.kpis.length > 0 ) && $scope.mouseOn )
+          $scope.isEditing() || ($scope.hasContent() && $scope.mouseOn) || !$scope.isKpiSelectorHidden()
 
         $scope.showDatesPicker = ->
-          $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
+          $scope.isEditing() && !$scope.hideDatesPicker
 
 
         # Private methods
