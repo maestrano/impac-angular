@@ -7,6 +7,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       parentWidget: '='
       deferred: '='
       histParams: '=?'
+      hideChartInterval: '=?'
     },
     template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
     
