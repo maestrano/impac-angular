@@ -15,7 +15,7 @@
         </div>
         <!-- Info KPI -->
         <div ng-show="isInfoShown()">
-            <button type="button" class='kpi-info im-fab im-warn' popover-template="dynamicPopover.templateUrl" popover-is-open="isOpen" popover-title="{{dynamicPopover.title}}" popover-placement="right" >
+            <button type="button" class='kpi-info im-fab im-warn' popover-template="'kpi-info-panel.tmpl.html'" popover-is-open="isOpen" popover-placement="right" >
               <i class="fa fa-info-circle" aria-hidden="true"></i>
             </button>
         </div>
@@ -61,7 +61,7 @@
         </form>
 
         <!-- Info KPI -->
-        <button type="button" class="kpi-info-in-settings im-fab im-warn" popover-template="dynamicPopover.templateUrl" popover-is-open="isOpen" popover-title="{{dynamicPopover.title}}" popover-placement="right" popover-append-to-body="false">
+        <button type="button" class="kpi-info-in-settings im-fab im-warn" popover-template="'kpi-info-panel.tmpl.html'" popover-is-open="isOpen" popover-placement="right" popover-append-to-body="false">
           <i class="fa fa-info-circle" aria-hidden="true"></i>
         </button>
         <!-- Remove KPI -->
@@ -84,3 +84,14 @@
     <i class="fa fa-spinner fa-pulse fa-3x"></i>
   </div>
 </div>
+
+
+<!-- ui.bootstrap popover template -->
+<script type="text/ng-template" id="kpi-info-panel.tmpl.html">
+  <div class="kpi kpi-info-panel">
+    <div class="kpi-name">
+      <h6>{{kpi.name}}</h6>
+      {{kpi.info}}
+    </div>
+  </div>
+</script>

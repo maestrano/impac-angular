@@ -178,11 +178,6 @@ angular
           $scope.isOpen = false
           $scope.kpi.isInfoButtonShown = false
 
-        $scope.dynamicPopover = {
-          templateUrl: $templateCache.get('kpi/kpi-info-panel.tmpl.html'),
-          title: 'Information'
-        }
-
         $scope.getFormTargetValueInput = (watchable, targetIndex)->
           $scope["kpi#{$scope.kpi.id}SettingsForm"]["#{watchable}TargetValue#{targetIndex}"]
 
