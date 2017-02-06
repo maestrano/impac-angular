@@ -20,10 +20,14 @@
           <h6>{{kpi.name.toUpperCase()}}</h6>
         </div>
         <alerts-config kpi="kpi" button-html="
-          <div class='im-button alert-caption'>
-            <span><a href='' ng-bind='kpi.layout.text.alert' /></span>
+          <div class='im-button alert-config-btn'>
+            <i class='fa fa-bell'></i>
           </div>">
         </alerts-config>
+
+        <div class='alert-caption'>
+          <span>{{kpi.layout.text.alert}}</span>
+        </div>
 
         <form name="kpi{{kpi.id}}SettingsForm">
           <!-- watchables -->

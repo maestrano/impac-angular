@@ -154,13 +154,30 @@
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: lighten(@kpi-negative-alert-label-background-color, 20%);
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
+    }
+
+    .im-button.alert-config-btn {
+      padding: 3px;
+      margin: 4px;
+      position: absolute;
+      top: -12px;
+      border-radius: 100%;
+      right: 15px;
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+      text-align: center;
+      color: white;
     }
 
     .kpi-target-watchable,
