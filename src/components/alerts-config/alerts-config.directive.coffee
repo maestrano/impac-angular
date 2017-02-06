@@ -32,7 +32,6 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       ImpacMainSvc.load().then(
         (config) ->
           $scope.members = config.currentOrgMembers
-          debugger;
           #Sets current state of recipients for email alerts
           emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
           if emailAlert && $scope.members
