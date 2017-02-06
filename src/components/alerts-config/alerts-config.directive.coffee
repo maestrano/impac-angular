@@ -32,6 +32,7 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       ImpacMainSvc.load().then(
         (config) ->
           $scope.members = config.currentOrgMembers
+          $scope.alerts.email.label += " #{config.userData.email}" unless $scope.members
           #Sets current state of recipients for email alerts
           emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
           if emailAlert && $scope.members
@@ -84,7 +85,7 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         $scope.modal = $modal.open(alertsSettingsModal.options)
 
       $scope.showRecipientList = (alert) ->
-        alert.active && alert.service == 'email'
+        alert.active && alert.service == 'email' && $scope.members
 
       $scope.onAddRecipientsKeyPress = (event) ->
         availableInactiveRecipients = _.filter(this.filteredMembers, (member) -> !member.active)
