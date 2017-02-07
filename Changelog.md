@@ -8,6 +8,17 @@
 
 ## Released
 
+### v1.5.0-rc3 | 2017 - Week 5
+
+#### Adds
+- [IMPAC-99] Change routes for widgets :index and :show
+- sso_session now passed as basic_auth param for widgets :show
+
+#### Fixes
+- [IMPAC-465] Fix dates picker positioning
+
+-------------------------------------------------------------
+
 ### v1.5.0-rc2 | 2017 - Week 3
 - add v1.4.7 changes
 

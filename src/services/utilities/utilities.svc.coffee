@@ -2,7 +2,7 @@
 # more than once place across the library.
 angular
   .module('impac.services.utilities', [])
-  .service('ImpacUtilities', ($window) ->
+  .service('ImpacUtilities', ($window, $templateCache) ->
 
     _       = $window._
     moment  = $window.moment
@@ -137,6 +137,21 @@ angular
           messages.push("Potentially a system or communication error. Please retry later.")
 
       return messages
+
+    # Retrieves the widget content css class name based on metadata or endpoint
+    @fetchWidgetCssClass = (widget) ->
+      return false unless endpoint = ((widget.metadata && widget.metadata.template) || widget.endpoint)
+      # 'accounts/accounting_values/ebitda' => ['accounts','accounting_values']
+      templateNameArray = endpoint.split('/').slice(0,2)
+      # ['accounts','accounting_values'] => 'accounts-accounting-values'
+      return templateNameArray.join('-').replace(/_/g, '-')
+
+    # Retrieves the HTML template path based on metadata or endpoint
+    @fetchWidgetTemplatePath = (widget) ->
+      return false unless cssClass = _self.fetchWidgetCssClass(widget)
+      templatePath = "widgets/#{cssClass}.tmpl.html"
+      # Returns the path only if it can be found
+      return ($templateCache.get(templatePath) && templatePath)
 
     return
   )

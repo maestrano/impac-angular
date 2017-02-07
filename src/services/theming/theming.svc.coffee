@@ -39,6 +39,9 @@ angular
         addDhbEnabled: true
         deleteDhbEnabled: true
         pdfModeEnabled: false
+      dhbWidgetsConfig:
+        templates:
+          defaultToFinancialYear: true
       # kpis options
       dhbKpisConfig:
         enableKpis: true

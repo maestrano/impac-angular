@@ -7,7 +7,7 @@
   <h6>CLICK TO INCLUDE IN PDF</h6>
 </div>
 
-<div class="content" ng-class="templateName">
+<div class="content" ng-class="::cssClass">
   <div ng-show="widget.isLoading" class="loader" align="center">
     <div>
       <i class="fa fa-spinner fa-pulse fa-3x"></i>
@@ -21,7 +21,7 @@
     </a>
   </div>
 
-  <div ng-hide="widget.isLoading" ng-include="widgetContentTemplate()" />
+  <div ng-hide="widget.isLoading" ng-include="::templatePath" />
 </div>
 
 <div common-info-panel parent-widget="widget" on-close="toggleInfoPanel()" ng-show="isInfoPanelDisplayed()" />
