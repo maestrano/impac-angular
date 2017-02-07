@@ -105,44 +105,35 @@ angular
         _self.loadLocked=true
 
         if (needConfigurationLoad() || force)
-
           ImpacMainSvc.load(force).then(
             (success)->
               orgId = success.currentOrganization.id
 
-              # Retrieve dashboards
-              $http.get(ImpacRoutes.dashboards.index(orgId)).then(
-                (dashboards)->
-                  _self.setDashboards(dashboards.data).then(->
-                    _self.setCurrentDashboard()
-                    deferred.resolve(_self.config)
-                    $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
-
-                  ).finally( -> _self.loadLocked = false )
-                (error)->
+              # Retrieve dashboards with widgets and kpis settings
+              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
+                (response) ->
+                  _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
+                (error) ->
                   $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
-                  _self.loadLocked=false
-                  deferred.reject(error)
               )
 
               # Retrieve widgets templates
-              url = 
-                if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear
-                  fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
-                  "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
-                else
-                  ImpacRoutes.widgets.templates()
-
-              $http.get(url).then(
+              widgetsTemplatesPromise = $http.get(widgetsTemplatesUrl()).then(
                 (response) ->
                   _self.setWidgetsTemplates(response.data.widgets)
-                  _self.loadLocked = false
-
                 (error) ->
                   $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", ImpacRoutes.widgets.templates())
-                  _self.loadLocked = false
+              )
+
+              # Remove the lock and resolve the promise once both the dashboards and widgets templates are loaded
+              $q.all([dashboardsPromise, widgetsTemplatesPromise]).then(
+                (success) ->
+                  $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
+                  deferred.resolve(_self.config)
+                (errors) ->
                   deferred.reject(error)
               )
+              .finally( -> _self.loadLocked = false )
 
             (error)->
               $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
@@ -163,6 +154,13 @@ angular
 
       return deferred.promise
 
+
+    widgetsTemplatesUrl = ->
+      if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear
+        fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+        return "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
+      else
+        return ImpacRoutes.widgets.templates()
 
     setDefaultCurrentDashboard = ->
       if _self.config.dashboards? && _self.config.dashboards.length > 0
