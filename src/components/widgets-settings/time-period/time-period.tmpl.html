@@ -37,4 +37,11 @@
       <i>Note: Chart is limited to {{ maxNumberOfPeriods }} intervals</i>
     </div>
   </div>
+
+  <!-- Save Changes -->
+  <div class="row text-center" ng-show="showApplyButton">
+    <div class="col-xs-12">
+      <button class="btn btn-sm btn-default" ng-click="applyChangesCallback()">Apply changes</button>
+    </div>
+  </div>
 </div>
