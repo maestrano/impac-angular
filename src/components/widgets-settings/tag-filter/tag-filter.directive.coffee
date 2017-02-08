@@ -14,6 +14,7 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
 
       setting = {}
       setting.key = "tag-filter"
+      scope.settingsTags = []
 
 
       setting.initialize = ->
