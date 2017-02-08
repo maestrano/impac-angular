@@ -1,16 +1,26 @@
 <h5>Tag Filter</h5>
 <div class="settings tag-filter" >
 
-  <div class="widget-lines-container">
-    <div class="widget-line" ng-repeat="rule in settingsTags" >
-      <span ng-hide="true" ng-class="{op_high: rule.operator=='AND'}" ng-click="switchOperator($event, rule)">AND</span>
-      <span ng-hide="$index==0" ng-class="{op_high: rule.operator=='OR'}" ng-click="switchOperator($event, rule)">OR</span>
-      <tags-input ng-model="rule.tags" >
-        <auto-complete source="loadTagList($query)" min-length="1" max-results-to-show="5" debounce-delay="0" load-on-down-arrow="true"></auto-complete>
-      </tags-input>
-      <button class="btn btn-sm" ng-click="delRule($index)">-</button>
+  <div class="tag-lines-container">
+    <div class="row tag-line" ng-repeat="rule in settingsTags" >
+      <div class="col-xs-2 text-center">
+        <span ng-hide="true" ng-class="{op_high: rule.operator=='AND'}" ng-click="switchOperator($event, rule)">AND</span>
+        <span ng-hide="$index==0" ng-class="{op_high: rule.operator=='OR'}" ng-click="switchOperator($event, rule)">OR</span>
+      </div>
+      <div class="col-xs-8 tags-col">
+        <tags-input ng-model="rule.tags" >
+          <auto-complete source="loadTagList($query)" min-length="1" max-results-to-show="5" debounce-delay="0" load-on-down-arrow="true"></auto-complete>
+        </tags-input>
+      </div>
+      <div class="col-xs-2 text-center">
+        <button class="btn btn-sm btn-default" ng-click="delRule($index)">-</button>
+      </div>
     </div>
-    <button class="btn btn-sm" ng-click="addRule()">+</button>
-  </div>
 
+    <div class="row">
+      <div class="col-xs-2 text-center">
+        <button class="btn btn-sm btn-default" ng-click="addRule()">+</button>
+      </div>
+    </div>
+  </div>
 </div>
