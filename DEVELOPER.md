@@ -310,6 +310,15 @@ You want to make the generator better? Of course. See the [README](./generators/
 5. Notify the parent widget that the setting's context has been loaded and is ready: `$scope.deferred.resolve(setting)`.
 **IMPORTANT**: The parent widget's #show method (= call to the Impac! API to retrieve the widget's content) will be called only once all the settings are loaded (= once they have resolved their `$scope.deferred` object). 
 
+6. Add the new components angular module to the `src/impac-angular.module.js` module declarations.
+
+  ```javascript
+    angular.module('impac.components.widgets-settings',
+      [
+        'impac.components.widgets-settings.my-new-setting'
+      ]
+    );
+  ```
 
 
 

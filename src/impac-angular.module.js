@@ -110,7 +110,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-presets',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
-    'impac.components.widgets-settings.attach-kpis'
+    'impac.components.widgets-settings.attach-kpis',
+    'impac.components.widgets-settings.tag-filter'
   ]
 );
 angular.module('impac.components.dashboard-settings',

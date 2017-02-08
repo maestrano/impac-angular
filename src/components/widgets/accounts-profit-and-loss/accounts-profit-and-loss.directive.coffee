@@ -11,6 +11,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.tagFilterDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,6 +19,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.tagFilterDeferred.promise
   ]
 
   $scope.ascending = true
@@ -180,7 +182,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  
+
 
   # Chart formating function
   # --------------------------------------
