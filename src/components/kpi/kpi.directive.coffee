@@ -15,29 +15,15 @@ angular
         # Private Methods
         # -------------------------
         fetchKpiData = ->
-          ImpacKpisSvc.show($scope.kpi).then( (renderedKpi) ->
-            angular.extend $scope.kpi, renderedKpi
-
-            # Get the corresponding template of the KPI loaded
-            kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
-            $scope.kpi.name = kpiTemplate? && kpiTemplate.name
-
-            # If the template contains extra params we add it to the KPI
-            if kpiTemplate? && kpiTemplate.extra_params?
-              $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
-              # Init the extra params select boxes with the first param
-              _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
-                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
-              )
-
-            watchablesWithoutTargets = false
+          ImpacKpisSvc.show($scope.kpi).then(->
             _.forEach($scope.kpi.watchables, (watchable)->
+              # No targets found - initialise a target form model for watchable
               if _.isEmpty (existingTargets = $scope.getTargets(watchable))
-                # No targets found - initialise a target form model for watchable
                 $scope.addTargetToWatchable(watchable)
                 watchablesWithoutTargets = true
+
+              # Targets found - bind existing targets to the form model
               else
-                # Targets found - bind existing targets to the form model
                 $scope.targets[watchable] = angular.copy(existingTargets)
             )
             # All watchables must have at least one target.
