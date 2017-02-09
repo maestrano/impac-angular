@@ -11,6 +11,7 @@
 ### v1.4.8 | Week 4
 
 #### Adds
+- [IMPAC-335] Alerts can have multiple recipients 
 - [IMPAC-162] Add time period setting to Accounts Comparison
 - [IMPAC-466] Add time period setting to Custom Calculation
 - [IMPAC-467] Add time period setting to Accounts Classes Comparison
@@ -84,7 +85,7 @@
 - [IMPAC-380] Hide widgets selector on dashboard deletion.
 - Fixes for Dashboard & KPI action button positioning on smaller screens
 - KPIs bar action buttons position issues on small screens.
-- Various error handlers in kpi.svc not rejecting promises 
+- Various error handlers in kpi.svc not rejecting promises
 
 #### Config changes
 - Ability to provide custom messages for the dashboard failed error case in the ImpacTheming service.
@@ -207,7 +208,7 @@ dhbErrorsConfig: {
 #### Adds
 - Impac Angular now provides default images.
 - Impac Angular less variables to customise no widgets / dhb message styles without overriding.
-- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs)
 - Gulp default task changed to `gulp serve`, added `gulp build:dist` task
 
 #### Fixes
@@ -235,7 +236,7 @@ dhbErrorsConfig: {
 ### v1.3.11 | Week 31
 
 #### Adds
-- Improve time preset behaviour 
+- Improve time preset behaviour
 - Add version console command & log (`impac.version`)
 - Drill down widgets are now sortable
 - Change in selected lines layout display
