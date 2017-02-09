@@ -79,13 +79,14 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
   $scope.formulaModal.open = ->
     self = $scope.formulaModal
     self.modalOrgDeferred = $q.defer()
+    self.timePeriodDeferred = $q.defer()
 
     # remove the initial organizations setting...
     _.remove w.settings, ((set) -> set.key == "organizations")
     self.instance = $modal.open(self.config)
 
     # ...it will be replaced by a new one when the modal DOM is loaded
-    self.modalOrgDeferred.promise.then(
+    $q.all([self.modalOrgDeferred.promise, self.timePeriodDeferred.promise]).then(
       (success) ->
         $scope.initSettings()
     )
@@ -94,7 +95,10 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
   $scope.reloadAccountsLists = (orgs) ->
     # Refresh the settings only if some orgs are selected
     if orgs? && _.some(_.values(orgs))
-      ImpacWidgetsSvc.updateWidgetSettings(w)
+      $scope.updateWidgetSettings()
+
+  $scope.updateWidgetSettings = ->
+    ImpacWidgetsSvc.updateWidgetSettings(w)
 
   $scope.formulaModal.cancel = ->
     $scope.initSettings()

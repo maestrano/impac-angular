@@ -10,12 +10,14 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   $scope.accountsListDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramsCheckboxesDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.accountsListDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramsCheckboxesDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
   # Widget specific methods
