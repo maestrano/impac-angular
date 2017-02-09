@@ -12,10 +12,17 @@
 
 #### Adds
 - [IMPAC-331] KPIs display layout labels and current value on first add 
+- [IMPAC-335] Alerts can have multiple recipients 
+- [IMPAC-162] Add time period setting to Accounts Comparison
+- [IMPAC-466] Add time period setting to Custom Calculation
+- [IMPAC-467] Add time period setting to Accounts Classes Comparison
+- Ability to hide period interval on time period setting
+- Ability to show a 'Apply changes' button on time period setting
 
 #### Fixes
 - [IMPAC-329] Better KPIs dates management: API driven defaults
 - [IMPAC-338] KPIs with extra_param do not update kpi "current value" on selection in the edit mode pane
+- Code injection issue on setting formula (custom calc.)
 
 
 -------------------------------------------------------------

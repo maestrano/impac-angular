@@ -8,11 +8,13 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
   $scope.orgDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
   # Configure the commonTimePeriodInfo directive
