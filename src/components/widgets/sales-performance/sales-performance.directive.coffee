@@ -29,18 +29,18 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.assignees)
 
     if $scope.isDataFound
-      if w.metadata.selectedElements
+
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.assignees, (statement)->
-            statement.name == sElem.name
-          )
+          # Attempt to find element by statement name
+          foundElem = _.find(w.content.assignees, (statement)-> statement.name == sElem)
 
-          if !foundElem
+          unless foundElem
             angular.forEach(w.content.summary, (statement) ->
-              foundElem ||= _.find(statement.accounts, (account)->
-                sElem.id == account.id
-              ) if statement.accounts?
+              if statement.accounts?
+                # Attempt to find element by statement account id
+                foundElem ||= _.find(statement.accounts, (account)-> account.id == sElem)
             )
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -164,7 +164,12 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
+      matcher = (if element.id? then 'id' else 'name')
+      element[matcher]
+    )
+    {selectedElements: selectedElementsMetadata}
 
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
