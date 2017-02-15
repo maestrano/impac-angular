@@ -13,6 +13,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-485] Fix drill down widget selection params
 
 -------------------------------------------------------------
 
