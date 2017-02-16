@@ -67,13 +67,15 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
         scope.settingsTags = filterToSettingTags (w.metadata.filter_query)
 
       initiateAutoComplete= ->
-        autotags = [{text:'North'}, {text:'South'}, {text:'Eastside'},{text:'West Coast'},{text:'Option 1'},{text:'Option 2'},{text:'Option 3'},{text:'Option 4'}]
+        tags = w.content.available_tags || []
+        autotags = []
+        for org, tag_hash of tags
+          angular.forEach tag_hash['tag_references'], (tag_ref) ->
+            angular.forEach tag_ref['tag_reference_values'], (tag) ->
+              autotags.push({text: tag['value']})
 
         scope.loadTagList= (query) ->
           return $.grep(autotags, (e) -> e.text.toLowerCase().indexOf(query.toLowerCase()) > -1)
-
-#      scope.loadTagList=
-#        return [{text:'North'}, {text:'South'}, {text:'Eastside'},{text:'West Coast'},{text:'Option 1'},{text:'Option 2'},{text:'Option 3'},{text:'Option 4'}]
 
       scope.addRule = ->
         scope.settingsTags.push ({'operator': 'OR', 'tags': []})
