@@ -16,6 +16,7 @@ angular
         # -------------------------
         fetchKpiData = ->
           ImpacKpisSvc.show($scope.kpi).then(->
+            watchablesWithoutTargets = false
             _.forEach($scope.kpi.watchables, (watchable)->
               # No targets found - initialise a target form model for watchable
               if _.isEmpty (existingTargets = $scope.getTargets(watchable))
@@ -102,11 +103,10 @@ angular
           !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
 
         $scope.showKpiContent = ->
-          # Newly added kpis start in edit mode (draft) and will have "no content".
-          !$scope.isLoading() && ($scope.hasContent() || $scope.kpi.isDraft)
+          !$scope.isLoading() && $scope.hasContent()
 
         $scope.isDataNotFound = ->
-          !$scope.hasContent() && !$scope.kpi.isDraft
+          !$scope.hasContent()
 
         $scope.isLoading = ->
           $scope.kpi.isLoading

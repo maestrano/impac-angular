@@ -251,41 +251,33 @@ angular
 
           return $http.get(url).then(
             (response) ->
-              # When no target has been defined
-              if response.data.error && response.data.error.code == 422
-                # TODO: this can be removed when Impac! API returns layout config for draft
-                # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
-                # considered in draft mode.
-                kpi.isDraft = true
-                return false
-              else
-                kpiResp = response.data.kpi
-                # Calculation
-                kpi.data = kpiResp.calculation
+              kpiResp = response.data.kpi
+              # Calculation
+              kpi.data = kpiResp.calculation
 
-                # Configuration
-                # When the kpi initial configuration is partial, we update it with what the API has picked by default
-                updatedConfig = kpiResp.configuration || {}
-                missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-                angular.extend kpi, _.pick(updatedConfig, missingParams)
+              # Configuration
+              # When the kpi initial configuration is partial, we update it with what the API has picked by default
+              updatedConfig = kpiResp.configuration || {}
+              missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+              angular.extend kpi, _.pick(updatedConfig, missingParams)
 
-                # Layout
-                kpi.layout = kpiResp.layout
+              # Layout
+              kpi.layout = kpiResp.layout
 
-                # Extra Params
-                # Get the corresponding template of the KPI loaded
-                kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
-                # Set the kpi name from the template
-                kpi.name = kpiTemplate? && kpiTemplate.name
-                # If the template contains extra params we add it to the KPI
-                if kpiTemplate? && kpiTemplate.extra_params?
-                  kpi.possibleExtraParams = kpiTemplate.extra_params
-                  # Init the extra params select boxes with the first param
-                  _.forIn(kpi.possibleExtraParams, (paramValues, param)->
-                    (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
-                  )
+              # Extra Params
+              # Get the corresponding template of the KPI loaded
+              kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
+              # Set the kpi name from the template
+              kpi.name = kpiTemplate? && kpiTemplate.name
+              # If the template contains extra params we add it to the KPI
+              if kpiTemplate? && kpiTemplate.extra_params?
+                kpi.possibleExtraParams = kpiTemplate.extra_params
+                # Init the extra params select boxes with the first param
+                _.forIn(kpi.possibleExtraParams, (paramValues, param)->
+                  (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
+                )
 
-                return kpi
+              return kpi
 
             (err) ->
               $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
@@ -362,7 +354,6 @@ angular
           )
       ).finally(->
         kpi.isLoading = false
-        kpi.isDraft = false
       )
 
 
