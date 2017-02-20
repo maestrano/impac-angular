@@ -51,24 +51,23 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         w.metadata && w.metadata.criteria == o.value
       ) || $scope.criteriaOptions[0])
 
-      if w.metadata.selectedElements
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.sales_comparison, (statement)->
-            statement.name == sElem.name
-          )
+          # Attempt to find element by statement name
+          foundElem = _.find(w.content.sales_comparison, (statement)-> statement.name == sElem)
 
-          if !foundElem
+          unless foundElem
             angular.forEach(w.content.sales_comparison, (statement) ->
-              foundElem ||= _.find(statement.sales, (sale)->
-                sElem.id == sale.id
-              ) if statement.sales?
+              if statement.sales?
+                # Attempt to find element by sale id
+                foundElem ||= _.find(statement.sales, (sale)-> sale.id == sElem)
             )
 
           $scope.selectedElements.push(foundElem) if foundElem
         )
       sortData()
-      
+
   $scope.getLastDate = ->
     _.last(w.content.dates) if $scope.isDataFound
 
@@ -213,7 +212,12 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
+      matcher = (if element.id? then 'id' else 'name')
+      element[matcher]
+    )
+    {selectedElements: selectedElementsMetadata}
 
   w.settings.push(selectedElementsSetting)
 
