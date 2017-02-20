@@ -154,14 +154,18 @@
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
     }
+
 
     .kpi-target-watchable,
     .kpi-target-unit {
@@ -194,6 +198,19 @@
   .kpi-edit,
   .kpi-no-data {
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
   }
 
   button.kpi-remove.im-fab.im-warn {

@@ -19,11 +19,10 @@
         <div class="kpi-name">
           <h6>{{kpi.name.toUpperCase()}}</h6>
         </div>
-        <alerts-config kpi="kpi" button-html="
-          <div class='im-button alert-caption'>
-            <span><a href='' ng-bind='kpi.layout.text.alert' /></span>
-          </div>">
-        </alerts-config>
+
+        <div class='alert-caption'>
+          <span>{{kpi.layout.text.alert}}</span>
+        </div>
 
         <form name="kpi{{kpi.id}}SettingsForm">
           <!-- watchables -->
@@ -53,6 +52,13 @@
             </div>
           </div>
         </form>
+
+        <!-- Alerts Config -->
+        <alerts-config kpi="kpi" button-html="
+          <button class='kpi-alerts im-fab im-primary'>
+            <i class='fa fa-bell'></i>
+          </button>">
+        </alerts-config>
 
         <!-- Remove KPI -->
         <button type="button" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">

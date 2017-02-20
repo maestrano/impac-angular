@@ -11,6 +11,7 @@
 ### v1.4.8 | Week 4
 
 #### Adds
+- [IMPAC-331] KPIs display layout labels and current value on first add 
 - [IMPAC-335] Alerts can have multiple recipients 
 - [IMPAC-162] Add time period setting to Accounts Comparison
 - [IMPAC-466] Add time period setting to Custom Calculation
