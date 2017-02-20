@@ -90,6 +90,8 @@ angular
               params =
                 metadata:
                   organization_ids: orgUids
+                opts:
+                  refresh_cache: force
 
               params.sso_session = ssoSessionId if ssoSessionId
 
@@ -142,17 +144,17 @@ angular
       )
 
     @isRefreshing = false
-    @refreshAll = ->
+    @refreshAll = (refreshCache=false) ->
       unless _self.isRefreshing
         _self.isRefreshing = true
-        _self.load().then(->
+        _self.load(refreshCache).then(->
           for k in _self.getCurrentDashboard().kpis
             _self.show(k).then(
               (renderedKpi)-> # success
               (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
             )
         ).finally(->
-          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          # throttles refreshAll calls
           $timeout(->
             _self.isRefreshing = false
           , 3000)
@@ -259,7 +261,6 @@ angular
               else
                 kpiResp = response.data.kpi
                 # Calculation
-                # angular.extend kpi.data, kpiResp.calculation
                 kpi.data = kpiResp.calculation
 
                 # Configuration
@@ -269,8 +270,20 @@ angular
                 angular.extend kpi, _.pick(updatedConfig, missingParams)
 
                 # Layout
-                # angular.extend kpi.layout, kpiResp.layout
                 kpi.layout = kpiResp.layout
+
+                # Extra Params
+                # Get the corresponding template of the KPI loaded
+                kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
+                # Set the kpi name from the template
+                kpi.name = kpiTemplate? && kpiTemplate.name
+                # If the template contains extra params we add it to the KPI
+                if kpiTemplate? && kpiTemplate.extra_params?
+                  kpi.possibleExtraParams = kpiTemplate.extra_params
+                  # Init the extra params select boxes with the first param
+                  _.forIn(kpi.possibleExtraParams, (paramValues, param)->
+                    (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
+                  )
 
                 return kpi
 

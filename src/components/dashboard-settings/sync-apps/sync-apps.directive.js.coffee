@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, $timeout, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacTheming, poller, $sce) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, $timeout, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacKpisSvc, ImpacTheming, poller, $sce) ->
   return {
     restrict: 'A',
     scope: {
@@ -50,6 +50,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       refreshDashboard = ->
         # Reloads all the widgets contents
         ImpacWidgetsSvc.refreshAll(true)
+        # Reloads all the kpis contents
+        ImpacKpisSvc.refreshAll(true)
         # Opens the modal if errors are present
         scope.triggerSyncAlertsModal() if _.any(scope.connectors, (c) -> isError(c))
 
