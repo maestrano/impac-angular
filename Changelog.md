@@ -20,6 +20,7 @@
 - Ability to show a 'Apply changes' button on time period setting
 
 #### Fixes
+- [IMPAC-328] refresh KPIs after first sync
 - [IMPAC-485] Fix drill down widget selection params
 - [IMPAC-329] Better KPIs dates management: API driven defaults
 - [IMPAC-338] KPIs with extra_param do not update kpi "current value" on selection in the edit mode pane
