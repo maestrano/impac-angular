@@ -35,10 +35,10 @@
     "angular-poller": "~0.4.5",
     "moment": "^2.11.2",
     "pusher": "^3.0.0",
-    "angular-translate": "^2.14.0",
-    "angular-translate-handler-log": "^2.14.0",
-    "angular-translate-loader-static-files": "^2.14.0",
-    "angular-translate-interpolation-messageformat": "^2.14.0",
+    "angular-translate": "~2.14.0",
+    "angular-translate-handler-log": "~2.14.0",
+    "angular-translate-loader-static-files": "~2.14.0",
+    "angular-translate-interpolation-messageformat": "~2.14.0",
     "angular-sanitize": "~1.6.0"
   },
   "devDependencies": {
