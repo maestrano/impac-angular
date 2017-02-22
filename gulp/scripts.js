@@ -24,6 +24,7 @@ gulp.task('scripts', function () {
 
 gulp.task('locales', function () {
   return gulp.src(path.join(conf.paths.src, '**/locales/*.json'))
+    .pipe(gulp.dest(conf.paths.dist))
     .pipe($.angularTranslate({
       module: 'maestrano.impac',
       standalone: false,
