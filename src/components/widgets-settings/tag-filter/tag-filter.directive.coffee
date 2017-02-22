@@ -37,11 +37,17 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
           filterQueryCondition['condition'] = 'AND'
           filterQueryCondition['rules'] = []
           angular.forEach  settingsTag.tags, (filterItem) ->
-            filterQueryCondition['rules'].push({'value': filterItem['text']})
+            # TODO: Put ruletag generation in a function
+            ruletag = {}
+            ruletag['id'] = filterItem['id']
+            ruletag['name'] = filterItem['name'] if filterItem['name']?
+            ruletag['value'] = filterItem['value']
+            filterQueryCondition['rules'].push(ruletag)
 
           filterQueryRules.push (filterQueryCondition) if settingsTag.tags.length != 0
 
         if filterQuery['rules'].length==0 then filterQuery = {}
+        console.log filterQuery
 
         return {filter_query: filterQuery}
 
@@ -57,8 +63,17 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
           settingRule['operator'] ='OR'
           settingRule['tags'] = []
           angular.forEach filterQueryRule.rules, (filterQueryRuleCondition) ->
-            settingRule['tags'].push({text: filterQueryRuleCondition['value']})
+            # TODO: Put ruletag generation in a function
+            tagtext = if filterQueryRuleCondition['name']? then filterQueryRuleCondition['name'] + ":" + filterQueryRuleCondition['value'] else filterQueryRuleCondition['value']
+            ruletag = {}
+            ruletag['id'] = filterQueryRuleCondition['id'] if filterQueryRuleCondition['id']
+            ruletag['name'] = filterQueryRuleCondition['name'] if filterQueryRuleCondition['name']?
+            ruletag['value'] = filterQueryRuleCondition['value']
+            ruletag['text'] = tagtext
+            settingRule['tags'].push(ruletag)
           settingsTags .push(settingRule)
+
+        console.log settingsTags
 
         return settingsTags
 
@@ -72,10 +87,18 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
         for org, tag_hash of tags
           angular.forEach tag_hash['tag_references'], (tag_ref) ->
             angular.forEach tag_ref['tag_reference_values'], (tag) ->
-              autotags.push({text: tag['value']})
+              # TODO: Put ruletag generation in a function
+              tagtext = if tag_ref['name']? then tag_ref['name'] + ":" + tag['value'] else tag['value']
+              ruletag = {}
+              ruletag['text'] = tagtext
+              ruletag['id'] = tag['id']
+              ruletag['name'] = tag_ref['name'] if tag_ref['name']?
+              ruletag['value'] = tag['value']
+              autotags.push(ruletag)
 
         scope.loadTagList= (query) ->
           return $.grep(autotags, (e) -> e.text.toLowerCase().indexOf(query.toLowerCase()) > -1)
+
 
       scope.addRule = ->
         scope.settingsTags.push ({'operator': 'OR', 'tags': []})
