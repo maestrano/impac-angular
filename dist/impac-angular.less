@@ -2691,9 +2691,6 @@ body {
 
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2712,6 +2709,9 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2844,6 +2844,29 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+
+  .time-period-info {
+    text-align: right;
+  }
+
+  .widget-line.header.sorting  {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+
+
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -2874,28 +2897,19 @@ body {
     }
   }
 }
-.analytics .widget-item .content.accounts-detailed-classifications {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
 
-  .account-class-title {
-    margin-bottom: 8px;
-    margin-left: 11px;
+    .title {
+      text-align: center;
+    }
   }
-
-  .time-period-info {
-    text-align: right;
-  }
-
-  .widget-line.header.sorting  {
-    border-bottom: 1px solid #ccc;
+  .chart-container {
+    max-height: 125px;
   }
 }
-
-
 
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
@@ -2923,20 +2937,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-expense-weight {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-    }
-  }
-  .chart-container {
-    max-height: 125px;
-  }
-}
-
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -2950,6 +2950,37 @@ body {
   }
 
   .row.widget-line.header > [class*='col-'] { position: static; }
+}
+
+.analytics .widget-item .content.accounts-ratios {
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
+
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
+    }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
+  }
+
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
+  }
 }
 
 .analytics .widget-item .content.hr-employee-details {
@@ -3009,6 +3040,13 @@ body {
     text-align: center;
   }
 }
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 145px;
+  }
+}
+
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3029,13 +3067,6 @@ body {
     color: @impac-widget-text-color;
   }
 }
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 145px;
-  }
-}
-
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -3057,6 +3088,10 @@ body {
     .center-bold(0px);
   }
 }
+.analytics .widget-item .content.hr-workforce-summary {
+  .expandable-filterable-widget();
+}
+
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3065,10 +3100,9 @@ body {
     max-height: 210px;
   }
 }
-.analytics .widget-item .content.hr-workforce-summary {
-  .expandable-filterable-widget();
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
 }
-
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
@@ -3081,9 +3115,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
@@ -3178,6 +3209,18 @@ body {
   }
 }
 
+.analytics .widget-item .content.sales-growth {
+  .price {
+    .center-bold(0px);
+  }
+  .legend {
+    max-height: 49px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
@@ -3190,18 +3233,6 @@ body {
 
 .analytics .widget-item .content.sales-leads-funnel {
   .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-growth {
-  .price {
-    .center-bold(0px);
-  }
-  .legend {
-    max-height: 49px;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 }
 
 .analytics .widget-item .content.sales-leads-list {
@@ -3419,9 +3450,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
-}
 .analytics .settings.accounting-behaviour {
 
   .btn.btn-primary {
@@ -3432,6 +3460,9 @@ body {
 
 }
 
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
 .analytics .settings.attach-kpis {
   .attach-kpi {
     padding: 8px 5px;
@@ -3631,6 +3662,24 @@ body {
     }
   }
 
+}
+
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
 }
 
 .analytics .settings.organizations {
