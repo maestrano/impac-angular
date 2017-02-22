@@ -6,8 +6,6 @@
 //*************************************************************************/
 angular.module('maestrano.impac',
   [
-    'impac.run',
-    'impac.constant',
     'impac.services',
     'impac.filters',
     'impac.components',
@@ -170,7 +168,3 @@ angular.module('impac.filters',
     'impac.filters.mno-date'
   ]
 );
-/*
-** CONSTANT
-*/
-angular.module('impac.constant', []);

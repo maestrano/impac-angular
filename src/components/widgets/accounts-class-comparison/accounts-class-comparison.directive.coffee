@@ -40,11 +40,12 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
           labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
+      )
 
       if !$scope.selectedClassification
-        $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
+        $scope.selectedClassification = angular.copy(_.find($scope.classifications, {
           value: w.metadata.classification || $scope.classifications[0].value
-        })
+        }))
 
   $scope.getTotals = ->
     return [] unless $scope.selectedClassification

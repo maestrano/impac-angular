@@ -1,7 +1,7 @@
 
 # Impac! Angular constants module
 # ---------------------------------------------
-module = angular.module('impac.constant')
+module = angular.module('maestrano.impac')
 
 # To facilitate the ImpacEvents service in defining event keys.
 module.constant('IMPAC_EVENTS',
