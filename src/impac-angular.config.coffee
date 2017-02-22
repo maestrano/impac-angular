@@ -32,7 +32,4 @@ module.config(($translateProvider, ImpacThemingProvider) ->
   $translateProvider.useMissingTranslationHandlerLog()
   $translateProvider.preferredLanguage(settings.fallbackLanguage)
   $translateProvider.fallbackLanguage(settings.preferredLanguage)
-
-  # remember language
-  # $translateProvider.useLocalStorage();
 )

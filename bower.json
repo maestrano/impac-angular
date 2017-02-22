@@ -38,8 +38,6 @@
     "angular-translate": "^2.14.0",
     "angular-translate-handler-log": "^2.14.0",
     "angular-translate-loader-static-files": "^2.14.0",
-    "angular-translate-storage-cookie": "^2.14.0",
-    "angular-translate-storage-local": "^2.14.0",
     "angular-translate-interpolation-messageformat": "^2.14.0",
     "angular-sanitize": "~1.6.0"
   },
