@@ -8,6 +8,22 @@
 
 ## Released
 
+### v1.5.0-rc3 | 2017 - Week 5
+
+#### Adds
+- [IMPAC-99] Change routes for widgets :index and :show
+- sso_session now passed as basic_auth param for widgets :show
+
+#### Fixes
+- [IMPAC-465] Fix dates picker positioning
+
+-------------------------------------------------------------
+
+### v1.5.0-rc2 | 2017 - Week 3
+- add v1.4.7 changes
+
+-------------------------------------------------------------
+
 ### v1.5.0-rc1 | 2017 - Week 1
 
 #### Adds
@@ -17,6 +33,25 @@
 #### Fixes
 - Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
 
+-------------------------------------------------------------
+
+### v1.4.7 | Week 3
+
+#### Adds
+- [IMPAC-453] New Widget: Debt Service Ratio
+- [IMPAC-456] New KPI: Debt Service Ratio
+- [IMPAC-460] New Widget: Current Ratio
+- [IMPAC-462] New KPI: Current Ratio
+- New setting: Offsets - Allows to set metadata[:offset] as a Hash of arrays
+- Can now inject text before/after caption of common-time-period-info
+
+#### Fixes
+- [IMPAC-420] Fix sync-apps poller on change organisation
+- [IMPAC-421] Fix kpis bar dates picker initialization
+- [IMPAC-440] fix aged payables & receivables sorting bugs
+- [IMPAC-463] No KPIs data when changing to multi-organisation w/ shared dashboard(remove ng-repeat "track by" for kpis)
+- Add guarding for account-class-comparison getTotals method
+- Formatting of the "real_value" on KPIs
 
 -------------------------------------------------------------
 

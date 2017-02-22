@@ -23,7 +23,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
 
   # Widget specific methods
   # --------------------------------------
-  
+
   translate = (word) ->
     word = word.toLowerCase()
     translation = $translate.instant('impac.widget.account_class_comp.klass.' + word)
@@ -40,12 +40,14 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
           labelTranslate: summary.classification_key if summary.classification_key?
           value: klass
         }
-      )
-      $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
-        value: w.metadata.classification || $scope.classifications[0].value
-      })
+
+      if !$scope.selectedClassification
+        $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
+          value: w.metadata.classification || $scope.classifications[0].value
+        })
 
   $scope.getTotals = ->
+    return [] unless $scope.selectedClassification
     amount = _.find(w.content.summary, (sum) ->
       sum.classification == $scope.selectedClassification.value
     ).totals

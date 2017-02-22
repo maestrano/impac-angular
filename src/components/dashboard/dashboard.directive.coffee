@@ -10,7 +10,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-    $scope.widgetsList = ImpacDashboardsSvc.getWidgetsTemplates()
+    $scope.widgetsTemplates = ImpacDashboardsSvc.getWidgetsTemplates()
 
     # assets
     # -------------------------------------
@@ -248,14 +248,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       )
 
     $scope.selectedCategory = 'accounts'
-    $scope.isCategorySelected = (aCatName) ->
-      if $scope.selectedCategory? && aCatName?
-        return $scope.selectedCategory == aCatName
+    $scope.isCategorySelected = (category) ->
+      if $scope.selectedCategory? && category?
+        return $scope.selectedCategory == category
       else
         return false
 
-    $scope.selectCategory = (aCatName) ->
-      $scope.selectedCategory = aCatName
+    $scope.selectCategory = (category) ->
+      $scope.selectedCategory = category
 
     $scope.getSelectedCategoryName = ->
       if $scope.selectedCategory?
@@ -290,20 +290,19 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
         return false
 
     $scope.getWidgetsForSelectedCategory = ->
-      if $scope.selectedCategory? && $scope.widgetsList?
-        return _.select $scope.widgetsList, (aWidgetTemplate) ->
-          if aWidgetTemplate.metadata && aWidgetTemplate.metadata.template
-            widgetCategory = aWidgetTemplate.metadata.template.split('/')[0]
+      if $scope.selectedCategory? && $scope.widgetsTemplates?
+        return _.select $scope.widgetsTemplates, (template) ->
+          if template.metadata && template.metadata.template
+            widgetCategory = template.metadata.template.split('/')[0]
           else
-            widgetCategory = aWidgetTemplate.path.split('/')[0]
+            widgetCategory = template.endpoint.split('/')[0]
           widgetCategory == $scope.selectedCategory
       else
         return []
 
-    $scope.addWidget = (widgetPath, widgetMetadata=null) ->
-      params = {widget_category: widgetPath}
-      if widgetMetadata?
-        angular.extend(params, {metadata: widgetMetadata})
+    $scope.addWidget = (widgetTemplate) ->
+      params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata'])
+
       angular.element('#widget-selector').css('cursor', 'progress')
       angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'progress')
       ImpacWidgetsSvc.create(params).then(

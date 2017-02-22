@@ -78,10 +78,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     else return "current month"
 
   $scope.getOldestInvoice = (element) ->
-    idx = _.findIndex(element.totals, (invoice, index) ->
-      return index if invoice > 0
-    )
-    return w.content.dates[idx]
+    idx = _.findIndex(element.totals, (invoice) -> invoice != 0)
+    return w.content.dates[idx] || null
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
@@ -140,6 +138,14 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       res *= -1 unless $scope.ascending
       return res
 
+  sortByInvoiceCallback = (el) ->
+    date = $scope.getOldestInvoice(el)
+    # Date is a date-string representation of a period returned formatted from Impac! API.
+    # It may contain symbols to signify further meaning, e.g " < 30 Nov 2015*". This
+    # cleanses the symbols, formatting a valid Date for sorting.
+    date = date.match(/[^_\W]+\s?/g).join('') if date && _.isString(date)
+    new Date(date)
+
   sortData = ->
     if $scope.sortedColumn == 'customer'
       sortBy(w.content.payables.suppliers, (el) -> el.name )
@@ -148,8 +154,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       sortBy(w.content.payables.suppliers, (el) -> $scope.getTotalSum(el) )
       sortBy(w.content.receivables.customers, (el) -> $scope.getTotalSum(el) )
     else if $scope.sortedColumn == 'invoice'
-      sortBy(w.content.payables.suppliers, (el) -> $scope.getOldestInvoice(el) )
-      sortBy(w.content.receivables.customers, (el) -> $scope.getOldestInvoice(el) )
+      sortBy(w.content.payables.suppliers, sortByInvoiceCallback)
+      sortBy(w.content.receivables.customers, sortByInvoiceCallback)
 
   $scope.sort = (col) ->
     if $scope.sortedColumn == col
@@ -175,8 +181,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-      dates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+      dates = _.map(w.content.dates, (date, index) -> $filter('mnoDate')(date, period))
 
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)
@@ -186,6 +191,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
           all_values_are_positive &&= value >= 0
         )
       )
+
       options = {
         scaleBeginAtZero: all_values_are_positive,
         showXLabels: true,

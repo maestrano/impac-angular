@@ -66,8 +66,8 @@
           {{getSelectedCategoryName() | titleize}}
         </div>
         <div class="row lines">
-          <div class="col-md-4" ng-repeat="widgetPattern in getWidgetsForSelectedCategory()" style="padding: 0px 8px;">
-            <p ng-click="addWidget(widgetPattern.path, widgetPattern.metadata)" uib-tooltip="{{widgetPattern.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetPattern.icon}}" /> {{widgetPattern.name}} <i class="fa fa-plus-circle" /></p>
+          <div class="col-md-4" ng-repeat="widgetTemplate in getWidgetsForSelectedCategory()" style="padding: 0px 8px;">
+            <p ng-click="addWidget(widgetTemplate)" uib-tooltip="{{widgetTemplate.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetTemplate.icon}}" /> {{widgetTemplate.name}} <i class="fa fa-plus-circle" /></p>
           </div>
         </div>
       </div>
