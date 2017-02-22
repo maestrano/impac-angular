@@ -15,19 +15,23 @@ module.config(($qProvider)->
   $qProvider.errorOnUnhandledRejections(false)
 )
 
-module.config(($translateProvider, LOCALES) ->
+module.config(($translateProvider, ImpacThemingProvider) ->
+
+  settings = ImpacThemingProvider.$get().get().translateSettings
+
   # # Path to translations files
-  # $translateProvider.useStaticFilesLoader({
-  #   prefix: 'locales/',
-  #   suffix: '.json'
-  # })
+  if settings.customLocaleFiles.prefix
+    $translateProvider.useStaticFilesLoader({
+      prefix: settings.customLocaleFiles.prefix,
+      suffix: settings.customLocaleFiles.suffix
+    })
 
   # language strategy
   $translateProvider.useSanitizeValueStrategy('escapeParameters')
   $translateProvider.useMessageFormatInterpolation()
   $translateProvider.useMissingTranslationHandlerLog()
-  $translateProvider.preferredLanguage(LOCALES.preferredLanguage)
-  $translateProvider.fallbackLanguage(LOCALES.fallbackLanguage)
+  $translateProvider.preferredLanguage(settings.fallbackLanguage)
+  $translateProvider.fallbackLanguage(settings.preferredLanguage)
 
   # remember language
   # $translateProvider.useLocalStorage();

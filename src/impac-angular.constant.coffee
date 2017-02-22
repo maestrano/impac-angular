@@ -14,11 +14,9 @@ module.constant('IMPAC_EVENTS',
   kpiPressEnterButton: 'on-kpi-press-enter-button'
 )
 
-module.constant('LOCALES', {
-  'locales': [
+module.constant('LOCALES',
+  list: [
     { id: 'en-gb', name: 'English (GB)' }
     { id: 'zh-HK', name: 'Chinese (HK)' }
-  ],
-  'preferredLanguage': 'en-gb',
-  'fallbackLanguage': 'zh-HK'
-})
+  ]
+)
