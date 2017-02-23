@@ -47,7 +47,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
           filterQueryRules.push (filterQueryCondition) if settingsTag.tags.length != 0
 
         if filterQuery['rules'].length==0 then filterQuery = {}
-        console.log filterQuery
 
         return {filter_query: filterQuery}
 
@@ -72,8 +71,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
             ruletag['text'] = tagtext
             settingRule['tags'].push(ruletag)
           settingsTags .push(settingRule)
-
-        console.log settingsTags
 
         return settingsTags
 
