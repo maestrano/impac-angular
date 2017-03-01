@@ -2435,14 +2435,14 @@ body {
   }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -2734,400 +2734,6 @@ body {
 
 }
 
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
-}
-.analytics .settings.accounting-behaviour {
-
-  .btn.btn-primary {
-    background-color: lighten(@impac-widget-link-color, 10%);
-    border: solid 1px @impac-widget-link-color;
-    &.focus, &.active { background-color: @impac-widget-link-color; }
-  }
-
-}
-
-.analytics .settings.attach-kpis {
-  .attach-kpi {
-    padding: 8px 5px;
-
-    form .row {
-      padding-bottom: 5px;
-    }
-
-    .attach-kpi-form {
-      background-color: white;
-      border: 1px solid #ddd;
-      padding: 5px;
-    }
-
-    form .row.kpi-description {
-      padding: 10px 2px;
-      span {
-        display: block;
-        font-weight: bold;
-        font-size: 13px;
-      }
-    }
-
-    form.attach-kpi-form {
-      input.attach-target {
-        background-color: white;
-        height: inherit;
-      }
-    }
-
-    .error-messages {
-      color: @brand-danger;
-      width: 120px;
-    }
-  }
-
-  .attached-kpis {
-    padding: 5px;
-  }
-
-  .list-group-item.attached-kpi {
-    padding: 5px 10px;
-
-    .attached-kpi-name {
-      overflow: hidden;
-      width: 75%;
-      display: inline-block;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      margin-top: 3px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .actions {
-      padding-top: 2px;
-      .alerts-config {
-        display: inline-block;
-        text-align: left;
-        padding-left: 4px;
-        height: 20px;
-        border-radius: 40px;
-        width: 21px;
-        color: @mblue;
-        background-color: white;
-        border: solid 1px @mblue;
-
-        &:hover { cursor: pointer; }
-      }
-      .edit-attached-kpi {
-        display: inline-block;
-        i {
-          border-radius: 10px;
-          width: 21px;
-          color: @mblue;
-          background-color: white;
-          height: 20px;
-          padding: 3px 5px 5px 5px;
-          border: solid 1px @mblue;
-          &:hover { cursor: pointer; }
-        }
-      }
-      .remove-attached-kpi {
-        display: inline-block;
-        i {
-          border-radius: 10px;
-          width: 21px;
-          color: @brand-danger;
-          background-color: white;
-          height: 20px;
-          padding: 3px 5px 5px 5px;
-          border: solid 1px @brand-danger;
-          &:hover { cursor: pointer; }
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: 20px;
-  }
-}
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  button.btn.btn-sm {
-    line-height: 1;
-    &.date-button { margin: 0px 5px; }
-    &.btn-danger { display: none; }
-    &.btn-info { border-radius: 3px; }
-  }
-
-  .tooltip-inner { text-transform: none; }
-
-  .dropdown-menu > li > div > table { outline: none; }
-}
-
-.analytics .widget-item .content .settings.hist-mode-choser {
-  max-height: 70px;
-
-  [common-time-period-info] {
-    padding-bottom: 8px;
-  }
-
-  .options {
-    width: 150px;
-    margin: auto;
-    padding-bottom: 8px;
-    border-bottom: solid 1px #e6e6e6;
-    .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
-    a {
-      .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
-      text-transform: @impac-widget-hist-text-transform;
-      &.active {
-        color: @impac-widget-link-color;
-      }
-    }
-  }
-  .arrow-container {
-    width: 28px;
-    height: 28px;
-    position: relative;
-    top: -14px;
-    margin: auto;
-    &.right {
-      left: 46px;
-    }
-    &.left {
-      left: -30px;
-    }
-    .arrow-border {
-      border-top: 14px solid #e6e6e6;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      width: 0px;
-      height: 0px;
-    }
-    .arrow {
-      border-top: 14px solid @impac-widget-background-color;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      position: relative;
-      top: 12px;
-      width: 0px;
-      height: 0px;
-    }
-  }
-}
-
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
-}
-
-.analytics .settings.offsets {
-  .offset-value {
-    font-style: italic;
-    font-size: 13px;
-  }
-
-  .offset-value .fa-trash-o {
-    &:hover {
-      color: @brand-danger;
-      cursor: pointer;
-    }
-    margin-left: 10px;
-  }
-
-  input { width: 75%; }
-  button { width: 30px; }
-}
-
-.analytics .settings.organizations {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
-.analytics .widget-item .content .settings.param-selector {
-  display: inline-block;
-
-  &.classic {
-    width: 100%;
-
-    select {
-      width: 100%;
-      height: 25px;
-      border: 1px solid #ccc;
-      text-transform: uppercase;
-      margin: 0px 0px 5px 0px;
-    }
-  }
-
-  a {
-    font-weight: normal;
-    color: @impac-widget-param-selector-color;
-    white-space: nowrap;
-  }
-  .options-container {
-    position: absolute;
-    background-color: white;
-    text-align: left;
-    min-width: 150px;
-    max-height: 200px;
-    z-index: 999;
-    overflow-y: auto;
-    overflow-x: hidden;
-    .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
-
-    div {
-      padding: 3px 5px;
-    }
-    div:hover {
-      cursor: pointer;
-      background-color: @impac-widget-param-selector-color;
-      color: white;
-    }
-
-    &::-webkit-scrollbar {
-      width: 8px;
-      background-color: darken(@lightgray,5%);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: @impac-widget-param-selector-color;
-      &:hover {
-        background-color: lighten(@impac-widget-param-selector-color,5%);
-      }
-    }
-  }
-}
-
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    margin: 0;
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-  label {
-    display: flex;
-    justify-content: center;
-    line-height: 14px;
-  }
-}
-
-.analytics .widget-item .content .settings.params-picker {
-  padding: 0px 10px;
-  .parameter {
-    margin: 0px 3px 3px 0px;
-    padding: 3px 5px;
-    background-color: @impac-widget-params-picker-bg;
-    color: white;
-    border: solid 1px @impac-widget-params-picker-bg;
-    border-radius: 4px;
-    cursor: move;
-    font-weight: bold;
-    white-space: nowrap;
-    float: left;
-    input[type="checkbox"] {
-      margin: 0px -3px 0px 3px;
-      vertical-align: middle;
-      height: inherit;
-      outline: none;
-      cursor: pointer;
-    }
-    .badge {
-      margin-right: 3px;
-      font-size: 10px;
-      background-color: darken(@impac-widget-background-color, 5%);
-      color: @impac-widget-params-picker-bg;
-      padding: 2px 6px;
-    }
-
-    &.unchecked {
-      background-color: inherit;
-      font-weight: normal;
-      color: inherit;
-      border-color: @impac-widget-params-picker-unchecked-bg;
-      .badge {
-        background-color: @impac-widget-params-picker-unchecked-bg;
-        color: white;
-      }
-    }
-  }
-}
-.analytics .settings.time-period {
-  padding: 0px 5px;
-
-  select {
-    height: 22px;
-    width: 100%;
-  }
-  
-  & > .row {
-    margin: 0px -5px 7px -5px;
-    & > div {
-      padding: 0px 5px;
-      position: static;
-    }
-
-    .sub-setting { padding: 5px; }
-  }
-}
-
-.analytics .widget-item .content .settings.width {
-  float: right;
-  font-size: 14px;
-  i {
-    color: silver;
-    cursor: pointer;
-    &.reduce {
-      margin-right: -10px;
-    }
-    &.expand {
-      margin-right: -3px;
-    }
-  }
-}
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -3218,35 +2824,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .price {
-    .center-bold(75px);
-  }
-
-  .legend {
-    max-height: 125px;
-  }
-}
-
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    overflow: visible;
-  }
-}
-
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -3310,6 +2887,35 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .price {
+    .center-bold(75px);
+  }
+
+  .legend {
+    max-height: 125px;
+  }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    overflow: visible;
+  }
+}
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -3347,19 +2953,16 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-profit-and-loss {
-  .drill-down-widget();
-
-  .row.lines-group.profit {
-    border-top: solid 1px;
-    border-bottom: double;
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
   }
 
-  .right-panel .widget-lines-container {
-    max-height: 215px;
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
   }
-
-  .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
 .analytics .widget-item .content.accounts-payable-receivable {
@@ -3376,16 +2979,19 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.lines-group.profit {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
+  .right-panel .widget-lines-container {
+    max-height: 215px;
   }
+
+  .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
 .analytics .widget-item .content.accounts-ratios {
@@ -3506,6 +3112,9 @@ body {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.hr-salaries-summary {
+  .expandable-filterable-widget();
+}
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -3520,9 +3129,6 @@ body {
   .price {
     .center-bold(0px);
   }
-}
-.analytics .widget-item .content.hr-salaries-summary {
-  .expandable-filterable-widget();
 }
 .analytics .widget-item .content.hr-timesheets {
   .currency {
@@ -3548,11 +3154,11 @@ body {
   }
 }
 
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
+}
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
@@ -3677,6 +3283,9 @@ body {
     .scrollable(scroll);
   }
 }
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -3691,9 +3300,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -3883,6 +3489,400 @@ body {
           padding-top: 8px;
         }
       }
+    }
+  }
+}
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
+.analytics .settings.accounting-behaviour {
+
+  .btn.btn-primary {
+    background-color: lighten(@impac-widget-link-color, 10%);
+    border: solid 1px @impac-widget-link-color;
+    &.focus, &.active { background-color: @impac-widget-link-color; }
+  }
+
+}
+
+.analytics .settings.attach-kpis {
+  .attach-kpi {
+    padding: 8px 5px;
+
+    form .row {
+      padding-bottom: 5px;
+    }
+
+    .attach-kpi-form {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+
+    form .row.kpi-description {
+      padding: 10px 2px;
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    }
+
+    form.attach-kpi-form {
+      input.attach-target {
+        background-color: white;
+        height: inherit;
+      }
+    }
+
+    .error-messages {
+      color: @brand-danger;
+      width: 120px;
+    }
+  }
+
+  .attached-kpis {
+    padding: 5px;
+  }
+
+  .list-group-item.attached-kpi {
+    padding: 5px 10px;
+
+    .attached-kpi-name {
+      overflow: hidden;
+      width: 75%;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .actions {
+      padding-top: 2px;
+      .alerts-config {
+        display: inline-block;
+        text-align: left;
+        padding-left: 4px;
+        height: 20px;
+        border-radius: 40px;
+        width: 21px;
+        color: @mblue;
+        background-color: white;
+        border: solid 1px @mblue;
+
+        &:hover { cursor: pointer; }
+      }
+      .edit-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @mblue;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @mblue;
+          &:hover { cursor: pointer; }
+        }
+      }
+      .remove-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @brand-danger;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @brand-danger;
+          &:hover { cursor: pointer; }
+        }
+      }
+    }
+  }
+}
+
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: 20px;
+  }
+}
+.analytics .widget-item .content .settings.hist-mode-choser {
+  max-height: 70px;
+
+  [common-time-period-info] {
+    padding-bottom: 8px;
+  }
+
+  .options {
+    width: 150px;
+    margin: auto;
+    padding-bottom: 8px;
+    border-bottom: solid 1px #e6e6e6;
+    .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+    a {
+      .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+      text-transform: @impac-widget-hist-text-transform;
+      &.active {
+        color: @impac-widget-link-color;
+      }
+    }
+  }
+  .arrow-container {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top: -14px;
+    margin: auto;
+    &.right {
+      left: 46px;
+    }
+    &.left {
+      left: -30px;
+    }
+    .arrow-border {
+      border-top: 14px solid #e6e6e6;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      width: 0px;
+      height: 0px;
+    }
+    .arrow {
+      border-top: 14px solid @impac-widget-background-color;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      position: relative;
+      top: 12px;
+      width: 0px;
+      height: 0px;
+    }
+  }
+}
+
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
+}
+
+.analytics .settings.organizations {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
+.analytics .widget-item .content .settings.param-selector {
+  display: inline-block;
+
+  &.classic {
+    width: 100%;
+
+    select {
+      width: 100%;
+      height: 25px;
+      border: 1px solid #ccc;
+      text-transform: uppercase;
+      margin: 0px 0px 5px 0px;
+    }
+  }
+
+  a {
+    font-weight: normal;
+    color: @impac-widget-param-selector-color;
+    white-space: nowrap;
+  }
+  .options-container {
+    position: absolute;
+    background-color: white;
+    text-align: left;
+    min-width: 150px;
+    max-height: 200px;
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
+
+    div {
+      padding: 3px 5px;
+    }
+    div:hover {
+      cursor: pointer;
+      background-color: @impac-widget-param-selector-color;
+      color: white;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: darken(@lightgray,5%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: @impac-widget-param-selector-color;
+      &:hover {
+        background-color: lighten(@impac-widget-param-selector-color,5%);
+      }
+    }
+  }
+}
+
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+  }
+}
+
+.analytics .widget-item .content .settings.params-picker {
+  padding: 0px 10px;
+  .parameter {
+    margin: 0px 3px 3px 0px;
+    padding: 3px 5px;
+    background-color: @impac-widget-params-picker-bg;
+    color: white;
+    border: solid 1px @impac-widget-params-picker-bg;
+    border-radius: 4px;
+    cursor: move;
+    font-weight: bold;
+    white-space: nowrap;
+    float: left;
+    input[type="checkbox"] {
+      margin: 0px -3px 0px 3px;
+      vertical-align: middle;
+      height: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+    .badge {
+      margin-right: 3px;
+      font-size: 10px;
+      background-color: darken(@impac-widget-background-color, 5%);
+      color: @impac-widget-params-picker-bg;
+      padding: 2px 6px;
+    }
+
+    &.unchecked {
+      background-color: inherit;
+      font-weight: normal;
+      color: inherit;
+      border-color: @impac-widget-params-picker-unchecked-bg;
+      .badge {
+        background-color: @impac-widget-params-picker-unchecked-bg;
+        color: white;
+      }
+    }
+  }
+}
+.analytics .settings.time-period {
+  padding: 0px 5px;
+
+  select {
+    height: 22px;
+    width: 100%;
+  }
+  
+  & > .row {
+    margin: 0px -5px 7px -5px;
+    & > div {
+      padding: 0px 5px;
+      position: static;
+    }
+
+    .sub-setting { padding: 5px; }
+  }
+}
+
+.analytics .widget-item .content .settings.width {
+  float: right;
+  font-size: 14px;
+  i {
+    color: silver;
+    cursor: pointer;
+    &.reduce {
+      margin-right: -10px;
+    }
+    &.expand {
+      margin-right: -3px;
     }
   }
 }
