@@ -264,19 +264,6 @@ angular
               # Layout
               kpi.layout = kpiResp.layout
 
-              # Extra Params
-              # Get the corresponding template of the KPI loaded
-              kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
-              # Set the kpi name from the template
-              kpi.name = kpiTemplate? && kpiTemplate.name
-              # If the template contains extra params we add it to the KPI
-              if kpiTemplate? && kpiTemplate.extra_params?
-                kpi.possibleExtraParams = kpiTemplate.extra_params
-                # Init the extra params select boxes with the first param
-                _.forIn(kpi.possibleExtraParams, (paramValues, param)->
-                  (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
-                )
-
               return kpi
 
             (err) ->
