@@ -80,8 +80,6 @@ angular
         return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
           (results)->
 
-            _.remove(_self.config.kpisTemplates, -> true)
-
             orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
             ssoSessionId = results[0].sso_session
 
@@ -102,6 +100,9 @@ angular
 
             return $q.all(promises).then(
               (response) ->
+                # Clear store
+                _.remove(_self.config.kpisTemplates, -> true)
+
                 if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
                   # fill array with new values from Impac! api
                   for template in response.impac.data.kpis
