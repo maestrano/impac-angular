@@ -20,6 +20,7 @@
 - Ability to show a 'Apply changes' button on time period setting
 
 #### Fixes
+- [IMPAC-495] KPI accounts from previous organization appearing in select box
 - [IMPAC-328] refresh KPIs after first sync
 - [IMPAC-485] Fix drill down widget selection params
 - [IMPAC-329] Better KPIs dates management: API driven defaults

@@ -17,7 +17,6 @@ angular
         fetchKpiData = ->
           ImpacKpisSvc.show($scope.kpi).then((renderedKpi)->
             angular.extend $scope.kpi, renderedKpi
-
             # Extra Params
             # Get the corresponding template of the KPI loaded
             kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
