@@ -105,6 +105,8 @@ angular
             bls: "Live"
         timePeriod:
           showSlider: true
+        tagging:
+          enableFilterTags: false
 
 
     #=======================================
