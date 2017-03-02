@@ -3,10 +3,10 @@ module = angular.module('impac.components.widgets-settings.formula',[])
 module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
 
   w = $scope.parentWidget
-  w.formula = ""
+  w.formula = ''
 
   # # Only authorize mathematical expressions
-  authorized_regex = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$")
+  AUTHORIZED_REGEXP = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$")
 
   setting = {}
   setting.key = "formula"
@@ -16,17 +16,17 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
     if w.metadata? && w.metadata.formula?
       w.formula = w.metadata.formula
       $timeout () ->
-        evaluateFormula()
+        prepareFormula()
         setting.isInitialized = true
     else
-      w.formula = ""
+      w.formula = ''
 
   setting.toMetadata = ->
-    evaluateFormula()
+    prepareFormula()
     if w.isFormulaCorrect
       return { formula: w.formula }
     else
-      return { formula: "" }
+      return { formula: '' }
 
   getFormula = ->
     return w.formula
@@ -35,41 +35,49 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
     return $filter('mnoCurrency')(anAccount.current_balance,anAccount.currency)
 
   $scope.$watch getFormula, (e) ->
-    evaluateFormula()
+    prepareFormula()
 
-  evaluateFormula = ->
-    str = angular.copy(w.formula)
-    legend = angular.copy(w.formula)
-    i=1
-    angular.forEach(w.selectedAccounts, (account) ->
-      balancePattern = "\\{#{i}\\}"
-      str = str.replace(new RegExp(balancePattern, 'g'), " #{account.current_balance_no_format} ")
-      legend = legend.replace(new RegExp(balancePattern, 'g'), account.name)
-      i++
-    )
+  # Assesses whether a formula is valid and format the result and legend
+  prepareFormula = ->
+    interpolatedFormula = interpolateInFormula(w.formula, w.selectedAccounts, 'current_balance')
 
-    # Guard against injection
-    if (!str.match(authorized_regex))
-      w.isFormulaCorrect = false
-      w.evaluatedFormula = "invalid expression"
-
-    try
-      w.evaluatedFormula = eval(str).toFixed(2)
-    catch e
-      w.evaluatedFormula = "invalid expression"
-
-    if !w.evaluatedFormula? || w.evaluatedFormula == "invalid expression" || w.evaluatedFormula == "Infinity" || w.evaluatedFormula == "-Infinity"
-      w.isFormulaCorrect = false
-    else
-      formatFormula()
-      w.legend = legend
+    if (evaluatedFormula = evaluateFormula(interpolatedFormula))
+      w.evaluatedFormula = formatFormula(evaluatedFormula, w.formula, w.selectedAccounts)
+      w.legend = interpolateInFormula(w.formula, w.selectedAccounts, 'name')
       w.isFormulaCorrect = true
+    else
+      w.evaluatedFormula = 'invalid expression'
+      w.legend = '...'
+      w.isFormulaCorrect = false
 
-  formatFormula = ->
-    if !w.formula.match(/\//g) && w.selectedAccounts?
-      if firstAcc = w.selectedAccounts[0]
-        if currency = firstAcc.currency
-          w.evaluatedFormula = $filter('mnoCurrency')(w.evaluatedFormula, currency)
+  # Replaces each account reference ({1} + {2}...) by a member of the corresponding account object
+  interpolateInFormula = (sourceFormula, selectedAccounts, accountMember) ->
+    interpolation = sourceFormula
+    return interpolation if _.isEmpty(selectedAccounts)
+    for account, i in selectedAccounts
+      pattern = new RegExp("\\{#{i+1}\\}", 'g')
+      interpolation = interpolation.replace(pattern, " #{account[accountMember]} ")
+    return interpolation
+
+  # Guards against injection and verifies the calculation is finite
+  evaluateFormula = (interpolatedFormula) ->
+    return false unless interpolatedFormula.match(AUTHORIZED_REGEXP)
+    try
+      evaluation = eval(interpolatedFormula).toFixed(2)
+      if isFinite(evaluation) then return evaluation else return false
+    catch e
+      return false
+  
+  # The expression is a ration if a '/' can be found...
+  isRatio = (sourceFormula) ->
+    sourceFormula.match(/\//g)
+
+  # Adds a currency to the expression if it is not a ratio and a currency can be found
+  formatFormula = (evaluation, sourceFormula, selectedAccounts)->
+    return evaluation if isRatio(sourceFormula) || _.isEmpty(selectedAccounts)
+    firstAccount = selectedAccounts[0]
+    return evaluation unless (currency = firstAccount.currency)
+    $filter('mnoCurrency')(evaluation, currency)
 
   w.settings.push(setting)
 
