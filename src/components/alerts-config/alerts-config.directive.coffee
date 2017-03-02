@@ -82,7 +82,7 @@ module.directive('alertsConfig', ($uibModal, $templateCache, $compile, ImpacKpis
         for alert in $scope.kpi.alerts
           $scope.alerts[alert.service].active = true
 
-      $scope.modal = $uibModal.open(alertsSettingsModal.options)
+        $scope.modal = $uibModal.open(alertsSettingsModal.options)
 
       $scope.showRecipientList = (alert) ->
         alert.active && alert.service == 'email' && $scope.members
