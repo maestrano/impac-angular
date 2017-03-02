@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -29,6 +29,11 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
+
+  # Display filter tags based on settings
+  # --------------------------------------
+  $scope.areFilterTagsEnabled = ->
+    ImpacTheming.get().widgetSettings.tagging.enableFilterTags
 
   # Init dates
   # --------------------------------------

@@ -4,7 +4,7 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-tag-filter parent-widget="widget" class="part" deferred="::tagFilterDeferred" />
+    <div setting-tag-filter ng-show="areFilterTagsEnabled()" parent-widget="widget" class="part" deferred="::tagFilterDeferred" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
