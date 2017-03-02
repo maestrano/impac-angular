@@ -50,6 +50,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       refreshDashboard = ->
         # Reloads all the widgets contents
         ImpacWidgetsSvc.refreshAll(true)
+        # Reloads all the kpis contents
+        ImpacKpisSvc.refreshAll(true)
         # Opens the modal if errors are present
         scope.triggerSyncAlertsModal() if _.any(scope.connectors, (c) -> isError(c))
 

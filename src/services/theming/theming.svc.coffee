@@ -46,6 +46,7 @@ angular
       dhbKpisConfig:
         enableKpis: true
         parentElementId: ''
+        enableDatesPicker: true
       # alert notifications options
       alertsConfig:
         enableAlerts: true

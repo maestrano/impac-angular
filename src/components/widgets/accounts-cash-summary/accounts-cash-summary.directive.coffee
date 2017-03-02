@@ -31,13 +31,15 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       if w.metadata.selectedElement
+        # Attempt to find the selectedElement by statement name
         $scope.selectedElement = _.find(w.content.summary, (statement)->
-          statement.name == w.metadata.selectedElement.name
+          statement.name == w.metadata.selectedElement
         )
         if !$scope.selectedElement
+          # Attempt to find the selectedElement by statement account id
           angular.forEach(w.content.summary, (statement) ->
             $scope.selectedElement ||= _.find(statement.accounts, (account)->
-              account.id == w.metadata.selectedElement.id
+              account.id == w.metadata.selectedElement
             ) if statement.accounts?
           )
       sortData()
@@ -195,7 +197,9 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     selectedElementSetting.initialized = true
 
   selectedElementSetting.toMetadata = ->
-    {selectedElement: $scope.selectedElement}
+    return {selectedElement: null} unless $scope.selectedElement?
+    {selectedElement: $scope.selectedElement.id || $scope.selectedElement.name }
+
 
   w.settings.push(selectedElementSetting)
 
