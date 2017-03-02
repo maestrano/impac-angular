@@ -7,7 +7,7 @@ angular
 # ====================================
 # Getters
 # ====================================
-    @config = 
+    @config =
       organizations: []
       currentOrganization: {}
       userData: {}
@@ -46,7 +46,7 @@ angular
         $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
           ImpacNotifications.load()
           deferred.resolve(_self.config)
-          $log.info("Impac! - MainSvc: loaded (force=#{force})") 
+          $log.info("Impac! - MainSvc: loaded (force=#{force})")
         ,(error) ->
           $log.error("Impac! - MainSvc: failed to load configuration")
           deferred.reject(error)
@@ -65,12 +65,15 @@ angular
         # Init
         _self.config.organizations = []
         _self.config.currentOrganization = {}
+        _self.config.currentOrgMembers = []
 
         ImpacLinking.getOrganizations().then (success) ->
 
           if success.organizations? && success.organizations.length > 0
             _self.config.organizations = success.organizations
+            _self.config.currentOrgMembers = success.currentOrgMembers
             _self.setCurrentOrganization(success.currentOrgId)
+
             $log.info("Impac! - MainSvc: Organizations loaded (force=#{force})")
           else
             $log.info("Impac! - MainSvc: retrieved empty organizations list")
@@ -144,7 +147,7 @@ angular
 
       else
         $log.warn "Impac! - MainSvc: User data load locked. Trying again in 1s"
-        $timeout (-> 
+        $timeout (->
           _self.loadUserData(force).then(
             (success) -> deferred.resolve(success)
             (errors) -> deferred.reject(errors)
