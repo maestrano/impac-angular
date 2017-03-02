@@ -39,7 +39,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
           angular.forEach  settingsTag.tags, (filterItem) ->
             # TODO: Put ruletag generation in a function
             ruletag = {}
-            ruletag['id'] = filterItem['id']
             ruletag['name'] = filterItem['name'] if filterItem['name']?
             ruletag['value'] = filterItem['value']
             filterQueryCondition['rules'].push(ruletag)
@@ -65,7 +64,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
             # TODO: Put ruletag generation in a function
             tagtext = if filterQueryRuleCondition['name']? then filterQueryRuleCondition['name'] + ":" + filterQueryRuleCondition['value'] else filterQueryRuleCondition['value']
             ruletag = {}
-            ruletag['id'] = filterQueryRuleCondition['id'] if filterQueryRuleCondition['id']
             ruletag['name'] = filterQueryRuleCondition['name'] if filterQueryRuleCondition['name']?
             ruletag['value'] = filterQueryRuleCondition['value']
             ruletag['text'] = tagtext
@@ -88,7 +86,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
               tagtext = if tag_ref['name']? then tag_ref['name'] + ":" + tag['value'] else tag['value']
               ruletag = {}
               ruletag['text'] = tagtext
-              ruletag['id'] = tag['id']
               ruletag['name'] = tag_ref['name'] if tag_ref['name']?
               ruletag['value'] = tag['value']
               autotags.push(ruletag)
