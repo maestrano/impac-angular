@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities) ->
+module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -35,6 +35,11 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     {label: 'Total for period', value: 'total'},
   ]
   setAmountDisplayed()
+
+  # Display filter tags based on settings
+  # --------------------------------------
+  $scope.areFilterTagsEnabled = ->
+    ImpacTheming.get().widgetSettings.tagging.enableFilterTags
 
   # Widget specific methods
   # --------------------------------------
