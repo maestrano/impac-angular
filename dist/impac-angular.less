@@ -190,6 +190,9 @@
 @kpi-settings-error-color:                     @brand-danger;
 @kpi-settings-remove-background:               #4c4749;
 @kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+@kpi-settings-alert-config-background:         #4c4749;
+@kpi-settings-alert-config-background-hover:   @mblue;
+@kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
 
 .font(@size,@weight,@color) {
   font-weight:@weight;
@@ -1319,19 +1322,42 @@ body {
       color: @impac-widget-text-color-medium;
       user-select: none;
 
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
       &.active {
         color: @mblue;
         font-weight: bold;
         background-color: transparent;
         border-color: #c4caca;
       }
-
-      &:hover { cursor: pointer; }
     }
 
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
     }
   }
 }
@@ -2004,14 +2030,18 @@ body {
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
     }
+
 
     .kpi-target-watchable,
     .kpi-target-unit {
@@ -2044,6 +2074,19 @@ body {
   .kpi-edit,
   .kpi-no-data {
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
   }
 
   button.kpi-remove.im-fab.im-warn {
@@ -2553,18 +2596,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
   .widget-lines-container {
@@ -2585,6 +2616,18 @@ body {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 
@@ -2686,11 +2729,10 @@ body {
   .edit {
     .edit-panel-style();
     padding: 5px;
-    .part {
-      width: 49%;
-    }
+    overflow: visible;
   }
 }
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
