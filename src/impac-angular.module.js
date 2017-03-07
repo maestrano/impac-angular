@@ -157,6 +157,7 @@ angular.module('impac.services',
     'impac.services.alerts',
     'impac.services.notifications',
     'impac.services.events',
+    'impac.services.currency-rates'
   ]
 );
 /*
