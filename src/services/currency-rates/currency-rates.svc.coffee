@@ -35,7 +35,7 @@ angular
                 rates.push rate
 
             $log.info("Impac! - CurrencyRatesSvc: ratesForPeriod params #{params}")
-            return {organizations: params.metadata.organization_ids, currencyRates: rates }
+            return rates
 
           (err) ->
             $log.error('Impac! - CurrencyRatesSvc: Cannot retrieve current rates :', err)
@@ -55,13 +55,12 @@ angular
       return url
 
   #  @ratesForPeriod= (hist_parameters) ->
-    #      org = ["org-fbbj"]
     #      currencyRates = []
     #      currencyRates.push({base_currency: 'USD', transaction_currency: 'AUD', date: moment.parse('2017-02-20'), rate: 1.30423})
     #      currencyRates.push({base_currency: 'USD', transaction_currency: 'AUD', date: moment.parse('2017-02-17'), rate: 1.29898})
     #      currencyRates.push({base_currency: 'USD', transaction_currency: 'AUD', date: moment.parse('2017-02-12'), rate: 1.30216})
     #      currencyRates.push({base_currency: 'USD', transaction_currency: 'AUD', date: moment.parse('2017-02-10'), rate: 1.31136})
-    #      return {organizations: org, currencyRates: currencyRates}
+    #      return currencyRates
 
     return @
   )
