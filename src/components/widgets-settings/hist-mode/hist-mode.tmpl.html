@@ -2,8 +2,8 @@
   <div common-time-period-info context="forwardParams" />
 
   <div align="center" class="options">
-    <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">{{ getCurrentLabel() }} </a> |
-    <a ng-click="toggleHistMode('history')" ng-class="parentWidget.isHistoryMode ? 'active' : 'inactive'">history</a>
+    <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'" translate>{{ getCurrentLabel() }} </a> |
+    <a ng-click="toggleHistMode('history')" ng-class="parentWidget.isHistoryMode ? 'active' : 'inactive'" translate>impac.widget.settings.hist.history</a>
   </div>
 
   <div class="{{parentWidget.isHistoryMode ? 'arrow-container right' : 'arrow-container left'}}">

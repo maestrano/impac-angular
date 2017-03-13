@@ -1,15 +1,15 @@
 <div widget-sales-cycle>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_cycle.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-params-picker options="statusOptions" param="status_selection" has-reach="hasReach" parent-widget="widget" class="part" deferred="::paramsPickerDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_cycle.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_cycle.save</button>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
     <div ng-show="(isDataFound==true)" class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">
-        <span>Your sales cycle represents how much time your leads stay set to each status</span>
+        <span translate>impac.widget.sales_cycle.your_sales_cycle</span>
       </div>
     </div>
 

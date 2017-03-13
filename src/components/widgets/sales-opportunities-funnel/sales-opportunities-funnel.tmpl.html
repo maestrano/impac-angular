@@ -1,15 +1,15 @@
 <div widget-sales-opportunities-funnel>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_funnel.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-params-picker options="statusOptions" has-reach="hasReach" param="sales_stage_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred1" />
     <div setting-params-picker options="assigneesOptions" has-reach="hasReach" param="assignees_selection" parent-widget="widget" class="part" deferred="::paramsPickerDeferred2" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_funnel.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_funnel.save</button>
     </div>
   </div>
 
@@ -20,7 +20,7 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6': 'col-md-12'">
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
-        <div class="legend">Your opportunities, sorted by sales stage</div>
+        <div class="legend" translate>impac.widget.sales_funnel.legend</div>
 
         <div class="funnel-container">
           <div class="tile" ng-repeat="elem in funnel" ng-click="toggleSelectStatus(elem.status)">
@@ -32,20 +32,18 @@
 
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
 
-        <div ng-hide="selectedStatus" class="currency">
-          Select a sales stage to display a list of the corresponding opportunities
-        </div>
+        <div ng-hide="selectedStatus" class="currency" translate>impac.widget.sales_funnel.select_a_sales</div>
 
         <div ng-show="selectedStatus" class="widget-lines-container">
 
           <!-- Header -->
           <div class="row widget-line header">
             <div class="col-xs-6 sortable-title" ng-click="sort('group')">
-              Assignees / Opportunities
+              {{'impac.widget.sales_funnel.assignees_opportunities' | translate}}
               <i ng-show="sortedColumn == 'group'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-6 text-right sortable-title" ng-click="sort('total')">
-              Potential per assignee
+              {{'impac.widget.sales_funnel.assignees_opportunities' | translate}}
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>

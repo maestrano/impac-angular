@@ -1,13 +1,13 @@
 <div widget-sales-list>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_list.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_list.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_list.save</button>
     </div>
   </div>
 
@@ -21,14 +21,14 @@
       </div>
       <div class="row widget-line header">
         <div class="col-xs-4 text-left sortable-title" ng-click="sort('account')">
-          Products
+          {{'impac.widget.sales_list.products' | translate}}
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
         <div class="col-xs-4 text-center">
           <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred" />
         </div>
         <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
-          Total
+          {{'impac.widget.sales_list.total' | translate}}
           <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
         </div>
       </div>
@@ -73,7 +73,7 @@
     </div>
 
     <div class="data-not-found" ng-show="(isDataFound==false)">
-      <div class="message">No data found for this time range<br/> Please select another one</div>
+      <div class="message" translate="impac.widget.sales_list.no_data_found"></div>
     </div>
 
   </div>

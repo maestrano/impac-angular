@@ -1,7 +1,7 @@
 
 # Impac! Angular run module
 # ---------------------------------------------
-module = angular.module('impac.run', [])
+module = angular.module('maestrano.impac')
 
 module.run((ImpacAlerts)->
   # Eager Loading the service 'ImpacAlerts', this can be removed when

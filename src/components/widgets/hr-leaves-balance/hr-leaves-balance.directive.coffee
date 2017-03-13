@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets.hr-leaves-balance',[])
 
-module.controller('WidgetHrLeavesBalanceCtrl', ($scope, $q) ->
+module.controller('WidgetHrLeavesBalanceCtrl', ($scope, $q, $translate) ->
 
   w = $scope.widget
 
@@ -43,6 +43,25 @@ module.controller('WidgetHrLeavesBalanceCtrl', ($scope, $q) ->
 
     return angular.copy(e)
 
+  # translate
+  employee = $scope.getEmployee()
+  name = employee && employee.leaves[0].name
+  if name
+    $scope.vacationLeaves_translation = name
+  else
+    $translate('impac.widget.hr_leaves_balance.vacation_leaves').then(
+      (translation) ->
+        $scope.vacationLeaves_translation = translation
+    )
+
+  name = employee && employee.leaves[1].name
+  if name
+    $scope.sickLeaves_translation = name
+  else
+    $translate('impac.widget.hr_leaves_balance.sick_leaves').then(
+      (translation) ->
+        $scope.sickLeaves_translation = translation
+    )
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

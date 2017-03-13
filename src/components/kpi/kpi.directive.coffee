@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $timeout, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('impacKpi', ($log, $timeout, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS, $translate) ->
     return {
       restrict: 'EA'
       scope: {
@@ -76,8 +76,8 @@ angular
         $scope.possibleExtraParams = []
         $scope.targets = {}
         $scope.possibleTargets = [
-          { label: 'below', mode: 'min' }
-          { label: 'over', mode: 'max' }
+          { label: $translate.instant('impac.kpi.below'), mode: 'min' }
+          { label: $translate.instant('impac.kpi.over'), mode: 'max' }
         ]
 
         $scope.kpi.isLoading = true

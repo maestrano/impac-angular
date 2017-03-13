@@ -1,7 +1,7 @@
 <div class="analytics modal-custom-calculation">
   <div class="modal-header">
     <div class="close" type="button" ng-click="cancel()" >×</div>
-    <h3>Custom Calculation</h3>
+    <h3 translate>impac.widget.account_cust_calc.formula.title</h3>
   </div>
 
   <div class="modal-body">
@@ -21,13 +21,13 @@
       <div setting-time-period parent-widget="widget" class="part col-md-6" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" hide-chart-interval="true" apply-changes-callback="updateWidgetSettings()" />
     </div>
 
-    <p>Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: ({1} + {2}) / {3})</p>
+    <p translate="impac.widget.account_cust_calc.formula.explanations" translate-values="{example: '({1} + {2}) / {3})' }"></p>
 
     <div class='row'>
       <div ng-show="widget.isLoading" class='col-md-6 loader' align="center">
         <div>
           <i class="fa fa-spinner fa-pulse fa-3x"></i>
-          <p>Your data is being retrieved...</p>
+          <p translate>impac.widget.account_cust_calc.formula.data_retrieved</p>
         </div>
       </div>
 
@@ -48,13 +48,13 @@
           <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
         </div>
       </div>
-      
+
       <div ng-hide="widget.isLoading" class='col-md-6'>
-        <p>Type your formula just below:</p>
+        <p translate>impac.widget.account_cust_calc.formula.type_here</p>
         <input class='form-control' ng-model="widget.formula">
 
-        <p>Result: {{widget.evaluatedFormula}}</p>
-        <p>Legend: {{widget.legend}}</p>
+        <p translate="impac.widget.account_cust_calc.formula.result" translate-values="{result: widget.evaluatedFormula}"></p>
+        <p translate="impac.widget.account_cust_calc.formula.legend" translate-values="{legend: widget.legend}"></p>
       </div>
     </div>
   </div>
@@ -62,13 +62,13 @@
   <div class="modal-footer">
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-gray" ng-click="cancel()" ng-hide="widget.isLoading" ng-disabled="isLoading">Cancel</button>
+        <button class="btn btn-gray" ng-click="cancel()" ng-hide="widget.isLoading" ng-disabled="isLoading" translate>impac.widget.account_cust_calc.formula.cancel</button>
         <button class="btn btn-warning" ng-click="proceed()" ng-hide="widget.isLoading" ng-disabled='!widget.isFormulaCorrect || widget.isLoading'>
           <i class="fa fa-spinner fa-pulse loader" ng-show="isLoading"></i>
-          Save
+          {{'impac.widget.account_cust_calc.formula.save' | translate}}
         </button>
       </div>
-      
+
     </div>
   </div>
 </div>

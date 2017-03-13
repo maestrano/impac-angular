@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-comparison',[])
 
-module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc, ImpacWidgetsSvc) ->
+module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormatterSvc, ImpacWidgetsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -33,20 +33,22 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       $scope.filterOptions = [
-        {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
-        {label: 'value sold (excl. taxes)', value: 'net_value_sold'},
-        {label: 'quantity sold', value: 'quantity_sold'},
+        {label: $translate.instant('impac.widget.sales_comparison.value_sold_taxes'), value: 'gross_value_sold'},
+        {label: $translate.instant('impac.widget.sales_comparison.value_sold_no_taxes'), value: 'net_value_sold'},
+        {label: $translate.instant('impac.widget.sales_comparison.quantity_sold'), value: 'quantity_sold'}
       ]
+
       $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        w.metadata && w.metadata.filter == o.value
-      ) || $scope.filterOptions[0])
+          w.metadata && w.metadata.filter == o.value
+        ) || $scope.filterOptions[0])
 
       $scope.criteriaOptions = [
-        {label: 'products', value: 'default'},
-        {label: 'locations', value: 'location'},
-        {label: 'industries', value: 'industry'},
-        {label: 'customers', value: 'customer'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.products'), value: 'default'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.locations'), value: 'location'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.industries'), value: 'industry'},
+        {label: $translate.instant('impac.widget.sales_comparison.criteria_options.customers'), value: 'customer'}
       ]
+
       $scope.criteria = angular.copy(_.find($scope.criteriaOptions, (o) ->
         w.metadata && w.metadata.criteria == o.value
       ) || $scope.criteriaOptions[0])

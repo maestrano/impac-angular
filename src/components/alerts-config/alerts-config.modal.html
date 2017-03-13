@@ -1,11 +1,13 @@
 <div class="kpi-alerts-settings">
 
-  <div class="modal-header">
-    Alerts settings
+  <div class="modal-header" translate>
+    impac.kpi.alerts.title
   </div>
 
   <div class="modal-body">
-    Alert me when <strong>{{kpi.name}} ({{kpi.element_watched}})</strong> is <u>{{translateTarget(kpi)}}</u> :
+    <span translate="impac.kpi.alerts.explanation"
+          translate-values="{name: kpi.name,  element_watched: kpi.element_watched}"></span>
+    <u>{{translateTarget(kpi)}}</u> :
 
     <ul class="list-group">
 
@@ -42,8 +44,8 @@
   </div>
 
   <div class="modal-footer text-right">
-    <button class="btn btn-default" ng-click="modal.close()">Cancel</button>
-    <button class="btn btn-primary" ng-click="save(alerts)"><strong>Save</strong></button>
+    <button class="btn btn-default" ng-click="modal.close()" translate>impac.kpi.alerts.cancel</button>
+    <button class="btn btn-primary" ng-click="save(alerts)" translate><strong>impac.kpi.alerts.save</strong></button>
   </div>
 
 </div>

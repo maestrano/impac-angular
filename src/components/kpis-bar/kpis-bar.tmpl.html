@@ -16,12 +16,10 @@
 
   <div class="content">
     <div class="row title" ng-if="kpis.length == 0 && availableKpis.kpiSelectorHidden">
-      <span class="badge">New!</span>
+      <span class="badge" translate>impac.kpi_bar.new</span>
       <div class="col-xs-12 text-center">
-        <a href="" class="show-dashboard" ng-click="availableKpis.toggle()" ng-show="hasKpiAvailability()">
-          You can now attach KPIs to your dashboard
-        </a>
-        <span class="no-kpi-templates" ng-hide="hasKpiAvailability()">No KPIs are available for your dashboard</span>
+        <a href="" class="show-dashboard" ng-click="availableKpis.toggle()" ng-show="hasKpiAvailability()" translate>impac.kpi_bar.you_can_now</a>
+        <span class="no-kpi-templates" ng-hide="hasKpiAvailability()" translate>impac.kpi_bar.no_kpis</span>
       </div>
     </div>
 
@@ -38,7 +36,7 @@
                   </div>
                   <div class="col-xs-9 col-sm-9 kpi-text">
                     <span class="caption"><strong>{{kpi.name}}</strong></span>
-                    <span class="emphasis">Add to dashboard</span>
+                    <span class="emphasis" translate>impac.kpi_bar.add_to_dashboard</span>
                   </div>
                 </div>
               </div>

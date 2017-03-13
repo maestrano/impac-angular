@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-assets-vs-liabilities',[])
 
-module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -14,11 +14,20 @@ module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFor
     $scope.chartDeferred.promise
   ]
 
+  # Translate ASSET and LIABILITY
+  $translate(['impac.widget.acc_ass_vs_liab.asset.one',
+             'impac.widget.acc_ass_vs_liab.liability.one']).then(
+    (translation) ->
+      $scope.classificationTranslation =
+        "ASSET": translation['impac.widget.acc_ass_vs_liab.asset.one'].toUpperCase()
+        "LIABILITY": translation['impac.widget.acc_ass_vs_liab.liability.one'].toUpperCase()
+  )
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
-    
+
     if $scope.isDataFound
       index=0
       $scope.companiesList = _.map w.content.companies, (company) ->
@@ -34,6 +43,7 @@ module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFor
 
         index++
         result
+      $scope.titleTranslation
 
   $scope.assetsColor = ChartFormatterSvc.getColor(0)
   $scope.liabilitiesColor = ChartFormatterSvc.getColor(1)
@@ -45,15 +55,14 @@ module.controller('WidgetAccountsAssetsVsLiabilitiesCtrl', ($scope, $q, ChartFor
   #   else
   #     ChartFormatterSvc.getColor(_.indexOf(w.selectedAccounts, anAccount))
 
-
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
       datasets = _.map w.content.summary, (sum) ->
-        if _.includes ['ASSET', 'LIABILITY'], sum.classification
-          { title: sum.classification, values: sum.totals }
+        if _.includes ['ASSET', 'LIABILITY'], sum.classification  # Add extra translations above if more classification
+          { title: $scope.classificationTranslation[sum.classification], values: sum.totals }
 
       datasets = _.sortByOrder(datasets, ['title'])
 

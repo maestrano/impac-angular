@@ -1,13 +1,13 @@
 <div widget-accounts-assets-vs-liabilities>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.acc_ass_vs_liab.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.acc_ass_vs_liab.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.acc_ass_vs_liab.save</button>
     </div>
   </div>
 
@@ -16,8 +16,10 @@
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend" style="max-height: 115px;">
         <div class="title">
-          <i class="fa fa-circle" style="color: {{assetsColor}};"> Assets</i> |
-          <i class="fa fa-circle" style="color: {{liabilitiesColor}};"> Liabilities</i>
+          <i class="fa fa-circle" style="color: {{assetsColor}};"
+          translate="impac.widget.acc_ass_vs_liab.asset.many"></i> |
+          <i class="fa fa-circle" style="color: {{liabilitiesColor}};"
+          translate="impac.widget.acc_ass_vs_liab.liability.many"></i>
         </div>
         <div class="row">
           <div ng-repeat="data in companiesList" ng-class="{'col-md-6': (widget.content.companies.length > 1), 'col-md-12': (widget.content.companies.length == 1)}">
