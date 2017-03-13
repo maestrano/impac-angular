@@ -16,8 +16,9 @@
       </div>
     </div>
 
-    <div class="edit">
-      <div setting-organizations parent-widget="widget" class="part" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+    <div class="edit row">
+      <div setting-organizations parent-widget="widget" class="part col-md-6" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+      <div setting-time-period parent-widget="widget" class="part col-md-6" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" hide-chart-interval="true" apply-changes-callback="updateWidgetSettings()" />
     </div>
 
     <p translate="impac.widget.account_cust_calc.formula.explanations" translate-values="{example: '({1} + {2}) / {3})' }"></p>

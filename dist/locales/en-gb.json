@@ -180,7 +180,7 @@
   "impac.kpi.alerts.title":                       "Alerts settings",
   "impac.kpi.alerts.explanation":                 "Alert me when <strong>{name} ({element_watched})</strong> is",
   "impac.kpi.alerts.service.inapp":               "With in-app notifications",
-  "impac.kpi.alerts.service.email":               "By sending me an email {EMAIL, select, hasEmail{ at {email}} other{}}",
+  "impac.kpi.alerts.service.email":               "By sending me an email to: {EMAIL, select, hasEmail{ at {email}} other{}}",
   "impac.kpi.alerts.target":                      "{TARGET, select, below{below} over{over} other{}} {value} {unit}",
   "impac.kpi.alerts.cancel":                      "@:impac.common.action.cancel",
   "impac.kpi.alerts.save":                        "@:impac.common.action.save",

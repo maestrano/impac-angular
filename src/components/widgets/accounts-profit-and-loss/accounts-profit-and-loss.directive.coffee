@@ -71,12 +71,14 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         $scope.selectedElements = []
 
         for sElem in w.metadata.selectedElements
-          foundElem = _.find(w.content.summary, (statement) -> statement.name == sElem.name )
+          # Attempt to find element by statement name
+          foundElem = _.find(w.content.summary, (statement) -> statement.name == sElem)
 
           unless foundElem
             for statement in w.content.summary
               if statement.accounts?
-                foundElem ||= _.find(statement.accounts, (account) -> sElem.account_id == account.account_id )
+                # Attempt to find element by statement account id
+                foundElem ||= _.find(statement.accounts, (account) -> account.account_id == sElem)
 
           $scope.selectedElements.push(foundElem) if foundElem
 
@@ -250,7 +252,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
+      matcher = (if element.account_id? then 'account_id' else 'name')
+      element[matcher]
+    )
+    {selectedElements: selectedElementsMetadata}
 
   w.settings.push(selectedElementsSetting)
 

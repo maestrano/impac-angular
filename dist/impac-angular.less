@@ -190,6 +190,9 @@
 @kpi-settings-error-color:                     @brand-danger;
 @kpi-settings-remove-background:               #4c4749;
 @kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+@kpi-settings-alert-config-background:         #4c4749;
+@kpi-settings-alert-config-background-hover:   @mblue;
+@kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
 
 .font(@size,@weight,@color) {
   font-weight:@weight;
@@ -1319,19 +1322,42 @@ body {
       color: @impac-widget-text-color-medium;
       user-select: none;
 
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
       &.active {
         color: @mblue;
         font-weight: bold;
         background-color: transparent;
         border-color: #c4caca;
       }
-
-      &:hover { cursor: pointer; }
     }
 
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
     }
   }
 }
@@ -2004,14 +2030,18 @@ body {
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
     }
+
 
     .kpi-target-watchable,
     .kpi-target-unit {
@@ -2044,6 +2074,19 @@ body {
   .kpi-edit,
   .kpi-no-data {
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
   }
 
   button.kpi-remove.im-fab.im-warn {
@@ -2686,11 +2729,10 @@ body {
   .edit {
     .edit-panel-style();
     padding: 5px;
-    .part {
-      width: 49%;
-    }
+    overflow: visible;
   }
 }
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -3072,6 +3114,9 @@ body {
   }
 }
 
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -3111,9 +3156,30 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
 }
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -3141,30 +3207,6 @@ body {
     }
   }
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
@@ -3203,22 +3245,6 @@ body {
     margin-bottom: 5px;
   }
 }
-.analytics .widget-item .content.sales-top-customers {
-  .selector {
-    border-bottom: dashed 1px #E6E6E6;
-    padding-bottom: 3px;
-    a { font-weight: normal; }
-    .param-selector { display: inline-block; }
-  }
-  .widget-lines-container {
-    max-height: 235px;
-    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
-
-    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
-    .row > [class*='col-'] { position: static; }
-  }
-}
-
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -3267,6 +3293,22 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-top-customers {
+  .selector {
+    border-bottom: dashed 1px #E6E6E6;
+    padding-bottom: 3px;
+    a { font-weight: normal; }
+    .param-selector { display: inline-block; }
+  }
+  .widget-lines-container {
+    max-height: 235px;
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
+
+    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
+    .row > [class*='col-'] { position: static; }
+  }
+}
+
 .analytics .widget-item {
   .editable-title {
     width: 100%;
@@ -3315,12 +3357,6 @@ body {
     }
   }
   // }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
 }
 
 .analytics .widget-item .info-panel {
@@ -3382,6 +3418,12 @@ body {
       .value { text-align: justify; }
     }
   }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
 }
 
 .analytics .widget-item .top-line .top-buttons {

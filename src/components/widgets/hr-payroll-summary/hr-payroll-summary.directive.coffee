@@ -35,18 +35,17 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
-      if w.metadata.selectedElements
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.summary, (statement)->
-            statement.name == sElem.name
-          )
+          # Attempt to find element by statement name
+          foundElem = _.find(w.content.summary, (statement)-> statement.name == sElem)
 
-          if !foundElem
+          unless foundElem
             angular.forEach(w.content.summary, (statement) ->
-              foundElem ||= _.find(statement.employees, (employee)->
-                sElem.id == employee.id
-              ) if statement.employees?
+              if statement.employees?
+                # Attempt to find element by statement employee id
+                foundElem ||= _.find(statement.employees, (employee)-> employee.id == sElem)
             )
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -259,7 +258,12 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
+      matcher = (if element.id? then 'id' else 'name')
+      element[matcher]
+    )
+    {selectedElements: selectedElementsMetadata}
 
   w.settings.push(selectedElementsSetting)
 

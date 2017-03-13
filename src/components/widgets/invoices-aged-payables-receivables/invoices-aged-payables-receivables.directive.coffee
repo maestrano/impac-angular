@@ -34,18 +34,21 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
-      if w.metadata.selectedElements
+      unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = w.content.payables if sElem.name == "aged_payables"
-          foundElem = w.content.receivables if sElem.name == "aged_receivables" && !foundElem
+          # Attempt to find element by content type name
+          foundElem = w.content.payables if sElem == "aged_payables"
+          foundElem = w.content.receivables if sElem == "aged_receivables" && !foundElem
 
+          # Attempt to find element by supplier id
           foundElem = _.find(w.content.payables.suppliers, (supplier)->
-            supplier.id == sElem.id
+            supplier.id == sElem
           ) if !foundElem
 
+          # Attempt to find element by customer id
           foundElem = _.find(w.content.receivables.customers, (customer)->
-            customer.id == sElem.id
+            customer.id == sElem
           ) if !foundElem
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -224,7 +227,12 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
+      matcher = (if element.id? then 'id' else 'name')
+      element[matcher]
+    )
+    {selectedElements: selectedElementsMetadata}
 
   w.settings.push(selectedElementsSetting)
 

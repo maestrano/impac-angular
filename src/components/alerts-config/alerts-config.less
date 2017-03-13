@@ -17,19 +17,42 @@
       color: @impac-widget-text-color-medium;
       user-select: none;
 
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
       &.active {
         color: @mblue;
         font-weight: bold;
         background-color: transparent;
         border-color: #c4caca;
       }
-
-      &:hover { cursor: pointer; }
     }
 
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
     }
   }
 }
