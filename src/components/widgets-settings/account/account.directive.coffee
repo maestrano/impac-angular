@@ -50,7 +50,7 @@ module.directive('settingAccount', ($templateCache, $translate) ->
     },
 
     link: (scope, element) ->
-      scope.label = $translate.instant('impac.widgets-settings.account.label') if !scope.label
+      scope.label = $translate.instant('impac.widget.settings.account.label') if !scope.label
 
     ,template: $templateCache.get('widgets-settings/account.tmpl.html'),
     controller: 'SettingAccountCtrl'
