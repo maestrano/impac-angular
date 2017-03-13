@@ -29,7 +29,6 @@ module.config(($translateProvider, ImpacThemingProvider) ->
   # language strategy
   $translateProvider.useSanitizeValueStrategy('escapeParameters')
   $translateProvider.useMessageFormatInterpolation()
-  $translateProvider.useMissingTranslationHandlerLog()
-  $translateProvider.preferredLanguage(settings.fallbackLanguage)
-  $translateProvider.fallbackLanguage(settings.preferredLanguage)
+  $translateProvider.preferredLanguage(settings.preferredLanguage)
+  $translateProvider.fallbackLanguage(settings.fallbackLanguage)
 )
