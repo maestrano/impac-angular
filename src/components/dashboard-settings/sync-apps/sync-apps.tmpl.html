@@ -1,7 +1,7 @@
 <!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
 <div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
-  <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
+  <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="'mouseenter'" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
     <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
     <span class="ng-hide" ng-show="isSyncing" translate>impac.components.sync_apps.syncing</span>
     <span ng-hide="isSyncing" translate>impac.components.sync_apps.show_sync_status</span>
