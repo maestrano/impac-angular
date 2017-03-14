@@ -579,7 +579,7 @@
   "impac.widget.sales_funnel.legend":         "Your opportunities, sorted by sales stage",
   "impac.widget.sales_funnel.select_a_sales": "Select a sales stage to display a list of the corresponding opportunities",
   "impac.widget.sales_funnel.assignees_opportunities": "Assignees / Opportunities",
-  "impac.widget.sales_funnel.assignees_opportunities": "Potential per assignee",
+  "impac.widget.sales_funnel.potential_per_assignee": "Potential per assignee",
 
   "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_performance.save":               "@:impac.common.action.save",
