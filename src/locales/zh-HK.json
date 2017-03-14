@@ -579,7 +579,7 @@
   "impac.widget.sales_funnel.legend":         "你好 你好, 你好 你好 你好 你好",
   "impac.widget.sales_funnel.select_a_sales": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.widget.sales_funnel.assignees_opportunities": "你好 / 你好",
-  "impac.widget.sales_funnel.assignees_opportunities": "你好 你好 你好",
+  "impac.widget.sales_funnel.potential_per_assignee": "你好 你好 你好",
 
   "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
   "impac.widget.sales_performance.save":               "@:impac.common.action.save",
