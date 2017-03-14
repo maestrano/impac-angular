@@ -94,7 +94,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         return true
 
   translateCategories = (categories) ->
-    _.map categories, (category) ->
+    _.each(categories, (category) ->
       $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
         (translation) ->
           $scope.categories.push({label: translation, key: category})
@@ -102,6 +102,8 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         (translationId) ->  # If there is no translation, keep the original
           $scope.categories.push({label: category.toLowerCase(), key: category})
       )
+      return
+    )
 
   sortAccountsBy = (getElem) ->
     angular.forEach($scope.categories, (cat) ->
