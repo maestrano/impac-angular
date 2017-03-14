@@ -2734,6 +2734,9 @@ body {
 
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2752,9 +2755,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2802,16 +2802,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-cash-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -2821,6 +2811,16 @@ body {
   .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -2953,6 +2953,18 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
+  }
+}
+
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -2967,18 +2979,6 @@ body {
     .center-bold(0px);
   }
 }
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
-  }
-}
-
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3154,11 +3154,11 @@ body {
   }
 }
 
-.analytics .widget-item .content.invoices-list {
-  .simple-list-widget();
-}
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
+}
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
 }
 .analytics .widget-item .content.sales-aged {
   .tall-widget();

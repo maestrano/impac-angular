@@ -590,7 +590,7 @@
   "impac.widget.sales_performance.total_won":          "Total won",
   "impac.widget.sales_performance.select_an_employee": "Select an employee or team to display the corresponding opportunities won/lost.",
   "impac.widget.sales_performance.pick_the_status":    "Pick the status that should be considered as 'Closed Won' and 'Closed Lost' in your widget settings.",
-  "impac.widget.sales_performance.total_won":          "Total won :",
+  "impac.widget.sales_performance.total_won_with_colon":          "Total won :",
   "impac.widget.sales_performance.forecast":           "Forecast",
   "impac.widget.sales_performance.closed_won":         "Closed Won",
   "impac.widget.sales_performance.closed_lost":        "Closed Lost",

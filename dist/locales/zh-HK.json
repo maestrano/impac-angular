@@ -590,7 +590,7 @@
   "impac.widget.sales_performance.total_won":          "你好 你好",
   "impac.widget.sales_performance.select_an_employee": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好/你好.",
   "impac.widget.sales_performance.pick_the_status":    "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好' 你好 '你好 你好' 你好 你好 你好 你好.",
-  "impac.widget.sales_performance.total_won":          "你好 你好 :",
+  "impac.widget.sales_performance.total_won_with_colon": "你好 你好 :",
   "impac.widget.sales_performance.forecast":           "你好",
   "impac.widget.sales_performance.closed_won":         "你好 你好",
   "impac.widget.sales_performance.closed_lost":        "你好 你好",
