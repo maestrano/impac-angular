@@ -8,11 +8,13 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
   $scope.orgDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.timePeriodDeferred.promise
   ]
 
   # Configure the commonTimePeriodInfo directive
@@ -27,13 +29,14 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
     if $scope.isDataFound
 
-      $scope.classifications = _.map w.content.summary, (summary) ->
+      $scope.classifications = _.map(w.content.summary, (summary) ->
         klass = summary.classification
         {
           label: _.capitalize(klass.toLowerCase())
           value: klass
         }
         # return { label: _.capitalize(summary.toLowerCase()), value: summary }
+      )
 
       if !$scope.selectedClassification
         $scope.selectedClassification = angular.copy(_.find $scope.classifications, {
@@ -41,6 +44,7 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
         })
 
   $scope.getTotals = ->
+    return [] unless $scope.selectedClassification
     amount = _.find(w.content.summary, (sum) ->
       sum.classification == $scope.selectedClassification.value
     ).totals

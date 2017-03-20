@@ -7,7 +7,7 @@ angular
 # ====================================
 # Getters
 # ====================================
-    @config = 
+    @config =
       organizations: []
       currentOrganization: {}
       userData: {}
@@ -22,6 +22,14 @@ angular
     @userIsKpiEnabled = ->
       _self.config.userData.kpi_enabled
 
+#====================================
+# Callbacks
+#====================================
+    @callbacks = {}
+
+    @callbacks.organizationChanged = $q.defer()
+    @organizationChanged = ->
+      return _self.callbacks.organizationChanged.promise
 
 # ====================================
 # Load and initialize
@@ -38,7 +46,7 @@ angular
         $q.all([_self.loadOrganizations(force), _self.loadUserData(force)]).then (results) ->
           ImpacNotifications.load()
           deferred.resolve(_self.config)
-          $log.info("Impac! - MainSvc: loaded (force=#{force})") 
+          $log.info("Impac! - MainSvc: loaded (force=#{force})")
         ,(error) ->
           $log.error("Impac! - MainSvc: failed to load configuration")
           deferred.reject(error)
@@ -57,12 +65,15 @@ angular
         # Init
         _self.config.organizations = []
         _self.config.currentOrganization = {}
+        _self.config.currentOrgMembers = []
 
         ImpacLinking.getOrganizations().then (success) ->
 
           if success.organizations? && success.organizations.length > 0
             _self.config.organizations = success.organizations
+            _self.config.currentOrgMembers = success.currentOrgMembers
             _self.setCurrentOrganization(success.currentOrgId)
+
             $log.info("Impac! - MainSvc: Organizations loaded (force=#{force})")
           else
             $log.info("Impac! - MainSvc: retrieved empty organizations list")
@@ -83,10 +94,12 @@ angular
       if _self.config.organizations? && _self.config.organizations.length > 0
         _self.config.currentOrganization = _self.config.organizations[0]
         $log.info("Impac! - MainSvc: first organization set as current by default")
+        _self.callbacks.organizationChanged.notify(_self.config.currentOrganization)
         return true
       else
-        _self.config.currentOrganization = {}
         $log.error("Impac! - MainSvc: cannot set default current organization")
+        _self.config.currentOrganization = {}
+        _self.callbacks.organizationChanged.notify(false)
         return {error: {code: 400, message: "cannot set default current organization"}}
 
     @setCurrentOrganization = (id=null) ->
@@ -95,6 +108,7 @@ angular
 
         if !_.isEmpty(fetchedOrg)
           _self.config.currentOrganization = fetchedOrg
+          _self.callbacks.organizationChanged.notify(_self.config.currentOrganization)
           return true
         else
           $log.error("Impac! - MainSvc: organization: #{id} not found in organizations list")
@@ -133,7 +147,7 @@ angular
 
       else
         $log.warn "Impac! - MainSvc: User data load locked. Trying again in 1s"
-        $timeout (-> 
+        $timeout (->
           _self.loadUserData(force).then(
             (success) -> deferred.resolve(success)
             (errors) -> deferred.reject(errors)

@@ -190,6 +190,9 @@
 @kpi-settings-error-color:                     @brand-danger;
 @kpi-settings-remove-background:               #4c4749;
 @kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+@kpi-settings-alert-config-background:         #4c4749;
+@kpi-settings-alert-config-background-hover:   @mblue;
+@kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
 
 .font(@size,@weight,@color) {
   font-weight:@weight;
@@ -1319,19 +1322,42 @@ body {
       color: @impac-widget-text-color-medium;
       user-select: none;
 
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
       &.active {
         color: @mblue;
         font-weight: bold;
         background-color: transparent;
         border-color: #c4caca;
       }
-
-      &:hover { cursor: pointer; }
     }
 
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
     }
   }
 }
@@ -2004,14 +2030,18 @@ body {
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
     }
+
 
     .kpi-target-watchable,
     .kpi-target-unit {
@@ -2044,6 +2074,19 @@ body {
   .kpi-edit,
   .kpi-no-data {
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
   }
 
   button.kpi-remove.im-fab.im-warn {
@@ -2508,56 +2551,6 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item {
-  .editable-title {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-    height: 22px;
-  }
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-  // }
-}
-
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 15px;
@@ -2617,6 +2610,56 @@ body {
       .value { text-align: justify; }
     }
   }
+}
+
+.analytics .widget-item {
+  .editable-title {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 22px;
+  }
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+  // }
 }
 
 .analytics .time-period-info {
@@ -2869,11 +2912,10 @@ body {
   .edit {
     .edit-panel-style();
     padding: 5px;
-    .part {
-      width: 49%;
-    }
+    overflow: visible;
   }
 }
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -2950,6 +2992,37 @@ body {
   }
 
   .row.widget-line.header > [class*='col-'] { position: static; }
+}
+
+.analytics .widget-item .content.accounts-ratios {
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
+
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
+    }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
+  }
+
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
+  }
 }
 
 .analytics .widget-item .content.hr-employee-details {
@@ -3210,6 +3283,9 @@ body {
     .scrollable(scroll);
   }
 }
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-list {
   .simple-list-widget();
   .widget-lines-container {
@@ -3224,9 +3300,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -3531,6 +3604,21 @@ body {
   }
 }
 
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -3550,21 +3638,6 @@ body {
     height: 20px;
   }
 }
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  button.btn.btn-sm {
-    line-height: 1;
-    &.date-button { margin: 0px 5px; }
-    &.btn-danger { display: none; }
-    &.btn-info { border-radius: 3px; }
-  }
-
-  .tooltip-inner { text-transform: none; }
-
-  .dropdown-menu > li > div > table { outline: none; }
-}
-
 .analytics .widget-item .content .settings.hist-mode-choser {
   max-height: 70px;
 
@@ -3652,6 +3725,24 @@ body {
     }
   }
 }
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 
@@ -3762,42 +3853,6 @@ body {
     }
   }
 }
-.analytics .settings.tag-filter {
-  padding: 0px 5px;
-
-  .btn.btn-default {
-    height: 32px; 
-    width: 30px;
-  }
-
-  .tag-lines-container {
-    padding: 0px 10px;
-    
-    .tag-line {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      .tags-col { position: static; }
-
-      tags-input {
-        .tags {
-          display: flex;
-          border-radius: 4px;
-          border: solid 1px #ccc;
-          .tag-item {
-            background: #79a2bb;
-            border-radius: 4px;
-            color: white;
-          }
-        }
-      }
-
-      .host { position: static; }
-    }
-  }
-}
-
 .analytics .settings.time-period {
   padding: 0px 5px;
 
