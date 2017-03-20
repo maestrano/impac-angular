@@ -106,7 +106,7 @@ angular
         timePeriod:
           showSlider: true
         tagging:
-          enableFilterTags: false
+          enableFilterTags: true
 
 
     #=======================================
