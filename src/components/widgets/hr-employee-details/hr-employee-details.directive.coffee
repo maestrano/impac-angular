@@ -18,6 +18,7 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
     $scope.paramSelectorDeferred2.promise
   ]
 
+  $scope.salaries = []
 
   # Widget specific methods
   # --------------------------------------
@@ -25,14 +26,14 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.employees)
 
       $scope.periodOptions = [
-        {label: 'Yearly', value: 'yearly'},
-        {label: 'Monthly', value: 'monthly'},
-        {label: 'Weekly', value: 'weekly'},
-        {label: 'Hourly', value: 'hourly'}
+        {label: 'per year', value: 'YEARLY'},
+        {label: 'per month', value: 'MONTHLY'},
+        {label: 'per week', value: 'WEEKLY'},
+        {label: 'per day', value: 'DAILY'}
       ]
       if w.metadata && w.metadata.period
         $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-          o.value == w.metadata.period.toLowerCase()
+          o.value == w.metadata.period.toUpperCase()
         ) || $scope.periodOptions[0])
       else
         $scope.period = angular.copy($scope.periodOptions[0])
@@ -43,10 +44,38 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
           label: "#{e.lastname} #{e.firstname}",
         }
       )
+      
+      employee = $scope.getEmployee()
       $scope.selectedEmployee = {
-        value: $scope.getEmployee().uid,
-        label: "#{$scope.getEmployee().lastname} #{$scope.getEmployee().firstname}",
+        value: employee.uid,
+        label: "#{employee.lastname} #{employee.firstname}",
       }
+
+      mapSalaries(employee, $scope.salaries)
+
+  # Map Employee salaries
+  mapSalaries = (employee, salariesArray) ->
+    _.remove(salariesArray, -> true)
+    for salary in employee.employee_salaries
+      tooltip = salary.name
+      if salary.hours_per_week
+        tooltip = "#{salary.name} (#{salary.hours_per_week}h per week)"
+
+      if (amount = salary.annual_salary)
+        salariesArray.push({
+          amount: amount,
+          currency: salary.currency,
+          period: 'Annual',
+          tooltip: tooltip
+        })
+      else if (amount = salary.hourly_rate)
+        salariesArray.push({
+          amount: amount,
+          currency: salary.currency,
+          period: 'Hourly',
+          tooltip: tooltip
+        })
+
 
   $scope.getSingleCompanyName = ->
     if w.content && w.content.organizations
@@ -66,7 +95,9 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter) ->
     else
       employee = angular.copy(w.content.employees[0])
 
-    employee.salary &&= $filter('mnoCurrency')(employee.salary.amount,employee.salary.currency)
+    if employee.salary?
+      employee.earnings = $filter('mnoCurrency')(employee.salary.amount, employee.salary.currency)
+    
     return employee
 
   $scope.formatAddress = (anAddress) ->
