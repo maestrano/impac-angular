@@ -1,8 +1,8 @@
 {
   "name": "impac-angular",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "author": {
-    "name": "Cesar Tonnoir",
+    "name": "Xaun Lopez",
     "email": "it@maestrano.com"
   },
   "main": "dist/impac-angular.js",

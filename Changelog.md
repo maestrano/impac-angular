@@ -8,6 +8,14 @@
 
 ## Released
 
+### v1.4.9 | 2017 - Week 13
+
+#### Adds
+- [IMPAC-521] Better layout for employee details (and other widgets)
+
+
+-------------------------------------------------------------
+
 ### v1.4.8 | Week 4
 
 #### Adds
