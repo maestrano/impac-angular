@@ -1,17 +1,17 @@
 # Impac! Frontend Changelog
 
-## Unreleased - development in progress
+### v1.4.10 | 2017 - Week 14
 
 
 -------------------------------------------------------------
--------------------------------------------------------------
-
-## Released
 
 ### v1.4.9 | 2017 - Week 13
 
 #### Adds
 - [IMPAC-521] Better layout for employee details (and other widgets)
+
+#### Dependencies
+- Impac! >= v1.5.3
 
 
 -------------------------------------------------------------
