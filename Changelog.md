@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
+- Aged Payables and Receivables to use common-currency-conversions directive
 
 -------------------------------------------------------------
 

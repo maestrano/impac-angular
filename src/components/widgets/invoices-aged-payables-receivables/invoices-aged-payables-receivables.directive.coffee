@@ -25,6 +25,8 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && (!_.isEmpty(w.content.payables) || !_.isEmpty(w.content.receivables)) && !_.isEmpty(w.content.dates)
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
 
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
@@ -164,6 +166,21 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+
+  buildFxTotals = ->
+    for contact in _.union(w.content.payables.suppliers, w.content.receivables.customers)
+      contactFxTotals = []
+      for fxTotal in contact.fx_totals
+        unless _.isEmpty(fxTotal)
+          _.mapKeys fxTotal, (total, currency) ->
+            if currency != w.metadata.currency
+              contactFxTotals.push({
+                currency: currency,
+                amount: total.amount,
+                rate: total.rate  
+              })  
+      unless _.isEmpty(contactFxTotals)
+        contact.formattedFxTotals = contactFxTotals
 
 
   # Chart formating function

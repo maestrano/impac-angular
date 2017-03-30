@@ -60,7 +60,7 @@
                       {{supplier.name}}
                     </div>
                     <div class="col-xs-3 text-right">
-                      {{getTotalSum(supplier) | mnoCurrency : supplier.currency}}
+                      {{getTotalSum(supplier) | mnoCurrency : supplier.currency}} <span common-currency-conversions fx-amounts="supplier.formattedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
                     </div>
                     <div class="col-xs-3 text-right">
                       <span tooltip="Oldest invoice: {{getOldestInvoice(supplier)}}" tooltip-placement="left">
@@ -101,7 +101,7 @@
                       {{customer.name}}
                     </div>
                     <div class="col-xs-3 text-right">
-                      <span>{{getTotalSum(customer) | mnoCurrency : customer.currency}}</span>
+                      <span>{{getTotalSum(customer) | mnoCurrency : customer.currency}} <span common-currency-conversions fx-amounts="customer.formattedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" /></span>
                     </div>
                     <div class="col-xs-3 text-right">
                       <span tooltip="Oldest invoice: {{getOldestInvoice(customer)}}" tooltip-placement="left">
