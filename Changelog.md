@@ -2,6 +2,8 @@
 
 ### v1.4.10 | 2017 - Week 14
 
+#### Adds
+- [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
 
 -------------------------------------------------------------
 
