@@ -39,7 +39,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
             angular.forEach(w.content.summary, (statement) ->
               if statement.employees?
                 # Attempt to find element by statement employee id
-                foundElem ||= _.find(statement.employees, (employee)-> employee.id == sElem)
+                foundElem ||= _.find(statement.employees, (employee)-> getIdentifier(employee) == sElem)
             )
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -104,8 +104,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.id? then 'id' else 'name')
-        sElem[matcher] == element[matcher]
+        getIdentifier(sElem) == getIdentifier(element)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -123,8 +122,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.isSelected = (element) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.id? then 'id' else 'name')
-      sElem[matcher] == element[matcher]
+      getIdentifier(sElem) == getIdentifier(element)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -146,6 +144,10 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  getIdentifier = (element)->
+    matcher = (if element.id? then 'id' else 'name')
+    element[matcher]
   # <---
 
   sortEmployeesBy = (getElem) ->
@@ -254,8 +256,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
     selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      matcher = (if element.id? then 'id' else 'name')
-      element[matcher]
+      getIdentifier(element)
     )
     {selectedElements: selectedElementsMetadata}
 

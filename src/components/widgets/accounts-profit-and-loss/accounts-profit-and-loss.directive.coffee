@@ -66,7 +66,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
             for statement in w.content.summary
               if statement.accounts?
                 # Attempt to find element by statement account id
-                foundElem ||= _.find(statement.accounts, (account) -> account.account_id == sElem)
+                foundElem ||= _.find(statement.accounts, (account) ->
+                  account.category = statement.name
+                  getIdentifier(account) == sElem
+                )
 
           $scope.selectedElements.push(foundElem) if foundElem
 
@@ -108,11 +111,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
-  $scope.toggleSelectedElement = (element) ->
+  $scope.toggleSelectedElement = (element, statement) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.account_id? then 'account_id' else 'name')
-        sElem[matcher] == element[matcher]
+        getIdentifier(sElem) == getIdentifier(element)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -120,6 +122,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
+      element.category = statement.name if statement
       $scope.selectedElements ||= []
       $scope.selectedElements.push(element)
       w.format()
@@ -130,8 +133,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.isSelected = (element) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.account_id? then 'account_id' else 'name')
-      sElem[matcher] == element[matcher]
+      getIdentifier(sElem) == getIdentifier(element)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -153,6 +155,10 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  getIdentifier = (element)->
+    matcher = (if element.account_id? then 'account_id' else 'name')
+    if element.category then "#{element.category}-#{element[matcher]}" else element[matcher]
   # <---
 
   sortAccountsBy = (getElem) ->
@@ -242,8 +248,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
     selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      matcher = (if element.account_id? then 'account_id' else 'name')
-      element[matcher]
+      getIdentifier(element)
     )
     {selectedElements: selectedElementsMetadata}
 

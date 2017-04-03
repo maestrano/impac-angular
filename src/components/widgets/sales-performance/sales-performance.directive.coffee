@@ -33,16 +33,8 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
       unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         angular.forEach(w.metadata.selectedElements, (sElem) ->
-          # Attempt to find element by statement name
-          foundElem = _.find(w.content.assignees, (statement)-> statement.name == sElem)
-
-          unless foundElem
-            angular.forEach(w.content.summary, (statement) ->
-              if statement.accounts?
-                # Attempt to find element by statement account id
-                foundElem ||= _.find(statement.accounts, (account)-> account.id == sElem)
-            )
-
+          # Attempt to find element by assignee name
+          foundElem = _.find(w.content.assignees, (assignee)-> getIdentifier(assignee) == sElem)
           $scope.selectedElements.push(foundElem) if foundElem
         )
       # Parameter which define showing 'Apply to all similar widgets' checkbox
@@ -98,8 +90,7 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.id? then 'id' else 'name')
-        sElem[matcher] == element[matcher]
+        getIdentifier(sElem) == getIdentifier(element)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -117,16 +108,19 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
 
   $scope.isSelected = (element) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.id? then 'id' else 'name')
-      sElem[matcher] == element[matcher]
+      getIdentifier(sElem) == getIdentifier(element)
     )
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
 
+  getIdentifier = (element)->
+    matcher = (if element.id? then 'id' else 'name')
+    element[matcher]
+  # <---
+
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-  # <---
 
   # Chart formating function
   # --------------------------------------
@@ -166,8 +160,7 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
     selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      matcher = (if element.id? then 'id' else 'name')
-      element[matcher]
+      getIdentifier(element)
     )
     {selectedElements: selectedElementsMetadata}
 

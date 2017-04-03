@@ -55,7 +55,7 @@
 
               <div class="row" collapse="isCollapsed(widget.content.payables)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(supplier)" ng-repeat="supplier in widget.content.payables.suppliers">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(supplier, 'payables')" ng-repeat="supplier in widget.content.payables.suppliers">
                     <div class="col-xs-5 col-xs-offset-1">
                       {{supplier.name}}
                     </div>
@@ -96,7 +96,7 @@
 
               <div class="row" collapse="isCollapsed(widget.content.receivables)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(customer)" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? 'selected' : null" >
+                  <div class="row widget-line" ng-click="toggleSelectedElement(customer, 'receivables')" ng-repeat="customer in widget.content.receivables.customers" ng-class="isSelected(customer) ? 'selected' : null" >
                     <div class="col-xs-5 col-xs-offset-1">
                       {{customer.name}}
                     </div>

@@ -39,12 +39,14 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
           # Attempt to find element by supplier id
           foundElem = _.find(w.content.payables.suppliers, (supplier)->
-            supplier.id == sElem
+            supplier.category = 'payables'
+            getIdentifier(supplier) == sElem
           ) if !foundElem
 
           # Attempt to find element by customer id
           foundElem = _.find(w.content.receivables.customers, (customer)->
-            customer.id == sElem
+            customer.category = 'receivables'
+            getIdentifier(customer) == sElem
           ) if !foundElem
 
           $scope.selectedElements.push(foundElem) if foundElem
@@ -82,11 +84,10 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
-  $scope.toggleSelectedElement = (element) ->
+  $scope.toggleSelectedElement = (element, category=null) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.id? then 'id' else 'name')
-        sElem[matcher] == element[matcher]
+        getIdentifier(sElem) == getIdentifier(element)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -95,6 +96,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
       $scope.selectedElements ||= []
+      element.category = category if category
       $scope.selectedElements.push(element)
       w.format()
       if !w.isExpanded()
@@ -104,8 +106,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.isSelected = (element) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.id? then 'id' else 'name')
-      sElem[matcher] == element[matcher]
+      getIdentifier(sElem) == getIdentifier(element)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -127,6 +128,11 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  getIdentifier = (element)->
+    matcher = (if element.id? then 'id' else 'name')
+    if element.category then "#{element.category}-#{element[matcher]}" else element[matcher]
+
   # <---
 
   sortBy = (data, getElem) ->
@@ -240,8 +246,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
     selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      matcher = (if element.id? then 'id' else 'name')
-      element[matcher]
+      getIdentifier(element)
     )
     {selectedElements: selectedElementsMetadata}
 

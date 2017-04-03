@@ -39,7 +39,8 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
           # Attempt to find the selectedElement by statement account id
           angular.forEach(w.content.summary, (statement) ->
             $scope.selectedElement ||= _.find(statement.accounts, (account)->
-              account.id == w.metadata.selectedElement
+              account.category = statement.name
+              getIdentifier(account) == w.metadata.selectedElement
             ) if statement.accounts?
           )
       sortData()
@@ -80,7 +81,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     element.name.replace(/_/g, " ") if element? && element.name?
 
 
-  $scope.toggleSelectedElement = (element) ->
+  $scope.toggleSelectedElement = (element, statement=null) ->
     if $scope.isSelected(element)
       $scope.selectedElement = null
       if w.isExpanded()
@@ -89,6 +90,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
       $scope.selectedElement = angular.copy(element)
+      $scope.selectedElement.category = statement.name if statement
       w.format()
       if !w.isExpanded()
         w.toggleExpanded()
@@ -97,8 +99,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
 
   $scope.isSelected = (element) ->
     element? && $scope.selectedElement? && (
-      matcher = (if element.id? then 'id' else 'name')
-      $scope.selectedElement[matcher] == element[matcher]
+      getIdentifier($scope.selectedElement) == getIdentifier(element)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -176,6 +177,10 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       $scope.sortedColumn = col
     sortData()
 
+  getIdentifier = (element)->
+    matcher = (if element.id? then 'id' else 'name')
+    if element.category then "#{element.category}-#{element[matcher]}" else element[matcher]
+
 
   # Mini-settings
   # --------------------------------------
@@ -198,7 +203,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
 
   selectedElementSetting.toMetadata = ->
     return {selectedElement: null} unless $scope.selectedElement?
-    {selectedElement: $scope.selectedElement.id || $scope.selectedElement.name }
+    {selectedElement: getIdentifier($scope.selectedElement) }
 
 
   w.settings.push(selectedElementSetting)
