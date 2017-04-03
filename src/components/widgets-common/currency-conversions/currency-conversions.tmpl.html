@@ -1,5 +1,5 @@
 <span class="currency-conversions" ng-if="fxAmounts">
-  <img ng-src="{{currencyConversionsIcon}}" popover-template="'details-popover.tmpl.html'" popover-title="{{popoverTitle}}" popover-trigger="mouseenter" popover-append-to-body="true" />
+  <img ng-src="{{currencyConversionsIcon}}" popover-template="'details-popover.tmpl.html'" popover-class="currency-conversions" popover-title="{{popoverTitle}}" popover-trigger="mouseenter" popover-append-to-body="true" />
 </span>
 
 <!-- ui.bootstrap popover template -->
@@ -19,5 +19,5 @@
   </table>
 
   <p ng-if="fxAmounts.length > 1">The rates used correspond to those for {{ formattedRatesDate }}.</p>
-  <p ng-if="fxAmounts.length == 1">The rate used correspond to the rate for {{ formattedRatesDate }}.</p>
+  <p ng-if="fxAmounts.length == 1">The rate used corresponds to the rate for {{ formattedRatesDate }}.</p>
 </script>
