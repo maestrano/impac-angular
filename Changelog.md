@@ -3,6 +3,7 @@
 ### v1.4.10 | 2017 - Week 14
 
 #### Adds
+- [IMPAC-536] fix param selector css bleed
 - [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
 - Aged Payables and Receivables to use common-currency-conversions directive
 
