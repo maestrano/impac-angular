@@ -23,7 +23,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
 
     $scope.filterOptions = [
       {label: 'value sold (incl. taxes)', value: 'gross_value_sold'},
@@ -81,6 +83,32 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
       $scope.ascending = true
       $scope.sortedColumn = col
     sortData()
+
+  buildFxTotals = ->
+    for groupedSales in w.content.summary
+      for sale in groupedSales.products
+        sale.formattedFxTotals = {}
+        netSaleFxTotals = []
+        grossSaleFxTotals = []
+        unless _.isEmpty(sale.fx_totals)
+          _.mapKeys sale.fx_totals, (total, currency) ->
+            grossAmount = total['net_value_sold']
+            unless grossAmount == 0 || currency == w.metadata.currency
+              netSaleFxTotals.push({
+                currency: currency,
+                amount: grossAmount,
+                rate: total.rate  
+              })
+            netAmount = total['gross_value_sold']
+            unless netAmount == 0 || currency == w.metadata.currency
+              grossSaleFxTotals.push({
+                currency: currency,
+                amount: netAmount,
+                rate: total.rate  
+              })
+        
+        sale.formattedFxTotals['net_value_sold'] = netSaleFxTotals unless _.isEmpty(netSaleFxTotals)
+        sale.formattedFxTotals['gross_value_sold'] = grossSaleFxTotals unless _.isEmpty(grossSaleFxTotals)
 
   # Mini-settings
   # --------------------------------------

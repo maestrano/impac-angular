@@ -45,14 +45,22 @@
             <b>{{entity.name}}</b>
           </div>
           <div class="col-xs-4 text-right">
-            <b ng-if="getHeaderField().showCurrency">{{ getHeaderField().getValue(entity) | mnoCurrency : entity.currency }}</b>
-            <b ng-if="!getHeaderField().showCurrency">{{ getHeaderField().getValue(entity) }}</b>
+            <b ng-if="getHeaderField().showCurrency">
+              <span common-currency-conversions fx-amounts="getHeaderField().getFormattedFxTotals(entity)" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+              {{ getHeaderField().getValue(entity) | mnoCurrency : entity.currency }}
+            </b>
+            <b ng-if="!getHeaderField().showCurrency">
+              {{ getHeaderField().getValue(entity) }}
+            </b>
           </div>
         </div>
 
         <div class="row widget-line sub-line" collapse="transactionsCollapsed">
           <div class="col-xs-4" ng-repeat="field in getRemainingFields() track by $index" ng-class="{'text-center': ($index==1), 'text-right': ($index==2)}" >
-            <i ng-if="field.showCurrency">{{field.label}}: {{field.getValue(entity) | mnoCurrency : entity.currency}}</i>
+            <i ng-if="field.showCurrency">
+              {{field.label}}: {{field.getValue(entity) | mnoCurrency : entity.currency}}
+              <span common-currency-conversions fx-amounts="field.getFormattedFxTotals(entity)" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+            </i>
             <i ng-if="!field.showCurrency">{{field.label}}: {{field.getValue(entity)}}</i>
           </div>
         </div>
