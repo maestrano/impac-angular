@@ -87,28 +87,18 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
   buildFxTotals = ->
     for groupedSales in w.content.summary
       for sale in groupedSales.products
-        sale.formattedFxTotals = {}
-        netSaleFxTotals = []
-        grossSaleFxTotals = []
+        saleFxTotals = []
         unless _.isEmpty(sale.fx_totals)
           _.mapKeys sale.fx_totals, (total, currency) ->
-            grossAmount = total['net_value_sold']
-            unless grossAmount == 0 || currency == w.metadata.currency
-              netSaleFxTotals.push({
+            amount = total['amount']
+            unless amount == 0 || currency == w.metadata.currency
+              saleFxTotals.push({
                 currency: currency,
-                amount: grossAmount,
-                rate: total.rate  
-              })
-            netAmount = total['gross_value_sold']
-            unless netAmount == 0 || currency == w.metadata.currency
-              grossSaleFxTotals.push({
-                currency: currency,
-                amount: netAmount,
+                amount: amount,
                 rate: total.rate  
               })
         
-        sale.formattedFxTotals['net_value_sold'] = netSaleFxTotals unless _.isEmpty(netSaleFxTotals)
-        sale.formattedFxTotals['gross_value_sold'] = grossSaleFxTotals unless _.isEmpty(grossSaleFxTotals)
+        sale.formattedFxTotals = saleFxTotals unless _.isEmpty(saleFxTotals)
 
   # Mini-settings
   # --------------------------------------
