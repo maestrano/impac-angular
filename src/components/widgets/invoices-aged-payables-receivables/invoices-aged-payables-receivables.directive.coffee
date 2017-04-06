@@ -28,29 +28,21 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       buildFxTotals()
       $scope.ratesDate = moment.now()
 
+      $scope.payables = w.content.payables
+      $scope.receivables = w.content.receivables
+
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
+        for sElemId in w.metadata.selectedElements
+          statements = [$scope.payables, $scope.receivables]
           # Attempt to find element by content type name
-          foundElem = w.content.payables if sElem == "aged_payables"
-          foundElem = w.content.receivables if sElem == "aged_receivables" && !foundElem
-
-          # Attempt to find element by supplier id
-          foundElem = _.find(w.content.payables.suppliers, (supplier)->
-            supplier.category = 'payables'
-            getIdentifier(supplier) == sElem
-          ) if !foundElem
-
-          # Attempt to find element by customer id
-          foundElem = _.find(w.content.receivables.customers, (customer)->
-            customer.category = 'receivables'
-            getIdentifier(customer) == sElem
-          ) if !foundElem
+          foundElem = _.find(statements, (statement)-> statement.name == sElemId)
+          # Attempt to find element by supplier & customer id
+          foundElem ||= fetchElement(statements, sElemId)
 
           $scope.selectedElements.push(foundElem) if foundElem
-        )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
       sortData()
@@ -82,12 +74,20 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     idx = _.findIndex(element.totals, (invoice) -> invoice != 0)
     return w.content.dates[idx] || null
 
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
-  $scope.toggleSelectedElement = (element, category=null) ->
-    if $scope.isSelected(element)
+  $scope.toggleSelectedElement = (element, statementName = null) ->
+    if $scope.isSelected(element, statementName)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        getIdentifier(sElem) == getIdentifier(element)
+        matchElementToSelectedElement(element, statementName, sElem)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -96,7 +96,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
       $scope.selectedElements ||= []
-      element.category = category if category
+      element.category = statementName if statementName
       $scope.selectedElements.push(element)
       w.format()
       if !w.isExpanded()
@@ -104,9 +104,9 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-  $scope.isSelected = (element) ->
+  $scope.isSelected = (element, statementName = null) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      getIdentifier(sElem) == getIdentifier(element)
+      matchElementToSelectedElement(element, statementName, sElem)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -126,12 +126,32 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
       else
         return true
 
+  $scope.getSelectLineColor = (element, statementName = null) ->
+    sElem = _.find($scope.selectedElements, (sElem)->
+      matchElementToSelectedElement(element, statementName, sElem)
+    )
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, sElem)) if $scope.hasElements()
+
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
 
-  getIdentifier = (element)->
-    matcher = (if element.id? then 'id' else 'name')
-    if element.category then "#{element.category}-#{element[matcher]}" else element[matcher]
+  matchElementToSelectedElement = (element, elementCategory = null, sElem)->
+    getIdentifier(element, elementCategory) == getIdentifier(sElem)
+
+  fetchElement = (statements, sElemId)->
+    for statement in statements
+      elements = statement.suppliers || statement.customers
+      continue if _.isEmpty(elements)
+      element = _.find(elements, (elem) -> getIdentifier(elem, statement.name) == sElemId)
+      if element?
+        element = angular.merge(angular.copy(element), category: statement.name)
+        return element
+
+  getIdentifier = (element, category = null)->
+    id = element.id || element.name
+    category ||= element.category
+    return id unless category
+    "#{category}-#{id}"
 
   # <---
 
@@ -161,17 +181,6 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
     else if $scope.sortedColumn == 'invoice'
       sortBy(w.content.payables.suppliers, sortByInvoiceCallback)
       sortBy(w.content.receivables.customers, sortByInvoiceCallback)
-
-  $scope.sort = (col) ->
-    if $scope.sortedColumn == col
-      $scope.ascending = !$scope.ascending
-    else
-      $scope.ascending = true
-      $scope.sortedColumn = col
-    sortData()
-
-  $scope.getSelectLineColor = (elem) ->
-    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
 
   buildFxTotals = ->
     for contact in _.union(w.content.payables.suppliers, w.content.receivables.customers)

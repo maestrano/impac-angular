@@ -32,11 +32,12 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
 
       unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
+        for sElemId in w.metadata.selectedElements
           # Attempt to find element by assignee name
-          foundElem = _.find(w.content.assignees, (assignee)-> getIdentifier(assignee) == sElem)
+          foundElem = _.find(w.content.assignees, (assignee)-> getIdentifier(assignee) == sElemId)
+
           $scope.selectedElements.push(foundElem) if foundElem
-        )
+
       # Parameter which define showing 'Apply to all similar widgets' checkbox
       $scope.hasReach = true
       $scope.closedWonOptions = _.compact _.map w.content.sales_stages.won, (stage) ->
@@ -85,12 +86,18 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
         theDate = theDate.split(' ')[0]
         return formatDate(theDate)
 
+  $scope.getElementChartColor = (index) ->
+    ChartFormatterSvc.getColor(index)
+
+  $scope.no_sales_stages_selected = ->
+    w.content && w.content.sales_stages && w.content.sales_stages.won.length == 0 && w.content.sales_stages.lost.length  == 0
+
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
   $scope.toggleSelectedElement = (element) ->
     if $scope.isSelected(element)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        getIdentifier(sElem) == getIdentifier(element)
+        matchElementToSelectedElement(element, sElem)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -98,8 +105,9 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
       else
         ImpacWidgetsSvc.updateWidgetSettings(w, false, true)
     else
+      selectedElement = angular.copy(element)
       $scope.selectedElements ||= []
-      $scope.selectedElements.push(element)
+      $scope.selectedElements.push(selectedElement)
       w.format()
       if !w.isExpanded()
         w.toggleExpanded()
@@ -108,19 +116,25 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
 
   $scope.isSelected = (element) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      getIdentifier(sElem) == getIdentifier(element)
+      matchElementToSelectedElement(element, sElem)
     )
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
 
-  getIdentifier = (element)->
-    matcher = (if element.id? then 'id' else 'name')
-    element[matcher]
-  # <---
+  $scope.getSelectLineColor = (element) ->
+    sElem = _.find($scope.selectedElements, (sElem)->
+      matchElementToSelectedElement(element, sElem)
+    )
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, sElem)) if $scope.hasElements()
 
-  $scope.getSelectLineColor = (elem) ->
-    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  matchElementToSelectedElement = (element, sElem)->
+    getIdentifier(element) == getIdentifier(sElem)
+
+  getIdentifier = (element)->
+    element.id || element.name
+
+  # <---
 
   # Chart formating function
   # --------------------------------------
@@ -151,7 +165,8 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
-  # Mini-setting
+  # Mini-settings
+  # --------------------------------------
   selectedElementsSetting = {initialized:false}
 
   selectedElementsSetting.initialize = ->
@@ -159,20 +174,14 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
 
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
-    selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      getIdentifier(element)
+    selectedElementsMetadata = _.map($scope.selectedElements, (sElem)->
+      getIdentifier(sElem)
     )
     {selectedElements: selectedElementsMetadata}
 
-  $scope.getElementChartColor = (index) ->
-    ChartFormatterSvc.getColor(index)
-
-  $scope.no_sales_stages_selected = ->
-    w.content && w.content.sales_stages && w.content.sales_stages.won.length == 0 && w.content.sales_stages.lost.length  == 0
-
-
-
   w.settings.push(selectedElementsSetting)
+
+
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
