@@ -1,6 +1,6 @@
 # Impac! Frontend Changelog
 
-### v1.4.10 | 2017 - Week 14
+### v1.4.10 | 2017 - Week 15
 
 #### Adds
 - [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
