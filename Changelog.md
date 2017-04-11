@@ -10,6 +10,7 @@
 
 #### Fixes
 - [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
+- [IMPAC-498] Improve widget drill-down selection saved ids
 - [IMPAC-536] fix param selector css bleed
 
 -------------------------------------------------------------
