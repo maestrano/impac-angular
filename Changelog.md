@@ -3,9 +3,13 @@
 ### v1.4.10 | 2017 - Week 14
 
 #### Adds
-- [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
+- [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
 - [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
-- Aged Payables and Receivables to use common-currency-conversions directive
+- Add loader for KPIs on delete
+- [IMPAC-534] Aged Payables and Receivables to use common-currency-conversions directive
+
+#### Fixes
+- [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
 
 -------------------------------------------------------------
 
