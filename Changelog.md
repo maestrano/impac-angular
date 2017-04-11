@@ -3,6 +3,7 @@
 ### v1.4.10 | 2017 - Week 14
 
 #### Adds
+- [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
 - [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
 - Add loader for KPIs on delete
 - Aged Payables and Receivables to use common-currency-conversions directive
