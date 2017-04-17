@@ -1,3 +1,25 @@
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
+
+  .filter-options {
+
+    #search-button {
+      position: absolute;
+      margin: 0 7px;
+      cursor: pointer;
+      &.active {
+        margin-top: 8px;
+        // to match settings-limit-entries on selected.
+        color: @impac-widget-limit-entries-color;
+      }
+    }
+    #entries-limit {}
+    #search-bar {
+      width: 93%;
+      margin-left: 30px;
+      height: 33px;
+      font-size: 16px;
+      padding-left: 6px;
+    }
+  }
 }
