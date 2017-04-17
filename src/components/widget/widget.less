@@ -36,6 +36,7 @@
     border: @impac-widget-border;
     border-top: none;
     background-color: @impac-widget-background-color;
+    overflow: none;
 
     vertical-align: top;
     .box-shadow(0px 1px 8px -4px);
@@ -118,4 +119,9 @@
       background: #CCCFD0;
     }
   }
+}
+
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
 }

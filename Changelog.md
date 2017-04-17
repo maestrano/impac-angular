@@ -9,6 +9,7 @@
 - Add loader for KPIs on delete
 
 #### Fixes
+- [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
 - [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
 - [IMPAC-397] Enforce at least 1 opportunities funnel widget option selection
 - [IMPAC-498] Improve widget drill-down selection saved ids
