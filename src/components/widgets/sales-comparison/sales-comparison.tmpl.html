@@ -67,6 +67,7 @@
                       {{getTotalForPeriod(sale)}}
                     </div>
                     <div ng-hide="filter.value == 'quantity_sold'" class="col-xs-4 text-right">
+                      <span common-currency-conversions fx-amounts="sale.formattedFxTotals[filter.value]" base-currency="widget.metadata.currency" rates-date="ratesDate" />
                       {{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}
                     </div>
 

@@ -51,6 +51,9 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         w.metadata && w.metadata.criteria == o.value
       ) || $scope.criteriaOptions[0])
 
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
+
       unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
         for sElemId in w.metadata.selectedElements
@@ -206,6 +209,32 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
+
+  buildFxTotals = ->
+    for groupedSales in w.content.sales_comparison
+      for sale in groupedSales.sales
+        sale.formattedFxTotals = {}
+        netSaleFxTotals = []
+        grossSaleFxTotals = []
+        unless _.isEmpty(sale.fx_totals)
+          _.mapKeys sale.fx_totals, (total, currency) ->
+            for grossAmount in total['net_value_sold']
+              unless grossAmount == 0 || currency == w.metadata.currency
+                netSaleFxTotals.push({
+                  currency: currency,
+                  amount: grossAmount,
+                  rate: total.rate  
+                })
+            for netAmount in total['gross_value_sold']
+              unless netAmount == 0 || currency == w.metadata.currency
+                grossSaleFxTotals.push({
+                  currency: currency,
+                  amount: netAmount,
+                  rate: total.rate  
+                })
+        
+        sale.formattedFxTotals['net_value_sold'] = netSaleFxTotals unless _.isEmpty(netSaleFxTotals)
+        sale.formattedFxTotals['gross_value_sold'] = grossSaleFxTotals unless _.isEmpty(grossSaleFxTotals)
 
   # Mini-settings
   # --------------------------------------
