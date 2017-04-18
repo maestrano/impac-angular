@@ -1,19 +1,21 @@
 # Impac! Frontend Changelog
 
-### v1.4.10 | 2017 - Week 15
+### v1.4.10 | 2017 - Week 16
 
 #### Adds
 - [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
+- [IMPAC-529] Sales Comparison to use common-currency-conversions
+- [IMPAC-530] Aged Sales to use common-currency-conversions
 - [IMPAC-534] Aged Payables and Receivables to use common-currency-conversions directive
 - [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
 - Add loader for KPIs on delete
 
 #### Fixes
-- [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
 - [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
 - [IMPAC-397] Enforce at least 1 opportunities funnel widget option selection
 - [IMPAC-498] Improve widget drill-down selection saved ids
 - [IMPAC-536] fix param selector css bleed
+- [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
 
 -------------------------------------------------------------
 
