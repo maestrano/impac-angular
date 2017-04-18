@@ -3,6 +3,12 @@
   .widget-lines-container {
     .scrollable(scroll);
     max-height: 540px;
+    @media (max-width: @screen-xs-max) {
+      .row.widget-line {
+        border-top: dashed 1px @impac-widget-borders-color;
+        &.header, &.total { border-top: none; }
+      }
+    }
   }
 
   .no-data-block {
