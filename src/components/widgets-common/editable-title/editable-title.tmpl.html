@@ -1,14 +1,12 @@
-<div class="common-editable-title">
-  <div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
-    {{ parentWidget.name }}
-  </div>
+<div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
+  {{ parentWidget.name }}
+</div>
 
-  <div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
-    {{ parentWidget.name }}
-  </div>
+<div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
+  {{ parentWidget.name }}
+</div>
 
-  <!-- Title edition no designed for mobile -->
-  <div class="visible-xs visible-sm title">
-    {{ parentWidget.name }}
-  </div>
+<!-- Title edition no designed for mobile -->
+<div class="visible-xs visible-sm title">
+  {{ parentWidget.name }}
 </div>
