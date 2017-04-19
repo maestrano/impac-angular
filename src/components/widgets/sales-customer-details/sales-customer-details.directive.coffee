@@ -41,12 +41,13 @@ module.controller('WidgetSalesCustomerDetailsCtrl', ($scope, $q) ->
 
   setSelectedCustomer = ->
     return false unless $scope.isDataFound
-    unless w.metadata && w.metadata.customer_uid
-      return $scope.selectedCustomer = angular.copy(w.content.customers[0])
 
-    customer = _.find(w.content.customers, (c) ->
-      c.uid == w.metadata.customer_uid
-    ) || w.content.customers[0]
+    if w.metadata && w.metadata.customer_uid
+      customer = _.find(w.content.customers, (c) ->
+        c.uid == w.metadata.customer_uid
+      )
+
+    customer ||= w.content.customers[0]
 
     $scope.selectedCustomer = angular.copy(customer)
     setSelectedCustomerId()
