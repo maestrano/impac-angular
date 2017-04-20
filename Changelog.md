@@ -17,6 +17,12 @@
 - [IMPAC-536] fix param selector css bleed
 - [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
 
+#### Dependencies
+- Depends on Impac! >= 1.5.4
+
+### Config Changes
+- Frontend needs to serve dist/images/currency-conversions.png as an asset
+
 -------------------------------------------------------------
 
 ### v1.4.9 | 2017 - Week 13
