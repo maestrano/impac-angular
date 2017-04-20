@@ -14,6 +14,7 @@ angular
       defaultImagesPath: '/images'
       impacTitleLogo: ':default/impac-title-logo.png'
       impacDashboardBackground: ':default/impac-dashboard-background.png'
+      currencyConversionsIcon: ':default/currency-conversions.png'
 
     #=======================================
     # Public methods available in config

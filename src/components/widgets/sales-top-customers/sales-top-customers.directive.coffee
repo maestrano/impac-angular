@@ -47,6 +47,9 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
       $scope.defaultFrom = $filter('date')(datesRange[0], 'yyyy-MM-dd')
       $scope.defaultTo = $filter('date')(datesRange[1], 'yyyy-MM-dd')
 
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
+
 
   fields = [
     {
@@ -54,6 +57,8 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
       showCurrency: true
       getValue: (entity) ->
         entity.total_invoiced
+      getFormattedFxTotals: (entity) ->
+        entity.formattedFxTotals
     }
     {
       label: '# tr'
@@ -90,6 +95,19 @@ module.controller('WidgetSalesTopCustomersCtrl', ($scope, $q, $filter, ImpacUtil
   $scope.getEntities = ->
     return [] unless $scope.isDataFound
     $filter('orderBy')( w.content.entities, ( (entity) -> $scope.getHeaderField().getValue(entity) ), true )
+
+  buildFxTotals = ->
+    for contact in w.content.entities
+      contactFxTotals = []
+      _.mapKeys contact.fx_totals, (total, currency) ->
+        if currency != w.metadata.currency
+          contactFxTotals.push({
+            currency: currency,
+            amount: total.invoiced,
+            rate: total.rate  
+          })  
+      unless _.isEmpty(contactFxTotals)
+        contact.formattedFxTotals = contactFxTotals
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"

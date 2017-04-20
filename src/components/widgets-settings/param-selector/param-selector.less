@@ -29,10 +29,16 @@
     overflow-x: hidden;
     .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
 
-    div {
+    .param-selector-label {
       padding: 3px 5px;
+      .font(inherit,500,black);
+      cursor: text;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 1.9;
     }
-    div:hover {
+    .param-selector-label:hover {
       cursor: pointer;
       background-color: @impac-widget-param-selector-color;
       color: white;

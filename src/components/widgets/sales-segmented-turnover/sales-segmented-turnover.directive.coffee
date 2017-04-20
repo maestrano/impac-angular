@@ -46,10 +46,10 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
   $scope.getColorByIndex = (index) ->
     ChartFormatterSvc.getColor(index)
 
-  $scope.getRangeLabel = (aLabel) ->
+  $scope.getRangeLabel = (aLabel, ISOmode=false) ->
     prices = aLabel.split('-')
     _.map(prices, (price) ->
-      $filter('mnoCurrency')(price,w.content.currency,false)
+      $filter('mnoCurrency')(price,w.content.currency,ISOmode)
     ).join(' - ')
 
   $scope.getMaxRange = ->
@@ -69,7 +69,7 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
     if $scope.isDataFound
       barData = {
         labels: _.map(w.content.ranges, (elem) ->
-          elem.label
+          $scope.getRangeLabel(elem.label, true)
         ),
         values: _.map(w.content.ranges, (elem) ->
           elem.value

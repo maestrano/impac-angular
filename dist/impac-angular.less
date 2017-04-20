@@ -977,6 +977,9 @@ body {
     padding: 0px;
     margin: 1px 0px 8px 0px;
     border: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 
   .widget-item .content, kpis-bar .kpi {
@@ -2393,6 +2396,11 @@ body {
   }
 }
 
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
+}
+
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
@@ -2551,13 +2559,23 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item {
-  .editable-title {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-    height: 22px;
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
   }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
 
   .title {
     text-transform: @impac-widget-title-text-transform;
@@ -2598,7 +2616,6 @@ body {
       }
     }
   }
-  // }
 }
 
 .analytics .widget-item .info-panel {
@@ -2783,7 +2800,7 @@ body {
   .tall-widget();
   .widget-lines-container {
     .scrollable(scroll);
-    max-height: 515px;
+    max-height: 490px;
     @media (max-width: @screen-xs-max) {
       .row.widget-line {
         &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
@@ -3033,14 +3050,6 @@ body {
     @media (min-width: @screen-md-min) { max-height: 200px; }
     .scrollable();
   }
-  pre {
-    font-size: 12px;
-    padding: 0px;
-    margin: 1px 0px 8px 0px;
-    border: none;
-    white-space: normal;
-    overflow: hidden;
-  }
   .right-panel {
     .details-container {
       @media (min-width: @screen-md-min) { max-height: 220px; }
@@ -3154,11 +3163,33 @@ body {
   .row.astericks-info {
     margin-top: 15px;
   }
+
+  .currency-conversions {
+    float: right;
+    margin-left: 3px;
+  }
 }
 
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
+
+  .currency-conversions {
+    float: right;
+    margin-right: 3px;
+    margin-top: -2px;
+  }
+
+  .fa.fa-info-circle {
+    float: right;
+    font-size: 15px;
+  }
+
+  .right-column {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
+
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
@@ -3222,6 +3253,9 @@ body {
   .right-panel .widget-lines-container {
     max-height: 250px;
   }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
 }
 
 .analytics .widget-item .content.sales-customer-details {
@@ -3231,13 +3265,13 @@ body {
   font-size: 12px;
   .details-container {
     padding: 0px;
-    @media (min-width: @screen-md-min) { max-height: 200px; }
+    @media (min-width: @screen-md-min) { max-height: 194px; }
     overflow-y: auto;
     overflow-x: hidden;
   }
   .right-panel {
     .details-container {
-      @media (min-width: @screen-md-min) { max-height: 208px; }
+      @media (min-width: @screen-md-min) { max-height: 230px; }
     }
     .legend {
       margin-bottom: 5px;
@@ -3247,6 +3281,11 @@ body {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+
+  .currency-conversions {
+    float: left;
+    margin-right: 3px;
   }
 }
 
@@ -3296,6 +3335,9 @@ body {
   }
   .selector {
     margin-bottom: 4px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
   }
 }
 
@@ -3423,7 +3465,17 @@ body {
       font-size: 11px;
     }
   }
+
+  .right-panel {
+    h3 {
+      margin: 15px 10px 5px 10px;
+      text-align: center;
+    }
+
+    .fa.fa-info-circle { float: left; }
+  }
 }
+
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
   .selector {
@@ -3443,6 +3495,9 @@ body {
 
     // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
     .row > [class*='col-'] { position: static; }
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
   }
 }
 
@@ -3776,10 +3831,16 @@ body {
     overflow-x: hidden;
     .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
 
-    div {
+    .param-selector-label {
       padding: 3px 5px;
+      .font(inherit,500,black);
+      cursor: text;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 1.9;
     }
-    div:hover {
+    .param-selector-label:hover {
       cursor: pointer;
       background-color: @impac-widget-param-selector-color;
       color: white;

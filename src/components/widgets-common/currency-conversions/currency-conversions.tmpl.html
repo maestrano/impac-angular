@@ -1,0 +1,23 @@
+<span class="currency-conversions" ng-if="fxAmounts">
+  <img ng-src="{{currencyConversionsIcon}}" uib-popover-template="'details-popover.tmpl.html'" uib-popover-class="currency-conversions" uib-popover-title="{{popoverTitle}}" uib-popover-trigger="mouseenter" uib-popover-append-to-body="true" />
+</span>
+
+<!-- ui.bootstrap popover template -->
+<script type="text/ng-template" id="details-popover.tmpl.html">
+  <p ng-if="fxAmounts.length > 1">This value includes amounts that have been converted to {{ baseCurrency }} from different currencies:</p>
+  <p ng-if="fxAmounts.length == 1">This value includes one amount that has been converted to {{ baseCurrency }} from a different currency:</p>
+  
+  <table class="table">
+    <tr>
+      <th>Original amount</th>
+      <th>Rate</th>
+    </tr>
+    <tr ng-repeat="fx in fxAmounts">
+      <td>{{ fx.amount | mnoCurrency : fx.currency }}</td>
+      <td>{{ fx.rate }}</td>
+    </tr>
+  </table>
+
+  <p ng-if="fxAmounts.length > 1">The rates used correspond to those for {{ formattedRatesDate }}.</p>
+  <p ng-if="fxAmounts.length == 1">The rate used corresponds to the rate for {{ formattedRatesDate }}.</p>
+</script>
