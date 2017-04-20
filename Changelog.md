@@ -5,6 +5,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-546] currency of widget & dashboard not in sync
 
 -------------------------------------------------------------
 
