@@ -5,6 +5,8 @@
 #### Adds
 
 #### Fixes
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
 
 -------------------------------------------------------------
 
