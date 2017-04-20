@@ -105,7 +105,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
     $scope.formulaModal.close()
 
   $scope.formulaModal.proceed = ->
-    ImpacWidgetsSvc.updateWidgetSettings(w,false)
+    ImpacWidgetsSvc.updateWidgetSettings(w)
     $scope.formulaModal.close()
 
   $scope.formulaModal.close = ->

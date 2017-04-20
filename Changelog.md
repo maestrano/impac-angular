@@ -3,6 +3,7 @@
 ### v1.4.11 | 2017 - Week 17 
 
 #### Adds
+- Apply widget settings on custom calc modal proceed (save)
 
 #### Fixes
 - [IMPAC-546] currency of widget & dashboard not in sync
