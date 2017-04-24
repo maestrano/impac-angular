@@ -5,6 +5,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-545] Fix css responsivenes for widgets selector
 
 -------------------------------------------------------------
 
