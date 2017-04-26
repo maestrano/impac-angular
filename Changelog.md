@@ -5,6 +5,7 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-448] Fix period hidden in "show last month"
 
 -------------------------------------------------------------
 
