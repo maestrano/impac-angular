@@ -5,6 +5,7 @@
 #### Adds
 
 #### Fixes
+- Fix refreshAll kpis wrongly forcing a dashboard reload
 
 -------------------------------------------------------------
 

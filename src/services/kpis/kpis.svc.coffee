@@ -77,7 +77,7 @@ angular
       unless _self.locked
         _self.locked = true
 
-        return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
+        return $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()]).then(
           (results)->
 
             orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
