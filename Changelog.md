@@ -5,8 +5,10 @@
 #### Adds
 
 #### Fixes
+- [IMPAC-448] Fix period hidden in "show last month"
 - Fix refreshAll kpis wrongly forcing a dashboard reload
 - Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
+
 
 -------------------------------------------------------------
 
