@@ -5,6 +5,8 @@
 #### Adds
 
 #### Fixes
+- Fix refreshAll kpis wrongly forcing a dashboard reload
+- Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
 
 -------------------------------------------------------------
 
