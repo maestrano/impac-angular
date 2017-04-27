@@ -3,6 +3,7 @@
 ### v1.4.11 | 2017 - Week 17 
 
 #### Adds
+- An improved configuration / customisation to the README.md
 
 #### Fixes
 - [IMPAC-545] Fix css responsivenes for widgets selector
