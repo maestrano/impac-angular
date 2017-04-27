@@ -3,9 +3,17 @@
 ### v1.4.11 | 2017 - Week 17 
 
 #### Adds
+- Apply widget settings on custom calc modal proceed (save)
+- An improved configuration / customisation to the README.md
 
 #### Fixes
 - [IMPAC-546] currency of widget & dashboard not in sync
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
+- [IMPAC-545] Fix css responsivenes for widgets selector
+- [IMPAC-448] Fix period hidden in "show last month"
+- Fix refreshAll kpis wrongly forcing a dashboard reload
+- Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
 
 -------------------------------------------------------------
 
