@@ -3,6 +3,7 @@
 ### v1.4.11 | 2017 - Week 17 
 
 #### Adds
+- Apply widget settings on custom calc modal proceed (save)
 - An improved configuration / customisation to the README.md
 
 #### Fixes
