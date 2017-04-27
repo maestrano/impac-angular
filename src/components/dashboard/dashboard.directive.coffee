@@ -305,12 +305,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       if widgetMetadata?
         angular.extend(params, {metadata: widgetMetadata})
       angular.element('#widget-selector').css('cursor', 'progress')
-      angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'progress')
+      angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'progress')
+      angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'progress')
       ImpacWidgetsSvc.create(params).then(
         () ->
           $scope.errors = ''
           angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
+          angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'pointer')
+          angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'pointer')
           angular.element('#widget-selector .badge.confirmation').fadeTo(250,1)
           $timeout ->
             angular.element('#widget-selector .badge.confirmation').fadeTo(700,0)
@@ -318,7 +320,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         , (errors) ->
           $scope.errors = ImpacUtilities.processRailsError(errors)
           angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .top-container .row.lines p').css('cursor', 'pointer')
+          angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'pointer')
+          angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'pointer')
       )
 
     $scope.triggerUpload = () ->
