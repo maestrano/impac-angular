@@ -73,7 +73,9 @@ angular
     #====================================
 
     @locked = false
-    @load = (force=false) ->
+    # @param [refreshCache] needed for refreshing cache on reports used for Impac! KPI
+    # possible_extra_params on #index.
+    @load = (refreshCache=false) ->
       unless _self.locked
         _self.locked = true
 
@@ -84,15 +86,12 @@ angular
             ssoSessionId = results[0].sso_session
 
             params =
-              metadata:
-                organization_ids: orgUids
-              opts:
-                refresh_cache: force
+              metadata: organization_ids: orgUids
+              opts: refresh_cache: refreshCache
 
             params.sso_session = ssoSessionId if ssoSessionId
 
-            promises =
-              impac: index(params)
+            promises = impac: index(params)
 
             # Get local kpis
             if ImpacRoutes.kpis.local()
@@ -115,7 +114,7 @@ angular
                     template.source = 'local'
                     _self.config.kpisTemplates.push template
 
-                $log.info("Impac! - KpisSvc: loaded (force=#{force})")
+                $log.info("Impac! - KpisSvc: loaded")
 
               (err) ->
                 $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
@@ -125,7 +124,7 @@ angular
 
       else
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
-        $timeout (-> _self.load(force)), 1000
+        $timeout (-> _self.load(refreshCache)), 1000
 
     @massAssignAll = (metadata) ->
       _self.load().then(->
@@ -144,7 +143,7 @@ angular
         _self.isRefreshing = true
         _self.load(refreshCache).then(->
           for k in _self.getCurrentDashboard().kpis
-            _self.show(k).then(
+            _self.show(k, refreshCache).then(
               (renderedKpi)-> # success
               (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
             )
@@ -220,16 +219,12 @@ angular
       return $http.get(url)
 
     # Retrieve data for kpi from api
-    @show = (kpi) ->
+    @show = (kpi, refreshCache=false) ->
       kpi.isLoading = true
       _self.load().then(
         ->
-          fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+          params = opts: refresh_cache: refreshCache
 
-          params = {
-            opts:
-              financial_year_end_month: fy_end_month
-          }
           params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
