@@ -7,6 +7,8 @@
 
 #### Fixes
 - [IMPAC-546] currency of widget & dashboard not in sync
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
 
 -------------------------------------------------------------
 
