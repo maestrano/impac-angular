@@ -114,7 +114,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       scope.onChange = ->
         scope.showApplyButton()
-        scope.onChangeCb()(buildDates()) if scope.onChangeCb()
+        scope.onChangeCb()(buildDates()) unless _.isUndefined(scope.onChangeCb)
 
       buildDates = ->
         {

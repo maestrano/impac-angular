@@ -19,7 +19,7 @@ describe('<> dashboard-setting-currency', function () {
   beforeEach(function() {
     module('maestrano.impac');
 
-    subject = angular.element('<div dashboard-setting-currency />');
+    subject = angular.element('<div dashboard-setting-currency currency="\'cur1\'" />');
 
     // Inject services called by the directive...
     inject(function (_$q_, _ImpacMainSvc_, _ImpacDashboardsSvc_, _ImpacWidgetsSvc_, _ImpacKpisSvc_) {
@@ -45,6 +45,15 @@ describe('<> dashboard-setting-currency', function () {
       subjectScope.$digest();
     });
 
+    it('defines scope.currency', function () {
+      expect(subjectScope.currency).toEqual('cur1');
+    })
+
+    it('defines the scope.data object', function () {
+      expect(subjectScope.data.currency).toEqual('cur1')
+      expect(subjectScope.data.savedCurrency).toEqual('cur1')
+    })
+
     it('defines scope.currentDhb', function() {
       expect(subjectScope.currentDhb).toEqual(currentDhb);
     });
@@ -59,25 +68,39 @@ describe('<> dashboard-setting-currency', function () {
   });
 
   describe('#massAssignCurrency()', function() {
+    var updateSpy;
     beforeEach(function() {
-      spyOn(ImpacDashboardsSvc, 'update').and.returnValue($q.resolve());
+      updateSpy = spyOn(ImpacDashboardsSvc, 'update').and.callFake($q.resolve);
       spyOn(ImpacWidgetsSvc, 'massAssignAll').and.stub();
       spyOn(ImpacKpisSvc, 'massAssignAll').and.stub();
 
       subjectScope = compile();
-      subjectScope.currency = 'cur2';
+      subjectScope.data.currency = 'cur2'
+      subjectScope.data.savedCurrency = 'cur1'
       subjectScope.$digest();
 
       subjectScope.massAssignCurrency();
       subjectScope.$digest();
+
+      it('updates the current dashboard with a currency', function() {
+        expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(1, {currency: 'cur2'});
+      });
+
+      it('updates the current dashboard\'s widgets with a currency', function() {
+        expect(ImpacWidgetsSvc.massAssignAll).toHaveBeenCalledWith({currency: 'cur2'});
+      });
+
+      it('updates the scope.data.savedCurrency saved value', function () {
+        expect(subjectScope.data.savedCurrency).toEqual('cur2');
+      })
     });
 
-    it('updates the current dashboard with a currency', function() {
-      expect(ImpacDashboardsSvc.update).toHaveBeenCalledWith(1, {currency: 'cur2'});
-    });
+    beforeEach(function () {
+      updateSpy.and.callFake($q.reject);
 
-    it('updates the current dashboard\'s widgets with a currency', function() {
-      expect(ImpacWidgetsSvc.massAssignAll).toHaveBeenCalledWith({currency: 'cur2'});
+      it('returns the scope.data.currency to the previously saved currency on error', function () {
+        expect(subjectScope.data.currency).toEqual('cur1');
+      });
     });
   });
 

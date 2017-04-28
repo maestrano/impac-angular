@@ -1,6 +1,6 @@
 {
   "name": "impac-angular",
-  "version": "1.4.10",
+  "version": "1.4.11",
   "author": {
     "name": "Xaun Lopez",
     "email": "it@maestrano.com"
@@ -40,7 +40,7 @@
     "karma-chrome-launcher": "^0.1.4",
     "karma-jasmine": "^0.3.6",
     "karma-mocha-reporter": "^0.3.1",
-    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-phantomjs-launcher": "^1.0.4",
     "lazypipe": "^1.0.1",
     "less-plugin-glob": "^1.1.0",
     "run-sequence": "^1.1.5",
