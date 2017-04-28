@@ -10,6 +10,7 @@
 - Fix sales-list data not found not displaying
 - Fix dates-picker throwing error when onChangeCb is undefined
 - [IMPAC-545] Fix css responsivenes for widgets selector
+- [IMPAC-448] Fix period hidden in "show last month"
 
 -------------------------------------------------------------
 
