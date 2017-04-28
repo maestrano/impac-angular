@@ -61,6 +61,11 @@
     -o-user-select: none;
     user-select: none;
 
+    @media (max-width: @screen-xs-max) {
+      padding: 0 15px 10px 15px;
+      margin: 0;
+    }
+
     .badge.confirmation {
       float: right;
       margin-right: 10px;
@@ -70,12 +75,14 @@
     .title {
       padding: 15px 0px;
       border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
+      display: flex;
+      align-items: center;
+      p { flex-grow: 1; }
       i.fa.fa-times-circle {
         float: right;
         cursor: pointer;
-        margin-right: -35px;
-        margin-top: -6px;
         font-size: 20px;
+        padding: 6px;
         &:hover {
           color: @mlightgrey;
         }
@@ -124,6 +131,10 @@
         }
       }
 
+      .categories_menu-items {
+        padding: 3px 12px;
+      }
+
       .widgets {
         background-color: darken(@impac-dashboard-widget-selector-bg,3%);
         padding-bottom: 15px;
@@ -134,15 +145,25 @@
         }
         .row.lines {
           padding: 3px 0px;
-          p:hover {
-            background-color: darken(@impac-dashboard-widget-selector-bg,6%);
-            font-weight: normal;
-          }
           .fa.fa-plus-circle {
             float: right;
             margin-top: 3px;
           }
         }
+      }
+
+      .widgets_widget-item {
+        padding: 0 13px;
+        display: flex;
+        align-items: center;
+        &:hover {
+          background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+          font-weight: normal;
+        }
+      }
+
+      .widgets_widget-item_text {
+        flex-grow: 1;
       }
 
       .row.header {
@@ -163,17 +184,19 @@
           margin: 0px;
           border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
-          &:hover, &.selected {& > div {
-      display: inline-block;
-      margin-left: 10px;
-    }
-    select {
-      margin: 0;
-    }
-    .btn {
-      height: 32px;
-      padding-top: 5px;
-    }
+
+          &:hover, &.selected {
+            & > div {
+              display: inline-block;
+              margin-left: 10px;
+            }
+            select {
+              margin: 0;
+            }
+            .btn {
+              height: 32px;
+              padding-top: 5px;
+            }
             color: @impac-dashboard-widget-selector-text-color;
           }
         }

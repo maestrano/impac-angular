@@ -190,6 +190,9 @@
 @kpi-settings-error-color:                     @brand-danger;
 @kpi-settings-remove-background:               #4c4749;
 @kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+@kpi-settings-alert-config-background:         #4c4749;
+@kpi-settings-alert-config-background-hover:   @mblue;
+@kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
 
 .font(@size,@weight,@color) {
   font-weight:@weight;
@@ -974,6 +977,9 @@ body {
     padding: 0px;
     margin: 1px 0px 8px 0px;
     border: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 
   .widget-item .content, kpis-bar .kpi {
@@ -1174,6 +1180,19 @@ body {
   &:focus { border-color: @brand-success }
 }
 
+// remove gutters from Boostrap row
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+// remove gutters from Boostrap column
+[class^="col-"].no-gutters,
+[class*=" col-"].no-gutters {
+  padding-right: 0;
+  padding-left: 0;
+}
+
 // --- Reusable widget style mixins
 
 // Payroll-Summary - Profit-and-Loss
@@ -1319,19 +1338,42 @@ body {
       color: @impac-widget-text-color-medium;
       user-select: none;
 
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
       &.active {
         color: @mblue;
         font-weight: bold;
         background-color: transparent;
         border-color: #c4caca;
       }
-
-      &:hover { cursor: pointer; }
     }
 
     .fa.fa-toggle-on, .fa.fa-toggle-off {
       font-size: 17px;
       margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
     }
   }
 }
@@ -1399,6 +1441,11 @@ body {
     -o-user-select: none;
     user-select: none;
 
+    @media (max-width: @screen-xs-max) {
+      padding: 0 15px 10px 15px;
+      margin: 0;
+    }
+
     .badge.confirmation {
       float: right;
       margin-right: 10px;
@@ -1408,12 +1455,14 @@ body {
     .title {
       padding: 15px 0px;
       border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
+      display: flex;
+      align-items: center;
+      p { flex-grow: 1; }
       i.fa.fa-times-circle {
         float: right;
         cursor: pointer;
-        margin-right: -35px;
-        margin-top: -6px;
         font-size: 20px;
+        padding: 6px;
         &:hover {
           color: @mlightgrey;
         }
@@ -1462,6 +1511,10 @@ body {
         }
       }
 
+      .categories_menu-items {
+        padding: 3px 12px;
+      }
+
       .widgets {
         background-color: darken(@impac-dashboard-widget-selector-bg,3%);
         padding-bottom: 15px;
@@ -1472,15 +1525,25 @@ body {
         }
         .row.lines {
           padding: 3px 0px;
-          p:hover {
-            background-color: darken(@impac-dashboard-widget-selector-bg,6%);
-            font-weight: normal;
-          }
           .fa.fa-plus-circle {
             float: right;
             margin-top: 3px;
           }
         }
+      }
+
+      .widgets_widget-item {
+        padding: 0 13px;
+        display: flex;
+        align-items: center;
+        &:hover {
+          background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+          font-weight: normal;
+        }
+      }
+
+      .widgets_widget-item_text {
+        flex-grow: 1;
       }
 
       .row.header {
@@ -1501,17 +1564,19 @@ body {
           margin: 0px;
           border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
           cursor: pointer;
-          &:hover, &.selected {& > div {
-      display: inline-block;
-      margin-left: 10px;
-    }
-    select {
-      margin: 0;
-    }
-    .btn {
-      height: 32px;
-      padding-top: 5px;
-    }
+
+          &:hover, &.selected {
+            & > div {
+              display: inline-block;
+              margin-left: 10px;
+            }
+            select {
+              margin: 0;
+            }
+            .btn {
+              height: 32px;
+              padding-top: 5px;
+            }
             color: @impac-dashboard-widget-selector-text-color;
           }
         }
@@ -2004,14 +2069,18 @@ body {
       text-align: center;
     }
 
-    .im-button.alert-caption {
+    .alert-caption {
       text-align: center;
       font-size: 11px;
-      width: 81%;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
       margin: 0 auto 5px auto;
       box-shadow: none;
       padding: 2px;
+      color: white;
     }
+
 
     .kpi-target-watchable,
     .kpi-target-unit {
@@ -2044,6 +2113,19 @@ body {
   .kpi-edit,
   .kpi-no-data {
     .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
   }
 
   button.kpi-remove.im-fab.im-warn {
@@ -2350,6 +2432,11 @@ body {
   }
 }
 
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
+}
+
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
@@ -2508,54 +2595,16 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item {
-  .editable-title {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-    height: 22px;
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
   }
 
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
   }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-  // }
 }
 
 .analytics .widget-item .info-panel {
@@ -2615,6 +2664,53 @@ body {
       }
 
       .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
     }
   }
 }
@@ -2740,7 +2836,7 @@ body {
   .tall-widget();
   .widget-lines-container {
     .scrollable(scroll);
-    max-height: 515px;
+    max-height: 490px;
     @media (max-width: @screen-xs-max) {
       .row.widget-line {
         &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
@@ -2759,6 +2855,16 @@ body {
   }
 }
 
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
+  }
+}
+
 .analytics .widget-item .content.accounts-cash-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -2768,16 +2874,6 @@ body {
   .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
-  }
-}
-
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
   }
 }
 
@@ -2869,11 +2965,10 @@ body {
   .edit {
     .edit-panel-style();
     padding: 5px;
-    .part {
-      width: 49%;
-    }
+    overflow: visible;
   }
 }
+
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -2952,6 +3047,37 @@ body {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.accounts-ratios {
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
+
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
+    }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
+  }
+
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
+  }
+}
+
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -2960,15 +3086,9 @@ body {
     @media (min-width: @screen-md-min) { max-height: 200px; }
     .scrollable();
   }
-  pre {
-    font-size: 12px;
-    padding: 0px;
-    margin: 1px 0px 8px 0px;
-    border: none;
-  }
   .right-panel {
     .details-container {
-      @media (min-width: @screen-md-min) { max-height: 208px; }
+      @media (min-width: @screen-md-min) { max-height: 220px; }
     }
     .legend {
       margin-bottom: 5px;
@@ -3009,6 +3129,13 @@ body {
     text-align: center;
   }
 }
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 145px;
+  }
+}
+
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3029,13 +3156,6 @@ body {
     color: @impac-widget-text-color;
   }
 }
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 145px;
-  }
-}
-
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -3079,22 +3199,36 @@ body {
   .row.astericks-info {
     margin-top: 15px;
   }
+
+  .currency-conversions {
+    float: right;
+    margin-left: 3px;
+  }
 }
 
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
-}
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
 
-  .widget-lines-container {
-    max-height: 238px;
+  .currency-conversions {
+    float: right;
+    margin-right: 3px;
+    margin-top: -2px;
+  }
+
+  .fa.fa-info-circle {
+    float: right;
+    font-size: 15px;
+  }
+
+  .right-column {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3139,6 +3273,14 @@ body {
     }
   }
 }
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
+  }
+}
+
 .analytics .widget-item .content.sales-comparison {
   .drill-down-widget();
   .widget-lines-container {
@@ -3146,6 +3288,9 @@ body {
   }
   .right-panel .widget-lines-container {
     max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
   }
 }
 
@@ -3156,13 +3301,13 @@ body {
   font-size: 12px;
   .details-container {
     padding: 0px;
-    @media (min-width: @screen-md-min) { max-height: 200px; }
+    @media (min-width: @screen-md-min) { max-height: 194px; }
     overflow-y: auto;
     overflow-x: hidden;
   }
   .right-panel {
     .details-container {
-      @media (min-width: @screen-md-min) { max-height: 208px; }
+      @media (min-width: @screen-md-min) { max-height: 230px; }
     }
     .legend {
       margin-bottom: 5px;
@@ -3172,6 +3317,11 @@ body {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+
+  .currency-conversions {
+    float: left;
+    margin-right: 3px;
   }
 }
 
@@ -3221,6 +3371,9 @@ body {
   }
   .selector {
     margin-bottom: 4px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
   }
 }
 
@@ -3348,7 +3501,17 @@ body {
       font-size: 11px;
     }
   }
+
+  .right-panel {
+    h3 {
+      margin: 15px 10px 5px 10px;
+      text-align: center;
+    }
+
+    .fa.fa-info-circle { float: left; }
+  }
 }
+
 .analytics .widget-item .content.sales-summary {
   .simple-summary-widget();
   .selector {
@@ -3368,6 +3531,9 @@ body {
 
     // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
     .row > [class*='col-'] { position: static; }
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
   }
 }
 
@@ -3633,6 +3799,24 @@ body {
 
 }
 
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -3683,10 +3867,16 @@ body {
     overflow-x: hidden;
     .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
 
-    div {
+    .param-selector-label {
       padding: 3px 5px;
+      .font(inherit,500,black);
+      cursor: text;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 1.9;
     }
-    div:hover {
+    .param-selector-label:hover {
       cursor: pointer;
       background-color: @impac-widget-param-selector-color;
       color: white;

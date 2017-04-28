@@ -39,6 +39,7 @@ angular
       alerts:
         index: null
         create: null
+        update: null
         del: null
 
       organizations:
@@ -163,6 +164,11 @@ angular
               defaults.alerts.create.replace(':kpi_id', kpi_id)
             else
               "#{defaults.mnoHub}/impac/kpis/#{kpi_id}/alerts"
+          update: (id) ->
+            if defaults.alerts.update
+              defaults.alerts.update.replace(':id', id)
+            else
+              "#{defaults.mnoHub}/impac/alerts/#{id}"
           delete: (id) ->
             if defaults.alerts.del
               defaults.alerts.del.replace(':id', id)

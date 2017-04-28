@@ -51,24 +51,20 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         w.metadata && w.metadata.criteria == o.value
       ) || $scope.criteriaOptions[0])
 
-      if w.metadata.selectedElements
-        $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
-          foundElem = _.find(w.content.sales_comparison, (statement)->
-            statement.name == sElem.name
-          )
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
 
-          if !foundElem
-            angular.forEach(w.content.sales_comparison, (statement) ->
-              foundElem ||= _.find(statement.sales, (sale)->
-                sElem.id == sale.id
-              ) if statement.sales?
-            )
+      unless _.isEmpty(w.metadata.selectedElements)
+        $scope.selectedElements = []
+        for sElemId in w.metadata.selectedElements
+          # Attempt to find element by statement name
+          foundElem = _.find(w.content.sales_comparison, (statement)-> statement.name == sElemId)
+          # Attempt to find element by element by sale id
+          foundElem ||= fetchElement(w.content.sales_comparison, sElemId)
 
           $scope.selectedElements.push(foundElem) if foundElem
-        )
       sortData()
-      
+
   $scope.getLastDate = ->
     _.last(w.content.dates) if $scope.isDataFound
 
@@ -80,13 +76,20 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
   $scope.getElementChartColor = (index) ->
     ChartFormatterSvc.getColor(index)
 
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
-  $scope.toggleSelectedElement = (element) ->
-    if $scope.isSelected(element)
+  $scope.toggleSelectedElement = (element, statementName = null) ->
+    if $scope.isSelected(element, statementName)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.id? then 'id' else 'name')
-        sElem[matcher] == element[matcher]
+        matchElementToSelectedElement(element, statementName, sElem)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -94,18 +97,19 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
+      selectedElement = angular.copy(element)
+      selectedElement.category = statementName
       $scope.selectedElements ||= []
-      $scope.selectedElements.push(element)
+      $scope.selectedElements.push(selectedElement)
       w.format()
       if !w.isExpanded()
         w.toggleExpanded()
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-  $scope.isSelected = (element) ->
+  $scope.isSelected = (element, statementName = null) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.id? then 'id' else 'name')
-      sElem[matcher] == element[matcher]
+      matchElementToSelectedElement(element, statementName, sElem)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -128,9 +132,47 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
 
-  $scope.getSelectLineColor = (elem) ->
-    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
+  $scope.getSelectLineColor = (element, statementName = null) ->
+    sElem = _.find($scope.selectedElements, (sElem)->
+      matchElementToSelectedElement(element, statementName, sElem)
+    )
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, sElem)) if $scope.hasElements()
+
+  matchElementToSelectedElement = (element, elementCategory = null, sElem)->
+    getIdentifier(element, elementCategory) == getIdentifier(sElem)
+
+  fetchElement = (statements, sElemId)->
+    for statement in statements
+      continue unless statement.sales?
+      element = _.find(statement.sales, (sale) -> getIdentifier(sale, statement.name) == sElemId)
+      if element?
+        element = angular.merge(angular.copy(element), category: statement.name)
+        return element
+
+  getIdentifier = (element, category = null)->
+    id = element.id || element.name
+    category ||= element.category
+    return id unless category
+    "#{category}-#{id}"
+
   # <---
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.sales_comparison, (sElem) ->
+      if sElem.sales
+        sElem.sales.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'sales'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getTotalForPeriod(el) )
 
   # Chart formating function
   # --------------------------------------
@@ -168,30 +210,31 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
-  sortAccountsBy = (getElem) ->
-    angular.forEach(w.content.sales_comparison, (sElem) ->
-      if sElem.sales
-        sElem.sales.sort (a, b) ->
-          res = if getElem(a) > getElem(b) then 1
-          else if getElem(a) < getElem(b) then -1
-          else 0
-          res *= -1 unless $scope.ascending
-          return res
-    )
-
-  sortData = ->
-    if $scope.sortedColumn == 'sales'
-      sortAccountsBy( (el) -> el.name )
-    else if $scope.sortedColumn == 'total'
-      sortAccountsBy( (el) -> $scope.getTotalForPeriod(el) )
-
-  $scope.sort = (col) ->
-    if $scope.sortedColumn == col
-      $scope.ascending = !$scope.ascending
-    else
-      $scope.ascending = true
-      $scope.sortedColumn = col
-    sortData()
+  buildFxTotals = ->
+    for groupedSales in w.content.sales_comparison
+      for sale in groupedSales.sales
+        sale.formattedFxTotals = {}
+        netSaleFxTotals = []
+        grossSaleFxTotals = []
+        unless _.isEmpty(sale.fx_totals)
+          _.mapKeys sale.fx_totals, (total, currency) ->
+            for grossAmount in total['net_value_sold']
+              unless grossAmount == 0 || currency == w.metadata.currency
+                netSaleFxTotals.push({
+                  currency: currency,
+                  amount: grossAmount,
+                  rate: total.rate  
+                })
+            for netAmount in total['gross_value_sold']
+              unless netAmount == 0 || currency == w.metadata.currency
+                grossSaleFxTotals.push({
+                  currency: currency,
+                  amount: netAmount,
+                  rate: total.rate  
+                })
+        
+        sale.formattedFxTotals['net_value_sold'] = netSaleFxTotals unless _.isEmpty(netSaleFxTotals)
+        sale.formattedFxTotals['gross_value_sold'] = grossSaleFxTotals unless _.isEmpty(grossSaleFxTotals)
 
   # Mini-settings
   # --------------------------------------
@@ -213,7 +256,11 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
     selectedElementsSetting.initialized = true
 
   selectedElementsSetting.toMetadata = ->
-    {selectedElements: $scope.selectedElements}
+    # Build simple array of identifiers for metadata storage
+    selectedElementsMetadata = _.map($scope.selectedElements, (sElem)->
+      getIdentifier(sElem)
+    )
+    {selectedElements: selectedElementsMetadata}
 
   w.settings.push(selectedElementsSetting)
 

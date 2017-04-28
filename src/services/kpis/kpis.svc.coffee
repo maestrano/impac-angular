@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming) ->
 
     _self = @
 
@@ -36,6 +36,7 @@ angular
       deferred.promise
 
     @getKpisDateRange = ->
+      return $q.reject('Kpis dates picker disabled') unless ImpacTheming.get().dhbKpisConfig.enableDatesPicker
       _self.load().then(->
         kpisDateRange = _self.getCurrentDashboard().metadata.kpis_hist_parameters
         return kpisDateRange unless _.isEmpty(kpisDateRange) || !_.isObject(kpisDateRange)
@@ -43,7 +44,7 @@ angular
           fyEndMonth = parseInt(config.currentOrganization.financial_year_end_month) || 6
           fyDates = ImpacUtilities.financialYearDates(fyEndMonth)
           {
-            from: moment(fyDates.end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD'),
+            from: fyDates.start,
             to: moment().format('YYYY-MM-DD'),
             keepToday: true
           }
@@ -72,62 +73,58 @@ angular
     #====================================
 
     @locked = false
-    @load = (force=false) ->
+    # @param [refreshCache] needed for refreshing cache on reports used for Impac! KPI
+    # possible_extra_params on #index.
+    @load = (refreshCache=false) ->
       unless _self.locked
         _self.locked = true
 
-        return $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)]).then(
+        return $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()]).then(
           (results)->
-            if _.isEmpty(_self.getKpisTemplates()) || force
 
-              # clear array
-              _.remove _self.config.kpisTemplates, (-> true)
+            orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
+            ssoSessionId = results[0].sso_session
 
-              orgUids = _.pluck _self.getCurrentDashboard().data_sources, 'uid'
-              ssoSessionId = results[0].sso_session
+            params =
+              metadata: organization_ids: orgUids
+              opts: refresh_cache: refreshCache
 
-              params =
-                metadata:
-                  organization_ids: orgUids
+            params.sso_session = ssoSessionId if ssoSessionId
 
-              params.sso_session = ssoSessionId if ssoSessionId
+            promises = impac: index(params)
 
-              promises =
-                impac: index(params)
+            # Get local kpis
+            if ImpacRoutes.kpis.local()
+              promises.local = $http.get(ImpacRoutes.kpis.local())
 
-              # Get local kpis
-              if ImpacRoutes.kpis.local()
-                promises.local = $http.get(ImpacRoutes.kpis.local())
+            return $q.all(promises).then(
+              (response) ->
+                # Clear store
+                _.remove(_self.config.kpisTemplates, -> true)
 
-              return $q.all(promises).then(
-                (response) ->
-                  if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
-                    # fill array with new values from Impac! api
-                    for template in response.impac.data.kpis
-                      template.source ||= 'impac'
-                      _self.config.kpisTemplates.push template
+                if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
+                  # fill array with new values from Impac! api
+                  for template in response.impac.data.kpis
+                    template.source ||= 'impac'
+                    _self.config.kpisTemplates.push template
 
-                  if response.local && response.local.data? && !_.isEmpty(response.local.data.kpis)
-                    # fill array with new values from local endpoints
-                    for template in response.local.data.kpis
-                      template.source = 'local'
-                      _self.config.kpisTemplates.push template
+                if response.local && response.local.data? && !_.isEmpty(response.local.data.kpis)
+                  # fill array with new values from local endpoints
+                  for template in response.local.data.kpis
+                    template.source = 'local'
+                    _self.config.kpisTemplates.push template
 
-                  $log.info("Impac! - KpisSvc: loaded (force=#{force})")
+                $log.info("Impac! - KpisSvc: loaded")
 
-                (err) ->
-                  $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
-                  $q.reject(err)
-              ).finally(-> _self.locked = false )
-
-            else
-              _self.locked = false
-              return $q.resolve()
+              (err) ->
+                $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
+                $q.reject(err)
+            ).finally(-> _self.locked = false )
         ).finally(-> _self.locked = false )
 
       else
         $log.warn "Impac! - KpisSvc: Load locked. Trying again in 1s"
-        $timeout (-> _self.load(force)), 1000
+        $timeout (-> _self.load(refreshCache)), 1000
 
     @massAssignAll = (metadata) ->
       _self.load().then(->
@@ -141,17 +138,17 @@ angular
       )
 
     @isRefreshing = false
-    @refreshAll = ->
+    @refreshAll = (refreshCache=false) ->
       unless _self.isRefreshing
         _self.isRefreshing = true
-        _self.load().then(->
+        _self.load(refreshCache).then(->
           for k in _self.getCurrentDashboard().kpis
-            _self.show(k).then(
+            _self.show(k, refreshCache).then(
               (renderedKpi)-> # success
               (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
             )
         ).finally(->
-          # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
+          # throttles refreshAll calls
           $timeout(->
             _self.isRefreshing = false
           , 3000)
@@ -222,71 +219,46 @@ angular
       return $http.get(url)
 
     # Retrieve data for kpi from api
-    @show = (kpi) ->
+    @show = (kpi, refreshCache=false) ->
       kpi.isLoading = true
       _self.load().then(
         ->
-          fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+          params = opts: refresh_cache: refreshCache
 
-          params = {
-            opts:
-              financial_year_end_month: fy_end_month
-          }
           params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
           params.metadata = kpi.settings if kpi.settings?
           params.extra_params = kpi.extra_params if kpi.extra_params?
           params.extra_watchables = kpi.extra_watchables if kpi.extra_watchables?
 
-          # Retrieve datesRange from dashboard or default.
-          _self.getKpisDateRange().then((dates)->
+          switch kpi.source
+            when 'impac'
+              host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
+            when 'local'
+              host = ImpacRoutes.kpis.local()
 
-            angular.extend params.metadata, {
-              hist_parameters:
-                from: dates.from
-                to: dates.to
-                period: 'MONTHLY'
-            }
+          url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
-            switch kpi.source
-              when 'impac'
-                host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
-              when 'local'
-                host = ImpacRoutes.kpis.local()
+          return $http.get(url).then(
+            (response) ->
+              kpiResp = response.data.kpi
+              # Calculation
+              kpi.data = kpiResp.calculation
 
-            url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
+              # Configuration
+              # When the kpi initial configuration is partial, we update it with what the API has picked by default
+              updatedConfig = kpiResp.configuration || {}
+              missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
+              angular.extend kpi, _.pick(updatedConfig, missingParams)
 
-            return $http.get(url).then(
-              (response) ->
-                # When no target has been defined
-                if response.data.error && response.data.error.code == 422
-                  # TODO: this can be removed when Impac! API returns layout config for draft
-                  # mode KPIs. As then KPIs with no kpi.data and kpi.layout could be
-                  # considered in draft mode.
-                  kpi.isDraft = true
-                  return false
-                else
-                  kpiResp = response.data.kpi
-                  # Calculation
-                  # angular.extend kpi.data, kpiResp.calculation
-                  kpi.data = kpiResp.calculation
+              # Layout
+              kpi.layout = kpiResp.layout
 
-                  # Configuration
-                  # When the kpi initial configuration is partial, we update it with what the API has picked by default
-                  updatedConfig = kpiResp.configuration || {}
-                  missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-                  angular.extend kpi, _.pick(updatedConfig, missingParams)
+              return kpi
 
-                  # Layout
-                  # angular.extend kpi.layout, kpiResp.layout
-                  kpi.layout = kpiResp.layout
-
-                  return kpi
-
-              (err) ->
-                $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
-                $q.reject(err)
-            )
+            (err) ->
+              $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
+              $q.reject(err)
           )
         ->
           $log.error 'Impac! - KpisSvc: Service not initialized'
@@ -294,6 +266,7 @@ angular
       ).finally ( -> kpi.isLoading = false )
 
     @create = (source, endpoint, elementWatched, opts={}) ->
+      deferred = $q.defer()
       _self.load().then(
         ->
           params = {
@@ -304,25 +277,32 @@ angular
               currency: _self.getCurrentDashboard().currency
           }
 
-          angular.extend params, opts
+          # Retrieve datesRange from dashboard or default.
+          _self.getKpisDateRange().then( (dates) ->
+            params.metadata = {} unless params.metadata?
+            params.metadata.hist_parameters = dates
+          ).finally( ->
+            angular.extend params, opts
 
-          url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
+            url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
-          $http.post(url, {kpi: params}).then(
-            (success) ->
-              # Alerts can be created by default on kpi#create (widget.kpis), check for
-              # new alerts and register them with Pusher.
-              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-              kpi = success.data
-              _self.buildKpiWatchables(kpi)
-              kpi
-            (err) ->
-              $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
-              $q.reject(err)
+            $http.post(url, {kpi: params}).then(
+              (success) ->
+                # Alerts can be created by default on kpi#create (widget.kpis), check for
+                # new alerts and register them with Pusher.
+                ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+                kpi = success.data
+                _self.buildKpiWatchables(kpi)
+                deferred.resolve(kpi)
+              (err) ->
+                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                deferred.reject(err)
+            )
           )
         ->
-          $q.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
+          deferred.reject({ error: {message: 'Impac! - KpisSvc: Service is not initialized'} })
       )
+      return deferred.promise
 
     @update = (kpi, params) ->
       kpi.isLoading = true
@@ -351,7 +331,6 @@ angular
           )
       ).finally(->
         kpi.isLoading = false
-        kpi.isDraft = false
       )
 
 
@@ -382,13 +361,30 @@ angular
         !alerts[alert.service].active
       )
 
+      # Update existing alerts that have been modified
+      alertsToUpdate = _.filter(alerts, (alert) ->
+        existingAlert = _.find(kpi.alerts, (kpi_alert) -> kpi_alert.service == alert.service)
+        return false if alert.service == "inapp" || !existingAlert || !alert.recipients
+        existingRecipientIds = existingAlert.recipients.map((recipient) -> recipient.id).sort()
+        updatedRecipientIds = alert.recipients.map((recipient) -> recipient.id).sort()
+        recipientChange = false
+        recipientChange = true if updatedRecipientIds.length != existingRecipientIds.length || "#{existingRecipientIds}" != "#{updatedRecipientIds}"
+        alert.id = existingAlert.id
+        alert.active && recipientChange
+      )
+
       promises = []
 
       for alert in alertsToCreate
-        promises.push ImpacAlerts.create(kpi.id, { alert: _.pick(alert, ['service']) })
+        alertHash = { alert: _.pick(alert, ['service']) }
+        alertHash.alert.recipients = alert.recipients if alert.service == 'email'
+        promises.push ImpacAlerts.create(kpi.id, alertHash)
 
       for alert in alertsToDelete
         promises.push ImpacAlerts.delete(alert.id)
+
+      for alert in alertsToUpdate
+        promises.push ImpacAlerts.update(alert.id, {alert: _.pick(alert, ['service', 'recipients'])})
 
       return $q.all(promises).then(
         (success) ->

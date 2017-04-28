@@ -27,13 +27,13 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc
     if $scope.isDataFound = !_.isEmpty(w.content) && w.content.summary? && !_.isEmpty(w.content.summary.data)
 
       $scope.periodOptions = [
-        {label: 'Yearly', value: 'yearly'},
-        {label: 'Monthly', value: 'monthly'},
-        {label: 'Weekly', value: 'weekly'},
-        {label: 'Hourly', value: 'hourly'}
+        {label: 'per year', value: 'YEARLY'},
+        {label: 'per month', value: 'MONTHLY'},
+        {label: 'per week', value: 'WEEKLY'},
+        {label: 'per day', value: 'DAILY'}
       ]
       $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.content.total.period.toLowerCase()
+        o.value == w.content.total.period.toUpperCase()
       ) || $scope.periodOptions[0])
 
       $scope.filterOptions = [

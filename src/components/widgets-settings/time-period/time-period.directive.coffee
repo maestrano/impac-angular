@@ -7,6 +7,8 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       parentWidget: '='
       deferred: '='
       histParams: '=?'
+      hideChartInterval: '=?'
+      applyChangesCallback: '&?'
     },
     template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
     
@@ -56,6 +58,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         $timeout ->
           initPeriod()
           getSetting('time-presets').initialize()
+          scope.showApplyButton = angular.isDefined(scope.applyChangesCallback)
 
       scope.timePeriodSetting.toMetadata = ->
         sourceSetting = getSetting(getUsedSettingKey())

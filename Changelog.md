@@ -1,12 +1,99 @@
 # Impac! Frontend Changelog
 
-## Unreleased - development in progress
+### v1.4.11 | 2017 - Week 17 
+
+#### Adds
+- Apply widget settings on custom calc modal proceed (save)
+- An improved configuration / customisation to the README.md
+
+#### Fixes
+- [IMPAC-546] currency of widget & dashboard not in sync
+- [IMPAC-545] Fix css responsivenes for widgets selector
+- [IMPAC-448] Fix period hidden in "show last month"
+- Fix refreshAll kpis wrongly forcing a dashboard reload
+- Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
+
+-------------------------------------------------------------
+
+### v1.4.10 | 2017 - Week 16
+
+#### Adds
+- [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
+- [IMPAC-529] Sales Comparison to use common-currency-conversions
+- [IMPAC-530] Aged Sales to use common-currency-conversions
+- [IMPAC-534] Aged Payables and Receivables to use common-currency-conversions directive
+- [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
+- Add loader for KPIs on delete
+
+#### Fixes
+- [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
+- [IMPAC-397] Enforce at least 1 opportunities funnel widget option selection
+- [IMPAC-498] Improve widget drill-down selection saved ids
+- [IMPAC-536] fix param selector css bleed
+- [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
+
+#### Dependencies
+- Depends on Impac! >= 1.5.4
+
+### Config Changes
+- Frontend needs to serve dist/images/currency-conversions.png as an asset
+
+-------------------------------------------------------------
+
+### v1.4.9 | 2017 - Week 13
+
+#### Adds
+- [IMPAC-521] Better layout for employee details (and other widgets)
+
+#### Dependencies
+- Impac! >= v1.5.3
 
 
 -------------------------------------------------------------
+
+### v1.4.8 | Week 4
+
+#### Adds
+- [IMPAC-331] KPIs display layout labels and current value on first add 
+- [IMPAC-335] Alerts can have multiple recipients 
+- [IMPAC-162] Add time period setting to Accounts Comparison
+- [IMPAC-466] Add time period setting to Custom Calculation
+- [IMPAC-467] Add time period setting to Accounts Classes Comparison
+- Ability to hide period interval on time period setting
+- Ability to show a 'Apply changes' button on time period setting
+
+#### Fixes
+- [IMPAC-495] KPI accounts from previous organization appearing in select box
+- [IMPAC-328] refresh KPIs after first sync
+- [IMPAC-485] Fix drill down widget selection params
+- [IMPAC-329] Better KPIs dates management: API driven defaults
+- [IMPAC-338] KPIs with extra_param do not update kpi "current value" on selection in the edit mode pane
+- Code injection issue on setting formula (custom calc.)
+
+
 -------------------------------------------------------------
 
-## Released
+### v1.4.7 | Week 3
+
+#### Adds
+- [IMPAC-453] New Widget: Debt Service Ratio
+- [IMPAC-456] New KPI: Debt Service Ratio
+- [IMPAC-460] New Widget: Current Ratio
+- [IMPAC-462] New KPI: Current Ratio
+- New setting: Offsets - Allows to set metadata[:offset] as a Hash of arrays
+- Can now inject text before/after caption of common-time-period-info
+
+#### Fixes
+- [IMPAC-420] Fix sync-apps poller on change organisation
+- [IMPAC-421] Fix kpis bar dates picker initialization
+- [IMPAC-440] fix aged payables & receivables sorting bugs
+- [IMPAC-463] No KPIs data when changing to multi-organisation w/ shared dashboard(remove ng-repeat "track by" for kpis)
+- Add guarding for account-class-comparison getTotals method
+- Formatting of the "real_value" on KPIs
+
+-------------------------------------------------------------
 
 ### v1.4.6 | Week 49
 
@@ -47,7 +134,7 @@
 - [IMPAC-380] Hide widgets selector on dashboard deletion.
 - Fixes for Dashboard & KPI action button positioning on smaller screens
 - KPIs bar action buttons position issues on small screens.
-- Various error handlers in kpi.svc not rejecting promises 
+- Various error handlers in kpi.svc not rejecting promises
 
 #### Config changes
 - Ability to provide custom messages for the dashboard failed error case in the ImpacTheming service.
@@ -170,7 +257,7 @@ dhbErrorsConfig: {
 #### Adds
 - Impac Angular now provides default images.
 - Impac Angular less variables to customise no widgets / dhb message styles without overriding.
-- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs) 
+- Added top-buffer less variables for improved layouts (replaces the need for bootstrap spacer divs)
 - Gulp default task changed to `gulp serve`, added `gulp build:dist` task
 
 #### Fixes
@@ -198,7 +285,7 @@ dhbErrorsConfig: {
 ### v1.3.11 | Week 31
 
 #### Adds
-- Improve time preset behaviour 
+- Improve time preset behaviour
 - Add version console command & log (`impac.version`)
 - Drill down widgets are now sortable
 - Change in selected lines layout display

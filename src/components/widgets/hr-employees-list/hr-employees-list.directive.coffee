@@ -20,13 +20,13 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
       $scope.periodOptions = [
-        {label: 'Yearly', value: 'yearly'},
-        {label: 'Monthly', value: 'monthly'},
-        {label: 'Weekly', value: 'weekly'},
-        {label: 'Hourly', value: 'hourly'}
+        {label: 'per year', value: 'YEARLY'},
+        {label: 'per month', value: 'MONTHLY'},
+        {label: 'per week', value: 'WEEKLY'},
+        {label: 'per day', value: 'DAILY'}
       ]
       $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.content.total.period.toLowerCase()
+        o.value == w.content.total.period.toUpperCase()
       ) || $scope.periodOptions[0])
 
   $scope.getSingleCompanyName = ->
@@ -37,7 +37,7 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
       )
       return org.label
 
-  $scope.getEmployeeSalary = (anEmployee) ->
+  $scope.getEmployeeEarnings = (anEmployee) ->
     if anEmployee.salary?
       return $filter('mnoCurrency')(anEmployee.salary.amount,w.content.total.currency)
     else

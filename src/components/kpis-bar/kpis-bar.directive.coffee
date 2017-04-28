@@ -74,19 +74,24 @@ angular
         # Promises this directive that the dates-picker is loaded and ready for initialize.
         $scope.datesPickerDeferred = $q.defer()
 
-        $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
-
-          ImpacKpisSvc.getKpisDateRange().then((dates)->
-
-            $scope.kpisDateRange.from = dates.from
-            $scope.kpisDateRange.to = dates.to
-            $scope.kpisDateRange.keepToday = dates.keepToday
-
-          ).finally(->
-
-            $scope.kpiDatesDeferred.resolve()
-            settingDatesPicker.initialize()
+        initDatesPicker = ->
+          $scope.datesPickerDeferred.promise.then((settingDatesPicker)->
+            ImpacKpisSvc.getKpisDateRange().then(
+              (dates)->
+                $scope.kpisDateRange.from = dates.from
+                $scope.kpisDateRange.to = dates.to
+                $scope.kpisDateRange.keepToday = dates.keepToday
+              ->
+                $scope.hideDatesPicker = true
+            ).finally(->
+              $scope.kpiDatesDeferred.resolve()
+              settingDatesPicker.initialize()
+            )
           )
+        initDatesPicker()
+
+        ImpacDashboardsSvc.dashboardChanged().then(null, null,
+          (result) -> initDatesPicker() if result
         )
 
         ImpacEvents.registerCb(IMPAC_EVENTS.kpiPressEnterButton, -> $scope.toggleEditMode())
@@ -155,6 +160,9 @@ angular
 
         $scope.hasKpiAvailability = ->
           $scope.availableKpis.list.length
+
+        $scope.showDatesPicker = ->
+          $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
 
         # Private methods
         # -------------------------

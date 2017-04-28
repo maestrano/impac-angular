@@ -25,7 +25,8 @@ angular
     #   @returns {string} A time period word
     ###
     @getPeriodWord = (period) ->
-      switch period
+      return '' unless angular.isDefined(period)
+      switch period.toLowerCase().slice(0,1)
         when "d" then return "day"
         when "w" then return "week"
         when "m" then return "month"
@@ -39,9 +40,11 @@ angular
     #   @returns {string} number and word formatted for reading e.g "4 weeks"
     ###
     @formatPeriod = (numberOfPeriods="", period="") ->
+      number = ''
+      word = "#{_self.getPeriodWord(period)}"
       if numberOfPeriods > 1
         number = "#{numberOfPeriods}"
-        word = "#{_self.getPeriodWord(period)}s"
+        word += 's'
       return [number,word].join(' ')
 
     ###

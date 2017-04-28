@@ -16,8 +16,9 @@
       </div>
     </div>
 
-    <div class="edit">
-      <div setting-organizations parent-widget="widget" class="part" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+    <div class="edit row">
+      <div setting-organizations parent-widget="widget" class="part col-md-6" deferred="::modalOrgDeferred" on-select="reloadAccountsLists(orgs)" />
+      <div setting-time-period parent-widget="widget" class="part col-md-6" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" hide-chart-interval="true" apply-changes-callback="updateWidgetSettings()" />
     </div>
 
     <p>Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: ({1} + {2}) / {3})</p>

@@ -31,15 +31,13 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
       if w.metadata.selectedElement
+        # Attempt to find the selectedElement by statement name
         $scope.selectedElement = _.find(w.content.summary, (statement)->
-          statement.name == w.metadata.selectedElement.name
+          statement.name == w.metadata.selectedElement
         )
-        if !$scope.selectedElement
-          angular.forEach(w.content.summary, (statement) ->
-            $scope.selectedElement ||= _.find(statement.accounts, (account)->
-              account.id == w.metadata.selectedElement.id
-            ) if statement.accounts?
-          )
+        # Attempt to find the selectedElement by statement account id
+        $scope.selectedElement ||= fetchElement(w.content.summary)
+
       sortData()
 
   $scope.getLastDate = ->
@@ -77,9 +75,18 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
   $scope.getName = (element) ->
     element.name.replace(/_/g, " ") if element? && element.name?
 
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
 
-  $scope.toggleSelectedElement = (element) ->
-    if $scope.isSelected(element)
+  # --->
+  # TODO selectedElement and collapsed should be factorized as settings or 'commons'
+  $scope.toggleSelectedElement = (element, statementName = null) ->
+    if $scope.isSelected(element, statementName)
       $scope.selectedElement = null
       if w.isExpanded()
         w.toggleExpanded()
@@ -87,16 +94,16 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
       $scope.selectedElement = angular.copy(element)
+      $scope.selectedElement.category = statementName
       w.format()
       if !w.isExpanded()
         w.toggleExpanded()
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-  $scope.isSelected = (element) ->
+  $scope.isSelected = (element, statementName = null) ->
     element? && $scope.selectedElement? && (
-      matcher = (if element.id? then 'id' else 'name')
-      $scope.selectedElement[matcher] == element[matcher]
+      matchElementToSelectedElement(element, statementName, $scope.selectedElement)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -119,6 +126,44 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
 
   $scope.getSelectLineColor = (elem) ->
     ChartFormatterSvc.getColor(0)
+
+  fetchElement = (statements)->
+    for statement in statements
+      continue unless statement.accounts?
+      element = _.find(statement.accounts, (acc) -> getIdentifier(acc, statement.name) == w.metadata.selectedElement)
+      if element?
+        element = angular.merge(angular.copy(element), category: statement.name)
+        return element
+
+  matchElementToSelectedElement = (element, elementCategory = null, sElem)->
+    getIdentifier(element, elementCategory) == getIdentifier(sElem)
+
+  getIdentifier = (element, category = null)->
+    id = element.id || element.name
+    category ||= element.category
+    return id unless category
+    "#{category}-#{id}"
+
+  # <---
+
+  sortAccountsBy = (getElem) ->
+    angular.forEach(w.content.summary, (sElem) ->
+      if sElem.accounts
+        sElem.accounts.sort (a, b) ->
+          res = if getElem(a) > getElem(b) then 1
+          else if getElem(a) < getElem(b) then -1
+          else 0
+          res *= -1 unless $scope.ascending
+          return res
+    )
+
+  sortData = ->
+    if $scope.sortedColumn == 'account'
+      sortAccountsBy( (el) -> el.name )
+    else if $scope.sortedColumn == 'total'
+      sortAccountsBy( (el) -> $scope.getLastValue(el) )
+    else if $scope.sortedColumn == 'variance'
+      sortAccountsBy( (el) -> $scope.getLastVariance(el) )
 
   # Chart formating function
   # --------------------------------------
@@ -147,34 +192,6 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
-  sortAccountsBy = (getElem) ->
-    angular.forEach(w.content.summary, (sElem) ->
-      if sElem.accounts
-        sElem.accounts.sort (a, b) ->
-          res = if getElem(a) > getElem(b) then 1
-          else if getElem(a) < getElem(b) then -1
-          else 0
-          res *= -1 unless $scope.ascending
-          return res
-    )
-
-  sortData = ->
-    if $scope.sortedColumn == 'account'
-      sortAccountsBy( (el) -> el.name )
-    else if $scope.sortedColumn == 'total'
-      sortAccountsBy( (el) -> $scope.getLastValue(el) )
-    else if $scope.sortedColumn == 'variance'
-      sortAccountsBy( (el) -> $scope.getLastVariance(el) )
-
-  $scope.sort = (col) ->
-    if $scope.sortedColumn == col
-      $scope.ascending = !$scope.ascending
-    else
-      $scope.ascending = true
-      $scope.sortedColumn = col
-    sortData()
-
-
   # Mini-settings
   # --------------------------------------
   unCollapsedSetting = {}
@@ -195,7 +212,9 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
     selectedElementSetting.initialized = true
 
   selectedElementSetting.toMetadata = ->
-    {selectedElement: $scope.selectedElement}
+    return {selectedElement: null} unless $scope.selectedElement?
+    {selectedElement: getIdentifier($scope.selectedElement) }
+
 
   w.settings.push(selectedElementSetting)
 

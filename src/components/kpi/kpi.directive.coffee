@@ -15,13 +15,13 @@ angular
         # Private Methods
         # -------------------------
         fetchKpiData = ->
-          ImpacKpisSvc.show($scope.kpi).then( (renderedKpi) ->
+          ImpacKpisSvc.show($scope.kpi).then((renderedKpi)->
             angular.extend $scope.kpi, renderedKpi
-
+            # Extra Params
             # Get the corresponding template of the KPI loaded
             kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
+            # Set the kpi name from the template
             $scope.kpi.name = kpiTemplate? && kpiTemplate.name
-
             # If the template contains extra params we add it to the KPI
             if kpiTemplate? && kpiTemplate.extra_params?
               $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
@@ -30,14 +30,16 @@ angular
                 ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
               )
 
+            # Targets
             watchablesWithoutTargets = false
             _.forEach($scope.kpi.watchables, (watchable)->
+              # No targets found - initialise a target form model for watchable
               if _.isEmpty (existingTargets = $scope.getTargets(watchable))
-                # No targets found - initialise a target form model for watchable
                 $scope.addTargetToWatchable(watchable)
                 watchablesWithoutTargets = true
+
+              # Targets found - bind existing targets to the form model
               else
-                # Targets found - bind existing targets to the form model
                 $scope.targets[watchable] = angular.copy(existingTargets)
             )
             # All watchables must have at least one target.
@@ -92,6 +94,7 @@ angular
 
         $scope.$on('$destroy', ()->
           ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateSettings, onUpdateSettingsCb)
+          ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarToggleSettings, onToggleSettingsCb)
           ImpacEvents.deregisterCb(IMPAC_EVENTS.kpisBarUpdateDates, onUpdateDatesCb)
         )
 
@@ -115,14 +118,16 @@ angular
           !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
 
         $scope.showKpiContent = ->
-          # Newly added kpis start in edit mode (draft) and will have "no content".
-          !$scope.isLoading() && ($scope.hasContent() || $scope.kpi.isDraft)
+          !$scope.isLoading() && $scope.hasContent()
 
         $scope.isDataNotFound = ->
-          !$scope.hasContent() && !$scope.kpi.isDraft
+          !$scope.hasContent()
 
         $scope.isLoading = ->
           $scope.kpi.isLoading
+
+        $scope.updateExtraParam = ->
+          $scope.updateSettings(true)
 
         $scope.updateSettings = (force)->
           params = {}
@@ -155,7 +160,8 @@ angular
 
         $scope.deleteKpi = ->
           return if $scope.kpi.static
-          ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
+          $scope.kpi.isLoading = true
+          ImpacKpisSvc.delete($scope.kpi).then((success) -> $scope.onDelete()).finally(-> $scope.kpi.isLoading = false)
 
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered
@@ -175,6 +181,13 @@ angular
 
         $scope.getTargetPlaceholder = (watchable)->
           ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, watchable)
+
+        $scope.getRealValue = ->
+          kpi = $scope.kpi
+          return "" if _.isEmpty(kpi.data)
+          value = kpi.data[kpi.watchables[0]].value
+          unit = kpi.data[kpi.watchables[0]].unit
+          [value, unit].join(' ').trim()
 
         # Add / remove placeholder for impac-material nice-ness.
         $scope.bindTargetInputPlaceholder = (watchable, targetIndex)->

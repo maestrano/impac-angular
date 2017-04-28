@@ -16,7 +16,7 @@
     <div ng-show="(isDataFound==true)" >
 
       <div class="legend">
-        <strong>{{widget.content.total.employees}}</strong> employee{{widget.content.total.employees > 1 ? "s" : null}} - Average salary rate (<span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>
+        <strong>{{widget.content.total.employees}}</strong> employee{{widget.content.total.employees > 1 ? "s" : null}} - Average estimated earnings - <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred"/>: <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>
       </div>
 
       <div class="widget-lines-container">
@@ -25,14 +25,14 @@
           <div class="col-sm-3">Employee</div>
           <div class="col-sm-2">Title</div>
           <div class="col-sm-3">Phone</div>
-          <div class="col-sm-2">Salary</div>
+          <div class="col-sm-2">Estimated earnings</div>
         </div>
         <div class="row widget-line" ng-repeat="employee in widget.content.employees" >
           <div class="col-sm-2">{{employee.company || getSingleCompanyName()}}</div>
           <div class="col-sm-3">{{employee.lastname}} {{employee.firstname}}</div>
           <div class="col-sm-2"><i>{{employee.job_title}}</i></div>
           <div class="col-sm-3">{{employee.phone}}</div>
-          <div class="col-sm-2"><i>{{getEmployeeSalary(employee)}}</i></div>
+          <div class="col-sm-2"><i>{{getEmployeeEarnings(employee)}}</i></div>
         </div>
       </div>
     </div>

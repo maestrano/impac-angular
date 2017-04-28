@@ -57,6 +57,7 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-expense-weight',
     'impac.components.widgets.accounts-assets-vs-liabilities',
     'impac.components.widgets.accounts-detailed-classifications',
+    'impac.components.widgets.accounts-ratios',
     'impac.components.widgets.hr-employee-details',
     'impac.components.widgets.hr-employees-list',
     'impac.components.widgets.hr-leaves-balance',
@@ -110,7 +111,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-presets',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
-    'impac.components.widgets-settings.attach-kpis'
+    'impac.components.widgets-settings.attach-kpis',
+    'impac.components.widgets-settings.offsets'
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -126,7 +128,8 @@ angular.module('impac.components.widgets-common',
     'impac.components.widgets-common.info-panel',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
-    'impac.components.widgets-common.autofocus'
+    'impac.components.widgets-common.autofocus',
+    'impac.components.widgets-common.currency-conversions'
   ]
 );
 angular.module('impac.components.common',
