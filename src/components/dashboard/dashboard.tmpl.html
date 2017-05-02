@@ -38,9 +38,9 @@
   <!-- Widgets selection container -->
   <div id="widget-selector" uib-collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
-      <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
+      <p>Select the widgets you want to add to your dashboard.</p>
       <span class="badge confirmation">Widget added!</span>
-      Select the widgets you want to add to your dashboard.
+      <i class="fa fa-times-circle" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
     </div>
 
     <div class="row top-container">
@@ -49,7 +49,7 @@
           All categories
         </div>
         <div class="row lines">
-          <div class="col-md-12" style="padding: 3px 12px;">
+          <div class="col-md-12 categories_menu-items">
             <p ng-click="selectCategory('accounts')" ng-class="isCategorySelected('accounts') ? 'selected' : none">Accounting</p>
             <p ng-click="selectCategory('invoices')" ng-class="isCategorySelected('invoices') ? 'selected' : none">Invoicing</p>
             <p ng-click="selectCategory('hr')" ng-class="isCategorySelected('hr') ? 'selected' : none">HR / Payroll</p>
@@ -69,8 +69,10 @@
           {{getSelectedCategoryName() | titleize}}
         </div>
         <div class="row lines">
-          <div class="col-md-4" ng-repeat="widgetTemplate in getWidgetsForSelectedCategory()" style="padding: 0px 8px;">
-            <p ng-click="addWidget(widgetTemplate)" uib-tooltip="{{widgetTemplate.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip"><i class="fa fa-{{widgetTemplate.icon}}" /> {{widgetTemplate.name}} <i class="fa fa-plus-circle" /></p>
+          <div class="col-md-4 widgets_widget-item" ng-repeat="widgetTemplate in getWidgetsForSelectedCategory()" ng-click="addWidget(widgetTemplate)" uib-tooltip="{{widgetTemplate.desc}}" tooltip-placement="{{$index < 9 ? 'bottom' : 'top'}}" tooltip-animation="false"  tooltip-append-to-body="true" tooltip-class="impac-widget-selector-tooltip">
+            <i class="fa fa-{{widgetTemplate.icon}}" />
+            <p class="widgets_widget-item_text" ng-bind="widgetTemplate.name"></p>
+            <i class="fa fa-plus-circle" />
           </div>
         </div>
       </div>
