@@ -20,9 +20,9 @@ angular
     # ====================================
     # Load and initialize
     # ====================================
-    @load = (force=false) ->
-      if !_self.getSsoSessionId()? || force
-        $q.all([ImpacMainSvc.loadUserData(force), ImpacDashboardsSvc.load(force)])
+    @load = ->
+      unless _self.getSsoSessionId()?
+        $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()])
       else
         $q.resolve()
 

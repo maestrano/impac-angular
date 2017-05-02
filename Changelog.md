@@ -1,5 +1,10 @@
 # Impac! Frontend Changelog
 
+### v1.5.0-rc7 | 2017 - Week 17
+- add v1.4.11
+
+-------------------------------------------------------------
+
 ### v1.5.0-rc6 | 2017 - Week 16
 - add v1.4.10
 
@@ -39,6 +44,23 @@
 
 #### Fixes
 - Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+
+-------------------------------------------------------------
+
+### v1.4.11 | 2017 - Week 17 
+
+#### Adds
+- Apply widget settings on custom calc modal proceed (save)
+- An improved configuration / customisation to the README.md
+
+#### Fixes
+- [IMPAC-546] currency of widget & dashboard not in sync
+- [IMPAC-545] Fix css responsivenes for widgets selector
+- [IMPAC-448] Fix period hidden in "show last month"
+- Fix refreshAll kpis wrongly forcing a dashboard reload
+- Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
 
 -------------------------------------------------------------
 
