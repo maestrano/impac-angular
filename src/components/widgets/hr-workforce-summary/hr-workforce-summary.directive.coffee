@@ -38,7 +38,7 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc
             {label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"].toLowerCase()), value: "weekly"},
             {label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"].toLowerCase()), value: "hourly"}
           ]
-    
+
           $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
               o.value == w.content.total.period.toLowerCase()
             ) || $scope.periodOptions[0])
@@ -56,7 +56,7 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc
             {label: translations["impac.common.label.salary_range"], value: "salary_range"},
             {label: translations["impac.common.label.job_title"], value: "job_title"},
           ]
-  
+
           $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
               o.value == w.content.summary.filter
             ) || $scope.filterOptions[0])
@@ -114,7 +114,7 @@ module.controller('WidgetHrWorkforceSummaryCtrl', ($scope, $q, ChartFormatterSvc
           tooltipFontSize: 12,
         }
         chartData = ChartFormatterSvc.pieChart(pieData, pieOptions)
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

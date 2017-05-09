@@ -48,11 +48,27 @@
       </div>
 
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
-        <div class="legend">{{'impac.widget.hr_employee_details.legend' | translate}} <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" /></div>
+        <!-- <div class="legend">{{'impac.widget.hr_employee_details.legend' | translate}} <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" /></div> -->
         <div class="details-container">
           <div class="row">
-            <div class="col-md-4"><label translate>impac.widget.hr_employee_details.label.salary</label></div>
-            <div class="col-md-8"><pre>{{getEmployee().salary || "-" }}</pre></div>
+            <div class="col-md-4">
+              <label translate>impac.widget.hr_employee_details.label.salary</label>
+            </div>
+            <div class="col-md-8">
+              <pre ng-if="salaries.length > 0" ng-repeat="salary in salaries" title="{{salary.tooltip}}">{{ salary.amount | mnoCurrency : salary.currency }} ({{ salary.period }})</pre>
+              <pre ng-if="salaries.length == 0">-</pre>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label>
+                Estimated earnings
+                - <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred2" />
+              </label>
+            </div>
+            <div class="col-md-8 col-md-offset-4">
+              <pre>{{ getEmployee().earnings || '-' }}</pre>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.hr_employee_details.label.address</label></div>

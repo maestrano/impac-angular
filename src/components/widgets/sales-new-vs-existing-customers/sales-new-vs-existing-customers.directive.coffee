@@ -71,10 +71,13 @@ module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFor
   $scope.shouldDisplayCurrency = () ->
     $scope.isDataFound && $scope.displayType.value.indexOf('count') < 0
 
+  # Calculate a percentage based on absolute values for representing on a piegraph.
   $scope.calculatePercentage = (sliceType) ->
-    Math.round(
-      w.content.summary[$scope.displayType.value][sliceType] / w.content.summary[$scope.displayType.value].total * 100
-    )
+    values =
+      new: Math.abs w.content.summary[$scope.displayType.value].new
+      existing: Math.abs w.content.summary[$scope.displayType.value].existing
+    values.totals = values.new + values.existing
+    return Math.round values[sliceType] / values.totals * 100
 
   # Chart formating function
   # --------------------------------------

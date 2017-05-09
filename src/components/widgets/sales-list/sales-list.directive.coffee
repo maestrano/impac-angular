@@ -23,7 +23,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
 
     $translate([
       'impac.widget.sales_list.value_sold_taxes',
@@ -91,6 +93,22 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
       $scope.ascending = true
       $scope.sortedColumn = col
     sortData()
+
+  buildFxTotals = ->
+    for groupedSales in w.content.summary
+      for sale in groupedSales.products
+        saleFxTotals = []
+        unless _.isEmpty(sale.fx_totals)
+          _.mapKeys sale.fx_totals, (total, currency) ->
+            amount = total['amount']
+            unless amount == 0 || currency == w.metadata.currency
+              saleFxTotals.push({
+                currency: currency,
+                amount: amount,
+                rate: total.rate  
+              })
+        
+        sale.formattedFxTotals = saleFxTotals unless _.isEmpty(saleFxTotals)
 
   # Mini-settings
   # --------------------------------------

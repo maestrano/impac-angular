@@ -32,7 +32,7 @@
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-sm-4"><b>{{entity.name}}</b></div>
       <div class="col-sm-7">
         <div class="row">
@@ -41,7 +41,10 @@
           <div class="col-xs-4"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
         </div>
       </div>
-      <div class="col-sm-1 text-right"><i class="fa fa-info-circle" /></div>
+      <div class="col-sm-1 right-column text-right">
+        <i class="fa fa-info-circle" />
+        <span common-currency-conversions fx-amounts="entity.formattedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+      </div>
     </div>
 
 
@@ -55,12 +58,15 @@
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="top" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-xs-12"><b>{{entity.name}}</b></div>
       <div class="col-xs-8" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
       <div class="col-xs-8" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
       <div class="col-xs-8" ng-hide="orderBy == 'paid ' || orderBy == 'due '"><i>{{entity.total_invoiced | mnoCurrency : entity.currency}}</i></div>
-      <div class="col-xs-4 text-right"><i class="fa fa-info-circle" /></div>
+      <div class="col-xs-4 text-right">
+        <i class="fa fa-info-circle" />
+        <span common-currency-conversions fx-amounts="entity.formattedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+      </div>
     </div>
 
 

@@ -160,7 +160,8 @@ angular
 
         $scope.deleteKpi = ->
           return if $scope.kpi.static
-          ImpacKpisSvc.delete($scope.kpi).then ((success) -> $scope.onDelete())
+          $scope.kpi.isLoading = true
+          ImpacKpisSvc.delete($scope.kpi).then((success) -> $scope.onDelete()).finally(-> $scope.kpi.isLoading = false)
 
         $scope.isTriggered = ->
           $scope.kpi.layout? && $scope.kpi.layout.triggered

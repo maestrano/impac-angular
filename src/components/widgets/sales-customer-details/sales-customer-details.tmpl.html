@@ -18,7 +18,7 @@
 
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred" />
-        <div setting-param-selector parent-widget="widget" param="customer_uid" options="customersOptions" selected="selectedCustomer" class="row title" deferred="::paramSelectorDeferred" />
+        <div setting-param-selector parent-widget="widget" param="customer_uid" options="customersOptions" selected="selectedCustomerId" class="row title" deferred="::paramSelectorDeferred" />
 
         <div class="details-container">
           <div class="row">
@@ -59,15 +59,24 @@
           </div>
           <div class="row">
             <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_invoiced</label></div>
-            <div class="col-md-7"><pre>{{getCustomer().total_invoiced | mnoCurrency : getCustomer().currency}}</pre></div>
+            <div class="col-md-7">
+              <span common-currency-conversions fx-amounts="selectedCustomer.invoicedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+              <pre>{{selectedCustomer.total_invoiced | mnoCurrency : selectedCustomer.currency}}</pre>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_paid</label></div>
-            <div class="col-md-7"><pre>{{getCustomer().total_paid | mnoCurrency : getCustomer().currency}}</pre></div>
+            <div class="col-md-7">
+              <span common-currency-conversions fx-amounts="selectedCustomer.paidFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+              <pre>{{selectedCustomer.total_paid | mnoCurrency : selectedCustomer.currency}}</pre>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_due</label></div>
-            <div class="col-md-7"><pre>{{getCustomer().total_due | mnoCurrency : getCustomer().currency}}</pre></div>
+            <div class="col-md-7">
+              <span common-currency-conversions fx-amounts="selectedCustomer.dueFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
+              <pre>{{selectedCustomer.total_due | mnoCurrency : selectedCustomer.currency}}</pre>
+            </div>
           </div>
         </div>
       </div>

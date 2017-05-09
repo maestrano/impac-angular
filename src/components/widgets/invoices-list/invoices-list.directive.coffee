@@ -36,6 +36,8 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $sce, $filter, ImpacUti
       $scope.defaultFrom = $filter('date')(datesRange[0], 'yyyy-MM-dd')
       $scope.defaultTo = $filter('date')(datesRange[1], 'yyyy-MM-dd')
       initInvoicesTooltips(w.content.entities)
+      buildFxTotals()
+      $scope.ratesDate = moment.now()
 
 
   # No need to put this under initContext because it won't change after a settings update
@@ -59,17 +61,33 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $sce, $filter, ImpacUti
       _.each(entity.invoices, (i) ->
 
         txn = if i.transaction_no != "" then " (" + i.transaction_no + ")" else ""
+        invCurrency = Object.keys(i.fx_totals)[0]
+        formattedInvoiced = $filter('mnoCurrency')(i.fx_totals[invCurrency].invoiced, invCurrency, true)
 
         if (i.tooltip_status == "partially paid")
-          paid = " (" + $filter('mnoCurrency')(i.paid,i.currency,true) + " over " + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
+          formattedPaid = $filter('mnoCurrency')(i.fx_totals[invCurrency].paid, invCurrency, true)
+          amountDetail = " (#{formattedPaid} on #{formattedInvoiced})"
         else
-          paid = " (" + $filter('mnoCurrency')(i.invoiced,i.currency,true) + ")"
+          amountDetail = " (#{formattedInvoiced})"
 
-        tooltip.push("#" + count + txn + " - " + i.tooltip_status + paid)
+        tooltip.push("#" + count + txn + " - " + i.tooltip_status + amountDetail)
         count++
       )
       $scope.invoiceTooltips[entity.id] = $sce.trustAsHtml(tooltip.join("<br />"))
     )
+
+  buildFxTotals = ->
+    for contact in w.content.entities
+      contactFxTotals = []
+      _.mapKeys contact.fx_totals, (total, currency) ->
+        if currency != w.metadata.currency
+          contactFxTotals.push({
+            currency: currency,
+            amount: total.invoiced,
+            rate: total.rate  
+          })  
+      unless _.isEmpty(contactFxTotals)
+        contact.formattedFxTotals = contactFxTotals
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"

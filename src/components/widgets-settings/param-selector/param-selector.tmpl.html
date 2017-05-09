@@ -1,7 +1,7 @@
 <span class="settings param-selector">
 	<a ng-click="toggleShowOptions()">{{((selected.labelTranslate | translate | titleize) || (selected.label | titleize)) | truncate : getTruncateValue() : "..." : false}} <i class="fa fa-chevron-down" /></a>
 	<div class="options-container" uib-collapse="!showOptions">
-		<div ng-repeat="option in options" ng-click="selectOption(option)">
+		<div ng-repeat="option in options" ng-click="selectOption(option)" class="param-selector-label">
 			{{(option.labelTranslate | translate | titleize) || (option.label | titleize)}}
 		</div>
 	</div>

@@ -40,28 +40,26 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
             ) || $scope.filterOptions[0])
         )
 
-  $scope.getAnalysis = ->
-    if $scope.isDataFound
       $translate([
-        'impac.widget.sales_turnover.analysis.less',
-        'impac.widget.sales_turnover.analysis.must',
-        'impac.widget.sales_turnover.analysis.revenue']).then(
+        'impac.widget.sales_turnover.analysis.least',
+        'impac.widget.sales_turnover.analysis.most',
+        'impac.widget.sales_turnover.analysis.balanced']).then(
         (translations) ->
            if w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50
-             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.less']
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.least']
            else if w.content.ranges[3].percentage + w.content.ranges[4].percentage > 50
-             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.must']
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.most']
            else
-             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.revenue']
-      )
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.balanced']
+        )
 
   $scope.getColorByIndex = (index) ->
     ChartFormatterSvc.getColor(index)
 
-  $scope.getRangeLabel = (aLabel) ->
+  $scope.getRangeLabel = (aLabel, ISOmode=false) ->
     prices = aLabel.split('-')
     _.map(prices, (price) ->
-      $filter('mnoCurrency')(price,w.content.currency,false)
+      $filter('mnoCurrency')(price,w.content.currency,ISOmode)
     ).join(' - ')
 
   $scope.getMaxRange = ->
@@ -81,7 +79,7 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
     if $scope.isDataFound
       barData = {
         labels: _.map(w.content.ranges, (elem) ->
-          elem.label
+          $scope.getRangeLabel(elem.label, true)
         ),
         values: _.map(w.content.ranges, (elem) ->
           elem.value

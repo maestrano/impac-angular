@@ -37,19 +37,13 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
       unless _.isEmpty(w.metadata.selectedElements)
         $scope.selectedElements = []
-        angular.forEach(w.metadata.selectedElements, (sElem) ->
+        for sElemId in w.metadata.selectedElements
           # Attempt to find element by statement name
-          foundElem = _.find(w.content.summary, (statement)-> statement.name == sElem)
-
-          unless foundElem
-            angular.forEach(w.content.summary, (statement) ->
-              if statement.employees?
-                # Attempt to find element by statement employee id
-                foundElem ||= _.find(statement.employees, (employee)-> employee.id == sElem)
-            )
+          foundElem = _.find(w.content.summary, (statement)-> statement.name == sElemId)
+          # Attempt to find element by statement employee id
+          foundElem ||= fetchElement(w.content.summary, sElemId)
 
           $scope.selectedElements.push(foundElem) if foundElem
-        )
 
       w.width = 6 unless $scope.selectedElements? && $scope.selectedElements.length > 0
       sortData()
@@ -105,13 +99,20 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     else
       return $filter('date')(date, 'MMM')
 
+  $scope.sort = (col) ->
+    if $scope.sortedColumn == col
+      $scope.ascending = !$scope.ascending
+    else
+      $scope.ascending = true
+      $scope.sortedColumn = col
+    sortData()
+
   # --->
   # TODO selectedElement and collapsed should be factorized as settings or 'commons'
-  $scope.toggleSelectedElement = (element) ->
-    if $scope.isSelected(element)
+  $scope.toggleSelectedElement = (element, statementName = null) ->
+    if $scope.isSelected(element, statementName)
       $scope.selectedElements = _.reject($scope.selectedElements, (sElem) ->
-        matcher = (if element.id? then 'id' else 'name')
-        sElem[matcher] == element[matcher]
+        matchElementToSelectedElement(element, statementName, sElem)
       )
       w.format()
       if w.isExpanded() && $scope.selectedElements.length == 0
@@ -119,18 +120,19 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
     else
+      selectedElement = angular.copy(element)
+      selectedElement.category = statementName
       $scope.selectedElements ||= []
-      $scope.selectedElements.push(element)
+      $scope.selectedElements.push(selectedElement)
       w.format()
       if !w.isExpanded()
         w.toggleExpanded()
       else
         ImpacWidgetsSvc.updateWidgetSettings(w,false)
 
-  $scope.isSelected = (element) ->
+  $scope.isSelected = (element, statementName = null) ->
     element? && _.any($scope.selectedElements, (sElem) ->
-      matcher = (if element.id? then 'id' else 'name')
-      sElem[matcher] == element[matcher]
+      matchElementToSelectedElement(element, statementName, sElem)
     )
 
   $scope.toggleCollapsed = (element) ->
@@ -152,6 +154,30 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.hasElements = ->
     $scope.selectedElements? && $scope.selectedElements.length > 0
+
+  $scope.getSelectLineColor = (element, statementName = null) ->
+    sElem = _.find($scope.selectedElements, (sElem)->
+      matchElementToSelectedElement(element, statementName, sElem)
+    )
+    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, sElem)) if $scope.hasElements()
+
+  matchElementToSelectedElement = (element, elementCategory = null, sElem)->
+    getIdentifier(element, elementCategory) == getIdentifier(sElem)
+
+  fetchElement = (statements, sElemId)->
+    for statement in statements
+      continue unless statement.employees?
+      element = _.find(statement.employees, (e) -> getIdentifier(e, statement.name) == sElemId)
+      if element?
+        element = angular.merge(angular.copy(element), category: statement.name)
+        return element
+
+  getIdentifier = (element, category = null)->
+    id = element.id || element.name
+    category ||= element.category
+    return id unless category
+    "#{category}-#{id}"
+
   # <---
 
   sortEmployeesBy = (getElem) ->
@@ -170,18 +196,6 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
       sortEmployeesBy( (el) -> el.name )
     else if $scope.sortedColumn == 'total'
       sortEmployeesBy( (el) -> $scope.getLastValue(el) )
-
-  $scope.sort = (col) ->
-    if $scope.sortedColumn == col
-      $scope.ascending = !$scope.ascending
-    else
-      $scope.ascending = true
-      $scope.sortedColumn = col
-    sortData()
-
-  $scope.getSelectLineColor = (elem) ->
-    ChartFormatterSvc.getColor(_.indexOf($scope.selectedElements, elem)) if $scope.hasElements()
-
 
   # Chart formating function
   # --------------------------------------
@@ -260,8 +274,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   selectedElementsSetting.toMetadata = ->
     # Build simple array of identifiers for metadata storage
     selectedElementsMetadata = _.map($scope.selectedElements, (element)->
-      matcher = (if element.id? then 'id' else 'name')
-      element[matcher]
+      getIdentifier(element)
     )
     {selectedElements: selectedElementsMetadata}
 

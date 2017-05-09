@@ -55,7 +55,7 @@
               <!-- Accounts lines -->
               <div class="row" uib-collapse="isCollapsed(statement)">
                 <div class="col-xs-12">
-                  <div class="row widget-line" ng-click="toggleSelectedElement(employee)" ng-repeat="employee in statement.employees" >
+                  <div class="row widget-line" ng-click="toggleSelectedElement(employee, statement.name)" ng-repeat="employee in statement.employees" >
                     <div class="col-xs-7 col-xs-offset-1">
                       {{employee.name}}
                     </div>
@@ -63,7 +63,7 @@
                       {{getLastValue(employee) | mnoCurrency : employee.currency}}
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(employee)" style="background-color: {{ getSelectLineColor(employee) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(employee, statement.name)" style="background-color: {{ getSelectLineColor(employee, statement.name) }}"/>
                   </div>
                 </div>
               </div>

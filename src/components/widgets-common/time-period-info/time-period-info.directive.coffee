@@ -20,6 +20,10 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $trans
         return '' unless angular.isDefined(scope.context.injectAfter)
         if angular.isFunction(scope.context.injectAfter) then scope.context.injectAfter() else scope.context.injectAfter
 
+      yieldCaption = (caption) ->
+        if getInjectBefore().length > 0 then caption = caption.toLowerCase()
+        [getInjectBefore(),caption,getInjectAfter()].join(' ')
+
       getDateInfo = ->
         dates = ImpacUtilities.selectedTimeRange(scope.context.histParams)
         if getBehaviour() == 'bls'
@@ -29,8 +33,13 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $trans
 
       getDateInfo()
 
-      yieldCaption = (caption) ->
-        if getInjectBefore().length > 0 then caption = caption.toLowerCase()
-        [getInjectBefore(),caption,getInjectAfter()].join(' ')
+      # TODO: refactor this component, removing the need for a watch.
+      #  - move the translation responsibility out of this component OR refactor into a setting
+      #  - use function bindings for inject methods rather than attaching to context
+      scope.$watch('context.histParams', (newVal, oldVal)->
+        getDateInfo() unless _.isEqual(newVal, oldVal)
+      )
+
+      return
   }
 )

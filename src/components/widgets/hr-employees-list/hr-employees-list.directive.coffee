@@ -45,7 +45,7 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate)
       )
       return org.label
 
-  $scope.getEmployeeSalary = (anEmployee) ->
+  $scope.getEmployeeEarnings = (anEmployee) ->
     if anEmployee.salary?
       return $filter('mnoCurrency')(anEmployee.salary.amount,w.content.total.currency)
     else

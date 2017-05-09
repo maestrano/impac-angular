@@ -19,7 +19,7 @@ module.config(($translateProvider, ImpacThemingProvider) ->
 
   settings = ImpacThemingProvider.$get().get().translateSettings
 
-  # # Path to translations files
+  # Path to translations files
   if settings.customLocaleFiles.prefix
     $translateProvider.useStaticFilesLoader({
       prefix: settings.customLocaleFiles.prefix,

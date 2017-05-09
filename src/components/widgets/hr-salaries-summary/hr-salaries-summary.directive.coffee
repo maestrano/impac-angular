@@ -77,7 +77,7 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
           elem.value
         )
       }
-      
+
       if $scope.filter.value == 'gender'
         barOptions = {
           showTooltips: false,
@@ -109,7 +109,7 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
 
       else
         return {error: {message: "wrong filter", code: 400}}
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

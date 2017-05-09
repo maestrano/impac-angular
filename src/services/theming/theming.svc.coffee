@@ -102,17 +102,19 @@ angular
       widgetSettings:
         histModeChoser:
           currentLabels:
-            pnl: "impac.widget.theming.hist.pnl"
             bls: "impac.widget.theming.hist.bls"
+            pnl: "impac.widget.theming.hist.pnl"
             default: "impac.widget.theming.hist.default"
           todayPrefixes:
-            bls: "impac.widget.theming.hist.bls.live"
+            bls: "impac.widget.theming.hist.bls.prefix"
+            pnl: "impac.widget.theming.hist.pnl.prefix"
+            default: "impac.widget.theming.hist.default.prefix"
         timePeriod:
           showSlider: true
 
       translateSettings:
         preferredLanguage: 'en-gb'
-        fallbackLanguage: 'zh-HK'
+        fallbackLanguage: ''
         customLocaleFiles:
           prefix: ''
           suffix: '.json'

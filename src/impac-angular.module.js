@@ -126,7 +126,8 @@ angular.module('impac.components.widgets-common',
     'impac.components.widgets-common.info-panel',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
-    'impac.components.widgets-common.autofocus'
+    'impac.components.widgets-common.autofocus',
+    'impac.components.widgets-common.currency-conversions'
   ]
 );
 angular.module('impac.components.common',
