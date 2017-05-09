@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.time-period-info',[])
-module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
+module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $translate) ->
   return {
     restrict: 'A'
     scope: {
@@ -8,6 +8,7 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
     template: $templateCache.get('widgets-common/time-period-info.tmpl.html')
 
     link: (scope, element) ->
+
       getBehaviour = ->
         if angular.isFunction(scope.context.accountingBehaviour) then scope.context.accountingBehaviour() else scope.context.accountingBehaviour
 
@@ -19,15 +20,26 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities) ->
         return '' unless angular.isDefined(scope.context.injectAfter)
         if angular.isFunction(scope.context.injectAfter) then scope.context.injectAfter() else scope.context.injectAfter
 
-      scope.getDateInfo = ->
-        dates = ImpacUtilities.selectedTimeRange(scope.context.histParams)
-        if getBehaviour() == 'bls'
-          return yieldCaption("As at #{dates.to}")
-        else
-          return yieldCaption("From #{dates.from} to #{dates.to}")
-
       yieldCaption = (caption) ->
         if getInjectBefore().length > 0 then caption = caption.toLowerCase()
         [getInjectBefore(),caption,getInjectAfter()].join(' ')
+
+      getDateInfo = ->
+        dates = ImpacUtilities.selectedTimeRange(scope.context.histParams)
+        if getBehaviour() == 'bls'
+           $translate('impac.widget.common.time_period_info.to', {dateTo: "#{dates.to}"}).then((label) -> scope.date = yieldCaption(label))
+        else
+          $translate('impac.widget.common.time_period_info.from_to', {dateFrom: "#{dates.from}", dateTo: "#{dates.to}"}).then((label) -> scope.date = yieldCaption(label))
+
+      getDateInfo()
+
+      # TODO: refactor this component, removing the need for a watch.
+      #  - move the translation responsibility out of this component OR refactor into a setting
+      #  - use function bindings for inject methods rather than attaching to context
+      scope.$watch('context.histParams', (newVal, oldVal)->
+        getDateInfo() unless _.isEqual(newVal, oldVal)
+      )
+
+      return
   }
 )

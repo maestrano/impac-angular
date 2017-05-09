@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-slider',[])
 
-module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, ImpacUtilities) ->
+module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, ImpacUtilities, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -10,7 +10,7 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, I
       onUse: '&?'
     },
     template: $templateCache.get('widgets-settings/time-slider.tmpl.html'),
-    
+
     link: (scope) ->
       w = scope.parentWidget
 
@@ -40,18 +40,18 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, I
         tr = scope.timeRange
         scope.numberOfPeriods = moment().month()
         return scope.numberOfPeriods unless tr?
-          
+
         nPattern = /^-?([0-9]{1,2})[a-z]?$/
         n = nPattern.exec(tr)
         scope.numberOfPeriods = parseInt(n[1]) if (n? && n[1] && parseInt(n[1]))
-        
+
         return scope.numberOfPeriods
 
       initPeriod = ->
         tr = scope.timeRange
         scope.period = "m"
         return "m" unless tr?
-          
+
         pPattern = /^-?[0-9]{0,2}([a-z])$/
         p = pPattern.exec(tr)
         period = _.find(PERIODS, (authPeriod) -> (p? && (p[1] == authPeriod)) )
@@ -86,6 +86,7 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, I
         p = getPeriod()
         return "-#{n}#{p}"
 
+
       scope.formatPeriod = ->
         return ImpacUtilities.formatPeriod(getNumberOfPeriods(), getPeriod())
 
@@ -109,7 +110,6 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, I
 
       scope.toDate = ->
         return moment()
-
 
       w.settings.push(setting)
 

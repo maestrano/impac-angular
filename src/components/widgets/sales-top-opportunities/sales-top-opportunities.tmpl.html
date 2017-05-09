@@ -1,13 +1,13 @@
 <div widget-sales-top-opportunities>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_opportunities.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_opportunities.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_opportunities.save</button>
     </div>
   </div>
 
@@ -16,7 +16,7 @@
     <div ng-show="(isDataFound==true)">
 
       <div class="legend">
-        Total potential: <b>{{widget.content.total_potential | mnoCurrency : widget.content.currency || "AUD"}}</b> - <b>{{widget.content.eligible_opportunities}}</b> eligible opportunities
+        {{'impac.widget.sales_opportunities.total_potential' | translate}} <b>{{widget.content.total_potential | mnoCurrency : widget.content.currency || "AUD"}}</b> - <b>{{widget.content.eligible_opportunities}}</b> {{'impac.widget.sales_opportunities.eligible_opportunities' | translate}}
       </div>
 
       <div class="opps-container">

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-net-sales',[])
 
-module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -16,27 +16,43 @@ module.controller('WidgetSalesNetSalesCtrl', ($scope, $q, ChartFormatterSvc, $fi
     $scope.paramSelector2Deferred.promise
   ]
 
-  $scope.displayOptions = [
-    {label: 'Total amount', value: 'total'},
-    {label: 'Average amount', value: 'average'},
-    {label: 'Volume', value: 'trans_count'},
-  ]
-  $scope.displayType = angular.copy(_.find($scope.displayOptions, (o) ->
-    w.metadata && o.value == w.metadata.display_type
-  ) || $scope.displayOptions[0])
+  $translate([
+    'impac.widget.sales_net_sales.total_amount',
+    'impac.widget.sales_net_sales.average_amount',
+    'impac.widget.sales_net_sales.volume']).then(
+    (translations) ->
+      $scope.displayOptions = [
+        {label: translations['impac.widget.sales_net_sales.total_amount'], value: 'total'},
+        {label: translations['impac.widget.sales_net_sales.average_amount'], value: 'average'},
+        {label: translations['impac.widget.sales_net_sales.volume'], value: 'trans_count'},
+      ]
 
-  $scope.timeRangeOptions = [
-    {label: 'Last 24h', value: '-1d'},
-    {label: 'Last 5 days', value: '-5d'},
-    {label: 'Last 7 days', value: '-7d'},
-    {label: 'Last 30 days', value: '-30d'},
-    {label: 'Last 45 days', value: '-45d'},
-    {label: 'Last 60 days', value: '-60d'},
-    {label: 'Last 90 days', value: '-90d'},
-  ]
-  $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
-    w.metadata && o.value == w.metadata.time_range
-  ) || $scope.timeRangeOptions[6])
+      $scope.displayType = angular.copy(_.find($scope.displayOptions, (o) ->
+        w.metadata && o.value == w.metadata.display_type
+      ) || $scope.displayOptions[0])
+  )
+
+  $translate([
+    'impac.widget.sales_net_sales.tmpl.last_hours',
+    'impac.widget.sales_net_sales.tmpl.last_days']).then(
+    (translations) ->
+      hoursTmpl = translations['impac.widget.sales_net_sales.tmpl.last_hours']
+      daysTmpl = translations['impac.widget.sales_net_sales.tmpl.last_days']
+      
+      $scope.timeRangeOptions = [
+        {label: hoursTmpl.replace(':hours:', 24), value: '-1d'},
+        {label: daysTmpl.replace(':days:', 5), value: '-5d'},
+        {label: daysTmpl.replace(':days:', 7), value: '-7d'},
+        {label: daysTmpl.replace(':days:', 30), value: '-30d'},
+        {label: daysTmpl.replace(':days:', 45), value: '-45d'},
+        {label: daysTmpl.replace(':days:', 60), value: '-60d'},
+        {label: daysTmpl.replace(':days:', 90), value: '-90d'}
+      ]
+
+      $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
+        w.metadata && o.value == w.metadata.time_range
+      ) || $scope.timeRangeOptions[6])
+  )
 
   # Widget specific methods
   # --------------------------------------

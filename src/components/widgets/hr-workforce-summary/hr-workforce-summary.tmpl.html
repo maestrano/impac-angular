@@ -1,13 +1,13 @@
 <div widget-hr-workforce-summary>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.hr_workforce_summary.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_workforce_summary.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_workforce_summary.save</button>
     </div>
   </div>
 
@@ -17,18 +17,18 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred" />
 
-        <h3 class="left">Total Estimated Earnings</h3>
+        <h3 class="left" translate>impac.widget.hr_workforce_summary.total_workforce</h3>
         <div class="price">
            {{getTotalWorkforce() | mnoCurrency : getCurrency()}}
         </div>
         <div class="currency" setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred1"/>
         <div class="legend">
-          <span>({{getNumberOfEmployees()}} employee{{getNumberOfEmployees() > 1 ? 's' : null}} with known salary)</span>
+          <span>({{getNumberOfEmployees()}} <span translate="impac.widget.hr_workforce_summary.legend.employee" translate-values="{num_employee: widget.content.total.employees}"></span> {{'impac.widget.hr_workforce_summary.legend.with' | translate}})</span>
         </div>
       </div>
 
       <div class="right-panel" ng-class="{'col-md-12': !widget.isExpanded(), 'col-md-6': widget.isExpanded()}">
-        <h3 class="right">Filter: <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/></h3>
+        <h3 class="right">{{'impac.widget.hr_workforce_summary.filter' | translate}} <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/></h3>
         <div class="chart-container">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
         </div>

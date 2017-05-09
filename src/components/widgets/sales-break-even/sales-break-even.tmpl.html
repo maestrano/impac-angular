@@ -1,14 +1,14 @@
 <div widget-sales-break-even>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_break_even.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_break_even.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_break_even.save</button>
     </div>
   </div>
 
@@ -16,31 +16,31 @@
 
     <div ng-show="(isDataFound==true)" class="align-center">
 
-      <div class="legend">From {{widget.content.period.from | date : 'd MMM yyyy'}} to {{widget.content.period.to | date : 'd MMM yyyy'}}</div>
+      <div class="legend">{{'impac.widget.sales_break_even.from' | translate}} {{widget.content.period.from | date : 'd MMM yyyy'}} {{'impac.widget.sales_break_even.to' | translate}} {{widget.content.period.to | date : 'd MMM yyyy'}}</div>
 
       <div class="block to-date">
-        <div class="title">Sales to Date</div>
+        <div class="title" translate>impac.widget.sales_break_even.title.sales</div>
         <div class="price">{{widget.content.sales.to_date | mnoCurrency : widget.content.currency : false}}</div>
-        Target: <span class="edit-target" style="float: right;" editable-text="threshold" buttons="no" onaftersave="updateSettings()">
+        {{'impac.widget.sales_break_even.target' | translate}}: <span class="edit-target" style="float: right;" editable-text="threshold" buttons="no" onaftersave="updateSettings()">
           {{threshold | mnoCurrency : widget.content.currency : false}}
         </span>
       </div>
 
       <div ng-show="widget.content.break_even" class="block to-breakeven">
-        <div class="title">Projection to Break-Even</div>
-        <span ng-show="isTargetMet()">Your sales already exceed your target by:</span>
+        <div class="title">impac.widget.sales_break_even.title.projection</div>
+        <span ng-show="isTargetMet()" translate>impac.widget.sales_break_even.your_sales</span>
         <div class="price">{{getVariance() | mnoCurrency : widget.content.currency : false}}</div>
         <span ng-hide="isTargetMet()">
-          Projected date: <span style="float: right;">{{getProjectedDate() | date : 'd-MM-yy'}}</span>
+          {{'impac.widget.sales_break_even.projected_date' | translate}} <span style="float: right;">{{getProjectedDate() | date : 'd-MM-yy'}}</span>
           <br />
-          Opportunities to close: <span style="float: right;">{{getOpportunitiesToClose()}}</span>
+          {{'impac.widget.sales_break_even.opportunities_to_close' | translate}} <span style="float: right;">{{getOpportunitiesToClose()}}</span>
         </span>
       </div>
-      <div ng-show="widget.content.break_even" class="legend">{{widget.content.break_even.eligible_opportunities}} eligible opportunities</div>
+      <div ng-show="widget.content.break_even" class="legend">{{widget.content.break_even.eligible_opportunities}} {{'impac.widget.sales_break_even.eligible_opportunities' | translate}}</div>
 
       <div ng-hide="widget.content.break_even" class="block to-breakeven">
         <span class="edit-target" editable-text="threshold" buttons="no" onaftersave="updateSettings()">
-          <div class="define-text">Click to define your sales target</div>
+          <div class="define-text">{{'impac.widget.sales_break_even.click_to_define' | translate}}</div>
         </span>
       </div>
 

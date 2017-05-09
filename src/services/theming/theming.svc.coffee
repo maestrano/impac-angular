@@ -52,8 +52,8 @@ angular
         enableAlerts: true
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
-        mainMessage: 'Data not found'
-        linkMessage: 'Are you missing an app?'
+        mainMessage: 'impac.data_not_found_config.main_message'
+        linkMessage: 'impac.data_not_found_config.link_message'
         linkUrl: '/apps'
         linkTarget: '_blank'
         linkUrlCallback: null
@@ -61,15 +61,15 @@ angular
       # options for configuring the dhb errors messages.
       dhbErrorsConfig:
         firstTimeCreated:
-          first: 'It\'s time to add a reporting dashboard!'
-          second: 'In 2 clicks, you\'ll be able to visualize how your business is performing.'
-          note: 'Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.'
+          first: 'impac.widget.common.error_config.first_time_created.first'
+          second: 'impac.widget.common.error_config.first_time_created.second'
+          note: 'impac.widget.common.error_config.first_time_created.note'
         empty:
-          first: 'Now it\'s time to select the metrics you want to see!'
-          second: 'Add widgets to your dashboard to help make an Impac!™ to your business.'
+          first: 'impac.widget.common.error_config.empty.first'
+          second: 'impac.widget.common.error_config.empty.second'
         failed:
-          first: 'Ooops! Something went wrong, can you please refresh your dashboard?'
-          second: 'Unable to load your dashboard, please contact support or try again later.'
+          first: 'impac.widget.common.error_config.failed.first'
+          second: 'impac.widget.common.error_config.failed.second'
 
       dhbSubMenuConfig:
         myobMessage:
@@ -77,7 +77,7 @@ angular
           appLink:
             show: true
             url: '#/marketplace'
-            text: '>> Check this app on our marketplace'
+            text: 'impac.widget.common.sub_menu_config.check_this_app'
 
       # options for the widget selector panel.
       widgetSelectorConfig:
@@ -102,13 +102,22 @@ angular
       widgetSettings:
         histModeChoser:
           currentLabels:
-            pnl: "Total period"
-            bls: "Balance"
-            default: "Current"
+            bls: "impac.widget.theming.hist.bls"
+            pnl: "impac.widget.theming.hist.pnl"
+            default: "impac.widget.theming.hist.default"
           todayPrefixes:
-            bls: "Live"
+            bls: "impac.widget.theming.hist.bls.prefix"
+            pnl: "impac.widget.theming.hist.pnl.prefix"
+            default: "impac.widget.theming.hist.default.prefix"
         timePeriod:
           showSlider: true
+
+      translateSettings:
+        preferredLanguage: 'en-gb'
+        fallbackLanguage: ''
+        customLocaleFiles:
+          prefix: ''
+          suffix: '.json'
 
 
     #=======================================

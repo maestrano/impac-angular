@@ -1,14 +1,14 @@
 <div widget-hr-timesheets>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.hr_timesheets.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.hr_timesheets.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.hr_timesheets.save</button>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
         <!-- Tab header -->
         <div class="row widget-line header">
           <div class="col-sm-12">
-            From {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}
+            {{'impac.widget.hr_timesheets.from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.hr_timesheets.to' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}
           </div>
         </div>
 
@@ -37,7 +37,7 @@
                 <i class="fa" ng-class="isCollapsed('total_time_worked') ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
               </div>
               <div class="col-xs-7">
-                <strong>Total Time Worked</strong>
+                <strong translate>impac.widget.hr_timesheets.total_worked</strong>
               </div>
               <div class="col-xs-4 text-right">
                 <strong>{{getEmployeeTimeWorked()}} h</strong>
@@ -49,7 +49,7 @@
               <div class="col-xs-12">
                 <div class="row widget-line">
                   <div class="col-xs-11 col-xs-offset-1">
-                    <i>Activities detail not found</i>
+                    <i translate>impac.widget.hr_timesheets.activities_not_found</i>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@
                 <i class="fa" ng-class="isCollapsed('total_time_of') ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
               </div>
               <div class="col-xs-7">
-                <strong>Total Time Off</strong>
+                <strong translate>impac.widget.hr_timesheets.total_off</strong>
               </div>
               <div class="col-xs-4 text-right">
                 <strong>{{getEmployeeTimeOff()}} h</strong>

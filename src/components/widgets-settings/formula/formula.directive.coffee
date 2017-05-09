@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.formula',[])
 
-module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
+module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout, $translate) ->
 
   w = $scope.parentWidget
   w.formula = ''
@@ -49,6 +49,14 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
       w.evaluatedFormula = 'invalid expression'
       w.legend = '...'
       w.isFormulaCorrect = false
+    w.evaluatedFormulaTranslate = translateEvaluatedFormula(w.evaluatedFormula);
+
+  translateEvaluatedFormula = (formula) ->
+    switch formula
+      when 'invalid expression' then return $translate.instant('impac.widget.formula.invalid_expression')
+      when 'Infinity'           then return $translate.instant('impac.widget.formula.infinity')
+      when '-Infinity'          then return $translate.instant('impac.widget.formula.minus_infinity')
+      else return formula
 
   # Replaces each account reference ({1} + {2}...) by a member of the corresponding account object
   interpolateInFormula = (sourceFormula, selectedAccounts, accountMember) ->
@@ -67,7 +75,7 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout) ->
       if isFinite(evaluation) then return evaluation else return false
     catch e
       return false
-  
+
   # The expression is a ration if a '/' can be found...
   isRatio = (sourceFormula) ->
     sourceFormula.match(/\//g)

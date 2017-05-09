@@ -362,6 +362,10 @@ _usage_: Options for the "widgets selector".
 _type_: Object<br>
 _usage_: Options for configuring various widget settings components.
 
+**translateSettings**
+_type_: Object<br>
+_usage_: Options for configuring internationalisation (i18n) for angular-translate.
+
 ##### Example
 ```coffeescript
 angular
@@ -396,13 +400,22 @@ angular
         widgetSettings:
           histModeChoser:
             currentLabels:
-              pnl: "Total period"
               bls: "Balance"
+              pnl: "Total period"
               default: "Current"
+            # Prefixed onto the currentLabels when date is today for hist mode chooser
             todayPrefixes:
               bls: "Live"
+              pnl: ""
+              default: ""
           timePeriod:
             showSlider: true
+        translateSettings:
+          preferredLanguage: 'en-gb'
+          fallbackLanguage: ''
+          customLocaleFiles:
+            prefix: ''
+            suffix: '.json'
 
     ImpacThemingProvider.configure(options)
 ```

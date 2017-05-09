@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-assets-summary', [])
-module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -25,12 +25,14 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
       else
         $scope.dataSource = w.content.summary
 
-    #TODO: No .pluralize() in angular?
-    switch (w.metadata.classification || 'assets').toLowerCase()
-      when 'liability'
-        $scope.classification = "Liabilities"
-      else
-        $scope.classification = "Assets"
+    # Initialize the classification to ASSET
+    if !w.metadata.classification
+      w.metadata.classification = "ASSET"
+
+    # Pluralize and translate classification (Liability -> Liabilities ...)
+    $translate('impac.widget.acc_ass_smry.' + w.metadata.classification.toLowerCase() + ".many").then((result) ->
+      $scope.classification = result
+    )
 
   $scope.getCurrency = ->
     w.content.currency if $scope.isDataFound

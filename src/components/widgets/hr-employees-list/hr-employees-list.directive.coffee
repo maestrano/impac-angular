@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-employees-list',[])
 
-module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
+module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -19,15 +19,23 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter) ->
   # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
-      $scope.periodOptions = [
-        {label: 'per year', value: 'YEARLY'},
-        {label: 'per month', value: 'MONTHLY'},
-        {label: 'per week', value: 'WEEKLY'},
-        {label: 'per day', value: 'DAILY'}
-      ]
-      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.content.total.period.toUpperCase()
-      ) || $scope.periodOptions[0])
+      $translate([
+        "impac.widget.settings.time_period.period.weekly",
+        "impac.widget.settings.time_period.period.monthly",
+        "impac.widget.settings.time_period.period.quarterly",
+        "impac.widget.settings.time_period.period.hourly"]).then(
+        (translations) ->
+          $scope.periodOptions = [
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"]), value: "weekly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"]), value: "monthly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.quarterly"]), value: "quarterly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"]), value: "hourly"}
+          ]
+
+          $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+              o.value == w.content.total.period.toLowerCase()
+            ) || $scope.periodOptions[0])
+      )
 
   $scope.getSingleCompanyName = ->
     if w.content && w.content.organizations

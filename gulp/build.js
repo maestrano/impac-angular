@@ -12,6 +12,7 @@ var banner = ['/**',
   ' * @license <%= pkg.license %>',
   ' */',
   ''].join('\n');
+var angularTranslate = require('gulp-angular-translate');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'del']
@@ -67,26 +68,23 @@ gulp.task('clean', function (asyncCallback) {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], asyncCallback);
 });
 
-gulp.task('build', ['version', 'scripts', 'styles', 'images', 'partials'], function() {
+gulp.task('build', ['version', 'scripts', 'locales', 'styles', 'images', 'partials'], function() {
   // Source files for final dist build - NOTE: order is important.
   var buildSourceFiles = [
     path.join(conf.paths.src, 'impac-angular.prefix'),
     path.join(conf.paths.src, 'impac-angular.module.js'),
     path.join(conf.paths.tmp, 'partials/*.js'),
-    path.join(conf.paths.src, 'impac-angular.suffix'),
     path.join(conf.paths.tmp, 'scripts/**/*.js'),
+    path.join(conf.paths.src, 'impac-angular.suffix'),
     path.join(conf.paths.lib, '*.js'),
     path.join(conf.paths.dist, 'impac-angular.css')
   ];
 
-  var jsFilter = $.filter(['**/*', '!**/*.css'], { restore: true });
+  var jsFilter = $.filter(['**/*', '!**/*.css', '!**/*.json'], { restore: true });
   var cssFilter = $.filter('**/*.css', { restore: true });
 
   return gulp.src(buildSourceFiles)
     .pipe(jsFilter)
-    // TODO: make source maps actually work.
-    // .pipe($.sourcemaps.init())
-    // .pipe($.sourcemaps.write())
     .pipe($.concat('impac-angular.js'))
     .pipe($.header(banner, { pkg: pkg } ))  // Add details about the current version
     .pipe($.ngAnnotate())

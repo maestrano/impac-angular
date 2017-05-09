@@ -38,11 +38,17 @@ module.exports = function(config) {
       'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
       'bower_components/pusher/dist/web/pusher.js',
+      'bower_components/angular-translate/angular-translate.js',
+      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/messageformat/messageformat.js',
+      'bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/AngularDevise/lib/devise.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/angular-translate-handler-log/angular-translate-handler-log.js',
       /* endinject */
       'dist/impac-angular.min.js',
       'src/**/*.spec.js'

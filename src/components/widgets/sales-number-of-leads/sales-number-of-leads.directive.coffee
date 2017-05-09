@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-number-of-leads',[])
 
-module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -20,16 +20,25 @@ module.controller('WidgetSalesNumberOfLeadsCtrl', ($scope, $q, ChartFormatterSvc
   w.initContext = ->
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.number_of_leads)
 
-      $scope.periodOptions = [
-        {label: 'year', value: 'YEARLY'},
-        {label: 'quarter', value: 'QUARTERLY'},
-        {label: 'month', value: 'MONTHLY'},
-        {label: 'week', value: 'WEEKLY'},
-        {label: 'day', value: 'DAILY'},
-      ]
-      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.metadata.period
-      ) || $scope.periodOptions[3])
+      $translate([
+        'impac.widget.settings.time_period.period.year',
+        'impac.widget.settings.time_period.period.quarter',
+        'impac.widget.settings.time_period.period.month',
+        'impac.widget.settings.time_period.period.week',
+        'impac.widget.settings.time_period.period.day']).then(
+          (translations) ->
+            $scope.periodOptions = [
+              {label: translations['impac.widget.settings.time_period.period.year'], value: 'YEARLY'},
+              {label: translations['impac.widget.settings.time_period.period.quarter'], value: 'QUARTERLY'},
+              {label: translations['impac.widget.settings.time_period.period.month'], value: 'monthly'},
+              {label: translations['impac.widget.settings.time_period.period.week'], value: 'WEEKLY'},
+              {label: translations['impac.widget.settings.time_period.period.day'], value: 'DAILY'}
+            ]
+
+            $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+              o.value == w.metadata.period
+            ) || $scope.periodOptions[3])
+        )
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
   w.processError = (error) ->

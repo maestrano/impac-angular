@@ -1,14 +1,14 @@
 <div widget-sales-comparison>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_comparison.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_comparison.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_comparison.save</button>
     </div>
   </div>
 
@@ -19,20 +19,20 @@
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
         <div class="row legend center">
-          Compare by: <div setting-param-selector parent-widget="widget" style="display: inline;" param="criteria" options="criteriaOptions" selected="criteria" truncate-no="30" deferred="::paramSelectorDeferred1" />
+          {{'impac.widget.sales_comparison.legend.compare_by' | translate}} <div setting-param-selector parent-widget="widget" style="display: inline;" param="criteria" options="criteriaOptions" selected="criteria" truncate-no="30" deferred="::paramSelectorDeferred1" />
            |
-          See: <div setting-param-selector parent-widget="widget" style="display: inline;" param="filter" options="filterOptions" selected="filter" truncate-no="30" on-select="widget.format()" no-reload deferred="::paramSelectorDeferred2" />
+          {{'impac.widget.sales_comparison.legend.see' | translate}} <div setting-param-selector parent-widget="widget" style="display: inline;" param="filter" options="filterOptions" selected="filter" truncate-no="30" on-select="widget.format()" no-reload deferred="::paramSelectorDeferred2" />
         </div>
 
         <div class="widget-lines-container">
 
           <div class="row widget-line header">
             <div class="col-xs-8 sortable-title" ng-click="sort('sales')">
-              Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
               <i ng-show="sortedColumn == 'sales'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
-              Total
+              {{'impac.widget.sales_comparison.total' | translate}}
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>
@@ -92,7 +92,7 @@
 
             <div class="row widget-line header">
               <div class="col-xs-12">
-                Total sales from {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} to {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+                {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
               </div>
             </div>
 
@@ -111,9 +111,7 @@
           </div>
         </div>
 
-        <div ng-hide="hasElements()" class="no-element">
-          Select one or several sales category(ies) to display the corresponding comparison.
-        </div>
+        <div ng-hide="hasElements()" class="no-element" translate>impac.widget.sales_comparison.select_sales_category</div>
 
       </div>
 

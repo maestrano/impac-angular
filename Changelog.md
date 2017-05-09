@@ -1,5 +1,26 @@
 # Impac! Frontend Changelog
 
+### v1.5.0 | 2017 - Week 18
+
+#### Adds
+- Internationalization
+
+#### Config Changes
+- Internationalization options for angular-translate via ImpacThemingSvc
+
+```javascript
+translateSettings: {
+  preferredLanguage: 'en-gb',
+  fallbackLanguage: 'zh-HK',
+  customLocaleFiles: {
+    prefix: '',
+    suffix: '.json'
+  }
+}
+```
+
+-------------------------------------------------------------
+
 ### v1.5.0-rc7 | 2017 - Week 17
 - add v1.4.11
 

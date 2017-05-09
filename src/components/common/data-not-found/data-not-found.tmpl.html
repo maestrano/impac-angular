@@ -1,15 +1,15 @@
 <div class="data-not-found">
   <img id="not-found-bg" />
   <div class="message">
-    {{content.mainMessage}}
+    {{content.mainMessage | translate}}
 
     <a ng-show="showAlertsTrigger" ng-click="onDisplayAlerts()">
-      <i class="fa fa-warning" /> Find out why
+      <i class="fa fa-warning" />{{'impac.data_not_found_config.find_why' | translate}}
     </a>
-    <a ng-if="hasCallbackUrl" ng-hide="showAlertsTrigger" ng-click="content.linkUrlCallback()">
+    <a ng-if="hasCallbackUrl" ng-hide="showAlertsTrigger" ng-click="content.linkUrlCallback()" translate>
       {{content.linkMessage}}
     </a>
-    <a ng-if="!hasCallbackUrl" ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}">
+    <a ng-if="!hasCallbackUrl" ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}" translate>
       {{content.linkMessage}}
     </a>
 
