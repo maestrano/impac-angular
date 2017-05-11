@@ -3,6 +3,7 @@
 ### v1.4.12 | 2017 - Week 18
 
 #### Adds
+- Improve widget selector using a Flexbox grid
 
 #### Fixes
 
