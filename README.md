@@ -322,6 +322,7 @@ Adjust Less styling by over-riding Less Variables in the parent application.
 // Widget selector
 @impac-dashboard-widget-selector-bg:            #233845;
 @impac-dashboard-widget-selector-text-color:    white;
+@impac-dashboard-widget-selector-widget-item-min-height: 55px;
 
 // Widgets container
 @impac-placeholder-border:                      2px dashed @impac-dashboard-borders-color;

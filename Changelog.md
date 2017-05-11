@@ -1,5 +1,10 @@
 # Impac! Frontend Changelog
 
+### v1.5.0-rc8 | 2017 - Week 18
+- add v1.4.12
+
+-------------------------------------------------------------
+
 ### v1.5.0 | 2017 - Week 18
 
 #### Adds
@@ -65,6 +70,13 @@ translateSettings: {
 
 #### Fixes
 - Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+
+-------------------------------------------------------------
+
+### v1.4.12 | 2017 - Week 18
+
+#### Adds
+- Improve widget selector using a Flexbox grid
 
 -------------------------------------------------------------
 

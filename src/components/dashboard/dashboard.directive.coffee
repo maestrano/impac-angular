@@ -279,11 +279,11 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
           when 'accounts'
             return {top: '33px'}
           when 'invoices'
-            return {top: '64px'}
+            return {top: '63px'}
           when 'hr'
-            return {top: '95px'}
+            return {top: '93px'}
           when 'sales'
-            return {top: '126px'}
+            return {top: '123px'}
           else
             return {top: '9999999px'}
       else
@@ -304,23 +304,21 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata'])
 
       angular.element('#widget-selector').css('cursor', 'progress')
-      angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'progress')
-      angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'progress')
+      angular.element('#widget-selector .section-lines .line-item').css('cursor', 'progress')
       ImpacWidgetsSvc.create(params).then(
         () ->
           $scope.errors = ''
-          angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'pointer')
-          angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'pointer')
-          angular.element('#widget-selector .badge.confirmation').fadeTo(250,1)
+          angular.element('#widget-selector .badge.widget-added').fadeTo(250,1)
           $timeout ->
-            angular.element('#widget-selector .badge.confirmation').fadeTo(700,0)
+            angular.element('#widget-selector .badge.widget-added').fadeTo(700,0)
           ,4000
+          return
         , (errors) ->
           $scope.errors = ImpacUtilities.processRailsError(errors)
-          angular.element('#widget-selector').css('cursor', 'auto')
-          angular.element('#widget-selector .widgets_widget-item > *').css('cursor', 'pointer')
-          angular.element('#widget-selector .categories_menu-items > p').css('cursor', 'pointer')
+      )
+      .finally(->
+        angular.element('#widget-selector').css('cursor', 'auto')
+        angular.element('#widget-selector .section-lines .line-item').css('cursor', 'pointer')
       )
 
     $scope.triggerUpload = () ->
