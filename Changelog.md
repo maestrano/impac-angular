@@ -1,5 +1,14 @@
 # Impac! Frontend Changelog
 
+### v1.4.12 | 2017 - Week 18
+
+#### Adds
+- Improve widget selector using a Flexbox grid
+
+#### Fixes
+
+-------------------------------------------------------------
+
 ### v1.4.11 | 2017 - Week 17 
 
 #### Adds
