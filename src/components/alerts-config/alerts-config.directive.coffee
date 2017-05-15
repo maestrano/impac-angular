@@ -1,5 +1,5 @@
 module = angular.module('impac.components.alerts-config', [])
-module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc, ImpacMainSvc) ->
+module.directive('alertsConfig', ($uibModal, $templateCache, $compile, $translate, ImpacKpisSvc, ImpacMainSvc) ->
 
   return {
     restrict: 'EA'
@@ -16,12 +16,13 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       $compile(alertsConfig.contents())(scope)
 
     controller: ($scope) ->
+
       $scope.members = []
 
       $scope.alerts = {
         inapp:
           service: 'inapp'
-          label: "With in-app notifications"
+          label: $translate.instant('impac.kpi.alerts.service.inapp')
         email:
           service: 'email'
           label: "By sending me an email to:"
@@ -32,8 +33,13 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
       ImpacMainSvc.load().then(
         (config) ->
           $scope.members = config.currentOrgMembers
-          $scope.alerts.email.label += " #{config.userData.email}" unless $scope.members
-          #Sets current state of recipients for email alerts
+          # Translates email label unless has members (multiple recipients)
+          # TODO: i18n for multiple recipients feature
+          unless $scope.members || !config.userData.email
+            $translate('impac.kpi.alerts.service.email', { EMAIL: 'hasEmail', email: config.userData.email }).then((label) ->
+              $scope.alerts.email.label = label
+            )
+          # Sets current state of recipients for email alerts
           emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
           if emailAlert && $scope.members
             emailAlertRecipients = emailAlert.recipients.map((recipient) -> recipient.id)
@@ -62,9 +68,9 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         result = []
 
         if watchableTargets[0].max?
-          result.push("over", watchableTargets[0].max)
+          result.push($translate.instant('impac.widget.alerts_config.over'), watchableTargets[0].max)
         else if watchableTargets[0].min
-          result.push("below", watchableTargets[0].min)
+          result.push($translate.instant('impac.widget.alerts_config.below'), watchableTargets[0].min)
 
         result.push(kpi.data[kpi.element_watched].unit) if kpi.data?
 
@@ -82,7 +88,7 @@ module.directive('alertsConfig', ($modal, $templateCache, $compile, ImpacKpisSvc
         for alert in $scope.kpi.alerts
           $scope.alerts[alert.service].active = true
 
-        $scope.modal = $modal.open(alertsSettingsModal.options)
+        $scope.modal = $uibModal.open(alertsSettingsModal.options)
 
       $scope.showRecipientList = (alert) ->
         alert.active && alert.service == 'email' && $scope.members

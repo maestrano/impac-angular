@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-settings.attach-kpis', [])
-module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc)->
+module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate)->
 
   return {
     restrict: 'A'
@@ -85,8 +85,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
 
       # Mapping target modes to labels.
       $scope.possibleTargets = [
-        { label: 'over', mode: 'min' }
-        { label: 'below', mode: 'max' }
+        { label: $translate.instant('impac.widget.settings.attach_kpis.over'), mode: 'min' }
+        { label: $translate.instant('impac.widget.settings.attach_kpis.below'), mode: 'max' }
       ]
 
       # Prepare Attachable KPI model.

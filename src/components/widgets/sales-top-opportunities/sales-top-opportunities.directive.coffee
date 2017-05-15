@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-top-opportunities',[])
 
-module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -27,7 +27,7 @@ module.controller('WidgetSalesTopOpportunitiesCtrl', ($scope, $q, ChartFormatter
   $scope.getOppDetails = (anOpp) ->
     oppDetails = []
     oppDetails.push($filter('mnoCurrency')(anOpp.amount.amount, anOpp.amount.currency || 'AUD')) if anOpp.amount
-    oppDetails.push("proba #{anOpp.probability}%") if anOpp.probability
+    oppDetails.push($translate.instant('impac.widget.sales_opportunities.proba') + " #{anOpp.probability}%") if anOpp.probability
     oppDetails.push(anOpp.sales_stage) if anOpp.sales_stage
 
     return oppDetails.join(' / ')

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, $translate) ->
 
     #====================================
     # Initialization
@@ -10,7 +10,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
     # references to services (bound objects shared between all controllers)
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-    $scope.widgetsList = ImpacDashboardsSvc.getWidgetsTemplates()
+    $scope.widgetsTemplates = ImpacDashboardsSvc.getWidgetsTemplates()
 
     # assets
     # -------------------------------------
@@ -126,7 +126,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       self.model = { name: '' }
       self.errors = ''
       self.isLoading = false
-      self.instance = $modal.open(self.config)
+      self.instance = $uibModal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
         self.locked = true
@@ -248,26 +248,26 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       )
 
     $scope.selectedCategory = 'accounts'
-    $scope.isCategorySelected = (aCatName) ->
-      if $scope.selectedCategory? && aCatName?
-        return $scope.selectedCategory == aCatName
+    $scope.isCategorySelected = (category) ->
+      if $scope.selectedCategory? && category?
+        return $scope.selectedCategory == category
       else
         return false
 
-    $scope.selectCategory = (aCatName) ->
-      $scope.selectedCategory = aCatName
+    $scope.selectCategory = (category) ->
+      $scope.selectedCategory = category
 
     $scope.getSelectedCategoryName = ->
       if $scope.selectedCategory?
         switch $scope.selectedCategory
           when 'accounts'
-            return 'Accounting'
+            return $translate.instant('impac.dashboard.category_name.accounting')
           when 'invoices'
-            return 'Invoicing'
+            return $translate.instant('impac.dashboard.category_name.invoicing')
           when 'hr'
-            return 'HR / Payroll'
+            return $translate.instant('impac.dashboard.category_name.hr_or_payroll')
           when 'sales'
-            return 'Sales'
+            return $translate.instant('impac.dashboard.category_name.sales')
           else
             return false
       else
@@ -290,20 +290,19 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
         return false
 
     $scope.getWidgetsForSelectedCategory = ->
-      if $scope.selectedCategory? && $scope.widgetsList?
-        return _.select $scope.widgetsList, (aWidgetTemplate) ->
-          if aWidgetTemplate.metadata && aWidgetTemplate.metadata.template
-            widgetCategory = aWidgetTemplate.metadata.template.split('/')[0]
+      if $scope.selectedCategory? && $scope.widgetsTemplates?
+        return _.select $scope.widgetsTemplates, (template) ->
+          if template.metadata && template.metadata.template
+            widgetCategory = template.metadata.template.split('/')[0]
           else
-            widgetCategory = aWidgetTemplate.path.split('/')[0]
+            widgetCategory = template.endpoint.split('/')[0]
           widgetCategory == $scope.selectedCategory
       else
         return []
 
-    $scope.addWidget = (widgetPath, widgetMetadata=null) ->
-      params = {widget_category: widgetPath}
-      if widgetMetadata?
-        angular.extend(params, {metadata: widgetMetadata})
+    $scope.addWidget = (widgetTemplate) ->
+      params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata'])
+
       angular.element('#widget-selector').css('cursor', 'progress')
       angular.element('#widget-selector .section-lines .line-item').css('cursor', 'progress')
       ImpacWidgetsSvc.create(params).then(
@@ -369,7 +368,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $modal, $lo
       ImpacMainSvc.loadUserData().then((user) ->
         self.userName = user.name
       )
-      self.instance = $modal.open(self.config)
+      self.instance = $uibModal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
         self.locked = true

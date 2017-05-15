@@ -81,6 +81,13 @@ module.run(function($http, DevSession) {
 });
 
 // --
+// Configure Angular Translate to use missing translation logs for development aid.
+// -------------------------------------------------------
+module.config(function($translateProvider) {
+  $translateProvider.useMissingTranslationHandlerLog();
+});
+
+// --
 // Impac! Angular Provider Service Configurations.
 // -------------------------------------------------------
 module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {

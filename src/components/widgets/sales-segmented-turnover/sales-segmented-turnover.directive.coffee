@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-segmented-turnover',[])
 
-module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, ChartFormatterSvc) ->
+module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -26,22 +26,32 @@ module.controller('WidgetSalesSegmentedTurnoverCtrl', ($scope, $q, $filter, Char
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)
 
-      $scope.filterOptions = [
-        {label: 'Gross revenue (incl. taxes)', value: 'gross'},
-        {label: 'Net revenue (excl. taxes)', value: 'net'},
-      ]
-      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        o.value == w.content.filter
-      ) || $scope.filterOptions[0])
+      $translate([
+        'impac.widget.sales_turnover.gross_revenue',
+        'impac.widget.sales_turnover.net_revenue']).then(
+          (translations) ->
+            $scope.filterOptions = [
+              {label: translations['impac.widget.sales_turnover.gross_revenue'], value: 'gross'},
+              {label: translations['impac.widget.sales_turnover.net_revenue'], value: 'net'},
+            ]
 
-  $scope.getAnalysis = ->
-    if $scope.isDataFound
-      if w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50
-        "Your less expensive products bring you most of your revenue."
-      else if w.content.ranges[3].percentage + w.content.ranges[4].percentage > 50
-        "Your most expensive products bring you most of your revenue."
-      else
-        "Your revenue is balanced between your different products segments."
+            $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+              o.value == w.content.filter
+            ) || $scope.filterOptions[0])
+        )
+
+      $translate([
+        'impac.widget.sales_turnover.analysis.least',
+        'impac.widget.sales_turnover.analysis.most',
+        'impac.widget.sales_turnover.analysis.balanced']).then(
+        (translations) ->
+           if w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.least']
+           else if w.content.ranges[3].percentage + w.content.ranges[4].percentage > 50
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.most']
+           else
+             $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.balanced']
+        )
 
   $scope.getColorByIndex = (index) ->
     ChartFormatterSvc.getColor(index)

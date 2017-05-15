@@ -1,13 +1,13 @@
 <div widget-sales-top-customers>
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_top_customers.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-dates-picker parent-widget="widget" class="part" from="(widget.metadata.hist_parameters.from || defaultFrom)" to="(widget.metadata.hist_parameters.to || defaultTo)" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_top_customers.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_top_customers.save</button>
     </div>
   </div>
 
@@ -15,7 +15,7 @@
 
     <div class="row selector" ng-show="(isDataFound==true)">
       <div class="col-xs-12 text-right">
-        <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'Show' : 'Hide'}} details</a> |
+        <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'impac.widget.sales_top_customers.show' : 'impac.widget.sales_top_customers.hide' | translate}} {{'impac.widget.sales_top_customers.details' | translate}}</a> |
         <div setting-param-selector parent-widget="widget" param="limit_entries" options="limitEntriesOptions" selected="limitEntriesSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload/>
       </div>
     </div>
@@ -25,9 +25,7 @@
       <div class="col-xs-1">
         #
       </div>
-      <div class="col-xs-7">
-        Customer name
-      </div>
+      <div class="col-xs-7" translate>impac.widget.sales_top_customers.customer_name</div>
       <div class="col-xs-4 text-right">
         <div setting-param-selector parent-widget="widget" param="header" options="headerOptions" selected="headerSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload />
       </div>
@@ -55,7 +53,7 @@
           </div>
         </div>
 
-        <div class="row widget-line sub-line" collapse="transactionsCollapsed">
+        <div class="row widget-line sub-line" uib-collapse="transactionsCollapsed">
           <div class="col-xs-4" ng-repeat="field in getRemainingFields() track by $index" ng-class="{'text-center': ($index==1), 'text-right': ($index==2)}" >
             <i ng-if="field.showCurrency">
               {{field.label}}: {{field.getValue(entity) | mnoCurrency : entity.currency}}
@@ -70,7 +68,7 @@
 
     <!-- Data not found line -->
     <div class="row widget-line" ng-show="(isDataFound==false)">
-      <div class="col-xs-12">No sales data found for your customers</div>
+      <div class="col-xs-12" translate>impac.widget.sales_top_customers.no_sales</div>
     </div>
 
   </div>

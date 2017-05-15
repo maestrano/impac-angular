@@ -1,14 +1,14 @@
 <div widget-accounts-profit-and-loss>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.accounts_profit_and_loss.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.accounts_profit_and_loss.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.accounts_profit_and_loss.save</button>
     </div>
   </div>
 
@@ -30,11 +30,11 @@
           <!-- Tab header -->
           <div class="row widget-line header">
             <div class="col-xs-7 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
-              Accounts
+              {{'impac.widget.accounts_profit_and_loss.accounts' | translate}}
               <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
-              Profit/Loss
+              {{'impac.widget.accounts_profit_and_loss.prof_loss' | translate}}
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>
@@ -59,7 +59,7 @@
               </div>
 
               <!-- Accounts lines -->
-              <div class="row" collapse="isCollapsed(statement)">
+              <div class="row" uib-collapse="isCollapsed(statement)">
                 <div class="col-xs-12">
                   <div class="row widget-line" ng-click="toggleSelectedElement(account, statement.name)" ng-repeat="account in statement.accounts" >
                     <div class="col-xs-7 col-xs-offset-1">
@@ -84,7 +84,7 @@
       <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
 
         <div ng-show="hasElements()">
-          <h4>{{(widget.metadata.hist_parameters.period || "Monthly") | titleize}} Profit and Loss</h4>
+          <h4>{{::period_translation}} {{'impac.widget.accounts_profit_and_loss.prof_and_loss' | translate}}</h4>
           <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
 
           <div class="chart-container">
@@ -144,14 +144,14 @@
           </div>
         </div>
 
-        <div ng-hide="hasElements()" class="no-element">
-          Select one or several account(s) or account(s) type(s) to display the corresponding PnL.
+        <div ng-hide="hasElements()" class="no-element" translate>
+          impac.widget.accounts_profit_and_loss.no_elements_selected
         </div>
       </div>
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width"/>
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
   </div>
 
 </div>

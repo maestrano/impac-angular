@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-leads-funnel',[])
 
-module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, $sce, ImpacWidgetsSvc, ImpacDashboardsSvc) ->
+module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, $filter, $sce, ImpacWidgetsSvc, ImpacDashboardsSvc, $translate) ->
 
   w = $scope.widget
 
@@ -116,7 +116,6 @@ module.controller('WidgetSalesLeadsFunnelCtrl', ($scope, $q, ChartFormatterSvc, 
 
       $scope.leadDescriptionTooltips[index] = $sce.trustAsHtml(tooltip.join("<br />"))
     )
-
 
   selectedStatusSetting = {}
   selectedStatusSetting.initialized = false

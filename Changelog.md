@@ -1,11 +1,82 @@
 # Impac! Frontend Changelog
 
+### v1.5.0 | 2017 - Week 20
+
+#### Adds
+- Internationalization
+
+#### Config Changes
+- Internationalization options for angular-translate via ImpacThemingSvc
+
+```javascript
+translateSettings: {
+  preferredLanguage: 'en-gb',
+  fallbackLanguage: 'zh-HK',
+  customLocaleFiles: {
+    prefix: '',
+    suffix: '.json'
+  }
+}
+```
+
+-------------------------------------------------------------
+
+### v1.5.0-rc8 | 2017 - Week 18
+- add v1.4.12
+
+-------------------------------------------------------------
+
+### v1.5.0-rc7 | 2017 - Week 17
+- add v1.4.11
+
+-------------------------------------------------------------
+
+### v1.5.0-rc6 | 2017 - Week 16
+- add v1.4.10
+
+-------------------------------------------------------------
+
+### v1.5.0-rc5 | 2017 - Week 13
+- add v1.4.9
+
+-------------------------------------------------------------
+
+### v1.5.0-rc4 | 2017 - Week 8
+- add v1.4.8
+
+-------------------------------------------------------------
+
+### v1.5.0-rc3 | 2017 - Week 5
+
+#### Adds
+- [IMPAC-99] Change routes for widgets :index and :show
+- sso_session now passed as basic_auth param for widgets :show
+
+#### Fixes
+- [IMPAC-465] Fix dates picker positioning
+
+-------------------------------------------------------------
+
+### v1.5.0-rc2 | 2017 - Week 3
+- add v1.4.7 changes
+
+-------------------------------------------------------------
+
+### v1.5.0-rc1 | 2017 - Week 1
+
+#### Adds
+- Upgrades Angular to v1.6
+- Upgrades Angular Bootstrap to v2.3
+
+#### Fixes
+- Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+
+-------------------------------------------------------------
+
 ### v1.4.12 | 2017 - Week 18
 
 #### Adds
 - Improve widget selector using a Flexbox grid
-
-#### Fixes
 
 -------------------------------------------------------------
 

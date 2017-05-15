@@ -1488,6 +1488,8 @@ body {
       padding: 10px 20px;
       font-weight: bold;
       min-height: 40px;
+      display: flex;
+      align-items: center;
     }
 
     .section-lines {
@@ -1561,7 +1563,7 @@ body {
           color: @impac-widget-link-color;
           float: right;
           position: absolute;
-          top: 0px;
+          top: -1.5px;
           right: 0px;
         }
       }
@@ -2175,6 +2177,129 @@ body {
   min-height: 80px;
 }
 
+.widget-item {
+  transition: width 0.3s;
+  padding: @impac-padding-between-widgets;
+  &.pdf-mode {
+    width: 100%;
+    padding: ~"@{impac-padding-between-widgets} 0px";
+  }
+}
+
+.widget-item .top-line {
+  position: relative;
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 12px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+
+  display: flex;
+  flex-direction: row;
+
+  z-index: 4;
+}
+
+.widget-item {
+  .content {
+    position: relative;
+    padding: 9px;
+    border-radius: @impac-widget-content-border-radius;
+    border: @impac-widget-border;
+    border-top: none;
+    background-color: @impac-widget-background-color;
+
+    vertical-align: top;
+    .box-shadow(0px 1px 8px -4px);
+    .short-widget();
+
+    .edit {
+      .edit-panel-style();
+    }
+
+    &.accessible {
+      height: auto !important;
+      min-height: 250px !important;
+      max-height: auto !important;
+    }
+  }
+
+  &.pdf-mode .content {
+    height: 100% !important;
+    min-height: 250px !important;
+    max-height: none !important;
+    .collapse {
+      display: inherit;
+    }
+    .fa-plus-square-o:before {
+      content: "\f147";
+    }
+    .legend {
+      max-height: none !important;
+    }
+    .chart-container {
+      max-height: none;
+    }
+    .widget-lines-container {
+      max-height: none !important;
+    }
+    .data-not-found .message {
+      position: inherit;
+      width: 100%;
+    }
+  }
+}
+
+.widget-item.pdf-mode .include-to-pdf{
+  &.title {
+    position: absolute;
+    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
+    z-index: 3;
+    padding-right: 1px;
+    h6 {
+      padding: 10px;
+      background-color: #FFC928;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  &.tick {
+    i {
+      position: absolute;
+      top: 35%;
+      left: 46%;
+      font-size: 100px;
+      opacity: .5;
+      z-index: 2;
+      color: black;
+    }
+  }
+  .widget-hover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 9px;
+    top: 0;
+    right: 0;
+    -webkit-transition: all ease .5s;
+    -moz-transition: all ease .5s;
+    transition: all ease .5s;
+    z-index: 1;
+    &:hover {
+      opacity: .5;
+      background: #CCCFD0;
+    }
+  }
+}
+
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
+}
+
 .analytics kpis-bar > .kpis {
   position: relative;
   .actions {
@@ -2338,129 +2463,6 @@ body {
 
 .analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
 
-.widget-item {
-  transition: width 0.3s;
-  padding: @impac-padding-between-widgets;
-  &.pdf-mode {
-    width: 100%;
-    padding: ~"@{impac-padding-between-widgets} 0px";
-  }
-}
-
-.widget-item .top-line {
-  position: relative;
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 12px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-
-  display: flex;
-  flex-direction: row;
-
-  z-index: 4;
-}
-
-.widget-item {
-  .content {
-    position: relative;
-    padding: 9px;
-    border-radius: @impac-widget-content-border-radius;
-    border: @impac-widget-border;
-    border-top: none;
-    background-color: @impac-widget-background-color;
-
-    vertical-align: top;
-    .box-shadow(0px 1px 8px -4px);
-    .short-widget();
-
-    .edit {
-      .edit-panel-style();
-    }
-
-    &.accessible {
-      height: auto !important;
-      min-height: 250px !important;
-      max-height: auto !important;
-    }
-  }
-
-  &.pdf-mode .content {
-    height: 100% !important;
-    min-height: 250px !important;
-    max-height: none !important;
-    .collapse {
-      display: inherit;
-    }
-    .fa-plus-square-o:before {
-      content: "\f147";
-    }
-    .legend {
-      max-height: none !important;
-    }
-    .chart-container {
-      max-height: none;
-    }
-    .widget-lines-container {
-      max-height: none !important;
-    }
-    .data-not-found .message {
-      position: inherit;
-      width: 100%;
-    }
-  }
-}
-
-.widget-item.pdf-mode .include-to-pdf{
-  &.title {
-    position: absolute;
-    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
-    z-index: 3;
-    padding-right: 1px;
-    h6 {
-      padding: 10px;
-      background-color: #FFC928;
-      text-align: center;
-      margin: 0;
-    }
-  }
-  &.tick {
-    i {
-      position: absolute;
-      top: 35%;
-      left: 46%;
-      font-size: 100px;
-      opacity: .5;
-      z-index: 2;
-      color: black;
-    }
-  }
-  .widget-hover {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 9px;
-    top: 0;
-    right: 0;
-    -webkit-transition: all ease .5s;
-    -moz-transition: all ease .5s;
-    transition: all ease .5s;
-    z-index: 1;
-    &:hover {
-      opacity: .5;
-      background: #CCCFD0;
-    }
-  }
-}
-
-// Fix overflow for large sums/text in .widget-lines-container tables
-.widget-item .widget-lines-container .widget-line > [class*='col-'] {
-  overflow-wrap: break-word;
-}
-
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
@@ -2508,6 +2510,9 @@ body {
   select {
     margin-top: 4px;
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -2614,9 +2619,6 @@ body {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .currency-conversions {
@@ -2814,18 +2816,6 @@ body {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2841,6 +2831,18 @@ body {
   }
   p {
     font-weight: bold;
+  }
+}
+
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
   }
 }
 
@@ -2879,16 +2881,6 @@ body {
   }
 }
 
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-cash-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -2898,6 +2890,16 @@ body {
   .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -3016,18 +3018,6 @@ body {
 
 
 
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
-  }
-}
-
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
     text-align: left;
@@ -3039,6 +3029,18 @@ body {
   }
   .chart-container {
     max-height: 125px;
+  }
+}
+
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
   }
 }
 
@@ -3352,6 +3354,16 @@ body {
 .analytics .widget-item .content.sales-cycle {
   .simple-summary-widget();
 }
+.analytics .widget-item .content.sales-forecast {
+  .tall-widget();
+  .widget-lines-container {
+    max-height: 340px;
+    .widget-line.main {
+      .selectable();
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -3366,16 +3378,6 @@ body {
 
 .analytics .widget-item .content.sales-leads-funnel {
   .funnel-widget();
-}
-
-.analytics .widget-item .content.sales-forecast {
-  .tall-widget();
-  .widget-lines-container {
-    max-height: 340px;
-    .widget-line.main {
-      .selectable();
-    }
-  }
 }
 
 .analytics .widget-item .content.sales-leads-list {
@@ -3807,6 +3809,22 @@ body {
   }
 }
 
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
+}
+
 .analytics .settings.offsets {
   .offset-value {
     font-style: italic;
@@ -3823,22 +3841,6 @@ body {
 
   input { width: 75%; }
   button { width: 30px; }
-}
-
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
 }
 
 .analytics .settings.organizations {
