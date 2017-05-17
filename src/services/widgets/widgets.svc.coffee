@@ -171,7 +171,7 @@ angular
             $http.get(url, config).then(
               (success) ->
                 # Pushes new content to widget
-                content = success.data.content || {}
+                content = success.data.content || success.data[widget.endpoint] || {}
                 name = success.data.name
                 angular.extend widget, {content: content, originalName: name}
 
