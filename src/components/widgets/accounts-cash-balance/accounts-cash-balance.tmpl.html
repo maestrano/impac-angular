@@ -19,8 +19,19 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
-    <div ng-show="(isDataFound==true)" class="">
-      <div id="cashBalanceChart"></div>
+    <div ng-show="(isDataFound==true)" class="data-container">
+      <div class="left-panel">
+        <div id="cash-balance-legend">
+          <ul>
+            <li>an item</li>
+            <li>another item</li>
+          </ul>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="top-bar"></div>
+        <div id="cashBalanceChart"></div>
+      </div>
     </div>
 
     <!-- No data found -->

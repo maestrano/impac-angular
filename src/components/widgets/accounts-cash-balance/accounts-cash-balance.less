@@ -1,8 +1,31 @@
 .analytics .widget-item .content.accounts-cash-balance {
   .tall-widget();
 
-  #cashBalanceChart {
+  .data-container {
     height: ~"calc(@{impac-big-widget-size} - 20px)";
+    width: 100%;
+    display: flex;
   }
 
+  .left-panel {
+    flex: 0;
+    // min-width: 100px;
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+
+    .top-bar {
+      flex: 0;
+      // min-height: 40px;
+    }
+
+    // Highchart container
+    #cashBalanceChart {
+      flex: 1;
+    }
+  }
 }

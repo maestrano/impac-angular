@@ -3,10 +3,12 @@
 # TODO:
 # - custom legend
 # - today and beyond marker, indicating cash projection
-# - colour shades by account sub-type
+# - colour shades by account sub-type (don't spend too much time on this one / not that important)
+# - format dates on the chart as per the PnL widget
+# - check if a different chart can be used for better time period selection
 #
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, ImpacTheming) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -28,51 +30,58 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, ImpacTheming) ->
     chartColors = ImpacTheming.get().chartColors.array
 
     # Custom settings for the 'totals' serie.
-    for serie in w.content.chart.series
-      # TODO: add configurable in theming svc
-      serie.color = '#7badfc' if serie.type == 'area'
+    totals_serie = _.find(w.content.chart.series, (serie)-> serie.type == 'area')
+    # TODO: add configurable in theming svc
+    totals_serie.color = 'rgb(123, 173, 252)'
 
-    Highcharts.chart('cashBalanceChart', {
-        chart:
-          type: 'line'
-          zoomType: 'x',
+    onChartRender = (chart)->
+      console.log('rendered!', chart)
+      series = chart.series
+      $legend = angular.element('#cash-balance-legend')
+      console.log($legend, series)
+
+    # Wait for the next digest cycle to ensure the chart parent (.data-container) is shown.
+    $timeout(->
+      buildChart(w.content.chart, chartColors, onChartRender)
+    )
+
+
+  # Private
+  # ----
+
+  buildChart = (data, colors, onRender)->
+    options =
+      chart:
+        type: 'line'
+        zoomType: 'x'
+      title: null
+      credits:
+        enabled: false
+      legend:
+        enabled: false
+        # layout: 'vertical'
+        # align: 'left'
+        # verticalAlign: 'middle'
+      scrollbar:
+        enabled: true
+      colors: colors
+      plotOptions:
+        series:
+          fillOpacity: '0.3'
+      xAxis:
+        startOnTick: false
+        minPadding: 0
+        tickInterval: 1
+        labels:
+          formatter: ()->
+            return data.labels[this.value]
+      yAxis:
+        startOnTick: true
+        minPadding: 0
         title: null
-        credits:
-          enabled: false
+      series: data.series
 
-        legend:
-          layout: 'vertical'
-          align: 'left'
-          verticalAlign: 'middle'
-          # width: 100,
-
-        scrollbar: {
-          enabled: true
-        }
-
-        colors: chartColors
-
-        plotOptions:
-          series:
-            fillOpacity: 0.3
-            # fillColor: '#7badfc'
-
-        xAxis:
-          startOnTick: false
-          minPadding: 0
-          tickInterval: 1
-          labels:
-            formatter: ()->
-              return w.content.chart.labels[this.value]
-
-        yAxis:
-          startOnTick: true
-          minPadding: 0
-          title: null
-          #   text: 'Balance'
-
-        series: w.content.chart.series
-    })
+    Highcharts.chart('cashBalanceChart', options, onRender)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"
