@@ -7,7 +7,7 @@
 # - check if a different chart can be used for better time period selection
 #
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, ImpacTheming) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -95,12 +95,17 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, ImpacT
         minPadding: 0
         tickInterval: 1
         labels:
+          style: textOverflow: 'none'
           formatter: ()->
-            return data.labels[this.value]
+            date = moment(data.labels[this.value]).toDate()
+            Highcharts.dateFormat('%a %d %b', date)
       yAxis:
         startOnTick: true
         minPadding: 0
         title: null
+        labels:
+          formatter: ()->
+            $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
       series: data.series
 
     Highcharts.chart('cashBalanceChart', options, onRender)
