@@ -10,6 +10,7 @@
   .left-panel {
     flex: 0;
     min-width: 180px;
+    overflow: auto;
   }
 
   #cash-balance-legend {
@@ -24,6 +25,7 @@
         font-size: 13px;
         padding: 3px;
         cursor: pointer;
+        user-select: none;
         &:hover {
           background-color: @impac-widget-menus-hover-background-color;
         }
@@ -42,6 +44,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.26);
 
     .top-bar {
       flex: 0;
