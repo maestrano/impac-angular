@@ -61,7 +61,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # ----
 
   getPeriod = ->
-    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period
+    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
   getSerieByAccount = (series, account)->
     _.find(series, (serie)-> (serie.uid || serie.options && serie.options.uid) == account.uid)
