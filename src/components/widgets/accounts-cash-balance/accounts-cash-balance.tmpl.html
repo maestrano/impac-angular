@@ -22,11 +22,11 @@
     <div ng-show="(isDataFound==true)" class="data-container">
       <div class="left-panel">
         <div id="cash-balance-legend">
-          <div class="header" ng-repeat="header in ::groupedTable.headers">
-            <h4 ng-bind="::header | titleize"></h4>
-            <div class="group-item" ng-repeat="item in ::groupedTable.groups[$index]" ng-click="legendItemOnClick(item)">
+          <div class="header" ng-repeat="header in groupedTable.headers">
+            <h4 ng-bind="header | titleize"></h4>
+            <div class="group-item" ng-repeat="item in groupedTable.groups[$index]" ng-click="legendItemOnClick(item)">
               <i ng-style="{'color': getLegendItemColor(item)}" class="fa {{getLegendItemIcon(item)}}" aria-hidden="true"></i>
-              <span ng-bind="::item.name"></span>
+              <span ng-bind="item.name"></span>
             </div>
           </div>
         </div>

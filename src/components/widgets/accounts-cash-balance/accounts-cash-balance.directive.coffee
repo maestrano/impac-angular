@@ -108,13 +108,14 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
           # TODO: ImpacTheming config for today "plot" color.
           color: '#0055ff'
           value: getTodayMarker()
-          width: 1.5
+          width: 1
           label:
             text: 'Today'
             verticalAlign: 'top'
             textAlign: 'center'
             rotation: 0
             y: -5
+            x: -2
         }]
       yAxis:
         startOnTick: true
