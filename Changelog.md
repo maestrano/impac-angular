@@ -5,6 +5,7 @@
 #### Adds
 
 #### Fixes
+- Settings Time Slider not displaying range period label
 
 -------------------------------------------------------------
 
