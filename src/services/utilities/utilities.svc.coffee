@@ -165,5 +165,9 @@ angular
       templatePath = "widgets/#{cssClass}.tmpl.html"
       return ($templateCache.get(templatePath) && templatePath)
 
+    # Returns a random number between min (inclusive) and max (exclusive)
+    @getRandomInteger = (min, max)->
+      Math.random() * (max - min) + min
+
     return
   )

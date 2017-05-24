@@ -26,10 +26,10 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
 
       $scope.groupedTable = w.content.grouped_table
 
-      chartColors = ImpacTheming.get().chartColors.array
-
+      # TODO: theming config for positive/negative hex codes
+      # chartColors = ImpacTheming.get().chartColors
       # Set account colors by group sub-type
-      setSeriesColors(chartColors)
+      setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
 
       # Custom settings for the 'totals' serie.
       totals_serie = _.find(w.content.chart.series, (serie)-> serie.type == 'area')
@@ -70,15 +70,13 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     projection_date = _.find(w.content.chart.labels, (label)-> moment(label) >= moment().startOf('day'))
     _.indexOf(w.content.chart.labels, projection_date)
 
-  # TODO: Test with more accounts & add color shade variations for group accounts.
-  setSeriesColors = (chartColors) ->
-    counter = 0
-    for group in $scope.groupedTable.groups
-      counter = 0 if counter >= (chartColors.length - 1)
-      groupColor = chartColors[counter++]
-      for account in group
-        serie = getSerieByAccount(w.content.chart.series, account)
-        serie.color = groupColor
+  setSeriesColors = (series, chartColors) ->
+    groupedSeries = _.groupBy(series, (serie)-> serie.sub_type)
+    for subType, series of groupedSeries
+      continue unless chartColors[subType]
+      palette = ImpacTheming.color.generateShadesPalette(chartColors[subType], series.length)
+      for serie, i in series
+        serie.color = palette[i]
 
   buildChart = (data, onRender)->
     options =
