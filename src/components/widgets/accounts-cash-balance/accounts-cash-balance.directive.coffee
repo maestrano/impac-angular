@@ -24,17 +24,14 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   w.initContext = ->
     if $scope.isDataFound = w.content?
 
+      # Custom chart legend
       $scope.groupedTable = w.content.grouped_table
 
-      # TODO: theming config for positive/negative hex codes
+      # TODO: theming config for positive/negative hex codes (or move to API)
       # chartColors = ImpacTheming.get().chartColors
-      # Set account colors by group sub-type
-      setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
 
-      # Custom settings for the 'totals' serie.
-      totals_serie = _.find(w.content.chart.series, (serie)-> serie.type == 'area')
-      # TODO: add configurable in theming svc
-      totals_serie.color = '#7badfc'
+      # Set chart accounts series colors by account sub-type ('positive' / 'negative')
+      setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
 
       # Wait for the next digest cycle to ensure the chart parent (.data-container) is shown.
       $timeout(->
@@ -91,9 +88,6 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         enabled: false
       scrollbar:
         enabled: true
-      plotOptions:
-        series:
-          fillOpacity: '0.3'
       xAxis:
         startOnTick: false
         minPadding: 0
@@ -103,12 +97,11 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
           formatter: ()->
             $filter('mnoDate')(data.labels[this.value], getPeriod())
         plotLines: [{
-          # TODO: ImpacTheming config for today "plot" color.
-          color: '#0055ff'
+          color: 'rgba(0, 85, 255, 0.2)'
           value: getTodayMarker()
           width: 1
           label:
-            text: 'Today'
+            text: null
             verticalAlign: 'top'
             textAlign: 'center'
             rotation: 0
