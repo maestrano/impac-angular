@@ -30,7 +30,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
       # TODO: theming config for positive/negative hex codes (or move to API)
       # chartColors = ImpacTheming.get().chartColors
 
-      # Set chart accounts series colors by account sub-type ('positive' / 'negative')
+      # Set chart accounts series colors by account bias ('positive' / 'negative')
       setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
 
       # Wait for the next digest cycle to ensure the chart parent (.data-container) is shown.
@@ -61,17 +61,17 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
   getSerieByAccount = (series, account)->
-    _.find(series, (serie)-> (serie.uid || serie.options && serie.options.uid) == account.uid)
+    _.find(series, (serie)-> (serie.id || serie.options && serie.options.id) == account.id)
 
   getTodayMarker = ->
     projection_date = _.find(w.content.chart.labels, (label)-> moment(label) >= moment().startOf('day'))
     _.indexOf(w.content.chart.labels, projection_date)
 
   setSeriesColors = (series, chartColors) ->
-    groupedSeries = _.groupBy(series, (serie)-> serie.sub_type)
-    for subType, series of groupedSeries
-      continue unless chartColors[subType]
-      palette = ImpacTheming.color.generateShadesPalette(chartColors[subType], series.length)
+    groupedSeries = _.groupBy(series, (serie)-> serie.bias)
+    for bias, series of groupedSeries
+      continue unless chartColors[bias]
+      palette = ImpacTheming.color.generateShadesPalette(chartColors[bias], series.length)
       for serie, i in series
         serie.color = palette[i]
 
