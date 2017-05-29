@@ -299,7 +299,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
           
           # Category defined by the bolt
           else if template.metadata && template.metadata.bolt_path
-            bolt = _.find ImpacRoutes.bolts, (bolt) -> bolt.path == template.metadata.bolt_path
+            bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == template.metadata.bolt_path
             widgetCategory = bolt.category
           
           # Category defined by the widget endpoint

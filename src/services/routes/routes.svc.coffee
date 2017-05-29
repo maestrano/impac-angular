@@ -207,7 +207,7 @@ angular
           else
             "#{defaults.mnoHub}/organizations/#{uid}/app_instances_sync"
 
-      service.bolts = 
+      service.bolts = ->
         _.map bolts.engines, (engine) ->
           {
             path: "#{defaults.impacApi}/#{bolts.version}/#{engine.provider}/#{engine.name}"

@@ -148,8 +148,8 @@ angular
           widget.metadata.template.split('/').slice(0,2)
 
         else if widget.endpoint && widget.metadata && widget.metadata.bolt_path
-          bolt = _.find ImpacRoutes.bolts, (bolt) -> bolt.path == widget.metadata.bolt_path
-          [bolt.category, widget.endpoint]
+          bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == widget.metadata.bolt_path
+          bolt && [bolt.category, widget.endpoint]
 
         else if widget.endpoint
           widget.endpoint.split('/').slice(0,2)

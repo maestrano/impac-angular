@@ -163,7 +163,7 @@ angular
       )
 
       # Fetch templates for each configured bolt
-      for bolt in ImpacRoutes.bolts
+      for bolt in ImpacRoutes.bolts()
         widgetsTemplatesPromises.push $http.get("#{bolt.path}/widgets").then(
           (response) ->
             for widgetTemplate in response.data.widgets
