@@ -30,15 +30,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter) ->
         verticalAlign: 'middle'
       xAxis:
         startOnTick: false
+        minPadding: 0
+        tickInterval: 1
         labels:
           formatter: ->
             $filter('mnoDate')(w.content.chart.labels[this.value], getPeriod())
         plotLines: [{
-          color: '#9dbee3'
+          color: 'rgba(0, 85, 255, 0.2)'
           value: getTodayMarker()
-          width: 1.5
+          width: 1
           label:
-            text: 'Today'
+            text: null
             verticalAlign: 'top'
             textAlign: 'center'
             rotation: 0
