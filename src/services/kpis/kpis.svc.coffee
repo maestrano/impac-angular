@@ -91,35 +91,10 @@ angular
 
             params.sso_session = ssoSessionId if ssoSessionId
 
-            promises = impac: index(params)
-
-            # Get local kpis
-            if ImpacRoutes.kpis.local()
-              promises.local = $http.get(ImpacRoutes.kpis.local())
-
-            return $q.all(promises).then(
-              (response) ->
-                # Clear store
-                _.remove(_self.config.kpisTemplates, -> true)
-
-                if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
-                  # fill array with new values from Impac! api
-                  for template in response.impac.data.kpis
-                    template.source ||= 'impac'
-                    _self.config.kpisTemplates.push template
-
-                if response.local && response.local.data? && !_.isEmpty(response.local.data.kpis)
-                  # fill array with new values from local endpoints
-                  for template in response.local.data.kpis
-                    template.source = 'local'
-                    _self.config.kpisTemplates.push template
-
-                $log.info("Impac! - KpisSvc: loaded")
-
-              (err) ->
-                $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
-                $q.reject(err)
-            ).finally(-> _self.locked = false )
+            fetchKpisTemplates(params).finally(->
+              _self.locked = false
+              $log.info("Impac! - KpisSvc: loaded")
+            )
         ).finally(-> _self.locked = false )
 
       else
@@ -211,12 +186,53 @@ angular
     # CRUD methods
     #====================================
 
-    # Retrieve all the available kpis from Impac!
-    # Note: index is a private method that should be called only by load()
-    index = (params) ->
-      host = ImpacRoutes.kpis.index()
-      url = [host,decodeURIComponent( $.param( params ) )].join('?')
-      return $http.get(url)
+    # Retrieve all the available kpis from various sources
+    # Note: fetchKpisTemplates is a private method that should be called only by load()
+    fetchKpisTemplates = (params)->
+      kpisTemplates = []
+      kpisTemplatesPromises = []
+
+      # Templates from Impac! api
+      # Serialize nested params as inline
+      impacUrl = [ImpacRoutes.kpis.index(), decodeURIComponent( $.param( params ) )].join('?')
+      kpisTemplatesPromises.push $http.get(impacUrl).then(
+        (response)->
+          for template in response.data.kpis
+            template.source ||= 'impac'
+            kpisTemplates.push template
+        (error) ->
+          $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from Impac!")
+      )
+
+      # Templates from local endpoints
+      if ImpacRoutes.kpis.local()
+        $http.get(ImpacRoutes.kpis.local()).then(
+          (response)->
+            # fill array with new values from local endpoints
+            for template in response.data.kpis
+              template.source = 'local'
+              _self.config.kpisTemplates.push template
+          (error) ->
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from local", "#{ImpacRoutes.kpis.local()}")
+        )
+
+      # Templates from each registered Bolt
+      for bolt in ImpacRoutes.bolts()
+        kpisTemplatesPromises.push $http.get("#{bolt.path}/bolt_kpis").then(
+          (response) ->
+            for template in response.data.kpis
+              template.metadata ||= {}
+              template.metadata.bolt_path = bolt.path
+              kpisTemplates.push(template)
+          (error) ->
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{boltPath}/bolt_kpis")
+        )
+
+      $q.all(kpisTemplatesPromises).then(->
+        _.remove(_self.config.kpisTemplates, -> true)
+        for template in kpisTemplates
+          _self.config.kpisTemplates.push template
+      )
 
     # Retrieve data for kpi from api
     @show = (kpi, refreshCache=false) ->
