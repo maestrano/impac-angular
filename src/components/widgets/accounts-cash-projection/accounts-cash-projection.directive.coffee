@@ -17,13 +17,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter) ->
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content?
-    
+
     myChart = Highcharts.chart 'cashProjectionChart', {
-      chart: 
+      chart:
         type: 'line'
         zoomType: 'x'
         spacingTop: 20
       title: null
+      credits:
+        enabled: false
       legend:
         layout: 'vertical'
         align: 'left'
