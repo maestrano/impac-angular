@@ -117,13 +117,7 @@ angular
                   $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
               )
 
-              # Retrieve widgets templates
-              widgetsTemplatesPromise = $http.get(widgetsTemplatesUrl()).then(
-                (response) ->
-                  _self.setWidgetsTemplates(response.data.widgets)
-                (error) ->
-                  $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", ImpacRoutes.widgets.templates())
-              )
+              widgetsTemplatesPromise = fetchWidgetsTemplates()
 
               # Remove the lock and resolve the promise once both the dashboards and widgets templates are loaded
               $q.all([dashboardsPromise, widgetsTemplatesPromise]).then(
@@ -154,6 +148,33 @@ angular
 
       return deferred.promise
 
+    # Retrieve widgets templates from legacy Impac! API and from all Bolts configured in ImpacRoutes service
+    fetchWidgetsTemplates = ->
+      widgetsTemplates = []
+      widgetsTemplatesPromises = []
+
+      # Fetch templates from legacy v1 api
+      widgetsTemplatesPromises.push $http.get(widgetsTemplatesUrl()).then(
+        (response) ->
+          for widgetTemplate in response.data.widgets
+            widgetsTemplates.push(widgetTemplate)
+        (error) ->
+          $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", widgetsTemplatesUrl())
+      )
+
+      # Fetch templates for each configured bolt
+      for bolt in ImpacRoutes.bolts()
+        widgetsTemplatesPromises.push $http.get("#{bolt.path}/widgets").then(
+          (response) ->
+            for widgetTemplate in response.data.widgets
+              widgetTemplate.metadata ||= {}
+              widgetTemplate.metadata.bolt_path = bolt.path
+              widgetsTemplates.push(widgetTemplate)
+          (error) ->
+            $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates from bolt", "#{boltPath}/widgets")
+        )
+
+      $q.all(widgetsTemplatesPromises).then(-> _self.setWidgetsTemplates(widgetsTemplates))
 
     widgetsTemplatesUrl = ->
       if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear

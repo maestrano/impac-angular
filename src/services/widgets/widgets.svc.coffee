@@ -155,7 +155,14 @@ angular
             params.refresh_cache = true if refreshCache
 
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+
+            # By default, widget is to be fetched from legacy Impac! API (v1)
             route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
+            
+            # If bolt_path is defined, widget is to be fetched from a bolt
+            if widget.metadata['bolt_path']
+              route = "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}"
+            
             url = [route, decodeURIComponent( $.param(params) )].join('?')
 
             authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
@@ -164,7 +171,7 @@ angular
             $http.get(url, config).then(
               (success) ->
                 # Pushes new content to widget
-                content = success.data.content || {}
+                content = success.data.content || success.data[widget.endpoint] || {}
                 name = success.data.name
                 angular.extend widget, {content: content, originalName: name}
 

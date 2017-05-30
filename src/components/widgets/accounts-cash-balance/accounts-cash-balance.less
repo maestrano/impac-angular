@@ -1,0 +1,59 @@
+.analytics .widget-item .content.accounts-cash-balance {
+  .tall-widget();
+
+  .data-container {
+    height: ~"calc(@{impac-big-widget-size} - 20px)";
+    width: 100%;
+    display: flex;
+  }
+
+  .left-panel {
+    flex: 0;
+    min-width: 180px;
+    overflow: auto;
+  }
+
+  #cash-balance-legend {
+
+    .header {
+
+      .group-item {
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+        margin: 3px;
+        font-size: 13px;
+        padding: 3px;
+        cursor: pointer;
+        user-select: none;
+        &:hover {
+          background-color: @impac-widget-menus-hover-background-color;
+        }
+        i {
+          font-size: 19px;
+          padding: 4px;
+          margin-top: 1px
+        }
+        span { color: @impac-widget-text-color; }
+      }
+    }
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.26);
+
+    .top-bar {
+      flex: 0;
+      min-height: 50px;
+    }
+
+    // Highchart container
+    #cashBalanceChart {
+      flex: 1;
+    }
+  }
+}

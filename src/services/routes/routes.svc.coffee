@@ -45,11 +45,34 @@ angular
       organizations:
         appInstancesSync: null
 
+    # Default bolts (proxied by Impac! API) - can be replaced in configuration
+    bolts = 
+      version: 'v2'
+      engines: [
+        { provider: 'maestrano', name: 'finance', category: 'accounts' }
+      ]
+
+    #=======================================
+    # Local helper methods
+    #=======================================    
+    isBoltValid = (bolt) ->
+      console.warn('Bolt has no provider', bolt) unless bolt.provider
+      console.warn('Bolt has no name', bolt) unless bolt.name
+      console.warn('Bolt is not mapped to a category', bolt) unless bolt.category
+      Boolean(bolt.provider && bolt.name && bolt.category)
+
     #=======================================
     # Public methods available in config
     #=======================================
     provider.configureRoutes = (configOptions) ->
       angular.extend(defaults, configOptions)
+
+    provider.configureBolts = (version, engines) ->
+      for bolt in engines
+        unless isBoltValid(bolt)
+          console.warn('Default bolts will be used:', bolts)
+          return false 
+      angular.extend(bolts, { version: version, engines: engines })
 
     #=======================================
     _$get = () ->
@@ -183,6 +206,13 @@ angular
             defaults.organizations.appInstancesSync.replace(':uid', uid)
           else
             "#{defaults.mnoHub}/organizations/#{uid}/app_instances_sync"
+
+      service.bolts = ->
+        _.map bolts.engines, (engine) ->
+          {
+            path: "#{defaults.impacApi}/#{bolts.version}/#{engine.provider}/#{engine.name}"
+            category: engine.category
+          }
 
       return service
     # inject service dependencies here, and declare in _$get function args.
