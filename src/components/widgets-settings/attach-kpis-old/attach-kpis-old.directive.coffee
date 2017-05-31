@@ -1,18 +1,18 @@
-module = angular.module('impac.components.widgets-settings.attach-kpis', [])
-module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate)->
+module = angular.module('impac.components.widgets-settings.attach-kpis-old', [])
+module.directive('settingAttachKpisOld', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate)->
 
   return {
     restrict: 'A'
     scope: {
       parentWidget: '='
-      attachedKpis: '='
+      attachedKpis: '=?'
       widgetEngine: '='
       widgetId: '='
-      extraParams: '='
+      extraParams: '=?'
       deferred: '='
       showExtraParam: '=?'
     }
-    template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html')
+    template: $templateCache.get('widgets-settings/attach-kpis-old.tmpl.html')
 
     controller: ($scope)->
       w = $scope.parentWidget
@@ -55,12 +55,15 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
           params.extra_params ||= {}
           params.extra_params[param] = paramValues.uid
 
+        console.log('attachKpis: ', $scope.kpi.endpoint, $scope.elementWatched, params)
+
         ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.elementWatched, params).then(
           (kpi)->
+            console.log('attached KPI: ', kpi)
             $scope.attachedKpis.push(kpi)
-            ImpacKpisSvc.show(kpi).then(->
-              # TODO: display interesting things (e.g graph overlays) with KPI data!
-            )
+            # ImpacKpisSvc.show(kpi).then(->
+            #   # TODO: display interesting things (e.g graph overlays) with KPI data!
+            # )
         )
 
       $scope.deleteKpi = (kpi)->
@@ -82,6 +85,8 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
 
       # On-load
       # -----------------------
+
+      $scope.attachedKpis ||= []
 
       # Mapping target modes to labels.
       $scope.possibleTargets = [
@@ -111,11 +116,11 @@ module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpi
 
       # Load attached KPI's data.
       loadKpisData = ->
-        _.forEach($scope.attachedKpis, (kpi)->
-          ImpacKpisSvc.show(kpi).then((res)->
-            # TODO: display interesting things (e.g graph overlays) with KPI data!
-          )
-        )
+        # _.forEach($scope.attachedKpis, (kpi)->)
+        #   ImpacKpisSvc.show(kpi).then((res)->
+        #     # TODO: display interesting things (e.g graph overlays) with KPI data!
+        #   )
+        # )
 
       loadKpisData()
 

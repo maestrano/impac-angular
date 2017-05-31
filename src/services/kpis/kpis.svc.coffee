@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming, toastr) ->
 
     _self = @
 
@@ -133,11 +133,6 @@ angular
     #====================================
     # Formatting methods
     #====================================
-    # TODO: to be replaced with @validateKpiTargets when attach-kpi is extended to handle
-    # targets for multiple watchables.
-    @validateKpiTarget = (kpi)->
-      (kpi.limit && kpi.limit.value && kpi.limit.mode)
-
     @validateKpiTargets = (targetsByWatchable)->
       return false if _.isEmpty targetsByWatchable
       _.every(targetsByWatchable, (targets)->
@@ -312,6 +307,7 @@ angular
                 deferred.resolve(kpi)
               (err) ->
                 $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                toastr.error('Unable to create KPI', 'Error')
                 deferred.reject(err)
             )
           )

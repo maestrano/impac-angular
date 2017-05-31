@@ -17,10 +17,13 @@
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
     <div ng-show="(isDataFound==true)" class="">
+      <!-- Set KPI target panel -->
+      <setting-attach-kpi widget="widget" chart-promise="chartPromise" on-init="onAttachKpiInit($event)" on-complete="onAttachedKpi($event)"></setting-attach-kpi>
+      <!-- Chart -->
       <div id="cashProjectionChart"></div>
     </div>
 
     <!-- No data found -->
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width" />
   </div>
 </div>
