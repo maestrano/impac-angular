@@ -16,21 +16,17 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = w.content?
+    # TODO: what to do when the widget has no data?
+    $scope.isDataFound = w.content.chart?
 
-      # Custom chart legend
-      $scope.groupedTable = w.content.grouped_table
+    # Custom chart legend
+    $scope.groupedTable = w.content.grouped_table
 
-      # TODO: theming config for positive/negative hex codes (or move to API)
-      # chartColors = ImpacTheming.get().chartColors
+    # TODO: theming config for positive/negative hex codes (or move to API)
+    # chartColors = ImpacTheming.get().chartColors
 
-      # Set chart accounts series colors by account bias ('positive' / 'negative')
-      setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
-
-      # Wait for the next digest cycle to ensure the chart parent (.data-container) is shown.
-      $timeout(->
-        $scope.chart = buildChart(w.content.chart)
-      )
+    # Set chart accounts series colors by account bias ('positive' / 'negative')
+    setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
 
   $scope.legendItemOnClick = (account)->
     serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
@@ -69,7 +65,11 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
       for serie, i in series
         serie.color = palette[i]
 
-  buildChart = (data, onRender)->
+  $scope.chartId = ->
+    "cashBalanceChart-#{w.id}"
+
+  # Called after initContext - draws the chart using HighCharts
+  w.format = ->
     options =
       chart:
         type: 'line'
@@ -111,7 +111,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
             $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
       series: data.series
 
-    Highcharts.chart('cashBalanceChart', options, onRender)
+    Highcharts.chart($scope.chartId(), options, onRender)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"

@@ -23,6 +23,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter) ->
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
+    # TODO: what to do when the widget has no data?
     $scope.isDataFound = w.content.chart?
 
     # Offset will be applied to all intervals after today
@@ -57,9 +58,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter) ->
     $scope.updateSettings()
     $scope.toggleSimulationMode()
 
+  $scope.chartId = ->
+    "cashProjectionChart-#{w.id}"
+
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
-    Highcharts.chart 'cashProjectionChart', {
+    Highcharts.chart $scope.chartId(), {
       chart:
         type: 'line'
         zoomType: 'x'

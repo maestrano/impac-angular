@@ -17,7 +17,7 @@
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
     <div ng-show="(isDataFound==true)" class="">
-      <div id="cashProjectionChart"></div>
+      <div id="{{chartId()}}" class="cash-projection-chart"></div>
 
       <div class="offset-box" ng-show="simulationMode">
         <h3>Offset your cash projection</h3>
