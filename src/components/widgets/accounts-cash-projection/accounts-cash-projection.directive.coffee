@@ -31,8 +31,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter) ->
     
     projectedSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Projected cash"
+
+    totalOffset = 0.0
+    if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
+      totalOffset += _.sum(w.metadata.offset.current)
+
+    if w.metadata.offset && w.metadata.offset.per_interval && w.metadata.offset.per_interval.length > 0
+      totalOffset += _.sum(w.metadata.offset.per_interval)
+    
     if projectedSerie?
-      $scope.currentProjectedCash = projectedSerie.data[todayInterval]
+      $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
 
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
