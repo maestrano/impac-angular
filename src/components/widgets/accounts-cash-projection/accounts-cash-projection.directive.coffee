@@ -43,25 +43,25 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     formatters: ->
       xAxis:
         labels:
-            formatter: ->
-              $filter('mnoDate')(w.content.chart.labels[this.value], getPeriod())
+          formatter: ->
+            $filter('mnoDate')(w.content.chart.labels[this.value], getPeriod())
       yAxis:
         labels:
-            formatter: ->
-              $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
+          formatter: ->
+            $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
     todayMarker: ->
       xAxis:
         plotLines: [{
-            color: 'rgba(0, 85, 255, 0.2)'
-            value: getTodayMarker()
-            width: 1
-            label:
-              text: null
-              verticalAlign: 'top'
-              textAlign: 'center'
-              rotation: 0
-              y: -5
-          }]
+          color: 'rgba(0, 85, 255, 0.2)'
+          value: getTodayMarker()
+          width: 1
+          label:
+            text: null
+            verticalAlign: 'top'
+            textAlign: 'center'
+            rotation: 0
+            y: -5
+        }]
     thresholdMarker: ->
       yAxis:
         plotLines: [{
@@ -76,19 +76,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content?
-    initChart()
 
-  # Can be removed once click even is registered in the attach-kpi cmp
-  $scope.onAttachKpiInit = ({api})->
-    $scope.settingAttachKpiApi = api
-
-  $scope.onAttachedKpi = ({kpi})->
-    $scope.chart.update(chartFactory.thresholdMarker())
-
-
-  # Private
-
-  initChart = ->
+  w.format = ->
     # Register chart and notify
     if $scope.chart
       # update existing chart with new values
@@ -109,6 +98,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       ))
 
     $scope.chartDeferred.notify($scope.chart)
+
+  # Can be removed once click even is registered in the attach-kpi cmp
+  $scope.onAttachKpiInit = ({api})->
+    $scope.settingAttachKpiApi = api
+
+  $scope.onAttachedKpi = ({kpi})->
+    $scope.chart.update(chartFactory.thresholdMarker())
+
+  # Private
 
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
