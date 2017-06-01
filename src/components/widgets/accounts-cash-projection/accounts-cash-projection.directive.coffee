@@ -63,6 +63,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
             y: -5
         }]
     thresholdMarker: ->
+      return unless w.kpis
       yAxis:
         plotLines: [{
           color: 'rgba(255, 0, 0, 0.5)'
@@ -118,7 +119,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # TODO: move to attach-kpi (note: problems updating chart with click event via chart.update)
   chartClickEvent = (event)->
     # Currently only one kpi per widget is supported in the front-end
-    return if w.kpis.length > 0
+    return if w.kpis && w.kpis.length > 0
     selectedValue = event.yAxis[0].value.toFixed(2)
     $scope.settingAttachKpiApi.createKpi(selectedValue)
 
