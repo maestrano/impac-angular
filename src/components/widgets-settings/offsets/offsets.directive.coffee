@@ -12,6 +12,7 @@ module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
       intervalsCount: '='
       period: '='
       showIntervalsMult: '='
+      textPlaceholder: '@?'
     },
     template: $templateCache.get('widgets-settings/offsets.tmpl.html'),
     
@@ -48,6 +49,7 @@ module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
         scope.addOffset() if event.keyCode == 13
         
       placeholder = (inputPeriod) ->
+        return scope.textPlaceholder if scope.textPlaceholder?
         period = inputPeriod.charAt(0).toUpperCase() + inputPeriod.slice(1).toLowerCase()
         "#{period} adjustment"
 
