@@ -213,14 +213,14 @@ angular
 
       # Templates from each registered Bolt
       for bolt in ImpacRoutes.bolts()
-        kpisTemplatesPromises.push $http.get("#{bolt.path}/bolt_kpis").then(
+        kpisTemplatesPromises.push $http.get("#{bolt.path}/kpis").then(
           (response) ->
             for template in response.data.kpis
               template.metadata ||= {}
               template.metadata.bolt_path = bolt.path
               kpisTemplates.push(template)
           (error) ->
-            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{boltPath}/bolt_kpis")
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{boltPath}/kpis")
         )
 
       $q.all(kpisTemplatesPromises).then(->
