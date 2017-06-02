@@ -118,7 +118,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       ))
     else
       # Build new chart
-      $scope.chart = Highcharts.chart('cashProjectionChart', angular.merge({},
+      $scope.chart = Highcharts.chart($scope.chartId(), angular.merge({},
         chartFactory.base(),
         chartFactory.data(),
         chartFactory.formatters(),
@@ -127,6 +127,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       ))
 
     $scope.chartDeferred.notify($scope.chart)
+ 
+  $scope.chartId = -> 
+    "cashProjectionChart-#{w.id}"
+ 
+  $scope.toggleSimulationMode = (init = false) -> 
+    $scope.initSettings() if init 
+    $scope.simulationMode = !$scope.simulationMode 
+ 
+  $scope.saveSimulation = -> 
+    $scope.updateSettings() 
+    $scope.toggleSimulationMode() 
 
   # Can be removed once click even is registered in the attach-kpi cmp
   $scope.onAttachKpiInit = ({api})->
