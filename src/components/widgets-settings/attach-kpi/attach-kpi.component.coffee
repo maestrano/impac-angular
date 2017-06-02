@@ -18,7 +18,7 @@ module.component('settingAttachKpi', {
       ctrl.showPanel = false
       ctrl.draftTarget = ''
       ctrl.options ||= {
-        chartShrinkSize: 30
+        chartShrinkSize: 38
       }
       ctrl.dhbCurrency = ImpacDashboardsSvc.getCurrentDashboard().currency
       # Emit API to parent
@@ -85,10 +85,12 @@ module.component('settingAttachKpi', {
     shrinkChart = ->
       return unless ctrl.chart
       ctrl.chart.setSize(null, ctrl.chart.chartHeight - ctrl.options.chartShrinkSize, false)
+      ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
     growChart = ->
       return unless ctrl.chart
       ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.options.chartShrinkSize, false)
+      ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
 
     return ctrl

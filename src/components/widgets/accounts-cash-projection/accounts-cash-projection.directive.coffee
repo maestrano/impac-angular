@@ -17,9 +17,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.currentOffsetsDeferred.promise
   ]
   
+  # Simulation mode
   $scope.simulationMode = false
   $scope.intervalsCount = 0
 
+  # Attach KPI
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
 
