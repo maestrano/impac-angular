@@ -1,0 +1,10 @@
+<div class="attach-panel" ng-if="$ctrl.showPanel">
+  <div class="attach-panel-text">
+    <span class="panel-text-label">Set target threshold: </span>
+    <span class="panel-text-value" ng-bind="$ctrl.draftTarget | mnoCurrency:$ctrl.dhbCurrency"></span>
+  </div>
+  <div class="action-buttons">
+    <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()">Cancel</button>
+    <button class="btn btn-primary" ng-click="$ctrl.saveKpi()">Save</button>
+  </div>
+</div>
