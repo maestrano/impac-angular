@@ -1,6 +1,6 @@
 <div class="settings time-slider">
   <div class="row">
-    <div class="col-xs-11 col-xs-offset-1" ng-click="onUse()" translate="impac.widget.settings.time_slider.show_last" translate-values="{formatPeriod: last_x_period}"></div>
+    <div class="col-xs-11 col-xs-offset-1" ng-click="onUse()" translate="impac.widget.settings.time_slider.show_last" translate-values="{formatPeriod: formatPeriod()}"></div>
     <div class="col-xs-11 col-xs-offset-1" ng-click="onUse()">
       <i>{{formatDate(fromDate())}} - {{formatDate(toDate())}}</i>
     </div>

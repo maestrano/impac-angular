@@ -1,5 +1,14 @@
 # Impac! Frontend Changelog
 
+### v1.5.1 | 2017 - Week 21
+
+#### Adds
+
+#### Fixes
+- Settings Time Slider not displaying range period label
+
+-------------------------------------------------------------
+
 ### v1.5.0 | 2017 - Week 20
 
 #### Adds

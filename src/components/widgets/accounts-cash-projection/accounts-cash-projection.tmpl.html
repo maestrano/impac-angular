@@ -19,8 +19,37 @@
     <div ng-show="(isDataFound==true)" class="">
       <!-- Set KPI target panel -->
       <setting-attach-kpi widget="widget" chart-promise="chartPromise" on-init="onAttachKpiInit($event)" on-complete="onAttachedKpi($event)"></setting-attach-kpi>
+
       <!-- Chart -->
-      <div id="cashProjectionChart"></div>
+      <div id="{{chartId()}}" class="cash-projection-chart"></div>
+
+      <!-- Simulation mode box -->
+      <div class="offset-box" ng-show="simulationMode">
+        <h3>Offset your cash projection</h3>
+
+        <h4>For the current interval</h4>
+        <div class="price" ng-if="currentProjectedCash">
+          {{ currentProjectedCash | mnoCurrency : widget.metadata.currency }}
+        </div>
+        <div setting-offsets parent-widget="widget" deferred="::currentOffsetsDeferred" offsets-key='current' initial-offsets='widget.metadata.offset.current' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="false" period='widget.metadata.hist_parameters.period' text-placeholder='Spot adjustment' />
+
+        <h4>For each interval in the future</h4>
+        <div setting-offsets parent-widget="widget" deferred="::intervalsOffsetsDeferred" offsets-key='per_interval' initial-offsets='widget.metadata.offset.per_interval' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="true" period='widget.metadata.hist_parameters.period' />
+      </div>
+
+      <!-- Simulation buttons -->
+      <div class="text-left">
+        <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
+          Cancel
+        </button>
+        <button class="btn btn-sm btn-default" ng-if="!simulationMode" ng-click="toggleSimulationMode()" title="Add custom offsets to the cash projection">
+          <i class="fa fa-pencil-square-o" />
+          Simulation
+        </button>
+        <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
+          Save
+        </button>
+      </div>
     </div>
 
     <!-- No data found -->
