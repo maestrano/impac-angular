@@ -26,7 +26,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     # chartColors = ImpacTheming.get().chartColors
 
     # Set chart accounts series colors by account bias ('positive' / 'negative')
-    setSeriesColors(w.content.chart.series, {'positive': '#3FC4FF', 'negative': '#e50228'})
+    setSeriesColors(w.content.chart.series, { positive: '#3FC4FF', negative: '#e50228'})
 
   $scope.legendItemOnClick = (account)->
     serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
@@ -89,7 +89,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         labels:
           style: textOverflow: 'none'
           formatter: ()->
-            $filter('mnoDate')(data.labels[this.value], getPeriod())
+            $filter('mnoDate')(w.content.chart.labels[this.value], getPeriod())
         plotLines: [{
           color: 'rgba(0, 85, 255, 0.2)'
           value: getTodayMarker()
@@ -109,9 +109,10 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         labels:
           formatter: ()->
             $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
-      series: data.series
+      series: w.content.chart.series
 
-    Highcharts.chart($scope.chartId(), options, onRender)
+    $timeout ->
+      $scope.chart = Highcharts.chart($scope.chartId(), options)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"
