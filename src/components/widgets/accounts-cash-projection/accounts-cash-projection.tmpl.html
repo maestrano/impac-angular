@@ -1,0 +1,52 @@
+<div widget-accounts-cash-projection>
+  <!-- Settings Panel -->
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
+
+    <!-- Buttons displayed on the lower  -->
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <!-- Content Panel -->
+  <div ng-hide="widget.isEditMode">
+    <!-- Data found -->
+    <div ng-show="(isDataFound==true)" class="">
+      <div id="{{chartId()}}" class="cash-projection-chart"></div>
+
+      <div class="offset-box" ng-show="simulationMode">
+        <h3>Offset your cash projection</h3>
+
+        <h4>For the current interval</h4>
+        <div class="price" ng-if="currentProjectedCash">
+          {{ currentProjectedCash | mnoCurrency : widget.metadata.currency }}
+        </div>
+        <div setting-offsets parent-widget="widget" deferred="::currentOffsetsDeferred" offsets-key='current' initial-offsets='widget.metadata.offset.current' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="false" period='widget.metadata.hist_parameters.period' text-placeholder='Spot adjustment' />
+
+        <h4>For each interval in the future</h4>
+        <div setting-offsets parent-widget="widget" deferred="::intervalsOffsetsDeferred" offsets-key='per_interval' initial-offsets='widget.metadata.offset.per_interval' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="true" period='widget.metadata.hist_parameters.period' />
+      </div>
+
+      <div class="text-left">
+        <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
+          Cancel
+        </button>
+        <button class="btn btn-sm btn-default" ng-if="!simulationMode" ng-click="toggleSimulationMode()" title="Add custom offsets to the cash projection">
+          <i class="fa fa-pencil-square-o" />
+          Simulation
+        </button>
+        <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
+          Save
+        </button>
+      </div>
+    </div>
+
+    <!-- No data found -->
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+  </div>
+</div>

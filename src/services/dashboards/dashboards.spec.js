@@ -74,7 +74,7 @@ describe('<> ImpacDashboardsSvc', function () {
       // Stub for $http.get()
       spyOn($http, "get").and.callFake(function() {
         var httpDeferred = $q.defer();
-        httpDeferred.resolve({data: 'stubbed http response'});
+        httpDeferred.resolve({ data: { widgets: [] } });
         return httpDeferred.promise;
       });
 
@@ -108,7 +108,7 @@ describe('<> ImpacDashboardsSvc', function () {
       });
 
       it('stores the dashboards in the service', function() {
-        expect(svc.setDashboards).toHaveBeenCalledWith('stubbed http response');
+        expect(svc.setDashboards).toHaveBeenCalledWith({ widgets: [] });
       });
 
       it('stores the current dashboard in the service', function() {

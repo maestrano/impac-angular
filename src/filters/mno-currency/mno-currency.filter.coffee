@@ -4,7 +4,7 @@
 # $filter('mnoCurrency')(amount,currency,[true|false])
 #
 angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ($filter) ->
-  (amount, currency='', ISOmode=true) ->
+  (amount, currency='', ISOmode=true, decimal) ->
 
     SYMBOLS = {
       USD: '$'
@@ -26,7 +26,7 @@ angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ($filter)
     return "" unless amount?
 
     symbol = if !ISOmode && _.has(SYMBOLS, currency) then SYMBOLS[currency] else ''
-    s = $filter('currency')(amount, symbol)
+    s = $filter('currency')(amount, symbol, decimal)
 
     # official accounting notation: replace '(15)' by: '-15'
     s = s.replace('(','-')
