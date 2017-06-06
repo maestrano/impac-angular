@@ -86,6 +86,7 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         startOnTick: false
         minPadding: 0
         tickInterval: 1
+        min: 0
         labels:
           style: textOverflow: 'none'
           formatter: ()->
