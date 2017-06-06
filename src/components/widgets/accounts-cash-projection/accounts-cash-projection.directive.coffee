@@ -45,6 +45,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         startOnTick: false
         minPadding: 0
         tickInterval: 1
+        min: 0
       yAxis:
         title: null
         startOnTick: true
