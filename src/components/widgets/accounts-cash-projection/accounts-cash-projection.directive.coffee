@@ -167,8 +167,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   chartClickEvent = (event)->
     # Currently only one kpi per widget is supported in the front-end
     return if w.kpis && w.kpis.length > 0
-    selectedValue = event.yAxis[0].value.toFixed(2)
-    $scope.settingAttachKpiApi.createKpi(selectedValue)
+    # Check whether click event fired is from the 'reset zoom' button
+    return if event.srcElement.textContent == 'Reset zoom'
+    value = event.yAxis[0].value
+    # Gaurd for click events fired outside of the yAxis values range
+    if !value || _.isNaN(value) then return else value = value.toFixed(2)
+    $scope.settingAttachKpiApi.createKpi(value)
 
   # TODO: move to helper method for reusability across widgets
   getThresholdTarget = ->
