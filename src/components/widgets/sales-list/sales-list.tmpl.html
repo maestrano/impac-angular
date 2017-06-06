@@ -64,6 +64,7 @@
                 <strong>{{product.total}}</strong>
               </div>
               <div class="col-xs-4 text-right" ng-hide="{{filter.value.match('quantity')}}">
+                <span common-currency-conversions fx-amounts="product.formattedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
                 <strong>{{product.total | mnoCurrency : product.currency}}</strong>
               </div>
             </div>
@@ -71,11 +72,10 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="data-not-found" ng-show="(isDataFound==false)">
-      <div class="message">No data found for this time range<br/> Please select another one</div>
-    </div>
-
+  <div class="data-not-found" ng-show="(isDataFound==false)">
+    <div class="message">No data found for this time range<br/> Please select another one</div>
   </div>
 
 </div>

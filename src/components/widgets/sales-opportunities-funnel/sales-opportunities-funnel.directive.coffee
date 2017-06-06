@@ -40,11 +40,13 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
     )
     return total? && total > 0
 
+  # Get number of assignees count in the statusOption (a.k.a sales stage, e.g 'Open')
   getFilteredTotal = (opps, assignees) ->
     return _.reduce(opps, (total=0, opp) ->
       if opp.assignee_id in assignees then total + 1 else total
     , 0)
 
+  # Gets ordered, selected assignee ids
   getOrderedAssigneeIds = (assigneesOptions) ->
     return _.map(_.filter(assigneesOptions, (assigneeOption) ->
       return assigneeOption.selected
@@ -63,17 +65,23 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       # Parameter which define showing 'Apply to all similar widgets' checkbox
       $scope.hasReach = true;
 
+      # Options for settings-params-picker, allowing users to remove and/or order status section display
       $scope.statusOptions = []
       angular.forEach w.content.opps_per_sales_stage, (value, status) ->
         # Sales stage will be ticked if has been selected before OR if no status is selected at all
         isSelected = _.isEmpty(sales_stage_selection.values) || ( status in sales_stage_selection.values )
         $scope.statusOptions.push({label: status, selected: isSelected})
+      # Enforce at least 1 statusOption to be selected on init
+      $scope.statusOptions[0].selected = true if $scope.statusOptions[0] && !_.any($scope.statusOptions, 'selected') && !_.isEmpty(w.content.opps_per_sales_stage)
 
+      # Options for settings-params-picker, allowing users to remove and/or order assignee right-panel display
       $scope.assigneesOptions = []
       angular.forEach w.content.assignees, (obj, index) ->
         # Assignee will be ticked if has been selected before OR if no assignee is selected at all
         isSelected = _.isEmpty(assignees_selection.values) || ( obj.id in assignees_selection.values )
         $scope.assigneesOptions.push({label: obj.name, selected: isSelected, value: obj.id})
+      # Enforce at least 1 assigneeOption to be selected on init
+      $scope.assigneesOptions[0].selected = true if $scope.assigneesOptions[0] && !_.any($scope.assigneesOptions, 'selected') && !_.isEmpty(w.content.assignees)
 
   # TODO: should it be managed in a service? in the widget directive? Must isLoading and isDataFound be bound to the widget object or to the scope?
   w.processError = (error) ->
@@ -119,13 +127,17 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
   $scope.getSelectedOpportunities = ->
     if $scope.isDataFound && $scope.selectedStatus && w.content.opps_per_sales_stage[$scope.selectedStatus]
       assignees = getOrderedAssigneeIds($scope.assigneesOptions)
+      # select opps with selected assignees
       filteredOpps = _.filter w.content.opps_per_sales_stage[$scope.selectedStatus].opps, (opportunity) ->
         return opportunity.assignee_id in assignees
+      # Group opps by assignee
       oppGroups = _.groupBy filteredOpps, 'assignee_id'
 
+      # Sort grouped opps by assigneesOptions order
       sortedOppGroups = []
       angular.forEach $scope.assigneesOptions, (assigneeOption) ->
-        sortedOppGroups.push({ assigneeName: assigneeOption.label, opps: oppGroups[assigneeOption.value]}) if oppGroups[assigneeOption.value]
+        assigneeId = assigneeOption.value
+        sortedOppGroups.push(assigneeName: assigneeOption.label, opps: oppGroups[assigneeId]) if oppGroups[assigneeId]
 
       return sortedOppGroups
     else
@@ -184,7 +196,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
   selectedStatusSetting.initialize = ->
     $scope.selectedStatus = w.metadata.selected_status if !_.isEmpty(w.content) && angular.isDefined(w.content.opps_per_sales_stage[w.metadata.selected_status])
     selectedStatusSetting.initialized = true
-    $scope.updateRightView();
+    $scope.updateRightView()
 
   selectedStatusSetting.toMetadata = ->
     {selected_status: $scope.selectedStatus}
@@ -198,7 +210,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       max=0
       assignees = getOrderedAssigneeIds($scope.assigneesOptions)
 
-      angular.forEach  $scope.statusOptions, (statusOption) ->
+      angular.forEach $scope.statusOptions, (statusOption) ->
         value = getFilteredTotal(w.content.opps_per_sales_stage[statusOption.label].opps, assignees)
         max = value if statusOption.selected && angular.isDefined(value) && value > max
 
@@ -216,6 +228,9 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
             coloredWidth: {width: "#{coloredWidth}%"}
             statusWidth: {width: "#{statusWidth}%"}
           } if statusOption.selected && angular.isDefined(value) && value > 0
+      else
+        # Something has gone wrong, fail safe display no data found (this shouldn't happen).
+        $scope.isDataFound = false
 
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------

@@ -1,12 +1,66 @@
 # Impac! Frontend Changelog
 
-## Unreleased - development in progress
+### v1.4.12 | 2017 - Week 18
+
+#### Adds
+- Improve widget selector using a Flexbox grid
+
+#### Fixes
+
+-------------------------------------------------------------
+
+### v1.4.11 | 2017 - Week 17 
+
+#### Adds
+- Apply widget settings on custom calc modal proceed (save)
+- An improved configuration / customisation to the README.md
+
+#### Fixes
+- [IMPAC-546] currency of widget & dashboard not in sync
+- [IMPAC-545] Fix css responsivenes for widgets selector
+- [IMPAC-448] Fix period hidden in "show last month"
+- Fix refreshAll kpis wrongly forcing a dashboard reload
+- Fix ImpacKpisSvc .load & .show method not properly applying refreshCache
+- Fix sales-list data not found not displaying
+- Fix dates-picker throwing error when onChangeCb is undefined
+
+-------------------------------------------------------------
+
+### v1.4.10 | 2017 - Week 16
+
+#### Adds
+- [IMPAC-527] sales segmented minor display improvements: add currency to graph tooltip, & improve price range legend bootstrap col spacing for larger numbers
+- [IMPAC-529] Sales Comparison to use common-currency-conversions
+- [IMPAC-530] Aged Sales to use common-currency-conversions
+- [IMPAC-534] Aged Payables and Receivables to use common-currency-conversions directive
+- [IMPAC-535] common-currency-conversions (directive to display more information on currency conversions)
+- Add loader for KPIs on delete
+
+#### Fixes
+- [IMPAC-262] Fix new vs existing customer widget incorrect tooltip values
+- [IMPAC-397] Enforce at least 1 opportunities funnel widget option selection
+- [IMPAC-498] Improve widget drill-down selection saved ids
+- [IMPAC-536] fix param selector css bleed
+- [IMPAC-537] Fix widget content css issues: .widget-lines bootstrap cols & widget content overflow
+
+#### Dependencies
+- Depends on Impac! >= 1.5.4
+
+### Config Changes
+- Frontend needs to serve dist/images/currency-conversions.png as an asset
+
+-------------------------------------------------------------
+
+### v1.4.9 | 2017 - Week 13
+
+#### Adds
+- [IMPAC-521] Better layout for employee details (and other widgets)
+
+#### Dependencies
+- Impac! >= v1.5.3
 
 
 -------------------------------------------------------------
--------------------------------------------------------------
-
-## Released
 
 ### v1.4.8 | Week 4
 

@@ -80,6 +80,9 @@ body {
     padding: 0px;
     margin: 1px 0px 8px 0px;
     border: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 
   .widget-item .content, kpis-bar .kpi {
@@ -278,4 +281,17 @@ body {
 .has-success .form-control {
   border-color: @brand-success;
   &:focus { border-color: @brand-success }
+}
+
+// remove gutters from Boostrap row
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+// remove gutters from Boostrap column
+[class^="col-"].no-gutters,
+[class*=" col-"].no-gutters {
+  padding-right: 0;
+  padding-left: 0;
 }
