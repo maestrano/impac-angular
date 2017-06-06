@@ -60,6 +60,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         labels:
           formatter: ->
             $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
+      tooltip:
+        formatter: ->
+          date = $filter('mnoDate')(w.content.chart.labels[this.x], getPeriod())
+          amount = $filter('mnoCurrency')(this.y, w.metadata.currency, false)
+          "<strong>#{date}</strong><br>#{this.series.name}: #{amount}"
     todayMarker: ->
       xAxis:
         plotLines: [{
