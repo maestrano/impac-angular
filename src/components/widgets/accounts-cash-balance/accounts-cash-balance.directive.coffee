@@ -114,7 +114,11 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         formatter: ->
           date = $filter('mnoDate')(w.content.chart.labels[this.x], getPeriod())
           amount = $filter('mnoCurrency')(this.y, w.metadata.currency, false)
-          "<strong>#{date}</strong><br>#{this.series.name}: #{amount}"
+          name = this.series.name
+          # Detect and remove 'Projected' label from 'Projected cash' on intervals less than today.
+          if _.include(name.toLowerCase(), 'projected')
+            name = 'Cash' if this.series.data.indexOf(this.point) < getTodayMarker()
+          "<strong>#{date}</strong><br>#{name}: #{amount}"
       series: w.content.chart.series
 
     $timeout ->
