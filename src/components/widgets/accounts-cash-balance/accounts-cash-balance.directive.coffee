@@ -109,6 +109,11 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
         labels:
           formatter: ()->
             $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
+      tooltip:
+        formatter: ->
+          date = $filter('mnoDate')(w.content.chart.labels[this.x], getPeriod())
+          amount = $filter('mnoCurrency')(this.y, w.metadata.currency, false)
+          "<strong>#{date}</strong><br>#{this.series.name}: #{amount}"
       series: w.content.chart.series
 
     $timeout ->
