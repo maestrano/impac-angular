@@ -30,6 +30,10 @@ angular
     @dashboardChanged = ->
       return _self.callbacks.dashboardChanged.promise
 
+    @callbacks.dashboardUpdated = $q.defer()
+    @dashboardUpdated = ->
+      return _self.callbacks.dashboardUpdated.promise
+
     @callbacks.widgetAdded = $q.defer()
     @widgetAdded = ->
       return _self.callbacks.widgetAdded.promise
@@ -304,6 +308,8 @@ angular
 
         if id == _self.config.currentDashboard.id
           angular.merge _self.config.currentDashboard, success.data
+
+        _self.callbacks.dashboardUpdated.notify(_self.config.currentDashboard)
 
         deferred.resolve(success.data)
       ,(error) ->
