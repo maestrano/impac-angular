@@ -112,7 +112,6 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
-    'impac.components.widgets-settings.attach-kpis-old',
     'impac.components.widgets-settings.offsets'
   ]
 );

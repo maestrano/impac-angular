@@ -17,13 +17,8 @@
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
     <div ng-show="(isDataFound==true)" class="">
-      <!-- Set KPI target panel -->
-      <setting-attach-kpi widget="widget" chart-promise="chartPromise" on-init="onAttachKpiInit($event)" on-complete="onAttachedKpi($event)"></setting-attach-kpi>
-
-      <!-- Chart -->
       <div id="{{chartId()}}" class="cash-projection-chart"></div>
 
-      <!-- Simulation mode box -->
       <div class="offset-box" ng-show="simulationMode">
         <h3>Offset your cash projection</h3>
 
@@ -37,7 +32,6 @@
         <div setting-offsets parent-widget="widget" deferred="::intervalsOffsetsDeferred" offsets-key='per_interval' initial-offsets='widget.metadata.offset.per_interval' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="true" period='widget.metadata.hist_parameters.period' />
       </div>
 
-      <!-- Simulation buttons -->
       <div class="text-left">
         <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
           Cancel
@@ -53,6 +47,6 @@
     </div>
 
     <!-- No data found -->
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width" />
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
   </div>
 </div>
