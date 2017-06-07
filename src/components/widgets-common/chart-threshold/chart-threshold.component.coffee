@@ -2,6 +2,7 @@
 #   @desc Chart Threshold - create Widget KPIs from Widget charts. (Highchart widgets only).
 #   @todo support for multiple KPI watchables?
 #   @todo support for multiple KPI targets?
+#   @todo support for multiple attachable KPIs?
 ###
 module = angular.module('impac.components.widgets-common.chart-threshold', [])
 module.component('chartThreshold', {
@@ -9,22 +10,13 @@ module.component('chartThreshold', {
   bindings:
     widget: '<'
     chartPromise: '<?'
-    options: '<?'
-    onInit: '&?'
+    chartShrinkSize: '<?'
+    disabled: '<?'
+    kpiTargetMode: '<?'
+    kpiCreateLabel: '<?'
     onComplete: '&?'
   controller: ($timeout, $log, ImpacKpisSvc, toastr)->
     ctrl = this
-
-    DEFAULT_OPTS = Object.freeze {
-      # whether threshold attachability is disabled
-      disabled: false
-      # Chart size is shrunk by x pixels on kpi tooltip show
-      chartShrinkSize: 38
-      # KPI target mode
-      kpiTargetMode: 'min'
-      # Label shown when user is creating a KPI to give context to the target value.
-      kpiCreateLabel: 'Get alerted when the target threshold goes below'
-    }
 
     ctrl.$onInit = ->
       # Define properties
@@ -32,10 +24,10 @@ module.component('chartThreshold', {
       ctrl.kpi = {}
       ctrl.showPanel = false
       ctrl.draftTarget = ''
-      # Configurable defaults
-      ctrl.options = angular.merge({}, DEFAULT_OPTS, ctrl.options)
-      # Emit API to parent
-      ctrl.onInit($event: { api: { createKpi: ctrl.createKpi } })
+      ctrl.chartShrinkSize ||= 38
+      ctrl.disabled ||= false
+      ctrl.kpiTargetMode ||= 'min'
+      ctrl.kpiCreateLabel ||= 'Get alerted when the target threshold goes below'
       # Get attachable kpi templates
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
         (templates)->
@@ -45,16 +37,12 @@ module.component('chartThreshold', {
           disableAttachability()
       )
       # Register to chart changes
-      ctrl.chartPromise.then(null, null, (chart)->
-        ctrl.chart = chart
-        # TODO: Not working for some reason =\ how can I update click event after init
-        # ctrl.chart.update({
-        #   chart: events: click: chartClickEvent
-        # })
-      )
+      ctrl.chartPromise.then(null, null, onChartNotify) if ctrl.chartPromise? && _.isFunction(ctrl.chartPromise.then)
 
     ctrl.createKpi = (target)->
-      return if ctrl.options.disabled || !_.isEmpty(ctrl.draftTarget) || !target?
+      return if ctrl.disabled
+      # Only 1 kpi per widget is supported & prevent panel showing if target is currently drafting
+      return unless target && _.isEmpty(ctrl.widget.kpis) && _.isEmpty(ctrl.draftTarget)
       ctrl.draftTarget = target
       # As this method can be called from parent component, dirty checking in this ctrl
       # scope are not checked, this ensures value change is detected as per usual.
@@ -74,39 +62,46 @@ module.component('chartThreshold', {
       params = {}
       params.targets = {}
       params.targets[ctrl.kpi.watchables[0]] = [{
-        "#{ctrl.options.kpiTargetMode}": ctrl.draftTarget
+        "#{ctrl.kpiTargetMode}": ctrl.draftTarget
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       params.widget_id = ctrl.widget.id
       ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
         (kpi)->
           ctrl.widget.kpis.push(kpi)
-          ctrl.onComplete($event: { kpi: kpi })
+          ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
       ).finally(->
         ctrl.cancelCreateKpi()
       )
 
     # Private
 
+    onChartNotify = (chart)->
+      ctrl.chart = chart
+      Highcharts.addEvent(chart.container, 'click', onChartClick)
+      return
+
+    onChartClick = (event)->
+      # Check whether click event fired is from the 'reset zoom' button
+      return if event.srcElement.textContent == 'Reset zoom'
+      value = event.yAxis[0].value
+      # Gaurd for click events fired outside of the yAxis values range
+      if !value || _.isNaN(value) then return else value = value.toFixed(2)
+      ctrl.createKpi(value)
+
     disableAttachability = (logMsg)->
-      ctrl.options.disabled = true
+      ctrl.disabled = true
       toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
       $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
 
-    # chartClickEvent = (event)->
-    #   # Currently only one kpi per widget is supported in the front-end
-    #   return if options.disableCreate
-    #   selectedValue = event.yAxis[0].value.toFixed(2)
-    #   ctrl.createKpi(selectedValue)
-
     shrinkChart = ->
       return unless ctrl.chart
-      ctrl.chart.setSize(null, ctrl.chart.chartHeight - ctrl.options.chartShrinkSize, false)
+      ctrl.chart.setSize(null, ctrl.chart.chartHeight - ctrl.chartShrinkSize, false)
       ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
     growChart = ->
       return unless ctrl.chart
-      ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.options.chartShrinkSize, false)
+      ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.chartShrinkSize, false)
       ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
 

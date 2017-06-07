@@ -16,7 +16,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.intervalsOffsetsDeferred.promise,
     $scope.currentOffsetsDeferred.promise
   ]
-  
+
   # Simulation mode
   $scope.simulationMode = false
   $scope.intervalsCount = 0
@@ -24,6 +24,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Attach KPI
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
+  $scope.chartThresholdOptions = {
+    label: 'Get alerted when the cash projection goes below'
+  }
 
   # TODO: move to a wrapper service (where you can set/get blocks of chart config)
   chartFactory = {
@@ -32,8 +35,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         type: 'line'
         zoomType: 'x'
         spacingTop: 20
-        events:
-          click: chartClickEvent
       title: null
       credits:
         enabled: false
@@ -100,14 +101,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     # TODO: what to do when the widget has no data?
     $scope.isDataFound = w.content?
 
-    $scope.chartThresholdOptions = {
-      kpiCreateLabel: 'Get alerted when the cash projection goes below'
-    }
-
     # Offset will be applied to all intervals after today
     todayInterval = w.content.chart.series[0].zones[0].value
     $scope.intervalsCount = w.content.chart.labels.length - todayInterval
-    
+
     projectedSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Projected cash"
 
@@ -117,7 +114,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
     if w.metadata.offset && w.metadata.offset.per_interval && w.metadata.offset.per_interval.length > 0
       totalOffset += _.sum(w.metadata.offset.per_interval)
-    
+
     if projectedSerie?
       $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
 
@@ -171,22 +168,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     projection_date = _.find(w.content.chart.labels, (label)-> moment(label) >= moment().startOf('day'))
     _.indexOf(w.content.chart.labels, projection_date)
 
-  # TODO: move to attach-kpi (note: problems updating chart with click event via chart.update)
-  chartClickEvent = (event)->
-    # Currently only one kpi per widget is supported in the front-end
-    return if w.kpis && w.kpis.length > 0
-    # Check whether click event fired is from the 'reset zoom' button
-    return if event.srcElement.textContent == 'Reset zoom'
-    value = event.yAxis[0].value
-    # Gaurd for click events fired outside of the yAxis values range
-    if !value || _.isNaN(value) then return else value = value.toFixed(2)
-    $scope.settingAttachKpiApi.createKpi(value)
-
-  # TODO: move to helper method for reusability across widgets
   getThresholdTarget = ->
     targets = w.kpis[0] && w.kpis[0].targets
     return null unless ImpacKpisSvc.validateKpiTargets(targets)
-    # Currently onle on watchable's target per kpi is supported in the front-end
     targets.threshold[0].min
 
   # Widget is ready: can trigger the "wait for settings to be ready"
