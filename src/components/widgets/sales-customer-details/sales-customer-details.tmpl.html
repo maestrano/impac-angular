@@ -1,14 +1,14 @@
 <div widget-sales-customer-details>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_customer_details.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_customer_details.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_customer_details.save</button>
     </div>
   </div>
 
@@ -22,28 +22,28 @@
 
         <div class="details-container">
           <div class="row">
-            <div class="col-md-4"><label>Email</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.email || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.email</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().email || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Phone</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.phone || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.phone</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().phone || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Website</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.website || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.website</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().website || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Contact</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.contact || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.contact</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().contact || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>City</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.city || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.city</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().city || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><label>Country</label></div>
-            <div class="col-md-8"><pre>{{selectedCustomer.country || '-'}}</pre></div>
+            <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.country</label></div>
+            <div class="col-md-8"><pre>{{getCustomer().country || '-'}}</pre></div>
           </div>
         </div>
       </div>
@@ -51,28 +51,28 @@
       <div class="col-md-6 right-panel" ng-show="widget.isExpanded()">
         <div class="details-container">
           <div class="row" style="border-bottom: solid 1px #e6e6e6; margin-bottom: 10px; padding-bottom: 5px;">
-            <div class="col-md-3"><label>Address</label></div>
-            <div class="col-md-9"><pre>{{formatAddress(selectedCustomer.full_address) || '-'}}</pre></div>
+            <div class="col-md-3"><label translate>impac.widget.sales_customer_details.label.address</label></div>
+            <div class="col-md-9"><pre>{{formatAddress(getCustomer().full_address) || '-'}}</pre></div>
           </div>
           <div class="row">
-            <div class="col-md-12 center legend">From {{getFromDate() | date : 'd MMM yyyy'}} to {{getToDate() | date : 'd MMM yyyy'}}:</div>
+            <div class="col-md-12 center legend">{{'impac.widget.sales_customer_details.from' | translate}} {{getFromDate() | date : 'd MMM yyyy'}} {{'impac.widget.sales_customer_details.to' | translate}} {{getToDate() | date : 'd MMM yyyy'}}:</div>
           </div>
           <div class="row">
-            <div class="col-md-5"><label>Total invoiced</label></div>
+            <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_invoiced</label></div>
             <div class="col-md-7">
               <span common-currency-conversions fx-amounts="selectedCustomer.invoicedFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
               <pre>{{selectedCustomer.total_invoiced | mnoCurrency : selectedCustomer.currency}}</pre>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-5"><label>Total paid</label></div>
+            <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_paid</label></div>
             <div class="col-md-7">
               <span common-currency-conversions fx-amounts="selectedCustomer.paidFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
               <pre>{{selectedCustomer.total_paid | mnoCurrency : selectedCustomer.currency}}</pre>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-5"><label>Total due</label></div>
+            <div class="col-md-5"><label translate>impac.widget.sales_customer_details.label.total_due</label></div>
             <div class="col-md-7">
               <span common-currency-conversions fx-amounts="selectedCustomer.dueFxTotals" base-currency="widget.metadata.currency" rates-date="ratesDate" />
               <pre>{{selectedCustomer.total_due | mnoCurrency : selectedCustomer.currency}}</pre>
@@ -83,7 +83,7 @@
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.category" width="::widget.width"/>
+    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
   </div>
 
 </div>

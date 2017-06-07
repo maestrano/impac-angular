@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $modal, $q, $templateCache, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uibModal, $q, $templateCache, ImpacWidgetsSvc) ->
 
   w = $scope.widget
 
@@ -83,7 +83,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $mod
 
     # remove the initial organizations setting...
     _.remove w.settings, ((set) -> set.key == "organizations")
-    self.instance = $modal.open(self.config)
+    self.instance = $uibModal.open(self.config)
 
     # ...it will be replaced by a new one when the modal DOM is loaded
     $q.all([self.modalOrgDeferred.promise, self.timePeriodDeferred.promise]).then(

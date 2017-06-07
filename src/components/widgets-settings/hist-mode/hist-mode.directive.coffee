@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.hist-mode',[])
 
-module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming, ImpacUtilities) ->
+module.controller('SettingHistModeCtrl', ($scope, $translate, $timeout, ImpacWidgetsSvc, ImpacTheming, ImpacUtilities) ->
 
   w = $scope.parentWidget
   w.isHistoryMode = false
@@ -16,6 +16,17 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming,
     ImpacWidgetsSvc.updateWidgetSettings(w,false)
     $scope.onToggle() in angular.isDefined $scope.onToggle
 
+  buildCurrentLabel = ->
+    labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
+    if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
+      needPrefix = !$scope.endDate || ($scope.endDate == moment().format('YYYY-MM-DD'))
+      label = labels[$scope.accountingBehaviour]
+      prefix = labels[$scope.accountingBehaviour] + '.prefix'
+      $translate([prefix, label]).then((translations)->
+        $scope.currentLabel = if needPrefix then "#{translations[prefix]} #{translations[label]}" else translations[label]
+      )
+    else
+      $translate(labels.default).then((label)-> $scope.currentLabel = label)
 
   # What will be passed to parentWidget
   setting = {}
@@ -24,33 +35,21 @@ module.controller('SettingHistModeCtrl', ($scope, ImpacWidgetsSvc, ImpacTheming,
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    if w.metadata? && w.metadata.hist_parameters? && mode = w.metadata.hist_parameters.mode
-      if mode == 'history'
-        w.isHistoryMode = true
-      else
-        w.isHistoryMode = false
-      setting.isInitialized = true
+    # Timeout to ensure latest scope bindings are available
+    $timeout ->
+      if w.metadata? && w.metadata.hist_parameters? && mode = w.metadata.hist_parameters.mode
+        w.isHistoryMode = if mode == 'history' then true else false
 
-    $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters
-    return $scope
+      buildCurrentLabel()
+
+      $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters
+
+      setting.isInitialized = true
+      return $scope
 
   setting.toMetadata = ->
-    if w.isHistoryMode
-      mode = 'history'
-    else
-      mode = 'current'
+    mode = if w.isHistoryMode then 'history' else 'current'
     return {hist_parameters: {mode: mode}}
-
-  labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels
-  todayPrefixes = ImpacTheming.get().widgetSettings.histModeChoser.todayPrefixes
-  $scope.getCurrentLabel = ->
-    if $scope.accountingBehaviour? && labels[$scope.accountingBehaviour]
-      needPrefix = ( !$scope.endDate? || ($scope.endDate == moment().format('YYYY-MM-DD')) )
-      label_array = [labels[$scope.accountingBehaviour]]
-      label_array.unshift(todayPrefixes[$scope.accountingBehaviour]) if needPrefix
-      return _.compact(label_array).join(' ')
-    else
-      return labels.default
 
 
   w.settings.push(setting)

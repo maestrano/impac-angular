@@ -1,15 +1,11 @@
 <!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
 <div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
 
-  <span class="show-status" popover-template="'connectors.tmpl.html'" popover-trigger="mouseenter" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
-    <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" /> 
-    <span class="ng-hide" ng-show="isSyncing">
-      Syncing...
-    </span>
-    <span ng-hide="isSyncing">
-      Show sync status
-    </span>
-  </span> 
+  <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="'mouseenter'" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
+    <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
+    <span class="ng-hide" ng-show="isSyncing" translate>impac.components.sync_apps.syncing</span>
+    <span ng-hide="isSyncing" translate>impac.components.sync_apps.show_sync_status</span>
+  </span>
 
   <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="hasError && !isSyncing">
     <i class="fa fa-exclamation-triangle"></i>
@@ -19,7 +15,7 @@
     <i class="fa fa-check"></i>
   </div>
 
-  <button id="sync" class="btn btn-primary" ng-click="synchronize()" tooltip="Sync data and refresh dashboard" ng-disabled="isSyncing">
+  <button id="sync" class="btn btn-primary" ng-click="synchronize()" uib-tooltip="{{'impac.components.sync_apps.tooltip.sync_data' | translate}}" ng-disabled="isSyncing">
     <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }" />
   </button>
 
@@ -31,17 +27,17 @@
     <div class="badge">{{connector.status}}</div>
     <strong>{{connector.name}}</strong> -
     <span ng-switch="connector.status">
-      <span ng-switch-when="SUCCESS">Synced at {{connector.formatted_date}}.</span>
-      <span ng-switch-when="PENDING">Sync will run in a few minutes.</span>
-      <span ng-switch-when="RUNNING">Syncing in progress...</span>
-      <span ng-switch-when="ERROR">Sync failed. Please contact support.</span>
-      <span ng-switch-when="DISCONNECTED">Please link your application.</span>
-      <span ng-switch-when="UNKNOWN">Couldn't retrieve sync status.</span>
+      <span ng-switch-when="SUCCESS">{{'impac.components.sync_apps.status.synced_at' | translate}} {{connector.formatted_date}}.</span>
+      <span ng-switch-when="PENDING" translate>impac.components.sync_apps.status.sync_will_run</span>
+      <span ng-switch-when="RUNNING" translate>impac.components.sync_apps.status.syncing_in_progres</span>
+      <span ng-switch-when="ERROR" translate>impac.components.sync_apps.status.sync_failed</span>
+      <span ng-switch-when="DISCONNECTED" translate>impac.components.sync_apps.status.please_link</span>
+      <span ng-switch-when="UNKNOWN" translate>impac.components.sync_apps.status.could_not_retrieve</span>
     </span>
     <!-- <span ng-if="connector.formatted_date"> - Synced at {{connector.formatted_date}}</span> -->
   </div>
   <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
-    <p>All {{realtimeSyncing ? '' : 'other'}} applications are synced in real-time.</p>
+    <p>{{'impac.components.sync_apps.all' | translate}} {{realtimeSyncing ? '' : 'other'}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
   </div>
 </script>
 
@@ -49,7 +45,7 @@
 <script type="text/ng-template" id="alerts.tmpl.html">
   <div id="sync-apps-modal">
     <div class="modal-header">
-      <h4 class="modal-title">Synchronization status</h4>
+      <h4 class="modal-title" translate>impac.components.sync_apps.synchronization_status</h4>
     </div>
     <div class="modal-list">
       <div class="modal-list-item" ng-class="{'{{connector.status.toLowerCase()}}': true, 'with-message': connector.message}" ng-repeat="connector in connectors track by $index" ng-click="expandListItemOnClick(connector)">
@@ -57,12 +53,12 @@
         <div class="text-left">
           <strong>{{connector.name}}</strong> -
           <span ng-switch="connector.status">
-            <span ng-switch-when="SUCCESS">Synced at {{connector.formatted_date}}.</span>
-            <span ng-switch-when="PENDING">Sync will run in a few minutes.</span>
-            <span ng-switch-when="RUNNING">Syncing in progress...</span>
-            <span ng-switch-when="ERROR">Sync failed. Please contact support.</span>
-            <span ng-switch-when="DISCONNECTED">Please link your application.</span>
-            <span ng-switch-when="UNKNOWN">Couldn't retrieve sync status.</span>
+            <span ng-switch-when="SUCCESS">{{'impac.components.sync_apps.status.synced_at' | translate}} {{connector.formatted_date}}.</span>
+            <span ng-switch-when="PENDING" translate>impac.components.sync_apps.status.sync_will_run</span>
+            <span ng-switch-when="RUNNING" translate>impac.components.sync_apps.status.syncing_in_progres</span>
+            <span ng-switch-when="ERROR" translate>impac.components.sync_apps.status.sync_failed</span>
+            <span ng-switch-when="DISCONNECTED" translate>impac.components.sync_apps.status.please_link</span>
+            <span ng-switch-when="UNKNOWN" translate>impac.components.sync_apps.status.could_not_retrieve</span>
           </span>
         </div>
         <div class="message ng-hide" ng-show="connector.showMessage">
@@ -71,7 +67,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+      <button class="btn btn-primary" type="button" ng-click="ok()" translate>impac.components.sync_apps.ok</button>
     </div>
   </div>
 </script>

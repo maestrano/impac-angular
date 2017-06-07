@@ -25,8 +25,8 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
 
       setting.toMetadata = ->
 
-        # in v1, all rules are combined by OR, and all conditions within a rule a AND
-        # TODO: Don't hard code Mongo field names in query
+        # in the MVP, all rules are combined by OR, and all conditions within a rule a AND
+
         filterQuery = {}
         filterQuery['condition'] = 'OR'
         filterQueryRules = []
@@ -49,9 +49,6 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
 
         return {filter_query: filterQuery}
 
-      scope.switchOperator = ($event, rule) ->
-        rule.operator = if rule.operator == "OR" then "AND" else "OR"
-
       # transform filter query in a more simple version for displaying in UI
       filterToSettingTags = (filterQuery) ->
         return if _.isEmpty(filterQuery)
@@ -68,7 +65,7 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
             ruletag['value'] = filterQueryRuleCondition['value']
             ruletag['text'] = tagtext
             settingRule['tags'].push(ruletag)
-          settingsTags .push(settingRule)
+          settingsTags.push(settingRule)
 
         return settingsTags
 

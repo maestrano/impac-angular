@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -105,31 +105,43 @@ angular
         _self.loadLocked=true
 
         if (needConfigurationLoad() || force)
-
           ImpacMainSvc.load(force).then(
             (success)->
               orgId = success.currentOrganization.id
 
-              $http.get(ImpacRoutes.dashboards.index(orgId)).then(
-                (dashboards)->
-                  _self.setDashboards(dashboards.data).then(->
-                    _self.setCurrentDashboard()
-                    deferred.resolve(_self.config)
-                    $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
-
-                  ).finally( -> _self.loadLocked=false )
-                (error)->
+              # Retrieve dashboards with widgets and kpis settings
+              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
+                (response) ->
+                  _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
+                (error) ->
                   $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
-                  _self.loadLocked=false
+              )
+
+              # Retrieve widgets templates
+              widgetsTemplatesPromise = $http.get(widgetsTemplatesUrl()).then(
+                (response) ->
+                  _self.setWidgetsTemplates(response.data.widgets)
+                (error) ->
+                  $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", ImpacRoutes.widgets.templates())
+              )
+
+              # Remove the lock and resolve the promise once both the dashboards and widgets templates are loaded
+              $q.all([dashboardsPromise, widgetsTemplatesPromise]).then(
+                (success) ->
+                  $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
+                  deferred.resolve(_self.config)
+                (errors) ->
                   deferred.reject(error)
               )
+              .finally( -> _self.loadLocked = false )
+
             (error)->
               $log.error("Impac! - DashboardsSvc: cannot retrieve current organization")
-              _self.loadLocked=false
+              _self.loadLocked = false
               deferred.reject(error)
           )
         else
-          _self.loadLocked=false
+          _self.loadLocked = false
           deferred.resolve(_self.config)
       else
         $log.warn("Impac! - DashboardsSvc: Load locked. Trying again in 1s")
@@ -143,11 +155,17 @@ angular
       return deferred.promise
 
 
+    widgetsTemplatesUrl = ->
+      if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear
+        fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
+        return "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
+      else
+        return ImpacRoutes.widgets.templates()
+
     setDefaultCurrentDashboard = ->
       if _self.config.dashboards? && _self.config.dashboards.length > 0
         $log.info("Impac! - DashboardsSvc: first dashboard set as current by default")
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
-        _self.setWidgetsTemplates(_self.config.currentDashboard.widgets_templates)
         _self.initializeActiveTabs()
         _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
         return true
@@ -163,7 +181,6 @@ angular
 
         if !_.isEmpty(fetchedDhb)
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
-          _self.setWidgetsTemplates(fetchedDhb.widgets_templates)
           _self.initializeActiveTabs()
           _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
           return true
@@ -194,17 +211,20 @@ angular
           $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
 
+    @setWidgetsTemplates = (srcTemplates) ->
+      return false if _.isEmpty(srcTemplates)
+      srcTemplates = ImpacDeveloper.stubWidgetsTemplates(srcTemplates) if ImpacDeveloper.isEnabled()
 
-    @setWidgetsTemplates = (templatesArray) ->
-      # Will be filled only once
-      return false if _.isEmpty(templatesArray) || !_.isEmpty(_self.config.widgetsTemplates)
+      # Shortcut reference
+      dstTemplates = _self.config.widgetsTemplates
 
-      templatesArray = ImpacDeveloper.stubWidgetsTemplates(templatesArray) if ImpacDeveloper.isEnabled()
+      # Clears the existing templates list without removing the reference
+      dstTemplates.length = 0
+      # Builds the templates list, omitting the widgets that aren't implemented in the library
+      for template in srcTemplates
+        dstTemplates.push template if ImpacUtilities.fetchWidgetTemplatePath(template)
 
-      for template in templatesArray
-        _self.config.widgetsTemplates.push template
-
-      return true
+      return dstTemplates
 
     @initializeActiveTabs = ->
       for dhb in _self.config.dashboards
@@ -266,7 +286,7 @@ angular
 
         deferred.resolve(success.data)
       ,(error) ->
-        $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{opts}")
+        $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{angular.toJson(opts)}")
         deferred.reject(error)
 
       return deferred.promise

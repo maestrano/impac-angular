@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-new-vs-existing-customers',[])
 
-module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
+module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -19,27 +19,32 @@ module.controller('WidgetSalesNewVsExistingCustomersCtrl', ($scope, $q, ChartFor
   ]
 
   $scope.displayOptions = [
-    {label: 'Customers', value: 'customers_count'},
-    {label: 'Total Sales', value: 'total_sales'},
-    {label: 'Transactions', value: 'transactions_count'},
+    {label: $translate.instant('impac.widget.sales_new_vs_existing.customers'), value: 'customers_count'},
+    {label: $translate.instant('impac.widget.sales_new_vs_existing.total_sales'), value: 'total_sales'},
+    {label: $translate.instant('impac.widget.sales_new_vs_existing.transactions'), value: 'transactions_count'}
   ]
+
   $scope.displayType = angular.copy(_.find($scope.displayOptions, (o) ->
-    w.metadata && (o.value == w.metadata.display_type)
-  ) || $scope.displayOptions[0])
+      w.metadata && (o.value == w.metadata.display_type)
+    ) || $scope.displayOptions[0])
 
+  hoursTmpl = $translate.instant('impac.widget.sales_new_vs_existing.tmpl.last_hours')
+  daysTmpl = $translate.instant('impac.widget.sales_new_vs_existing.tmpl.last_days')
+  
   $scope.timeRangeOptions = [
-    {label: 'Last 24h', value: '-1d'},
-    {label: 'Last 5 days', value: '-5d'},
-    {label: 'Last 7 days', value: '-7d'},
-    {label: 'Last 30 days', value: '-30d'},
-    {label: 'Last 45 days', value: '-45d'},
-    {label: 'Last 60 days', value: '-60d'},
-    {label: 'Last 90 days', value: '-90d'},
+    {label: hoursTmpl.replace(':hours:', 24), value: '-1d'},
+    {label: daysTmpl.replace(':days:', 5), value: '-5d'},
+    {label: daysTmpl.replace(':days:', 7), value: '-7d'},
+    {label: daysTmpl.replace(':days:', 30), value: '-30d'},
+    {label: daysTmpl.replace(':days:', 45), value: '-45d'},
+    {label: daysTmpl.replace(':days:', 60), value: '-60d'},
+    {label: daysTmpl.replace(':days:', 90), value: '-90d'}
   ]
-  $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
-    w.metadata && (o.value == w.metadata.time_range)
-  ) || $scope.timeRangeOptions[6])
 
+  $scope.timeRange = angular.copy(_.find($scope.timeRangeOptions, (o) ->
+      w.metadata && (o.value == w.metadata.time_range)
+    ) || $scope.timeRangeOptions[6])
+  
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->

@@ -1,14 +1,14 @@
 <div widget-invoices-list>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.invoices_list.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-dates-picker parent-widget="widget" class="part" from="(widget.metadata.hist_parameters.from || defaultFrom)" to="(widget.metadata.hist_parameters.to || defaultTo)" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred"/>
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.invoices_list.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.invoices_list.save</button>
     </div>
   </div>
 
@@ -24,15 +24,15 @@
       <div class="col-sm-4">{{entityTypeCap}}</div>
       <div class="col-sm-7">
         <div class="row">
-          <div class="col-xs-4">Paid</div>
-          <div class="col-xs-4">Due</div>
-          <div class="col-xs-4">Invoiced</div>
+          <div class="col-xs-4" translate>impac.widget.invoices_list.paid</div>
+          <div class="col-xs-4" translate>impac.widget.invoices_list.due</div>
+          <div class="col-xs-4" translate>impac.widget.invoices_list.invoiced</div>
         </div>
       </div>
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-sm-4"><b>{{entity.name}}</b></div>
       <div class="col-sm-7">
         <div class="row">
@@ -52,13 +52,13 @@
 
     <!-- Header line -->
     <div ng-if="widget.width <= 3" class="row widget-line header">
-      <div class="col-xs-12" ng-show="orderBy == 'paid '">{{entityTypeCap}} - Total paid</div>
-      <div class="col-xs-12" ng-show="orderBy == 'due '">{{entityTypeCap}} - Total due</div>
-      <div class="col-xs-12" ng-hide="orderBy == 'paid ' || orderBy == 'due '">{{entityTypeCap}} - Total invoiced</div>
+      <div class="col-xs-12" ng-show="orderBy == 'paid '">{{entityTypeCap}} {{'impac.widget.invoices_list.total_paid' | translate}}</div>
+      <div class="col-xs-12" ng-show="orderBy == 'due '">{{entityTypeCap}} {{'impac.widget.invoices_list.total_due' | translate}}</div>
+      <div class="col-xs-12" ng-hide="orderBy == 'paid ' || orderBy == 'due '">{{entityTypeCap}} {{'impac.widget.invoices_list.total_invoiced' | translate}}</div>
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-xs-12"><b>{{entity.name}}</b></div>
       <div class="col-xs-8" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
       <div class="col-xs-8" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
@@ -72,7 +72,7 @@
 
     <!-- Data not found line -->
     <div class="row widget-line" ng-show="(isDataFound==false)">
-      <div class="col-xs-12">No {{orderBy}}invoice found for your {{entityType}}</div>
+      <div class="col-xs-12" translate translate-values="{orderBy: orderBy, entityType: entityType}">impac.widget.invoices_list.no_invoice</div>
     </div>
 
   </div>

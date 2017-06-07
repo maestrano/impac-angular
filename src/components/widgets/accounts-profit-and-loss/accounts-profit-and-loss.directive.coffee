@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities, ImpacTheming) ->
+module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities, $translate, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -27,19 +27,34 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
-      w.metadata && o.value == w.metadata.amount_displayed
-    ) || $scope.amountDisplayedOptions[1])
+        w.metadata && o.value == w.metadata.amount_displayed
+      ) || $scope.amountDisplayedOptions[1])
 
-  $scope.amountDisplayedOptions = [
-    {label: 'Last period', value: 'last'},
-    {label: 'Total for period', value: 'total'},
-  ]
-  setAmountDisplayed()
+  $translate([
+    'impac.widget.accounts_profit_and_loss.last_period',
+    'impac.widget.accounts_profit_and_loss.total_for_period']).then(
+    (translation) ->
+      $scope.amountDisplayedOptions = [
+        { label: translation['impac.widget.accounts_profit_and_loss.last_period'], value: 'last' },
+        { label: translation['impac.widget.accounts_profit_and_loss.total_for_period'], value: 'total' }
+      ]
+
+      setAmountDisplayed()
+  )
+
+  periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
+  $translate('impac.widget.settings.time_period.period.' + periodName).then(
+    (translation) ->
+      $scope.period_translation = _.capitalize(translation.toLowerCase())
+  )
 
   # Display filter tags based on settings
   # --------------------------------------
   $scope.areFilterTagsEnabled = ->
     ImpacTheming.get().widgetSettings.tagging.enableFilterTags
+
+  $scope.isReportFiltered = ->
+    w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0
 
   # Widget specific methods
   # --------------------------------------

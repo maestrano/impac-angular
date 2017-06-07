@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-settings.sync-apps',[])
 
-module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $modal, $document, $timeout, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacKpisSvc, ImpacTheming, poller, $sce) ->
+module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filter, $uibModal, $document, $timeout, ImpacMainSvc, ImpacRoutes, ImpacWidgetsSvc, ImpacKpisSvc, ImpacTheming, poller, $sce) ->
   return {
     restrict: 'A',
     scope: {
@@ -90,11 +90,12 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
 
       scope.triggerSyncAlertsModal = ->
         unless scope.modalOpened || _.isEmpty(scope.connectors)
-          modalInstance = $modal.open({
+          modalInstance = $uibModal.open({
             animation: true
             size: 'md'
             templateUrl: 'alerts.tmpl.html'
             appendTo: angular.element('impac-dashboard')
+            openedClass: 'sync-modal-opened' # prevent use of default
             controller: ($scope, connectors) ->
               $scope.connectors = connectors
               $scope.expandListItemOnClick = (connector) ->

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.hr-salaries-summary',[])
 
-module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc) ->
+module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc, $translate) ->
 
   w = $scope.widget
 
@@ -26,24 +26,39 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc)
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && w.content.summary? && !_.isEmpty(w.content.summary.data)
 
-      $scope.periodOptions = [
-        {label: 'per year', value: 'YEARLY'},
-        {label: 'per month', value: 'MONTHLY'},
-        {label: 'per week', value: 'WEEKLY'},
-        {label: 'per day', value: 'DAILY'}
-      ]
-      $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-        o.value == w.content.total.period.toUpperCase()
-      ) || $scope.periodOptions[0])
+      $translate([
+        "impac.widget.settings.time_period.period.yearly",
+        "impac.widget.settings.time_period.period.monthly",
+        "impac.widget.settings.time_period.period.weekly",
+        "impac.widget.settings.time_period.period.hourly"]).then(
+        (translations) ->
+          $scope.periodOptions = [
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.yearly"].toLowerCase()), value: "yearly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"].toLowerCase()), value: "monthly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"].toLowerCase()), value: "weekly"},
+            {label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"].toLowerCase()), value: "hourly"}
+          ]
 
-      $scope.filterOptions = [
-        {label: 'Gender', value: 'gender'},
-        {label: 'Age Range', value: 'age_range'},
-        {label: 'Job Title', value: 'job_title'},
-      ]
-      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-        o.value == w.content.summary.filter
-      ) || $scope.filterOptions[0])
+          $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+              o.value == w.content.total.period.toLowerCase()
+            ) || $scope.periodOptions[0])
+      )
+
+      $translate([
+        "impac.common.label.gender",
+        "impac.common.label.age_range",
+        "impac.common.label.job_title"]).then(
+        (translations) ->
+          $scope.filterOptions = [
+            {label: translations["impac.common.label.gender"], value: "gender"},
+            {label: translations["impac.common.label.age_range"], value: "age_range"},
+            {label: translations["impac.common.label.job_title"], value: "job_title"},
+          ]
+
+          $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+              o.value == w.content.summary.filter
+            ) || $scope.filterOptions[0])
+      )
 
   $scope.getColorByIndex = (index) ->
     ChartFormatterSvc.getColor(index)
@@ -62,7 +77,7 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc)
           elem.value
         )
       }
-      
+
       if $scope.filter.value == 'gender'
         barOptions = {
           showTooltips: false,
@@ -94,7 +109,7 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc)
 
       else
         return {error: {message: "wrong filter", code: 400}}
-      
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 

@@ -8,8 +8,8 @@
           <i class="fa {{kpi.layout.icon.value}} fa-2x"></i>
         </div>
         <div class="col-xs-9 col-sm-9 kpi-text" ng-class="{ 'triggered': kpi.layout.triggered }">
-          <span class="caption" tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
-          <span class="emphasis" tooltip="{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})" tooltip-placement="bottom" tooltip-append-to-body="false">
+          <span class="caption" uib-tooltip="{{kpi.layout.text.caption}}" tooltip-append-to-body="false">{{kpi.layout.text.caption}}</span>
+          <span class="emphasis" uib-tooltip="{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})" tooltip-placement="bottom" tooltip-append-to-body="false">
             <strong>{{kpi.layout.text.emphasis}}</strong> - <span class="real-value">({{ getRealValue() }})</span>
           </span>
         </div>
@@ -27,7 +27,7 @@
         <form name="kpi{{kpi.id}}SettingsForm">
           <!-- watchables -->
           <div ng-repeat="watchable in kpi.watchables track by $index">
-            <div class="real-value" ng-show="kpi.data">Current {{watchable}}: {{ getRealValue() }}</div>
+            <div class="real-value" ng-show="kpi.data">{{'impac.kpi.current' | translate}} {{watchable}}: {{ getRealValue() }}</div>
             <!-- targets -->
             <div class="im-form-group" ng-class="getFormTargetValueInput(watchable, $index).$valid ? 'has-success' : 'has-error'" ng-repeat="target in targets[watchable] track by $index">
               <!-- target -->
@@ -36,8 +36,8 @@
               <span class="kpi-target-unit" aria-hidden="true">{{getTargetUnit(watchable)}}</span>
               <!-- target error messages -->
               <div ng-messages="getFormTargetValueInput(watchable, $index).$error" class="im-messages">
-                <span ng-message="required">KPI target is required</span>
-                <span ng-message="pattern">KPI target must be a number</span>
+                <span ng-message="required" translate>impac.kpi.kpi_target_require</span>
+                <span ng-message="pattern" translate>impac.kpi.kpi_target_number</span>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@
               <!-- extra param selection -->
               <select name="extraParam" ng-model="kpi.extra_params[param]" ng-change="updateExtraParam()" ng-options="value.id as value.label for value in paramValues">
               </select>
-              <label for="extraParam" class="im-control-label">Select {{param | titleize}}</label>
+              <label for="extraParam" class="im-control-label">{{'impac.kpi.extra_param_label.verb' | translate}} {{param | titleize}}</label>
               <i class="im-bar"></i>
             </div>
           </div>

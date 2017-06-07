@@ -1,14 +1,14 @@
 <div widget-sales-growth>
 
   <div class="edit" ng-show="widget.isEditMode">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.sales_growth.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_growth.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_growth.save</button>
     </div>
   </div>
 
@@ -26,12 +26,12 @@
       </div>
 
       <div ng-show="product.value != -1" class="legend text-center">{{getSelectedProduct().displayName}}</div>
-      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" tooltip="total for last period">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
-      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" tooltip="total for last period">{{getCurrentValue()}}</div>
+      <div class="price text-center" ng-hide="isDataQuantity || product.value == -1" uib-tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue() | mnoCurrency : getSelectedProduct().currency}}</div>
+      <div class="price text-center" ng-show="isDataQuantity && product.value != -1" uib-tooltip="{{'impac.widget.sales_growth.tooltip.total_for_period' | translate}}">{{getCurrentValue()}}</div>
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.category" width="::widget.width"/>
+    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
   </div>
 
 </div>

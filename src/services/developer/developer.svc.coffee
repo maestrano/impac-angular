@@ -27,14 +27,7 @@ angular
 
     #=======================================
     _$get = ($q) ->
-      # Mapping constant for widget stubbing.
-      # TODO: impac-angular receives a template with `template.path`, converts
-      #       it to a `widget.widget_category` key, then server responds with
-      #       `widget.category`. This should be more consistant.
-      WIDGET = {
-        widget_category: 'path'
-        category: 'path'
-      }
+      WIDGET = { endpoint: 'endpoint' }
       #=======================================
       # Public methods available as service
       #=======================================
@@ -48,7 +41,7 @@ angular
 
       # Find widgets template by match object
       # TODO: refactor this method.
-      service.findTemplate = (widget, keys=['path', 'metadata'], metadataKeys=['template']) ->
+      service.findTemplate = (widget, keys=['endpoint', 'metadata'], metadataKeys=['template']) ->
         match = _.mapKeys widget, (val, key) -> if WIDGET[key]? then WIDGET[key] else key
         match.metadata = _.pick(match.metadata, metadataKeys) if match.metadata
         _.find developer.widgetsTemplates, (t) -> _.isEqual(_.pick(match, keys), _.pick(t, keys))
@@ -68,7 +61,7 @@ angular
           data: {
             id: Math.random().toString(36).substr(2, 9) + '-stubbed';
             name: template.name
-            category: template.path
+            endpoint: template.endpoint
             width: template.width
             metadata: angular.merge(template.metadata, {
               organization_ids: _.map currentDhb.data_sources, (s) -> s.uid

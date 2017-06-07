@@ -1,14 +1,14 @@
 <div widget-accounts-accounting-values>
 
   <div ng-show="widget.isEditMode" class="edit">
-    <h4>Widget settings</h4>
+    <h4 translate>impac.widget.accounting_values.turnover.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <div class="bottom-buttons" align="right">
-      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
-      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.accounting_values.turnover.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.accounting_values.turnover.save</button>
     </div>
   </div>
 
@@ -18,19 +18,19 @@
 
       <div ng-hide="widget.isHistoryMode" class="current">
         <div class="price">
-           {{ getCurrentPrice() | mnoCurrency : getCurrency() : false }}
+           {{ getCurrentPrice() | mnoCurrency : currency_unit : false }}
         </div>
-        <div class="currency">{{getCurrency()}}</div>
-        <div class="legend">{{getLegend()}}</div>
+        <div class="currency">{{::currency}}</div>
+        <div class="legend">{{::legend}}</div>
       </div>
 
       <div class="history chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-        <div class="legend">{{getLegend()}}</div>
+        <div class="legend">{{::legend}}</div>
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width"/>
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
   </div>
 
 </div>

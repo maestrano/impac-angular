@@ -5,16 +5,16 @@
   <title>Impac! Developer Workspace</title>
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-xeditable/dist/css/xeditable.css" />
+  <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
   <link rel="stylesheet" href="../bower_components/ng-tags-input/ng-tags-input.css" />
   <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css" />
-  <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
   <!-- endbower -->
   <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="../dist/impac-angular.css">
   <!-- inject:css -->
   <link rel="stylesheet" href="app/views/workspace/workspace.css">
-  <link rel="stylesheet" href="app/views/workspace/settings/settings.css">
   <link rel="stylesheet" href="app/views/workspace/login/login.css">
+  <link rel="stylesheet" href="app/views/workspace/settings/settings.css">
   <!-- endinject -->
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -29,24 +29,30 @@
   <!-- bower:js -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-messages/angular-messages.js"></script>
   <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
   <script src="../bower_components/angular-ui-sortable/sortable.js"></script>
   <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+  <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
   <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../bower_components/ng-tags-input/ng-tags-input.js"></script>
   <script src="../bower_components/Chart.js/dist/Chart.js"></script>
   <script src="../bower_components/lodash/lodash.js"></script>
   <script src="../bower_components/angular-poller/angular-poller.min.js"></script>
   <script src="../bower_components/moment/moment.js"></script>
-  <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
   <script src="../bower_components/pusher/dist/web/pusher.js"></script>
-  <script src="../bower_components/angular-messages/angular-messages.js"></script>
+  <script src="../bower_components/angular-translate/angular-translate.js"></script>
+  <script src="../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="../bower_components/messageformat/messageformat.js"></script>
+  <script src="../bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
+  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <script src="../bower_components/angular-scenario/angular-scenario.js"></script>
+  <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
   <script src="../bower_components/AngularDevise/lib/devise.js"></script>
   <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="../bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
   <!-- endbower -->
 
   <!-- inject:js -->
@@ -55,9 +61,9 @@
   <script src="app/services/dev-settings.svc.js"></script>
   <script src="app/services/dev-user.svc.js"></script>
   <script src="app/views/workspace/workspace.controller.js"></script>
-  <script src="app/views/workspace/settings/settings.controller.js"></script>
-  <script src="app/views/workspace/login/login.controller.js"></script>
   <script src="app/views/workspace/impac/impac.controller.js"></script>
+  <script src="app/views/workspace/login/login.controller.js"></script>
+  <script src="app/views/workspace/settings/settings.controller.js"></script>
   <!-- endinject -->
   <script src="../dist/impac-angular.js"></script>
 </body>

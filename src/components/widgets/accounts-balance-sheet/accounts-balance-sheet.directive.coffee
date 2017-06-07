@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, ImpacTheming) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, $translate, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -34,6 +34,9 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
   # --------------------------------------
   $scope.areFilterTagsEnabled = ->
     ImpacTheming.get().widgetSettings.tagging.enableFilterTags
+
+  $scope.isReportFiltered = ->
+    w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0
 
   # Init dates
   # --------------------------------------
@@ -76,7 +79,9 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
-      $scope.categories = Object.keys(w.content.summary)
+
+      $scope.categories = []
+      translateCategories(Object.keys(w.content.summary))
 
     initDates()
     sortData()
@@ -97,6 +102,18 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         return false
       else
         return true
+
+  translateCategories = (categories) ->
+    _.each(categories, (category) ->
+      $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
+        (translation) ->
+          $scope.categories.push({label: translation, key: category})
+
+        (translationId) ->  # If there is no translation, keep the original
+          $scope.categories.push({label: category.toLowerCase(), key: category})
+      )
+      return
+    )
 
   sortAccountsBy = (getElem) ->
     angular.forEach($scope.categories, (cat) ->
