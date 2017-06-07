@@ -1,3 +1,8 @@
+###
+#   @desc Chart Threshold - create Widget KPIs from Widget charts. (Highchart widgets only).
+#   @todo support for multiple KPI watchables?
+#   @todo support for multiple KPI targets?
+###
 module = angular.module('impac.components.widgets-common.chart-threshold', [])
 module.component('chartThreshold', {
   templateUrl: 'widgets-common/chart-threshold.tmpl.html'
@@ -7,8 +12,17 @@ module.component('chartThreshold', {
     options: '<?'
     onInit: '&?'
     onComplete: '&?'
-  controller: ($timeout, ImpacKpisSvc)->
+  controller: ($timeout, $log, ImpacKpisSvc, toastr)->
     ctrl = this
+
+    DEFAULT_OPTS = Object.freeze {
+      # whether threshold attachability is disabled
+      disabled: false
+      # Chart size is shrunk by x pixels on kpi tooltip show
+      chartShrinkSize: 38
+      # KPI target mode
+      kpiTargetMode: 'min'
+    }
 
     ctrl.$onInit = ->
       # Define properties
@@ -16,16 +30,17 @@ module.component('chartThreshold', {
       ctrl.kpi = {}
       ctrl.showPanel = false
       ctrl.draftTarget = ''
-      ctrl.options ||= {
-        # Chart size is shrunk by x pixels on kpi tooltip show
-        chartShrinkSize: 38
-      }
+      # Configurable defaults
+      ctrl.options = angular.merge({}, DEFAULT_OPTS, ctrl.options)
       # Emit API to parent
       ctrl.onInit($event: { api: { createKpi: ctrl.createKpi } })
       # Get attachable kpi templates
-      ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then((kpiTemplates)->
-        # TODO: support for multiple kpi's.
-        angular.extend(ctrl.kpi, angular.copy(kpiTemplates[0]))
+      ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
+        (templates)->
+          return disableAttachability('No valid KPI Templates found') if _.isEmpty(templates) || _.isEmpty(templates[0].watchables)
+          angular.extend(ctrl.kpi, angular.copy(templates[0]))
+        ->
+          disableAttachability()
       )
       # Register to chart changes
       ctrl.chartPromise.then(null, null, (chart)->
@@ -37,7 +52,7 @@ module.component('chartThreshold', {
       )
 
     ctrl.createKpi = (target)->
-      return if ctrl.draftTarget || !target?
+      return if ctrl.options.disabled || !_.isEmpty(ctrl.draftTarget) || !target?
       ctrl.draftTarget = target
       # As this method can be called from parent component, dirty checking in this ctrl
       # scope are not checked, this ensures value change is detected as per usual.
@@ -56,8 +71,9 @@ module.component('chartThreshold', {
     ctrl.saveKpi = ->
       params = {}
       params.targets = {}
-      # TODO: get target mode from engine placeholders
-      params.targets[ctrl.kpi.watchables[0]] = [{ min: ctrl.draftTarget }]
+      params.targets[ctrl.kpi.watchables[0]] = [{
+        "#{ctrl.options.kpiTargetMode}": ctrl.draftTarget
+      }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       params.widget_id = ctrl.widget.id
       ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
@@ -69,6 +85,11 @@ module.component('chartThreshold', {
       )
 
     # Private
+
+    disableAttachability = (logMsg)->
+      ctrl.options.disabled = true
+      toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
+      $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
 
     # chartClickEvent = (event)->
     #   # Currently only one kpi per widget is supported in the front-end
