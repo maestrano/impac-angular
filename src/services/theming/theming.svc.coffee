@@ -121,6 +121,13 @@ angular
           prefix: ''
           suffix: '.json'
 
+      translateSettings:
+        preferredLanguage: 'en-gb'
+        fallbackLanguage: ''
+        customLocaleFiles:
+          prefix: ''
+          suffix: '.json'
+
 
     #=======================================
     # Public methods available in config
