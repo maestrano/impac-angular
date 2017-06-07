@@ -1,5 +1,5 @@
-module = angular.module('impac.components.widgets-settings.attach-kpis', [])
-module.component('settingAttachKpi', {
+module = angular.module('impac.components.widgets-common.chart-threshold', [])
+module.component('chartThreshold', {
   bindings: {
     widget: '<'
     chartPromise: '<?'
@@ -7,7 +7,7 @@ module.component('settingAttachKpi', {
     onInit: '&?'
     onComplete: '&?'
   }
-  templateUrl: 'widgets-settings/attach-kpi.tmpl.html'
+  templateUrl: 'widgets-common/chart-threshold.tmpl.html'
   controller: ($timeout, ImpacKpisSvc, ImpacDashboardsSvc)->
     ctrl = this
 
