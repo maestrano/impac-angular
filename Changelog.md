@@ -1,8 +1,11 @@
 # Impac! Frontend Changelog
 
-### v1.5.1 | 2017 - Week 21
+### v1.5.1 | 2017 - Week 23
 
 #### Adds
+- Routes to Bolt widgets and KPIs (discovery + show)
+- Template for Cash Balance widget
+- Template for Cash Projection widget
 
 #### Fixes
 - Settings Time Slider not displaying range period label
@@ -13,6 +16,14 @@
 
 #### Adds
 - Internationalization
+- Upgrades Angular to v1.6
+- Upgrades Angular Bootstrap to v2.3
+- [IMPAC-99] Change routes for widgets :index and :show
+- sso_session now passed as basic_auth param for widgets :show
+
+#### Fixes
+- Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+- [IMPAC-465] Fix dates picker positioning
 
 #### Config Changes
 - Internationalization options for angular-translate via ImpacThemingSvc
@@ -27,6 +38,10 @@ translateSettings: {
   }
 }
 ```
+
+#### Dependencies
+- Impac! API >= 1.5.0
+- Mno-enterprise > v3.1.2
 
 -------------------------------------------------------------
 
