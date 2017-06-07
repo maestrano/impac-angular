@@ -1,14 +1,13 @@
 module = angular.module('impac.components.widgets-common.chart-threshold', [])
 module.component('chartThreshold', {
-  bindings: {
+  templateUrl: 'widgets-common/chart-threshold.tmpl.html'
+  bindings:
     widget: '<'
     chartPromise: '<?'
     options: '<?'
     onInit: '&?'
     onComplete: '&?'
-  }
-  templateUrl: 'widgets-common/chart-threshold.tmpl.html'
-  controller: ($timeout, ImpacKpisSvc, ImpacDashboardsSvc)->
+  controller: ($timeout, ImpacKpisSvc)->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -18,19 +17,15 @@ module.component('chartThreshold', {
       ctrl.showPanel = false
       ctrl.draftTarget = ''
       ctrl.options ||= {
+        # Chart size is shrunk by x pixels on kpi tooltip show
         chartShrinkSize: 38
       }
-      ctrl.dhbCurrency = ImpacDashboardsSvc.getCurrentDashboard().currency
       # Emit API to parent
       ctrl.onInit($event: { api: { createKpi: ctrl.createKpi } })
       # Get attachable kpi templates
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then((kpiTemplates)->
         # TODO: support for multiple kpi's.
         angular.extend(ctrl.kpi, angular.copy(kpiTemplates[0]))
-      )
-      # Register to dashboard change for currency update
-      ImpacDashboardsSvc.dashboardUpdated().then(null, null, (dhb)->
-        ctrl.dhbCurrency = dhb.currency
       )
       # Register to chart changes
       ctrl.chartPromise.then(null, null, (chart)->
@@ -46,7 +41,6 @@ module.component('chartThreshold', {
       ctrl.draftTarget = target
       # As this method can be called from parent component, dirty checking in this ctrl
       # scope are not checked, this ensures value change is detected as per usual.
-      # Also, improve animation of chart shrinking & panel rendering.
       $timeout(->
         ctrl.showPanel = true
         shrinkChart()
