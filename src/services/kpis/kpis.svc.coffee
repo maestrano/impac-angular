@@ -220,7 +220,7 @@ angular
               template.metadata.bolt_path = bolt.path
               kpisTemplates.push(template)
           (error) ->
-            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{boltPath}/kpis")
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{bolt.path}/kpis")
         )
 
       $q.all(kpisTemplatesPromises).then(->

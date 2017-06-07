@@ -45,6 +45,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         startOnTick: false
         minPadding: 0
         tickInterval: 1
+        min: 0
       yAxis:
         title: null
         startOnTick: true
@@ -60,6 +61,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         labels:
           formatter: ->
             $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
+      tooltip:
+        formatter: ->
+          date = $filter('mnoDate')(w.content.chart.labels[this.x], getPeriod())
+          amount = $filter('mnoCurrency')(this.y, w.metadata.currency, false)
+          name = this.series.name
+          # Detect and remove 'Projected' label from 'Projected cash' on intervals less than today.
+          if _.include(name.toLowerCase(), 'projected')
+            name = 'Cash' if this.series.data.indexOf(this.point) < getTodayMarker()
+          "<strong>#{date}</strong><br>#{name}: #{amount}"
     todayMarker: ->
       xAxis:
         plotLines: [{
@@ -161,8 +171,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   chartClickEvent = (event)->
     # Currently only one kpi per widget is supported in the front-end
     return if w.kpis && w.kpis.length > 0
-    selectedValue = event.yAxis[0].value.toFixed(2)
-    $scope.settingAttachKpiApi.createKpi(selectedValue)
+    # Check whether click event fired is from the 'reset zoom' button
+    return if event.srcElement.textContent == 'Reset zoom'
+    value = event.yAxis[0].value
+    # Gaurd for click events fired outside of the yAxis values range
+    if !value || _.isNaN(value) then return else value = value.toFixed(2)
+    $scope.settingAttachKpiApi.createKpi(value)
 
   # TODO: move to helper method for reusability across widgets
   getThresholdTarget = ->
