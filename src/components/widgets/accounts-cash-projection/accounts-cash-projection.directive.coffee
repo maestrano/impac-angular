@@ -100,6 +100,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     # TODO: what to do when the widget has no data?
     $scope.isDataFound = w.content?
 
+    $scope.chartThresholdOptions = {
+      kpiCreateLabel: 'Get alerted when the cash projection goes below'
+    }
+
     # Offset will be applied to all intervals after today
     todayInterval = w.content.chart.series[0].zones[0].value
     $scope.intervalsCount = w.content.chart.labels.length - todayInterval

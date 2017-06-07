@@ -1,6 +1,6 @@
 <div class="attach-panel" ng-if="$ctrl.showPanel">
   <div class="attach-panel-text">
-    <span class="panel-text-label">Set target threshold: </span>
+    <span class="panel-text-label">{{$ctrl.options.kpiCreateLabel}}: </span>
     <span class="panel-text-value" ng-bind="$ctrl.draftTarget | mnoCurrency:$ctrl.widget.metadata.currency"></span>
   </div>
   <div class="action-buttons">

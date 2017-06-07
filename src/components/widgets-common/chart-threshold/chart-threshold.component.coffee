@@ -22,6 +22,8 @@ module.component('chartThreshold', {
       chartShrinkSize: 38
       # KPI target mode
       kpiTargetMode: 'min'
+      # Label shown when user is creating a KPI to give context to the target value.
+      kpiCreateLabel: 'Get alerted when the target threshold goes below'
     }
 
     ctrl.$onInit = ->
