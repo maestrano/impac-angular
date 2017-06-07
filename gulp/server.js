@@ -52,3 +52,7 @@ gulp.task('serve', ['workspace', 'watch'], function () {
 gulp.task('serve:noreload', ['workspace'], function () {
   browserSyncInit(conf.paths.workspace);
 });
+
+gulp.task('serve:nobuild', function () {
+  browserSyncInit(conf.paths.workspace);
+});
