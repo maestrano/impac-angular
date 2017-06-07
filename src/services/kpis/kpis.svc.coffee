@@ -26,12 +26,15 @@ angular
 
     @getAttachableKpis = (widgetEngine) ->
       deferred = $q.defer()
-      _self.load().then(->
-        templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
-          return false unless _.isArray(kpiTemplate.attachables)
-          _.includes(kpiTemplate.attachables, widgetEngine)
-        )
-        deferred.resolve(templates)
+      _self.load().then(
+        ->
+          templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+            return false unless _.isArray(kpiTemplate.attachables)
+            _.includes(kpiTemplate.attachables, widgetEngine)
+          )
+          deferred.resolve(templates)
+        ->
+          deferred.reject()
       )
       deferred.promise
 
@@ -95,6 +98,8 @@ angular
               _self.locked = false
               $log.info("Impac! - KpisSvc: loaded")
             )
+          (err)->
+            $log.error('Impac! - KpisSvc: failed to load.', err)
         ).finally(-> _self.locked = false )
 
       else

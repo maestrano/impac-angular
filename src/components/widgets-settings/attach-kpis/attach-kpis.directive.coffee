@@ -1,5 +1,10 @@
-module = angular.module('impac.components.widgets-settings.attach-kpis-old', [])
-module.directive('settingAttachKpisOld', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate)->
+###
+#     Attach KPIs onto widget with a form for picking target mode and value. View widget's
+#     attached KPIs, manage set targets, alerts and delete.
+#     **NOTE: this component is not in use, and requires fixes/improvements to be used.**
+###
+module = angular.module('impac.components.widgets-settings.attach-kpis', [])
+module.directive('settingAttachKpis', ($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate)->
 
   return {
     restrict: 'A'
@@ -12,7 +17,7 @@ module.directive('settingAttachKpisOld', ($templateCache, ImpacWidgetsSvc, Impac
       deferred: '='
       showExtraParam: '=?'
     }
-    template: $templateCache.get('widgets-settings/attach-kpis-old.tmpl.html')
+    template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html')
 
     controller: ($scope)->
       w = $scope.parentWidget

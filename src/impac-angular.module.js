@@ -112,8 +112,7 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
-    'impac.components.widgets-settings.attach-kpis-old',
-    'impac.components.widgets-settings.offsets'
+    'impac.components.widgets-settings.offsets',
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -130,7 +129,8 @@ angular.module('impac.components.widgets-common',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
     'impac.components.widgets-common.autofocus',
-    'impac.components.widgets-common.currency-conversions'
+    'impac.components.widgets-common.currency-conversions',
+    'impac.components.widgets-common.chart-threshold',
   ]
 );
 angular.module('impac.components.common',
