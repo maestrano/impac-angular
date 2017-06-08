@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, HighChartsFormatter) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, HighchartsFactory) ->
 
   w = $scope.widget
 
@@ -56,26 +56,29 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
   w.format = ->
     options =
-      id: $scope.chartId
-      period: getPeriod()
+      chartType: 'line'
+      data: w.content.chart
       currency: w.metadata.currency
+      period: getPeriod()
       showToday: true
       showLegend: true
       thresholds: getThresholds()
 
-    HighChartsFormatter.lineChart($scope, w.content.chart, options)
+    unless $scope.chart instanceof HighchartsFactory
+      $scope.chart = new HighchartsFactory($scope.chartId(), options)
+    $scope.chart.render(options)
 
-    $scope.chartDeferred.notify($scope.chart)
- 
-  $scope.chartId = -> 
+    $scope.chartDeferred.notify($scope.chart.hc)
+
+  $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
- 
-  $scope.toggleSimulationMode = (init = false) -> 
-    $scope.initSettings() if init 
-    $scope.simulationMode = !$scope.simulationMode 
- 
-  $scope.saveSimulation = -> 
-    $scope.updateSettings() 
+
+  $scope.toggleSimulationMode = (init = false) ->
+    $scope.initSettings() if init
+    $scope.simulationMode = !$scope.simulationMode
+
+  $scope.saveSimulation = ->
+    $scope.updateSettings()
     $scope.toggleSimulationMode()
 
   getPeriod = ->

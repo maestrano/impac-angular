@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, HighChartsFormatter) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, HighchartsFactory) ->
 
   w = $scope.widget
 
@@ -29,18 +29,18 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     setSeriesColors(w.content.chart.series, { positive: '#3FC4FF', negative: '#e50228'})
 
   $scope.legendItemOnClick = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return unless serie
     visibility = if serie.visible then false else true
     serie.setVisible(visibility)
 
   $scope.getLegendItemIcon = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return 'fa-check-square-o' unless serie
     if serie.visible then 'fa-check-square-o' else 'fa-square-o'
 
   $scope.getLegendItemColor = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return '#000' unless serie
     serie.color
 
@@ -64,14 +64,17 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
     options =
-      id: $scope.chartId
-      period: getPeriod()
+      chartType: 'line'
+      data: w.content.chart
       currency: w.metadata.currency
+      period: getPeriod()
       showToday: true
       showLegend: false
 
     $timeout ->
-      HighChartsFormatter.lineChart($scope, w.content.chart, options)
+      unless $scope.chart instanceof HighchartsFactory
+        $scope.chart = new HighchartsFactory($scope.chartId(), options)
+      $scope.chart.render(options)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"
