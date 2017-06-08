@@ -18,7 +18,7 @@
     <!-- Data found -->
     <div ng-show="(isDataFound==true)" class="">
       <!-- Set KPI target threshold panel -->
-      <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="onAttachedKpi($event)"></chart-threshold>
+      <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
 
       <!-- Chart -->
       <div id="{{chartId()}}" class="cash-projection-chart"></div>
