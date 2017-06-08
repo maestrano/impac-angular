@@ -150,13 +150,13 @@ angular
           if defaults.kpis.index
             defaults.kpis.index.replace(':dashboard_id', dashboard_id)
           else
-            "#{defaults.impacApi}/v2/kpis"
+            "#{defaults.impacApi}/v1/kpis"
 
         show: (dashboard_id, id) ->
           if defaults.kpis.show
             defaults.kpis.show.replace(':dashboard_id', dashboard_id).replace(':id', id)
           else
-            "#{defaults.impacApi}/v2/kpis"
+            "#{defaults.impacApi}/v1/kpis"
 
         create: (dashboard_id) ->
           if defaults.kpis.create
