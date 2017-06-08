@@ -101,7 +101,7 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       spyOn(svc, 'update').and.callFake(function (wgt, data) {
-        return $q.resolve(wgt.id);
+        return $q.resolve(wgt);
       });
 
       spyOn(svc, 'show').and.callFake(function (updatedWidget) {
@@ -128,8 +128,8 @@ describe('<> ImpacWidgetsSvc', function () {
     });
 
     it('renders the updated widgets', function () {
-      expect(svc.show).toHaveBeenCalledWith(1);
-      expect(svc.show).toHaveBeenCalledWith(3);
+      expect(svc.show).toHaveBeenCalledWith(dashboard.widgets[0]);
+      expect(svc.show).toHaveBeenCalledWith(dashboard.widgets[2]);
     });
   });
 
@@ -188,6 +188,8 @@ describe('<> ImpacWidgetsSvc', function () {
     describe('when the dashboard cannot be retrieved', function() {
       beforeEach(function() {
         spyOn(ImpacDashboardsSvc, 'getCurrentDashboard').and.returnValue(null);
+        // Catch the exception to avoid "Possibly unhandled rejection" error
+        subject.then(function(){}, function(){});
         $rootScope.$apply();
       });
 
@@ -254,6 +256,8 @@ describe('<> ImpacWidgetsSvc', function () {
           spyOn($http, "post").and.returnValue($q.reject('an error response'));
           spyOn($log, 'error').and.callThrough();
           subject = svc.create(widget)
+          // Catch the exception to avoid "Possibly unhandled rejection" error
+          subject.then(function(){}, function(){});
           $rootScope.$apply();
         });
 
@@ -296,6 +300,8 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(svc, 'load').and.returnValue($q.reject('error'));
         spyOn($log, 'error').and.callThrough();
         subject = svc.create(widget);
+        // Catch the exception to avoid "Possibly unhandled rejection" error
+        subject.then(function(){}, function(){});
         $rootScope.$apply();
       });
 
@@ -363,6 +369,8 @@ describe('<> ImpacWidgetsSvc', function () {
           spyOn($http, "put").and.returnValue($q.reject("an error response"));
           spyOn($log, 'error').and.callThrough();
           subject = svc.update(widget,opts);
+          // Catch the exception to avoid "Possibly unhandled rejection" error
+          subject.then(function(){}, function(){});
           $rootScope.$apply();
         });
 
@@ -382,6 +390,8 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(svc, 'load').and.returnValue($q.reject('error'));
         spyOn($log, 'error').and.callThrough();
         subject = svc.create(widget);
+        // Catch the exception to avoid "Possibly unhandled rejection" error
+        subject.then(function(){}, function(){});
         $rootScope.$apply();
       });
 
@@ -438,6 +448,8 @@ describe('<> ImpacWidgetsSvc', function () {
           spyOn($http, "delete").and.returnValue($q.reject("an error response"));
           spyOn($log, 'error').and.callThrough();
           subject = svc.delete(widgetToDelete);
+          // Catch the exception to avoid "Possibly unhandled rejection" error
+          subject.then(function(){}, function(){});
           $rootScope.$apply();
         });
 
@@ -453,6 +465,8 @@ describe('<> ImpacWidgetsSvc', function () {
         spyOn(svc, 'load').and.returnValue($q.reject('an error response'));
         spyOn($log, 'error').and.callThrough();
         subject = svc.delete(widgetToDelete);
+        // Catch the exception to avoid "Possibly unhandled rejection" error
+        subject.then(function(){}, function(){});
         $rootScope.$apply();
       });
 
