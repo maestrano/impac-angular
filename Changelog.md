@@ -6,9 +6,12 @@
 - Routes to Bolt widgets and KPIs (discovery + show)
 - Template for Cash Balance widget
 - Template for Cash Projection widget
+- Component for chart-threshold setting
+- Attach threshold KPI to Cash Projection chart
 
 #### Fixes
 - Settings Time Slider not displaying range period label
+- Multi-currency broken on EBITDA widget
 
 -------------------------------------------------------------
 
