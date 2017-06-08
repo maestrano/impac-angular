@@ -13,6 +13,12 @@
 - Settings Time Slider not displaying range period label
 - Multi-currency broken on EBITDA widget
 
+#### Config changes
+- Default route to Impac! KPIs endpoints is now `api/v1/kpis`
+
+#### Dependencies
+- Impac! API >= v1.5.8
+
 -------------------------------------------------------------
 
 ### v1.5.0 | 2017 - Week 20
