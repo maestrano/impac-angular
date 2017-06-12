@@ -85,7 +85,7 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
         return DevUser.getUser(mnoeUrl);
       },
       // TODO: add pusher key to advance settings on #/settings.
-      pusher_key: 'e98dfd8e4a359a7faf48' // Maestrano pusher account key.
+      pusher_key: '67da20b2dc7a407dc522' // Maestrano pusher account key.
     }
   }
 
