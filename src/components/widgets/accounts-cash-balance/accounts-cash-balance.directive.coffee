@@ -65,16 +65,14 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   w.format = ->
     options =
       chartType: 'line'
-      data: w.content.chart
       currency: w.metadata.currency
       period: getPeriod()
       showToday: true
       showLegend: false
 
     $timeout ->
-      unless $scope.chart instanceof HighchartsFactory
-        $scope.chart = new HighchartsFactory($scope.chartId(), options)
-      $scope.chart.render(options)
+      $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
+      $scope.chart.render(w.content.chart, options)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"

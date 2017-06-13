@@ -4,7 +4,7 @@ angular
 
   templates =
     line: Object.freeze
-      get: (options = {})->
+      get: (series = [], options = {})->
         chart:
           type: 'line'
           zoomType: 'x'
@@ -26,19 +26,20 @@ angular
           title: null
           startOnTick: true
           minPadding: 0
-        series: _.get(options, 'data.series', [])
+        series: series
 
   class Chart
-    constructor: (@id, @options = {})->
+    constructor: (@id, @data = {}, @options = {})->
       @_template = templates[@options.chartType]
       return
 
-    render: (options)->
-      angular.merge(@options, options)
+    render: (data, options)->
+      @data = data if _.isObject(data)
+      angular.extend(@options, options)
       chartConfig = angular.merge({},
-        @template(@options)
-        @formatters(@options)
-        @todayMarker(@options)
+        @template(@data.series, @options)
+        @formatters(@data.labels, @options)
+        @todayMarker(@data.labels, @options)
         @thresholdsMarkers(@options)
       )
       if _.isEmpty(@hc)
@@ -47,32 +48,32 @@ angular
         @hc.update(chartConfig)
       return @
 
-    template: (options = {})->
-      @_template.get(options)
+    template: (series, options = {})->
+      @_template.get(series, options)
 
-    formatters: (options = {})->
+    formatters: (labels, options = {})->
       xAxis:
         labels:
           formatter: ->
-            $filter('mnoDate')(options.data.labels[this.value], options.period)
+            $filter('mnoDate')(labels[this.value], options.period)
       yAxis:
         labels:
           formatter: ->
             $filter('mnoCurrency')(this.value, options.currency, false, 0)
       tooltip:
         formatter: ->
-          date = $filter('mnoDate')(options.data.labels[this.x], options.period)
+          date = $filter('mnoDate')(labels[this.x], options.period)
           amount = $filter('mnoCurrency')(this.y, options.currency, false)
           name = this.series.name
           # If point is in the past, "My Projected Stuff" => "My Stuff"
-          if moment(options.data.labels[this.x]) < moment().startOf('day')
+          if moment(labels[this.x]) < moment().startOf('day')
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
-    todayMarker: (options = {})->
-      return {} unless options.showToday && !_.isEmpty(options.data)
-      projection_date = _.find(options.data.labels, (date)-> moment(date) >= moment().startOf('day'))
-      todayIndex = _.indexOf(options.data.labels, projection_date)
+    todayMarker: (labels, options = {})->
+      return {} unless options.showToday && !_.isEmpty(labels)
+      projection_date = _.find(labels, (date)-> moment(date) >= moment().startOf('day'))
+      todayIndex = _.indexOf(labels, projection_date)
       xAxis:
         plotLines: [{
           color: _.get(options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')

@@ -57,16 +57,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   w.format = ->
     options =
       chartType: 'line'
-      data: w.content.chart
       currency: w.metadata.currency
       period: getPeriod()
       showToday: true
       showLegend: true
       thresholds: getThresholds()
 
-    unless $scope.chart instanceof HighchartsFactory
-      $scope.chart = new HighchartsFactory($scope.chartId(), options)
-    $scope.chart.render(options)
+    $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
+    $scope.chart.render(w.content.chart, options)
 
     $scope.chartDeferred.notify($scope.chart.hc)
 
