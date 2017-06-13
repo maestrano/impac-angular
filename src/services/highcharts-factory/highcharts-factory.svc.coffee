@@ -1,5 +1,5 @@
 angular
-.module('impac.services.highcharts-formatter', [])
+.module('impac.services.highcharts-factory', [])
 .factory('HighchartsFactory', ($filter)->
 
   templates =
