@@ -15,7 +15,7 @@ module.component('chartThreshold', {
     kpiTargetMode: '<?'
     kpiCreateLabel: '<?'
     onComplete: '&?'
-  controller: ($timeout, $log, ImpacKpisSvc, toastr)->
+  controller: ($timeout, $log, ImpacKpisSvc, ImpacUtilities, toastr)->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -59,14 +59,16 @@ module.component('chartThreshold', {
       return
 
     ctrl.saveKpi = ->
-      params = {}
-      params.targets = {}
+      params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.watchables[0]] = [{
         "#{ctrl.kpiTargetMode}": ctrl.draftTarget
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
-      params.metadata = {}
-      params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
+      # TODO: improve the way the hist_params are applied onto widget kpis
+      if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
+        params.metadata.hist_parameters = widgetHistParams
+      else
+        params.metadata.hist_parameters = ImpacUtilities.yearDates()
       params.widget_id = ctrl.widget.id
       ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
         (kpi)->
