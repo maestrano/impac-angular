@@ -38,7 +38,7 @@
       </div>
 
       <!-- Simulation buttons -->
-      <div class="text-left">
+      <div class="text-left" ng-hide="isTimePeriodInThePast">
         <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
           Cancel
         </button>
