@@ -298,7 +298,7 @@ angular
             params.metadata = {} unless params.metadata?
             params.metadata.hist_parameters = dates
           ).finally( ->
-            angular.extend params, opts
+            angular.merge params, opts
 
             url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 

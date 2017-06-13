@@ -65,6 +65,8 @@ module.component('chartThreshold', {
         "#{ctrl.kpiTargetMode}": ctrl.draftTarget
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
+      params.metadata = {}
+      params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
       params.widget_id = ctrl.widget.id
       ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
         (kpi)->
