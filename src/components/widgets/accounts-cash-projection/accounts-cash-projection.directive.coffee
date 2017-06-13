@@ -118,6 +118,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     if projectedSerie?
       $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
 
+    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
+
 
   w.format = ->
     # Register chart and notify
