@@ -36,7 +36,7 @@ module.component('chartThreshold', {
         ->
           disableAttachability()
       )
-      # Register to chart changes
+      # Register to chart changes (expects a highchart instance)
       ctrl.chartPromise.then(null, null, onChartNotify) if ctrl.chartPromise? && _.isFunction(ctrl.chartPromise.then)
 
     ctrl.createKpi = (target)->
