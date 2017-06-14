@@ -99,6 +99,11 @@ angular
 
       return resultHash
 
+    # Get default year-to-date hist parameters
+    @yearDates = ()->
+      from: moment().startOf('year').format('YYYY-MM-DD')
+      to: moment().format('YYYY-MM-DD')
+
     # Parse a Rails model error and return an array of messages
     # ready to be displayed
     # ---
