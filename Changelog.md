@@ -8,6 +8,7 @@
 - Template for Cash Projection widget
 - Component for chart-threshold setting
 - Attach threshold KPI to Cash Projection chart
+- Adds a HighchartsFactory for creating & updating highchart objects 
 
 #### Fixes
 - Settings Time Slider not displaying range period label

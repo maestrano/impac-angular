@@ -36,7 +36,7 @@ module.component('chartThreshold', {
         ->
           disableAttachability()
       )
-      # Register to chart changes
+      # Register to chart changes (expects a highchart instance)
       ctrl.chartPromise.then(null, null, onChartNotify) if ctrl.chartPromise? && _.isFunction(ctrl.chartPromise.then)
 
     ctrl.createKpi = (target)->
@@ -86,6 +86,8 @@ module.component('chartThreshold', {
     onChartClick = (event)->
       # Check whether click event fired is from the 'reset zoom' button
       return if event.srcElement.textContent == 'Reset zoom'
+      # Gaurd for tooltips / other chart areas that don't return a yAxis value
+      return unless event.yAxis && event.yAxis[0]
       value = event.yAxis[0].value
       # Gaurd for click events fired outside of the yAxis values range
       if !value || _.isNaN(value) then return else value = value.toFixed(2)

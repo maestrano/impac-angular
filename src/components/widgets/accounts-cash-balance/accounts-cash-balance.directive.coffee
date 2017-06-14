@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, HighchartsFactory) ->
 
   w = $scope.widget
 
@@ -29,33 +29,26 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     setSeriesColors(w.content.chart.series, { positive: '#3FC4FF', negative: '#e50228'})
 
   $scope.legendItemOnClick = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return unless serie
     visibility = if serie.visible then false else true
     serie.setVisible(visibility)
 
   $scope.getLegendItemIcon = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return 'fa-check-square-o' unless serie
     if serie.visible then 'fa-check-square-o' else 'fa-square-o'
 
   $scope.getLegendItemColor = (account)->
-    serie = $scope.chart && getSerieByAccount($scope.chart.series, account)
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return '#000' unless serie
     serie.color
-
-  # Private
-  # ----
 
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
   getSerieByAccount = (series, account)->
     _.find(series, (serie)-> (serie.id || serie.options && serie.options.id) == account.id)
-
-  getTodayMarker = ->
-    projection_date = _.find(w.content.chart.labels, (label)-> moment(label) >= moment().startOf('day'))
-    _.indexOf(w.content.chart.labels, projection_date)
 
   setSeriesColors = (series, chartColors) ->
     groupedSeries = _.groupBy(series, (serie)-> serie.bias)
@@ -71,58 +64,15 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
     options =
-      chart:
-        type: 'line'
-        zoomType: 'x'
-        spacingTop:20
-      title: null
-      credits:
-        enabled: false
-      legend:
-        enabled: false
-      scrollbar:
-        enabled: true
-      xAxis:
-        startOnTick: false
-        minPadding: 0
-        tickInterval: 1
-        min: 0
-        labels:
-          style: textOverflow: 'none'
-          formatter: ()->
-            $filter('mnoDate')(w.content.chart.labels[this.value], getPeriod())
-        plotLines: [{
-          color: 'rgba(0, 85, 255, 0.2)'
-          value: getTodayMarker()
-          width: 1
-          label:
-            text: null
-            verticalAlign: 'top'
-            textAlign: 'center'
-            rotation: 0
-            y: -5
-            x: -2
-        }]
-      yAxis:
-        startOnTick: true
-        minPadding: 0
-        title: null
-        labels:
-          formatter: ()->
-            $filter('mnoCurrency')(this.value, w.metadata.currency, false, 0)
-      tooltip:
-        formatter: ->
-          date = $filter('mnoDate')(w.content.chart.labels[this.x], getPeriod())
-          amount = $filter('mnoCurrency')(this.y, w.metadata.currency, false)
-          name = this.series.name
-          # Detect and remove 'Projected' label from 'Projected cash' on intervals less than today.
-          if _.include(name.toLowerCase(), 'projected')
-            name = 'Cash' if this.series.data.indexOf(this.point) < getTodayMarker()
-          "<strong>#{date}</strong><br>#{name}: #{amount}"
-      series: w.content.chart.series
+      chartType: 'line'
+      currency: w.metadata.currency
+      period: getPeriod()
+      showToday: true
+      showLegend: false
 
     $timeout ->
-      $scope.chart = Highcharts.chart($scope.chartId(), options)
+      $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
+      $scope.chart.render(w.content.chart, options)
 
 
   # Widget is ready: can trigger the "wait for settings to be ready"
