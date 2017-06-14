@@ -20,13 +20,13 @@
         <div class="price">
            {{ getCurrentPrice() | mnoCurrency : currency_unit : false }}
         </div>
-        <div class="currency">{{::currency}}</div>
-        <div class="legend">{{::legend}}</div>
+        <div class="currency">{{currency}}</div>
+        <div class="legend">{{legend}}</div>
       </div>
 
       <div class="history chart-container" ng-show="widget.isHistoryMode">
         <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-        <div class="legend">{{::legend}}</div>
+        <div class="legend">{{legend}}</div>
       </div>
     </div>
 

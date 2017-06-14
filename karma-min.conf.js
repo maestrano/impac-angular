@@ -43,6 +43,8 @@ module.exports = function(config) {
       'bower_components/messageformat/messageformat.js',
       'bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/highcharts/highcharts.js',
+      'bower_components/color/one-color-all.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-cookies/angular-cookies.js',

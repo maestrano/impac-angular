@@ -1,0 +1,37 @@
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-value {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+    }
+  }
+}
