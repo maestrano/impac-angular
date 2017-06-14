@@ -97,7 +97,7 @@ module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, Impac
   // Configure ImpacRoutes
   // -------------------------------------------------------
   ImpacRoutes.configureRoutes(DevSettings.buildRoutesConfig(defaults.mnoeUrl, defaults.impacUrl, defaults.multipleWatchableMode));
-  ImpacRoutes.configureBolts(defaults.bolts.version, defaults.bolts.engines)
+  ImpacRoutes.configureBolts('v2', defaults.bolts)
 
 
   // Configure ImpacTheming - aesthetic and feature customisations across the app

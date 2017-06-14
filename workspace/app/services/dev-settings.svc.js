@@ -42,12 +42,9 @@ angular.module('impacWorkspace').service('DevSettings', function ($q, ImpacRoute
       //   width: 3
       // },
     ],
-    bolts: {
-      version: 'v2',
-      engines: [
-        { provider: 'maestrano', name: 'finance', category: 'accounts' }
-      ]
-    }
+    bolts: [
+      { provider: 'maestrano', name: 'finance', category: 'accounts' }
+    ]
   };
 
   this._defaults = angular.copy(DEFAULTS);
