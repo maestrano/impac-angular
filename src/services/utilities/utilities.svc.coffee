@@ -2,7 +2,7 @@
 # more than once place across the library.
 angular
   .module('impac.services.utilities', [])
-  .service('ImpacUtilities', ($window, $templateCache) ->
+  .service('ImpacUtilities', ($window, $templateCache, ImpacRoutes) ->
 
     _       = $window._
     moment  = $window.moment
@@ -99,6 +99,11 @@ angular
 
       return resultHash
 
+    # Get default year-to-date hist parameters
+    @yearDates = ()->
+      from: moment().startOf('year').format('YYYY-MM-DD')
+      to: moment().format('YYYY-MM-DD')
+
     # Parse a Rails model error and return an array of messages
     # ready to be displayed
     # ---
@@ -142,18 +147,32 @@ angular
 
     # Retrieves the widget content css class name based on metadata or endpoint
     @fetchWidgetCssClass = (widget) ->
-      return false unless endpoint = ((widget.metadata && widget.metadata.template) || widget.endpoint)
       # 'accounts/accounting_values/ebitda' => ['accounts','accounting_values']
-      templateNameArray = endpoint.split('/').slice(0,2)
+      templateNameArray =
+        if widget.metadata && widget.metadata.template
+          widget.metadata.template.split('/').slice(0,2)
+
+        else if widget.endpoint && widget.metadata && widget.metadata.bolt_path
+          bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == widget.metadata.bolt_path
+          bolt && [bolt.category, widget.endpoint]
+
+        else if widget.endpoint
+          widget.endpoint.split('/').slice(0,2)
+
+      return false unless templateNameArray?
+
       # ['accounts','accounting_values'] => 'accounts-accounting-values'
       return templateNameArray.join('-').replace(/_/g, '-')
 
-    # Retrieves the HTML template path based on metadata or endpoint
+    # Retrieves the HTML template path based on metadata or endpoint (only if the template exists)
     @fetchWidgetTemplatePath = (widget) ->
       return false unless cssClass = _self.fetchWidgetCssClass(widget)
       templatePath = "widgets/#{cssClass}.tmpl.html"
-      # Returns the path only if it can be found
       return ($templateCache.get(templatePath) && templatePath)
+
+    # Returns a random number between min (inclusive) and max (exclusive)
+    @getRandomInteger = (min, max)->
+      Math.random() * (max - min) + min
 
     return
   )
