@@ -45,12 +45,10 @@ angular
       organizations:
         appInstancesSync: null
 
-    # Default bolts (proxied by Impac! API) - can be replaced in configuration
+    # Default bolts (proxied by Impac! API) - to be defined in configuration
     bolts = 
       version: 'v2'
-      engines: [
-        { provider: 'maestrano', name: 'finance', category: 'accounts' }
-      ]
+      engines: []
 
     #=======================================
     # Local helper methods
