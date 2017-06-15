@@ -85,12 +85,18 @@ module.run(function($http, DevSession) {
 // -------------------------------------------------------
 module.config(function($translateProvider) {
   $translateProvider.useMissingTranslationHandlerLog();
+  $translateProvider.useStaticFilesLoader(
+    {
+      prefix: 'locales/',
+      suffix: '.json'
+    }
+  );
 });
 
 // --
 // Impac! Angular Provider Service Configurations.
 // -------------------------------------------------------
-module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
+module.run(function ($translate, ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
 
   var defaults = DevSettings.defaults();
 
@@ -132,4 +138,6 @@ module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, Impac
   // -------------------------------------------------------
   ImpacLinking.linkData(DevSettings.buildLinkingConfig(defaults.orgUid, defaults.mnoeUrl));
 
+  // Locale to be used
+  $translate.use('en-AU');
 });
