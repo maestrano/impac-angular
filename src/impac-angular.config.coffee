@@ -12,13 +12,6 @@ module.config(($translateProvider, ImpacThemingProvider) ->
 
   settings = ImpacThemingProvider.$get().get().translateSettings
 
-  # Path to translations files
-  if settings.customLocaleFiles.prefix
-    $translateProvider.useStaticFilesLoader({
-      prefix: settings.customLocaleFiles.prefix,
-      suffix: settings.customLocaleFiles.suffix
-    })
-
   # language strategy
   $translateProvider.useSanitizeValueStrategy('escapeParameters')
   $translateProvider.useMessageFormatInterpolation()

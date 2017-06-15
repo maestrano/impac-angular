@@ -115,9 +115,6 @@ angular
       translateSettings:
         preferredLanguage: 'en-gb'
         fallbackLanguage: ''
-        customLocaleFiles:
-          prefix: ''
-          suffix: '.json'
 
 
     #=======================================
