@@ -36,22 +36,19 @@ angular
     render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
-      chartConfig = angular.merge({},
-        @template(@data.series, @options)
-        @formatters(@data.labels, @options)
-        @todayMarker(@data.labels, @options)
-      )
+      chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       if _.isEmpty(@hc)
         @hc = Highcharts.chart(@id, chartConfig)
       else
         @hc.update(chartConfig)
-      @addThresholds(@data.labels, @options)
+      @addThresholds()
       return @
 
-    template: (series, options = {})->
-      @_template.get(series, options)
+    template: ->
+      @_template.get(@data.series, @options)
 
-    formatters: (labels, options = {})->
+    formatters: ->
+      [labels, options] = [@data.labels, @options]
       xAxis:
         labels:
           formatter: ->
@@ -70,12 +67,12 @@ angular
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
-    todayMarker: (labels, options = {})->
-      return {} unless options.showToday && !_.isEmpty(labels)
+    todayMarker: ->
+      return {} unless @options.showToday && !_.isEmpty(@data.labels)
       xAxis:
         plotLines: [{
-          color: _.get(options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: todayIndex(labels)
+          color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
+          value: todayIndex(@data.labels)
           width: 1
           label:
             text: null
@@ -85,16 +82,16 @@ angular
             y: -5
         }]
 
-    addThresholds: (labels, options = {})->
+    addThresholds: (options = @options)->
       return if _.isEmpty(options.thresholds) || _.isEmpty(@hc)
       # Remove existing thresholds
       _.each(@hc.series, (series)-> series.remove() if series.name.includes('Threshold'))
       # Determine the indexes length of the cash projection intervals
-      projectionIntervalLength = labels.slice(todayIndex(labels), labels.length).length
+      projectionIntervalLength = @data.labels.slice(todayIndex(@data.labels), @data.labels.length).length
       for threshold in options.thresholds
         serie =
           name: 'Threshold KPI'
-          data: new Array(labels.length - projectionIntervalLength).fill(null)
+          data: new Array(@data.labels.length - projectionIntervalLength).fill(null)
           color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
           showInLegend: false
           marker: { enabled: false }
