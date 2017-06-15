@@ -10,9 +10,9 @@
 #### Config changes
 - Remove `translateSettings` from ThemingSvc
 - Host application must configure `$translateProvider`:
--- indicate how to load the locale files
--- configure `preferredLanguage` and `fallbackLanguage`
--- manage the active language using `$translate.use`
+- - indicate how to load the locale files
+- - configure `preferredLanguage` and `fallbackLanguage`
+- - manage the active language using `$translate.use`
 
 #### Dependencies
 - Mno-enterprise >= 3.3.0
