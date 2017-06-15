@@ -9,12 +9,7 @@ module.config(($httpProvider)->
 )
 
 module.config(($translateProvider, ImpacThemingProvider) ->
-
-  settings = ImpacThemingProvider.$get().get().translateSettings
-
-  # language strategy
+  # Language strategy
   $translateProvider.useSanitizeValueStrategy('escapeParameters')
   $translateProvider.useMessageFormatInterpolation()
-  $translateProvider.preferredLanguage(settings.preferredLanguage)
-  $translateProvider.fallbackLanguage(settings.fallbackLanguage)
 )

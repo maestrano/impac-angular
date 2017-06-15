@@ -112,10 +112,6 @@ angular
         timePeriod:
           showSlider: true
 
-      translateSettings:
-        preferredLanguage: 'en-gb'
-        fallbackLanguage: ''
-
 
     #=======================================
     # Public methods available in config
