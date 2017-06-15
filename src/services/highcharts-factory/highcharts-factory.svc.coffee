@@ -40,12 +40,12 @@ angular
         @template(@data.series, @options)
         @formatters(@data.labels, @options)
         @todayMarker(@data.labels, @options)
-        @thresholdsMarkers(@options)
       )
       if _.isEmpty(@hc)
         @hc = Highcharts.chart(@id, chartConfig)
       else
         @hc.update(chartConfig)
+      @addThresholds(@data.labels, @options)
       return @
 
     template: (series, options = {})->
@@ -72,12 +72,10 @@ angular
 
     todayMarker: (labels, options = {})->
       return {} unless options.showToday && !_.isEmpty(labels)
-      projection_date = _.find(labels, (date)-> moment(date) >= moment().startOf('day'))
-      todayIndex = _.indexOf(labels, projection_date)
       xAxis:
         plotLines: [{
           color: _.get(options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: todayIndex
+          value: todayIndex(labels)
           width: 1
           label:
             text: null
@@ -87,16 +85,31 @@ angular
             y: -5
         }]
 
-    thresholdsMarkers: (options = {})->
-      return {} if _.isEmpty(options.thresholds)
-      lines = []
+    addThresholds: (labels, options = {})->
+      return if _.isEmpty(options.thresholds) || _.isEmpty(@hc)
+      # Remove existing thresholds
+      _.each(@hc.series, (series)-> series.remove() if series.name.includes('Threshold'))
+      # Determine the indexes length of the cash projection intervals
+      projectionIntervalLength = labels.slice(todayIndex(labels), labels.length).length
       for threshold in options.thresholds
-        lines.push({
+        serie =
+          name: 'Threshold KPI'
+          data: new Array(labels.length - projectionIntervalLength).fill(null)
           color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
-          value: threshold
-          width: 2
-          zIndex: 5
-        })
-      "#{_.get(options, 'thresholdsMarkers.axis', 'yAxis')}":
-        plotLines: lines
+          showInLegend: false
+          marker: { enabled: false }
+        # Set the thresholds for the projection intervals, creating a horizontal bar
+        thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold))
+        serie.data.push.apply(serie.data, thresholdBar)
+        # Note: series can only be added after initial render via the `addSeries` method.
+        @hc.addSeries(serie, true)
+      return @hc
+
+    # Private methods
+    # --
+
+    todayIndex = (labels)->
+      projection_date = _.find(labels, (date)-> moment(date) >= moment().startOf('day'))
+      _.indexOf(labels, projection_date)
+
 )
