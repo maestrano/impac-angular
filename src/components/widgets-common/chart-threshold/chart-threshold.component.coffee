@@ -92,6 +92,7 @@ module.component('chartThreshold', {
 
     onChartNotify = (chart)->
       ctrl.chart = chart
+      validateHistParameters()
       Highcharts.addEvent(chart.container, 'click', onChartClick)
       thresholdSeries = _.select(chart.series, (s)-> s.name.toLowerCase().includes('threshold'))
       _.each(thresholdSeries, (t)->
@@ -136,6 +137,13 @@ module.component('chartThreshold', {
       ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.chartShrinkSize, false)
       ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
+    # Disable threshold when selected time period is strictly in the past
+    validateHistParameters = ->
+      widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
+      # Widget histParams are YTD by default (when undefined on metadata),
+      # therefore in the past by default
+      ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day')
+      return
 
     return ctrl
 })
