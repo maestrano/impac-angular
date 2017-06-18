@@ -1,11 +1,11 @@
 <div class="attach-panel" ng-if="$ctrl.showPanel">
   <div class="attach-panel-text">
     <span class="panel-text-label">{{$ctrl.kpiCreateLabel}}: </span>
-    <input type="text" class="panel-text-input" ng-model="$ctrl.draftTarget">
+    <input type="text" class="panel-text-input" ng-model="$ctrl.draftTarget.value">
     <span class="panel-text-currency" ng-bind="$ctrl.widget.metadata.currency"></span>
   </div>
   <div class="action-buttons">
     <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()">Cancel</button>
-    <button class="btn btn-primary" ng-click="$ctrl.saveKpi()">Save</button>
+    <button class="btn btn-primary" ng-click="$ctrl.saveKpi()">{{$ctrl.isEditingKpi ? 'Update' : 'Save'}}</button>
   </div>
 </div>

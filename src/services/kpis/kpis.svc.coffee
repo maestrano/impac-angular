@@ -321,7 +321,7 @@ angular
       )
       return deferred.promise
 
-    @update = (kpi, params) ->
+    @update = (kpi, params = {}, showKpi = true) ->
       kpi.isLoading = true
       _self.load().then(->
 
@@ -341,7 +341,7 @@ angular
               ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
               angular.extend(kpi, success.data)
               _self.buildKpiWatchables(kpi)
-              _self.show(kpi)
+              _self.show(kpi) if showKpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
               $q.reject(err)

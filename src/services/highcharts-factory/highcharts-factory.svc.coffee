@@ -85,18 +85,19 @@ angular
     addThresholds: (options = @options)->
       return if _.isEmpty(options.thresholds) || _.isEmpty(@hc)
       # Remove existing thresholds
-      _.each(@hc.series, (series)-> series.remove() if series.name.includes('Threshold'))
+      _.each(@hc.series, (s)-> s.remove() if s.name.toLowerCase().includes('threshold'))
       # Determine the indexes length of the cash projection intervals
       projectionIntervalLength = @data.labels.slice(todayIndex(@data.labels), @data.labels.length).length
       for threshold in options.thresholds
         serie =
           name: 'Threshold KPI'
+          kpiId: threshold.kpiId
           data: new Array(@data.labels.length - projectionIntervalLength).fill(null)
           color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
           showInLegend: false
           marker: { enabled: false }
         # Set the thresholds for the projection intervals, creating a horizontal bar
-        thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold))
+        thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold.value))
         serie.data.push.apply(serie.data, thresholdBar)
         # Note: series can only be added after initial render via the `addSeries` method.
         @hc.addSeries(serie, true)
