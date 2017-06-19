@@ -12,7 +12,6 @@ var banner = ['/**',
   ' * @license <%= pkg.license %>',
   ' */',
   ''].join('\n');
-var angularTranslate = require('gulp-angular-translate');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'del']

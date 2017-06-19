@@ -112,13 +112,6 @@ angular
         timePeriod:
           showSlider: true
 
-      translateSettings:
-        preferredLanguage: 'en-gb'
-        fallbackLanguage: ''
-        customLocaleFiles:
-          prefix: ''
-          suffix: '.json'
-
 
     #=======================================
     # Public methods available in config

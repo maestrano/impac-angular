@@ -363,10 +363,6 @@ _usage_: Options for the "widgets selector".
 _type_: Object<br>
 _usage_: Options for configuring various widget settings components.
 
-**translateSettings**
-_type_: Object<br>
-_usage_: Options for configuring internationalisation (i18n) for angular-translate.
-
 ##### Example
 ```coffeescript
 angular
@@ -411,12 +407,6 @@ angular
               default: ""
           timePeriod:
             showSlider: true
-        translateSettings:
-          preferredLanguage: 'en-gb'
-          fallbackLanguage: ''
-          customLocaleFiles:
-            prefix: ''
-            suffix: '.json'
 
     ImpacThemingProvider.configure(options)
 ```

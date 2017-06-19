@@ -39,7 +39,6 @@ module.exports = function(config) {
       'bower_components/moment/moment.js',
       'bower_components/pusher/dist/web/pusher.js',
       'bower_components/angular-translate/angular-translate.js',
-      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
       'bower_components/messageformat/messageformat.js',
       'bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
@@ -51,9 +50,13 @@ module.exports = function(config) {
       'bower_components/AngularDevise/lib/devise.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-translate-handler-log/angular-translate-handler-log.js',
+      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/jasmine/lib/jasmine-core/jasmine.js',
+      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       /* endinject */
       'dist/impac-angular.min.js',
-      'src/**/*.spec.js'
+      'src/**/*.spec.js',
+      { pattern: 'dist/locales/*.json', watched: true, served: true, included: false }
     ],
 
 

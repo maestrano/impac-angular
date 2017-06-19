@@ -5,6 +5,18 @@
 #### Adds
 
 #### Fixes
+- Delegate i18n configuration to the host app
+
+#### Config changes
+- Remove `translateSettings` from ThemingSvc
+- Host application must configure `$translateProvider`:
+- - indicate how to load the locale files
+- - configure `preferredLanguage` and `fallbackLanguage`
+- - manage the active language using `$translate.use`
+
+#### Dependencies
+- Mno-enterprise >= 3.3.0
+- Mno-enterprise Angular >= 1.1.0
 
 -------------------------------------------------------------
 
