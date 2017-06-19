@@ -5,7 +5,10 @@
     <span class="panel-text-currency" ng-bind="$ctrl.widget.metadata.currency"></span>
   </div>
   <div class="action-buttons">
-    <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()">Cancel</button>
-    <button class="btn btn-primary" ng-click="$ctrl.saveKpi()">{{$ctrl.isEditingKpi ? 'Update' : 'Save'}}</button>
+    <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()" ng-disabled="$ctrl.loading">Cancel</button>
+    <button class="btn btn-primary" ng-click="$ctrl.saveKpi()">
+      <i ng-show="$ctrl.loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+      <span ng-hide="$ctrl.loading">{{$ctrl.isEditingKpi ? 'Update' : 'Save'}}</span>
+    </button>
   </div>
 </div>

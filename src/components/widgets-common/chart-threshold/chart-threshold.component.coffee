@@ -24,6 +24,7 @@ module.component('chartThreshold', {
       ctrl.kpi = {}
       ctrl.showPanel = false
       ctrl.isEditingKpi = false
+      ctrl.loading = false
       ctrl.draftTarget = value: ''
       ctrl.chartShrinkSize ||= 38
       ctrl.disabled ||= false
@@ -56,12 +57,17 @@ module.component('chartThreshold', {
       return
 
     ctrl.cancelCreateKpi = ->
-      ctrl.draftTarget.value = ''
-      ctrl.isEditingKpi = false
       toggleKpiPanel()
+      $timeout(->
+        ctrl.draftTarget.value = ''
+        ctrl.isEditingKpi = false
+        ctrl.loading = false
+      , 100)
       return
 
     ctrl.saveKpi = ->
+      return if ctrl.loading
+      ctrl.loading = true
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.watchables[0]] = [{
         "#{ctrl.kpiTargetMode}": ctrl.draftTarget.value
