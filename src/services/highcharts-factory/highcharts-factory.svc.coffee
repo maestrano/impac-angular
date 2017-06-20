@@ -90,15 +90,20 @@ angular
       # Determine the indexes length of the cash projection intervals
       projectionIntervalLength = @data.labels.slice(todayIndex(@data.labels), @data.labels.length).length
       for threshold in options.thresholds
+        data = if options.fullLengthThresholds then [] else new Array(@data.labels.length - projectionIntervalLength).fill(null)
         serie =
           name: 'Threshold KPI'
           kpiId: threshold.kpiId
-          data: new Array(@data.labels.length - projectionIntervalLength).fill(null)
+          data: data
           color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
           showInLegend: false
           marker: { enabled: false }
-        # Set the thresholds for the projection intervals, creating a horizontal bar
-        thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold.value))
+        if options.fullLengthThresholds
+          # Set the thresholds for all intervals, creating a full length horizontal bar
+          thresholdBar = _.map(@data.labels, -> parseFloat(threshold.value))
+        else
+          # Set the thresholds for the projection intervals, creating a horizontal bar
+          thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold.value))
         serie.data.push.apply(serie.data, thresholdBar)
         # Note: series can only be added after initial render via the `addSeries` method.
         @hc.addSeries(serie, true)
