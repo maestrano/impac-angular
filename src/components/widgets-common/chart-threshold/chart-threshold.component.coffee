@@ -74,8 +74,7 @@ module.component('chartThreshold', {
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
-        kpi = _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
-        ImpacKpisSvc.update(kpi, params, false)
+        ImpacKpisSvc.update(getKpi(), params, false)
       else
         # TODO: improve the way the hist_params are applied onto widget kpis
         if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
@@ -94,7 +93,25 @@ module.component('chartThreshold', {
         ctrl.cancelCreateKpi()
       )
 
+    ctrl.deleteKpi = ->
+      return if ctrl.loading
+      ctrl.loading = true
+      kpiDesc = "#{ctrl.widget.name} #{(kpi = getKpi()).element_watched}"
+      ImpacKpisSvc.delete(kpi).then(
+        ->
+          toastr.success("Deleted #{kpiDesc} KPI")
+          _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
+          ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
+        ->
+          toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
+      ).finally(->
+        ctrl.cancelCreateKpi()
+      )
+
     # Private
+
+    getKpi = ->
+      _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
 
     onChartNotify = (chart)->
       ctrl.chart = chart
