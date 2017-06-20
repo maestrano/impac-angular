@@ -341,7 +341,7 @@ angular
               ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
               angular.extend(kpi, success.data)
               _self.buildKpiWatchables(kpi)
-              _self.show(kpi) if showKpi
+              if showKpi then _self.show(kpi) else kpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
               $q.reject(err)
