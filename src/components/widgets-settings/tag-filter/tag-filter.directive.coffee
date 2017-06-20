@@ -27,25 +27,24 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
 
         # in the MVP, all rules are combined by OR, and all conditions within a rule a AND
 
-        filterQuery = {}
-        filterQuery['condition'] = 'OR'
         filterQueryRules = []
-        filterQuery['rules'] = filterQueryRules
+        filterQuery =
+          condition: 'OR'
+          rules: filterQueryRules
 
         angular.forEach  scope.settingsTags, (settingsTag) ->
-          filterQueryCondition = {}
-          filterQueryCondition['condition'] = 'AND'
-          filterQueryCondition['rules'] = []
+          filterQueryCondition =
+            condition: 'AND'
+            rules: []
           angular.forEach  settingsTag.tags, (filterItem) ->
-            # TODO: Put ruletag generation in a function
-            ruletag = {}
-            ruletag['name'] = filterItem['name'] if filterItem['name']?
-            ruletag['value'] = filterItem['value']
-            filterQueryCondition['rules'].push(ruletag)
+            ruletag =
+              value: filterItem.value
+            ruletag.name = filterItem.name if filterItem.name?
+            filterQueryCondition.rules.push(ruletag)
 
           filterQueryRules.push (filterQueryCondition) if settingsTag.tags.length != 0
 
-        if filterQuery['rules'].length==0 then filterQuery = {}
+        if filterQuery.rules.length==0 then filterQuery = {}
 
         return {filter_query: filterQuery}
 
@@ -54,17 +53,17 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
         return if _.isEmpty(filterQuery)
         settingsTags = []
         angular.forEach filterQuery.rules, (filterQueryRule) ->
-          settingRule = {}
-          settingRule['operator'] ='OR'
-          settingRule['tags'] = []
+          settingRule =
+            operator: 'OR'
+            tags: []
+
           angular.forEach filterQueryRule.rules, (filterQueryRuleCondition) ->
-            # TODO: Put ruletag generation in a function
-            tagtext = if filterQueryRuleCondition['name']? then filterQueryRuleCondition['name'] + ":" + filterQueryRuleCondition['value'] else filterQueryRuleCondition['value']
-            ruletag = {}
-            ruletag['name'] = filterQueryRuleCondition['name'] if filterQueryRuleCondition['name']?
-            ruletag['value'] = filterQueryRuleCondition['value']
-            ruletag['text'] = tagtext
-            settingRule['tags'].push(ruletag)
+            tagtext = _.compact([filterQueryRuleCondition.name,filterQueryRuleCondition.value]).join(":")
+            ruletag =
+              value: filterQueryRuleCondition.value
+              text: tagtext
+            ruletag.name = filterQueryRuleCondition.name if filterQueryRuleCondition.name?
+            settingRule.tags.push(ruletag)
           settingsTags.push(settingRule)
 
         return settingsTags
@@ -77,18 +76,17 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
         tags = w.content.available_tags || []
         autotags = []
         for org, tag_hash of tags
-          angular.forEach tag_hash['tag_references'], (tag_ref) ->
-            angular.forEach tag_ref['tag_reference_values'], (tag) ->
-              # TODO: Put ruletag generation in a function
-              tagtext = if tag_ref['name']? then tag_ref['name'] + ":" + tag['value'] else tag['value']
-              ruletag = {}
-              ruletag['text'] = tagtext
-              ruletag['name'] = tag_ref['name'] if tag_ref['name']?
-              ruletag['value'] = tag['value']
+          angular.forEach tag_hash.tag_references, (tag_ref) ->
+            angular.forEach tag_ref.tag_reference_values, (tag) ->
+              tagtext = _.compact([tag_ref.name, tag.value]).join(":")
+              ruletag =
+                text: tagtext
+                value: tag.value
+              ruletag.name = tag_ref.name if tag_ref.name?
               autotags.push(ruletag)
 
         scope.loadTagList= (query) ->
-          return $.grep(autotags, (e) -> e.text.toLowerCase().indexOf(query.toLowerCase()) > -1)
+          return _.filter(autotags, (e) -> e.text.toLowerCase().indexOf(query.toLowerCase()) > -1)
 
 
       scope.addRule = ->

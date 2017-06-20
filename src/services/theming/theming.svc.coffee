@@ -112,14 +112,7 @@ angular
         timePeriod:
           showSlider: true
         tagging:
-          enableFilterTags: true
-
-      translateSettings:
-        preferredLanguage: 'en-gb'
-        fallbackLanguage: ''
-        customLocaleFiles:
-          prefix: ''
-          suffix: '.json'
+          enabled: true
 
       translateSettings:
         preferredLanguage: 'en-gb'

@@ -24,6 +24,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
+  $scope.filterTagsEnabled = ImpacTheming.get().widgetSettings.tagging.enabled
 
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
@@ -47,11 +48,6 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     (translation) ->
       $scope.period_translation = _.capitalize(translation.toLowerCase())
   )
-
-  # Display filter tags based on settings
-  # --------------------------------------
-  $scope.areFilterTagsEnabled = ->
-    ImpacTheming.get().widgetSettings.tagging.enableFilterTags
 
   $scope.isReportFiltered = ->
     w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0

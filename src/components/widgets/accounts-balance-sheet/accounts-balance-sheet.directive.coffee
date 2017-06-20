@@ -29,11 +29,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
-
-  # Display filter tags based on settings
-  # --------------------------------------
-  $scope.areFilterTagsEnabled = ->
-    ImpacTheming.get().widgetSettings.tagging.enableFilterTags
+  $scope.filterTagsEnabled = ImpacTheming.get().widgetSettings.tagging.enabled
 
   $scope.isReportFiltered = ->
     w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0
