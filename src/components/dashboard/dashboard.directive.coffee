@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard', [])
 
-module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, $translate) ->
+module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, $translate, ImpacDhbTemplatesSvc) ->
 
     #====================================
     # Initialization
@@ -116,7 +116,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       backdrop: 'static'
       template: $templateCache.get('dashboard/create.modal.html')
       size: 'md'
-      windowClass: 'inverse'
+      windowClass: 'inverse dhb-create-modal'
       scope: $scope.createDashboardModal
     }
 
@@ -144,8 +144,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
 
     $scope.createDashboardModal.proceed = ->
       self = $scope.createDashboardModal
+      return unless self.model.name
       self.isLoading = true
-      dashboard = { name: self.model.name }
+      dashboard = self.model
 
       # Add organizations if multi company dashboard
       organizations = []
@@ -154,10 +155,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       else
         organizations = [ { id: ImpacMainSvc.config.currentOrganization.id } ]
 
-      if organizations.length > 0
-        dashboard.organization_ids = _.pluck(organizations, 'id')
+      dashboard.organization_ids = _.pluck(organizations, 'id')
+      dashboard.metadata = _.omit(dashboard.metadata, ['organization_ids'])
 
-      return ImpacDashboardsSvc.create(dashboard).then(
+      ImpacDashboardsSvc.create(dashboard).then(
         (dashboard) ->
           self.errors = ''
           self.instance.close()
@@ -214,6 +215,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
         organization.current_user_role == "Admin"
       )
 
+    $scope.createDashboardModal.onSelectTemplate = ({ template })->
+      $scope.createDashboardModal.model = template
 
     #====================================
     # Widgets selector

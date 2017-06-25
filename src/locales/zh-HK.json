@@ -635,6 +635,7 @@
 
   "impac.dashboard.create.create_new_dashboard":      "你好 你好 {name}",
   "impac.dashboard.create.name":                      "你好",
+  "impac.dashboard.create.rename":                    "你好",
   "impac.dashboard.create.type":                      "你好",
   "impac.dashboard.create.current_company":           "你好 你好",
   "impac.dashboard.create.multi_company":             "你好 你好",

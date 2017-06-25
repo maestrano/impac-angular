@@ -1,0 +1,22 @@
+dashboard-templates-selector {
+  .templates {
+    border: 1px solid #ccc;
+    box-shadow: inset 0px 0px 1px 0px #ccc;
+    height: 130px;
+    overflow: auto;
+    border-radius: 2px;
+
+    .template {
+      padding: 5px 10px;
+      color: @impac-widget-text-color;
+      border-bottom: 1px solid #ececec;
+      &:hover {
+        cursor: pointer;
+        background-color: lighten(@impac-dashboard-templates-selected-background-color, 20%);
+      }
+      &.selected {
+        background-color: @impac-dashboard-templates-selected-background-color;
+      }
+    }
+  }
+}

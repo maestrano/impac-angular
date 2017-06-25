@@ -635,6 +635,7 @@
 
   "impac.dashboard.create.create_new_dashboard":      "Create New {name}",
   "impac.dashboard.create.name":                      "Name",
+  "impac.dashboard.create.rename":                    "Rename",
   "impac.dashboard.create.type":                      "Type",
   "impac.dashboard.create.current_company":           "Current Company",
   "impac.dashboard.create.multi_company":             "Multi Company",
