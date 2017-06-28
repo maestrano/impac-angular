@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacDashboardsSvc, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacDashboardsSvc, ImpacTheming, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
@@ -23,6 +23,8 @@ angular
         $scope.showEditMode = false
         $scope.isAddingKpi = false
         $scope.showContent = true
+
+        $scope.dhbLabelName = ImpacTheming.getDhbLabelName()
 
         # references to services (bound objects shared between all controllers)
         # -------------------------------------

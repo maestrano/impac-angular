@@ -102,6 +102,7 @@ angular
 
         self.errors = ''
         self.isLoading = false
+        self.dhbLabelName = ImpacTheming.getDhbLabelName()
         self.instance = $uibModal.open(self.config)
 
         self.instance.rendered.then (onRender) ->
@@ -143,6 +144,7 @@ angular
       scope.isAddWidgetEnabled = options.addWidgetEnabled
       scope.isAddDhbEnabled = options.addDhbEnabled
       scope.isDeleteDhbEnabled = options.deleteDhbEnabled
+      scope.dhbLabelName = ImpacTheming.getDhbLabelName()
 
       # buttons / display
       # -------------------------------------

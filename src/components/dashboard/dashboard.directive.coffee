@@ -22,6 +22,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
     $scope.dhbErrorsConfig = ImpacTheming.get().dhbErrorsConfig
+    $scope.dhbLabelName = ImpacTheming.getDhbLabelName()
 
     # Dashboard Settings
     # -------------------------------------
@@ -126,6 +127,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       self.model = { name: '' }
       self.errors = ''
       self.isLoading = false
+      self.dhbLabelName = ImpacTheming.getDhbLabelName()
       self.instance = $uibModal.open(self.config)
 
       self.instance.rendered.then (onRender) ->
@@ -296,12 +298,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
           # Category defined by the widget's template
           if template.metadata && template.metadata.template
             widgetCategory = template.metadata.template.split('/')[0]
-          
+
           # Category defined by the bolt
           else if template.metadata && template.metadata.bolt_path
             bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == template.metadata.bolt_path
             widgetCategory = bolt.category
-          
+
           # Category defined by the widget endpoint
           else
             widgetCategory = template.endpoint.split('/')[0]
