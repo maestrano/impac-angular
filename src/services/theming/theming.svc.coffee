@@ -30,6 +30,7 @@ angular
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
+        multiCompany: false
       # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'

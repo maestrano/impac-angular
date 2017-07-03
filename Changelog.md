@@ -3,11 +3,18 @@
 ### v1.5.2 | 2017 - Week 24
 
 #### Adds
+- Re-adds the ability to enable multi-company dashboards
 
 #### Fixes
 - Delegate i18n configuration to the host app
 
 #### Config changes
+- Multi-company dashboards enable/disable option to Theming service
+```javascript
+dhbConfig: {
+  multiCompany: true
+}
+```
 - Remove `translateSettings` from ThemingSvc
 - Host application must configure `$translateProvider`:
 - - indicate how to load the locale files

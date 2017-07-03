@@ -216,6 +216,7 @@ angular
     dhbConfig:
       showDhbHeading: false
       dhbHeadingText: 'Impac!'
+      multiCompany: false
     dhbSelectorConfig:
       selectorType: 'dropdown'
       customTmplPath: null
