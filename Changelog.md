@@ -7,6 +7,7 @@
 
 #### Fixes
 - Delegate i18n configuration to the host app
+- Fixes some widgets breaking during load because w.initContext is not designed for async definitions (i18n async translations were being made).
 
 #### Config changes
 - Multi-company dashboards enable/disable option to Theming service

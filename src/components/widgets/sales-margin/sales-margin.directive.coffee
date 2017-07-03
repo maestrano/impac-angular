@@ -26,20 +26,17 @@ module.controller('WidgetSalesMarginCtrl', ($scope, $q, ChartFormatterSvc, $filt
   w.initContext = ->
     $scope.isDataFound = w.content? && w.content.margins? && w.content.dates?
 
-    $translate([
-      'impac.widget.sales_margin.including_taxes',
-      'impac.widget.sales_margin.excluding_taxes']).then(
-        (translations) ->
-          $scope.filterOptions = [
-            {label: translations['impac.widget.sales_margin.including_taxes'], value: 'gross_margin'},
-            {label: translations['impac.widget.sales_margin.excluding_taxes'], value: 'net_margin'}
-          ]
+    if $scope.isDataFound
+      $scope.filterOptions = [
+        {label: $translate.instant('impac.widget.sales_margin.including_taxes'), value: 'gross_margin'},
+        {label: $translate.instant('impac.widget.sales_margin.excluding_taxes'), value: 'net_margin'}
+      ]
 
-          if w.metadata? && w.metadata.filter=="net_margin"
-            $scope.filter = angular.copy $scope.filterOptions[1]
-          else
-            $scope.filter = angular.copy $scope.filterOptions[0]
-      )
+      if w.metadata? && w.metadata.filter=="net_margin"
+        $scope.filter = angular.copy $scope.filterOptions[1]
+      else
+        $scope.filter = angular.copy $scope.filterOptions[0]
+
   $scope.getTotalMargin = ->
     if $scope.isDataFound
       if w.metadata? && w.metadata.filter=="net_margin"
