@@ -85,7 +85,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   getThresholds = ->
     targets = w.kpis? && w.kpis[0] && w.kpis[0].targets
     return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-    [targets.threshold[0].min]
+    [{ kpiId: w.kpis[0].id, value: targets.threshold[0].min }]
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
