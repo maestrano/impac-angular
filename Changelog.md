@@ -1,5 +1,34 @@
 # Impac! Frontend Changelog
 
+### v1.5.2 | 2017 - Week 27
+
+#### Adds
+- Re-adds the ability to enable multi-company dashboards
+- [IMPAC-598] Better UI for threshold KPI
+
+#### Fixes
+- Delegate i18n configuration to the host app
+- [IMPAC-592] Use $translate.instant in synchronous `initContext` methods
+
+#### Config changes
+- Multi-company dashboards enable/disable option to Theming service
+```javascript
+dhbConfig: {
+  multiCompany: true
+}
+```
+- Remove `translateSettings` from ThemingSvc
+- Host application must configure `$translateProvider`:
+- - indicate how to load the locale files
+- - configure `preferredLanguage` and `fallbackLanguage`
+- - manage the active language using `$translate.use`
+
+#### Dependencies
+- Mno-enterprise >= 3.3.0
+- Mno-enterprise Angular >= 1.1.0
+
+-------------------------------------------------------------
+
 ### v1.5.1 | 2017 - Week 23
 
 #### Adds

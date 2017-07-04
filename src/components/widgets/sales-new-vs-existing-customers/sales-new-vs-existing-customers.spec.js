@@ -5,9 +5,15 @@ describe('<> sales-new-vs-existing-customers widget', function () {
 
   var template = angular.element('<div widget-sales-new-vs-existing-customers />');
 
-  // Injects services needed by the directive & this spec
   beforeEach(function () {
-    module('maestrano.impac');
+    module('maestrano.impac', function ($translateProvider) {
+      // Stubs the en-AU language with locale file
+      jasmine.getJSONFixtures().fixturesPath = "base/dist/locales/";
+      $translateProvider.translations('en-AU', getJSONFixture("en-AU.json"));
+      $translateProvider.preferredLanguage('en-AU');
+    })
+
+    // Injects services needed by the directive & this spec
     inject(function (_$q_, _ChartFormatterSvc_) {
       $q = _$q_;
       ChartFormatterSvc = _ChartFormatterSvc_;

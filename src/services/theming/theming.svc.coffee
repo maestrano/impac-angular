@@ -30,6 +30,7 @@ angular
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
+        multiCompany: false
       # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'
@@ -111,13 +112,6 @@ angular
             default: "impac.widget.theming.hist.default.prefix"
         timePeriod:
           showSlider: true
-
-      translateSettings:
-        preferredLanguage: 'en-gb'
-        fallbackLanguage: ''
-        customLocaleFiles:
-          prefix: ''
-          suffix: '.json'
 
 
     #=======================================
