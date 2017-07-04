@@ -8,7 +8,7 @@
 
 #### Fixes
 - Delegate i18n configuration to the host app
-- [IMPAC-592] Use $translate.instant in synchronous `initContext` methods
+- [IMPAC-592] Use `$translate.instant` in synchronous `initContext` methods
 
 #### Config changes
 - Multi-company dashboards enable/disable option to Theming service
