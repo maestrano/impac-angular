@@ -1,6 +1,6 @@
 /**
  * impac-angular - Impac! Front-End Library
- * @version v1.5.0
+ * @version v1.5.2
  * @git git://github.com/maestrano/impac-angular.git
  * @license Copyright 2017 Maestrano Pty Ltd
  */
@@ -54,6 +54,7 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-assets-liability-summary',
     'impac.components.widgets.accounts-balance-sheet',
     'impac.components.widgets.accounts-balance',
+    'impac.components.widgets.accounts-cash-projection',
     'impac.components.widgets.accounts-cash-summary',
     'impac.components.widgets.accounts-comparison',
     'impac.components.widgets.accounts-custom-calculation',
@@ -65,6 +66,7 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-assets-vs-liabilities',
     'impac.components.widgets.accounts-detailed-classifications',
     'impac.components.widgets.accounts-ratios',
+    'impac.components.widgets.accounts-cash-balance',
     'impac.components.widgets.hr-employee-details',
     'impac.components.widgets.hr-employees-list',
     'impac.components.widgets.hr-leaves-balance',
@@ -119,7 +121,7 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
-    'impac.components.widgets-settings.offsets'
+    'impac.components.widgets-settings.offsets',
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -136,7 +138,8 @@ angular.module('impac.components.widgets-common',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
     'impac.components.widgets-common.autofocus',
-    'impac.components.widgets-common.currency-conversions'
+    'impac.components.widgets-common.currency-conversions',
+    'impac.components.widgets-common.chart-threshold',
   ]
 );
 angular.module('impac.components.common',
@@ -154,6 +157,7 @@ angular.module('impac.services',
     'impac.services.theming',
     'impac.services.assets',
     'impac.services.chart-formatter',
+    'impac.services.highcharts-factory',
     'impac.services.message-bus',
     'impac.services.utilities',
     'impac.services.main',
@@ -181,30 +185,33 @@ angular.module('impac.filters',
 
 angular.module("impac.components.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("alerts-config/alerts-config.modal.html","<div class=\"kpi-alerts-settings\">\n\n  <div class=\"modal-header\" translate>\n    impac.kpi.alerts.title\n  </div>\n\n  <div class=\"modal-body\">\n    <span translate=\"impac.kpi.alerts.explanation\"\n          translate-values=\"{name: kpi.name,  element_watched: kpi.element_watched}\"></span>\n    <u>{{translateTarget(kpi)}}</u> :\n\n    <ul class=\"list-group\">\n\n      <li class=\"list-group-item\" ng-repeat=\"alert in alerts\" ng-class=\"{active: alert.active}\">\n        <div class=\"alert-toggle\" ng-click=\"toggleAlert(alert)\">\n          <i class=\"fa\" ng-class=\"alert.active ? \'fa-toggle-on\' : \'fa-toggle-off\'\" />\n          {{alert.label}}\n        </div>\n\n        <ul class=\"list-group recipients-list\" ng-show=\"showRecipientList(alert)\">\n\n          <li class=\"list-group-item\" ng-repeat=\"member in members track by member.id\" ng-if=\"member.active\" ng-click=\"toggleRecipient(member)\">\n            {{member.email}}\n            <button type=\"button\" class=\"close\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n          </li>\n\n        </ul>\n\n        <input class=\"recipient-search\" placeholder=\"Add Recipients By Member Email\" ng-show=\"showRecipientList(alert)\" ng-model=\"recipientSearch.text\" ng-keydown=\"onAddRecipientsKeyPress($event)\" ng-focus=\"onRecipientSearchFocus()\"/>\n\n        <ul class=\"list-group recipients-list available\" ng-show=\"showAvailableRecipients(alert)\">\n\n          <li class=\"list-group-item\" ng-class=\"member == selectedMember ? \'active\' : \'\'\" ng-repeat=\"member in members | filter:recipientSearch.text as filteredMembers\" ng-if=\"!member.active\" ng-click=\"toggleRecipient(member)\">\n            {{member.email}}\n          </li>\n\n        </ul>\n      </li>\n\n    </ul>\n\n  </div>\n\n  <div class=\"modal-footer text-right\">\n    <button class=\"btn btn-default\" ng-click=\"modal.close()\" translate>impac.kpi.alerts.cancel</button>\n    <button class=\"btn btn-primary\" ng-click=\"save(alerts)\" translate><strong>impac.kpi.alerts.save</strong></button>\n  </div>\n\n</div>\n");
 $templateCache.put("alerts-config/alerts-config.tmpl.html","<div class=\"alerts-config\" ng-show=\"(kpi.targets && kpi.targets[kpi.element_watched].length > 0)\" ng-click=\"showAlertsSettings()\">\n  <!-- directive link function compiles html here -->\n</div>\n");
-$templateCache.put("dashboard-selector/bootstrap-tabs.tmpl.html","<div class=\"row buttons-bar-row\" ng-class=\"{\'pdf-mode\': pdfMode}\">\n\n  <div ng-show=\"pdfMode\" class=\'col-md-6 col-md-offset-3 title-container text-center\'>\n    <h1 class=\"dashboard-title\">\n      {{currentDhb.full_name}}\n    </h1>\n    <p class=\"data-source-label\">\n      <small><b translate>impac.dashboard_selector.bootstrap_tabs.source</b> {{organizationsNames()}}</small>\n    </p>\n  </div>\n\n  <div class=\"buttons-bar col-sm-8\" ng-show=\"isThereADashboard() && !pdfMode\">\n    <uib-tabset type=\"{{selectorType}}\">\n      <uib-tab ng-repeat=\"dhb in dashboardsList\" ng-click=\"selectDashboard(dhb.id)\" active=\"dhb.active\">\n        <uib-tab-heading>\n          {{dhb.full_name}}\n          <a href=\"\" class=\"close-link\" ng-if=\"isDeleteDhbEnabled\">\n            <i class=\"fa fa-times\" ng-click=\"deleteDashboardModal.open()\"></i>\n          </a>\n        </uib-tab-heading>\n      </uib-tab>\n      <uib-tab ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\">\n        <uib-tab-heading>\n          <a href=\"\"><i class=\"fa fa-wheelchair\"></i></a>\n        </uib-tab-heading>\n      </uib-tab>\n      <uib-tab ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\">\n        <uib-tab-heading>\n          <a href=\"\">+</a>\n        </uib-tab-heading>\n      </uib-tab>\n    </uib-tabset>\n  </div>\n\n  <div class=\'buttons-bar hidden-print\' ng-class=\"{\'col-md-3\': pdfMode, \'col-sm-4\': !pdfMode}\">\n    <div class=\'actions-panel\'>\n      <button ng-if=\'isAccessibilityEnabled && !pdfMode\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-wheelchair\'></span></button>\n      <button ng-if=\"isAddWidgetEnabled && isThereADashboard() && !pdfMode\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-plus\'></span> {{\'impac.dashboard_selector.bootstrap_tabs.add_widget\' | translate}}</button>\n\n      <div dashboard-settings-pdf-mode ng-if=\"isThereADashboard() && !isCurrentDashboardEmpty()\" />\n\n    </div>\n  </div>\n</div>\n");
-$templateCache.put("dashboard-selector/delete.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"instance.close()\" >×</div>\n  <h3 translate>impac.dashboard_selector.delete.delete_dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new widget -->\n  <p translate>impac.dashboard_selector.delete_widget.description</p>\n\n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"instance.dismiss()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\" translate>impac.dashboard_selector.delete.cancel</button>\n      <button class=\"btn btn-danger\" ng-click=\"proceed()\" ng-disabled=\"isLoading\">\n        <i class=\"fa fa-spinner fa-pulse loader\" ng-if=\"isLoading\"></i>\n        {{\'impac.dashboard_selector.delete.delete\' | translate}}\n      </button>\n    </div>\n  </div>\n</div>\n");
-$templateCache.put("dashboard-selector/dropdown.tmpl.html","<div class=\"row buttons-bar-row buttons-bar no-gutters\" ng-class=\"{\'pdf-mode\': pdfMode}\">\n\n  <div ng-show=\"pdfMode\" class=\'col-md-6 col-md-offset-3 title-container text-center\'>\n    <h1 class=\"dashboard-title\">\n      {{currentDhb.full_name}}\n    </h1>\n    <p class=\"data-source-label\">\n      <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>\n    </p>\n  </div>\n\n  <div class=\"col-md-6 dropdown-container\" ng-hide=\"isLoading || pdfMode\">\n    <div ng-if=\"isThereADashboard()\">\n      <h4 class=\'dashboard-title\'>\n        <div style=\"display: inline-block;\" ng-click=\"toggleShowDashboardsDropdown()\">\n          {{currentDhb.full_name}}\n          <i class=\"fa fa-chevron-down\" style=\"font-size: 18px;\"></i>\n        </div>\n        <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip.change_name\' | translate}}\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(currentDhb)\"></i>\n      </h4>\n\n      <div ng-show=\"showDashboardsDropdown\" class=\'dashboard-select hidden-print\'>\n        <div ng-hide=\"dhb.id == currentDhb.id\" class=\'option\' ng-repeat=\"dhb in dashboardsList\">\n          <span class=\"name\" ng-click=\"selectDashboard(dhb.id)\">{{dhb.full_name}}</span>\n          <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip.change_name\' | translate}}\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(dhb)\"/>\n        </div>\n\n        <div ng-show=\"showCreateDashboardButton\" class=\"option create\" ng-click=\"onCreateDashboard()\"><i class=\"fa fa-plus\" /> {{\'impac.dashboard_selector.dropdown.create_dashboard\' | translate}}</div>\n      </div>\n\n      <div ng-if=\"showChangeDashboardNameBox\" class=\"change-name\">\n        <p translate>impac.dashboard_selector.dropdown.change_dashboard_name</p>\n        <input type=\"text\" class=\"form-control\" id=\"changeDhbNameInput\" ng-model=\"dashboardToChange.name\" ng-keyup=\"checkAndUpdateDashboardName($event)\"/>\n        <button class=\"btn btn-sm btn-default\" ng-click=\"hideChangeDashboardNameBox()\" translate>impac.dashboard_selector.dropdown.cancel</button>\n        <button class=\"btn btn-sm btn-success\" style=\"margin-left: 10px\" ng-click=\"updateDashboardName()\" translate>impac.dashboard_selector.dropdown.confirm</button>\n      </div>\n\n      <p class=\"data-source-label\">\n        <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>\n      </p>\n    </div>\n  </div>\n\n  <div class=\"col-md-6 loader-container\" ng-show=\"isLoading\">\n    <i class=\"fa fa-spinner fa-pulse fa-4x loading-spinner\"/>\n  </div>\n\n  <div class=\'actions-panel hidden-print\' ng-class=\"{\'col-md-3\': pdfMode, \'col-md-6\': !pdfMode}\">\n    <button ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"showWidgetSelector\" ng-hide=\"pdfMode\"><span class=\'fa fa-wheelchair\'></span></button>\n\n    <button ng-if=\"isAddWidgetEnabled && isThereADashboard()\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\" ng-hide=\"pdfMode\"><span class=\'fa fa-plus\'></span> {{\'impac.dashboard_selector.dropdown.add_widget\' | translate}}</button>\n\n    <button ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\" class=\'btn btn-warning\' ng-show=\"showCreateDashboardButton\" ng-hide=\"pdfMode\"><span class=\'fa fa-pencil-square-o\'></span> {{\'impac.dashboard_selector.dropdown.create_dashboard\' | translate}}</button>\n\n    <div dashboard-settings-pdf-mode ng-if=\"isThereADashboard() && !isCurrentDashboardEmpty()\" />\n\n    <button ng-if=\"isDeleteDhbEnabled && isThereADashboard()\" ng-click=\"deleteDashboardModal.open()\" class=\'btn btn-danger hidden-xs\' ng-show=\"isThereADashboard()\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip\' | translate}}\" ng-hide=\"pdfMode\"><span class=\'fa fa-trash-o\'></span> </button>\n  </div>\n\n</div>\n");
 $templateCache.put("dashboard/create.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"instance.close()\" >×</div>\n  <h3 translate>impac.dashboard.create.create_new_dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new dashboard -->\n  <div class=\"row dashboard-form\">\n    <div class=\"col-sm-10 col-sm-offset-1\">\n      <form class=\"form-horizontal\" role=\"form\">\n        <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\" translate>impac.dashboard.create.name</label>\n          <div class=\"col-sm-10\">\n            <input type=\'text\' class=\"form-control\" ng-model=\"model.name\" placeholder=\"{{\'impac.dashboard.create.placeholder.cash_accounts\' | translate}}\" required>\n          </div>\n        </div>\n\n        <div class=\"form-group\" ng-show=\"isMultiCompanyAvailable()\">\n          <label class=\"col-sm-2 control-label\" translate>impac.dashboard.create.type</label>\n          <div class=\"col-sm-10\">\n            <div class=\"btn-group\" role=\"group\">\n              <button type=\"button\" ng-click=\"selectMode(\'single\')\" ng-class=\"btnBlassFor(\'single\')\" translate>impac.dashboard.create.current_company</button>\n              <button type=\"button\" ng-click=\"selectMode(\'multi\')\" ng-class=\"btnBlassFor(\'multi\')\" translate>impac.dashboard.create.multi_company</button>\n            </div>\n          </div>\n        </div>\n\n        <!-- Single Company mode -->\n        <div class=\"form-group\" ng-show=\"isCurrentOrganizationShown()\">\n          <div ng-show=\"!canAccessAnalyticsForCurrentOrganization()\" class=\"text-center text-purple\">\n            <div class=\"spacer1\"></div>\n            <p>\n              {{\'impac.dashboard.create.now_access_text\' | translate}} {{currentOrganization.name}}.\n              <span ng-show=\"isMultiCompanyAvailable()\" translate>impac.dashboard.create.select_multi_company</span>\n            </p>\n          </div>\n        </div>\n\n        <!-- Multi Company mode -->\n        <div class=\"form-group\" ng-show=\"isSelectOrganizationShown()\">\n          <label class=\"col-sm-2 control-label\" translate>impac.dashboard.create.companies</label>\n          <div class=\"col-sm-10\">\n            <ul class=\"list-unstyled\">\n              <li ng-repeat=\"organization in organizations\" >\n                <input type=\"checkbox\" ng-model=\"organization.$selected\" ng-disabled=\"!canAccessAnalyticsData(organization)\">\n                {{organization.name}}\n                <span ng-show=\"organization.is_customer_account\">(customer)</span>\n                <span ng-show=\"!canAccessAnalyticsData(organization)\">\n                  <em><small>\n                    &nbsp;\n                    &nbsp;\n                    <i class=\"fa fa-exclamation-circle text-danger\" uib-tooltip=\"{{\'impac.dashboard.create.tooltip.access\' | translate}}\"></i>\n                  </small></em>\n                </span>\n              </li>\n            </ul>\n          </div>\n        </div>\n      </form>\n\n      <!-- End row col -->\n    </div>\n\n    <!-- End Dashboard form -->\n  </div>\n\n\n\n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"instance.dismiss()\" ng-hide=\"isLoading\" translate>impac.dashboard.create.cancel</button>\n      <button class=\"btn btn-primary\" ng-click=\"proceed()\" ng-disabled=\"isProceedDisabled()\">\n        <i class=\"fa fa-spinner fa-pulse loader\" ng-if=\"isLoading\"></i>\n        {{\'impac.dashboard.create.add\' | translate}}\n      </button>\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("dashboard/dashboard.tmpl.html","<!-- DASHBOARD -->\n<div class=\"analytics\" ng-hide=\"(isLoading || forceLoad || failedDashboardLoad)\" ng-class=\"{\'hide-dhb\': (isLoading || forceLoad), \'show-dhb\': !(isLoading || forceLoad), \'pdf-mode\': pdfMode }\">\n  <div mno-star-wizard=true modal-open=\'starWizardModal.value\'></div>\n\n  <!-- Title and Dashboard selection -->\n  <div class=\"row\" id=\"dashboard-heading\" ng-if=\"showDhbHeading\">\n    <div class=\"col-xs-12\">\n      <img ng-src=\"{{impacTitleLogo}}\" ng-click=\"!pdfMode || triggerUpload()\" ng-class=\"{\'pdf-mode\': pdfMode}\" />\n      <br />\n      <button class=\"btn btn-sm btn-default hidden-print\" ng-click=\"triggerUpload()\" ng-if=\"pdfMode\" translate>impac.dashboard.change_logo</button>\n      <input type=\"file\" style=\"display:none\" id=\"fileInput\" name=\"filedata\"/>\n    </div>\n\n    <div class=\"col-xs-12\">\n      <div class=\"caption\">{{dhbHeadingText}}</div>\n    </div>\n  </div>\n\n  <!-- Impac KPI\'s -->\n  <kpis-bar ng-if=\"showKpisBar()\" kpis=\"currentDhb.kpis\"></kpis-bar>\n\n  <!-- Dashboards selection/creation/deletion -->\n  <dashboard-selector id=\"module__dashboard-selector\" is-widget-selector-shown=\"showWidgetSelector()\" on-create-dashboard=\"createDashboardModal.open()\" on-display-widget-selector=\"displayWidgetSelector()\" on-select-dashboard=\"activateTimer()\" pdf-mode=\"pdfMode\"></dashboard-selector>\n\n  <div id=\"sub-menu\" uib-collapse=\"!showSubMenu\">\n    <i class=\"fa fa-times\" ng-click=\"hideSubMenu()\" />\n\n    <!-- Displayed to MYOB Essentials Users -->\n    <div id=\"myob-message\" ng-if=\"hasMyobEssentialsOnly && myobMessageConfig.show\" class=\"alert alert-warning\">\n      <h3 translate>impac.dashboard.it_looks_like</h3>\n      <p translate=\"impac.dashboard.unfortunately_information\"></p>\n      <p>{{\'impac.dashboard.myob_message.part_1\' | translate}} <a href=\"http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948\" target=\"_blank\">{{\'impac.dashboard.myob_message.part_2\' | translate}}</a> {{\'impac.dashboard.myob_message.part_3\' | translate}}</p>\n      <p align=\"right\" ng-if=\"myobMessageConfig.appLink.show\"><a ng-href=\"{{myobMessageConfig.appLink.url}}\" target=\"_blank\" translate>{{myobMessageConfig.appLink.text}}</a></p>\n    </div>\n  </div>\n\n  <!-- Widgets selection container -->\n  <div id=\"widget-selector\" uib-collapse=\"!showWidgetSelector()\" ng-if=\"!customWidgetSelector.path\">\n    <div class=\"title\">\n      <p class=\"instruction\" translate>impac.dashboard.select_the_widgets</p>\n      <span class=\"widget-added badge\" translate>impac.dashboard.widget_added</span>\n      <i class=\"fa fa-times-circle close-selector\" ng-if=\"showCloseWidgetSelectorButton()\" ng-click=\"displayWidgetSelector(false)\"/>\n    </div>\n\n    <div class=\"row top-container\">\n      <div class=\"col-md-3 categories-section\">\n        <div class=\"row section-header\">\n          <span translate>impac.dashboard.all_categories</span>\n        </div>\n        <div class=\"row section-lines\">\n          <div class=\"col-md-12\">\n            <p class=\"line-item\" ng-click=\"selectCategory(\'accounts\')\" ng-class=\"isCategorySelected(\'accounts\') ? \'selected\' : none\" translate>impac.dashboard.accounting</p>\n            <p class=\"line-item\" ng-click=\"selectCategory(\'invoices\')\" ng-class=\"isCategorySelected(\'invoices\') ? \'selected\' : none\" translate>impac.dashboard.invoicing</p>\n            <p class=\"line-item\" ng-click=\"selectCategory(\'hr\')\" ng-class=\"isCategorySelected(\'hr\') ? \'selected\' : none\" translate>impac.dashboard.hr_or_payroll</p>\n            <p class=\"line-item\" ng-click=\"selectCategory(\'sales\')\" ng-class=\"isCategorySelected(\'sales\') ? \'selected\' : none\" translate>impac.dashboard.sales</p>\n          </div>\n        </div>\n        <div class=\"arrow-icon\" ng-style=\"getSelectedCategoryTop()\">\n          <div class=\"square\"></div>\n          <i class=\"fa fa-caret-right\"></i>\n        </div>\n      </div>\n\n      <div class=\"col-md-9 widgets-section\">\n        <div class=\"section-header row\">\n          <span>{{getSelectedCategoryName() | titleize}}</span>\n        </div>\n        <div class=\"section-lines\">\n          <div class=\"line-items-grid\">\n            <div class=\"grid-item\" ng-repeat=\"widgetTemplate in getWidgetsForSelectedCategory()\" ng-click=\"addWidget(widgetTemplate)\" uib-tooltip=\"{{widgetTemplate.desc}}\" tooltip-placement=\"{{$index < 9 ? \'bottom\' : \'top\'}}\" tooltip-animation=\"false\"  tooltip-append-to-body=\"true\" tooltip-class=\"impac-widget-selector-tooltip\">\n              <i class=\"fa fa-{{widgetTemplate.icon}} line-item\" />\n              <p class=\"line-item\" ng-bind=\"widgetTemplate.name\"></p>\n              <i class=\"fa fa-plus-circle line-item\" />\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"bottom\" ng-if=\"widgetSuggestionModal.config.apiPath\">\n      <span class=\"suggestion\">\n        {{\'impac.dashboard.can_not_find\' | translate}} <a ng-click=\"widgetSuggestionModal.open()\">{{\'impac.dashboard.give_us\' | translate}}</a>\n      </span>\n    </div>\n  </div>\n\n  <!-- custom widget selector template configured from ImpacThemingProvider -->\n  <div id=\"custom-widget-selector\" ng-if=\"customWidgetSelector.path\" ng-include=\"customWidgetSelector.path\" ng-hide=\"showChooseDhbMsg()\"></div>\n\n  <!-- Dashboard Settings - DEFAULT POSITION -->\n  <div id=\"dashboard-settings-panel\" ng-if=\"!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()\" class=\"row\" ng-hide=\"pdfMode\">\n    <div class=\"col-xs-12\">\n      <div dashboard-setting-sync-apps ng-if=\"dhbSettingsConfig.syncApps.show()\"/>\n      <div dashboard-setting-currency currency=\"currentDhb.currency\" />\n    </div>\n  </div>\n\n  <!-- Errors -->\n  <div class=\"alert alert-error\" ng-show=\"errors\">\n    <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n    <ul>\n      <li ng-repeat=\"error in errors\">{{error}}</li>\n    </ul>\n  </div>\n\n  <div id=\"no-widgets-container\" class=\"row text-center ng-hide\" ng-show=\'(showChooseDhbMsg() || showNoWidgetsMsg())\'>\n\n    <img ng-src=\"{{impacDashboardBackground}}\" class=\"bg\">\n\n    <div class=\"impac-info-message\">\n      <!-- First Time Dashboard Creation -->\n      <div class=\"ng-hide\" ng-show=\'showChooseDhbMsg()\'>\n        <div class=\'hidden-xs\'>\n          <div class=\"row top-buffer-4\">\n            <div class=\"col-md-8 col-md-offset-2\">\n              <div class=\"info-text\">\n                <p><b translate>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>\n                <p translate>{{dhbErrorsConfig.firstTimeCreated.second}}</p>\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class=\"align-center top-buffer-2\">\n          <button ng-click=\"createDashboardModal.open()\" class=\'btn btn-lg btn-warning\'><span class=\'fa fa-plus\'></span> {{\'impac.dashboard.create_a_dashboard\' | translate}}</button>\n        </div>\n      </div>\n\n      <!-- Empty Dashboard -->\n      <div class=\"ng-hide\" ng-show=\'showNoWidgetsMsg()\'>\n        <div class=\'hidden-xs\'>\n          <div class=\"row top-buffer-4\">\n            <div class=\"col-md-8 col-md-offset-2\">\n              <div class=\"info-text\">\n                <p><b translate>{{dhbErrorsConfig.empty.first}}</b></p>\n                <p translate>{{dhbErrorsConfig.empty.second}}</p>\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class=\"align-center top-buffer-2\">\n          <button ng-disabled=\"showWidgetSelector()\" ng-click=\"displayWidgetSelector()\" class=\'btn btn-lg btn-warning\'><span class=\'fa fa-plus\'></span> {{\'impac.dashboard.add_new_widget\' | translate}}</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- First Time Dashboard Creation -->\n  <div class=\"row text-center\" ng-show=\'showChooseDhbMsg()\'>\n    <img class=\"bg\" ng-src=\"{{impacDashboardBackground}}\">\n    <div class=\"spacer2 hidden-xs\"></div>\n    <div class=\'col-md-8 col-md-offset-2\'>\n      <p class=\"text-muted\"><small><em translate>{{dhbErrorsConfig.firstTimeCreated.note}}</em></small></p>\n    </div>\n  </div>\n\n  <!-- Widgets -->\n  <div class=\'row\' id=\"widgets-section\" ng-hide=\"showNoWidgetsMsg() || showChooseDhbMsg()\">\n    <!-- Dashboard Settings - CONFIGURED INSIDE WIDGETS-CONTAINER -->\n    <div id=\"dashboard-settings-panel\" ng-if=\"dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()\" class=\"col-md-12 in-widgets-container\">\n      <div>\n        <div dashboard-setting-sync-apps ng-if=\"dhbSettingsConfig.syncApps.show()\"/>\n        <div dashboard-setting-currency currency=\"currentDhb.currency\" />\n      </div>\n    </div>\n    <div class=\"col-md-12\">\n      <div id=\"widgets-container\" ui-sortable=\"sortableOptions\" ng-model=\"currentDhb.widgets\" class=\"row\">\n        <!-- Widgets -->\n        <div impac-widget widget=\"widget\" is-accessibility=\"accessibility\" parent-dashboard=\"currentDhb\" ng-repeat=\"widget in currentDhb.widgets\" class=\"widget-item\" ng-class=\"widget.getCssClasses()\" on-display-alerts=\"displaySubMenu()\" />\n        <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->\n        <div ng-if=\"isAddChartEnabled\" class=\"unsortable\" ng-click=\"addChartTileOnClick()\">\n          <div class=\"col-md-6 widget-item add-chart\">\n            <div class=\"a-content\" translate>impac.dashboard.plus_chart</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"analytics\" ng-show=\"(isLoading || forceLoad)\">\n  <div class=\"row\">\n    <div class=\"col-md-12 loader-container text-center\" style=\"margin-top: 200px;\">\n      <i class=\"fa fa-refresh fa-spin\" style=\"font-size: 250px; opacity: 0.7;\"/>\n    </div>\n  </div>\n</div>\n\n<div class=\"analytics load-failed\" ng-show=\"!isLoading && failedDashboardLoad\">\n  <div class=\"row\">\n    <div class=\"col-md-12 text-center\" style=\"margin-top: 200px;\">\n      <p translate>{{dhbErrorsConfig.failed.first}}</p>\n      <div class=\"second-msg\" ng-if=\"displaySecondMsg\">\n        <p translate>{{dhbErrorsConfig.failed.second}}</p>\n      </div>\n      <a href=\"\" ng-click=\"reloadDashboard()\">\n        <button type=\"button\" class=\"btn btn-default\" translate>impac.dashboard.refresh</button>\n      </a>\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("dashboard/widget-suggestion.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"instance.close()\" >×</div>\n  <h3 translate>impac.dashboard.widget_suggestion.suggest_a_widget</h3>\n</div>\n\n<div class=\"modal-body\">\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <label translate>impac.dashboard.widget_suggestion.widget_name</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.name\" ng-disabled=\"isLoading\" />\n    </div>\n    <div class=\"col-md-6\">\n      <label>In which category?</label><br />\n      <input type=\"text\" ng-model=\"widgetDetails.category\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" />\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <label translate>impac.dashboard.widget_suggestion.kind_of_information</label><br/>\n      <textarea ng-model=\"widgetDetails.description\" ng-disabled=\"isLoading\" />\n    </div>\n  </div>\n\n  <div class=\"spacer1\" ng-show=\"isLoading\" />\n\n  <div class=\"row\" uib-collapse=\"!onSuccess\">\n    <div class=\"col-md-12 text-center\">\n      <h3 class=\"thanks-message\">{{userName | titleize}}, <span translate=\"impac.dashboard.widget_suggestion.helping\"></span></h3>\n    </div>\n  </div>\n\n  <div class=\"row\" ng-show=\"error\">\n    <div class=\"col-md-12 text-center\">\n      <h5 style=\"color: red;\" translate>impac.dashboard.widget_suggestion.unable_to_send</h5>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"instance.dismiss()\" ng-hide=\"isLoading\" translate>impac.dashboard.widget_suggestion.cancel</button>\n      <button class=\"btn btn-info\" ng-click=\"proceed()\" ng-disabled=\"!(widgetDetails.name && widgetDetails.category && widgetDetails.description) || isLoading\">\n        <i class=\"fa fa-spinner fa-pulse loader\" ng-show=\"isLoading\"></i>\n        {{\'impac.dashboard.widget_suggestion.send_your_suggestion\' | translate}}\n      </button>\n    </div>\n  </div>\n</div>\n");
-$templateCache.put("kpi/kpi.tmpl.html","<div class=\"kpi\" ng-class=\"{ \'static\': kpi.static, \'triggered\': (kpi.layout.triggered && !isEditing() && !isLoading()), \'editing\': isEditing() }\">\n  <div class=\"content-container\" ng-hide=\"isLoading()\">\n    <div class=\"top-line\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\"></div>\n    <div class=\"kpi-content\" ng-show=\"showKpiContent()\" ng-class=\"{ \'editing\': isEditing() }\">\n      <!-- SHOW -->\n      <div class=\"kpi-show row nomargin nopadding\" ng-hide=\"isEditing()\">\n        <div class=\"col-xs-3 col-sm-3 kpi-icon\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\">\n          <i class=\"fa {{kpi.layout.icon.value}} fa-2x\"></i>\n        </div>\n        <div class=\"col-xs-9 col-sm-9 kpi-text\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\">\n          <span class=\"caption\" uib-tooltip=\"{{kpi.layout.text.caption}}\" tooltip-append-to-body=\"false\">{{kpi.layout.text.caption}}</span>\n          <span class=\"emphasis\" uib-tooltip=\"{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})\" tooltip-placement=\"bottom\" tooltip-append-to-body=\"false\">\n            <strong>{{kpi.layout.text.emphasis}}</strong> - <span class=\"real-value\">({{ getRealValue() }})</span>\n          </span>\n        </div>\n      </div>\n      <!-- EDIT -->\n      <div class=\"kpi-edit\" ng-show=\"isEditing()\">\n        <div class=\"kpi-name\">\n          <h6>{{kpi.name.toUpperCase()}}</h6>\n        </div>\n\n        <div class=\'alert-caption\'>\n          <span>{{kpi.layout.text.alert}}</span>\n        </div>\n\n        <form name=\"kpi{{kpi.id}}SettingsForm\">\n          <!-- watchables -->\n          <div ng-repeat=\"watchable in kpi.watchables track by $index\">\n            <div class=\"real-value\" ng-show=\"kpi.data\">{{\'impac.kpi.current\' | translate}} {{watchable}}: {{ getRealValue() }}</div>\n            <!-- targets -->\n            <div class=\"im-form-group\" ng-class=\"getFormTargetValueInput(watchable, $index).$valid ? \'has-success\' : \'has-error\'\" ng-repeat=\"target in targets[watchable] track by $index\">\n              <!-- target -->\n              <input name=\"{{watchable}}TargetValue{{$index}}\" type=\"text\" pattern=\"^-?\\d+(\\.\\d+)?$\" ng-model=\"target[getTargetPlaceholder(watchable).mode]\" placeholder=\"{{bindTargetInputPlaceholder(watchable, $index)}}\" ng-focus=\"setTargetInputPlaceholder(watchable, $index)\" ng-blur=\"resetTargetInputPlaceholder(watchable, $index)\" autofocus ng-keypress=\"onKeyPress($event)\" required>\n              <label for=\"targetValue\" class=\"im-control-label\">{{watchable | titleize}}</label><i class=\"im-bar\"></i>\n              <span class=\"kpi-target-unit\" aria-hidden=\"true\">{{getTargetUnit(watchable)}}</span>\n              <!-- target error messages -->\n              <div ng-messages=\"getFormTargetValueInput(watchable, $index).$error\" class=\"im-messages\">\n                <span ng-message=\"required\" translate>impac.kpi.kpi_target_require</span>\n                <span ng-message=\"pattern\" translate>impac.kpi.kpi_target_number</span>\n              </div>\n            </div>\n          </div>\n\n          <div class=\"im-form-group\">\n            <div ng-repeat=\"(param, paramValues) in kpi.possibleExtraParams track by $index\">\n              <!-- extra param selection -->\n              <select name=\"extraParam\" ng-model=\"kpi.extra_params[param]\" ng-change=\"updateExtraParam()\" ng-options=\"value.id as value.label for value in paramValues\">\n              </select>\n              <label for=\"extraParam\" class=\"im-control-label\">{{\'impac.kpi.extra_param_label.verb\' | translate}} {{param | titleize}}</label>\n              <i class=\"im-bar\"></i>\n            </div>\n          </div>\n        </form>\n\n        <!-- Alerts Config -->\n        <alerts-config kpi=\"kpi\" button-html=\"\n          <button class=\'kpi-alerts im-fab im-primary\'>\n            <i class=\'fa fa-bell\'></i>\n          </button>\">\n        </alerts-config>\n\n        <!-- Remove KPI -->\n        <button type=\"button\" class=\"kpi-remove im-fab im-warn\" ng-click=\"deleteKpi()\">\n          <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\n        </button>\n\n      </div>\n    </div>\n    <!-- Data not found display -->\n    <div class=\"kpi-no-data\" ng-if=\"isDataNotFound()\">\n      <!-- Remove KPI -->\n      <button type=\"button\" ng-show=\"isEditing()\" class=\"kpi-remove im-fab im-warn\" ng-click=\"deleteKpi()\">\n        <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\n      </button>\n      <div common-data-not-found no-image=\"true\" endpoint=\"::kpi.endpoint\"/>\n    </div>\n  </div>\n  <div class=\"col-xs-2 kpi-data-loader loader\" ng-if=\"isLoading()\">\n    <i class=\"fa fa-spinner fa-pulse fa-3x\"></i>\n  </div>\n</div>\n");
+$templateCache.put("dashboard-selector/bootstrap-tabs.tmpl.html","<div class=\"row buttons-bar-row\" ng-class=\"{\'pdf-mode\': pdfMode}\">\n\n  <div ng-show=\"pdfMode\" class=\'col-md-6 col-md-offset-3 title-container text-center\'>\n    <h1 class=\"dashboard-title\">\n      {{currentDhb.full_name}}\n    </h1>\n    <p class=\"data-source-label\">\n      <small><b translate>impac.dashboard_selector.bootstrap_tabs.source</b> {{organizationsNames()}}</small>\n    </p>\n  </div>\n\n  <div class=\"buttons-bar col-sm-8\" ng-show=\"isThereADashboard() && !pdfMode\">\n    <uib-tabset type=\"{{selectorType}}\">\n      <uib-tab ng-repeat=\"dhb in dashboardsList\" ng-click=\"selectDashboard(dhb.id)\" active=\"dhb.active\">\n        <uib-tab-heading>\n          {{dhb.full_name}}\n          <a href=\"\" class=\"close-link\" ng-if=\"isDeleteDhbEnabled\">\n            <i class=\"fa fa-times\" ng-click=\"deleteDashboardModal.open()\"></i>\n          </a>\n        </uib-tab-heading>\n      </uib-tab>\n      <uib-tab ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\">\n        <uib-tab-heading>\n          <a href=\"\"><i class=\"fa fa-wheelchair\"></i></a>\n        </uib-tab-heading>\n      </uib-tab>\n      <uib-tab ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\">\n        <uib-tab-heading>\n          <a href=\"\">+</a>\n        </uib-tab-heading>\n      </uib-tab>\n    </uib-tabset>\n  </div>\n\n  <div class=\'buttons-bar hidden-print\' ng-class=\"{\'col-md-3\': pdfMode, \'col-sm-4\': !pdfMode}\">\n    <div class=\'actions-panel\'>\n      <button ng-if=\'isAccessibilityEnabled && !pdfMode\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-wheelchair\'></span></button>\n      <button ng-if=\"isAddWidgetEnabled && isThereADashboard() && !pdfMode\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\"><span class=\'fa fa-plus\'></span> {{\'impac.dashboard_selector.bootstrap_tabs.add_widget\' | translate}}</button>\n\n      <div dashboard-settings-pdf-mode ng-if=\"isThereADashboard() && !isCurrentDashboardEmpty()\" />\n\n    </div>\n  </div>\n</div>\n");
+$templateCache.put("dashboard-selector/delete.modal.html","<div class=\"modal-header\">\n  <div class=\"close\" type=\"button\" ng-click=\"instance.close()\" >×</div>\n  <h3 translate>impac.dashboard_selector.delete.delete_dashboard</h3>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"alert alert-error\" ng-show=\"errors\">\n        <button class=\"close\" ng-click=\"errors=\'\'\">×</button>\n        <ul>\n          <li ng-repeat=\"error in errors\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <!-- Create a new widget -->\n  <p translate>impac.dashboard_selector.delete_widget.description</p>\n\n</div>\n\n<div class=\"modal-footer\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <button class=\"btn btn-shaded\" ng-click=\"instance.dismiss()\" ng-hide=\"isLoading\" ng-disabled=\"isLoading\" translate>impac.dashboard_selector.delete.cancel</button>\n      <button class=\"btn btn-danger\" ng-click=\"proceed()\" ng-disabled=\"isLoading\">\n        <i class=\"fa fa-spinner fa-pulse loader\" ng-if=\"isLoading\"></i>\n        {{\'impac.dashboard_selector.delete.delete\' | translate}}\n      </button>\n    </div>\n  </div>\n</div>\n");
+$templateCache.put("dashboard-selector/dropdown.tmpl.html","<div class=\"row buttons-bar-row buttons-bar no-gutters\" ng-class=\"{\'pdf-mode\': pdfMode}\">\n\n  <div ng-show=\"pdfMode\" class=\'col-md-6 col-md-offset-3 title-container text-center\'>\n    <h1 class=\"dashboard-title\">\n      {{currentDhb.full_name}}\n    </h1>\n    <p class=\"data-source-label\">\n      <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>\n    </p>\n  </div>\n\n  <div class=\"col-md-6 dropdown-container\" ng-hide=\"isLoading || pdfMode\">\n    <div ng-if=\"isThereADashboard()\">\n      <h4 class=\'dashboard-title\'>\n        <div style=\"display: inline-block;\" ng-click=\"toggleShowDashboardsDropdown()\">\n          {{currentDhb.full_name}}\n          <i class=\"fa fa-chevron-down\" style=\"font-size: 18px;\"></i>\n        </div>\n        <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip.change_name\' | translate}}\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(currentDhb)\"></i>\n      </h4>\n\n      <div ng-show=\"showDashboardsDropdown\" class=\'dashboard-select hidden-print\'>\n        <div ng-hide=\"dhb.id == currentDhb.id\" class=\'option\' ng-repeat=\"dhb in dashboardsList\">\n          <span class=\"name\" ng-click=\"selectDashboard(dhb.id)\">{{dhb.full_name}}</span>\n          <i ng-hide=\"showChangeDashboardNameBox\" class=\"fa fa-pencil\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip.change_name\' | translate}}\" tooltip-animation=\"false\" tooltip-append-to-body=\"true\" ng-click=\"toggleChangeDashboardNameBox(dhb)\"/>\n        </div>\n\n        <div ng-show=\"showCreateDashboardButton\" class=\"option create\" ng-click=\"onCreateDashboard()\"><i class=\"fa fa-plus\" /> {{\'impac.dashboard_selector.dropdown.create_dashboard\' | translate}}</div>\n      </div>\n\n      <div ng-if=\"showChangeDashboardNameBox\" class=\"change-name\">\n        <p translate>impac.dashboard_selector.dropdown.change_dashboard_name</p>\n        <input type=\"text\" class=\"form-control\" id=\"changeDhbNameInput\" ng-model=\"dashboardToChange.name\" ng-keyup=\"checkAndUpdateDashboardName($event)\"/>\n        <button class=\"btn btn-sm btn-default\" ng-click=\"hideChangeDashboardNameBox()\" translate>impac.dashboard_selector.dropdown.cancel</button>\n        <button class=\"btn btn-sm btn-success\" style=\"margin-left: 10px\" ng-click=\"updateDashboardName()\" translate>impac.dashboard_selector.dropdown.confirm</button>\n      </div>\n\n      <p class=\"data-source-label\">\n        <small><b translate>impac.dashboard_selector.dropdown.source</b> {{organizationsNames()}}</small>\n      </p>\n    </div>\n  </div>\n\n  <div class=\"col-md-6 loader-container\" ng-show=\"isLoading\">\n    <i class=\"fa fa-spinner fa-pulse fa-4x loading-spinner\"/>\n  </div>\n\n  <div class=\'actions-panel hidden-print\' ng-class=\"{\'col-md-3\': pdfMode, \'col-md-6\': !pdfMode}\">\n    <button ng-if=\'isAccessibilityEnabled\' ng-click=\"toggleAccessibilityMode()\" class=\'btn btn-info\' ng-disabled=\"showWidgetSelector\" ng-hide=\"pdfMode\"><span class=\'fa fa-wheelchair\'></span></button>\n\n    <button ng-if=\"isAddWidgetEnabled && isThereADashboard()\" ng-click=\"onDisplayWidgetSelector()\" class=\'btn btn-warning\' ng-disabled=\"isWidgetSelectorShown()\" ng-hide=\"pdfMode\"><span class=\'fa fa-plus\'></span> {{\'impac.dashboard_selector.dropdown.add_widget\' | translate}}</button>\n\n    <button ng-if=\"isAddDhbEnabled\" ng-click=\"onCreateDashboard()\" class=\'btn btn-warning\' ng-show=\"showCreateDashboardButton\" ng-hide=\"pdfMode\"><span class=\'fa fa-pencil-square-o\'></span> {{\'impac.dashboard_selector.dropdown.create_dashboard\' | translate}}</button>\n\n    <div dashboard-settings-pdf-mode ng-if=\"isThereADashboard() && !isCurrentDashboardEmpty()\" />\n\n    <button ng-if=\"isDeleteDhbEnabled && isThereADashboard()\" ng-click=\"deleteDashboardModal.open()\" class=\'btn btn-danger hidden-xs\' ng-show=\"isThereADashboard()\" uib-tooltip=\"{{\'impac.dashboard_selector.dropdown.tooltip\' | translate}}\" ng-hide=\"pdfMode\"><span class=\'fa fa-trash-o\'></span> </button>\n  </div>\n\n</div>\n");
 $templateCache.put("kpis-bar/kpis-bar.tmpl.html","<div class=\"kpis\" ng-class=\"{\'empty\': (kpis.length == 0), \'hidden-print\': (kpis.length == 0)}\">\n\n  <div class=\"actions\">\n    <button type=\"button\" class=\"toggle-show-content im-fab im-primary\" ng-click=\"toggleShowContent()\">\n      <a href=\"\"><i class=\"fa\" ng-class=\"{ \'fa-chevron-up\': showContent, \'fa-chevron-down\': !showContent }\"></i></a>\n    </button>\n    <div class=\"content-buttons\">\n      <button type=\"button\" class=\"add-kpis im-fab im-primary\" ng-click=\"availableKpis.toggle()\" ng-class=\"{ disabled: !hasKpiAvailability() }\">\n        <a href=\"\"><i class=\"fa\" ng-class=\"{\'fa-plus\': availableKpis.kpiSelectorHidden, \'fa-minus\': !availableKpis.kpiSelectorHidden}\"></i></a>\n      </button>\n      <button type=\"button\" class=\"edit-kpis im-fab im-primary\" ng-class=\"{ \'disabled\': toggleEditModeLock, \'editing\':isEditing() }\" ng-click=\"toggleEditMode()\" ng-if=\"kpis.length > 0\">\n        <a href=\"\"><i class=\"fa\" ng-class=\"{ \'fa-cog\': !isEditing(), \'fa-floppy-o\': isEditing() }\"></i></a>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"content\">\n    <div class=\"row title\" ng-if=\"kpis.length == 0 && availableKpis.kpiSelectorHidden\">\n      <span class=\"badge\" translate>impac.kpi_bar.new</span>\n      <div class=\"col-xs-12 text-center\">\n        <a href=\"\" class=\"show-dashboard\" ng-click=\"availableKpis.toggle()\" ng-show=\"hasKpiAvailability()\" translate>impac.kpi_bar.you_can_now</a>\n        <span class=\"no-kpi-templates\" ng-hide=\"hasKpiAvailability()\" translate>impac.kpi_bar.no_kpis</span>\n      </div>\n    </div>\n\n    <div class=\"row add-bar\" uib-collapse=\"availableKpis.kpiSelectorHidden\">\n      <div class=\"col-xs-12 col-sm-12\">\n        <div class=\"row\">\n          <div ng-repeat=\"kpi in availableKpis.list track by $index\" class=\"impac-kpi col-xs-6 col-sm-4 col-md-3\" ng-click=\"addKpi(kpi)\">\n            <div class=\"kpi add\" ng-hide=\"(availableKpis.list.length == 0)\">\n              <div class=\"top-line ui-sortable-handle\"></div>\n              <div class=\"kpi-content\">\n                <div class=\"kpi-show row nomargin nopadding\">\n                  <div class=\"col-xs-3 col-sm-3 kpi-icon\">\n                    <i class=\"fa fa-2x fa-plus\"></i>\n                  </div>\n                  <div class=\"col-xs-9 col-sm-9 kpi-text\">\n                    <span class=\"caption\"><strong>{{kpi.name}}</strong></span>\n                    <span class=\"emphasis\" translate>impac.kpi_bar.add_to_dashboard</span>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"row\">\n      <div class=\"col-xs-12 col-sm-12\">\n        <div class=\"row\">\n          <div ui-sortable=\"sortableOptions\" ng-model=\"kpis\">\n            <div ng-repeat=\"kpi in kpis\" impac-kpi class=\"impac-kpi col-xs-6 col-sm-4 col-md-3\" kpi=\"kpi\" on-delete=\"removeKpi(kpi.id)\" edit-mode=\"showEditMode\" available-kpis=\"availableKpis.list\" load-ready=\"kpiDatesDeferred\">\n            </div>\n          </div>\n          <div ng-show=\"isAddingKpi\" class=\"col-xs-6 col-sm-4 col-md-3 kpi-loader\">\n            <i class=\"fa fa-2x fa-spin fa-refresh\"></i>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\" ng-show=\"showDatesPicker()\">\n      <div class=\"dates-picker-container\">\n        <div setting-dates-picker from=\"kpisDateRange.from\" to=\"kpisDateRange.to\" keep-today=\"kpisDateRange.keepToday\" on-change=\"kpisBarUpdateDates\" deferred=\"datesPickerDeferred\"/>\n      </div>\n    </div>\n</div>\n\n</div>\n");
+$templateCache.put("kpi/kpi.tmpl.html","<div class=\"kpi\" ng-class=\"{ \'static\': kpi.static, \'triggered\': (kpi.layout.triggered && !isEditing() && !isLoading()), \'editing\': isEditing() }\">\n  <div class=\"content-container\" ng-hide=\"isLoading()\">\n    <div class=\"top-line\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\"></div>\n    <div class=\"kpi-content\" ng-show=\"showKpiContent()\" ng-class=\"{ \'editing\': isEditing() }\">\n      <!-- SHOW -->\n      <div class=\"kpi-show row nomargin nopadding\" ng-hide=\"isEditing()\">\n        <div class=\"col-xs-3 col-sm-3 kpi-icon\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\">\n          <i class=\"fa {{kpi.layout.icon.value}} fa-2x\"></i>\n        </div>\n        <div class=\"col-xs-9 col-sm-9 kpi-text\" ng-class=\"{ \'triggered\': kpi.layout.triggered }\">\n          <span class=\"caption\" uib-tooltip=\"{{kpi.layout.text.caption}}\" tooltip-append-to-body=\"false\">{{kpi.layout.text.caption}}</span>\n          <span class=\"emphasis\" uib-tooltip=\"{{kpi.layout.text.emphasis}} - ({{ getRealValue() }})\" tooltip-placement=\"bottom\" tooltip-append-to-body=\"false\">\n            <strong>{{kpi.layout.text.emphasis}}</strong> - <span class=\"real-value\">({{ getRealValue() }})</span>\n          </span>\n        </div>\n      </div>\n      <!-- EDIT -->\n      <div class=\"kpi-edit\" ng-show=\"isEditing()\">\n        <div class=\"kpi-name\">\n          <h6>{{kpi.name.toUpperCase()}}</h6>\n        </div>\n\n        <div class=\'alert-caption\'>\n          <span>{{kpi.layout.text.alert}}</span>\n        </div>\n\n        <form name=\"kpi{{kpi.id}}SettingsForm\">\n          <!-- watchables -->\n          <div ng-repeat=\"watchable in kpi.watchables track by $index\">\n            <div class=\"real-value\" ng-show=\"kpi.data\">{{\'impac.kpi.current\' | translate}} {{watchable}}: {{ getRealValue() }}</div>\n            <!-- targets -->\n            <div class=\"im-form-group\" ng-class=\"getFormTargetValueInput(watchable, $index).$valid ? \'has-success\' : \'has-error\'\" ng-repeat=\"target in targets[watchable] track by $index\">\n              <!-- target -->\n              <input name=\"{{watchable}}TargetValue{{$index}}\" type=\"text\" pattern=\"^-?\\d+(\\.\\d+)?$\" ng-model=\"target[getTargetPlaceholder(watchable).mode]\" placeholder=\"{{bindTargetInputPlaceholder(watchable, $index)}}\" ng-focus=\"setTargetInputPlaceholder(watchable, $index)\" ng-blur=\"resetTargetInputPlaceholder(watchable, $index)\" autofocus ng-keypress=\"onKeyPress($event)\" required>\n              <label for=\"targetValue\" class=\"im-control-label\">{{watchable | titleize}}</label><i class=\"im-bar\"></i>\n              <span class=\"kpi-target-unit\" aria-hidden=\"true\">{{getTargetUnit(watchable)}}</span>\n              <!-- target error messages -->\n              <div ng-messages=\"getFormTargetValueInput(watchable, $index).$error\" class=\"im-messages\">\n                <span ng-message=\"required\" translate>impac.kpi.kpi_target_require</span>\n                <span ng-message=\"pattern\" translate>impac.kpi.kpi_target_number</span>\n              </div>\n            </div>\n          </div>\n\n          <div class=\"im-form-group\">\n            <div ng-repeat=\"(param, paramValues) in kpi.possibleExtraParams track by $index\">\n              <!-- extra param selection -->\n              <select name=\"extraParam\" ng-model=\"kpi.extra_params[param]\" ng-change=\"updateExtraParam()\" ng-options=\"value.id as value.label for value in paramValues\">\n              </select>\n              <label for=\"extraParam\" class=\"im-control-label\">{{\'impac.kpi.extra_param_label.verb\' | translate}} {{param | titleize}}</label>\n              <i class=\"im-bar\"></i>\n            </div>\n          </div>\n        </form>\n\n        <!-- Alerts Config -->\n        <alerts-config kpi=\"kpi\" button-html=\"\n          <button class=\'kpi-alerts im-fab im-primary\'>\n            <i class=\'fa fa-bell\'></i>\n          </button>\">\n        </alerts-config>\n\n        <!-- Remove KPI -->\n        <button type=\"button\" class=\"kpi-remove im-fab im-warn\" ng-click=\"deleteKpi()\">\n          <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\n        </button>\n\n      </div>\n    </div>\n    <!-- Data not found display -->\n    <div class=\"kpi-no-data\" ng-if=\"isDataNotFound()\">\n      <!-- Remove KPI -->\n      <button type=\"button\" ng-show=\"isEditing()\" class=\"kpi-remove im-fab im-warn\" ng-click=\"deleteKpi()\">\n        <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\n      </button>\n      <div common-data-not-found no-image=\"true\" endpoint=\"::kpi.endpoint\"/>\n    </div>\n  </div>\n  <div class=\"col-xs-2 kpi-data-loader loader\" ng-if=\"isLoading()\">\n    <i class=\"fa fa-spinner fa-pulse fa-3x\"></i>\n  </div>\n</div>\n");
 $templateCache.put("widget/widget.tmpl.html","<div class=\"top-line\">\n  <div common-editable-title parent-widget=\"widget\" class=\"editable-title\" on-toggle=\"toggleEditTitle()\" />\n  <div common-top-buttons parent-widget=\"widget\" on-refresh=\"showWidget\" ng-hide=\"isInfoPanelDisplayed() || isTitleEdited() || pdfMode\" on-toggle-info-panel=\"toggleInfoPanel()\"/>\n</div>\n\n<div ng-if=\"pdfMode && !widget.ticked\" class=\"include-to-pdf title hidden-print\">\n  <h6 translate>impac.widget.include_pdf</h6>\n</div>\n\n<div class=\"content\" ng-class=\"::cssClass\">\n  <div ng-show=\"widget.isLoading\" class=\"loader\" align=\"center\">\n    <div>\n      <i class=\"fa fa-spinner fa-pulse fa-3x\"></i>\n      <p translate=\"impac.widget.loader\"></p>\n    </div>\n  </div>\n\n  <div ng-if=\"pdfMode\" class=\"include-to-pdf tick hidden-print\">\n    <a class=\"widget-hover\" ng-click=\"tick()\">\n      <i class=\"fa fa-check-circle fa-5x\" aria-hidden=\"true\" ng-show=\"widget.ticked\"></i>\n    </a>\n  </div>\n\n  <div ng-hide=\"widget.isLoading\" ng-include=\"::templatePath\" />\n</div>\n\n<div common-info-panel parent-widget=\"widget\" on-close=\"toggleInfoPanel()\" ng-show=\"isInfoPanelDisplayed()\" />\n");
 $templateCache.put("common/data-not-found.tmpl.html","<div class=\"data-not-found\">\n  <img id=\"not-found-bg\" />\n  <div class=\"message\">\n    {{content.mainMessage | translate}}\n\n    <a ng-show=\"showAlertsTrigger\" ng-click=\"onDisplayAlerts()\">\n      <i class=\"fa fa-warning\" />{{\'impac.data_not_found_config.find_why\' | translate}}\n    </a>\n    <a ng-if=\"hasCallbackUrl\" ng-hide=\"showAlertsTrigger\" ng-click=\"content.linkUrlCallback()\" translate>\n      {{content.linkMessage}}\n    </a>\n    <a ng-if=\"!hasCallbackUrl\" ng-hide=\"showAlertsTrigger\" ng-href=\"{{content.linkUrl}}\" target=\"{{content.linkTarget}}\" translate>\n      {{content.linkMessage}}\n    </a>\n\n  </div>\n</div>\n");
-$templateCache.put("dashboard-settings/currency.tmpl.html","<div class=\"dashboard-settings currency\">\n  <select ng-options=\"cur for cur in currencies\" ng-model=\"data.currency\" ng-change=\"massAssignCurrency()\" ng-disabled=\"locked\">\n    <option ng-if=\"!data.currency\" value=\"\" disabled translate>impac.components.currency.choose_currency</option>\n  </select>\n</div>\n");
 $templateCache.put("dashboard-settings/pdf-mode.tmpl.html","<div class=\"dashboard-settings pdf-mode\" ng-if=\"enabled\">\n  <div ng-hide=\"pdfMode\">\n    <button ng-click=\"toggle()\" class=\'btn btn-info\' uib-tooltip=\"Print Dashboard\">\n      <span class=\'fa fa-print\' />\n    </button>\n  </div>\n\n  <div ng-show=\"pdfMode\">\n    <button ng-click=\"print()\" class=\'btn btn-info\' ng-disabled=\"allNotTicked\">\n      <span class=\'fa fa-print\' /> {{\'impac.components.pdf_mode.print\' | translate}}\n    </button>\n    <button ng-click=\"toggle()\" class=\'btn btn-default\' translate>impac.components.pdf_mode.cancel</button>\n  </div>\n</div>\n");
+$templateCache.put("dashboard-settings/currency.tmpl.html","<div class=\"dashboard-settings currency\">\n  <select ng-options=\"cur for cur in currencies\" ng-model=\"data.currency\" ng-change=\"massAssignCurrency()\" ng-disabled=\"locked\">\n    <option ng-if=\"!data.currency\" value=\"\" disabled translate>impac.components.currency.choose_currency</option>\n  </select>\n</div>\n");
 $templateCache.put("dashboard-settings/sync-apps.tmpl.html","<!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->\n<div class=\"dashboard-settings sync-apps\" ng-show=\"connectors.length || realtimeSyncing\">\n\n  <span class=\"show-status\" uib-popover-template=\"\'connectors.tmpl.html\'\" popover-trigger=\"\'mouseenter\'\" popover-placement=\"bottom\" ng-click=\"triggerSyncAlertsModal()\">\n    <i class=\"fa fa-info\" ng-click=\"triggerSyncAlertsModal()\" />\n    <span class=\"ng-hide\" ng-show=\"isSyncing\" translate>impac.components.sync_apps.syncing</span>\n    <span ng-hide=\"isSyncing\" translate>impac.components.sync_apps.show_sync_status</span>\n  </span>\n\n  <div class=\"status-btn\" ng-click=\"triggerSyncAlertsModal()\" ng-show=\"hasError && !isSyncing\">\n    <i class=\"fa fa-exclamation-triangle\"></i>\n  </div>\n\n  <div class=\"status-btn\" ng-click=\"triggerSyncAlertsModal()\" ng-show=\"!hasError && !isSyncing\">\n    <i class=\"fa fa-check\"></i>\n  </div>\n\n  <button id=\"sync\" class=\"btn btn-primary\" ng-click=\"synchronize()\" uib-tooltip=\"{{\'impac.components.sync_apps.tooltip.sync_data\' | translate}}\" ng-disabled=\"isSyncing\">\n    <i class=\"fa fa-refresh\" ng-class=\"{ \'fa-spin\': isSyncing }\" />\n  </button>\n\n</div>\n\n<!-- ui.bootstrap popover template -->\n<script type=\"text/ng-template\" id=\"connectors.tmpl.html\">\n  <div class=\"connector\" ng-repeat=\"connector in connectors track by $index\" ng-class=\"{ \'{{connector.status.toLowerCase()}}\': true, \'add-seperator\': !$last }\">\n    <div class=\"badge\">{{connector.status}}</div>\n    <strong>{{connector.name}}</strong> -\n    <span ng-switch=\"connector.status\">\n      <span ng-switch-when=\"SUCCESS\">{{\'impac.components.sync_apps.status.synced_at\' | translate}} {{connector.formatted_date}}.</span>\n      <span ng-switch-when=\"PENDING\" translate>impac.components.sync_apps.status.sync_will_run</span>\n      <span ng-switch-when=\"RUNNING\" translate>impac.components.sync_apps.status.syncing_in_progres</span>\n      <span ng-switch-when=\"ERROR\" translate>impac.components.sync_apps.status.sync_failed</span>\n      <span ng-switch-when=\"DISCONNECTED\" translate>impac.components.sync_apps.status.please_link</span>\n      <span ng-switch-when=\"UNKNOWN\" translate>impac.components.sync_apps.status.could_not_retrieve</span>\n    </span>\n    <!-- <span ng-if=\"connector.formatted_date\"> - Synced at {{connector.formatted_date}}</span> -->\n  </div>\n  <div class=\"popover-footer\" ng-class=\"{ \'remove-seperator\': realtimeSyncing }\">\n    <p>{{\'impac.components.sync_apps.all\' | translate}} {{realtimeSyncing ? \'\' : \'other\'}} {{\'impac.components.sync_apps.applications_are_synced\' | translate}}</p>\n  </div>\n</script>\n\n<!-- ui.bootstrap modal template -->\n<script type=\"text/ng-template\" id=\"alerts.tmpl.html\">\n  <div id=\"sync-apps-modal\">\n    <div class=\"modal-header\">\n      <h4 class=\"modal-title\" translate>impac.components.sync_apps.synchronization_status</h4>\n    </div>\n    <div class=\"modal-list\">\n      <div class=\"modal-list-item\" ng-class=\"{\'{{connector.status.toLowerCase()}}\': true, \'with-message\': connector.message}\" ng-repeat=\"connector in connectors track by $index\" ng-click=\"expandListItemOnClick(connector)\">\n        <div class=\"badge\">{{connector.status}}</div>\n        <div class=\"text-left\">\n          <strong>{{connector.name}}</strong> -\n          <span ng-switch=\"connector.status\">\n            <span ng-switch-when=\"SUCCESS\">{{\'impac.components.sync_apps.status.synced_at\' | translate}} {{connector.formatted_date}}.</span>\n            <span ng-switch-when=\"PENDING\" translate>impac.components.sync_apps.status.sync_will_run</span>\n            <span ng-switch-when=\"RUNNING\" translate>impac.components.sync_apps.status.syncing_in_progres</span>\n            <span ng-switch-when=\"ERROR\" translate>impac.components.sync_apps.status.sync_failed</span>\n            <span ng-switch-when=\"DISCONNECTED\" translate>impac.components.sync_apps.status.please_link</span>\n            <span ng-switch-when=\"UNKNOWN\" translate>impac.components.sync_apps.status.could_not_retrieve</span>\n          </span>\n        </div>\n        <div class=\"message ng-hide\" ng-show=\"connector.showMessage\">\n          <p>{{connector.message}}</p>\n        </div>\n      </div>\n    </div>\n    <div class=\"modal-footer\">\n      <button class=\"btn btn-primary\" type=\"button\" ng-click=\"ok()\" translate>impac.components.sync_apps.ok</button>\n    </div>\n  </div>\n</script>\n");
+$templateCache.put("widgets-common/chart-threshold.tmpl.html","<div class=\"attach-panel\" ng-if=\"$ctrl.showPanel\">\n  <div class=\"attach-panel-text\">\n    <span class=\"panel-text-label\">{{$ctrl.kpiCreateLabel}}: </span>\n    <input type=\"text\" class=\"panel-text-input\" ng-model=\"$ctrl.draftTarget.value\">\n    <span class=\"panel-text-currency\" ng-bind=\"$ctrl.widget.metadata.currency\"></span>\n  </div>\n  <div class=\"action-buttons\">\n    <button class=\"btn btn-default\" ng-click=\"$ctrl.cancelCreateKpi()\" ng-disabled=\"$ctrl.loading\">Cancel</button>\n    <button class=\"btn btn-primary has-spinner\" ng-click=\"$ctrl.saveKpi()\">\n      <i ng-show=\"$ctrl.loading\" class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i>\n      <span ng-hide=\"$ctrl.loading\">{{$ctrl.isEditingKpi ? \'Update\' : \'Save\'}}</span>\n    </button>\n    <button ng-if=\"$ctrl.isEditingKpi\" class=\"btn btn-danger has-spinner\" ng-click=\"$ctrl.deleteKpi()\">\n      <i ng-show=\"$ctrl.loading\" class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i>\n      <span ng-hide=\"$ctrl.loading\">Delete</span>\n    </button>\n  </div>\n</div>\n");
 $templateCache.put("widgets-common/currency-conversions.tmpl.html","<span class=\"currency-conversions\" ng-if=\"fxAmounts\">\n  <img ng-src=\"{{currencyConversionsIcon}}\" uib-popover-template=\"\'details-popover.tmpl.html\'\" popover-class=\"currency-conversions\" popover-title=\"{{popoverTitle}}\" popover-trigger=\"\'mouseenter\'\" popover-append-to-body=\"true\" />\n</span>\n\n<!-- ui.bootstrap popover template -->\n<script type=\"text/ng-template\" id=\"details-popover.tmpl.html\">\n  <p ng-if=\"fxAmounts.length > 1\">This value includes amounts that have been converted to {{ baseCurrency }} from different currencies:</p>\n  <p ng-if=\"fxAmounts.length == 1\">This value includes one amount that has been converted to {{ baseCurrency }} from a different currency:</p>\n  \n  <table class=\"table\">\n    <tr>\n      <th>Original amount</th>\n      <th>Rate</th>\n    </tr>\n    <tr ng-repeat=\"fx in fxAmounts\">\n      <td>{{ fx.amount | mnoCurrency : fx.currency }}</td>\n      <td>{{ fx.rate }}</td>\n    </tr>\n  </table>\n\n  <p ng-if=\"fxAmounts.length > 1\">The rates used correspond to those for {{ formattedRatesDate }}.</p>\n  <p ng-if=\"fxAmounts.length == 1\">The rate used corresponds to the rate for {{ formattedRatesDate }}.</p>\n</script>\n");
 $templateCache.put("widgets-common/editable-title.tmpl.html","<div ng-show=\"parentWidget.hasEditAbility\" class=\"hidden-xs hidden-sm title\" editable-text=\"parentWidget.name\" onaftersave=\"updateName()\" onshow=\"onToggle()\" onhide=\"onToggle()\" uib-tooltip=\"{{ getTooltip() }}\" tooltip-placement=\"top-left\">\n  {{ parentWidget.name }}\n</div>\n\n<div ng-hide=\"parentWidget.hasEditAbility\" class=\"hidden-xs hidden-sm title\" uib-tooltip=\"{{ getTooltip() }}\" tooltip-placement=\"top-left\">\n  {{ parentWidget.name }}\n</div>\n\n<!-- Title edition no designed for mobile -->\n<div class=\"visible-xs visible-sm title\">\n  {{ parentWidget.name }}\n</div>\n");
 $templateCache.put("widgets-common/info-panel.tmpl.html","<div class=\"info-panel\">\n\n  <div class=\"i-header text-center\">\n    <i class=\"fa fa-info-circle\" />\n    <i class=\"fa fa-times-circle\" ng-click=\"toggleInfoPanel()\" />\n    {{\'impac.widget.info_panel.information\' | translate}} <b>{{ getWidgetTemplateName() | titleize }}</b>\n  </div>\n\n  <div class=\"i-content text-left\">\n    <div class=\"row text-left\" ng-repeat=\"i in parentWidget.content.info\">\n\n      <div class=\"col-md-3 key\">\n        {{i.key}}\n      </div>\n\n      <div class=\"col-md-9 value\">\n        {{i.value}}\n      </div>\n\n    </div>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets-common/time-period-info.tmpl.html","<div class=\"time-period-info text-center\" ng-if=\"context\">\n  {{date}}\n</div>\n");
 $templateCache.put("widgets-common/top-buttons.tmpl.html","<div class=\"top-buttons\">\n  <div class=\"top-buttons-wrapper\">\n\n    <button class=\"btn top-button btn-info\" ng-if=\"hasInfo()\" ng-click=\"onToggleInfoPanel()\">\n      <i class=\"fa fa-info-circle\"></i>\n      <span class=\"text-hide\" translate>impac.widget.common.top_buttons.info_popup.info</span>\n    </button>\n\n    <button class=\"btn top-button btn-refresh\" ng-click=\"onRefresh({refreshCache: true})\">\n      <i class=\"fa fa-refresh\"></i>\n      <span class=\"text-hide\" translate>impac.widget.common.top_buttons.info_popup.refresh</span>\n    </button>\n\n    <button class=\"btn top-button btn-edit\" ng-click=\"toggleEditMode()\" ng-show=\"parentWidget.hasEditAbility\" ng-class=\"{\'edit-mode\': parentWidget.isEditMode}\">\n      <i class=\"fa fa-cog fa-lg\"></i>\n      <span class=\"text-hide\" translate>impac.widget.common.top_buttons.info_popup.edit</span>\n    </button>\n\n    <button class=\"btn top-button btn-close\" ng-click=\"toggleDeleteMode()\" ng-show=\"parentWidget.hasDeleteAbility\">\n      <i class=\"fa fa-times-circle-o fa-lg\"></i>\n      <span class=\"text-hide\" translate>impac.widget.common.top_buttons.info_popup.delete</span>\n    </button>\n  </div>\n\n  <div class=\"confirm-delete-popover\" ng-show=\"showConfirmDelete\">\n    <h4 translate>impac.widget.common.top_buttons.delete.title</h4>\n    <p translate>impac.widget.common.top_buttons.delete.explanation</p>\n    <div ng-hide=\"isDeletePopoverLoading\">\n      <button ng-click=\"toggleDeleteMode()\" class=\"btn btn-sm btn-default\" translate>impac.widget.common.top_buttons.delete.cancel</button>\n      <button ng-click=\"deleteWidget()\" class=\"btn btn-sm btn-danger\" style=\"margin-left: 10px;\" translate>impac.widget.common.top_buttons.delete.delete</button>\n    </div>\n    <div ng-show=\"isDeletePopoverLoading\" class=\"loader\" align=\"center\">\n      <div>\n        <i class=\"fa fa-spinner fa-pulse fa-4x\"></i>\n      </div>\n    </div>\n  </div>\n</div>\n");
-$templateCache.put("widgets/accounts-accounting-values.tmpl.html","<div widget-accounts-accounting-values>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.accounting_values.turnover.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.accounting_values.turnover.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.accounting_values.turnover.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" accounting-behaviour=\"pnl\" />\n\n      <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n        <div class=\"price\">\n           {{ getCurrentPrice() | mnoCurrency : currency_unit : false }}\n        </div>\n        <div class=\"currency\">{{::currency}}</div>\n        <div class=\"legend\">{{::legend}}</div>\n      </div>\n\n      <div class=\"history chart-container\" ng-show=\"widget.isHistoryMode\">\n        <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        <div class=\"legend\">{{::legend}}</div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
+$templateCache.put("widgets/accounts-accounting-values.tmpl.html","<div widget-accounts-accounting-values>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.accounting_values.turnover.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.accounting_values.turnover.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.accounting_values.turnover.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" accounting-behaviour=\"pnl\" />\n\n      <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n        <div class=\"price\">\n           {{ getCurrentPrice() | mnoCurrency : currency_unit : false }}\n        </div>\n        <div class=\"currency\">{{currency}}</div>\n        <div class=\"legend\">{{legend}}</div>\n      </div>\n\n      <div class=\"history chart-container\" ng-show=\"widget.isHistoryMode\">\n        <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        <div class=\"legend\">{{legend}}</div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-assets-liability-summary.tmpl.html","<div widget-accounts-assets-liability-summary>\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.acc_ass_liab_smry.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.acc_ass_liab_smry.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.acc_ass_liab_smry.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\" class=\"chart-container\">\n      <!-- account classification selectors -->\n      <div setting-param-selector parent-widget=\"widget\" param=\"classification\" options=\"accountsOptions\" selected=\"selectedAccountsOption\" class=\"row param-selector\" deferred=\"::paramSelectorDeferred\"/>\n      <!---->\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\">\n        <div class=\"title\" ng-show=\"widget.metadata.organization_ids.length==1\">{{widget.content.summary[0].company}} {{classification}}</div>\n        <div class=\"title\" ng-hide=\"widget.metadata.organization_ids.length==1\">{{classification}} repartition</div>\n        <span ng-repeat=\"valuePair in dataSource\">\n          <span style=\"font-weight: bold; color: {{getAccountColor(valuePair)}};\">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}\n          <br />\n        </span>\n      </div>\n    </div>\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n</div>\n");
 $templateCache.put("widgets/accounts-assets-summary.tmpl.html","<div widget-accounts-assets-summary>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.acc_ass_smry.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.acc_ass_smry.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.acc_ass_smry.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\" class=\"chart-container\">\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\">\n        <div class=\"title\" ng-show=\"widget.metadata.organization_ids.length==1\">{{widget.content.summary[0].company}} {{classification}}</div>\n        <div class=\"title\" ng-hide=\"widget.metadata.organization_ids.length==1\">{{classification}} repartition</div>\n        <span ng-repeat=\"valuePair in dataSource\">\n          <span style=\"font-weight: bold; color: {{getAccountColor(valuePair)}};\">{{valuePair.label}}</span>: {{valuePair.total | mnoCurrency : getCurrency()}}\n          <br />\n        </span>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-assets-vs-liabilities.tmpl.html","<div widget-accounts-assets-vs-liabilities>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.acc_ass_vs_liab.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.acc_ass_vs_liab.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.acc_ass_vs_liab.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\" class=\"chart-container\">\n      <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n      <div class=\"legend\" style=\"max-height: 115px;\">\n        <div class=\"title\">\n          <i class=\"fa fa-circle\" style=\"color: {{assetsColor}};\"\n          translate=\"impac.widget.acc_ass_vs_liab.asset.many\"></i> |\n          <i class=\"fa fa-circle\" style=\"color: {{liabilitiesColor}};\"\n          translate=\"impac.widget.acc_ass_vs_liab.liability.many\"></i>\n        </div>\n        <div class=\"row\">\n          <div ng-repeat=\"data in companiesList\" ng-class=\"{\'col-md-6\': (widget.content.companies.length > 1), \'col-md-12\': (widget.content.companies.length == 1)}\">\n            <span>{{ data.company }}</span><br />\n            <span style=\"color: {{assetsColor}};\"> {{ data.assets | mnoCurrency : data.currency }}</span> <br/>\n            <span style=\"color: {{liabilitiesColor}};\"> {{ data.liabilities | mnoCurrency : data.currency }}</span>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-balance.tmpl.html","<div widget-accounts-balance>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.account_balance.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-account parent-widget=\"widget\" on-account-selected=\"updateKpiExtraParams(\'account\', widget.selectedAccount)\" class=\"part\" deferred=\"::accountBackDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n    <!-- ATTACH KPI FEATURE HAS BEEN DISABLED UNTIL FURTHER NOTICE. -->\n    <!-- <div setting-attach-kpis parent-widget=\"widget\" attached-kpis=\"widget.kpis\" widget-engine=\"widget.category\" widget-id=\"widget.id\" extra-params=\"kpiExtraParams\" class=\"part\" deferred=\"::attachKpisDeferred\" /> -->\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.account_balance.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.account_balance.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\">\n      <!-- Will be hidden once an account is selected -->\n      <div setting-account ng-hide=\"widget.selectedAccount\" parent-widget=\"widget\" label=\'Select an account to monitor\' on-account-selected=\"displayAccount()\" deferred=\"::accountFrontDeferred\" />\n\n      <!-- All the below divs will remain hidden until an account is selected -->\n      <div ng-show=\"widget.selectedAccount\">\n        <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" accounting-behaviour=\"{{ getBehaviour() }}\" end-date=\"widget.metadata.hist_parameters.to\" />\n\n        <div ng-hide=\"widget.isHistoryMode\">\n          <h3>{{getName()}}</h3>\n          <div class=\"price\">\n             {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}\n          </div>\n          <div class=\"currency\">{{getCurrency()}}</div>\n        </div>\n\n        <div class=\"chart-container\" ng-show=\"widget.isHistoryMode\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n          <div class=\"legend\">{{getName()}}</div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-balance-sheet.tmpl.html","<div widget-accounts-balance-sheet>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.account_balance_sheets.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.account_balance_sheets.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.account_balance_sheets.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div class=\"no-data-block\" ng-show=\"(isDataFound==false)\" translate=\"impac.widget.account_balance_sheets.not_found\" translate-values=\"{fromDate: fromDate, toDate: toDate}\"></div>\n\n    <!-- Tab header -->\n    <!-- TODO: review widget-lines-container scrolling -->\n    <div class=\"widget-lines-container no-scroll\">\n      <div class=\"row widget-line header\">\n        <div class=\"col-sm-6 col-sm-offset-6 col-xs-12\">\n          <div setting-dates-picker parent-widget=\"widget\" deferred=\"::datesPickerDeferred\" from=\"fromDate\" to=\"toDate\" keep-today=\"keepToday\" update-on-pick=\"true\" template=\"::datesPickerTemplate\" />\n        </div>\n      </div>\n      <div class=\"row widget-line header\">\n<!--         <div class=\"col-sm-6 col-xs-12 col-xs-offset-1 text-left sortable-title\" ng-click=\"sort(\'account\')\">\n          Account\n          <i ng-show=\"sortedColumn == \'account\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n        </div> -->\n        <div class=\"col-sm-5 col-sm-offset-1 col-xs-12 text-left sortable-title\" ng-click=\"sort(\'account\')\">\n          {{\'impac.widget.account_balance_sheets.accounts\' | translate}}\n          <i ng-show=\"sortedColumn == \'account\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n        </div>\n        <div class=\"col-sm-6 col-xs-12\">\n          <div class=\"row\">\n            <div class=\"col-xs-6 text-center sortable-title\" ng-click=\"sort(\'total1\')\">\n              {{\'impac.widget.account_balance_sheets.balance\' | translate}}\n              <i ng-show=\"sortedColumn == \'total1\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n            <div class=\"col-xs-6 text-center sortable-title\" ng-click=\"sort(\'total2\')\">\n              {{\'impac.widget.account_balance_sheets.balance\' | translate}}\n              <i ng-show=\"sortedColumn == \'total2\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n          </div>\n\n<!--           <div class=\"col-sm-2 col-xs-4 text-right sortable-title\" ng-click=\"sort(\'total1\')\">\n            Total\n            <i ng-show=\"sortedColumn == \'total1\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n          </div>\n          <div class=\"col-sm-2 col-xs-4 col-xs-offset-1 text-right sortable-title\" ng-click=\"sort(\'total2\')\">\n            Total\n            <i ng-show=\"sortedColumn == \'total2\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n          </div> -->\n        </div>\n      </div>\n    </div>\n\n    <div ng-show=\"(isDataFound==true)\" class=\"widget-lines-container\">\n\n      <!-- Groups of statements with their accounts -->\n      <div class=\"row lines-group\" ng-repeat=\"category in categories\" >\n        <div class=\"col-xs-12\">\n\n          <!-- Statements lines -->\n          <div class=\"row widget-line\" >\n            <div class=\"col-xs-1\" ng-click=\"toggleCollapsed(category.key)\" style=\"cursor: pointer;\">\n              <i class=\"fa\" ng-class=\"isCollapsed(category.key) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" />\n            </div>\n            <div class=\"col-sm-5 col-xs-11 text-left\">\n              <strong>{{category.label}}</strong>\n            </div>\n            <div class=\"col-sm-3 col-xs-6 text-right\">\n              <strong>{{widget.content.summary[category.key].totals[1] | mnoCurrency : widget.content.summary[category.key].currency}}</strong>\n            </div>\n            <div class=\"col-sm-3 col-xs-6 text-right\">\n              <strong>{{widget.content.summary[category.key].totals[0] | mnoCurrency : widget.content.summary[category.key].currency}}</strong>\n            </div>\n          </div>\n\n          <!-- Accounts lines -->\n          <div class=\"row\" uib-collapse=\"isCollapsed(category.key)\">\n            <div class=\"col-xs-12\">\n              <div class=\"row widget-line\" ng-repeat=\"account in widget.content.summary[category.key].accounts\" >\n                <div class=\"col-sm-5 col-xs-11 col-xs-offset-1 text-left\">\n                  {{account.name | titleize}}\n                </div>\n                <div class=\"col-sm-3 col-xs-6 text-right\">\n                  {{account.totals[1] | mnoCurrency : account.currency}}\n                </div>\n                <div class=\"col-sm-3 col-xs-6 text-right\">\n                  {{account.totals[0] | mnoCurrency : account.currency}}\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n  </div>\n\n</div>\n");
+$templateCache.put("widgets/accounts-cash-balance.tmpl.html","<!--\n  Component generated by Impac! Widget Generator!\n-->\n<div widget-accounts-cash-balance>\n  <!-- Settings Panel -->\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <!-- Buttons displayed on the lower  -->\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <!-- Content Panel -->\n  <div ng-hide=\"widget.isEditMode\">\n    <!-- Data found -->\n    <div ng-show=\"(isDataFound==true)\" class=\"data-container\">\n      <div class=\"left-panel\">\n        <div id=\"cash-balance-legend\">\n          <div class=\"header\" ng-repeat=\"header in groupedTable.headers\">\n            <h4 ng-bind=\"header | titleize\"></h4>\n            <div class=\"group-item\" ng-repeat=\"item in groupedTable.groups[$index]\" ng-click=\"legendItemOnClick(item)\">\n              <i ng-style=\"{\'color\': getLegendItemColor(item)}\" class=\"fa {{getLegendItemIcon(item)}}\" aria-hidden=\"true\"></i>\n              <span ng-bind=\"item.name\"></span>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"right-panel\">\n        <div class=\"top-bar\"></div>\n        <div id=\"{{chartId()}}\" class=\"cash-balance-chart\"></div>\n      </div>\n    </div>\n\n    <!-- No data found -->\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.category\" width=\"::widget.width\" />\n  </div>\n</div>\n");
+$templateCache.put("widgets/accounts-cash-projection.tmpl.html","<div widget-accounts-cash-projection>\n  <!-- Settings Panel -->\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <!-- Buttons displayed on the lower  -->\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <!-- Content Panel -->\n  <div ng-hide=\"widget.isEditMode\">\n    <!-- Data found -->\n    <div ng-show=\"(isDataFound==true)\" class=\"\">\n      <!-- Set KPI target threshold panel -->\n      <chart-threshold widget=\"widget\" chart-promise=\"chartPromise\" kpi-create-label=\"chartThresholdOptions.label\" on-complete=\"widget.format()\"></chart-threshold>\n\n      <!-- Chart -->\n      <div id=\"{{chartId()}}\" class=\"cash-projection-chart\"></div>\n\n      <!-- Simulation mode box -->\n      <div class=\"offset-box\" ng-show=\"simulationMode\">\n        <h3>Offset your cash projection</h3>\n\n        <h4>For the current interval</h4>\n        <div class=\"price\" ng-if=\"currentProjectedCash\">\n          {{ currentProjectedCash | mnoCurrency : widget.metadata.currency }}\n        </div>\n        <div setting-offsets parent-widget=\"widget\" deferred=\"::currentOffsetsDeferred\" offsets-key=\'current\' initial-offsets=\'widget.metadata.offset.current\' currency=\'widget.metadata.currency\' intervals-count=\'intervalsCount\' show-intervals-mult=\"false\" period=\'widget.metadata.hist_parameters.period\' text-placeholder=\'Spot adjustment\' />\n\n        <h4>For each interval in the future</h4>\n        <div setting-offsets parent-widget=\"widget\" deferred=\"::intervalsOffsetsDeferred\" offsets-key=\'per_interval\' initial-offsets=\'widget.metadata.offset.per_interval\' currency=\'widget.metadata.currency\' intervals-count=\'intervalsCount\' show-intervals-mult=\"true\" period=\'widget.metadata.hist_parameters.period\' />\n      </div>\n\n      <!-- Simulation buttons -->\n      <div class=\"text-left\" ng-hide=\"isTimePeriodInThePast\">\n        <button class=\"btn btn-sm btn-default\" ng-if=\"simulationMode\" ng-click=\"toggleSimulationMode(true)\" title = \"Clear changes to simulation\">\n          Cancel\n        </button>\n        <button class=\"btn btn-sm btn-default\" ng-if=\"!simulationMode\" ng-click=\"toggleSimulationMode()\" title=\"Add custom offsets to the cash projection\">\n          <i class=\"fa fa-pencil-square-o\" />\n          Simulation\n        </button>\n        <button class=\"btn btn-sm btn-warning\" ng-if=\"simulationMode\" ng-click=\"saveSimulation()\" title=\"Apply simulation\">\n          Save\n        </button>\n      </div>\n    </div>\n\n    <!-- No data found -->\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\" />\n  </div>\n</div>\n");
 $templateCache.put("widgets/accounts-cash-summary.tmpl.html","<div widget-accounts-cash-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.account_cash_smry.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.account_cash_smry.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.account_cash_smry.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n        <!-- Tab header -->\n          <div class=\"row widget-line header\">\n            <div class=\"col-xs-5 col-xs-offset-1 sortable-title\" ng-click=\"sort(\'account\')\">\n              {{ impac.widget.account_cash_smry.cash_flow | translate }}\n              <i ng-show=\"sortedColumn == \'account\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n            <div class=\"col-xs-3 text-right sortable-title\" ng-click=\"sort(\'total\')\">\n              {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}\n              <i ng-show=\"sortedColumn == \'total\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n            <div class=\"col-xs-3 text-right sortable-title\" ng-click=\"sort(\'variance\')\">\n              {{\'impac.widget.account_cash_smry.vs\' | translate}}{{getPrevDate() | mnoDate : widget.metadata.hist_parameters.period}}\n              <i ng-show=\"sortedColumn == \'variance\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n          </div>\n\n          <!-- Groups of statements with their accounts -->\n          <div class=\"row lines-group\" ng-repeat=\"statement in widget.content.summary\" ng-class=\"{cash: statement.name.indexOf(\'cash\')>0}\" >\n            <div class=\"col-xs-12\">\n\n              <!-- Statements lines -->\n              <div class=\"row widget-line\" >\n                <div class=\"col-xs-1\" ng-click=\"toggleCollapsed(statement)\">\n                  <i ng-show=\"(statement.accounts && statement.accounts.length)\" class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\"/>\n                </div>\n                <div class=\"col-xs-5\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{statement.label | titleize}}</strong>\n                </div>\n                <div class=\"col-xs-3 text-right\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{getLastValue(statement) | mnoCurrency : statement.currency : false}}</strong>\n                </div>\n                <div class=\"col-xs-3 text-right\" ng-click=\"toggleSelectedElement(statement)\" ng-class=\"getVarianceClassColor(getLastVariance(statement))\">\n                  <strong>{{getLastVariance(statement)}}</strong>\n                </div>\n\n                <div class=\"selection-tag\" ng-if=\"isSelected(statement)\" style=\"background-color: {{ getSelectLineColor(statement) }}\"/>\n              </div>\n\n              <!-- Accounts lines -->\n              <div class=\"row\" uib-collapse=\"isCollapsed(statement)\">\n                <div class=\"col-xs-12\">\n                  <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(account, statement.name)\" ng-repeat=\"account in statement.accounts\" >\n                    <div class=\"col-xs-5 col-xs-offset-1\">\n                      {{account.name}}\n                    </div>\n                    <div class=\"col-xs-3 text-right\">\n                      {{getLastValue(account) | mnoCurrency : account.currency : false }}\n                    </div>\n                    <div class=\"col-xs-3 text-right\" ng-class=\"getVarianceClassColor(getLastVariance(account))\">\n                      {{getLastVariance(account)}}\n                    </div>\n\n                    <div class=\"selection-tag\" ng-if=\"isSelected(account, statement.name)\" style=\"background-color: {{ getSelectLineColor(account) }}\"/>\n                  </div>\n                </div>\n              </div>\n\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <div class=\"col-md-6 right-panel text-center\" ng-show=\"widget.isExpanded()\">\n\n        <div ng-show=\"selectedElement\">\n          <h4>{{(selectedElement.label | titleize) || selectedElement.name}}</h4>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n            <div class=\"legend\">{{::widget.metadata.hist_parameters.period_translation}}</div>\n          </div>\n\n          <div class=\"widget-lines-container\">\n\n            <!-- Not mobile -->\n            <div class=\"row\">\n              <span ng-repeat=\"date in dates track by $index\" class=\"hidden-xs\">\n                <!-- Separator every 4 items -->\n                <div ng-if=\"$index % 4 == 0 && $index > 0\" class=\"clearfix dashed\"></div>\n\n                <div class=\"col-sm-3 text-center\">\n                  <!-- Date -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\">\n                      {{date | mnoDate : widget.metadata.hist_parameters.period}}\n                    </div>\n                  </div>\n                  <!-- Amount + currency -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\">\n                      {{selectedElement.cash_flows[$index] | mnoCurrency : selectedElement.currency }}\n                    </div>\n                  </div>\n                  <!-- Variance -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\" ng-class=\"getVarianceClassColor(selectedElement.variances[$index])\">\n                      {{formatVariance(selectedElement.variances[$index])}}\n                    </div>\n                  </div>\n                </div>\n              </span>\n            </div>\n\n            <!-- Mobile -->\n            <div ng-repeat=\"date in dates track by $index\" class=\"row widget-line visible-xs\">\n              <!-- Date -->\n              <div class=\"col-xs-4\">\n                {{date | mnoDate : widget.metadata.hist_parameters.period}}\n              </div>\n              <!-- Amount + currency -->\n              <div class=\"col-xs-4 text-right\">\n                {{selectedElement.cash_flows[$index] | mnoCurrency : selectedElement.currency }}\n              </div>\n              <!-- Variance -->\n              <div class=\"col-xs-4 text-right\" ng-class=\"getVarianceClassColor(selectedElement.variances[$index])\">\n                {{formatVariance(selectedElement.variances[$index])}}\n              </div>\n            </div>\n\n          </div>\n        </div>\n\n        <div ng-hide=\"selectedElement\" class=\"no-element\" translate>\n          impac.widget.account_cash_smry.select.description\n        </div>\n      </div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-class-comparison.tmpl.html","<div widget-accounts-class-comparison>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.account_class_comp.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" hide-chart-interval=\"true\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.account_class_comp.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.account_class_comp.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\">\n      <!-- account classification selectors -->\n      <div setting-param-selector parent-widget=\"widget\" param=\"classification\" options=\"classifications\" selected=\"selectedClassification\" class=\"row param-selector\" deferred=\"::paramSelectorDeferred\" on-select=\"widget.format()\" no-reload/>\n      <!---->\n      <div class=\"row\">\n        <div class=\"col-md-12 chart-container\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-md-12 widget-lines-container\">\n          <div class=\"row\" style=\"margin-bottom: 5px;\">\n            <div class=\"col-xs-12\">\n              <div common-time-period-info context=\"timePeriodInfoParams\" />\n            </div>\n          </div>\n\n          <div class=\"row\" ng-repeat=\"entity in widget.content.companies track by $index\">\n            <div class=\"col-xs-6 text-left\">\n              <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getAccountColor(entity)}}\" />\n              {{entity}}\n            </div>\n            <div class=\"col-xs-6 text-right\">\n              <i>{{getAmount($index)}}</i>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-comparison.tmpl.html","<div widget-accounts-comparison>\n  <div setting-accounts-list parent-widget=\"widget\" deferred=\"::accountsListDeferred\" accounts-list=\"savedAccountsList\"/>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.account_comp.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" hide-chart-interval=\"true\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.account_comp.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.account_comp.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\">\n      <!-- multi-companies mode -->\n      <div ng-show=\"widget.metadata.organization_ids.length > 1 && canSelectComparisonMode || isComparisonMode()\">\n        <div setting-params-checkboxes options=\"comparisonModeOptions\" param=\"comparison_mode\" parent-widget=\"widget\" deferred=\"::paramsCheckboxesDeferred\"/>\n      </div>\n      <!-- end -->\n      <div ng-hide=\"hasAccountsSelected() || noComparableAccounts\" class=\"row\">\n        <div class=\"col-xs-12\">\n          <h5 translate>impac.widget.account_comp.account.select</h5>\n        </div>\n        <div class=\"col-md-6\">\n          <div class=\"input-group\">\n            <select ng-model=\"movedAccount\" ng-options=\"account.name + \' (\' + formatAmount(account) + \')\' group by account.classification for account in widget.remainingAccounts\" class=\"form-control\" ng-show=\"widget.hasEditAbility\" ng-change=\"addAccount(movedAccount)\"></select>\n          </div>\n        </div>\n      </div>\n      <!-- error: when there are no comparable accounts matched -->\n      <div ng-show=\"isComparisonMode() && noComparableAccounts\" class=\"row comparable-error\">\n        <div class=\"col-xs-12\"><h5 translate>impac.widget.account_comp.account.not_found</h5></div>\n      </div>\n\n      <div class=\"row\" ng-show=\"hasAccountsSelected()\">\n        <div class=\"col-xs-12 text-center\">\n          <div class=\"chart-container\" impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n        </div>\n      </div>\n\n      <div class=\"row\" ng-show=\"hasAccountsSelected()\">\n        <div class=\"col-xs-12 widget-lines-container\">\n\n          <div class=\"row\" ng-class=\"{\'lines-group\': isComparisonMode(), \'widget-line\': !isComparisonMode()}\" ng-repeat=\"account in widget.selectedAccounts track by $index\">\n\n            <!-- Comparison between several conpanies -->\n            <div class=\"col-xs-12\" ng-if=\"isComparisonMode()\">\n              <div class=\"row widget-line\" ng-repeat=\"groupedAccount in account.accounts track by $index\">\n                <div class=\"col-xs-1\">\n                  <i class=\"fa fa-circle\" style=\"color: {{getAccountColor(groupedAccount)}}\" />\n                </div>\n                <div class=\"col-xs-6\">\n                  {{groupedAccount.name}}\n                </div>\n                <div class=\"col-xs-4 text-right\">\n                  <i>{{formatAmount(groupedAccount)}}</i>\n                </div>\n                <div class=\"col-xs-1 text-right\">\n                  <button class=\"close\" ng-click=\"removeAccount(account)\" ng-show=\"widget.hasDeleteAbility\">x</button>\n                </div>\n              </div>\n            </div>\n\n            <!-- Simple comparison between accounts -->\n            <div ng-if=\"!isComparisonMode()\" class=\"col-xs-1\">\n              <i class=\"fa fa-circle\" style=\"color: {{getAccountColor(account)}}\" />\n            </div>\n            <div ng-if=\"!isComparisonMode()\" class=\"col-xs-6\">\n              {{account.name}}\n            </div>\n            <div ng-if=\"!isComparisonMode()\" class=\"col-xs-4 text-right\">\n              <i>{{formatAmount(account)}}</i>\n            </div>\n            <div ng-if=\"!isComparisonMode()\" class=\"col-xs-1 text-right\">\n              <button class=\"close\" ng-click=\"removeAccount(account)\" ng-show=\"widget.hasDeleteAbility\">x</button>\n            </div>\n\n          </div>\n        </div>\n      </div>\n\n      <div class=\"row\" ng-show=\"hasAccountsSelected() && !pdfMode\">\n        <div class=\"col-xs-12 input-group add-account\">\n          <select ng-model=\"movedAccount\" ng-options=\"account.name + \' (\' + formatAmount(account) + \')\' group by account.classification for account in widget.remainingAccounts track by account.uid\" class=\"form-control\" ng-show=\"widget.hasDeleteAbility\" ng-change=\"addAccount(movedAccount)\" ng-disabled=\"widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()\">\n            <option value=\"\" disabled selected translate>impac.widget.account_comp.account.add</option>\n          </select>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
@@ -216,8 +223,8 @@ $templateCache.put("widgets/accounts-expenses-revenue.tmpl.html","<div widget-ac
 $templateCache.put("widgets/accounts-payable-receivable.tmpl.html","<div widget-accounts-payable-receivable>\n\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4 translate>impac.widget.accounts_payable_receivable.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.accounts_payable_receivable.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.accounts_payable_receivable.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n    <div ng-show=\"(isDataFound==true)\">\n      <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" accounting-behaviour=\"bls\" end-date=\"widget.metadata.hist_parameters.to\" />\n\n      <div ng-hide=\"widget.isHistoryMode\">\n        <div class=\"receivable\">\n          <h3 translate>impac.widget.accounts_payable_receivable.receivables.title</h3>\n          <div class=\"price positive2\">\n            {{getCurrentReceivable() | mnoCurrency : getCurrency() : false}}\n          </div>\n          <div class=\"currency\">{{getCurrency()}}</div>\n        </div>\n\n        <div class=\"payable\">\n          <h3 translate>impac.widget.accounts_payable_receivable.payables.title</h3>\n          <div class=\"price negative2\">\n            {{getCurrentPayable() | mnoCurrency : getCurrency() : false}}\n          </div>\n          <div class=\"currency\">{{getCurrency()}}</div>\n        </div>\n      </div>\n\n      <div class=\"chart-container\" ng-show=\"widget.isHistoryMode\">\n        <div impac-chart draw-trigger=\"drawTrigger.promise\" deferred=\"chartDeferred\"></div>\n        <div class=\"legend\">\n          <span class=\"negative2\" translate>impac.widget.accounts_payable_receivable.payable</span> -\n          <span class=\"positive2\" translate>impac.widget.accounts_payable_receivable.receivable</span>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-profit-and-loss.tmpl.html","<div widget-accounts-profit-and-loss>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.accounts_profit_and_loss.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.accounts_profit_and_loss.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.accounts_profit_and_loss.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n          <!-- Total mode -->\n          <div class=\"row widget-line header\">\n            <div class=\"col-xs-12 text-right\">\n              <span setting-param-selector parent-widget=\"widget\" param=\"amount_displayed\" options=\"amountDisplayedOptions\" selected=\"amountDisplayed\" deferred=\"::paramSelectorDeferred\" no-reload />\n            </div>\n          </div>\n\n          <!-- Tab header -->\n          <div class=\"row widget-line header\">\n            <div class=\"col-xs-7 col-xs-offset-1 text-left sortable-title\" ng-click=\"sort(\'account\')\">\n              {{\'impac.widget.accounts_profit_and_loss.accounts\' | translate}}\n              <i ng-show=\"sortedColumn == \'account\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n            <div class=\"col-xs-4 text-right sortable-title\" ng-click=\"sort(\'total\')\">\n              {{\'impac.widget.accounts_profit_and_loss.prof_loss\' | translate}}\n              <i ng-show=\"sortedColumn == \'total\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n          </div>\n\n          <!-- Groups of statements with their accounts -->\n          <div class=\"row lines-group\" ng-repeat=\"statement in widget.content.summary\" ng-class=\"{profit: statement.name.indexOf(\'profit\')>0}\">\n            <div class=\"col-xs-12\">\n\n              <!-- Statements lines -->\n              <div class=\"row widget-line\" >\n                <div class=\"col-xs-1\" ng-click=\"toggleCollapsed(statement)\">\n                  <i ng-show=\"(statement.accounts && statement.accounts.length)\" class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" />\n                </div>\n                <div class=\"col-xs-7\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{getName(statement) | titleize}}</strong>\n                </div>\n                <div class=\"col-xs-4 text-right\" ng-class=\"getClassColor(getAmount(statement))\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{getAmount(statement) | mnoCurrency : statement.currency}}</strong>\n                </div>\n\n                <div class=\"selection-tag\" ng-if=\"isSelected(statement)\" style=\"background-color: {{ getSelectLineColor(statement) }}\"/>\n              </div>\n\n              <!-- Accounts lines -->\n              <div class=\"row\" uib-collapse=\"isCollapsed(statement)\">\n                <div class=\"col-xs-12\">\n                  <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(account, statement.name)\" ng-repeat=\"account in statement.accounts\" >\n                    <div class=\"col-xs-7 col-xs-offset-1\">\n                      {{account.name}}\n                    </div>\n                    <div class=\"col-xs-4 text-right\" ng-class=\"getClassColor(getAmount(account))\">\n                      {{getAmount(account) | mnoCurrency : account.currency}}\n                    </div>\n\n                    <div class=\"selection-tag\" ng-if=\"isSelected(account, statement.name)\" style=\"background-color: {{ getSelectLineColor(account, statement.name) }}\"/>\n                  </div>\n                </div>\n              </div>\n\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <div class=\"col-md-6 right-panel text-center\" ng-show=\"widget.isExpanded()\">\n\n        <div ng-show=\"hasElements()\">\n          <h4>{{::period_translation}} {{\'impac.widget.accounts_profit_and_loss.prof_and_loss\' | translate}}</h4>\n          <div ng-show=\"selectedElements.length < 2\" class=\"legend\">{{getName(selectedElements[0]) | titleize}}</div>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n          </div>\n\n          <div ng-show=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n\n            <!-- Not mobile -->\n            <div class=\"row\">\n              <span ng-repeat=\"date in dates track by $index\" class=\"hidden-xs\">\n                <!-- Separator every 4 items -->\n                <div ng-if=\"$index % 4 == 0 && $index > 0\" class=\"clearfix dashed\"></div>\n\n                <div class=\"col-sm-3 text-center\">\n                  <!-- Date -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\">\n                      {{date | mnoDate : widget.metadata.hist_parameters.period}}\n                    </div>\n                  </div>\n                  <!-- Amount + currency -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\" ng-class=\"getClassColor(selectedElements[0].totals[$index])\">\n                      {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}\n                    </div>\n                  </div>\n                </div>\n              </span>\n            </div>\n\n            <!-- Mobile -->\n            <div ng-repeat=\"date in dates track by $index\" class=\"row widget-line visible-xs\">\n              <!-- Date -->\n              <div class=\"col-xs-6\">\n                {{date | mnoDate : widget.metadata.hist_parameters.period}}\n              </div>\n              <!-- Amount + currency -->\n              <div class=\"col-xs-6 text-right\" ng-class=\"getClassColor(selectedElements[0].totals[$index])\">\n                {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}\n              </div>\n            </div>\n          </div>\n\n          <div ng-hide=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n            <div class=\"row widget-line\" ng-repeat=\"element in selectedElements track by $index\">\n              <div class=\"col-xs-7 text-left\">\n                <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getElementChartColor($index)}}\" />\n                {{getName(element) | titleize}}\n              </div>\n              <div class=\"col-xs-5 text-right\">\n                <i ng-class=\"getClassColor(getAmount(element))\">\n                  {{getAmount(element) | mnoCurrency : element.currency}}\n                </i>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div ng-hide=\"hasElements()\" class=\"no-element\" translate>\n          impac.widget.accounts_profit_and_loss.no_elements_selected\n        </div>\n      </div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/accounts-ratios.tmpl.html","<!--\n  Component generated by Impac! Widget Generator!\n-->\n<div widget-accounts-ratios>\n  <!-- Settings Panel -->\n  <div ng-show=\"widget.isEditMode\" class=\"edit\">\n    <h4>Widget settings</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <!-- Buttons displayed on the lower  -->\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\">Cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\">Save</button>\n    </div>\n  </div>\n\n  <!-- Content Panel -->\n  <div ng-hide=\"widget.isEditMode\">\n    <!-- Data found -->\n    <div ng-show=\"(isDataFound==true)\">\n\n      <!-- Ratio details -->\n      <div class=\"col-md-6 left-panel\" ng-class=\"{simulation: simulationMode}\">\n        <div common-time-period-info ng-if=\"simulationMode\" context=\"periodInfoContext\" />\n\n        <div class=\"member\">\n          <div class=\"price\" ng-if=\"!simulationMode\">\n            {{ totalNumerator | mnoCurrency : widget.content.layout.currency }}\n          </div>\n\n          <div class=\"price\" ng-if=\"simulationMode\">\n            {{ calculatedNumerator | mnoCurrency : widget.content.layout.currency }}\n          </div>\n\n          <div class=\"legend\">\n            {{ widget.content.layout.numerator }}\n          </div>\n\n          <div setting-offsets ng-show=\'simulationMode\' parent-widget=\"widget\" deferred=\"::numeratorOffsetsDeferred\" offsets-key=\'numerator\' initial-offsets=\'widget.metadata.offset.numerator\' currency=\'widget.content.layout.currency\' intervals-count=\'intervalsCount\' show-intervals-mult=\"isPnl\" period=\'widget.metadata.hist_parameters.period\' />\n        </div>\n\n        <div class=\"center-block separator\" />\n\n        <div class=\"member\">\n          <div class=\"price\" ng-if=\"!simulationMode\">\n            {{ totalDenominator | mnoCurrency : widget.content.layout.currency }}\n          </div>\n\n          <div class=\"price\" ng-if=\"simulationMode\">\n            {{ calculatedDenominator | mnoCurrency : widget.content.layout.currency }}\n          </div>\n\n          <div class=\"legend\">\n            {{ widget.content.layout.denominator }}\n          </div>\n\n          <div setting-offsets ng-show=\'simulationMode\' parent-widget=\"widget\" deferred=\"::denominatorOffsetsDeferred\" offsets-key=\'denominator\' initial-offsets=\'widget.metadata.offset.denominator\' currency=\'widget.content.layout.currency\' intervals-count=\'intervalsCount\' show-intervals-mult=\"isPnl\" period=\'widget.metadata.hist_parameters.period\' />\n        </div>\n\n        <div class=\"text-center\">\n          <button class=\"btn btn-sm btn-default\" ng-if=\"simulationMode\" ng-click=\"toggleSimulationMode(true)\" title = \"Clear changes to simulation\">\n            Cancel\n          </button>\n          <button class=\"btn btn-sm btn-default\" ng-if=\"!simulationMode\" ng-click=\"toggleSimulationMode()\" title=\"Add custom offsets to the ratio calculation\">\n            <i class=\"fa fa-pencil-square-o\" />\n            Simulation\n          </button>\n          <button class=\"btn btn-sm btn-warning\" ng-if=\"simulationMode\" ng-click=\"saveSimulation()\" title=\"Apply simulation\">\n            Save\n          </button>\n        </div>\n      </div>\n\n      <!-- Current value / Chart -->\n      <div class=\"col-md-6 right-panel\">\n        <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" accounting-behaviour=\"{{widget.content.layout.accounting_behaviour}}\" end-date=\"endDate\" />\n\n        <div ng-hide=\"widget.isHistoryMode\" class=\"current\">\n          <div class=\"price\">\n             {{ totalRatio | mnoCurrency : \'(ratio)\' : false }}\n          </div>\n          <div class=\"legend\">{{ widget.content.layout.ratio }}</div>\n        </div>\n\n        <div class=\"history chart-container\" ng-show=\"widget.isHistoryMode\">\n          <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n          <div class=\"legend\">{{ widget.content.layout.ratio }}</div>\n        </div>\n      </div>\n\n    </div>\n\n    <!-- No data found -->\n    <div ng-show=\"(isDataFound==false)\" common-data-not-found on-display-alerts=\"onDisplayAlerts()\" endpoint=\"::widget.endpoint\" width=\"::widget.width\" />\n  </div>\n</div>\n");
-$templateCache.put("widgets/hr-employees-list.tmpl.html","<div widget-hr-employees-list>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.hr_employees_list.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.hr_employees_list.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.hr_employees_list.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" >\n\n      <div class=\"legend\">\n        <strong>{{widget.content.total.employees}}</strong> <span translate=\"impac.widget.hr_employees_list.legend.employee\" translate-values=\"{num_employee: widget.content.total.employees}\"></span> {{\'impac.widget.hr_employees_list.legend.average\' | translate}} (<span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred\"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>\n      </div>\n\n      <div class=\"widget-lines-container\">\n        <div class=\"row widget-line header\">\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.company</div>\n          <div class=\"col-sm-3\" translate>impac.widget.hr_employees_list.label.employee</div>\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.title</div>\n          <div class=\"col-sm-3\" translate>impac.widget.hr_employees_list.label.phone</div>\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.salary</div>\n        </div>\n        <div class=\"row widget-line\" ng-repeat=\"employee in widget.content.employees\" >\n          <div class=\"col-sm-2\">{{employee.company || getSingleCompanyName()}}</div>\n          <div class=\"col-sm-3\">{{employee.lastname}} {{employee.firstname}}</div>\n          <div class=\"col-sm-2\"><i>{{employee.job_title}}</i></div>\n          <div class=\"col-sm-3\">{{employee.phone}}</div>\n          <div class=\"col-sm-2\"><i>{{getEmployeeEarnings(employee)}}</i></div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/hr-employee-details.tmpl.html","<div widget-hr-employee-details>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.hr_employee_details.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.hr_employee_details.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.hr_employee_details.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" class=\"row\" >\n\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n        <div setting-width parent-widget=\"widget\" min=\"3\" max=\"6\" class=\"settings width\" deferred=\"::widthDeferred\" />\n        <div setting-param-selector parent-widget=\"widget\" param=\"employee_uid\" options=\"employeesOptions\" selected=\"selectedEmployee\" class=\"row title\" deferred=\"::paramSelectorDeferred1\" />\n\n        <div class=\"details-container\">\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.job_title</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().job_title || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.company</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().company || getSingleCompanyName()}}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.phone</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().phone || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.email</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().email || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.date_of_birth</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().dob || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.gender</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().gender || \"-\" }}</pre></div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"col-md-6 right-panel\" ng-show=\"widget.isExpanded()\">\n        <!-- <div class=\"legend\">{{\'impac.widget.hr_employee_details.legend\' | translate}} <span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred2\" /></div> -->\n        <div class=\"details-container\">\n          <div class=\"row\">\n            <div class=\"col-md-4\">\n              <label translate>impac.widget.hr_employee_details.label.salary</label>\n            </div>\n            <div class=\"col-md-8\">\n              <pre ng-if=\"salaries.length > 0\" ng-repeat=\"salary in salaries\" title=\"{{salary.tooltip}}\">{{ salary.amount | mnoCurrency : salary.currency }} ({{ salary.period }})</pre>\n              <pre ng-if=\"salaries.length == 0\">-</pre>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-12\">\n              <label>\n                Estimated earnings\n                - <span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred2\" />\n              </label>\n            </div>\n            <div class=\"col-md-8 col-md-offset-4\">\n              <pre>{{ getEmployee().earnings || \'-\' }}</pre>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.address</label></div>\n            <div class=\"col-md-8\"><pre>{{formatAddress(getEmployee().address) || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.job_location</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().location || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.supervisor</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().supervisor || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.status</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().employment_status || \"-\" }}</pre></div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-md-4\"><label translate>impac.widget.hr_employee_details.label.note</label></div>\n            <div class=\"col-md-8\"><pre>{{getEmployee().note || \"-\" }}</pre></div>\n          </div>\n        </div>\n      </div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
+$templateCache.put("widgets/hr-employees-list.tmpl.html","<div widget-hr-employees-list>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.hr_employees_list.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.hr_employees_list.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.hr_employees_list.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" >\n\n      <div class=\"legend\">\n        <strong>{{widget.content.total.employees}}</strong> <span translate=\"impac.widget.hr_employees_list.legend.employee\" translate-values=\"{num_employee: widget.content.total.employees}\"></span> {{\'impac.widget.hr_employees_list.legend.average\' | translate}} (<span setting-param-selector parent-widget=\"widget\" param=\"period\" options=\"periodOptions\" selected=\"period\" deferred=\"::paramSelectorDeferred\"/>): <strong>{{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}</strong>\n      </div>\n\n      <div class=\"widget-lines-container\">\n        <div class=\"row widget-line header\">\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.company</div>\n          <div class=\"col-sm-3\" translate>impac.widget.hr_employees_list.label.employee</div>\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.title</div>\n          <div class=\"col-sm-3\" translate>impac.widget.hr_employees_list.label.phone</div>\n          <div class=\"col-sm-2\" translate>impac.widget.hr_employees_list.label.salary</div>\n        </div>\n        <div class=\"row widget-line\" ng-repeat=\"employee in widget.content.employees\" >\n          <div class=\"col-sm-2\">{{employee.company || getSingleCompanyName()}}</div>\n          <div class=\"col-sm-3\">{{employee.lastname}} {{employee.firstname}}</div>\n          <div class=\"col-sm-2\"><i>{{employee.job_title}}</i></div>\n          <div class=\"col-sm-3\">{{employee.phone}}</div>\n          <div class=\"col-sm-2\"><i>{{getEmployeeEarnings(employee)}}</i></div>\n        </div>\n      </div>\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/hr-leaves-balance.tmpl.html","<div widget-hr-leaves-balance>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate=\"\">impac.widget.hr_leaves_balance.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\"/>\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.hr_leaves_balance.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.hr_leaves_balance.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" >\n\n      <div setting-param-selector parent-widget=\"widget\" param=\"employee_id\" options=\"employeesOptions\" selected=\"selectedEmployee\" class=\"employee-name\" deferred=\"::paramSelectorDeferred\" />\n\n      <h3>{{vacationLeaves_translation}} {{\'impac.widget.hr_leaves_balance.balance\' | translate}}</h3>\n      <div class=\"balance\">{{(getEmployee().leaves[0].units || 0) | mnoCurrency : (getEmployee().leaves[0].type_of_units || \'h\')}}</div>\n\n      <h3>{{sickLeaves_translation}} {{\'impac.widget.hr_leaves_balance.balance\' | translate}}</h3>\n      <div class=\"balance\">{{(getEmployee().leaves[1].units || 0) | mnoCurrency : (getEmployee().leaves[1].type_of_units || \'h\')}}</div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"::widget.endpoint\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/hr-leaves-schedule.tmpl.html","<div widget-hr-leaves-schedule>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 tranlate>impac.widget.hr_leaves_schedule.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" tranlate>impac.widget.hr_leaves_schedule.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" tranlate>impac.widget.hr_leaves_schedule.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\">\n\n      <div widget-component-calendar ng-model=\"eventSources\"></div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"widget.category\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
 $templateCache.put("widgets/hr-payroll-summary.tmpl.html","<div widget-hr-payroll-summary>\n\n  <div class=\"edit\" ng-show=\"widget.isEditMode\">\n    <h4 translate>impac.widget.hr_payroll_summary.settings.title</h4>\n\n    <div setting-organizations parent-widget=\"widget\" class=\"part\" deferred=\"::orgDeferred\" />\n    <div setting-time-period parent-widget=\"widget\" class=\"part\" deferred=\"::timePeriodDeferred\" hist-params=\"widget.metadata.hist_parameters\" />\n\n    <div class=\"bottom-buttons\" align=\"right\">\n      <button class=\"btn btn-default\" ng-click=\"initSettings()\" translate>impac.widget.hr_payroll_summary.cancel</button>\n      <button class=\"btn btn-warning\" ng-click=\"updateSettings()\" translate>impac.widget.hr_payroll_summary.save</button>\n    </div>\n  </div>\n\n  <div ng-hide=\"widget.isEditMode\">\n\n    <div ng-show=\"(isDataFound==true)\" class=\"row\" >\n      <div ng-class=\"widget.isExpanded() ? \'col-md-6\' : \'col-md-12\'\">\n\n        <div setting-width parent-widget=\"widget\" min=\"6\" max=\"12\" class=\"settings width\" deferred=\"::widthDeferred\" />\n\n        <div class=\"widget-lines-container\">\n\n          <!-- Tab header -->\n          <div class=\"row widget-line header\">\n            <div class=\"col-xs-9 sortable-title\" ng-click=\"sort(\'employee\')\">\n              {{widget.metadata.hist_parameters.period}} {{\'impac.widget.hr_payroll_summary.payroll_summary\' | translate}}\n              <i ng-show=\"sortedColumn == \'employee\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n            <div class=\"col-xs-3 text-right sortable-title\" ng-click=\"sort(\'total\')\">\n              {{\'impac.widget.hr_payroll_summary.total\' | translate}}\n              <i ng-show=\"sortedColumn == \'total\'\" class=\"fa\" ng-class=\"ascending ? \'fa-sort-alpha-asc\' : \'fa-sort-alpha-desc\'\" />\n            </div>\n          </div>\n\n          <!-- Groups of statements with their accounts -->\n          <div class=\"row lines-group\" ng-repeat=\"statement in widget.content.summary\" >\n            <div class=\"col-xs-12\">\n\n              <!-- Statements lines -->\n              <div class=\"row widget-line\">\n                <div class=\"col-xs-1\" ng-click=\"toggleCollapsed(statement)\">\n                  <i ng-show=\"(statement.employees && statement.employees.length)\" class=\"fa\" ng-class=\"isCollapsed(statement) ? \'fa-plus-square-o\' : \'fa-minus-square-o\'\" />\n                </div>\n                <div class=\"col-xs-7\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{getName(statement) | titleize}}</strong>\n                </div>\n                <div class=\"col-xs-4 text-right\" ng-click=\"toggleSelectedElement(statement)\">\n                  <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>\n                </div>\n\n                <div class=\"selection-tag\" ng-if=\"isSelected(statement)\" style=\"background-color: {{ getSelectLineColor(statement) }}\"/>\n              </div>\n\n              <!-- Accounts lines -->\n              <div class=\"row\" uib-collapse=\"isCollapsed(statement)\">\n                <div class=\"col-xs-12\">\n                  <div class=\"row widget-line\" ng-click=\"toggleSelectedElement(employee, statement.name)\" ng-repeat=\"employee in statement.employees\" >\n                    <div class=\"col-xs-7 col-xs-offset-1\">\n                      {{employee.name}}\n                    </div>\n                    <div class=\"col-xs-4 text-right\">\n                      {{getLastValue(employee) | mnoCurrency : employee.currency}}\n                    </div>\n\n                    <div class=\"selection-tag\" ng-if=\"isSelected(employee, statement.name)\" style=\"background-color: {{ getSelectLineColor(employee, statement.name) }}\"/>\n                  </div>\n                </div>\n              </div>\n\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"col-md-6 right-panel text-center\" ng-show=\"widget.isExpanded()\">\n\n        <div ng-show=\"hasElements()\">\n\n          <h4>{{::period_translation | titleize}} {{\'impac.widget.hr_payroll_summary.payroll_summary\' | translate}}</h4>\n          <div setting-hist-mode parent-widget=\"widget\" deferred=\"::histModeDeferred\" on-toggle=\"widget.format()\"/>\n\n          <div class=\"chart-container\">\n            <div impac-chart draw-trigger=\"::drawTrigger.promise\" deferred=\"::chartDeferred\"></div>\n            <div ng-show=\"selectedElements.length < 2\" class=\"legend\">{{getName(selectedElements[0]) | titleize}}</div>\n          </div>\n\n          <div ng-show=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n\n            <div ng-show=\"getTrackedField()\" class=\"row widget-line header\">\n              <div class=\"col-xs-12\">{{getTrackedField()}}</div>\n            </div>\n\n            <!-- Not mobile -->\n            <div class=\"row\">\n              <span ng-repeat=\"date in widget.content.dates track by $index\" class=\"hidden-xs\">\n                <!-- Separator every 4 items -->\n                <div ng-if=\"$index % 4 == 0 && $index > 0\" class=\"clearfix dashed\"></div>\n\n                <div class=\"col-sm-3 text-center\">\n                  <!-- Date -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\">\n                      {{formatDate(date)}}\n                    </div>\n                  </div>\n                  <!-- Amount + currency -->\n                  <div class=\"row widget-line\">\n                    <div class=\"col-sm-12\" ng-class=\"getClassColor(selectedElements[0].totals[$index])\">\n                      {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency }}\n                    </div>\n                  </div>\n                </div>\n              </span>\n            </div>\n\n            <!-- Mobile -->\n            <div ng-repeat=\"date in widget.content.dates track by $index\" class=\"row widget-line visible-xs\">\n              <!-- Date -->\n              <div class=\"col-xs-6\">\n                {{formatDate(date)}}\n              </div>\n              <!-- Amount + currency -->\n              <div class=\"col-xs-6 text-right\" ng-class=\"getClassColor(selectedElements[0].totals[$index])\">\n                {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}\n              </div>\n            </div>\n          </div>\n\n          <div ng-hide=\"selectedElements.length < 2\" class=\"widget-lines-container\">\n\n            <div class=\"row widget-line header\">\n              <div class=\"col-md-12\">\n                <span ng-if=\"getTrackedField()\">\n                  {{getTrackedField()}} -\n                </span>\n                <span ng-if=\"widget.isHistoryMode\">\n                  {{\'impac.widget.hr_payroll_summary.from\' | translate}} {{widget.content.dates[0] | date : \"MMM-d\"}} {{\'impac.widget.hr_payroll_summary.to\' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | date : \"MMM-d\"}}\n                </span>\n                <span ng-if=\"!widget.isHistoryMode\">\n                  {{getPeriod()}}\n                </span>\n              </div>\n            </div>\n\n            <div class=\"row widget-line\" ng-repeat=\"element in selectedElements track by $index\">\n              <div class=\"col-xs-7\">\n                <i class=\"fa fa-circle\" style=\"margin: 0px 8px; color: {{getElementChartColor($index)}}\" />\n                {{getName(element) | titleize}}\n              </div>\n              <div class=\"col-xs-5 text-right\">\n                <span ng-if=\"widget.isHistoryMode\">{{getTotalSum(element) | mnoCurrency : element.currency}}</span>\n                <span ng-if=\"!widget.isHistoryMode\">{{getLastValue(element) | mnoCurrency : element.currency}}</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-hide=\"hasElements()\" class=\"no-element\" translate>impac.widget.hr_payroll_summary.no_elements</div>\n\n      </div>\n\n    </div>\n\n    <div ng-if=\"(isDataFound==false)\" common-data-not-found endpoint=\"widget.category\" width=\"::widget.width\"/>\n  </div>\n\n</div>\n");
@@ -262,10 +269,10 @@ $templateCache.put("widgets-settings/organizations.tmpl.html","<div class=\"sett
 $templateCache.put("widgets-settings/param-selector-classic.tmpl.html","<span class=\"settings param-selector classic\" ng-if=\"selected != undefined\">\n  <select ng-options=\"option as option.label for option in options track by option.value\" ng-model=\"$parent.selectedOption\" ng-change=\"selectOption(selectedOption)\" ng-init=\"onInit()\">\n  </select>\n</span>\n");
 $templateCache.put("widgets-settings/param-selector.tmpl.html","<span class=\"settings param-selector\">\n	<a ng-click=\"toggleShowOptions()\">{{((selected.labelTranslate | translate | titleize) || (selected.label | titleize)) | truncate : getTruncateValue() : \"...\" : false}} <i class=\"fa fa-chevron-down\" /></a>\n	<div class=\"options-container\" uib-collapse=\"!showOptions\">\n		<div ng-repeat=\"option in options\" ng-click=\"selectOption(option)\" class=\"param-selector-label\">\n			{{(option.labelTranslate | translate | titleize) || (option.label | titleize)}}\n		</div>\n	</div>\n</span>\n");
 $templateCache.put("widgets-settings/params-checkboxes.tmpl.html","<div ng-repeat=\"parameter in options track by $index\" class=\"settings params-checkboxes\">\n  <label>\n    <input type=\"checkbox\" ng-model=\"parameter.value\" ng-change=\"parameter.onChangeCallback()\">\n    <span>{{parameter.label}}</span>\n  </label>\n</div>\n");
-$templateCache.put("widgets-settings/params-picker.tmpl.html","<h5>{{formattedParam | titleize}}</h5>\n<div class=\"settings params-picker\">\n  <div style=\"margin-bottom: 8px;\">{{description}}</div>\n  <div ui:sortable=\"sortableOptions\" ng-model=\"options\" class=\"input-group\">\n    <span ng-repeat=\"parameter in options track by $index\" class=\"parameter\" ng-class=\"!parameter.selected ? \'unchecked\' : \'\'\">\n      <span class=\"badge\">{{$index + 1}}</span>\n      {{parameter.label | titleize}}\n      <input type=\"checkbox\" ng-model=\"parameter.selected\" />\n    </span>\n  </div>\n  <div ng-show=\"hasReach\">\n    <label><strong translate>impac.widget.settings.params-picker.apply_to_all</strong> <input type=\"checkbox\" ng-change=\"toggleReach()\" ng-model=\"applyToDashboard\"></label>\n  </div>\n</div>\n");
 $templateCache.put("widgets-settings/time-period.tmpl.html","<h5 translate>impac.widget.settings.time_period.title</h5>\n<div class=\"settings time-period\" ng-if=\"timePeriodSetting\">\n\n  <!-- Time range -->\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <strong translate>impac.widget.settings.time_period.time_range</strong>\n      <div setting-time-presets parent-widget=\"timePeriodSetting\" deferred=\"::timePresetsDeferred\" on-select=\"applyPreset(histParams)\" presets=\"presets\" on-choose-dates=\"useDatesPicker()\" on-choose-period=\"useTimeSlider()\" hist-params=\"histParams\" reset-promise=\"resetPreset.promise\" />\n    </div>\n  </div>\n\n  <!-- Dates pickers -->\n  <div class=\"row\" ng-show=\"isDatesPickerUsed()\">\n    <div class=\"col-xs-12\">\n      <div setting-dates-picker class=\"sub-setting\" parent-widget=\"timePeriodSetting\" deferred=\"::datesPickerDeferred\" min-date=\"getMinDate()\" from=\"fromDate\" to=\"toDate\" keep-today=\"keepToday\" on-use=\"useDatesPicker()\" />\n    </div>\n  </div>\n\n  <!-- Slider -->\n  <div class=\"row\" ng-show=\"isTimeSliderUsed()\">\n    <div class=\"col-xs-12\">\n      <div setting-time-slider class=\"sub-setting\" parent-widget=\"timePeriodSetting\" deferred=\"::timeSliderDeferred\" time-range=\"timePeriodSetting.timeRange\" on-use=\"useTimeSlider()\" />\n    </div>\n  </div>\n\n  <!-- Chart interval -->\n  <div class=\"row\" ng-hide=\"hideChartInterval\">\n    <div class=\"col-xs-12\">\n      <strong translate>impac.widget.settings.time_period.chart_interval</strong>\n      <select ng-model=\"timePeriodSetting.period\" ng-options=\"period.value as period.label for period in periods\" ng-change=\"updateSettings()\" />\n    </div>\n  </div>\n\n  <!-- Info -->\n  <div class=\"row text-center\" ng-hide=\"hideChartInterval\">\n    <div class=\"col-xs-12\">\n      <i translate=\"impac.widget.settings.time_period.chart_note\" translate-values=\"{nbOfPeriods: maxNumberOfPeriods}\"></i>\n    </div>\n  </div>\n\n  <!-- Save Changes -->\n  <div class=\"row text-center\" ng-show=\"showApplyButton\">\n    <div class=\"col-xs-12\">\n      <button class=\"btn btn-sm btn-default\" ng-click=\"applyChangesCallback()\">Apply changes</button>\n    </div>\n  </div>\n</div>\n");
+$templateCache.put("widgets-settings/params-picker.tmpl.html","<h5>{{formattedParam | titleize}}</h5>\n<div class=\"settings params-picker\">\n  <div style=\"margin-bottom: 8px;\">{{description}}</div>\n  <div ui:sortable=\"sortableOptions\" ng-model=\"options\" class=\"input-group\">\n    <span ng-repeat=\"parameter in options track by $index\" class=\"parameter\" ng-class=\"!parameter.selected ? \'unchecked\' : \'\'\">\n      <span class=\"badge\">{{$index + 1}}</span>\n      {{parameter.label | titleize}}\n      <input type=\"checkbox\" ng-model=\"parameter.selected\" />\n    </span>\n  </div>\n  <div ng-show=\"hasReach\">\n    <label><strong translate>impac.widget.settings.params-picker.apply_to_all</strong> <input type=\"checkbox\" ng-change=\"toggleReach()\" ng-model=\"applyToDashboard\"></label>\n  </div>\n</div>\n");
 $templateCache.put("widgets-settings/time-presets.tmpl.html","<div class=\"settings time-presets\">\n  <select ng-model=\"selectedPreset\" ng-options=\"p.label for p in presets\" ng-change=\"presetSelected()\" />\n</div>\n");
-$templateCache.put("widgets-settings/time-slider.tmpl.html","<div class=\"settings time-slider\">\n  <div class=\"row\">\n    <div class=\"col-xs-11 col-xs-offset-1\" ng-click=\"onUse()\" translate=\"impac.widget.settings.time_slider.show_last\" translate-values=\"{formatPeriod: last_x_period}\"></div>\n    <div class=\"col-xs-11 col-xs-offset-1\" ng-click=\"onUse()\">\n      <i>{{formatDate(fromDate())}} - {{formatDate(toDate())}}</i>\n    </div>\n    <div class=\"col-xs-12\">\n      <input type=\"range\" ng-model=\"numberOfPeriods\" min=\"1\" max=\"12\" step=\"1\" ng-focus=\"onUse()\" ng-change=\"formatPeriod()\">\n    </div>\n  </div>\n</div>\n");
+$templateCache.put("widgets-settings/time-slider.tmpl.html","<div class=\"settings time-slider\">\n  <div class=\"row\">\n    <div class=\"col-xs-11 col-xs-offset-1\" ng-click=\"onUse()\" translate=\"impac.widget.settings.time_slider.show_last\" translate-values=\"{formatPeriod: formatPeriod()}\"></div>\n    <div class=\"col-xs-11 col-xs-offset-1\" ng-click=\"onUse()\">\n      <i>{{formatDate(fromDate())}} - {{formatDate(toDate())}}</i>\n    </div>\n    <div class=\"col-xs-12\">\n      <input type=\"range\" ng-model=\"numberOfPeriods\" min=\"1\" max=\"12\" step=\"1\" ng-focus=\"onUse()\" ng-change=\"formatPeriod()\">\n    </div>\n  </div>\n</div>\n");
 $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-double-left reduce\" ng-show=\"expanded && !pdfMode\" ng-click=\"parentWidget.toggleExpanded()\" uib-tooltip=\"{{\'impac.widget.settings.width.reduce\' | translate}}\"/>\n<i class=\"fa fa-angle-double-right expand\" ng-hide=\"expanded || pdfMode\" ng-click=\"parentWidget.toggleExpanded()\" uib-tooltip=\"{{\'impac.widget.settings.width.expand\' | translate}}\"/>\n");}]);
 (function() {
   var module;
@@ -277,23 +284,9 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
     return $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
   }]);
 
-  module.config(["$qProvider", function($qProvider) {
-    return $qProvider.errorOnUnhandledRejections(false);
-  }]);
-
   module.config(["$translateProvider", "ImpacThemingProvider", function($translateProvider, ImpacThemingProvider) {
-    var settings;
-    settings = ImpacThemingProvider.$get().get().translateSettings;
-    if (settings.customLocaleFiles.prefix) {
-      $translateProvider.useStaticFilesLoader({
-        prefix: settings.customLocaleFiles.prefix,
-        suffix: settings.customLocaleFiles.suffix
-      });
-    }
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
-    $translateProvider.useMessageFormatInterpolation();
-    $translateProvider.preferredLanguage(settings.preferredLanguage);
-    return $translateProvider.fallbackLanguage(settings.fallbackLanguage);
+    return $translateProvider.useMessageFormatInterpolation();
   }]);
 
 }).call(this);
@@ -327,1498 +320,6 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 
 }).call(this);
 
-angular.module("maestrano.impac").config(["$translateProvider", function($translateProvider) {
-$translateProvider.translations("en-gb", {
-  "hello_world":                                  "Hello world",
-  "workspace.title":                              "IMPAC! DEVELOPER WORKSPACE",
-  "impac.common.action.cancel":                   "Cancel",
-  "impac.common.action.save":                     "Save",
-  "impac.common.action.delete":                   "Delete",
-  "impac.common.action.calendar.left":            "prev",
-  "impac.common.action.calendar.center":          "title",
-  "impac.common.action.calendar.right":           "next",
-  "impac.common.title.widget.settings.title":     "Widget settings",
-  "impac.common.measure.unit.days":               "{QTY, plural, =0{day} one{day} other{days}}",
-  "impac.common.measure.unit.percentage":         "%",
-  "impac.common.term.accounting.asset.one":       "Asset",
-  "impac.common.term.accounting.asset.many":      "Assets",
-  "impac.common.term.accounting.liability.one":   "Liability",
-  "impac.common.term.accounting.liability.many":  "Liabilities",
-  "impac.common.period.period_in_words.last_x_days.one": "last day",
-  "impac.common.period.period_in_words.last_x_days.other": "last {count} days",
-  "impac.common.period.period_in_words.last_x_weeks.one": "last week",
-  "impac.common.period.period_in_words.last_x_weeks.other": "last {count} weeks",
-  "impac.common.period.period_in_words.last_x_months.one": "last month",
-  "impac.common.period.period_in_words.last_x_months.other": "last {count} months",
-  "impac.common.period.period_in_words.last_x_quarters.one": "last quarter",
-  "impac.common.period.period_in_words.last_x_quarters.other": "last {count} quarters",
-  "impac.common.period.period_in_words.last_x_years.one": "last year",
-  "impac.common.period.period_in_words.last_x_years.other": "last {count} years",
-  "impac.common.period.period_in_words.last_x_financial_years.one": "last financial year",
-  "impac.common.period.period_in_words.last_x_financial_years.other": "last {count} financial years",
-  "impac.common.period.preset_in_words.calendar_year_to_date": "Calendar year to date",
-  "impac.common.period.preset_in_words.financial_year_to_date": "Financial year to date",
-  "impac.common.period.preset_in_words.previous_financial_year": "Previous financial year",
-  "impac.common.period.preset_in_words.last_6_months": "Last 6 months",
-  "impac.common.period.preset_in_words.last_4_quarters": "Last 4 quarters",
-  "impac.common.period.preset_in_words.last_4_weeks": "Last 4 weeks",
-  "impac.common.period.preset_in_words.choose_period": "Choose period...",
-  "impac.common.period.preset_in_words.choose_dates": "Choose dates...",
-  "impac.common.label.job_title":     "Job Title",
-  "impac.common.label.company":       "Company",
-  "impac.common.label.phone":         "Phone",
-  "impac.common.label.email":         "Email",
-  "impac.common.label.date_of_birth": "Date of birth",
-  "impac.common.label.gender":        "Gender",
-  "impac.common.label.salary":        "Salary",
-  "impac.common.label.address":       "Address",
-  "impac.common.label.job_location":  "Job location",
-  "impac.common.label.supervisor":    "Supervisor",
-  "impac.common.label.status":        "Status",
-  "impac.common.label.employee":      "Employee",
-  "impac.common.label.title":         "Title",
-  "impac.common.label.note":          "Note",
-  "impac.common.label.age_range":     "Age Range",
-  "impac.common.label.salary_range":  "Salary Range",
-  "impac.common.label.website":       "Website",
-  "impac.common.label.contact":       "Contact",
-  "impac.common.label.city":          "City",
-  "impac.common.label.country":       "Country",
-  "impac.common.label.total_invoiced": "Total invoiced",
-  "impac.common.label.total_paid":     "Total paid",
-  "impac.common.label.total_due":      "Total due",
-  "impac.common.text.from":           "From",
-  "impac.common.text.to":             "to",
-  "impac.common.value_sold_taxes":    "value sold (incl. taxes)",
-  "impac.common.value_sold_no_taxes": "value sold (excl. taxes)",
-  "impac.common.quantity_sold":       "quantity sold",
-  "impac.common.value_purchased_taxes":    "value purchased (incl. taxes)",
-  "impac.common.value_purchased_no_taxes": "value purchased (excl. taxes)",
-  "impac.common.quantity_purchased":       "quantity purchased",
-  "impac.common.reduce":                   "reduce",
-  "impac.common.expand":                   "expand",
-
-  "impac.data_not_found_config.main_message":     "Data not found",
-  "impac.data_not_found_config.link_message":     "Are you missing an app?",
-  "impac.data_not_found_config.find_why":         "Find out why",
-  "impac.widget.settings.hist.history":           "history",
-  "impac.widget.settings.time_period.title":      "Time period selection",
-  "impac.widget.settings.time_period.time_range": "Time Range:",
-  "impac.widget.settings.time_period.chart_interval": "Chart Interval:",
-  "impac.widget.settings.time_period.chart_note": "Note: Chart is limited to {nbOfPeriods} intervals:",
-  "impac.widget.settings.time_period.period.hourly": "HOURLY",
-  "impac.widget.settings.time_period.period.daily": "DAILY",
-  "impac.widget.settings.time_period.period.weekly": "WEEKLY",
-  "impac.widget.settings.time_period.period.monthly": "MONTHLY",
-  "impac.widget.settings.time_period.period.quarterly": "QUARTERLY",
-  "impac.widget.settings.time_period.period.yearly": "YEARLY",
-  "impac.widget.settings.time_period.yearly_financial": "Yearly (financial)",
-  "impac.widget.settings.time_period.period.days": "DAYS",
-  "impac.widget.settings.time_period.period.weeks": "WEEKS",
-  "impac.widget.settings.time_period.period.months": "MONTHS",
-  "impac.widget.settings.time_period.period.quarters": "QUARTERS",
-  "impac.widget.settings.time_period.period.years": "YEARS",
-  "impac.widget.settings.time_period.period.year":    "year",
-  "impac.widget.settings.time_period.period.quarter": "quarter",
-  "impac.widget.settings.time_period.period.month":   "month",
-  "impac.widget.settings.time_period.period.week":    "week",
-  "impac.widget.settings.time_period.period.day":     "day",
-  "impac.widget.settings.dates_picker.title": "Time range",
-  "impac.widget.settings.dates_picker.from": "From",
-  "impac.widget.settings.dates_picker.to": "To",
-  "impac.widget.settings.dates_picker.tooltip.apply_changes": "Apply changes",
-  "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
-  "impac.widget.settings.organizations.select_companies": "Select Companies",
-  "impac.widget.settings.chart_filters.title": "Chart filters",
-  "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
-  "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
-  "impac.widget.settings.account.label": "Account to monitor",
-  "impac.widget.settings.account.label.accounting_behaviour": "Accounting behaviour",
-  "impac.widget.settings.accounting_behaviour.balance_sheet": "Balance Sheet",
-  "impac.widget.settings.accounting_behaviour.p_and_l": "P&L",
-
-  "impac.widget.settings.attach_kpis.attach_an_alert":    "Attach an Alert",
-  "impac.widget.settings.attach_kpis.keep_the":           "Keep the",
-  "impac.widget.settings.attach_kpis.of":                 "of",
-  "impac.widget.settings.attach_kpis.kpi_target_require": "KPI target is required",
-  "impac.widget.settings.attach_kpis.kpi_target_number":  "KPI target must be a number",
-  "impac.widget.settings.attach_kpis.attached_alerts":    "Attached Alerts",
-  "impac.widget.settings.attach_kpis.keep":               "Keep",
-  "impac.widget.settings.attach_kpis.over":               "over",
-  "impac.widget.settings.attach_kpis.below":              "below",
-
-  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
-  "impac.widget.settings.width.expand": "@:impac.common.expand",
-
-  "impac.widget.settings.params-picker.description": "The selected criteria will be displayed in this order (drag/drop to modify):",
-  "impac.widget.settings.params-picker.apply_to_all": "Apply to all similar widgets",
-  "impac.widget.settings.params-picker.status_selection": "STATUS SELECTION",
-
-  "impac.widget.settings.limit_entries.top":     "Top",
-  "impac.widget.settings.limit_entries.display": "Display",
-  "impac.widget.settings.limit_entries.entries": "entries",
-
-  "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this analytics dashboard?",
-  "impac.dashboard_selector.bootstrap_tabs.add_widget": "Add Widget",
-  "impac.dashboard_selector.bootstrap_tabs.source": "Source:",
-  "impac.dashboard_selector.delete.delete_dashboard": "Delete Dashboard",
-  "impac.dashboard_selector.delete.delete": "Delete",
-  "impac.dashboard_selector.delete.cancel": "@:impac.common.action.cancel",
-  "impac.dashboard_selector.dropdown.source": "Source:",
-  "impac.dashboard_selector.dropdown.tooltip.change_name": "Change name",
-  "impac.dashboard_selector.dropdown.create_dashboard": "Create Dashboard",
-  "impac.dashboard_selector.dropdown.change_dashboard_name": "Change dashboard name:",
-  "impac.dashboard_selector.dropdown.cancel": "@:impac.common.action.cancel",
-  "impac.dashboard_selector.dropdown.confirm": "Confirm",
-  "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
-  "impac.dashboard_selector.dropdown.tooltip": "Delete Dashboard",
-
-  "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
-  "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
-  "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
-  "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
-  "impac.widget.common.top_buttons.info_popup.delete": "Delete widget",
-  "impac.widget.common.top_buttons.info_popup.edit": "Edit widget",
-  "impac.widget.common.top_buttons.info_popup.refresh": "Refresh widget",
-  "impac.widget.common.top_buttons.info_popup.info": "Widget info",
-  "impac.widget.common.time_period_info.to":      "As at {dateTo}",
-  "impac.widget.common.time_period_info.from_to": "From {dateFrom} to {dateTo}",
-  "impac.widget.common.error_config.first_time_created.first": "It's time to add a reporting dashboard!",
-  "impac.widget.common.error_config.first_time_created.second": "In 2 clicks, you'll be able to visualize how your business is performing.",
-  "impac.widget.common.error_config.first_time_created.note": "Note: dashboards you create will only be accessible by you. Dashboard sharing across users will be added soon.",
-  "impac.widget.common.error_config.empty.first": "Now it's time to select the metrics you want to see!",
-  "impac.widget.common.error_config.empty.second": "Add widgets to your dashboard to help make an Impac!™ to your business.",
-  "impac.widget.common.error_config.failed.first": "Ooops! Something went wrong, can you please refresh your dashboard?",
-  "impac.widget.common.error_config.failed.second": "Unable to load your dashboard, please contact support or try again later.",
-  "impac.widget.common.sub_menu_config.check_this_app": ">> Check this app on our marketplace",
-  "impac.widget.theming.hist.default":            "Current",
-  "impac.widget.theming.hist.default.prefix":     "",
-  "impac.widget.theming.hist.bls":                "Balance",
-  "impac.widget.theming.hist.bls.prefix":         "Live",
-  "impac.widget.theming.hist.pnl":                "Total Period",
-  "impac.widget.theming.hist.pnl.prefix":         "",
-  "impac.widget.include_pdf":                     "CLICK TO INCLUDE IN PDF",
-  "impac.widget.loader":                          "Your data is being retrieved...",
-  "impac.widget.type.revenue_asset":              "Revenue / Asset",
-  "impac.widget.currency.ratio":                  "Ratio",
-  "impac.widget.classification_summary.liability":"Liability",
-  "impac.widget.classification_summary.revenue":  "Revenue",
-  "impac.widget.classification_summary.expense":  "Expense",
-  "impac.widget.classification_summary.asset":    "Asset",
-  "impac.widget.classification_summary.equity":   "Equity",
-
-  "impac.kpi.alerts.title":                       "Alerts settings",
-  "impac.kpi.alerts.explanation":                 "Alert me when <strong>{name} ({element_watched})</strong> is",
-  "impac.kpi.alerts.service.inapp":               "With in-app notifications",
-  "impac.kpi.alerts.service.email":               "By sending me an email to: {EMAIL, select, hasEmail{ at {email}} other{}}",
-  "impac.kpi.alerts.target":                      "{TARGET, select, below{below} over{over} other{}} {value} {unit}",
-  "impac.kpi.alerts.cancel":                      "@:impac.common.action.cancel",
-  "impac.kpi.alerts.save":                        "@:impac.common.action.save",
-  "impac.kpi.current":                            "Current",
-  "impac.kpi.kpi_target_require":                 "@:impac.widget.settings.attach_kpis.kpi_target_require",
-  "impac.kpi.kpi_target_number":                  "@:impac.widget.settings.attach_kpis.kpi_target_number",
-  "impac.kpi.over":                               "@:impac.widget.settings.attach_kpis.over",
-  "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
-  "impac.kpi.extra_param_label.verb":             "Select",
-
-  "impac.kpi_bar.you_can_now":                    "You can now attach KPIs to your dashboard",
-  "impac.kpi_bar.no_kpis":                        "No KPIs are available for your dashboard",
-  "impac.kpi_bar.add_to_dashboard":               "Add to dashboard",
-  "impac.kpi_bar.new":                            "New!",
-
-  "impac.widget.accounting_values.turnover.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounting_values.turnover.save":           "@:impac.common.action.save",
-  "impac.widget.accounting_values.turnover.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.accounting_values.turnover.type":           "Overall Turnover",
-  "impac.widget.accounting_values.turnover.legend":         "Revenue / Asset",
-  "impac.widget.accounting_values.turnover.currency":       "(ratio)",
-
-  "impac.widget.acc_ass_liab_smry.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_liab_smry.save":              "@:impac.common.action.save",
-  "impac.widget.acc_ass_liab_smry.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_liab_smry.asset.one":         "@:impac.common.term.accounting.asset.one",
-  "impac.widget.acc_ass_liab_smry.asset.many":        "@:impac.common.term.accounting.asset.many",
-  "impac.widget.acc_ass_liab_smry.liability.one":     "@:impac.common.term.accounting.liability.one",
-  "impac.widget.acc_ass_liab_smry.liability.many":    "@:impac.common.term.accounting.liability.many",
-  "impac.widget.acc_ass_liab_smry.accounts.asset":    "Asset Accounts",
-  "impac.widget.acc_ass_liab_smry.accounts.liability":"Liability Accounts",
-
-  "impac.widget.acc_ass_smry.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_smry.save":               "@:impac.common.action.save",
-  "impac.widget.acc_ass_smry.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_smry.asset.many":         "@:impac.common.term.accounting.asset.many",
-  "impac.widget.acc_ass_smry.liability.many":     "@:impac.common.term.accounting.liability.many",
-
-  "impac.widget.acc_ass_vs_liab.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_vs_liab.save":            "@:impac.common.action.save",
-  "impac.widget.acc_ass_vs_liab.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_vs_liab.asset.one":       "@:impac.common.term.accounting.asset.one",
-  "impac.widget.acc_ass_vs_liab.asset.many":      "@:impac.common.term.accounting.asset.many",
-  "impac.widget.acc_ass_vs_liab.liability.many":  "@:impac.common.term.accounting.liability.many",
-  "impac.widget.acc_ass_vs_liab.liability.one":   "@:impac.common.term.accounting.liability.one",
-
-  "impac.widget.account_balance.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_balance.save":            "@:impac.common.action.save",
-  "impac.widget.account_balance.cancel":          "@:impac.common.action.cancel",
-
-  "impac.widget.account_balance_sheets.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_balance_sheets.save":            "@:impac.common.action.save",
-  "impac.widget.account_balance_sheets.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.account_balance_sheets.not_found":       "No balance sheet can be generated between {fromDate} and {toDate} <br/> Please select another period",
-  "impac.widget.account_balance_sheets.compare_balances":"Compare balances at dates:",
-  "impac.widget.account_balance_sheets.asset":           "Asset",
-  "impac.widget.account_balance_sheets.liability":       "Liability",
-  "impac.widget.account_balance_sheets.equity":          "Equity",
-  "impac.widget.account_balance_sheets.accounts":        "Accounts",
-  "impac.widget.account_balance_sheets.balance":         "Balance",
-
-  "impac.widget.account_cash_smry.settings.title":        "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_cash_smry.save":                  "@:impac.common.action.save",
-  "impac.widget.account_cash_smry.cancel":                "@:impac.common.action.cancel",
-  "impac.widget.account_cash_smry.cash_flow":             "Cash Flow",
-  "impac.widget.account_cash_smry.cash_flow.daily":       "Daily Cash Flow",
-  "impac.widget.account_cash_smry.cash_flow.weekly":      "Weekly Cash Flow",
-  "impac.widget.account_cash_smry.cash_flow.monthly":     "Monthly Cash Flow",
-  "impac.widget.account_cash_smry.cash_flow.quarterly":   "Quarterly Cash Flow",
-  "impac.widget.account_cash_smry.cash_flow.yearly":      "Yearly Cash Flow",
-  "impac.widget.account_cash_smry.select.description":    "Select an account or an account type to display the corresponding cash evolution.",
-  "impac.widget.account_cash_smry.vs":                    "vs ",
-  "impac.widget.account_cash_smry.summary.total_operating":     "Total Operating",
-  "impac.widget.account_cash_smry.summary.total_non_operating": "Total Non Operating",
-  "impac.widget.account_cash_smry.summary.gst_movements":       "Gst Movements",
-  "impac.widget.account_cash_smry.summary.net_cash_flow":       "Net Cash Flow",
-
-  "impac.widget.account_class_comp.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_class_comp.save":              "@:impac.common.action.save",
-  "impac.widget.account_class_comp.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_class_comp.klass.liability":    "liability",
-  "impac.widget.account_class_comp.klass.asset":        "asset",
-  "impac.widget.account_class_comp.klass.expense":      "expense",
-  "impac.widget.account_class_comp.klass.revenue":      "revenue",
-  "impac.widget.account_class_comp.klass.equity":       "equity",
-
-  "impac.widget.account_comp.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_comp.save":              "@:impac.common.action.save",
-  "impac.widget.account_comp.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_comp.account.select":    "Select the accounts you wish to compare.",
-  "impac.widget.account_comp.account.not_found": "No comparable accounts found.",
-  "impac.widget.account_comp.account.add":       "+ ADD ACCOUNT",
-  "impac.widget.account_comp.compare_mode_opt":  "Compare matching accounts across your companies",
-
-  "impac.widget.account_cust_calc.title":                     "Create a custom calculation",
-  "impac.widget.account_cust_calc.formula.save":              "@:impac.common.action.save",
-  "impac.widget.account_cust_calc.formula.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_cust_calc.formula.title":             "Custom Calculation",
-  "impac.widget.account_cust_calc.formula.legend":            "Legend: {legend}",
-  "impac.widget.account_cust_calc.formula.result":            "Result: {result}",
-  "impac.widget.account_cust_calc.formula.type_here":         "Type your formula just below:",
-  "impac.widget.account_cust_calc.formula.data_retrieved":    "Your data is being retrieved...",
-  "impac.widget.account_cust_calc.formula.explanations":      "Make a custom equation with your accounts, and save it as a widget. To create an equation, simply select your accounts in the list, and use the classical operators (example: {example}",
-
-  "impac.widget.account_det_class.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_det_class.save":              "@:impac.common.action.save",
-  "impac.widget.account_det_class.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_det_class.acc_classifications":            "{name} - Accounts classifications",
-  "impac.widget.account_det_class.account_classifications":        "Account Classifications",
-  "impac.widget.account_det_class.amounts":                        "Amounts",
-
-  "impac.widget.account_expense_weight.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
-  "impac.widget.account_expense_weight.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_expense_weight.comparator.turnover": "turnover",
-  "impac.widget.account_expense_weight.comparator.total_exp": "total expenses",
-
-  "impac.widget.accounts_profit_and_loss.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_profit_and_loss.save":                 "@:impac.common.action.save",
-  "impac.widget.accounts_profit_and_loss.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.accounts_profit_and_loss.accounts":             "Accounts",
-  "impac.widget.accounts_profit_and_loss.prof_loss":            "Profit/Loss",
-  "impac.widget.accounts_profit_and_loss.prof_and_loss":        "Profit and Loss",
-  "impac.widget.accounts_profit_and_loss.no_elements_selected": "Select one or several account(s) or account(s) type(s) to display the corresponding PnL.",
-  "impac.widget.accounts_profit_and_loss.last_period":          "Last period",
-  "impac.widget.accounts_profit_and_loss.total_for_period":     "Total for period",
-
-  "impac.widget.accounts_payable_receivable.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_payable_receivable.save":              "@:impac.common.action.save",
-  "impac.widget.accounts_payable_receivable.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.accounts_payable_receivable.receivables.title": "Accounts Receivable",
-  "impac.widget.accounts_payable_receivable.payables.title":    "Accounts Payable",
-  "impac.widget.accounts_payable_receivable.payable":           "Payable",
-  "impac.widget.accounts_payable_receivable.receivable":        "Receivable",
-
-  "impac.widget.hr_employee_details.settings.title":      "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_employee_details.save":                "@:impac.common.action.save",
-  "impac.widget.hr_employee_details.cancel":              "@:impac.common.action.cancel",
-  "impac.widget.hr_employee_details.label.job_title":     "@:impac.common.label.job_title",
-  "impac.widget.hr_employee_details.label.company":       "@:impac.common.label.company",
-  "impac.widget.hr_employee_details.label.phone":         "@:impac.common.label.phone",
-  "impac.widget.hr_employee_details.label.email":         "@:impac.common.label.email",
-  "impac.widget.hr_employee_details.label.date_of_birth": "@:impac.common.label.date_of_birth",
-  "impac.widget.hr_employee_details.label.gender":        "@:impac.common.label.gender",
-  "impac.widget.hr_employee_details.label.salary":        "@:impac.common.label.salary",
-  "impac.widget.hr_employee_details.label.address":       "@:impac.common.label.address",
-  "impac.widget.hr_employee_details.label.job_location":  "@:impac.common.label.job_location",
-  "impac.widget.hr_employee_details.label.supervisor":    "@:impac.common.label.supervisor",
-  "impac.widget.hr_employee_details.label.status":        "@:impac.common.label.status",
-  "impac.widget.hr_employee_details.label.note":          "@:impac.common.label.note",
-  "impac.widget.hr_employee_details.legend":              "Salary calculation period:",
-
-  "impac.widget.hr_employees_list.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_employees_list.save":            "@:impac.common.action.save",
-  "impac.widget.hr_employees_list.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_employees_list.label.company":   "@:impac.common.label.company",
-  "impac.widget.hr_employees_list.label.employee":  "@:impac.common.label.employee",
-  "impac.widget.hr_employees_list.label.title":     "@:impac.common.label.title",
-  "impac.widget.hr_employees_list.label.phone":     "@:impac.common.label.phone",
-  "impac.widget.hr_employees_list.label.salary":    "@:impac.common.label.salary",
-  "impac.widget.hr_employees_list.legend.average":  " - Average salary rate",
-  "impac.widget.hr_employees_list.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-
-  "impac.widget.hr_leaves_balance.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_leaves_balance.save":            "@:impac.common.action.save",
-  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_leaves_balance.vacation_leaves": "Vacation leaves",
-  "impac.widget.hr_leaves_balance.sick_leaves":     "Sick leaves",
-  "impac.widget.hr_leaves_balance.balance":         "balance",
-
-  "impac.widget.hr_leaves_schedule.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_leaves_schedule.save":            "@:impac.common.action.save",
-  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel",
-
-  "impac.widget.hr_payroll_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_payroll_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_payroll_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_payroll_summary.payroll_summary": "Payroll Summary",
-  "impac.widget.hr_payroll_summary.from":            "@:impac.common.text.from",
-  "impac.widget.hr_payroll_summary.to":              "@:impac.common.text.to",
-  "impac.widget.hr_payroll_summary.no_elements":     "Select one or several employee(s) or category(ies) to display the corresponding summary.",
-  "impac.widget.hr_payroll_summary.total_leaves":         "Total Leaves Accruals",
-  "impac.widget.hr_payroll_summary.total_superannuation": "Total Superannuation Accruals",
-  "impac.widget.hr_payroll_summary.total_reimbursements": "Total Reimbursements",
-  "impac.widget.hr_payroll_summary.total_taxes":          "Total Taxes",
-  "impac.widget.hr_payroll_summary.total_time_off":       "Total Time Off",
-  "impac.widget.hr_payroll_summary.total":                "Total",
-
-  "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
-  "impac.widget.hr_payroll_taxes.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.hr_payroll_taxes.legend":         "Taxes upon workforce costs",
-  "impac.widget.hr_payroll_taxes.payroll_taxes":  "Payroll Taxes",
-
-  "impac.widget.hr_salaries_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_salaries_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_salaries_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_salaries_summary.average_rate":    "Average Salary Rate",
-  "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-  "impac.widget.hr_salaries_summary.legend.with":     "with known salary",
-  "impac.widget.hr_salaries_summary.filter":          "Filter:",
-
-  "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
-  "impac.widget.hr_superannuation_accruals.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.hr_superannuation_accruals.superannuation_balance": "Superannuation Balance",
-
-  "impac.widget.hr_timesheets.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_timesheets.save":                 "@:impac.common.action.save",
-  "impac.widget.hr_timesheets.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.hr_timesheets.total_worked":         "Total Time Worked",
-  "impac.widget.hr_timesheets.total_off":            "Total Time Off",
-  "impac.widget.hr_timesheets.activities_not_found": "Activities detail not found",
-  "impac.widget.hr_timesheets.from":                 "@:impac.common.text.from",
-  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to",
-
-  "impac.widget.hr_workforce_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_workforce_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_workforce_summary.total_workforce": "Total Workforce",
-  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{employee} other{employees}}",
-  "impac.widget.hr_workforce_summary.legend.with":     "with known salary",
-  "impac.widget.hr_workforce_summary.filter":          "@:impac.widget.hr_salaries_summary.filter",
-
-  "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",
-  "impac.widget.invoices_receivables.cancel":                        "@:impac.common.action.cancel",
-  "impac.widget.invoices_receivables.payables_and_receivables":      "Payables & Receivables",
-  "impac.widget.invoices_receivables.total":                         "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.invoices_receivables.oldest":                        "Oldest",
-  "impac.widget.invoices_receivables.aged_payables":                 "Aged Payables",
-  "impac.widget.invoices_receivables.aged_receivables":              "Aged Receivables",
-  "impac.widget.invoices_receivables.aged_payables_and_receivables": "Aged Payables and Receivables",
-  "impac.widget.invoices_receivables.your_opening_balance":          "* Your opening-balance of receivables and/or payables for this period.",
-  "impac.widget.invoices_receivables.select_accounts":               "Select one or several account(s) or category(ies) to display the payables/receivables evolution(s).",
-  "impac.widget.invoices_receivables.tooltip.oldest_invoice":        "Oldest invoice:",
-
-  "impac.widget.invoices_list.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_list.save":           "@:impac.common.action.save",
-  "impac.widget.invoices_list.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.invoices_list.paid":           "Paid",
-  "impac.widget.invoices_list.due":            "Due",
-  "impac.widget.invoices_list.invoiced":       "Invoiced",
-  "impac.widget.invoices_list.no_invoice":     "No {orderBy}invoice found for your {entityType}",
-  "impac.widget.invoices_list.total_paid":     "- Total paid",
-  "impac.widget.invoices_list.total_due":      "- Total due",
-  "impac.widget.invoices_list.total_invoiced": "- Total invoiced",
-  "impac.widget.invoices_list.limit_entries_label.creditors": "creditors",
-  "impac.widget.invoices_list.limit_entries_label.debtors":   "debtors",
-
-  "impac.widget.invoices_summary.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_summary.save":           "@:impac.common.action.save",
-  "impac.widget.invoices_summary.cancel":         "@:impac.common.action.cancel",
-
-  "impac.widget.sales_aged.settings.title":      "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_aged.save":                "@:impac.common.action.save",
-  "impac.widget.sales_aged.cancel":              "@:impac.common.action.cancel",
-  "impac.widget.sales_aged.from":                "@:impac.common.text.from",
-  "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
-  "impac.widget.sales_aged.value_sold_taxes":    "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_aged.value_sold_no_taxes": "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_aged.quantity_sold":       "@:impac.common.quantity_sold",
-
-  "impac.widget.sales_break_even.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_break_even.save":                   "@:impac.common.action.save",
-  "impac.widget.sales_break_even.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.sales_break_even.from":                   "@:impac.common.text.from",
-  "impac.widget.sales_break_even.to":                     "@:impac.common.text.to",
-  "impac.widget.sales_break_even.title.sales":            "Sales to Date",
-  "impac.widget.sales_break_even.title.projection":       "Projection to Break-Even",
-  "impac.widget.sales_break_even.target":                 "Target",
-  "impac.widget.sales_break_even.your_sales":             "Your sales already exceed your target by:",
-  "impac.widget.sales_break_even.projected_date":         "Projected date:",
-  "impac.widget.sales_break_even.opportunities_to_close": "Opportunities to close:",
-  "impac.widget.sales_break_even.eligible_opportunities": "eligible opportunities",
-  "impac.widget.sales_break_even.click_to_define":        "Click to define your sales target",
-
-  "impac.widget.sales_comparison.settings.title":          "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_comparison.save":                    "@:impac.common.action.save",
-  "impac.widget.sales_comparison.cancel":                  "@:impac.common.action.cancel",
-  "impac.widget.sales_comparison.legend.compare_by":       "Compare by:",
-  "impac.widget.sales_comparison.legend.see":              "See:",
-  "impac.widget.sales_comparison.total_sales_from":        "Total sales from",
-  "impac.widget.sales_comparison.to":                      "@:impac.common.text.to",
-  "impac.widget.sales_comparison.total":                   "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.sales_comparison.select_sales_category":   "Select one or several sales category(ies) to display the corresponding comparison.",
-  "impac.widget.sales_comparison.value_sold_taxes":        "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_comparison.value_sold_no_taxes":     "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_comparison.quantity_sold":           "@:impac.common.quantity_sold",
-  "impac.widget.sales_comparison.criteria_options.products":   "products",
-  "impac.widget.sales_comparison.criteria_options.locations":  "locations",
-  "impac.widget.sales_comparison.criteria_options.industries": "industries",
-  "impac.widget.sales_comparison.criteria_options.customers":  "customers",
-
-  "impac.widget.sales_customer_details.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_customer_details.save":                 "@:impac.common.action.save",
-  "impac.widget.sales_customer_details.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.sales_customer_details.label.email":          "@:impac.common.label.email",
-  "impac.widget.sales_customer_details.label.phone":          "@:impac.common.label.phone",
-  "impac.widget.sales_customer_details.label.website":        "@:impac.common.label.website",
-  "impac.widget.sales_customer_details.label.contact":        "@:impac.common.label.contact",
-  "impac.widget.sales_customer_details.label.city":           "@:impac.common.label.city",
-  "impac.widget.sales_customer_details.label.country":        "@:impac.common.label.country",
-  "impac.widget.sales_customer_details.label.address":        "@:impac.common.label.address",
-  "impac.widget.sales_customer_details.label.total_invoiced": "@:impac.common.label.total_invoiced",
-  "impac.widget.sales_customer_details.label.total_paid":     "@:impac.common.label.total_paid",
-  "impac.widget.sales_customer_details.label.total_due":      "@:impac.common.label.total_due",
-  "impac.widget.sales_customer_details.from":                 "@:impac.common.text.from",
-  "impac.widget.sales_customer_details.to":                   "@:impac.common.text.to",
-
-  "impac.widget.sales_cycle.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_cycle.save":             "@:impac.common.action.save",
-  "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_cycle.your_sales_cycle": "Your sales cycle represents how much time your leads stay set to each status",
-
-  "impac.widget.sales_forecast.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_forecast.save":              "@:impac.common.action.save",
-  "impac.widget.sales_forecast.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.sales_forecast.projection_on":     "Projection on the next 6 months",
-  "impac.widget.sales_forecast.sales_performance": "Sales Performance",
-
-  "impac.widget.sales_growth.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_growth.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_growth.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_growth.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_growth.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_growth.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_growth.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_growth.select_product":           "SELECT PRODUCT",
-  "impac.widget.sales_growth.tooltip.total_for_period": "total for last period",
-
-  "impac.widget.sales_leads_funnel.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_leads_funnel.save":              "@:impac.common.action.save",
-  "impac.widget.sales_leads_funnel.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.sales_leads_funnel.legend.your_leads": "Your leads sales funnel from",
-  "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
-  "impac.widget.sales_leads_funnel.select_a_status":   "Select a status to display a list of the corresponding leads",
-  "impac.widget.sales_leads_funnel.status":            "Status:",
-  "impac.widget.sales_leads_funnel.organization":      "Organization:",
-  "impac.widget.sales_leads_funnel.opportunities":     "Opportunities:",
-
-  "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
-  "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_leads_list.status":         "@:impac.widget.sales_leads_funnel.status",
-  "impac.widget.sales_leads_list.organization":   "@:impac.widget.sales_leads_funnel.organization",
-  "impac.widget.sales_leads_list.opportunities":  "@:impac.widget.sales_leads_funnel.opportunities",
-
-  "impac.widget.sales_list.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_list.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_list.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_list.products":                 "Products",
-  "impac.widget.sales_list.total":                    "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.sales_list.no_data_found":            "No data found for this time range<br/> Please select another one",
-  "impac.widget.sales_list.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_list.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_list.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_list.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_list.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_list.from":                     "@:impac.common.text.from",
-  "impac.widget.sales_list.to":                       "@:impac.common.text.to",
-
-  "impac.widget.sales_margin.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_margin.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_margin.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_margin.total_sold_and_purchased": "Total sold - Total purchased",
-  "impac.widget.sales_margin.including_taxes":          "Including taxes",
-  "impac.widget.sales_margin.excluding_taxes":          "Excluding taxes",
-  "impac.widget.sales_margin.gross_margin":             "Gross margin",
-
-  "impac.widget.sales_net_sales.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_net_sales.save":             "@:impac.common.action.save",
-  "impac.widget.sales_net_sales.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_net_sales.title.sales":      "Sales",
-  "impac.widget.sales_net_sales.title.returns":    "Returns",
-  "impac.widget.sales_net_sales.title.net_result": "Net Result",
-  "impac.widget.sales_net_sales.no_transaction":   "No transaction found for this time range<br/> Please select another one",
-  "impac.widget.sales_net_sales.total_amount":     "Total amount",
-  "impac.widget.sales_net_sales.average_amount":   "Average amount",
-  "impac.widget.sales_net_sales.volume":           "Volume",
-  "impac.widget.sales_net_sales.tmpl.last_hours":  "Last :hours:h",
-  "impac.widget.sales_net_sales.tmpl.last_days":   "Last :days: days",
-
-  "impac.widget.sales_number_of_leads.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_number_of_leads.save":           "@:impac.common.action.save",
-  "impac.widget.sales_number_of_leads.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_number_of_leads.leads_for_this": "Leads for this",
-  "impac.widget.sales_number_of_leads.leads_in_total": "leads in total",
-
-  "impac.widget.sales_funnel.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_funnel.save":           "@:impac.common.action.save",
-  "impac.widget.sales_funnel.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_funnel.legend":         "Your opportunities, sorted by sales stage",
-  "impac.widget.sales_funnel.select_a_sales": "Select a sales stage to display a list of the corresponding opportunities",
-  "impac.widget.sales_funnel.assignees_opportunities": "Assignees / Opportunities",
-  "impac.widget.sales_funnel.potential_per_assignee": "Potential per assignee",
-
-  "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_performance.save":               "@:impac.common.action.save",
-  "impac.widget.sales_performance.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.sales_performance.from":               "@:impac.common.text.from",
-  "impac.widget.sales_performance.to":                 "@:impac.common.text.to",
-  "impac.widget.sales_performance.win_ratio":          "Win ratio",
-  "impac.widget.sales_performance.total_won":          "Total won",
-  "impac.widget.sales_performance.select_an_employee": "Select an employee or team to display the corresponding opportunities won/lost.",
-  "impac.widget.sales_performance.pick_the_status":    "Pick the status that should be considered as 'Closed Won' and 'Closed Lost' in your widget settings.",
-  "impac.widget.sales_performance.total_won_with_colon":          "Total won :",
-  "impac.widget.sales_performance.forecast":           "Forecast",
-  "impac.widget.sales_performance.closed_won":         "Closed Won",
-  "impac.widget.sales_performance.closed_lost":        "Closed Lost",
-  "impac.widget.sales_performance.description.pick_the_status": "Pick the status that should be considered as 'Closed Won'",
-  "impac.widget.sales_performance.description.pick_the_status_lost": "Pick the status that should be considered as 'Closed Lost'",
-
-  "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
-  "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_turnover.filter":           "@:impac.widget.hr_salaries_summary.filter",
-  "impac.widget.sales_turnover.average_price":    "Average price range",
-  "impac.widget.sales_turnover.of_your_revenue":  "of your revenue comes from products sold at an average price between",
-  "impac.widget.sales_turnover.and":              "and",
-  "impac.widget.sales_turnover.gross_revenue":    "Gross revenue (incl. taxes)",
-  "impac.widget.sales_turnover.net_revenue":      "Net revenue (excl. taxes)",
-  "impac.widget.sales_turnover.analysis.least":    "Your less expensive products bring you most of your revenue.",
-  "impac.widget.sales_turnover.analysis.most":    "Your most expensive products bring you most of your revenue.",
-  "impac.widget.sales_turnover.analysis.balanced": "Your revenue is balanced between your different products segments.",
-  "impac.widget.sales_turnover.tooltip.widget_segment": "This widget segments your revenue by products average price range and propose an analysis of its composition",
-
-  "impac.widget.sales_summary.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_summary.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_summary.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_summary.no_data_found":            "No data found in this time range<br/> Please select another one",
-  "impac.widget.sales_summary.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_summary.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_summary.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_summary.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_summary.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_summary.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_summary.to":                       "@:impac.common.text.to",
-
-  "impac.widget.sales_opportunities.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_opportunities.save":                   "@:impac.common.action.save",
-  "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.sales_opportunities.total_potential":        "Total potential:",
-  "impac.widget.sales_opportunities.eligible_opportunities": "eligible opportunities",
-  "impac.widget.sales_opportunities.proba":                  "proba",
-
-  "impac.widget.editable_title.tooltip_text": "(click to edit name)",
-  "impac.widget.editable_title.incorrect_name": "Incorrect name",
-
-  "impac.dashboard.create.create_new_dashboard":      "Create New Dashboard",
-  "impac.dashboard.create.name":                      "Name",
-  "impac.dashboard.create.type":                      "Type",
-  "impac.dashboard.create.current_company":           "Current Company",
-  "impac.dashboard.create.multi_company":             "Multi Company",
-  "impac.dashboard.create.now_access_text":           "Oops! Only Admins and Super Admins can create dashboards for company",
-  "impac.dashboard.create.select_multi_company":      "Please select a \"Multi Company\" dashboard to select data from other companies.",
-  "impac.dashboard.create.companies":                 "Companies",
-  "impac.dashboard.create.tooltip.access":            "Only Admins and Super Admins can access analytics data for this company",
-  "impac.dashboard.create.cancel":                    "@:impac.common.action.cancel",
-  "impac.dashboard.create.add":                       "Add",
-  "impac.dashboard.create.placeholder.cash_accounts": "E.g: Cash Accounts Monitoring",
-
-  "impac.dashboard.change_logo":               "Change logo",
-  "impac.dashboard.it_looks_like":             "It looks like you are using MYOB Essentials...",
-  "impac.dashboard.unfortunately_information": "Unfortunately, all the information required by Impac! is not exposed by MYOB Essentials API <strong>yet</strong>. Consequently, most of the accounting widgets provided by Impac! won't find a valid source of data to display their content.",
-  "impac.dashboard.myob_message.part_1":       "Maybe you should consider switching to",
-  "impac.dashboard.myob_message.part_2":       "MYOB AccountRight",
-  "impac.dashboard.myob_message.part_3":       ", the other MYOB accounting solution?",
-  "impac.dashboard.widget_added":              "Widget added!",
-  "impac.dashboard.select_the_widgets":        "Select the widgets you want to add to your dashboard.",
-  "impac.dashboard.all_categories":            "All categories",
-  "impac.dashboard.accounting":                "Accounting",
-  "impac.dashboard.invoicing":                 "Invoicing",
-  "impac.dashboard.hr_or_payroll":             "HR / Payroll",
-  "impac.dashboard.sales":                     "Sales",
-  "impac.dashboard.can_not_find":              "Can't find the widget you're looking for?",
-  "impac.dashboard.give_us":                   "Give us your suggestions here!",
-  "impac.dashboard.create_a_dashboard":        "Create a Dashboard!",
-  "impac.dashboard.add_new_widget":            "Add a new Widget",
-  "impac.dashboard.plus_chart":                "+ chart",
-  "impac.dashboard.refresh":                   "Refresh",
-  "impac.dashboard.category_name.accounting":    "Accounting",
-  "impac.dashboard.category_name.invoicing":     "Invoicing",
-  "impac.dashboard.category_name.hr_or_payroll": "HR / Payroll",
-  "impac.dashboard.category_name.sales":         "Sales",
-
-  "impac.dashboard.widget_suggestion.suggest_a_widget":     "Suggest a widget",
-  "impac.dashboard.widget_suggestion.widget_name":          "What would you name your widget?",
-  "impac.dashboard.widget_suggestion.kind_of_information":  "What kind of information would your widget display?",
-  "impac.dashboard.widget_suggestion.helping":              "thanks a lot for helping us improve Impac!&trade;",
-  "impac.dashboard.widget_suggestion.unable_to_send":       "Unable to send suggestions request, please try again or contact technical support.",
-  "impac.dashboard.widget_suggestion.cancel":               "@:impac.common.action.cancel",
-  "impac.dashboard.widget_suggestion.send_your_suggestion": "Send your suggestion",
-
-  "impac.widget.accounts_expenses_revenue.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_expenses_revenue.save":            "@:impac.common.action.save",
-  "impac.widget.accounts_expenses_revenue.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.accounts_expenses_revenue.expenses":        "Expenses",
-  "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
-  "impac.widget.accounts_expenses_revenue.net_profit":      "Net Profit",
-  "impac.widget.accounts_expenses_revenue.show_net_profit": "Show net profit",
-
-  "impac.widget.sales_new_vs_existing.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_new_vs_existing.save":               "@:impac.common.action.save",
-  "impac.widget.sales_new_vs_existing.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.sales_new_vs_existing.new_customers":      "New Customers:",
-  "impac.widget.sales_new_vs_existing.existing_customers": "Existing Customers:",
-  "impac.widget.sales_new_vs_existing.total":              "Total:",
-  "impac.widget.sales_new_vs_existing.no_data_found":      "No data found for this time range<br/> Please select another one",
-  "impac.widget.sales_new_vs_existing.customers":          "Customers",
-  "impac.widget.sales_new_vs_existing.total_sales":        "Total Sales",
-  "impac.widget.sales_new_vs_existing.transactions":       "Transactions",
-  "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "Last :hours:h",
-  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "Last :days: days",
-
-  "impac.widget.sales_top_customers.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_top_customers.save":           "@:impac.common.action.save",
-  "impac.widget.sales_top_customers.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_top_customers.no_sales":       "No sales data found for your customers",
-  "impac.widget.sales_top_customers.customer_name":  "Customer name",
-  "impac.widget.sales_top_customers.top":            "TOP - :number:",
-  "impac.widget.sales_top_customers.total_sales":    "Total sales",
-  "impac.widget.sales_top_customers.transactions":   "Transactions",
-  "impac.widget.sales_top_customers.avg_sales":      "Avg sales",
-  "impac.widget.sales_top_customers.last_sale":      "Last sale",
-  "impac.widget.sales_top_customers.show":           "Show",
-  "impac.widget.sales_top_customers.hide":           "Hide",
-  "impac.widget.sales_top_customers.details":        "details",
-
-  "impac.widget.info_panel.information": "Information on widget",
-
-  "impac.widget.formula.invalid_expression": "invalid expression",
-  "impac.widget.formula.infinity":           "Infinity",
-  "impac.widget.formula.minus_infinity":     "-Infinity",
-
-  "impac.widget.alerts_config.over":  "over",
-  "impac.widget.alerts_config.below": "below",
-
-  "impac.components.currency.choose_currency": "Choose currency...",
-
-  "impac.components.pdf_mode.print":  "Print",
-  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel",
-
-  "impac.components.sync_apps.syncing":                   "Syncing...",
-  "impac.components.sync_apps.show_sync_status":          "Show sync status",
-  "impac.components.sync_apps.tooltip.sync_data":         "Sync data and refresh dashboard",
-  "impac.components.sync_apps.status.synced_at":          "Synced at",
-  "impac.components.sync_apps.status.sync_will_run":      "Sync will run in a few minutes.",
-  "impac.components.sync_apps.status.syncing_in_progres": "Syncing in progress...",
-  "impac.components.sync_apps.status.sync_failed":        "Sync failed. Please contact support.",
-  "impac.components.sync_apps.status.please_link":        "Please link your application.",
-  "impac.components.sync_apps.status.could_not_retrieve": "Couldn't retrieve sync status.",
-  "impac.components.sync_apps.all":                       "All",
-  "impac.components.sync_apps.applications_are_synced":   "applications are synced in real-time.",
-  "impac.components.sync_apps.synchronization_status":    "Synchronization status",
-  "impac.components.sync_apps.ok":                        "OK"
-}
-);
-
-$translateProvider.translations("zh-HK", {
-  "hello_world":                                  "你好 你好",
-  "workspace.title":                              "你好! 你好 你好",
-  "impac.common.action.cancel":                   "你好",
-  "impac.common.action.save":                     "你好",
-  "impac.common.action.delete":                   "你好",
-  "impac.common.action.calendar.left":            "你好",
-  "impac.common.action.calendar.center":          "你好",
-  "impac.common.action.calendar.right":           "你好",
-  "impac.common.title.widget.settings.title":     "你好 你好",
-  "impac.common.measure.unit.days":               "{QTY, plural, =0{你好} one{你好} other{你好}}",
-  "impac.common.measure.unit.percentage":         "%",
-  "impac.common.term.accounting.asset.one":       "你好你",
-  "impac.common.term.accounting.asset.many":      "你好你",
-  "impac.common.term.accounting.liability.one":   "好你你",
-  "impac.common.term.accounting.liability.many":  "好你你",
-  "impac.common.period.period_in_words.last_x_days.one": "你好 你好",
-  "impac.common.period.period_in_words.last_x_days.other": "你好 {count} 你好",
-  "impac.common.period.period_in_words.last_x_weeks.one": "你好 你好",
-  "impac.common.period.period_in_words.last_x_weeks.other": "你好 {count} 你好",
-  "impac.common.period.period_in_words.last_x_months.one": "你好 你好",
-  "impac.common.period.period_in_words.last_x_months.other": "你好 {count} 你好",
-  "impac.common.period.period_in_words.last_x_quarters.one": "你好 你好",
-  "impac.common.period.period_in_words.last_x_quarters.other": "你好 {count} 你好",
-  "impac.common.period.period_in_words.last_x_years.one": "你好 你好",
-  "impac.common.period.period_in_words.last_x_years.other": "你好 {count} 你好",
-  "impac.common.period.period_in_words.last_x_financial_years.one": "你好 你好 你好",
-  "impac.common.period.period_in_words.last_x_financial_years.other": "你好 {count} 你好 你好",
-  "impac.common.period.preset_in_words.calendar_year_to_date": "年初至今",
-  "impac.common.period.preset_in_words.financial_year_to_date": "财政年至今",
-  "impac.common.period.preset_in_words.previous_financial_year": "上一财政年",
-  "impac.common.period.preset_in_words.last_6_months": "最近6个月",
-  "impac.common.period.preset_in_words.last_4_quarters": "最近4个季度",
-  "impac.common.period.preset_in_words.last_4_weeks": "最近4周",
-  "impac.common.period.preset_in_words.choose_period": "你好 你好...",
-  "impac.common.period.preset_in_words.choose_dates": "你好 你好...",
-  "impac.common.label.job_title":     "你好 你好",
-  "impac.common.label.company":       "你好",
-  "impac.common.label.phone":         "你好",
-  "impac.common.label.email":         "你好",
-  "impac.common.label.date_of_birth": "你好 你好 你好",
-  "impac.common.label.gender":        "你好",
-  "impac.common.label.salary":        "你好",
-  "impac.common.label.address":       "你好",
-  "impac.common.label.job_location":  "你好 你好",
-  "impac.common.label.supervisor":    "你好",
-  "impac.common.label.status":        "你好",
-  "impac.common.label.employee":      "你好",
-  "impac.common.label.title":         "你好",
-  "impac.common.label.note":          "你好",
-  "impac.common.label.age_range":     "你好 你好",
-  "impac.common.label.salary_range":  "你好 你好",
-  "impac.common.label.website":       "你好",
-  "impac.common.label.contact":       "你好",
-  "impac.common.label.city":          "你好",
-  "impac.common.label.country":       "你好",
-  "impac.common.label.total_invoiced": "你好 你好",
-  "impac.common.label.total_paid":     "你好 你好",
-  "impac.common.label.total_due":      "你好 你好",
-  "impac.common.text.from":           "你好",
-  "impac.common.text.to":             "你好",
-  "impac.common.value_sold_taxes":    "你好 你好 (你好. 你好)",
-  "impac.common.value_sold_no_taxes": "你好 你好 (你好. 你好)",
-  "impac.common.quantity_sold":       "你好 你好",
-  "impac.common.value_purchased_taxes":    "你好 你好 (你好. 你好)",
-  "impac.common.value_purchased_no_taxes": "你好 你好 (你好. 你好)",
-  "impac.common.quantity_purchased":       "你好 你好",
-  "impac.common.reduce":                   "你好",
-  "impac.common.expand":                   "你好",
-
-  "impac.data_not_found_config.main_message":     "你好 你好 你好",
-  "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
-  "impac.data_not_found_config.find_why":         "你好 你好 你好",
-  "impac.widget.settings.hist.history":           "你好",
-  "impac.widget.settings.time_period.title":      "你好 你好 你好",
-  "impac.widget.settings.time_period.time_range": "你好 你好:",
-  "impac.widget.settings.time_period.chart_interval": "你好 你好:",
-  "impac.widget.settings.time_period.chart_note": "你好: 你好 你好 你好 你好 {nbOfPeriods} 你好:",
-  "impac.widget.settings.time_period.period.hourly": "你好",
-  "impac.widget.settings.time_period.period.daily": "你好",
-  "impac.widget.settings.time_period.period.weekly": "你好",
-  "impac.widget.settings.time_period.period.monthly": "你好",
-  "impac.widget.settings.time_period.period.quarterly": "你好",
-  "impac.widget.settings.time_period.period.yearly": "你好",
-  "impac.widget.settings.time_period.yearly_financial": "你好 (你好)",
-  "impac.widget.settings.time_period.period.days": "你好",
-  "impac.widget.settings.time_period.period.weeks": "你好",
-  "impac.widget.settings.time_period.period.months": "你好",
-  "impac.widget.settings.time_period.period.quarters": "你好",
-  "impac.widget.settings.time_period.period.years": "你好",
-  "impac.widget.settings.time_period.period.year":    "你好",
-  "impac.widget.settings.time_period.period.quarter": "你好",
-  "impac.widget.settings.time_period.period.month":   "你好",
-  "impac.widget.settings.time_period.period.week":    "你好",
-  "impac.widget.settings.time_period.period.day":     "你好",
-  "impac.widget.settings.dates_picker.title": "你好 你好",
-  "impac.widget.settings.dates_picker.from": "你好",
-  "impac.widget.settings.dates_picker.to": "你好",
-  "impac.widget.settings.dates_picker.tooltip.apply_changes": "你好 你好",
-  "impac.widget.settings.time_slider.show_last": "你好 {formatPeriod}",
-  "impac.widget.settings.organizations.select_companies": "你好 你好",
-  "impac.widget.settings.chart_filters.title": "你好 你好 你好 你好",
-  "impac.widget.settings.chart_filters.filter_number": "你好 你好 {number} {entityType}",
-  "impac.widget.settings.chart_filters.filter_percentage": "你好 你好 {percentage}% {entityType}",
-  "impac.widget.settings.account.label": "你好 你好 你好",
-  "impac.widget.settings.account.label.accounting_behaviour": "你好 你好",
-  "impac.widget.settings.accounting_behaviour.balance_sheet": "你好 你好",
-  "impac.widget.settings.accounting_behaviour.p_and_l": "你好 & 你好",
-
-  "impac.widget.settings.attach_kpis.attach_an_alert":    "你好 你好 你好",
-  "impac.widget.settings.attach_kpis.keep_the":           "你好 你好",
-  "impac.widget.settings.attach_kpis.of":                 "你好",
-  "impac.widget.settings.attach_kpis.kpi_target_require": "你好 你好 你好 你好",
-  "impac.widget.settings.attach_kpis.kpi_target_number":  "你好 你好 你好 你好 你好 你好",
-  "impac.widget.settings.attach_kpis.attached_alerts":    "你好 你好",
-  "impac.widget.settings.attach_kpis.keep":               "你好",
-  "impac.widget.settings.attach_kpis.over":               "你好",
-  "impac.widget.settings.attach_kpis.below":              "你好",
-
-  "impac.widget.settings.width.reduce": "@:impac.common.reduce",
-  "impac.widget.settings.width.expand": "@:impac.common.expand",
-
-  "impac.widget.settings.params-picker.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 (你好/你好 你好 你好):",
-  "impac.widget.settings.params-picker.apply_to_all": "你好 你好 你好 你好 你好",
-  "impac.widget.settings.params-picker.status_selection": "你好 你好",
-
-  "impac.widget.settings.limit_entries.top":     "你好",
-  "impac.widget.settings.limit_entries.display": "你好",
-  "impac.widget.settings.limit_entries.entries": "你好",
-
-  "impac.dashboard_selector.delete_widget.description": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好?",
-  "impac.dashboard_selector.bootstrap_tabs.add_widget": "你好 你好",
-  "impac.dashboard_selector.bootstrap_tabs.source": "你好:",
-  "impac.dashboard_selector.delete.delete_dashboard": "你好 你好",
-  "impac.dashboard_selector.delete.delete": "你好",
-  "impac.dashboard_selector.delete.cancel": "@:impac.common.action.cancel",
-  "impac.dashboard_selector.dropdown.source": "你好:",
-  "impac.dashboard_selector.dropdown.tooltip.change_name": "你好 你好",
-  "impac.dashboard_selector.dropdown.create_dashboard": "你好 你好",
-  "impac.dashboard_selector.dropdown.change_dashboard_name": "你好 你好 你好:",
-  "impac.dashboard_selector.dropdown.cancel": "@:impac.common.action.cancel",
-  "impac.dashboard_selector.dropdown.confirm": "你好",
-  "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
-  "impac.dashboard_selector.dropdown.tooltip": "你好 你好",
-
-  "impac.widget.common.top_buttons.delete.title": "你好 你好 你好 你好 你好 你好 你好 你好?",
-  "impac.widget.common.top_buttons.delete.explanation": "(你好 你好 你好 你好 你好)",
-  "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
-  "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
-  "impac.widget.common.top_buttons.info_popup.delete": "你好 你好 你好 你好",
-  "impac.widget.common.top_buttons.info_popup.edit": "你好 你好 你好 你好",
-  "impac.widget.common.top_buttons.info_popup.refresh": "你好 你好 你好 你好",
-  "impac.widget.common.top_buttons.info_popup.info": "你好 你好 你好 你好",
-  "impac.widget.common.time_period_info.to":      "你好 你好 {dateTo}",
-  "impac.widget.common.time_period_info.from_to": "你好 {dateFrom} 你好 {dateTo}",
-  "impac.widget.common.error_config.first_time_created.first": "你好's 你好 你好 你好 你好 你好 你好!",
-  "impac.widget.common.error_config.first_time_created.second": "你好 2 你好, 你好'll 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.common.error_config.first_time_created.note": "你好: 你好 你好 你好 你好 你好 你好 你好 你好 你好. 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.common.error_config.empty.first": "你好 你好's 你好 你好 你好 你好 你好 你好 你好 你好 你好!",
-  "impac.widget.common.error_config.empty.second": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好!™ 你好 你好 你好.",
-  "impac.widget.common.error_config.failed.first": "你好! 你好 你好 你好, 你好 你好 你好 你好 你好 你好?",
-  "impac.widget.common.error_config.failed.second": "你好 你好 你好 你好 你好, 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.common.sub_menu_config.check_this_app": ">> 你好 你好 你好 你好 你好 你好",
-  "impac.widget.theming.hist.default":            "你好",
-  "impac.widget.theming.hist.default.prefix":     "你好",
-  "impac.widget.theming.hist.bls":                "你好",
-  "impac.widget.theming.hist.bls.prefix":         "你好",
-  "impac.widget.theming.hist.pnl":                "你好 你好",
-  "impac.widget.theming.hist.pnl.prefix":         "你好",
-  "impac.widget.include_pdf":                     "你好 你好 你好 你好 你好",
-  "impac.widget.loader":                          "你好 你好 你好 你好 你好...",
-  "impac.widget.type.revenue_asset":              "你好 / 你好",
-  "impac.widget.currency.ratio":                  "你好",
-  "impac.widget.classification_summary.liability":"你好",
-  "impac.widget.classification_summary.revenue":  "你好",
-  "impac.widget.classification_summary.expense":  "你好",
-  "impac.widget.classification_summary.asset":    "你好",
-  "impac.widget.classification_summary.equity":   "你好",
-
-  "impac.kpi.alerts.title":                       "你好 你好",
-  "impac.kpi.alerts.explanation":                 "你好 你好 你好 <strong>{name} ({element_watched})</strong> 你好",
-  "impac.kpi.alerts.service.inapp":               "你好 你好-你好 你好",
-  "impac.kpi.alerts.service.email":               "你好 你好 你好 你好 你好 {EMAIL, select, hasEmail{ 你好 {email}} other{}}",
-  "impac.kpi.alerts.target":                      "{TARGET, select, below{你好} over{你好} other{}} {value} {unit}",
-  "impac.kpi.alerts.cancel":                      "@:impac.common.action.cancel",
-  "impac.kpi.alerts.save":                        "@:impac.common.action.save",
-  "impac.kpi.current":                            "你好",
-  "impac.kpi.kpi_target_require":                 "@:impac.widget.settings.attach_kpis.kpi_target_require",
-  "impac.kpi.kpi_target_number":                  "@:impac.widget.settings.attach_kpis.kpi_target_number",
-  "impac.kpi.over":                               "@:impac.widget.settings.attach_kpis.over",
-  "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
-  "impac.kpi.extra_param_label.verb":             "你好",
-
-  "impac.kpi_bar.you_can_now":                    "你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.kpi_bar.no_kpis":                        "你好 你好 你好 你好 你好 你好 你好",
-  "impac.kpi_bar.add_to_dashboard":               "你好 你好 你好",
-  "impac.kpi_bar.new":                            "你好!",
-
-  "impac.widget.accounting_values.turnover.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounting_values.turnover.save":           "@:impac.common.action.save",
-  "impac.widget.accounting_values.turnover.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.accounting_values.turnover.type":           "你好 你好",
-  "impac.widget.accounting_values.turnover.legend":         "你好 / 你好",
-  "impac.widget.accounting_values.turnover.currency":       "(你好)",
-
-  "impac.widget.acc_ass_liab_smry.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_liab_smry.save":              "@:impac.common.action.save",
-  "impac.widget.acc_ass_liab_smry.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_liab_smry.asset.one":         "你好",
-  "impac.widget.acc_ass_liab_smry.asset.many":        "你好你",
-  "impac.widget.acc_ass_liab_smry.liability.one":     "你好",
-  "impac.widget.acc_ass_liab_smry.liability.many":    "你好你",
-  "impac.widget.acc_ass_liab_smry.accounts.asset":     "你好 你好",
-  "impac.widget.acc_ass_liab_smry.accounts.liability": "你好 你好",
-
-  "impac.widget.acc_ass_smry.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_smry.save":               "@:impac.common.action.save",
-  "impac.widget.acc_ass_smry.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_smry.asset.many":         "@:impac.common.term.accounting.asset.many",
-  "impac.widget.acc_ass_smry.liability.many":     "@:impac.common.term.accounting.liability.many",
-
-  "impac.widget.acc_ass_vs_liab.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.acc_ass_vs_liab.save":            "@:impac.common.action.save",
-  "impac.widget.acc_ass_vs_liab.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.acc_ass_vs_liab.asset.one":       "@:impac.common.term.accounting.asset.one",
-  "impac.widget.acc_ass_vs_liab.asset.many":      "@:impac.common.term.accounting.asset.many",
-  "impac.widget.acc_ass_vs_liab.liability.many":  "@:impac.common.term.accounting.liability.many",
-  "impac.widget.acc_ass_vs_liab.liability.one":   "@:impac.common.term.accounting.liability.one",
-
-  "impac.widget.account_balance.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_balance.save":            "@:impac.common.action.save",
-  "impac.widget.account_balance.cancel":          "@:impac.common.action.cancel",
-
-  "impac.widget.account_balance_sheets.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_balance_sheets.save":            "@:impac.common.action.save",
-  "impac.widget.account_balance_sheets.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.account_balance_sheets.not_found":       "你好 你好 你好 你好 你好 你好 你好 {fromDate} 你好 {toDate} <br/> 你好 你好 你好 你好",
-  "impac.widget.account_balance_sheets.compare_balances":"你好 你好 你好 你好:",
-  "impac.widget.account_balance_sheets.asset":           "你好",
-  "impac.widget.account_balance_sheets.liability":       "好你好",
-  "impac.widget.account_balance_sheets.equity":          "你好好",
-  "impac.widget.account_balance_sheets.accounts":        "你好",
-  "impac.widget.account_balance_sheets.balance":         "你好",
-
-  "impac.widget.account_cash_smry.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_cash_smry.save":              "@:impac.common.action.save",
-  "impac.widget.account_cash_smry.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_cash_smry.cash_flow":            "你好 你好",
-  "impac.widget.account_cash_smry.cash_flow.daily":      "你好 你好 你你好",
-  "impac.widget.account_cash_smry.cash_flow.weekly":     "你好 你你好 你好",
-  "impac.widget.account_cash_smry.cash_flow.monthly":    "你好 你好 你好",
-  "impac.widget.account_cash_smry.cash_flow.quarterly":  "你你好 你好 你好",
-  "impac.widget.account_cash_smry.cash_flow.yearly":     "你好 你你好 你好",
-  "impac.widget.account_cash_smry.select.description":"你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.account_cash_smry.vs":                          "你好 ",
-  "impac.widget.account_cash_smry.summary.total_operating":     "你好 你好",
-  "impac.widget.account_cash_smry.summary.total_non_operating": "你好 你好 你好",
-  "impac.widget.account_cash_smry.summary.gst_movements":       "你好 你好",
-  "impac.widget.account_cash_smry.summary.net_cash_flow":       "你好 你好 你好",
-
-  "impac.widget.account_class_comp.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_class_comp.save":              "@:impac.common.action.save",
-  "impac.widget.account_class_comp.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_class_comp.klass.liability":    "你好",
-  "impac.widget.account_class_comp.klass.asset":        "你好",
-  "impac.widget.account_class_comp.klass.expense":      "你好",
-  "impac.widget.account_class_comp.klass.revenue":      "你好",
-  "impac.widget.account_class_comp.klass.equity":       "你好",
-
-  "impac.widget.account_comp.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_comp.save":              "@:impac.common.action.save",
-  "impac.widget.account_comp.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_comp.account.select":    "你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.account_comp.account.not_found": "你好 你好 你好 你好.",
-  "impac.widget.account_comp.account.add":       "+ 你好 你好",
-  "impac.widget.account_comp.compare_mode_opt":  "你好 你好 你好 你好 你好 你好",
-
-  "impac.widget.account_cust_calc.title":                     "你好 你好 你好 你好",
-  "impac.widget.account_cust_calc.formula.save":              "@:impac.common.action.save",
-  "impac.widget.account_cust_calc.formula.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_cust_calc.formula.title":             "你好 你好",
-  "impac.widget.account_cust_calc.formula.legend":            "你好: {legend}",
-  "impac.widget.account_cust_calc.formula.result":            "你好: {result}",
-  "impac.widget.account_cust_calc.formula.type_here":         "你好 你好 你好 你好 你好:",
-  "impac.widget.account_cust_calc.formula.data_retrieved":    "你好 你好 你好 你好 你好...",
-  "impac.widget.account_cust_calc.formula.explanations":      "你好 你好 你好 你好 你好 你好 你好, 你好 你好 你好 你好 你好 你好. 你好 你好 你好 你好, 你好 你好 你好 你好 你好 你好 你好, 你好 你好 你好 你好 你好 (你好: {example}",
-
-  "impac.widget.account_det_class.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_det_class.save":              "@:impac.common.action.save",
-  "impac.widget.account_det_class.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_det_class.acc_classifications":            "{name} - 你好 你好",
-  "impac.widget.account_det_class.account_classifications":        "你好 你好",
-  "impac.widget.account_det_class.amounts":                        "你好",
-
-  "impac.widget.account_expense_weight.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.account_expense_weight.save":              "@:impac.common.action.save",
-  "impac.widget.account_expense_weight.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.account_expense_weight.comparator.turnover": "你好",
-  "impac.widget.account_expense_weight.comparator.total_exp": "你好 你好",
-
-  "impac.widget.accounts_profit_and_loss.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_profit_and_loss.save":                 "@:impac.common.action.save",
-  "impac.widget.accounts_profit_and_loss.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.accounts_profit_and_loss.accounts":             "你好",
-  "impac.widget.accounts_profit_and_loss.prof_loss":            "你好/你好",
-  "impac.widget.accounts_profit_and_loss.prof_and_loss":        "你好 你好 你好",
-  "impac.widget.accounts_profit_and_loss.no_elements_selected": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.accounts_profit_and_loss.last_period":          "你好 你好",
-  "impac.widget.accounts_profit_and_loss.total_for_period":     "你好 你好 你好",
-
-  "impac.widget.accounts_payable_receivable.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_payable_receivable.save":              "@:impac.common.action.save",
-  "impac.widget.accounts_payable_receivable.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.accounts_payable_receivable.receivables.title": "你好 你好",
-  "impac.widget.accounts_payable_receivable.payables.title":    "你好 你好",
-  "impac.widget.accounts_payable_receivable.payable":           "你好",
-  "impac.widget.accounts_payable_receivable.receivable":        "你好",
-
-  "impac.widget.hr_employee_details.settings.title":      "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_employee_details.save":                "@:impac.common.action.save",
-  "impac.widget.hr_employee_details.cancel":              "@:impac.common.action.cancel",
-  "impac.widget.hr_employee_details.label.job_title":     "@:impac.common.label.job_title",
-  "impac.widget.hr_employee_details.label.company":       "@:impac.common.label.company",
-  "impac.widget.hr_employee_details.label.phone":         "@:impac.common.label.phone",
-  "impac.widget.hr_employee_details.label.email":         "@:impac.common.label.email",
-  "impac.widget.hr_employee_details.label.date_of_birth": "@:impac.common.label.date_of_birth",
-  "impac.widget.hr_employee_details.label.gender":        "@:impac.common.label.gender",
-  "impac.widget.hr_employee_details.label.salary":        "@:impac.common.label.salary",
-  "impac.widget.hr_employee_details.label.address":       "@:impac.common.label.address",
-  "impac.widget.hr_employee_details.label.job_location":  "@:impac.common.label.job_location",
-  "impac.widget.hr_employee_details.label.supervisor":    "@:impac.common.label.supervisor",
-  "impac.widget.hr_employee_details.label.status":        "@:impac.common.label.status",
-  "impac.widget.hr_employee_details.label.note":          "@:impac.common.label.note",
-  "impac.widget.hr_employee_details.legend":              "你好 你好 你好:",
-
-  "impac.widget.hr_employees_list.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_employees_list.save":            "@:impac.common.action.save",
-  "impac.widget.hr_employees_list.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_employees_list.label.company":   "@:impac.common.label.company",
-  "impac.widget.hr_employees_list.label.employee":  "@:impac.common.label.employee",
-  "impac.widget.hr_employees_list.label.title":     "@:impac.common.label.title",
-  "impac.widget.hr_employees_list.label.phone":     "@:impac.common.label.phone",
-  "impac.widget.hr_employees_list.label.salary":    "@:impac.common.label.salary",
-  "impac.widget.hr_employees_list.legend.average":  " - 你好 你好 你好",
-  "impac.widget.hr_employees_list.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
-
-  "impac.widget.hr_leaves_balance.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_leaves_balance.save":            "@:impac.common.action.save",
-  "impac.widget.hr_leaves_balance.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_leaves_balance.vacation_leaves": "你好 你好",
-  "impac.widget.hr_leaves_balance.sick_leaves":     "你好 你好",
-  "impac.widget.hr_leaves_balance.balance":         "你好",
-
-  "impac.widget.hr_leaves_schedule.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_leaves_schedule.save":            "@:impac.common.action.save",
-  "impac.widget.hr_leaves_schedule.cancel":          "@:impac.common.action.cancel",
-
-  "impac.widget.hr_payroll_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_payroll_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_payroll_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_payroll_summary.payroll_summary": "你好 你好",
-  "impac.widget.hr_payroll_summary.from":            "@:impac.common.text.from",
-  "impac.widget.hr_payroll_summary.to":              "@:impac.common.text.to",
-  "impac.widget.hr_payroll_summary.no_elements":     "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好 你好.",
-  "impac.widget.hr_payroll_summary.total_leaves":         "你好 你好 你好",
-  "impac.widget.hr_payroll_summary.total_superannuation": "你好 你好 你好",
-  "impac.widget.hr_payroll_summary.total_reimbursements": "你好 你好",
-  "impac.widget.hr_payroll_summary.total_taxes":          "你好 你好",
-  "impac.widget.hr_payroll_summary.total_time_off":       "你好 你好 你好",
-  "impac.widget.hr_payroll_summary.total":                "你好",
-
-  "impac.widget.hr_payroll_taxes.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_payroll_taxes.save":           "@:impac.common.action.save",
-  "impac.widget.hr_payroll_taxes.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.hr_payroll_taxes.legend":         "你好 你好 你好 你好",
-  "impac.widget.hr_payroll_taxes.payroll_taxes":  "你好 你好",
-
-  "impac.widget.hr_salaries_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_salaries_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_salaries_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_salaries_summary.average_rate":    "你好 你好 你好",
-  "impac.widget.hr_salaries_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
-  "impac.widget.hr_salaries_summary.legend.with":     "你好 你好 你好",
-  "impac.widget.hr_salaries_summary.filter":          "你好:",
-
-  "impac.widget.hr_superannuation_accruals.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_superannuation_accruals.save":                   "@:impac.common.action.save",
-  "impac.widget.hr_superannuation_accruals.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.hr_superannuation_accruals.superannuation_balance": "你好 你好",
-
-  "impac.widget.hr_timesheets.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_timesheets.save":                 "@:impac.common.action.save",
-  "impac.widget.hr_timesheets.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.hr_timesheets.total_worked":         "你好 你好 你好",
-  "impac.widget.hr_timesheets.total_off":            "你好 你好 你好",
-  "impac.widget.hr_timesheets.activities_not_found": "你好 你好 你好 你好",
-  "impac.widget.hr_timesheets.from":                 "@:impac.common.text.from",
-  "impac.widget.hr_timesheets.to":                   "@:impac.common.text.to",
-
-  "impac.widget.hr_workforce_summary.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.hr_workforce_summary.save":            "@:impac.common.action.save",
-  "impac.widget.hr_workforce_summary.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.hr_workforce_summary.total_workforce": "你好 你好",
-  "impac.widget.hr_workforce_summary.legend.employee": "{num_employee, plural, =1{你好} other{你好s}}",
-  "impac.widget.hr_workforce_summary.legend.with":     "你好 你好 你好",
-  "impac.widget.hr_workforce_summary.filter":          "@:impac.widget.hr_salaries_summary.filter",
-
-  "impac.widget.invoices_receivables.settings.title":                "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_receivables.save":                          "@:impac.common.action.save",
-  "impac.widget.invoices_receivables.cancel":                        "@:impac.common.action.cancel",
-  "impac.widget.invoices_receivables.payables_and_receivables":      "你好 & 你好",
-  "impac.widget.invoices_receivables.total":                         "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.invoices_receivables.oldest":                        "你好",
-  "impac.widget.invoices_receivables.aged_payables":                 "你好 你好",
-  "impac.widget.invoices_receivables.aged_receivables":              "你好 你好",
-  "impac.widget.invoices_receivables.aged_payables_and_receivables": "你好 你好 你好 你好",
-  "impac.widget.invoices_receivables.your_opening_balance":          "* 你好 你好-你好 你好 你好 你好/你好 你好 你好 你好 你好.",
-  "impac.widget.invoices_receivables.select_accounts":               "你好 你好 你好 你好 你好(s) 你好 你好(ies) 你好 你好 你好 你好/你好 你好(s).",
-  "impac.widget.invoices_receivables.tooltip.oldest_invoice":        "你好 你好:",
-
-  "impac.widget.invoices_list.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_list.save":           "@:impac.common.action.save",
-  "impac.widget.invoices_list.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.invoices_list.paid":           "你好",
-  "impac.widget.invoices_list.due":            "你好",
-  "impac.widget.invoices_list.invoiced":       "你好",
-  "impac.widget.invoices_list.no_invoice":     "你好 {orderBy}你好 你好 你好 你好 {entityType}",
-  "impac.widget.invoices_list.total_paid":     "- 你好 你好",
-  "impac.widget.invoices_list.total_due":      "- 你好 你好",
-  "impac.widget.invoices_list.total_invoiced": "- 你好 你好",
-  "impac.widget.invoices_list.limit_entries_label.creditors": "你好",
-  "impac.widget.invoices_list.limit_entries_label.debtors":   "你好",
-
-  "impac.widget.invoices_summary.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.invoices_summary.save":           "@:impac.common.action.save",
-  "impac.widget.invoices_summary.cancel":         "@:impac.common.action.cancel",
-
-  "impac.widget.sales_aged.settings.title":      "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_aged.save":                "@:impac.common.action.save",
-  "impac.widget.sales_aged.cancel":              "@:impac.common.action.cancel",
-  "impac.widget.sales_aged.from":                "@:impac.common.text.from",
-  "impac.widget.sales_aged.to":                  "@:impac.common.text.to",
-  "impac.widget.sales_aged.value_sold_taxes":    "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_aged.value_sold_no_taxes": "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_aged.quantity_sold":       "@:impac.common.quantity_sold",
-
-  "impac.widget.sales_break_even.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_break_even.save":                   "@:impac.common.action.save",
-  "impac.widget.sales_break_even.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.sales_break_even.from":                   "@:impac.common.text.from",
-  "impac.widget.sales_break_even.to":                     "@:impac.common.text.to",
-  "impac.widget.sales_break_even.title.sales":            "你好 你好 你好",
-  "impac.widget.sales_break_even.title.projection":       "你好 你好 你好-你好",
-  "impac.widget.sales_break_even.target":                 "你好",
-  "impac.widget.sales_break_even.your_sales":             "你好 你好 你好 你好 你好 你好 你好:",
-  "impac.widget.sales_break_even.projected_date":         "你好 你好:",
-  "impac.widget.sales_break_even.opportunities_to_close": "你好 你好 你好:",
-  "impac.widget.sales_break_even.eligible_opportunities": "你好 你好",
-  "impac.widget.sales_break_even.click_to_define":        "你好 你好 你好 你好 你好 你好",
-
-  "impac.widget.sales_comparison.settings.title":          "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_comparison.save":                    "@:impac.common.action.save",
-  "impac.widget.sales_comparison.cancel":                  "@:impac.common.action.cancel",
-  "impac.widget.sales_comparison.legend.compare_by":       "你好 你好:",
-  "impac.widget.sales_comparison.legend.see":              "你好:",
-  "impac.widget.sales_comparison.total_sales_from":        "你好 你好 你好",
-  "impac.widget.sales_comparison.to":                      "@:impac.common.text.to",
-  "impac.widget.sales_comparison.total":                   "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.sales_comparison.select_sales_category":   "你好 你好 你好 你好 你好 你好(ies) 你好 你好 你好 你好 你好.",
-  "impac.widget.sales_comparison.value_sold_taxes":        "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_comparison.value_sold_no_taxes":     "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_comparison.quantity_sold":           "@:impac.common.quantity_sold",
-  "impac.widget.sales_comparison.criteria_options.products":   "你好",
-  "impac.widget.sales_comparison.criteria_options.locations":  "你好",
-  "impac.widget.sales_comparison.criteria_options.industries": "你好",
-  "impac.widget.sales_comparison.criteria_options.customers":  "你好",
-
-  "impac.widget.sales_customer_details.settings.title":       "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_customer_details.save":                 "@:impac.common.action.save",
-  "impac.widget.sales_customer_details.cancel":               "@:impac.common.action.cancel",
-  "impac.widget.sales_customer_details.label.email":          "@:impac.common.label.email",
-  "impac.widget.sales_customer_details.label.phone":          "@:impac.common.label.phone",
-  "impac.widget.sales_customer_details.label.website":        "@:impac.common.label.website",
-  "impac.widget.sales_customer_details.label.contact":        "@:impac.common.label.contact",
-  "impac.widget.sales_customer_details.label.city":           "@:impac.common.label.city",
-  "impac.widget.sales_customer_details.label.country":        "@:impac.common.label.country",
-  "impac.widget.sales_customer_details.label.address":        "@:impac.common.label.address",
-  "impac.widget.sales_customer_details.label.total_invoiced": "@:impac.common.label.total_invoiced",
-  "impac.widget.sales_customer_details.label.total_paid":     "@:impac.common.label.total_paid",
-  "impac.widget.sales_customer_details.label.total_due":      "@:impac.common.label.total_due",
-  "impac.widget.sales_customer_details.from":                 "@:impac.common.text.from",
-  "impac.widget.sales_customer_details.to":                   "@:impac.common.text.to",
-
-  "impac.widget.sales_cycle.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_cycle.save":             "@:impac.common.action.save",
-  "impac.widget.sales_cycle.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_cycle.your_sales_cycle": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-
-  "impac.widget.sales_forecast.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_forecast.save":              "@:impac.common.action.save",
-  "impac.widget.sales_forecast.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.sales_forecast.projection_on":     "你好 你好 你好 你好 6 你好",
-  "impac.widget.sales_forecast.sales_performance": "你好 你好",
-
-  "impac.widget.sales_growth.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_growth.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_growth.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_growth.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_growth.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_growth.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_growth.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_growth.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_growth.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_growth.select_product":           "你好 你好",
-  "impac.widget.sales_growth.tooltip.total_for_period": "你好 你好 你好 你好",
-
-  "impac.widget.sales_leads_funnel.settings.title":    "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_leads_funnel.save":              "@:impac.common.action.save",
-  "impac.widget.sales_leads_funnel.cancel":            "@:impac.common.action.cancel",
-  "impac.widget.sales_leads_funnel.legend.your_leads": "你好 你好 你好 你好 你好",
-  "impac.widget.sales_leads_funnel.legend.to":         "@:impac.common.text.to",
-  "impac.widget.sales_leads_funnel.select_a_status":   "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.widget.sales_leads_funnel.status":            "你好:",
-  "impac.widget.sales_leads_funnel.organization":      "你好:",
-  "impac.widget.sales_leads_funnel.opportunities":     "你好:",
-
-  "impac.widget.sales_leads_list.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_leads_list.save":           "@:impac.common.action.save",
-  "impac.widget.sales_leads_list.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_leads_list.status":         "@:impac.widget.sales_leads_funnel.status",
-  "impac.widget.sales_leads_list.organization":   "@:impac.widget.sales_leads_funnel.organization",
-  "impac.widget.sales_leads_list.opportunities":  "@:impac.widget.sales_leads_funnel.opportunities",
-
-  "impac.widget.sales_list.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_list.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_list.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_list.products":                 "你好",
-  "impac.widget.sales_list.total":                    "@:impac.widget.hr_payroll_summary.total",
-  "impac.widget.sales_list.no_data_found":            "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
-  "impac.widget.sales_list.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_list.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_list.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_list.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_list.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_list.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_list.from":                     "@:impac.common.text.from",
-  "impac.widget.sales_list.to":                       "@:impac.common.text.to",
-
-  "impac.widget.sales_margin.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_margin.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_margin.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_margin.total_sold_and_purchased": "你好 你好 - 你好 你好",
-  "impac.widget.sales_margin.including_taxes":          "你好 你好",
-  "impac.widget.sales_margin.excluding_taxes":          "你好 你好",
-  "impac.widget.sales_margin.gross_margin":             "你好 你好",
-
-  "impac.widget.sales_net_sales.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_net_sales.save":             "@:impac.common.action.save",
-  "impac.widget.sales_net_sales.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_net_sales.title.sales":      "你好",
-  "impac.widget.sales_net_sales.title.returns":    "你好",
-  "impac.widget.sales_net_sales.title.net_result": "你好 你好",
-  "impac.widget.sales_net_sales.no_transaction":   "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
-  "impac.widget.sales_net_sales.total_amount":     "你好 你好",
-  "impac.widget.sales_net_sales.average_amount":   "你好 你好",
-  "impac.widget.sales_net_sales.volume":           "你好",
-  "impac.widget.sales_net_sales.tmpl.last_hours":  "你好 :hours:你好",
-  "impac.widget.sales_net_sales.tmpl.last_days":   "你好 :days: 你好",
-
-  "impac.widget.sales_number_of_leads.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_number_of_leads.save":           "@:impac.common.action.save",
-  "impac.widget.sales_number_of_leads.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_number_of_leads.leads_for_this": "你好 你好 你好",
-  "impac.widget.sales_number_of_leads.leads_in_total": "你好 你好 你好",
-
-   "impac.widget.sales_funnel.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_funnel.save":           "@:impac.common.action.save",
-  "impac.widget.sales_funnel.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_funnel.legend":         "你好 你好, 你好 你好 你好 你好",
-  "impac.widget.sales_funnel.select_a_sales": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.widget.sales_funnel.assignees_opportunities": "你好 / 你好",
-  "impac.widget.sales_funnel.potential_per_assignee": "你好 你好 你好",
-
-  "impac.widget.sales_performance.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_performance.save":               "@:impac.common.action.save",
-  "impac.widget.sales_performance.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.sales_performance.from":               "@:impac.common.text.from",
-  "impac.widget.sales_performance.to":                 "@:impac.common.text.to",
-  "impac.widget.sales_performance.win_ratio":          "你好 你好",
-  "impac.widget.sales_performance.total_won":          "你好 你好",
-  "impac.widget.sales_performance.select_an_employee": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好/你好.",
-  "impac.widget.sales_performance.pick_the_status":    "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好' 你好 '你好 你好' 你好 你好 你好 你好.",
-  "impac.widget.sales_performance.total_won_with_colon": "你好 你好 :",
-  "impac.widget.sales_performance.forecast":           "你好",
-  "impac.widget.sales_performance.closed_won":         "你好 你好",
-  "impac.widget.sales_performance.closed_lost":        "你好 你好",
-  "impac.widget.sales_performance.description.pick_the_status": "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好'",
-  "impac.widget.sales_performance.description.pick_the_status_lost": "你好 你好 你好 你好 你好 你好 你好 你好 '你好 你好'",
-
-  "impac.widget.sales_turnover.settings.title":   "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_turnover.save":             "@:impac.common.action.save",
-  "impac.widget.sales_turnover.cancel":           "@:impac.common.action.cancel",
-  "impac.widget.sales_turnover.filter":           "@:impac.widget.hr_salaries_summary.filter",
-  "impac.widget.sales_turnover.average_price":    "你好 你好 你好",
-  "impac.widget.sales_turnover.of_your_revenue":  "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.widget.sales_turnover.and":              "你好",
-  "impac.widget.sales_turnover.gross_revenue":    "你好 你好 (你好. 你好)",
-  "impac.widget.sales_turnover.net_revenue":      "你好 你好 (你好. 你好)",
-  "impac.widget.sales_turnover.analysis.least":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.sales_turnover.analysis.most":    "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.sales_turnover.analysis.balanced": "你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.widget.sales_turnover.tooltip.widget_segment": "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-
-  "impac.widget.sales_summary.settings.title":           "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_summary.save":                     "@:impac.common.action.save",
-  "impac.widget.sales_summary.cancel":                   "@:impac.common.action.cancel",
-  "impac.widget.sales_summary.no_data_found":            "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
-  "impac.widget.sales_summary.value_sold_taxes":         "@:impac.common.value_sold_taxes",
-  "impac.widget.sales_summary.value_sold_no_taxes":      "@:impac.common.value_sold_no_taxes",
-  "impac.widget.sales_summary.quantity_sold":            "@:impac.common.quantity_sold",
-  "impac.widget.sales_summary.value_purchased_taxes":    "@:impac.common.value_purchased_taxes",
-  "impac.widget.sales_summary.value_purchased_no_taxes": "@:impac.common.value_purchased_no_taxes",
-  "impac.widget.sales_summary.quantity_purchased":       "@:impac.common.quantity_purchased",
-  "impac.widget.sales_summary.to":                       "@:impac.common.text.to",
-
-  "impac.widget.sales_opportunities.settings.title":         "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_opportunities.save":                   "@:impac.common.action.save",
-  "impac.widget.sales_opportunities.cancel":                 "@:impac.common.action.cancel",
-  "impac.widget.sales_opportunities.total_potential":        "你好 你好:",
-  "impac.widget.sales_opportunities.eligible_opportunities": "你好 你好",
-  "impac.widget.sales_opportunities.proba":                  "你好",
-
-  "impac.widget.editable_title.tooltip_text": "(你好 你好 你好 你好)",
-  "impac.widget.editable_title.incorrect_name": "你好 你好",
-
-  "impac.dashboard.create.create_new_dashboard":      "你好 你好 你好",
-  "impac.dashboard.create.name":                      "你好",
-  "impac.dashboard.create.type":                      "你好",
-  "impac.dashboard.create.current_company":           "你好 你好",
-  "impac.dashboard.create.multi_company":             "你好 你好",
-  "impac.dashboard.create.now_access_text":           "你好! 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.dashboard.create.select_multi_company":      "你好 你好 你好 \"你好 你好\" 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.dashboard.create.companies":                 "你好",
-  "impac.dashboard.create.tooltip.access":            "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
-  "impac.dashboard.create.cancel":                    "@:impac.common.action.cancel",
-  "impac.dashboard.create.add":                       "你好",
-  "impac.dashboard.create.placeholder.cash_accounts": "你好.你好: 你好 你好 你好",
-
-  "impac.dashboard.change_logo":               "你好 你好",
-  "impac.dashboard.it_looks_like":             "你好 你好 你好 你好 你好 你好 你好 你好...",
-  "impac.dashboard.unfortunately_information": "你好, 你好 你好 你好 你好 你好 你好! 你好 你好 你好 你好 你好 你好 你好 <strong>你好</strong>. 你好, 你好 你好 你好 你好 你好 你好 你好 你好! 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.dashboard.myob_message.part_1":       "你好 你好 你好 你好 你好 你好",
-  "impac.dashboard.myob_message.part_2":       "你好 你好",
-  "impac.dashboard.myob_message.part_3":       ", 你好 你好 你好 你好 你好?",
-  "impac.dashboard.widget_added":              "你好 你好!",
-  "impac.dashboard.select_the_widgets":        "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.dashboard.all_categories":            "你好 你好",
-  "impac.dashboard.accounting":                "你好",
-  "impac.dashboard.invoicing":                 "你好",
-  "impac.dashboard.hr_or_payroll":             "你好 / 你好",
-  "impac.dashboard.sales":                     "你好",
-  "impac.dashboard.can_not_find":              "你好 你好 你好 你好 你好 你好 你好?",
-  "impac.dashboard.give_us":                   "你好 你好 你好 你好 你好!",
-  "impac.dashboard.create_a_dashboard":        "你好 你好 你好!",
-  "impac.dashboard.add_new_widget":            "你好 你好 你好 你好",
-  "impac.dashboard.plus_chart":                "+ 你好",
-  "impac.dashboard.refresh":                   "你好",
-  "impac.dashboard.category_name.accounting":    "你好",
-  "impac.dashboard.category_name.invoicing":     "你好",
-  "impac.dashboard.category_name.hr_or_payroll": "你好 / 你好",
-  "impac.dashboard.category_name.sales":         "你好",
-
-  "impac.dashboard.widget_suggestion.suggest_a_widget":     "你好 你好 你好",
-  "impac.dashboard.widget_suggestion.widget_name":          "你好 你好 你好 你好 你好 你好?",
-  "impac.dashboard.widget_suggestion.kind_of_information":  "你好 你好 你好 你好 你好 你好 你好 你好?",
-  "impac.dashboard.widget_suggestion.helping":              "你好 你好 你好 你好 你好 你好 你好 你好!&trade;",
-  "impac.dashboard.widget_suggestion.unable_to_send":       "你好 你好 你好 你好 你好, 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.dashboard.widget_suggestion.cancel":               "@:impac.common.action.cancel",
-  "impac.dashboard.widget_suggestion.send_your_suggestion": "你好 你好 你好",
-
-  "impac.widget.accounts_expenses_revenue.settings.title":  "@:impac.common.title.widget.settings.title",
-  "impac.widget.accounts_expenses_revenue.save":            "@:impac.common.action.save",
-  "impac.widget.accounts_expenses_revenue.cancel":          "@:impac.common.action.cancel",
-  "impac.widget.accounts_expenses_revenue.expenses":        "你好",
-  "impac.widget.accounts_expenses_revenue.revenue":         "@:impac.widget.classification_summary.revenue",
-  "impac.widget.accounts_expenses_revenue.net_profit":      "你好 你好",
-  "impac.widget.accounts_expenses_revenue.show_net_profit": "你好 你好 你好",
-
-  "impac.widget.sales_new_vs_existing.settings.title":     "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_new_vs_existing.save":               "@:impac.common.action.save",
-  "impac.widget.sales_new_vs_existing.cancel":             "@:impac.common.action.cancel",
-  "impac.widget.sales_new_vs_existing.new_customers":      "你好 你好:",
-  "impac.widget.sales_new_vs_existing.existing_customers": "你好 你好:",
-  "impac.widget.sales_new_vs_existing.total":              "你好:",
-  "impac.widget.sales_new_vs_existing.no_data_found":      "你好 你好 你好 你好 你好 你好 你好<br/> 你好 你好 你好 你好",
-  "impac.widget.sales_new_vs_existing.customers":          "你好",
-  "impac.widget.sales_new_vs_existing.total_sales":        "你好 你好",
-  "impac.widget.sales_new_vs_existing.transactions":       "你好",
-  "impac.widget.sales_new_vs_existing.tmpl.last_hours":    "你好 :hours:你好",
-  "impac.widget.sales_new_vs_existing.tmpl.last_days":     "你好 :days: 你好",
-
-  "impac.widget.sales_top_customers.settings.title": "@:impac.common.title.widget.settings.title",
-  "impac.widget.sales_top_customers.save":           "@:impac.common.action.save",
-  "impac.widget.sales_top_customers.cancel":         "@:impac.common.action.cancel",
-  "impac.widget.sales_top_customers.no_sales":       "你好 你好 你好 你好 你好 你好 你好",
-  "impac.widget.sales_top_customers.customer_name":  "你好 你好",
-  "impac.widget.sales_top_customers.top":            "你好 - :number:",
-  "impac.widget.sales_top_customers.total_sales":    "你好 你好",
-  "impac.widget.sales_top_customers.transactions":   "你好",
-  "impac.widget.sales_top_customers.avg_sales":      "你好 你好",
-  "impac.widget.sales_top_customers.last_sale":      "你好 你好",
-  "impac.widget.sales_top_customers.show":           "你好",
-  "impac.widget.sales_top_customers.hide":           "你好",
-  "impac.widget.sales_top_customers.details":        "你好",
-
-  "impac.widget.info_panel.information": "你好 你好 你好",
-
-  "impac.widget.formula.invalid_expression": "你好 你好",
-  "impac.widget.formula.infinity":           "你好",
-  "impac.widget.formula.minus_infinity":     "-你好",
-
-  "impac.widget.alerts_config.over":  "你好",
-  "impac.widget.alerts_config.below": "你好",
-
-  "impac.components.currency.choose_currency": "你好 你好...",
-
-  "impac.components.pdf_mode.print":  "你好",
-  "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel",
-
-  "impac.components.sync_apps.syncing":                   "你好...",
-  "impac.components.sync_apps.show_sync_status":          "你好 你好 你好",
-  "impac.components.sync_apps.tooltip.sync_data":         "你好 你好 你好 你好 你好",
-  "impac.components.sync_apps.status.synced_at":          "你好 你好",
-  "impac.components.sync_apps.status.sync_will_run":      "你好 你好 你好 你好 你好 你好 你好.",
-  "impac.components.sync_apps.status.syncing_in_progres": "你好 你好 你好...",
-  "impac.components.sync_apps.status.sync_failed":        "你好 你好. 你好 你好 你好.",
-  "impac.components.sync_apps.status.please_link":        "你好 你好 你好 你好.",
-  "impac.components.sync_apps.status.could_not_retrieve": "你好'你好 你好 你好 你好.",
-  "impac.components.sync_apps.all":                       "你好",
-  "impac.components.sync_apps.applications_are_synced":   "你好 你好 你好 你好 你好-你好.",
-  "impac.components.sync_apps.synchronization_status":    "你好 你好",
-  "impac.components.sync_apps.ok":                        "你好"
-}
-);
-}]);
-
 (function() {
   var module;
 
@@ -1828,7 +329,7 @@ $translateProvider.translations("zh-HK", {
 
 }).call(this);
 
-(function () {console.info("Impac! Front-End Library - v1.5.0"); window["impac"] = {"version": "1.5.0"};}).call();
+(function () {console.info("Impac! Front-End Library - v1.5.2"); window["impac"] = {"version": "1.5.2"};}).call();
 (function() {
   angular.module('impac.filters.mno-date', []).filter('mnoDate', ["$filter", function($filter) {
     return function(date_string, period) {
@@ -1898,64 +399,85 @@ $translateProvider.translations("zh-HK", {
 }).call(this);
 
 (function() {
-  angular.module('impac.components.chart', []).directive('impacChart', ["$log", "$window", function($log, $window) {
-    return {
-      restrict: 'A',
-      scope: {
-        drawTrigger: '=',
-        deferred: '='
-      },
-      link: function(scope, elem, attr) {
-        scope.draw = function(chartData) {
-          var canvas, ctx;
-          if ((chartData.options.showXLabels != null) && !chartData.options.showXLabels) {
-            angular.merge(chartData.options, {
-              scales: {
-                xAxes: [
-                  {
-                    display: false
-                  }
-                ]
-              }
-            });
-          }
-          if (elem.children().length > 0) {
-            elem.children().remove(0);
-          }
-          elem.append('<canvas></canvas>');
-          canvas = elem.children()[0];
-          ctx = canvas.getContext("2d");
-          return new Chart(ctx, chartData);
-        };
-        scope.drawTrigger.then(function(success) {
-          return $log.warn('chart promise has been resolved: use notify instead');
-        }, function(error) {
-          return $log.error(error);
-        }, function(chartData) {
-          var timeoutUntilVisible, userAgent, waitUntilVisible;
-          userAgent = $window.navigator.userAgent;
-          waitUntilVisible = true;
-          if (waitUntilVisible) {
-            timeoutUntilVisible = function() {
-              var visible;
-              visible = $(elem).is(':visible');
-              if (visible) {
-                return scope.draw(chartData);
-              } else {
-                return setTimeout(function() {
-                  return timeoutUntilVisible();
-                }, 100);
-              }
-            };
-            return timeoutUntilVisible();
-          } else {
-            return scope.draw(chartData);
-          }
-        });
-        return scope.deferred.resolve('chart ready');
+  angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ["$filter", function($filter) {
+    return function(amount, currency, ISOmode, decimal) {
+      var SYMBOLS, s, symbol;
+      if (currency == null) {
+        currency = '';
       }
+      if (ISOmode == null) {
+        ISOmode = true;
+      }
+      SYMBOLS = {
+        USD: '$',
+        AUD: '$',
+        CAD: '$',
+        CNY: '¥',
+        EUR: '€',
+        GBP: '£',
+        HKD: '$',
+        INR: '',
+        JPY: '¥',
+        NZD: '$',
+        SGD: '$',
+        PHP: '₱',
+        AED: '',
+        IDR: 'Rp'
+      };
+      if (amount == null) {
+        return "";
+      }
+      symbol = !ISOmode && _.has(SYMBOLS, currency) ? SYMBOLS[currency] : '';
+      s = $filter('currency')(amount, symbol, decimal);
+      s = s.replace('(', '-');
+      s = s.replace(')', '');
+      if ((currency && !currency.match(/[A-Z]{3}/)) || currency === '%' || currency === '(ratio)') {
+        s = s.replace(/,/g, '');
+        if (currency !== '%' && currency !== '(ratio)') {
+          return parseInt(s);
+        }
+      }
+      if (ISOmode) {
+        s = s + " " + currency;
+      }
+      return s;
     };
   }]);
+
+}).call(this);
+
+(function() {
+  angular.module('impac.filters.url-helper', []).filter('urlHelper', function() {
+    return function(input, params) {
+      var processArrayParams, processObjectParams;
+      if (!input || !input.length) {
+        return;
+      }
+      processArrayParams = function() {
+        input = [input, params.shift()].join('?');
+        return input = [].concat.apply([], [input, params]).join('&');
+      };
+      processObjectParams = function() {
+        var arr, i, keys;
+        i = 0;
+        arr = [];
+        keys = Object.keys(params);
+        while (i < keys.length) {
+          arr.push(keys[i] + '=' + params[keys[i]]);
+          i++;
+        }
+        params = arr;
+        return processArrayParams();
+      };
+      if (Array.isArray(params)) {
+        processArrayParams();
+      }
+      if (typeof params === 'object' && !Array.isArray(params)) {
+        processObjectParams();
+      }
+      return input;
+    };
+  });
 
 }).call(this);
 
@@ -2150,6 +672,68 @@ $translateProvider.translations("zh-HK", {
 }).call(this);
 
 (function() {
+  angular.module('impac.components.chart', []).directive('impacChart', ["$log", "$window", function($log, $window) {
+    return {
+      restrict: 'A',
+      scope: {
+        drawTrigger: '=',
+        deferred: '='
+      },
+      link: function(scope, elem, attr) {
+        scope.draw = function(chartData) {
+          var canvas, ctx;
+          if ((chartData.options.showXLabels != null) && !chartData.options.showXLabels) {
+            angular.merge(chartData.options, {
+              scales: {
+                xAxes: [
+                  {
+                    display: false
+                  }
+                ]
+              }
+            });
+          }
+          if (elem.children().length > 0) {
+            elem.children().remove(0);
+          }
+          elem.append('<canvas></canvas>');
+          canvas = elem.children()[0];
+          ctx = canvas.getContext("2d");
+          return new Chart(ctx, chartData);
+        };
+        scope.drawTrigger.then(function(success) {
+          return $log.warn('chart promise has been resolved: use notify instead');
+        }, function(error) {
+          return $log.error(error);
+        }, function(chartData) {
+          var timeoutUntilVisible, userAgent, waitUntilVisible;
+          userAgent = $window.navigator.userAgent;
+          waitUntilVisible = true;
+          if (waitUntilVisible) {
+            timeoutUntilVisible = function() {
+              var visible;
+              visible = $(elem).is(':visible');
+              if (visible) {
+                return scope.draw(chartData);
+              } else {
+                return setTimeout(function() {
+                  return timeoutUntilVisible();
+                }, 100);
+              }
+            };
+            return timeoutUntilVisible();
+          } else {
+            return scope.draw(chartData);
+          }
+        });
+        return scope.deferred.resolve('chart ready');
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
   var module;
 
   module = angular.module('impac.components.dashboard', []);
@@ -2336,7 +920,7 @@ $translateProvider.translations("zh-HK", {
       return self.canAccessAnalyticsData(self.currentOrganization);
     };
     $scope.createDashboardModal.isMultiCompanyAvailable = function() {
-      return $scope.createDashboardModal.organizations.length > 1 && $scope.createDashboardModal.multiOrganizationReporting;
+      return $scope.createDashboardModal.organizations.length > 1 && ImpacTheming.get().dhbConfig.multiCompany;
     };
     $scope.createDashboardModal.canAccessAnalyticsData = function(organization) {
       return organization.current_user_role && (organization.current_user_role === "Super Admin" || organization.current_user_role === "Admin");
@@ -2426,9 +1010,14 @@ $translateProvider.translations("zh-HK", {
     $scope.getWidgetsForSelectedCategory = function() {
       if (($scope.selectedCategory != null) && ($scope.widgetsTemplates != null)) {
         return _.select($scope.widgetsTemplates, function(template) {
-          var widgetCategory;
+          var bolt, widgetCategory;
           if (template.metadata && template.metadata.template) {
             widgetCategory = template.metadata.template.split('/')[0];
+          } else if (template.metadata && template.metadata.bolt_path) {
+            bolt = _.find(ImpacRoutes.bolts(), function(bolt) {
+              return bolt.path === template.metadata.bolt_path;
+            });
+            widgetCategory = bolt.category;
           } else {
             widgetCategory = template.endpoint.split('/')[0];
           }
@@ -3314,89 +1903,6 @@ $translateProvider.translations("zh-HK", {
 }).call(this);
 
 (function() {
-  angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ["$filter", function($filter) {
-    return function(amount, currency, ISOmode) {
-      var SYMBOLS, s, symbol;
-      if (currency == null) {
-        currency = '';
-      }
-      if (ISOmode == null) {
-        ISOmode = true;
-      }
-      SYMBOLS = {
-        USD: '$',
-        AUD: '$',
-        CAD: '$',
-        CNY: '¥',
-        EUR: '€',
-        GBP: '£',
-        HKD: '$',
-        INR: '',
-        JPY: '¥',
-        NZD: '$',
-        SGD: '$',
-        PHP: '₱',
-        AED: '',
-        IDR: 'Rp'
-      };
-      if (amount == null) {
-        return "";
-      }
-      symbol = !ISOmode && _.has(SYMBOLS, currency) ? SYMBOLS[currency] : '';
-      s = $filter('currency')(amount, symbol);
-      s = s.replace('(', '-');
-      s = s.replace(')', '');
-      if ((currency && !currency.match(/[A-Z]{3}/)) || currency === '%' || currency === '(ratio)') {
-        s = s.replace(/,/g, '');
-        if (currency !== '%' && currency !== '(ratio)') {
-          return parseInt(s);
-        }
-      }
-      if (ISOmode) {
-        s = s + " " + currency;
-      }
-      return s;
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  angular.module('impac.filters.url-helper', []).filter('urlHelper', function() {
-    return function(input, params) {
-      var processArrayParams, processObjectParams;
-      if (!input || !input.length) {
-        return;
-      }
-      processArrayParams = function() {
-        input = [input, params.shift()].join('?');
-        return input = [].concat.apply([], [input, params]).join('&');
-      };
-      processObjectParams = function() {
-        var arr, i, keys;
-        i = 0;
-        arr = [];
-        keys = Object.keys(params);
-        while (i < keys.length) {
-          arr.push(keys[i] + '=' + params[keys[i]]);
-          i++;
-        }
-        params = arr;
-        return processArrayParams();
-      };
-      if (Array.isArray(params)) {
-        processArrayParams();
-      }
-      if (typeof params === 'object' && !Array.isArray(params)) {
-        processObjectParams();
-      }
-      return input;
-    };
-  });
-
-}).call(this);
-
-(function() {
   angular.module('impac.services.alerts', []).service('ImpacAlerts', ["$log", "$q", "$http", "$httpParamSerializerJQLike", "ImpacRoutes", "ImpacMainSvc", "ImpacEvents", "IMPAC_EVENTS", function($log, $q, $http, $httpParamSerializerJQLike, ImpacRoutes, ImpacMainSvc, ImpacEvents, IMPAC_EVENTS) {
     var _self;
     _self = this;
@@ -3818,7 +2324,7 @@ $translateProvider.translations("zh-HK", {
 
 (function() {
   angular.module('impac.services.dashboards', []).service('ImpacDashboardsSvc', ["$q", "$http", "$log", "$timeout", "ImpacMainSvc", "ImpacRoutes", "ImpacTheming", "ImpacDeveloper", "ImpacUtilities", function($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) {
-    var _self, belongsToCurrentOrganization, needConfigurationLoad, setDefaultCurrentDashboard, widgetsTemplatesUrl;
+    var _self, belongsToCurrentOrganization, fetchWidgetsTemplates, needConfigurationLoad, setDefaultCurrentDashboard, widgetsTemplatesUrl;
     _self = this;
     this.config = {};
     this.config.dashboards = [];
@@ -3925,11 +2431,7 @@ $translateProvider.translations("zh-HK", {
             }, function(error) {
               return $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: " + orgId);
             });
-            widgetsTemplatesPromise = $http.get(widgetsTemplatesUrl()).then(function(response) {
-              return _self.setWidgetsTemplates(response.data.widgets);
-            }, function(error) {
-              return $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", ImpacRoutes.widgets.templates());
-            });
+            widgetsTemplatesPromise = fetchWidgetsTemplates();
             return $q.all([dashboardsPromise, widgetsTemplatesPromise]).then(function(success) {
               $log.info("Impac! - DashboardsSvc: loaded (force=" + force + ")");
               return deferred.resolve(_self.config);
@@ -3958,6 +2460,44 @@ $translateProvider.translations("zh-HK", {
         }, 1000);
       }
       return deferred.promise;
+    };
+    fetchWidgetsTemplates = function() {
+      var bolt, i, len, ref, widgetsTemplates, widgetsTemplatesPromises;
+      widgetsTemplates = [];
+      widgetsTemplatesPromises = [];
+      widgetsTemplatesPromises.push($http.get(widgetsTemplatesUrl()).then(function(response) {
+        var i, len, ref, results, widgetTemplate;
+        ref = response.data.widgets;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          widgetTemplate = ref[i];
+          results.push(widgetsTemplates.push(widgetTemplate));
+        }
+        return results;
+      }, function(error) {
+        return $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", widgetsTemplatesUrl());
+      }));
+      ref = ImpacRoutes.bolts();
+      for (i = 0, len = ref.length; i < len; i++) {
+        bolt = ref[i];
+        widgetsTemplatesPromises.push($http.get(bolt.path + "/widgets").then(function(response) {
+          var j, len1, ref1, results, widgetTemplate;
+          ref1 = response.data.widgets;
+          results = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            widgetTemplate = ref1[j];
+            widgetTemplate.metadata || (widgetTemplate.metadata = {});
+            widgetTemplate.metadata.bolt_path = bolt.path;
+            results.push(widgetsTemplates.push(widgetTemplate));
+          }
+          return results;
+        }, function(error) {
+          return $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates from bolt", boltPath + "/widgets");
+        }));
+      }
+      return $q.all(widgetsTemplatesPromises).then(function() {
+        return _self.setWidgetsTemplates(widgetsTemplates);
+      });
     };
     widgetsTemplatesUrl = function() {
       var fy_end_month;
@@ -4254,8 +2794,201 @@ $translateProvider.translations("zh-HK", {
 }).call(this);
 
 (function() {
-  angular.module('impac.services.kpis', []).service('ImpacKpisSvc', ["$log", "$http", "$filter", "$q", "$timeout", "ImpacRoutes", "ImpacMainSvc", "ImpacDashboardsSvc", "ImpacDeveloper", "ImpacAlerts", "ImpacEvents", "IMPAC_EVENTS", "ImpacUtilities", "ImpacTheming", function($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming) {
-    var _self, formatShowQuery, index;
+  angular.module('impac.services.highcharts-factory', []).factory('HighchartsFactory', ["$filter", function($filter) {
+    var Chart, templates;
+    templates = {
+      line: Object.freeze({
+        get: function(series, options) {
+          if (series == null) {
+            series = [];
+          }
+          if (options == null) {
+            options = {};
+          }
+          return {
+            chart: {
+              type: 'line',
+              zoomType: 'x',
+              spacingTop: 20
+            },
+            title: null,
+            credits: {
+              enabled: false
+            },
+            legend: {
+              enabled: _.get(options, 'showLegend', true),
+              layout: 'vertical',
+              align: 'left',
+              verticalAlign: 'middle'
+            },
+            xAxis: {
+              startOnTick: false,
+              minPadding: 0,
+              tickInterval: 1,
+              min: 0
+            },
+            yAxis: {
+              title: null,
+              startOnTick: true,
+              minPadding: 0
+            },
+            series: series
+          };
+        }
+      })
+    };
+    return Chart = (function() {
+      var todayIndex;
+
+      function Chart(id, data1, options1) {
+        this.id = id;
+        this.data = data1 != null ? data1 : {};
+        this.options = options1 != null ? options1 : {};
+        this._template = templates[this.options.chartType];
+        return;
+      }
+
+      Chart.prototype.render = function(data, options) {
+        var chartConfig;
+        if (_.isObject(data)) {
+          this.data = data;
+        }
+        angular.extend(this.options, options);
+        chartConfig = angular.merge({}, this.template(), this.formatters(), this.todayMarker());
+        if (_.isEmpty(this.hc)) {
+          this.hc = Highcharts.chart(this.id, chartConfig);
+        } else {
+          this.hc.update(chartConfig);
+        }
+        this.addThresholds();
+        return this;
+      };
+
+      Chart.prototype.template = function() {
+        return this._template.get(this.data.series, this.options);
+      };
+
+      Chart.prototype.formatters = function() {
+        var labels, options, ref;
+        ref = [this.data.labels, this.options], labels = ref[0], options = ref[1];
+        return {
+          xAxis: {
+            labels: {
+              formatter: function() {
+                return $filter('mnoDate')(labels[this.value], options.period);
+              }
+            }
+          },
+          yAxis: {
+            labels: {
+              formatter: function() {
+                return $filter('mnoCurrency')(this.value, options.currency, false, 0);
+              }
+            }
+          },
+          tooltip: {
+            formatter: function() {
+              var amount, date, name;
+              date = $filter('mnoDate')(labels[this.x], options.period);
+              amount = $filter('mnoCurrency')(this.y, options.currency, false);
+              name = this.series.name;
+              if (moment(labels[this.x]) < moment().startOf('day')) {
+                name = _.startCase(_.trim(name.toLowerCase().replace(/\s*projected\s*/, ' ')));
+              }
+              return "<strong>" + date + "</strong><br>" + name + ": " + amount;
+            }
+          }
+        };
+      };
+
+      Chart.prototype.todayMarker = function() {
+        if (!(this.options.showToday && !_.isEmpty(this.data.labels))) {
+          return {};
+        }
+        return {
+          xAxis: {
+            plotLines: [
+              {
+                color: _.get(this.options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)'),
+                value: todayIndex(this.data.labels),
+                width: 1,
+                label: {
+                  text: null,
+                  verticalAlign: 'top',
+                  textAlign: 'center',
+                  rotation: 0,
+                  y: -5
+                }
+              }
+            ]
+          }
+        };
+      };
+
+      Chart.prototype.addThresholds = function(options) {
+        var data, i, len, projectionIntervalLength, ref, serie, threshold, thresholdBar;
+        if (options == null) {
+          options = this.options;
+        }
+        if (_.isEmpty(this.hc)) {
+          return;
+        }
+        _.each(this.hc.series, function(s) {
+          if (s.name.toLowerCase().includes('threshold')) {
+            return s.remove();
+          }
+        });
+        if (_.isEmpty(options.thresholds)) {
+          return this.hc;
+        }
+        projectionIntervalLength = this.data.labels.slice(todayIndex(this.data.labels), this.data.labels.length).length;
+        ref = options.thresholds;
+        for (i = 0, len = ref.length; i < len; i++) {
+          threshold = ref[i];
+          data = options.fullLengthThresholds ? [] : new Array(this.data.labels.length - projectionIntervalLength).fill(null);
+          serie = {
+            name: 'Threshold KPI',
+            kpiId: threshold.kpiId,
+            data: data,
+            color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)'),
+            showInLegend: false,
+            marker: {
+              enabled: false
+            }
+          };
+          if (options.fullLengthThresholds) {
+            thresholdBar = _.map(this.data.labels, function() {
+              return parseFloat(threshold.value);
+            });
+          } else {
+            thresholdBar = _.map(new Array(projectionIntervalLength), function() {
+              return parseFloat(threshold.value);
+            });
+          }
+          serie.data.push.apply(serie.data, thresholdBar);
+          this.hc.addSeries(serie, true);
+        }
+        return this.hc;
+      };
+
+      todayIndex = function(labels) {
+        var projection_date;
+        projection_date = _.find(labels, function(date) {
+          return moment(date) >= moment().startOf('day');
+        });
+        return _.indexOf(labels, projection_date);
+      };
+
+      return Chart;
+
+    })();
+  }]);
+
+}).call(this);
+
+(function() {
+  angular.module('impac.services.kpis', []).service('ImpacKpisSvc', ["$log", "$http", "$filter", "$q", "$timeout", "ImpacRoutes", "ImpacMainSvc", "ImpacDashboardsSvc", "ImpacDeveloper", "ImpacAlerts", "ImpacEvents", "IMPAC_EVENTS", "ImpacUtilities", "ImpacTheming", "toastr", function($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming, toastr) {
+    var _self, fetchKpisTemplates, formatShowQuery;
     _self = this;
     this.getSsoSessionId = ImpacMainSvc.getSsoSessionId;
     this.getCurrentDashboard = ImpacDashboardsSvc.getCurrentDashboard;
@@ -4282,6 +3015,8 @@ $translateProvider.translations("zh-HK", {
           return _.includes(kpiTemplate.attachables, widgetEngine);
         });
         return deferred.resolve(templates);
+      }, function() {
+        return deferred.reject();
       });
       return deferred.promise;
     };
@@ -4324,7 +3059,7 @@ $translateProvider.translations("zh-HK", {
       if (!_self.locked) {
         _self.locked = true;
         return $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()]).then(function(results) {
-          var orgUids, params, promises, ssoSessionId;
+          var orgUids, params, ssoSessionId;
           orgUids = _.pluck(_self.getCurrentDashboard().data_sources, 'uid');
           ssoSessionId = results[0].sso_session;
           params = {
@@ -4338,40 +3073,12 @@ $translateProvider.translations("zh-HK", {
           if (ssoSessionId) {
             params.sso_session = ssoSessionId;
           }
-          promises = {
-            impac: index(params)
-          };
-          if (ImpacRoutes.kpis.local()) {
-            promises.local = $http.get(ImpacRoutes.kpis.local());
-          }
-          return $q.all(promises).then(function(response) {
-            var i, j, len, len1, ref, ref1, template;
-            _.remove(_self.config.kpisTemplates, function() {
-              return true;
-            });
-            if ((response.impac != null) && (response.impac.data != null) && !_.isEmpty(response.impac.data.kpis)) {
-              ref = response.impac.data.kpis;
-              for (i = 0, len = ref.length; i < len; i++) {
-                template = ref[i];
-                template.source || (template.source = 'impac');
-                _self.config.kpisTemplates.push(template);
-              }
-            }
-            if (response.local && (response.local.data != null) && !_.isEmpty(response.local.data.kpis)) {
-              ref1 = response.local.data.kpis;
-              for (j = 0, len1 = ref1.length; j < len1; j++) {
-                template = ref1[j];
-                template.source = 'local';
-                _self.config.kpisTemplates.push(template);
-              }
-            }
+          return fetchKpisTemplates(params)["finally"](function() {
+            _self.locked = false;
             return $log.info("Impac! - KpisSvc: loaded");
-          }, function(err) {
-            $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err);
-            return $q.reject(err);
-          })["finally"](function() {
-            return _self.locked = false;
           });
+        }, function(err) {
+          return $log.error('Impac! - KpisSvc: failed to load.', err);
         })["finally"](function() {
           return _self.locked = false;
         });
@@ -4425,9 +3132,6 @@ $translateProvider.translations("zh-HK", {
         });
       }
     };
-    this.validateKpiTarget = function(kpi) {
-      return kpi.limit && kpi.limit.value && kpi.limit.mode;
-    };
     this.validateKpiTargets = function(targetsByWatchable) {
       if (_.isEmpty(targetsByWatchable)) {
         return false;
@@ -4480,11 +3184,69 @@ $translateProvider.translations("zh-HK", {
       }
       return kpi.watchables = [kpi.element_watched].concat(kpi.extra_watchables || []);
     };
-    index = function(params) {
-      var host, url;
-      host = ImpacRoutes.kpis.index();
-      url = [host, decodeURIComponent($.param(params))].join('?');
-      return $http.get(url);
+    fetchKpisTemplates = function(params) {
+      var bolt, i, impacUrl, kpisTemplates, kpisTemplatesPromises, len, ref;
+      kpisTemplates = [];
+      kpisTemplatesPromises = [];
+      impacUrl = [ImpacRoutes.kpis.index(), decodeURIComponent($.param(params))].join('?');
+      kpisTemplatesPromises.push($http.get(impacUrl).then(function(response) {
+        var i, len, ref, results1, template;
+        ref = response.data.kpis;
+        results1 = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          template = ref[i];
+          template.source || (template.source = 'impac');
+          results1.push(kpisTemplates.push(template));
+        }
+        return results1;
+      }, function(error) {
+        return $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from Impac!");
+      }));
+      if (ImpacRoutes.kpis.local()) {
+        $http.get(ImpacRoutes.kpis.local()).then(function(response) {
+          var i, len, ref, results1, template;
+          ref = response.data.kpis;
+          results1 = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            template = ref[i];
+            template.source = 'local';
+            results1.push(_self.config.kpisTemplates.push(template));
+          }
+          return results1;
+        }, function(error) {
+          return $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from local", "" + (ImpacRoutes.kpis.local()));
+        });
+      }
+      ref = ImpacRoutes.bolts();
+      for (i = 0, len = ref.length; i < len; i++) {
+        bolt = ref[i];
+        kpisTemplatesPromises.push($http.get(bolt.path + "/kpis").then(function(response) {
+          var j, len1, ref1, results1, template;
+          ref1 = response.data.kpis;
+          results1 = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            template = ref1[j];
+            template.metadata || (template.metadata = {});
+            template.metadata.bolt_path = bolt.path;
+            results1.push(kpisTemplates.push(template));
+          }
+          return results1;
+        }, function(error) {
+          return $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", bolt.path + "/kpis");
+        }));
+      }
+      return $q.all(kpisTemplatesPromises).then(function() {
+        var j, len1, results1, template;
+        _.remove(_self.config.kpisTemplates, function() {
+          return true;
+        });
+        results1 = [];
+        for (j = 0, len1 = kpisTemplates.length; j < len1; j++) {
+          template = kpisTemplates[j];
+          results1.push(_self.config.kpisTemplates.push(template));
+        }
+        return results1;
+      });
     };
     this.show = function(kpi, refreshCache) {
       if (refreshCache == null) {
@@ -4570,7 +3332,7 @@ $translateProvider.translations("zh-HK", {
           return params.metadata.hist_parameters = dates;
         })["finally"](function() {
           var url;
-          angular.extend(params, opts);
+          angular.merge(params, opts);
           url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id);
           return $http.post(url, {
             kpi: params
@@ -4582,6 +3344,7 @@ $translateProvider.translations("zh-HK", {
             return deferred.resolve(kpi);
           }, function(err) {
             $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=" + endpoint, err);
+            toastr.error('Unable to create KPI', 'Error');
             return deferred.reject(err);
           });
         });
@@ -4594,7 +3357,13 @@ $translateProvider.translations("zh-HK", {
       });
       return deferred.promise;
     };
-    this.update = function(kpi, params) {
+    this.update = function(kpi, params, showKpi) {
+      if (params == null) {
+        params = {};
+      }
+      if (showKpi == null) {
+        showKpi = true;
+      }
       kpi.isLoading = true;
       return _self.load().then(function() {
         var filtered_params, url;
@@ -4619,7 +3388,11 @@ $translateProvider.translations("zh-HK", {
             ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts);
             angular.extend(kpi, success.data);
             _self.buildKpiWatchables(kpi);
-            return _self.show(kpi);
+            if (showKpi) {
+              return _self.show(kpi);
+            } else {
+              return kpi;
+            }
           }, function(err) {
             $log.error("Impac! - KpisSvc: Unable to update KPI " + kpi.id, err);
             return $q.reject(err);
@@ -5107,7 +3880,7 @@ $translateProvider.translations("zh-HK", {
 
 (function() {
   angular.module('impac.services.routes', []).provider('ImpacRoutes', function() {
-    var _$get, defaults, provider;
+    var _$get, bolts, defaults, isBoltValid, provider;
     provider = this;
     defaults = {
       mnoHub: 'http://localhost:7000/mnoe/jpi/v1',
@@ -5145,8 +3918,38 @@ $translateProvider.translations("zh-HK", {
         appInstancesSync: null
       }
     };
+    bolts = {
+      version: 'v2',
+      engines: []
+    };
+    isBoltValid = function(bolt) {
+      if (!bolt.provider) {
+        console.warn('Bolt has no provider', bolt);
+      }
+      if (!bolt.name) {
+        console.warn('Bolt has no name', bolt);
+      }
+      if (!bolt.category) {
+        console.warn('Bolt is not mapped to a category', bolt);
+      }
+      return Boolean(bolt.provider && bolt.name && bolt.category);
+    };
     provider.configureRoutes = function(configOptions) {
       return angular.extend(defaults, configOptions);
+    };
+    provider.configureBolts = function(version, engines) {
+      var bolt, i, len;
+      for (i = 0, len = engines.length; i < len; i++) {
+        bolt = engines[i];
+        if (!isBoltValid(bolt)) {
+          console.warn('Default bolts will be used:', bolts);
+          return false;
+        }
+      }
+      return angular.extend(bolts, {
+        version: version,
+        engines: engines
+      });
     };
     _$get = function() {
       var service;
@@ -5242,14 +4045,14 @@ $translateProvider.translations("zh-HK", {
           if (defaults.kpis.index) {
             return defaults.kpis.index.replace(':dashboard_id', dashboard_id);
           } else {
-            return defaults.impacApi + "/v2/kpis";
+            return defaults.impacApi + "/v1/kpis";
           }
         },
         show: function(dashboard_id, id) {
           if (defaults.kpis.show) {
             return defaults.kpis.show.replace(':dashboard_id', dashboard_id).replace(':id', id);
           } else {
-            return defaults.impacApi + "/v2/kpis";
+            return defaults.impacApi + "/v1/kpis";
           }
         },
         create: function(dashboard_id) {
@@ -5316,6 +4119,14 @@ $translateProvider.translations("zh-HK", {
           }
         }
       };
+      service.bolts = function() {
+        return _.map(bolts.engines, function(engine) {
+          return {
+            path: defaults.impacApi + "/" + bolts.version + "/" + engine.provider + "/" + engine.name,
+            category: engine.category
+          };
+        });
+      };
       return service;
     };
     _$get.$inject = [];
@@ -5337,7 +4148,8 @@ $translateProvider.translations("zh-HK", {
       },
       dhbConfig: {
         showDhbHeading: false,
-        dhbHeadingText: 'Impac!'
+        dhbHeadingText: 'Impac!',
+        multiCompany: false
       },
       dhbSelectorConfig: {
         selectorType: 'dropdown',
@@ -5433,28 +4245,59 @@ $translateProvider.translations("zh-HK", {
         timePeriod: {
           showSlider: true
         }
-      },
-      translateSettings: {
-        preferredLanguage: 'en-gb',
-        fallbackLanguage: '',
-        customLocaleFiles: {
-          prefix: '',
-          suffix: '.json'
-        }
       }
     };
     provider.configure = function(configOptions) {
       return angular.merge(options, configOptions);
     };
-    _$get = function() {
+    _$get = function($window, ImpacUtilities) {
       var service;
       service = this;
       service.get = function() {
         return options;
       };
+      service.color = {
+
+        /*
+         *   @desc Generates a random shade of the given hexcode color.
+         */
+        generateRandomShade: function(hexcode) {
+          var baseHsl, shade;
+          baseHsl = $window.Color(hexcode).hsl();
+          shade = $window.Color().hsl(baseHsl.h, ImpacUtilities.getRandomInteger(40, 100), ImpacUtilities.getRandomInteger(50, 85)).rgb();
+          return "rgb(" + shade.r + ", " + shade.g + ", " + shade.b + ")";
+        },
+
+        /*
+         *   @desc Generates a palette of shades starting from the given hexcode color
+         *   @param {string} [hexcode] A color hexcode to base the palette from.
+         *   @param {integer} [amount] The amount of colour needed.
+         *   @param {Array<number>} [options.lightnessRange] A minimum and maximum lightness range.
+         */
+        generateShadesPalette: function(hexcode, amount, options) {
+          var baseHsl, counter, increment, palette, shade;
+          if (options == null) {
+            options = {};
+          }
+          options.lightnessRange || (options.lightnessRange = [50, 90]);
+          baseHsl = $window.Color(hexcode).hsl();
+          increment = options.lightnessRange.slice(0, 2).reduce(function(min, max) {
+            return max - min;
+          }) / amount;
+          palette = [];
+          counter = 0;
+          while (counter < amount) {
+            shade = $window.Color().hsl(baseHsl.h, baseHsl.s, options.lightnessRange[0]).rgb();
+            palette.push("rgb(" + shade.r + ", " + shade.g + ", " + shade.b + ")");
+            options.lightnessRange[0] += increment;
+            counter++;
+          }
+          return palette;
+        }
+      };
       return service;
     };
-    _$get.$inject = [];
+    _$get.$inject = ['$window', 'ImpacUtilities'];
     provider.$get = _$get;
     return provider;
   });
@@ -5462,7 +4305,7 @@ $translateProvider.translations("zh-HK", {
 }).call(this);
 
 (function() {
-  angular.module('impac.services.utilities', []).service('ImpacUtilities', ["$window", "$templateCache", function($window, $templateCache) {
+  angular.module('impac.services.utilities', []).service('ImpacUtilities', ["$window", "$templateCache", "ImpacRoutes", function($window, $templateCache, ImpacRoutes) {
     var _, _self, moment;
     _ = $window._;
     moment = $window.moment;
@@ -5582,6 +4425,12 @@ $translateProvider.translations("zh-HK", {
       };
       return resultHash;
     };
+    this.yearDates = function() {
+      return {
+        from: moment().startOf('year').format('YYYY-MM-DD'),
+        to: moment().format('YYYY-MM-DD')
+      };
+    };
     this.processRailsError = function(error) {
       var messages;
       messages = [];
@@ -5627,11 +4476,13 @@ $translateProvider.translations("zh-HK", {
       return messages;
     };
     this.fetchWidgetCssClass = function(widget) {
-      var endpoint, templateNameArray;
-      if (!(endpoint = (widget.metadata && widget.metadata.template) || widget.endpoint)) {
+      var bolt, templateNameArray;
+      templateNameArray = widget.metadata && widget.metadata.template ? widget.metadata.template.split('/').slice(0, 2) : widget.endpoint && widget.metadata && widget.metadata.bolt_path ? (bolt = _.find(ImpacRoutes.bolts(), function(bolt) {
+        return bolt.path === widget.metadata.bolt_path;
+      }), bolt && [bolt.category, widget.endpoint]) : widget.endpoint ? widget.endpoint.split('/').slice(0, 2) : void 0;
+      if (templateNameArray == null) {
         return false;
       }
-      templateNameArray = endpoint.split('/').slice(0, 2);
       return templateNameArray.join('-').replace(/_/g, '-');
     };
     this.fetchWidgetTemplatePath = function(widget) {
@@ -5641,6 +4492,9 @@ $translateProvider.translations("zh-HK", {
       }
       templatePath = "widgets/" + cssClass + ".tmpl.html";
       return $templateCache.get(templatePath) && templatePath;
+    };
+    this.getRandomInteger = function(min, max) {
+      return Math.random() * (max - min) + min;
     };
   }]);
 
@@ -5760,36 +4614,35 @@ $translateProvider.translations("zh-HK", {
       if (refreshCache == null) {
         refreshCache = false;
       }
-      if (!_.isEmpty(metadata)) {
-        return _self.load().then(function() {
-          var currentDhb, i, len, newMetadata, promises, ref, widget;
-          currentDhb = ImpacDashboardsSvc.getCurrentDashboard();
-          promises = [];
-          if ((currentDhb != null) && (currentDhb.widgets != null)) {
-            if (!_.isEmpty(currentDhb.widgets)) {
-              ref = currentDhb.widgets;
-              for (i = 0, len = ref.length; i < len; i++) {
-                widget = ref[i];
-                newMetadata = angular.merge({}, widget.metadata, metadata);
-                if (!_.isEqual(widget.metadata, newMetadata)) {
-                  widget.isLoading = true;
-                  promises.push(_self.update(widget, {
-                    metadata: newMetadata
-                  }));
-                }
-              }
-              return $q.all(promises).then(function(results) {
-                return _self.refreshAll(refreshCache);
-              });
-            } else {
-              return $q.resolve([]);
-            }
-          } else {
-            $log.error("Impac! - WidgetsSvc: CurrentDhb.widgets is null", currentDhb);
-            return $q.reject(null);
-          }
-        });
+      if (_.isEmpty(metadata)) {
+        return $q.reject('undefined metadata');
       }
+      return _self.load().then(function(_widget) {
+        var currentDhb, i, len, newMetadata, promises, ref, widget;
+        currentDhb = ImpacDashboardsSvc.getCurrentDashboard();
+        promises = [];
+        if (!((currentDhb != null) && (currentDhb.widgets != null))) {
+          $log.error("Impac! - WidgetsSvc: CurrentDhb.widgets is null", currentDhb);
+          return $q.reject('undefined currentDhb or currentDhb.widgets');
+        } else if (_.isEmpty(currentDhb.widgets)) {
+          return $q.resolve([]);
+        } else {
+          ref = currentDhb.widgets;
+          for (i = 0, len = ref.length; i < len; i++) {
+            widget = ref[i];
+            newMetadata = angular.merge({}, widget.metadata, metadata);
+            if (!_.isEqual(widget.metadata, newMetadata)) {
+              widget.isLoading = true;
+              promises.push(_self.update(widget, {
+                metadata: newMetadata
+              }));
+            }
+          }
+          return $q.all(promises).then(function(results) {
+            return _self.refreshAll(refreshCache);
+          });
+        }
+      });
     };
     this.isRefreshing = false;
     this.refreshAll = function(refreshCache) {
@@ -5842,6 +4695,9 @@ $translateProvider.translations("zh-HK", {
           }
           dashboard = ImpacDashboardsSvc.getCurrentDashboard();
           route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id);
+          if (widget.metadata['bolt_path']) {
+            route = widget.metadata['bolt_path'] + "/widgets/" + widget.endpoint;
+          }
           url = [route, decodeURIComponent($.param(params))].join('?');
           authHeader = 'Basic ' + btoa(_self.getSsoSessionId());
           config = {
@@ -5851,7 +4707,7 @@ $translateProvider.translations("zh-HK", {
           };
           return $http.get(url, config).then(function(success) {
             var content, i, len, name, ref, setting;
-            content = success.data.content || {};
+            content = success.data.content || success.data[widget.endpoint] || {};
             name = success.data.name;
             angular.extend(widget, {
               content: content,
@@ -5896,9 +4752,7 @@ $translateProvider.translations("zh-HK", {
       return deferred.promise;
     };
     this.create = function(params) {
-      var deferred;
-      deferred = $q.defer();
-      _self.load().then(function() {
+      return _self.load().then(function(_widget) {
         var dashboard, request;
         dashboard = ImpacDashboardsSvc.getCurrentDashboard();
         if (ImpacDeveloper.isWidgetStubbed(params)) {
@@ -5911,25 +4765,22 @@ $translateProvider.translations("zh-HK", {
           newWidget = success.data;
           dashboard.widgets.push(newWidget);
           ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget);
-          return deferred.resolve(newWidget);
-        }, function(error) {
+          return $q.resolve(newWidget);
+        }, function(createError) {
           $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard " + dashboard.id);
-          return deferred.reject(error);
+          return $q.reject(createError);
         });
-      }, function(error) {
+      }, function(loadError) {
         $log.error("Impac! - WidgetsSvc: Error while trying to load the service");
-        return deferred.reject(error);
+        return $q.reject(loadError);
       });
-      return deferred.promise;
     };
     this.update = function(widget, opts) {
-      var deferred;
-      deferred = $q.defer();
-      _self.load().then(function() {
+      return _self.load().then(function(_widget) {
         var dashboard, data, request;
         if (!isWidgetInCurrentDashboard(widget.id)) {
           $log.info("Impac! - WidgetsSvc: Trying to update a widget (id: " + widget.id + ") that is not in currentDashboard");
-          return deferred.reject("trying to update a widget (id: " + widget.id + ") that is not in currentDashboard");
+          return $q.reject("trying to update a widget (id: " + widget.id + ") that is not in currentDashboard");
         } else {
           data = {
             widget: opts
@@ -5942,22 +4793,19 @@ $translateProvider.translations("zh-HK", {
           }
           return request.then(function(success) {
             angular.extend(widget, success.data);
-            return deferred.resolve(widget);
-          }, function(error) {
+            return $q.resolve(widget);
+          }, function(updateError) {
             $log.error("Impac! - WidgetsSvc: Cannot update widget: " + widget.id);
-            return deferred.reject(error);
+            return $q.reject(updateError);
           });
         }
-      }, function(error) {
+      }, function(loadError) {
         $log.error("Impac! - WidgetsSvc: Error while trying to load the service");
-        return deferred.reject(error);
+        return $q.reject(loadError);
       });
-      return deferred.promise;
     };
     this["delete"] = function(widgetToDelete) {
-      var deferred;
-      deferred = $q.defer();
-      _self.load().then(function() {
+      return _self.load().then(function(_widget) {
         var dashboard, request;
         dashboard = ImpacDashboardsSvc.getCurrentDashboard();
         if (ImpacDeveloper.isWidgetStubbed(widgetToDelete)) {
@@ -5969,16 +4817,15 @@ $translateProvider.translations("zh-HK", {
           _.remove(dashboard.widgets, function(widget) {
             return widget.id === widgetToDelete.id;
           });
-          return deferred.resolve(success);
-        }, function(error) {
+          return $q.resolve(success);
+        }, function(deleteError) {
           $log.error("Impac! - WidgetsSvc: Error while trying to delete widget: " + widgetToDelete.id);
-          return deferred.reject(error);
+          return $q.reject(deleteError);
         });
-      }, function(error) {
+      }, function(loadError) {
         $log.error("Impac! - WidgetsSvc: Error while trying to load the service");
-        return deferred.reject(error);
+        return $q.reject(loadError);
       });
-      return deferred.promise;
     };
     return _self;
   }]);
@@ -6312,6 +5159,227 @@ $translateProvider.translations("zh-HK", {
 
 }).call(this);
 
+
+/*
+ *   @desc Chart Threshold - create Widget KPIs from Widget charts. (Highchart widgets only).
+ *   @todo support for multiple KPI watchables?
+ *   @todo support for multiple KPI targets?
+ *   @todo support for multiple attachable KPIs?
+ */
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-common.chart-threshold', []);
+
+  module.component('chartThreshold', {
+    templateUrl: 'widgets-common/chart-threshold.tmpl.html',
+    bindings: {
+      widget: '<',
+      chartPromise: '<?',
+      chartShrinkSize: '<?',
+      disabled: '<?',
+      kpiTargetMode: '<?',
+      kpiCreateLabel: '<?',
+      onComplete: '&?'
+    },
+    controller: ["$timeout", "$log", "ImpacKpisSvc", "ImpacUtilities", "toastr", function($timeout, $log, ImpacKpisSvc, ImpacUtilities, toastr) {
+      var ctrl, disableAttachability, getKpi, growChart, onChartClick, onChartNotify, onThresholdClick, shrinkChart, toggleKpiPanel, validateHistParameters;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        ctrl.kpi = {};
+        ctrl.showPanel = false;
+        ctrl.isEditingKpi = false;
+        ctrl.loading = false;
+        ctrl.draftTarget = {
+          value: ''
+        };
+        ctrl.chartShrinkSize || (ctrl.chartShrinkSize = 38);
+        ctrl.disabled || (ctrl.disabled = false);
+        ctrl.kpiTargetMode || (ctrl.kpiTargetMode = 'min');
+        ctrl.kpiCreateLabel || (ctrl.kpiCreateLabel = 'Get alerted when the target threshold goes below');
+        ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(function(templates) {
+          if (_.isEmpty(templates) || _.isEmpty(templates[0].watchables)) {
+            return disableAttachability('No valid KPI Templates found');
+          }
+          return angular.extend(ctrl.kpi, angular.copy(templates[0]));
+        }, function() {
+          return disableAttachability();
+        });
+        if ((ctrl.chartPromise != null) && _.isFunction(ctrl.chartPromise.then)) {
+          return ctrl.chartPromise.then(null, null, onChartNotify);
+        }
+      };
+      ctrl.createKpi = function(target) {
+        if (ctrl.disabled) {
+          return;
+        }
+        if (!(target && _.isEmpty(ctrl.widget.kpis) && _.isEmpty(ctrl.draftTarget.value))) {
+          return;
+        }
+        ctrl.draftTarget.value = target;
+        toggleKpiPanel();
+      };
+      ctrl.editKpi = function(options) {
+        if (ctrl.showPanel || ctrl.disabled || _.isEmpty(ctrl.widget.kpis)) {
+          return;
+        }
+        ctrl.isEditingKpi = true;
+        angular.extend(ctrl.draftTarget, options);
+        toggleKpiPanel();
+      };
+      ctrl.cancelCreateKpi = function() {
+        toggleKpiPanel();
+        $timeout(function() {
+          ctrl.draftTarget.value = '';
+          ctrl.isEditingKpi = false;
+          return ctrl.loading = false;
+        }, 100);
+      };
+      ctrl.saveKpi = function() {
+        var obj, params, promise, widgetHistParams;
+        if (ctrl.loading) {
+          return;
+        }
+        ctrl.loading = true;
+        params = {
+          targets: {},
+          metadata: {}
+        };
+        params.targets[ctrl.kpi.watchables[0]] = [
+          (
+            obj = {},
+            obj["" + ctrl.kpiTargetMode] = ctrl.draftTarget.value,
+            obj
+          )
+        ];
+        if (!ImpacKpisSvc.validateKpiTargets(params.targets)) {
+          return;
+        }
+        promise = ctrl.isEditingKpi ? ImpacKpisSvc.update(getKpi(), params, false) : (ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters) ? params.metadata.hist_parameters = widgetHistParams : params.metadata.hist_parameters = ImpacUtilities.yearDates(), params.widget_id = ctrl.widget.id, ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params));
+        return promise.then(function(kpi) {
+          ctrl.widget.kpis.push(kpi);
+          if (_.isFunction(ctrl.onComplete)) {
+            return ctrl.onComplete({
+              $event: {
+                kpi: kpi
+              }
+            });
+          }
+        }, function(err) {
+          return toastr.error('Failed to save KPI', 'Error');
+        })["finally"](function() {
+          return ctrl.cancelCreateKpi();
+        });
+      };
+      ctrl.deleteKpi = function() {
+        var kpi, kpiDesc;
+        if (ctrl.loading) {
+          return;
+        }
+        ctrl.loading = true;
+        kpiDesc = ctrl.widget.name + " " + (kpi = getKpi()).element_watched;
+        return ImpacKpisSvc["delete"](kpi).then(function() {
+          toastr.success("Deleted " + kpiDesc + " KPI");
+          _.remove(ctrl.widget.kpis, function(k) {
+            return k.id === kpi.id;
+          });
+          if (_.isFunction(ctrl.onComplete)) {
+            return ctrl.onComplete({
+              $event: {}
+            });
+          }
+        }, function() {
+          return toastr.error("Failed to delete " + kpiDesc + " KPI", 'Error');
+        })["finally"](function() {
+          return ctrl.cancelCreateKpi();
+        });
+      };
+      getKpi = function() {
+        return _.find(ctrl.widget.kpis, function(k) {
+          return k.id === ctrl.draftTarget.kpiId;
+        });
+      };
+      onChartNotify = function(chart) {
+        var thresholdSeries;
+        ctrl.chart = chart;
+        validateHistParameters();
+        Highcharts.addEvent(chart.container, 'click', onChartClick);
+        thresholdSeries = _.select(chart.series, function(s) {
+          return s.name.toLowerCase().includes('threshold');
+        });
+        _.each(thresholdSeries, function(t) {
+          return Highcharts.addEvent(t, 'click', function(event) {
+            return onThresholdClick(t);
+          });
+        });
+      };
+      onChartClick = function(event) {
+        var value;
+        if (event.srcElement.textContent === 'Reset zoom') {
+          return;
+        }
+        if (!(event.yAxis && event.yAxis[0])) {
+          return;
+        }
+        value = event.yAxis[0].value;
+        if (!value || _.isNaN(value)) {
+          return;
+        } else {
+          value = value.toFixed(2);
+        }
+        return ctrl.createKpi(value);
+      };
+      onThresholdClick = function(thresholdSerie) {
+        var opts, thresholdValue;
+        thresholdValue = (opts = thresholdSerie.options).data[opts.data.length - 1];
+        return ctrl.editKpi({
+          kpiId: opts.kpiId,
+          value: thresholdValue
+        });
+      };
+      disableAttachability = function(logMsg) {
+        ctrl.disabled = true;
+        toastr.warning("Chart threshold KPI disabled!", ctrl.widget.name + " Widget");
+        if (logMsg) {
+          return $log.warn("Impac! - " + ctrl.widget.name + " Widget: " + logMsg);
+        }
+      };
+      toggleKpiPanel = function() {
+        return $timeout(function() {
+          if (ctrl.showPanel) {
+            growChart();
+          } else {
+            shrinkChart();
+          }
+          return ctrl.showPanel = !ctrl.showPanel;
+        });
+      };
+      shrinkChart = function() {
+        if (!ctrl.chart) {
+          return;
+        }
+        ctrl.chart.setSize(null, ctrl.chart.chartHeight - ctrl.chartShrinkSize, false);
+        return ctrl.chart.container.parentElement.style.height = ctrl.chart.chartHeight + "px";
+      };
+      growChart = function() {
+        if (!ctrl.chart) {
+          return;
+        }
+        ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.chartShrinkSize, false);
+        return ctrl.chart.container.parentElement.style.height = ctrl.chart.chartHeight + "px";
+      };
+      validateHistParameters = function() {
+        var widgetHistParams;
+        widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters;
+        ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day');
+      };
+      return ctrl;
+    }]
+  });
+
+}).call(this);
+
 (function() {
   var module;
 
@@ -6393,7 +5461,7 @@ $translateProvider.translations("zh-HK", {
 
   module = angular.module('impac.components.widgets-common.info-panel', []);
 
-  module.directive('commonInfoPanel', ["$templateCache", function($templateCache) {
+  module.directive('commonInfoPanel', ["$templateCache", "ImpacUtilities", function($templateCache, ImpacUtilities) {
     return {
       restrict: 'A',
       scope: {
@@ -6410,11 +5478,15 @@ $translateProvider.translations("zh-HK", {
           return scope.onClose();
         };
         return scope.getWidgetTemplateName = function() {
-          var cat_array, result;
-          cat_array = (w.metadata.template || w.endpoint).split('/');
-          cat_array = cat_array.slice(cat_array.length - 2, cat_array.length);
-          result = cat_array[0] + " - " + (cat_array[1].replace('_', ' '));
-          return result;
+          var cssClass, cssClassArray, widgetCategory, widgetName;
+          cssClass = ImpacUtilities.fetchWidgetCssClass(w);
+          if (!cssClass) {
+            return "";
+          }
+          cssClassArray = cssClass.split('-');
+          widgetCategory = cssClassArray.slice(0, 1);
+          widgetName = cssClassArray.slice(1, cssClassArray.length).join(' ');
+          return widgetCategory + " - " + widgetName;
         };
       }
     };
@@ -6548,1734 +5620,6 @@ $translateProvider.translations("zh-HK", {
       },
       template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
       controller: 'CommonTopButtonsCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.account', []);
-
-  module.controller('SettingAccountCtrl', ["$scope", "$filter", function($scope, $filter) {
-    var formatAmount, setting, w;
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "account";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      w.selectedAccount = w.selectedAccount || null;
-      if ((w.content != null) && (w.content.account_list != null) && (w.metadata != null) && (w.metadata.account_uid != null)) {
-        w.selectedAccount = _.find(w.content.account_list, function(acc) {
-          return acc.uid === w.metadata.account_uid;
-        });
-        return setting.isInitialized = true;
-      }
-    };
-    setting.toMetadata = function() {
-      if (w.selectedAccount != null) {
-        return {
-          account_uid: w.selectedAccount.uid
-        };
-      }
-    };
-    formatAmount = function(anAccount) {
-      var balance;
-      balance = anAccount.current_balance || anAccount.balance || 0.0;
-      return $filter('mnoCurrency')(balance, anAccount.currency);
-    };
-    $scope.formatLabel = function(anAccount) {
-      if (anAccount.company != null) {
-        return anAccount.company + " - " + anAccount.name + " (" + (formatAmount(anAccount)) + ")";
-      } else {
-        return anAccount.name + " (" + (formatAmount(anAccount)) + ")";
-      }
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingAccount', ["$templateCache", "$translate", function($templateCache, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        label: '@',
-        showLabel: '=?',
-        onAccountSelected: '&'
-      },
-      link: function(scope, element) {
-        if (!scope.label) {
-          return scope.label = $translate.instant('impac.widget.settings.account.label');
-        }
-      },
-      template: $templateCache.get('widgets-settings/account.tmpl.html'),
-      controller: 'SettingAccountCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.accounting-behaviour', []);
-
-  module.directive('settingAccountingBehaviour', ["$templateCache", "$timeout", function($templateCache, $timeout) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        defaultBehaviour: '=?'
-      },
-      template: $templateCache.get('widgets-settings/accounting-behaviour.tmpl.html'),
-      link: function(scope) {
-        var setting, w;
-        w = scope.parentWidget;
-        setting = {};
-        setting.key = "accounting-behaviour";
-        setting.initialize = function() {
-          return $timeout(function() {
-            if ((scope.defaultBehaviour != null) && scope.defaultBehaviour === 'pnl') {
-              return scope.selectedBehaviour = 'pnl';
-            } else {
-              return scope.selectedBehaviour = 'bls';
-            }
-          });
-        };
-        setting.toMetadata = function() {
-          return {
-            accounting_behaviour: scope.selectedBehaviour
-          };
-        };
-        w.settings.push(setting);
-        return scope.deferred.resolve(setting);
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.accounts-list', []);
-
-  module.controller('SettingAccountsListCtrl', ["$scope", "$timeout", "ImpacWidgetsSvc", function($scope, $timeout, ImpacWidgetsSvc) {
-    var restoreSavedAccounts, setting, w;
-    w = $scope.parentWidget;
-    w.moveAccountToAnotherList = function(account, src, dst, triggerUpdate) {
-      if (triggerUpdate == null) {
-        triggerUpdate = true;
-      }
-      if (_.isEmpty(src) || _.isEmpty(account)) {
-        return;
-      }
-      dst || (dst = []);
-      _.remove(src, function(acc) {
-        return account.uid === acc.uid;
-      });
-      dst.push(account);
-      if (triggerUpdate) {
-        ImpacWidgetsSvc.updateWidgetSettings(w, false);
-      }
-      return null;
-    };
-    setting = {};
-    setting.key = "accounts-list";
-    setting.initialize = function() {
-      setting.isInitialized = false;
-      w.remainingAccounts = [];
-      w.selectedAccounts = [];
-      if ((w.content != null) && !_.isEmpty(w.content.complete_list)) {
-        w.remainingAccounts = angular.copy(w.content.complete_list);
-        return $timeout(function() {
-          restoreSavedAccounts();
-          return setting.isInitialized = true;
-        });
-      }
-    };
-    setting.toMetadata = function() {
-      if (setting.isInitialized) {
-        return {
-          accounts_list: _.map(w.selectedAccounts, (function(acc) {
-            return acc.uid;
-          }))
-        };
-      }
-    };
-    restoreSavedAccounts = function() {
-      var acc, accUid, accountsList, i, len, results;
-      if (_.isEmpty(w.metadata.accounts_list) && _.isEmpty($scope.accountsList)) {
-        return;
-      }
-      accountsList = _.isEmpty($scope.accountsList) ? w.metadata.accounts_list : $scope.accountsList;
-      results = [];
-      for (i = 0, len = accountsList.length; i < len; i++) {
-        accUid = accountsList[i];
-        acc = _.find(w.content.complete_list, function(acc) {
-          return acc.uid === accUid;
-        });
-        results.push(w.moveAccountToAnotherList(acc, w.remainingAccounts, w.selectedAccounts, false));
-      }
-      return results;
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingAccountsList', function() {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        accountsList: '=?'
-      },
-      controller: 'SettingAccountsListCtrl'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.attach-kpis', []);
-
-  module.directive('settingAttachKpis', ["$templateCache", "ImpacWidgetsSvc", "ImpacKpisSvc", "$translate", function($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        attachedKpis: '=',
-        widgetEngine: '=',
-        widgetId: '=',
-        extraParams: '=',
-        deferred: '=',
-        showExtraParam: '=?'
-      },
-      template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html'),
-      controller: ["$scope", function($scope) {
-        var loadKpisData, settings, w;
-        w = $scope.parentWidget;
-        settings = {};
-        settings.initialize = function() {
-          return loadKpisData();
-        };
-        settings.toMetadata = function() {};
-        w.settings.push(settings);
-        $scope.formatKpiName = function(endpoint) {
-          return ImpacKpisSvc.formatKpiName(endpoint);
-        };
-        $scope.hasValidTarget = function() {
-          return ImpacKpisSvc.validateKpiTarget($scope.kpi);
-        };
-        $scope.attachKpi = function() {
-          var param, paramValues, params, ref, target0;
-          params = {};
-          if (!$scope.hasValidTarget()) {
-            return;
-          }
-          target0 = {};
-          target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value;
-          params.targets = {};
-          params.targets[$scope.kpi.watchables[0]] = [target0];
-          params.widget_id = $scope.widgetId;
-          ref = $scope.extraParams;
-          for (param in ref) {
-            paramValues = ref[param];
-            params.extra_params || (params.extra_params = {});
-            params.extra_params[param] = paramValues.uid;
-          }
-          return ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.elementWatched, params).then(function(kpi) {
-            $scope.attachedKpis.push(kpi);
-            return ImpacKpisSvc.show(kpi).then(function() {});
-          });
-        };
-        $scope.deleteKpi = function(kpi) {
-          return ImpacKpisSvc["delete"](kpi, {
-            widget_id: $scope.widgetId
-          }).then(function() {
-            return _.remove($scope.attachedKpis, function(k) {
-              return k.id === kpi.id;
-            });
-          });
-        };
-        $scope.formatAttachedKpiTitle = function(kpi) {
-          if (!(kpi.data && kpi.targets && $scope.elementWatched)) {
-            return '';
-          }
-          return ImpacKpisSvc.formatKpiTarget(kpi.targets[$scope.elementWatched][0], kpi.data[$scope.elementWatched].unit, $scope.possibleTargets);
-        };
-        $scope.possibleTargets = [
-          {
-            label: $translate.instant('impac.widget.settings.attach_kpis.over'),
-            mode: 'min'
-          }, {
-            label: $translate.instant('impac.widget.settings.attach_kpis.below'),
-            mode: 'max'
-          }
-        ];
-        $scope.kpi = {
-          limit: {
-            mode: $scope.possibleTargets[0].mode
-          }
-        };
-        ImpacKpisSvc.getAttachableKpis($scope.widgetEngine).then(function(kpiTemplates) {
-          $scope.availableKpis = angular.copy(kpiTemplates);
-          angular.extend($scope.kpi, $scope.availableKpis[0]);
-          $scope.selectedParam = _.keys($scope.extraParams)[0];
-          return $scope.elementWatched = ($scope.kpi.watchables != null) && $scope.kpi.watchables[0];
-        });
-        loadKpisData = function() {
-          return _.forEach($scope.attachedKpis, function(kpi) {
-            return ImpacKpisSvc.show(kpi).then(function(res) {});
-          });
-        };
-        loadKpisData();
-        return $scope.deferred.resolve($scope.parentWidget);
-      }]
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.chart-filters', []);
-
-  module.controller('SettingChartFiltersCtrl', ["$scope", function($scope) {
-    var setting, w;
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "chart-filters";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      if ((w.content != null) && (w.content.chart_filter != null) && ($scope.filterCriteria = w.content.chart_filter.criteria)) {
-        $scope.maxEntities = w.content.chart_filter.max;
-        $scope.entityType = w.content.chart_filter.entity_type;
-        $scope.filterLabel = w.content.chart_filter.filter_label.replace(/_/g, " ");
-        if ($scope.filterCriteria === "number") {
-          $scope.filterValuePercentage = 80;
-          $scope.filterValueNumber = w.content.chart_filter.value;
-        } else {
-          $scope.filterValuePercentage = w.content.chart_filter.value;
-          $scope.filterValueNumber = Math.round($scope.maxEntities / 2);
-        }
-        return setting.isInitialized = true;
-      }
-    };
-    setting.toMetadata = function() {
-      var filterValue;
-      if ((w.content != null) && (w.content.chart_filter != null)) {
-        if ($scope.filterCriteria === "percentage") {
-          filterValue = $scope.filterValuePercentage;
-        } else {
-          filterValue = $scope.filterValueNumber;
-        }
-        return {
-          chart_filter: {
-            criteria: $scope.filterCriteria,
-            value: filterValue
-          }
-        };
-      } else {
-        return {};
-      }
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingChartFilters', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '='
-      },
-      template: $templateCache.get('widgets-settings/chart-filters.tmpl.html'),
-      controller: 'SettingChartFiltersCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.dates-picker', []);
-
-  module.directive('settingDatesPicker', ["$templateCache", "$filter", "ImpacWidgetsSvc", "$timeout", "$compile", function($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=?',
-        deferred: '=',
-        fromDate: '=from',
-        toDate: '=to',
-        keepToday: '=',
-        onUse: '&?',
-        onChangeCb: '&?onChange',
-        minDate: '=?',
-        updateOnPick: '=?',
-        template: '=?'
-      },
-      template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
-      link: function(scope, element) {
-        var applyHtml, buildDates, fromDateHtml, isToToday, setting, templatesContainer, toDateHtml, w;
-        w = scope.parentWidget;
-        setting = {};
-        setting.key = "dates-picker";
-        scope.calendarFrom = {
-          opened: false,
-          value: new Date(new Date().getFullYear(), 0, 1),
-          toggle: function() {
-            scope.calendarFrom.opened = !scope.calendarFrom.opened;
-            return scope.calendarTo.opened = false;
-          }
-        };
-        scope.calendarTo = {
-          opened: false,
-          value: new Date(),
-          toggle: function() {
-            scope.calendarFrom.opened = false;
-            return scope.calendarTo.opened = !scope.calendarTo.opened;
-          }
-        };
-        scope.template || (scope.template = "<div style=\"display: flex; flex-wrap: wrap;\">\n  <div style=\"display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;\">\n    <span class=\"sdp-from-label\" style=\"padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;\" translate>impac.widget.settings.dates_picker.from</span> <from-date style=\"flex-grow: 2;\">\n  </div>\n  <div style=\"display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;\">\n    <span class=\"sdp-to-label\" style=\"padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;\" translate>impac.widget.settings.dates_picker.to</span> <to-date style=\"flex-grow: 2;\">\n  </div>\n</div>");
-        fromDateHtml = "<div style=\"display: inline-block;\">\n  <button class=\"btn btn-sm btn-default date-button\" ng-click=\"calendarFrom.toggle()\" uib-datepicker-popup ng-model=\"calendarFrom.value\" is-open=\"calendarFrom.opened\" ng-change=\"onChange()\" min-date=\"minDate\" max-date=\"calendarTo.value\" ng-focus=\"onUse()\" ATTRS>\n    {{ calendarFrom.value | date : 'yyyy-MM-dd' }}\n  </button>\n</div>";
-        toDateHtml = "<div style=\"display: inline-block;\">\n  <button class=\"btn btn-sm btn-default date-button\" ng-click=\"calendarTo.toggle()\" uib-datepicker-popup ng-model=\"calendarTo.value\" is-open=\"calendarTo.opened\" ng-change=\"onChange()\" min-date=\"calendarFrom.value\" ng-focus=\"onUse()\" ATTRS>\n    {{ calendarTo.value | date : 'yyyy-MM-dd' }}\n  </button>\n</div>";
-        applyHtml = "<button class=\"btn btn-sm btn-success\" uib-tooltip=\"{{'impac.widget.settings.dates_picker.tooltip.apply_changes' | translate}}\" ng-show=\"changed && !parentWidget.isEditMode\" ng-click=\"applyChanges()\" ng-focus=\"onUse()\" >\n  <i class=\"fa fa-check\"/>\n</button>";
-        scope.template = scope.template.replace(/>/, " ng-click='onUse()'>");
-        scope.template = scope.template.replace(/<from-date([^>]*)>/g, "" + (fromDateHtml.replace('ATTRS', '$1')));
-        scope.template = scope.template.replace(/<to-date([^>]*)>/g, "" + (toDateHtml.replace('ATTRS', '$1')));
-        scope.template = scope.template.replace(/<apply([^>]*)>/g, "" + (applyHtml.replace('ATTRS', '$1')));
-        templatesContainer = element.find('#template-container');
-        templatesContainer.html(scope.template).show();
-        $compile(templatesContainer.contents())(scope);
-        setting.initialize = function() {
-          return $timeout(function() {
-            var d, m, parsedFrom, parsedTo, y;
-            scope.changed = false;
-            if (Date.parse(scope.fromDate)) {
-              parsedFrom = scope.fromDate.split('-');
-              y = parsedFrom[0];
-              m = parsedFrom[1] - 1;
-              d = parsedFrom[2];
-              scope.calendarFrom.value = new Date(y, m, d);
-            } else {
-              scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1);
-            }
-            if (Date.parse(scope.toDate) && !scope.keepToday) {
-              parsedTo = scope.toDate.split('-');
-              y = parsedTo[0];
-              m = parsedTo[1] - 1;
-              d = parsedTo[2];
-              return scope.calendarTo.value = new Date(y, m, d);
-            } else {
-              return scope.calendarTo.value = new Date();
-            }
-          });
-        };
-        isToToday = function() {
-          return (scope.calendarTo.value.getFullYear() === new Date().getFullYear()) && (scope.calendarTo.value.getMonth() === new Date().getMonth()) && (scope.calendarTo.value.getDate() === new Date().getDate());
-        };
-        setting.toMetadata = function() {
-          return {
-            hist_parameters: {
-              from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd'),
-              to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd'),
-              period: "RANGE",
-              keep_today: isToToday()
-            }
-          };
-        };
-        scope.onChange = function() {
-          scope.showApplyButton();
-          if (!_.isUndefined(scope.onChangeCb)) {
-            return scope.onChangeCb()(buildDates());
-          }
-        };
-        buildDates = function() {
-          return {
-            from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd'),
-            to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd'),
-            keepToday: isToToday()
-          };
-        };
-        scope.showApplyButton = function() {
-          if (scope.updateOnPick) {
-            return scope.applyChanges();
-          } else {
-            return scope.changed = true;
-          }
-        };
-        scope.applyChanges = function() {
-          ImpacWidgetsSvc.updateWidgetSettings(w, true);
-          return scope.changed = false;
-        };
-        scope.showTitle = function() {
-          return element.hasClass('part');
-        };
-        if (w) {
-          w.settings.push(setting);
-        }
-        return scope.deferred.resolve(setting);
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.formula', []);
-
-  module.controller('SettingFormulaCtrl', ["$scope", "$filter", "$timeout", "$translate", function($scope, $filter, $timeout, $translate) {
-    var AUTHORIZED_REGEXP, evaluateFormula, formatFormula, getFormula, interpolateInFormula, isRatio, prepareFormula, setting, translateEvaluatedFormula, w;
-    w = $scope.parentWidget;
-    w.formula = '';
-    AUTHORIZED_REGEXP = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$");
-    setting = {};
-    setting.key = "formula";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      if ((w.metadata != null) && (w.metadata.formula != null)) {
-        w.formula = w.metadata.formula;
-        return $timeout(function() {
-          prepareFormula();
-          return setting.isInitialized = true;
-        });
-      } else {
-        return w.formula = '';
-      }
-    };
-    setting.toMetadata = function() {
-      prepareFormula();
-      if (w.isFormulaCorrect) {
-        return {
-          formula: w.formula
-        };
-      } else {
-        return {
-          formula: ''
-        };
-      }
-    };
-    getFormula = function() {
-      return w.formula;
-    };
-    w.formatAmount = function(anAccount) {
-      return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency);
-    };
-    $scope.$watch(getFormula, function(e) {
-      return prepareFormula();
-    });
-    prepareFormula = function() {
-      var evaluatedFormula, interpolatedFormula;
-      interpolatedFormula = interpolateInFormula(w.formula, w.selectedAccounts, 'current_balance');
-      if ((evaluatedFormula = evaluateFormula(interpolatedFormula))) {
-        w.evaluatedFormula = formatFormula(evaluatedFormula, w.formula, w.selectedAccounts);
-        w.legend = interpolateInFormula(w.formula, w.selectedAccounts, 'name');
-        w.isFormulaCorrect = true;
-      } else {
-        w.evaluatedFormula = 'invalid expression';
-        w.legend = '...';
-        w.isFormulaCorrect = false;
-      }
-      return w.evaluatedFormulaTranslate = translateEvaluatedFormula(w.evaluatedFormula);
-    };
-    translateEvaluatedFormula = function(formula) {
-      switch (formula) {
-        case 'invalid expression':
-          return $translate.instant('impac.widget.formula.invalid_expression');
-        case 'Infinity':
-          return $translate.instant('impac.widget.formula.infinity');
-        case '-Infinity':
-          return $translate.instant('impac.widget.formula.minus_infinity');
-        default:
-          return formula;
-      }
-    };
-    interpolateInFormula = function(sourceFormula, selectedAccounts, accountMember) {
-      var account, i, interpolation, j, len, pattern;
-      interpolation = sourceFormula;
-      if (_.isEmpty(selectedAccounts)) {
-        return interpolation;
-      }
-      for (i = j = 0, len = selectedAccounts.length; j < len; i = ++j) {
-        account = selectedAccounts[i];
-        pattern = new RegExp("\\{" + (i + 1) + "\\}", 'g');
-        interpolation = interpolation.replace(pattern, " " + account[accountMember] + " ");
-      }
-      return interpolation;
-    };
-    evaluateFormula = function(interpolatedFormula) {
-      var e, evaluation;
-      if (!interpolatedFormula.match(AUTHORIZED_REGEXP)) {
-        return false;
-      }
-      try {
-        evaluation = eval(interpolatedFormula).toFixed(2);
-        if (isFinite(evaluation)) {
-          return evaluation;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        e = error;
-        return false;
-      }
-    };
-    isRatio = function(sourceFormula) {
-      return sourceFormula.match(/\//g);
-    };
-    formatFormula = function(evaluation, sourceFormula, selectedAccounts) {
-      var currency, firstAccount;
-      if (isRatio(sourceFormula) || _.isEmpty(selectedAccounts)) {
-        return evaluation;
-      }
-      firstAccount = selectedAccounts[0];
-      if (!(currency = firstAccount.currency)) {
-        return evaluation;
-      }
-      return $filter('mnoCurrency')(evaluation, currency);
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingFormula', function() {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '='
-      },
-      controller: 'SettingFormulaCtrl'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var module,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-  module = angular.module('impac.components.widgets-settings.hist-mode', []);
-
-  module.controller('SettingHistModeCtrl', ["$scope", "$translate", "$timeout", "ImpacWidgetsSvc", "ImpacTheming", "ImpacUtilities", function($scope, $translate, $timeout, ImpacWidgetsSvc, ImpacTheming, ImpacUtilities) {
-    var buildCurrentLabel, setting, w;
-    w = $scope.parentWidget;
-    w.isHistoryMode = false;
-    $scope.forwardParams = {
-      accountingBehaviour: function() {
-        return $scope.accountingBehaviour;
-      }
-    };
-    $scope.toggleHistMode = function(mode) {
-      var ref;
-      if ((w.isHistoryMode && mode === 'history') || (!w.isHistoryMode && mode === 'current')) {
-        return;
-      }
-      w.isHistoryMode = !w.isHistoryMode;
-      ImpacWidgetsSvc.updateWidgetSettings(w, false);
-      return ref = $scope.onToggle(), indexOf.call(angular.isDefined($scope.onToggle), ref) >= 0;
-    };
-    buildCurrentLabel = function() {
-      var label, labels, needPrefix, prefix;
-      labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels;
-      if (($scope.accountingBehaviour != null) && labels[$scope.accountingBehaviour]) {
-        needPrefix = !$scope.endDate || ($scope.endDate === moment().format('YYYY-MM-DD'));
-        label = labels[$scope.accountingBehaviour];
-        prefix = labels[$scope.accountingBehaviour] + '.prefix';
-        return $translate([prefix, label]).then(function(translations) {
-          return $scope.currentLabel = needPrefix ? translations[prefix] + " " + translations[label] : translations[label];
-        });
-      } else {
-        return $translate(labels["default"]).then(function(label) {
-          return $scope.currentLabel = label;
-        });
-      }
-    };
-    setting = {};
-    setting.key = "hist-mode";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      return $timeout(function() {
-        var mode;
-        if ((w.metadata != null) && (w.metadata.hist_parameters != null) && (mode = w.metadata.hist_parameters.mode)) {
-          w.isHistoryMode = mode === 'history' ? true : false;
-        }
-        buildCurrentLabel();
-        $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters;
-        setting.isInitialized = true;
-        return $scope;
-      });
-    };
-    setting.toMetadata = function() {
-      var mode;
-      mode = w.isHistoryMode ? 'history' : 'current';
-      return {
-        hist_parameters: {
-          mode: mode
-        }
-      };
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingHistMode', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        onToggle: '&',
-        accountingBehaviour: '@?',
-        endDate: '=?'
-      },
-      template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
-      controller: 'SettingHistModeCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.limit-entries', []);
-
-  module.controller('SettingLimitEntriesCtrl', ["$scope", function($scope) {
-    var setting;
-    setting = {};
-    setting.key = 'limit-entries';
-    setting.initialize = function() {
-      return true;
-    };
-    setting.toMetadata = function() {
-      return {
-        limit_entries: $scope.selected
-      };
-    };
-    $scope.parentWidget.settings.push(setting);
-    return $scope.deferred.resolve(setting);
-  }]);
-
-  module.directive('settingLimitEntries', ["$templateCache", "ImpacWidgetsSvc", function($templateCache, ImpacWidgetsSvc) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        selected: '=',
-        max: '=?',
-        options: '=?',
-        entriesLabel: '=?'
-      },
-      link: function(scope, elements, attrs) {
-        if (!((scope.options != null) && scope.options.length > 0)) {
-          scope.options = [5, 15, 50];
-        }
-        scope.selectOption = function(anOption) {
-          scope.selected = anOption;
-          return ImpacWidgetsSvc.updateWidgetSettings(scope.parentWidget, false);
-        };
-        return scope.isOptionValid = function(anOption) {
-          return (scope.max == null) || anOption < scope.max;
-        };
-      },
-      controller: 'SettingLimitEntriesCtrl',
-      template: $templateCache.get('widgets-settings/limit-entries.tmpl.html')
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.offsets', []);
-
-  module.directive('settingOffsets', ["$templateCache", "ImpacUtilities", function($templateCache, ImpacUtilities) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        offsetsKey: '@',
-        initialOffsets: '=',
-        currency: '=',
-        intervalsCount: '=',
-        period: '=',
-        showIntervalsMult: '='
-      },
-      template: $templateCache.get('widgets-settings/offsets.tmpl.html'),
-      link: function(scope) {
-        var authorized_regex, computedFormula, placeholder, setting, w;
-        w = scope.parentWidget;
-        authorized_regex = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$");
-        setting = {
-          key: "offsets-" + scope.offsetsKey
-        };
-        setting.initialize = function() {
-          var i, len, offsetValue, ref;
-          scope.offsets = [];
-          ref = scope.initialOffsets || [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            offsetValue = ref[i];
-            scope.offsets.push(offsetValue);
-          }
-          scope.offsetFormula = "";
-          scope.periodWord = ImpacUtilities.getPeriodWord(scope.period);
-          return scope.placeholder = placeholder(scope.period || 'MONTHLY');
-        };
-        setting.toMetadata = function() {
-          var metadata;
-          metadata = {
-            offset: {}
-          };
-          metadata.offset[scope.offsetsKey] = scope.offsets;
-          return metadata;
-        };
-        scope.addOffset = function() {
-          var result;
-          result = computedFormula();
-          if (result) {
-            scope.offsets.push(result);
-          }
-          return scope.offsetFormula = "";
-        };
-        scope.removeOffset = function(offsetIndex) {
-          return scope.offsets.splice(offsetIndex, 1);
-        };
-        scope.addOffsetOnEnter = function(event) {
-          if (event.keyCode === 13) {
-            return scope.addOffset();
-          }
-        };
-        placeholder = function(inputPeriod) {
-          var period;
-          period = inputPeriod.charAt(0).toUpperCase() + inputPeriod.slice(1).toLowerCase();
-          return period + " adjustment";
-        };
-        computedFormula = function() {
-          if (scope.offsetFormula.match(authorized_regex)) {
-            return eval(scope.offsetFormula);
-          }
-        };
-        if (w) {
-          w.settings.push(setting);
-        }
-        return scope.deferred.resolve(setting);
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.organizations', []);
-
-  module.controller('SettingOrganizationsCtrl', ["$scope", "$log", "ImpacDashboardsSvc", function($scope, $log, ImpacDashboardsSvc) {
-    var setting, w;
-    w = $scope.parentWidget;
-    w.selectedOrganizations = {};
-    $scope.isOrganizationSelected = function(orgUid) {
-      return !!w.selectedOrganizations[orgUid];
-    };
-    $scope.toggleSelectOrganization = function(orgUid) {
-      w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid];
-      if (angular.isDefined($scope.onSelect)) {
-        return $scope.onSelect({
-          orgs: w.selectedOrganizations
-        });
-      }
-    };
-    setting = {};
-    setting.key = "organizations";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      return ImpacDashboardsSvc.load().then(function(config) {
-        var i, len, org, ref;
-        $scope.dashboardOrganizations = config.currentDashboard.data_sources;
-        if ((w.metadata != null) && (w.metadata.organization_ids != null)) {
-          ref = $scope.dashboardOrganizations;
-          for (i = 0, len = ref.length; i < len; i++) {
-            org = ref[i];
-            w.selectedOrganizations[org.uid] = _.contains(w.metadata.organization_ids, org.uid);
-          }
-          return setting.isInitialized = true;
-        }
-      });
-    };
-    setting.toMetadata = function() {
-      var newOrganizations;
-      newOrganizations = _.compact(_.map(w.selectedOrganizations, function(checked, uid) {
-        if (checked) {
-          return uid;
-        }
-      }));
-      if (_.isEmpty(newOrganizations)) {
-        newOrganizations = [_.first($scope.dashboardOrganizations).uid];
-      }
-      return {
-        organization_ids: newOrganizations
-      };
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingOrganizations', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        onSelect: '&?'
-      },
-      template: $templateCache.get('widgets-settings/organizations.tmpl.html'),
-      controller: 'SettingOrganizationsCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.param-selector', []);
-
-  module.controller('SettingParamSelectorCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
-    var setting, w;
-    $scope.showOptions = false;
-    $scope.toggleShowOptions = function() {
-      return $scope.showOptions = !$scope.showOptions;
-    };
-    $scope.onInit = function() {
-      $scope.selectedOption = {};
-      return angular.extend($scope.selectedOption, $scope.selected);
-    };
-    $scope.selectOption = function(anOption) {
-      if (anOption.value !== $scope.selected.value) {
-        angular.extend($scope.selected, anOption);
-        if (!$scope.noReload) {
-          $scope.parentWidget.isLoading = true;
-        }
-        ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget, !$scope.noReload);
-        if (angular.isDefined($scope.onSelect)) {
-          $scope.onSelect();
-        }
-      }
-      return $scope.toggleShowOptions();
-    };
-    $scope.getTruncateValue = function() {
-      return parseInt($scope.truncateNo) || 20;
-    };
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "param-selector";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      if (w.content != null) {
-        return setting.isInitialized = true;
-      }
-    };
-    setting.toMetadata = function() {
-      var param;
-      param = {};
-      if (!_.isEmpty($scope.selected)) {
-        param[$scope.param] = $scope.selected.value;
-      }
-      return param;
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingParamSelector', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        param: '@',
-        options: '=',
-        selected: '=',
-        truncateNo: '@',
-        onSelect: '&'
-      },
-      link: function(scope, elements, attrs) {
-        scope.noReload = typeof attrs.noReload !== 'undefined';
-        return scope.truncateNo = attrs.truncateNo || 20;
-      },
-      template: function(elements, attrs) {
-        return $templateCache.get(attrs.classic ? 'widgets-settings/param-selector-classic.tmpl.html' : 'widgets-settings/param-selector.tmpl.html');
-      },
-      controller: 'SettingParamSelectorCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.params-checkboxes', []);
-
-  module.controller('SettingParamsCheckboxesCtrl', ["$scope", function($scope) {
-    var setting, w;
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "params-checkboxes";
-    setting.initialize = function() {};
-    setting.toMetadata = function() {
-      var param;
-      param = {};
-      param[$scope.param] = _.map($scope.options, function(opt) {
-        return {
-          id: opt.id,
-          value: opt.value
-        };
-      });
-      return param;
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingParamsCheckboxes', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        param: '@',
-        options: '='
-      },
-      template: $templateCache.get('widgets-settings/params-checkboxes.tmpl.html'),
-      controller: 'SettingParamsCheckboxesCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.params-picker', []);
-
-  module.controller('SettingParamsPickerCtrl', ["$scope", function($scope) {
-    var setting, w;
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "params-picker";
-    setting.isInitialized = false;
-    setting.initialize = function() {
-      $scope.sortableOptions = {
-        'ui-floating': true,
-        tolerance: 'pointer'
-      };
-      $scope.applyToDashboard = w.metadata[$scope.param] && w.metadata[$scope.param].reach === 'dashboard';
-      $scope.toggleReach = function() {
-        return setting.reach = $scope.applyToDashboard ? 'dashboard' : 'widget';
-      };
-      $scope.toggleReach();
-      if (_.isEmpty($scope.options)) {
-        return setting.isInitialized = true;
-      }
-    };
-    setting.toMetadata = function() {
-      var param;
-      param = {};
-      param[$scope.param] = {
-        values: _.compact(_.map($scope.options, function(statusOption) {
-          if (statusOption.selected) {
-            return statusOption.value || statusOption.label;
-          }
-        })),
-        reach: setting.reach
-      };
-      return param;
-    };
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingParamsPicker', ["$templateCache", "$translate", function($templateCache, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        param: '@',
-        options: '=',
-        hasReach: '=',
-        description: '@'
-      },
-      link: function(scope, elements, attrs) {
-        var paramText;
-        paramText = $translate.instant('impac.widget.settings.params-picker.' + scope.param);
-        scope.formattedParam = _.includes(paramText, 'impac.widget.settings.params-picker') ? scope.param.replace(/_/g, ' ') : paramText;
-        if (scope.description == null) {
-          return scope.description = $translate.instant('impac.widget.settings.params-picker.description');
-        }
-      },
-      template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
-      controller: 'SettingParamsPickerCtrl'
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.time-period', []);
-
-  module.directive('settingTimePeriod', ["$templateCache", "$q", "$log", "$timeout", "ImpacTheming", "$translate", function($templateCache, $q, $log, $timeout, ImpacTheming, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        histParams: '=?',
-        hideChartInterval: '=?',
-        applyChangesCallback: '&?'
-      },
-      template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
-      link: function(scope) {
-        var getPeriod, getSetting, getUsedSettingKey, initPeriod, initUsedSetting, settingsPromises, updateFromDate, updateTimeRangePeriod, w;
-        w = scope.parentWidget;
-        scope.timePeriodSetting = {
-          key: "time-period",
-          settings: [],
-          isEditMode: true
-        };
-        scope.timeSliderDeferred = $q.defer();
-        scope.datesPickerDeferred = $q.defer();
-        scope.timePresetsDeferred = $q.defer();
-        settingsPromises = [scope.timeSliderDeferred.promise, scope.datesPickerDeferred.promise, scope.timePresetsDeferred.promise];
-        scope.resetPreset = $q.defer();
-        $translate(["impac.widget.settings.time_period.period.daily", "impac.widget.settings.time_period.period.weekly", "impac.widget.settings.time_period.period.monthly", "impac.widget.settings.time_period.period.quarterly", "impac.widget.settings.time_period.period.yearly", "impac.widget.settings.time_period.period.days", "impac.widget.settings.time_period.period.weeks", "impac.widget.settings.time_period.period.months", "impac.widget.settings.time_period.period.quarters", "impac.widget.settings.time_period.period.years"]).then(function(translations) {
-          return scope.periods = [
-            {
-              label: translations["impac.widget.settings.time_period.period.daily"],
-              plural: "days",
-              value: "DAILY"
-            }, {
-              label: translations["impac.widget.settings.time_period.period.weekly"],
-              plural: "weeks",
-              value: "WEEKLY"
-            }, {
-              label: translations["impac.widget.settings.time_period.period.monthly"],
-              plural: "months",
-              value: "MONTHLY"
-            }, {
-              label: translations["impac.widget.settings.time_period.period.quarterly"],
-              plural: "quarters",
-              value: "QUARTERLY"
-            }, {
-              label: translations["impac.widget.settings.time_period.period.yearly"],
-              plural: "years",
-              value: "YEARLY"
-            }
-          ];
-        });
-        scope.maxNumberOfPeriods = 20;
-        if ((ImpacTheming.get().widgetSettings != null) && (ImpacTheming.get().widgetSettings.timePeriod != null) && !_.isEmpty(ImpacTheming.get().widgetSettings.timePeriod.presets)) {
-          scope.presets = angular.copy(ImpacTheming.get().widgetSettings.timePeriod.presets);
-        }
-        scope.applyPreset = function(histParams) {
-          initPeriod(histParams);
-          return initUsedSetting(histParams);
-        };
-        scope.timePeriodSetting.initialize = function() {
-          return $timeout(function() {
-            initPeriod();
-            getSetting('time-presets').initialize();
-            return scope.showApplyButton = angular.isDefined(scope.applyChangesCallback);
-          });
-        };
-        scope.timePeriodSetting.toMetadata = function() {
-          var histParams, metadata, sourceSetting;
-          sourceSetting = getSetting(getUsedSettingKey());
-          if (sourceSetting != null) {
-            histParams = sourceSetting.toMetadata().hist_parameters;
-          }
-          histParams.period = getPeriod();
-          if ((scope.histParams != null) && (scope.histParams.mode != null)) {
-            histParams.mode = scope.histParams.mode;
-          }
-          metadata = {
-            hist_parameters: histParams
-          };
-          return metadata;
-        };
-        scope.titleize = function(word) {
-          if (word !== "FYEARLY") {
-            return "" + (word.slice(0, 1).toUpperCase()) + (word.slice(1).toLowerCase());
-          } else {
-            return "Yearly (financial)";
-          }
-        };
-        getPeriod = function() {
-          if (scope.timePeriodSetting.period != null) {
-            return scope.timePeriodSetting.period;
-          } else {
-            return initPeriod();
-          }
-        };
-        scope.isTimeSliderUsed = function() {
-          return getUsedSettingKey() === 'time-slider';
-        };
-        scope.isDatesPickerUsed = function() {
-          return getUsedSettingKey() === 'dates-picker';
-        };
-        getUsedSettingKey = function() {
-          if (scope.usedSetting != null) {
-            return scope.usedSetting;
-          } else {
-            return initUsedSetting();
-          }
-        };
-        getSetting = function(key) {
-          return _.find(scope.timePeriodSetting.settings, function(set) {
-            return set.key === key;
-          });
-        };
-        initPeriod = function(histParams) {
-          if (histParams == null) {
-            histParams = null;
-          }
-          if (histParams == null) {
-            histParams = scope.histParams;
-          }
-          if ((histParams != null) && (histParams.period != null) && _.find(scope.periods, function(period) {
-            return period.value === histParams.period;
-          })) {
-            scope.timePeriodSetting.period = angular.copy(histParams.period);
-          } else {
-            scope.timePeriodSetting.period = "MONTHLY";
-          }
-          return scope.timePeriodSetting.period;
-        };
-        initUsedSetting = function(histParams) {
-          var minDate, newLetter, pattern, tr;
-          if (histParams == null) {
-            histParams = null;
-          }
-          if (histParams == null) {
-            histParams = scope.histParams;
-          }
-          if ((histParams != null) && (histParams.from != null)) {
-            scope.usedSetting = 'dates-picker';
-            scope.toDate = histParams.to;
-            minDate = scope.getMinDate(scope.toDate);
-            if (moment(histParams.from, "YYYY-MM-DD").isBefore(minDate)) {
-              scope.fromDate = minDate;
-            } else {
-              scope.fromDate = histParams.from;
-            }
-            scope.keepToday = histParams.keep_today;
-            getSetting('dates-picker').initialize();
-          } else {
-            scope.usedSetting = 'time-slider';
-            if ((histParams != null) && (histParams.time_range != null)) {
-              tr = histParams.time_range;
-              pattern = /([a-z])/;
-              newLetter = pattern.exec(tr)[1];
-              scope.timePeriodSetting.period = angular.copy(_.find(scope.periods, function(p) {
-                return p.value.slice(0, 1).toLowerCase() === newLetter;
-              }).value);
-              scope.timePeriodSetting.timeRange = tr;
-            }
-            getSetting('time-slider').initialize();
-          }
-          return scope.usedSetting;
-        };
-        scope.updateSettings = function() {
-          if (scope.usedSetting === 'time-slider') {
-            scope.resetPreset.notify('choose-period');
-          } else if (scope.usedSetting === 'dates-picker') {
-            scope.resetPreset.notify('choose-dates');
-          }
-          updateTimeRangePeriod();
-          return updateFromDate();
-        };
-        updateTimeRangePeriod = function() {
-          var periodLetter, set, tr;
-          if (scope.isTimeSliderUsed()) {
-            set = getSetting('time-slider');
-            tr = set.toMetadata().hist_parameters.time_range;
-            periodLetter = getPeriod().slice(0, 1).toLowerCase();
-            scope.timePeriodSetting.timeRange = tr.replace(/[a-z]/, periodLetter);
-            set.initialize();
-          }
-          return scope.timePeriodSetting.timeRange;
-        };
-        updateFromDate = function() {
-          var fromDate, minDate, set, toDate;
-          if (scope.isDatesPickerUsed()) {
-            set = getSetting('dates-picker');
-            fromDate = set.toMetadata().hist_parameters.from;
-            toDate = set.toMetadata().hist_parameters.to;
-            minDate = scope.getMinDate();
-            if (moment(fromDate, "YYYY-MM-DD").isBefore(minDate)) {
-              scope.toDate = toDate;
-              scope.fromDate = minDate;
-              set.initialize();
-            }
-          }
-          return scope.fromDate;
-        };
-        scope.useTimeSlider = function() {
-          scope.usedSetting = 'time-slider';
-          return scope.updateSettings();
-        };
-        scope.useDatesPicker = function() {
-          scope.usedSetting = 'dates-picker';
-          return scope.updateSettings();
-        };
-        scope.getMinDate = function(toDate) {
-          var currentPeriod, periodWord, sourceSetting, to;
-          if (toDate == null) {
-            toDate = void 0;
-          }
-          to = moment();
-          if (toDate != null) {
-            to = moment(toDate, "YYYY-MM-DD");
-          } else if ((scope.usedSetting != null) && scope.isDatesPickerUsed()) {
-            sourceSetting = getSetting('dates-picker');
-            to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD");
-          }
-          currentPeriod = getPeriod();
-          periodWord = _.find(scope.periods, function(period) {
-            return currentPeriod === period.value;
-          }).plural;
-          return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD');
-        };
-        w.settings.push(scope.timePeriodSetting);
-        return $q.all(settingsPromises).then(function() {
-          return scope.deferred.resolve(scope.timePeriodSetting);
-        });
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.time-presets', []);
-
-  module.directive('settingTimePresets', ["$templateCache", "ImpacMainSvc", "$timeout", "ImpacUtilities", "ImpacTheming", "$translate", function($templateCache, ImpacMainSvc, $timeout, ImpacUtilities, ImpacTheming, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        presets: '=?',
-        onSelect: '&?',
-        onChooseDates: '&?',
-        onChoosePeriod: '&?',
-        histParams: '=?',
-        resetPromise: '=?'
-      },
-      template: $templateCache.get('widgets-settings/time-presets.tmpl.html'),
-      link: function(scope) {
-        var fyEndMonth, initPreset, showSlider, w;
-        w = scope.parentWidget;
-        scope.setting = {};
-        scope.setting.key = "time-presets";
-        scope.financialYearEndMonth = 6;
-        fyEndMonth = scope.financialYearEndMonth;
-        ImpacMainSvc.load().then(function() {
-          return fyEndMonth = ImpacMainSvc.getFinancialYearEndMonth();
-        })["finally"](function() {
-          var fyStartDate, prevFyEndDate, prevFyStartDate, toDate;
-          fyStartDate = ImpacUtilities.financialYearDates(fyEndMonth).start;
-          prevFyStartDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).start, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD');
-          prevFyEndDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD');
-          toDate = moment().format('YYYY-MM-DD');
-          return $translate(['impac.common.period.preset_in_words.calendar_year_to_date', 'impac.common.period.preset_in_words.financial_year_to_date', 'impac.common.period.preset_in_words.previous_financial_year', 'impac.common.period.preset_in_words.last_6_months', 'impac.common.period.preset_in_words.last_4_quarters', 'impac.common.period.preset_in_words.last_4_weeks', 'impac.common.period.preset_in_words.choose_period', 'impac.common.period.preset_in_words.choose_dates']).then(function(translations) {
-            scope.presets || (scope.presets = [
-              {
-                label: translations['impac.common.period.preset_in_words.calendar_year_to_date'],
-                value: {
-                  from: moment().startOf('year').format('YYYY-MM-DD'),
-                  to: toDate,
-                  period: 'MONTHLY'
-                }
-              }, {
-                label: translations['impac.common.period.preset_in_words.financial_year_to_date'],
-                value: {
-                  from: fyStartDate,
-                  to: toDate,
-                  period: 'MONTHLY'
-                }
-              }, {
-                label: translations['impac.common.period.preset_in_words.previous_financial_year'],
-                value: {
-                  from: prevFyStartDate,
-                  to: prevFyEndDate,
-                  period: 'MONTHLY'
-                }
-              }, {
-                label: translations['impac.common.period.preset_in_words.last_6_months'],
-                value: {
-                  time_range: '-6m',
-                  to: toDate
-                }
-              }, {
-                label: translations['impac.common.period.preset_in_words.last_4_quarters'],
-                value: {
-                  time_range: '-4q',
-                  to: toDate
-                }
-              }, {
-                label: translations['impac.common.period.preset_in_words.last_4_weeks'],
-                value: {
-                  time_range: '-4w',
-                  to: toDate
-                }
-              }
-            ]);
-            if (angular.isDefined(scope.onChooseDates) && showSlider()) {
-              scope.presets.unshift({
-                label: translations['impac.common.period.preset_in_words.choose_period'],
-                value: 'choose-period'
-              });
-            }
-            if (angular.isDefined(scope.onChooseDates)) {
-              return scope.presets.unshift({
-                label: translations['impac.common.period.preset_in_words.choose_dates'],
-                value: 'choose-dates'
-              });
-            }
-          });
-        });
-        if (scope.resetPromise != null) {
-          scope.resetPromise.then(null, null, function(key) {
-            return scope.selectedPreset = _.find(scope.presets, function(p) {
-              return p.value === key;
-            });
-          });
-        }
-        showSlider = function() {
-          return (ImpacTheming.get().widgetSettings != null) && (ImpacTheming.get().widgetSettings.timePeriod != null) && ImpacTheming.get().widgetSettings.timePeriod.showSlider;
-        };
-        initPreset = function() {
-          if (scope.histParams != null) {
-            scope.selectedPreset = _.find(scope.presets, function(p) {
-              return _.every(p.value, function(v, k) {
-                return scope.histParams[k] === (angular.isFunction(v) ? v(fyEndMonth) : v);
-              });
-            });
-            if ((scope.selectedPreset == null) && (scope.histParams.time_range != null) && showSlider()) {
-              scope.selectedPreset = scope.presets[1];
-            }
-          }
-          if (scope.selectedPreset == null) {
-            return scope.selectedPreset = scope.presets[0];
-          }
-        };
-        scope.presetSelected = function() {
-          if ((scope.selectedPreset != null) && (scope.selectedPreset.value === "choose-dates")) {
-            return scope.onChooseDates();
-          } else if ((scope.selectedPreset != null) && (scope.selectedPreset.value === "choose-period")) {
-            return scope.onChoosePeriod();
-          } else {
-            return scope.onSelect({
-              histParams: scope.setting.toMetadata().hist_parameters
-            });
-          }
-        };
-        scope.setting.initialize = function() {
-          initPreset();
-          scope.presetSelected();
-          return true;
-        };
-        scope.setting.toMetadata = function() {
-          var result;
-          result = {};
-          if (!_.isEmpty(scope.selectedPreset.value)) {
-            _.forEach(scope.selectedPreset.value, function(value, key) {
-              if (angular.isFunction(value)) {
-                return result[key] = value(fyEndMonth);
-              } else {
-                return result[key] = value;
-              }
-            });
-          }
-          return {
-            hist_parameters: result
-          };
-        };
-        w.settings.push(scope.setting);
-        return scope.deferred.resolve(scope.setting);
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.time-slider', []);
-
-  module.directive('settingTimeSlider', ["$templateCache", "$timeout", "ImpacMainSvc", "ImpacUtilities", "$translate", function($templateCache, $timeout, ImpacMainSvc, ImpacUtilities, $translate) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        timeRange: '=?',
-        onUse: '&?'
-      },
-      template: $templateCache.get('widgets-settings/time-slider.tmpl.html'),
-      link: function(scope) {
-        var PERIODS, getNumberOfPeriods, getPeriod, getPeriodWord, getTimeRange, initFinancialYearEndMonth, initNumberOfPeriods, initPeriod, setting, w;
-        w = scope.parentWidget;
-        setting = {};
-        setting.key = "time-slider";
-        PERIODS = ['d', 'w', 'm', 'q', 'y', 'f'];
-        setting.initialize = function() {
-          return $timeout(function() {
-            initNumberOfPeriods();
-            initPeriod();
-            initFinancialYearEndMonth();
-            return true;
-          });
-        };
-        setting.toMetadata = function() {
-          var histParams;
-          histParams = {
-            to: scope.toDate().format('YYYY-MM-DD'),
-            time_range: getTimeRange()
-          };
-          if (getPeriod() === 'f') {
-            histParams.from = scope.fromDate().format('YYYY-MM-DD');
-          }
-          return {
-            hist_parameters: histParams
-          };
-        };
-        initNumberOfPeriods = function() {
-          var n, nPattern, tr;
-          tr = scope.timeRange;
-          scope.numberOfPeriods = moment().month();
-          if (tr == null) {
-            return scope.numberOfPeriods;
-          }
-          nPattern = /^-?([0-9]{1,2})[a-z]?$/;
-          n = nPattern.exec(tr);
-          if ((n != null) && n[1] && parseInt(n[1])) {
-            scope.numberOfPeriods = parseInt(n[1]);
-          }
-          return scope.numberOfPeriods;
-        };
-        initPeriod = function() {
-          var p, pPattern, period, tr;
-          tr = scope.timeRange;
-          scope.period = "m";
-          if (tr == null) {
-            return "m";
-          }
-          pPattern = /^-?[0-9]{0,2}([a-z])$/;
-          p = pPattern.exec(tr);
-          period = _.find(PERIODS, function(authPeriod) {
-            return (p != null) && (p[1] === authPeriod);
-          });
-          if (period != null) {
-            scope.period = period;
-          }
-          return scope.period;
-        };
-        initFinancialYearEndMonth = function() {
-          scope.financialYearEndMonth = 6;
-          return ImpacMainSvc.load().then(function(config) {
-            if ((config != null) && (config.currentOrganization != null) && parseInt(config.currentOrganization.financial_year_end_month)) {
-              return scope.financialYearEndMonth = parseInt(config.currentOrganization.financial_year_end_month);
-            }
-          });
-        };
-        getPeriod = function() {
-          if (scope.period != null) {
-            return scope.period;
-          } else {
-            return initPeriod();
-          }
-        };
-        getPeriodWord = function() {
-          return ImpacUtilities.getPeriodWord(getPeriod());
-        };
-        getNumberOfPeriods = function() {
-          if (scope.numberOfPeriods != null) {
-            return scope.numberOfPeriods;
-          } else {
-            return initNumberOfPeriods();
-          }
-        };
-        getTimeRange = function() {
-          var n, p;
-          n = getNumberOfPeriods();
-          p = getPeriod();
-          return "-" + n + p;
-        };
-        scope.formatPeriod = function() {
-          return ImpacUtilities.formatPeriod(getNumberOfPeriods(), getPeriod());
-        };
-        scope.formatDate = function(aDate) {
-          return aDate.format('Do MMM YYYY');
-        };
-        scope.fromDate = function() {
-          var financialYearStartYear, n, word;
-          n = getNumberOfPeriods();
-          word = getPeriodWord();
-          if (word.slice(0, 1) === "f") {
-            financialYearStartYear = moment().year() - 1;
-            if (moment().month() >= 6) {
-              financialYearStartYear = moment().year();
-            }
-            financialYearStartYear = financialYearStartYear - n;
-            return moment(financialYearStartYear + "-" + (scope.financialYearEndMonth + 1) + "-01", "YYYY-M-DD");
-          } else if (word.slice(0, 1) === "w") {
-            return moment().subtract(n, word).startOf('isoweek');
-          } else {
-            return moment().subtract(n, word).startOf(word);
-          }
-        };
-        scope.toDate = function() {
-          return moment();
-        };
-        w.settings.push(setting);
-        return scope.deferred.resolve(setting);
-      }
-    };
-  }]);
-
-}).call(this);
-
-(function() {
-  var module;
-
-  module = angular.module('impac.components.widgets-settings.width', []);
-
-  module.controller('SettingWidthCtrl', ["$scope", "$element", "$timeout", "$log", "ImpacWidgetsSvc", "ImpacDashboardsSvc", function($scope, $element, $timeout, $log, ImpacWidgetsSvc, ImpacDashboardsSvc) {
-    var elem, hideOnResize, i, len, ref, setting, w;
-    w = $scope.parentWidget;
-    setting = {};
-    setting.key = "width";
-    setting.isInitialized = false;
-    ref = $element.parents();
-    for (i = 0, len = ref.length; i < len; i++) {
-      elem = ref[i];
-      if (angular.element(elem).hasClass('content')) {
-        $scope.contentElements = angular.element(elem).children();
-        break;
-      }
-    }
-    hideOnResize = function(elements) {
-      var j, len1;
-      if (!(elements && elements.length > 0)) {
-        return;
-      }
-      for (j = 0, len1 = elements.length; j < len1; j++) {
-        elem = elements[j];
-        angular.element(elem).animate({
-          opacity: 0
-        }, 0);
-      }
-      return $timeout(function() {
-        var k, len2, results;
-        results = [];
-        for (k = 0, len2 = elements.length; k < len2; k++) {
-          elem = elements[k];
-          results.push(angular.element(elem).animate({
-            opacity: 1
-          }, 200));
-        }
-        return results;
-      }, 300);
-    };
-    w.toggleExpanded = function(save) {
-      if (save == null) {
-        save = true;
-      }
-      $scope.expanded = !$scope.expanded;
-      if (save) {
-        ImpacWidgetsSvc.updateWidgetSettings(w, false, true);
-      }
-      hideOnResize($scope.contentElements);
-      if ($scope.expanded) {
-        return w.width = parseInt($scope.max);
-      } else {
-        return w.width = parseInt($scope.min);
-      }
-    };
-    w.isExpanded = function() {
-      return $scope.expanded;
-    };
-    setting.initialize = function() {
-      if (w.width != null) {
-        $scope.expanded = w.width === parseInt($scope.max);
-        return setting.isInitialized = true;
-      }
-    };
-    setting.toMetadata = function() {
-      var newWidth;
-      if ($scope.expanded) {
-        newWidth = $scope.max;
-      } else {
-        newWidth = $scope.min;
-      }
-      return {
-        width: parseInt(newWidth)
-      };
-    };
-    ImpacDashboardsSvc.pdfModeEnabled().then(null, null, function() {
-      $scope.pdfMode = true;
-      $scope.initiallyExpanded = !!$scope.expanded;
-      if (!$scope.initiallyExpanded) {
-        return w.toggleExpanded(false);
-      }
-    });
-    ImpacDashboardsSvc.pdfModeCanceled().then(null, null, function() {
-      $scope.pdfMode = false;
-      if (!$scope.initiallyExpanded) {
-        return w.toggleExpanded(false);
-      }
-    });
-    w.settings.push(setting);
-    return $scope.deferred.resolve($scope.parentWidget);
-  }]);
-
-  module.directive('settingWidth', ["$templateCache", function($templateCache) {
-    return {
-      restrict: 'A',
-      scope: {
-        parentWidget: '=',
-        deferred: '=',
-        min: '@',
-        max: '@'
-      },
-      template: $templateCache.get('widgets-settings/width.tmpl.html'),
-      controller: 'SettingWidthCtrl'
     };
   }]);
 
@@ -8856,6 +6200,213 @@ $translateProvider.translations("zh-HK", {
     return {
       restrict: 'A',
       controller: 'WidgetAccountsBalanceSheetCtrl'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets.accounts-cash-balance', []);
+
+  module.controller('WidgetAccountsCashBalanceCtrl', ["$scope", "$q", "$timeout", "$filter", "ImpacTheming", "HighchartsFactory", function($scope, $q, $timeout, $filter, ImpacTheming, HighchartsFactory) {
+    var getPeriod, getSerieByAccount, setSeriesColors, settingsPromises, w;
+    w = $scope.widget;
+    $scope.orgDeferred = $q.defer();
+    $scope.timePeriodDeferred = $q.defer();
+    settingsPromises = [$scope.orgDeferred.promise, $scope.timePeriodDeferred.promise];
+    w.initContext = function() {
+      $scope.isDataFound = w.content.chart != null;
+      $scope.groupedTable = w.content.grouped_table;
+      return setSeriesColors(w.content.chart.series, {
+        positive: '#3FC4FF',
+        negative: '#e50228'
+      });
+    };
+    $scope.legendItemOnClick = function(account) {
+      var serie, visibility;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return;
+      }
+      visibility = serie.visible ? false : true;
+      return serie.setVisible(visibility);
+    };
+    $scope.getLegendItemIcon = function(account) {
+      var serie;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return 'fa-check-square-o';
+      }
+      if (serie.visible) {
+        return 'fa-check-square-o';
+      } else {
+        return 'fa-square-o';
+      }
+    };
+    $scope.getLegendItemColor = function(account) {
+      var serie;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return '#000';
+      }
+      return serie.color;
+    };
+    getPeriod = function() {
+      return (w.metadata != null) && (w.metadata.hist_parameters != null) && w.metadata.hist_parameters.period || 'MONTHLY';
+    };
+    getSerieByAccount = function(series, account) {
+      return _.find(series, function(serie) {
+        return (serie.id || serie.options && serie.options.id) === account.id;
+      });
+    };
+    setSeriesColors = function(series, chartColors) {
+      var bias, groupedSeries, i, palette, results, serie;
+      groupedSeries = _.groupBy(series, function(serie) {
+        return serie.bias;
+      });
+      results = [];
+      for (bias in groupedSeries) {
+        series = groupedSeries[bias];
+        if (!chartColors[bias]) {
+          continue;
+        }
+        palette = ImpacTheming.color.generateShadesPalette(chartColors[bias], series.length);
+        results.push((function() {
+          var j, len, results1;
+          results1 = [];
+          for (i = j = 0, len = series.length; j < len; i = ++j) {
+            serie = series[i];
+            results1.push(serie.color = palette[i]);
+          }
+          return results1;
+        })());
+      }
+      return results;
+    };
+    $scope.chartId = function() {
+      return "cashBalanceChart-" + w.id;
+    };
+    w.format = function() {
+      var options;
+      options = {
+        chartType: 'line',
+        currency: w.metadata.currency,
+        period: getPeriod(),
+        showToday: true,
+        showLegend: false
+      };
+      return $timeout(function() {
+        $scope.chart || ($scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options));
+        return $scope.chart.render(w.content.chart, options);
+      });
+    };
+    return $scope.widgetDeferred.resolve(settingsPromises);
+  }]);
+
+  module.directive('widgetAccountsCashBalance', function() {
+    return {
+      restrict: 'A',
+      controller: 'WidgetAccountsCashBalanceCtrl'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets.accounts-cash-projection', []);
+
+  module.controller('WidgetAccountsCashProjectionCtrl', ["$scope", "$q", "$filter", "ImpacKpisSvc", "HighchartsFactory", function($scope, $q, $filter, ImpacKpisSvc, HighchartsFactory) {
+    var getPeriod, getThresholds, settingsPromises, w;
+    w = $scope.widget;
+    $scope.orgDeferred = $q.defer();
+    $scope.timePeriodDeferred = $q.defer();
+    $scope.intervalsOffsetsDeferred = $q.defer();
+    $scope.currentOffsetsDeferred = $q.defer();
+    settingsPromises = [$scope.orgDeferred.promise, $scope.timePeriodDeferred.promise, $scope.intervalsOffsetsDeferred.promise, $scope.currentOffsetsDeferred.promise];
+    $scope.simulationMode = false;
+    $scope.intervalsCount = 0;
+    $scope.chartDeferred = $q.defer();
+    $scope.chartPromise = $scope.chartDeferred.promise;
+    $scope.chartThresholdOptions = {
+      label: 'Get alerted when the cash projection goes below'
+    };
+    w.initContext = function() {
+      var projectedSerie, todayInterval, totalOffset;
+      $scope.isDataFound = w.content != null;
+      todayInterval = w.content.chart.series[0].zones[0].value;
+      $scope.intervalsCount = w.content.chart.labels.length - todayInterval;
+      projectedSerie = _.find(w.content.chart.series, function(serie) {
+        return serie.name === "Projected cash";
+      });
+      totalOffset = 0.0;
+      if (w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0) {
+        totalOffset += _.sum(w.metadata.offset.current);
+      }
+      if (w.metadata.offset && w.metadata.offset.per_interval && w.metadata.offset.per_interval.length > 0) {
+        totalOffset += _.sum(w.metadata.offset.per_interval);
+      }
+      if (projectedSerie != null) {
+        $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset;
+      }
+      return $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day');
+    };
+    w.format = function() {
+      var options;
+      options = {
+        chartType: 'line',
+        currency: w.metadata.currency,
+        period: getPeriod(),
+        showToday: true,
+        showLegend: true,
+        thresholds: getThresholds()
+      };
+      $scope.chart || ($scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options));
+      $scope.chart.render(w.content.chart, options);
+      return $scope.chartDeferred.notify($scope.chart.hc);
+    };
+    $scope.chartId = function() {
+      return "cashProjectionChart-" + w.id;
+    };
+    $scope.toggleSimulationMode = function(init) {
+      if (init == null) {
+        init = false;
+      }
+      if (init) {
+        $scope.initSettings();
+      }
+      return $scope.simulationMode = !$scope.simulationMode;
+    };
+    $scope.saveSimulation = function() {
+      $scope.updateSettings();
+      return $scope.toggleSimulationMode();
+    };
+    getPeriod = function() {
+      return (w.metadata != null) && (w.metadata.hist_parameters != null) && w.metadata.hist_parameters.period || 'MONTHLY';
+    };
+    getThresholds = function() {
+      var targets;
+      targets = (w.kpis != null) && w.kpis[0] && w.kpis[0].targets;
+      if (!ImpacKpisSvc.validateKpiTargets(targets)) {
+        return [];
+      }
+      return [
+        {
+          kpiId: w.kpis[0].id,
+          value: targets.threshold[0].min
+        }
+      ];
+    };
+    return $scope.widgetDeferred.resolve(settingsPromises);
+  }]);
+
+  module.directive('widgetAccountsCashProjection', function() {
+    return {
+      restrict: 'A',
+      controller: 'WidgetAccountsCashProjectionCtrl'
     };
   });
 
@@ -11217,44 +8768,41 @@ $translateProvider.translations("zh-HK", {
     $scope.chartDeferred = $q.defer();
     settingsPromises = [$scope.orgDeferred.promise, $scope.widthDeferred.promise, $scope.paramSelectorDeferred1.promise, $scope.paramSelectorDeferred2.promise, $scope.chartDeferred.promise];
     w.initContext = function() {
-      if ($scope.isDataFound = !_.isEmpty(w.content) && (w.content.summary != null) && !_.isEmpty(w.content.summary.data)) {
-        $translate(["impac.widget.settings.time_period.period.yearly", "impac.widget.settings.time_period.period.monthly", "impac.widget.settings.time_period.period.weekly", "impac.widget.settings.time_period.period.hourly"]).then(function(translations) {
-          $scope.periodOptions = [
-            {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.yearly"].toLowerCase()),
-              value: "yearly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"].toLowerCase()),
-              value: "monthly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"].toLowerCase()),
-              value: "weekly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"].toLowerCase()),
-              value: "hourly"
-            }
-          ];
-          return $scope.period = angular.copy(_.find($scope.periodOptions, function(o) {
-            return o.value === w.content.total.period.toLowerCase();
-          }) || $scope.periodOptions[0]);
-        });
-        return $translate(["impac.common.label.gender", "impac.common.label.age_range", "impac.common.label.job_title"]).then(function(translations) {
-          $scope.filterOptions = [
-            {
-              label: translations["impac.common.label.gender"],
-              value: "gender"
-            }, {
-              label: translations["impac.common.label.age_range"],
-              value: "age_range"
-            }, {
-              label: translations["impac.common.label.job_title"],
-              value: "job_title"
-            }
-          ];
-          return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
-            return o.value === w.content.summary.filter;
-          }) || $scope.filterOptions[0]);
-        });
+      $scope.isDataFound = !_.isEmpty(w.content) && (w.content.summary != null) && !_.isEmpty(w.content.summary.data);
+      if ($scope.isDataFound) {
+        $scope.periodOptions = [
+          {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly").toLowerCase()),
+            value: "yearly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly").toLowerCase()),
+            value: "monthly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly").toLowerCase()),
+            value: "weekly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.hourly").toLowerCase()),
+            value: "hourly"
+          }
+        ];
+        $scope.filterOptions = [
+          {
+            label: $translate.instant("impac.common.label.gender"),
+            value: "gender"
+          }, {
+            label: $translate.instant("impac.common.label.age_range"),
+            value: "age_range"
+          }, {
+            label: $translate.instant("impac.common.label.job_title"),
+            value: "job_title"
+          }
+        ];
+        $scope.period = angular.copy(_.find($scope.periodOptions, function(o) {
+          return o.value === w.content.total.period.toLowerCase();
+        }) || $scope.periodOptions[0]);
+        return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
+          return o.value === w.content.summary.filter;
+        }) || $scope.filterOptions[0]);
       }
     };
     $scope.getColorByIndex = function(index) {
@@ -11492,47 +9040,44 @@ $translateProvider.translations("zh-HK", {
     $scope.chartDeferred = $q.defer();
     settingsPromises = [$scope.orgDeferred.promise, $scope.widthDeferred.promise, $scope.paramSelectorDeferred1.promise, $scope.paramSelectorDeferred2.promise, $scope.chartDeferred.promise];
     w.initContext = function() {
-      if ($scope.isDataFound = !_.isEmpty(w.content) && (w.content.summary != null) && !_.isEmpty(w.content.summary.data)) {
-        $translate(["impac.widget.settings.time_period.period.yearly", "impac.widget.settings.time_period.period.monthly", "impac.widget.settings.time_period.period.weekly", "impac.widget.settings.time_period.period.hourly"]).then(function(translations) {
-          $scope.periodOptions = [
-            {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.yearly"].toLowerCase()),
-              value: "yearly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"].toLowerCase()),
-              value: "monthly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"].toLowerCase()),
-              value: "weekly"
-            }, {
-              label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"].toLowerCase()),
-              value: "hourly"
-            }
-          ];
-          return $scope.period = angular.copy(_.find($scope.periodOptions, function(o) {
-            return o.value === w.content.total.period.toLowerCase();
-          }) || $scope.periodOptions[0]);
-        });
-        return $translate(["impac.common.label.gender", "impac.common.label.age_range", "impac.common.label.salary_range", "impac.common.label.job_title"]).then(function(translations) {
-          $scope.filterOptions = [
-            {
-              label: translations["impac.common.label.gender"],
-              value: "gender"
-            }, {
-              label: translations["impac.common.label.age_range"],
-              value: "age_range"
-            }, {
-              label: translations["impac.common.label.salary_range"],
-              value: "salary_range"
-            }, {
-              label: translations["impac.common.label.job_title"],
-              value: "job_title"
-            }
-          ];
-          return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
-            return o.value === w.content.summary.filter;
-          }) || $scope.filterOptions[0]);
-        });
+      $scope.isDataFound = !_.isEmpty(w.content) && (w.content.summary != null) && !_.isEmpty(w.content.summary.data);
+      if ($scope.isDataFound) {
+        $scope.periodOptions = [
+          {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly").toLowerCase()),
+            value: "yearly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly").toLowerCase()),
+            value: "monthly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly").toLowerCase()),
+            value: "weekly"
+          }, {
+            label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.hourly").toLowerCase()),
+            value: "hourly"
+          }
+        ];
+        $scope.filterOptions = [
+          {
+            label: $translate.instant("impac.common.label.gender"),
+            value: "gender"
+          }, {
+            label: $translate.instant("impac.common.label.age_range"),
+            value: "age_range"
+          }, {
+            label: $translate.instant("impac.common.label.salary_range"),
+            value: "salary_range"
+          }, {
+            label: $translate.instant("impac.common.label.job_title"),
+            value: "job_title"
+          }
+        ];
+        $scope.period = angular.copy(_.find($scope.periodOptions, function(o) {
+          return o.value === w.content.total.period.toLowerCase();
+        }) || $scope.periodOptions[0]);
+        return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
+          return o.value === w.content.summary.filter;
+        }) || $scope.filterOptions[0]);
       }
     };
     $scope.getTotalWorkforce = function() {
@@ -12126,24 +9671,23 @@ $translateProvider.translations("zh-HK", {
     $scope.chartDeferred = $q.defer();
     settingsPromises = [$scope.orgDeferred.promise, $scope.timePeriodDeferred.promise, $scope.paramSelectorDeferred.promise, $scope.chartDeferred.promise];
     w.initContext = function() {
-      if ($scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.aged_sales) && !_.isEmpty(w.content.dates)) {
-        return $translate(["impac.widget.sales_aged.value_sold_taxes", "impac.widget.sales_aged.value_sold_no_taxes", "impac.widget.sales_aged.quantity_sold"]).then(function(translations) {
-          $scope.filterOptions = [
-            {
-              label: translations["impac.widget.sales_aged.value_sold_taxes"],
-              value: 'gross_value_sold'
-            }, {
-              label: translations["impac.widget.sales_aged.value_sold_no_taxes"],
-              value: 'net_value_sold'
-            }, {
-              label: translations["impac.widget.sales_aged.quantity_sold"],
-              value: 'quantity_sold'
-            }
-          ];
-          return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
-            return w.metadata && w.metadata.filter === o.value;
-          }) || $scope.filterOptions[0]);
-        });
+      $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.aged_sales) && !_.isEmpty(w.content.dates);
+      if ($scope.isDataFound) {
+        $scope.filterOptions = [
+          {
+            label: $translate.instant("impac.widget.sales_aged.value_sold_taxes"),
+            value: 'gross_value_sold'
+          }, {
+            label: $translate.instant("impac.widget.sales_aged.value_sold_no_taxes"),
+            value: 'net_value_sold'
+          }, {
+            label: $translate.instant("impac.widget.sales_aged.quantity_sold"),
+            value: 'quantity_sold'
+          }
+        ];
+        return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
+          return w.metadata && w.metadata.filter === o.value;
+        }) || $scope.filterOptions[0]);
       }
     };
     $scope.getTotal = function(anIndex) {
@@ -13366,35 +10910,33 @@ $translateProvider.translations("zh-HK", {
       if ($scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary)) {
         buildFxTotals();
         $scope.ratesDate = moment.now();
-      }
-      $translate(['impac.widget.sales_list.value_sold_taxes', 'impac.widget.sales_list.value_sold_no_taxes', 'impac.widget.sales_list.quantity_sold', 'impac.widget.sales_list.value_purchased_taxes', 'impac.widget.sales_list.value_purchased_no_taxes', 'impac.widget.sales_list.quantity_purchased']).then(function(translations) {
         $scope.filterOptions = [
           {
-            label: translations['impac.widget.sales_list.value_sold_taxes'],
+            label: $translate.instant('impac.widget.sales_list.value_sold_taxes'),
             value: 'gross_value_sold'
           }, {
-            label: translations['impac.widget.sales_list.value_sold_no_taxes'],
+            label: $translate.instant('impac.widget.sales_list.value_sold_no_taxes'),
             value: 'net_value_sold'
           }, {
-            label: translations['impac.widget.sales_list.quantity_sold'],
+            label: $translate.instant('impac.widget.sales_list.quantity_sold'),
             value: 'quantity_sold'
           }, {
-            label: translations['impac.widget.sales_list.value_purchased_taxes'],
+            label: $translate.instant('impac.widget.sales_list.value_purchased_taxes'),
             value: 'gross_value_purchased'
           }, {
-            label: translations['impac.widget.sales_list.value_purchased_no_taxes'],
+            label: $translate.instant('impac.widget.sales_list.value_purchased_no_taxes'),
             value: 'net_value_purchased'
           }, {
-            label: translations['impac.widget.sales_list.quantity_purchased'],
+            label: $translate.instant('impac.widget.sales_list.quantity_purchased'),
             value: 'quantity_purchased'
           }
         ];
-        return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
+        $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
           return o.value === w.metadata.filter;
         }) || $scope.filterOptions[0]);
-      });
-      $scope.unCollapsed = w.metadata.unCollapsed || [];
-      return sortData();
+        $scope.unCollapsed = w.metadata.unCollapsed || [];
+        return sortData();
+      }
     };
     $scope.toggleCollapsed = function(categoryName) {
       if (categoryName != null) {
@@ -13531,13 +11073,13 @@ $translateProvider.translations("zh-HK", {
     settingsPromises = [$scope.orgDeferred.promise, $scope.timePeriodDeferred.promise, $scope.histModeDeferred.promise, $scope.paramSelectorDeferred.promise, $scope.chartDeferred.promise];
     w.initContext = function() {
       $scope.isDataFound = (w.content != null) && (w.content.margins != null) && (w.content.dates != null);
-      return $translate(['impac.widget.sales_margin.including_taxes', 'impac.widget.sales_margin.excluding_taxes']).then(function(translations) {
+      if ($scope.isDataFound) {
         $scope.filterOptions = [
           {
-            label: translations['impac.widget.sales_margin.including_taxes'],
+            label: $translate.instant('impac.widget.sales_margin.including_taxes'),
             value: 'gross_margin'
           }, {
-            label: translations['impac.widget.sales_margin.excluding_taxes'],
+            label: $translate.instant('impac.widget.sales_margin.excluding_taxes'),
             value: 'net_margin'
           }
         ];
@@ -13546,7 +11088,7 @@ $translateProvider.translations("zh-HK", {
         } else {
           return $scope.filter = angular.copy($scope.filterOptions[0]);
         }
-      });
+      }
     };
     $scope.getTotalMargin = function() {
       if ($scope.isDataFound) {
@@ -14512,29 +12054,25 @@ $translateProvider.translations("zh-HK", {
     settingsPromises = [$scope.orgDeferred.promise, $scope.timePeriodDeferred.promise, $scope.widthDeferred.promise, $scope.paramSelectorDeferred.promise, $scope.chartDeferred.promise];
     w.initContext = function() {
       if ($scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.dates) && !_.isEmpty(w.content.ranges)) {
-        $translate(['impac.widget.sales_turnover.gross_revenue', 'impac.widget.sales_turnover.net_revenue']).then(function(translations) {
-          $scope.filterOptions = [
-            {
-              label: translations['impac.widget.sales_turnover.gross_revenue'],
-              value: 'gross'
-            }, {
-              label: translations['impac.widget.sales_turnover.net_revenue'],
-              value: 'net'
-            }
-          ];
-          return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
-            return o.value === w.content.filter;
-          }) || $scope.filterOptions[0]);
-        });
-        return $translate(['impac.widget.sales_turnover.analysis.least', 'impac.widget.sales_turnover.analysis.most', 'impac.widget.sales_turnover.analysis.balanced']).then(function(translations) {
-          if (w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50) {
-            return $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.least'];
-          } else if (w.content.ranges[3].percentage + w.content.ranges[4].percentage > 50) {
-            return $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.most'];
-          } else {
-            return $scope.analysisTranslate = translations['impac.widget.sales_turnover.analysis.balanced'];
+        $scope.filterOptions = [
+          {
+            label: $translate.instant('impac.widget.sales_turnover.gross_revenue'),
+            value: 'gross'
+          }, {
+            label: $translate.instant('impac.widget.sales_turnover.net_revenue'),
+            value: 'net'
           }
-        });
+        ];
+        $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
+          return o.value === w.content.filter;
+        }) || $scope.filterOptions[0]);
+        if (w.content.ranges[0].percentage + w.content.ranges[1].percentage > 50) {
+          return $scope.analysisTranslate = $translate.instant('impac.widget.sales_turnover.analysis.least');
+        } else if (w.content.ranges[3].percentage + w.content.ranges[4].percentage > 50) {
+          return $scope.analysisTranslate = $translate.instant('impac.widget.sales_turnover.analysis.most');
+        } else {
+          return $scope.analysisTranslate = $translate.instant('impac.widget.sales_turnover.analysis.balanced');
+        }
       }
     };
     $scope.getColorByIndex = function(index) {
@@ -14616,25 +12154,25 @@ $translateProvider.translations("zh-HK", {
       $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.summary) && (_.sum(_.map(w.content.summary, function(s) {
         return s.total;
       })) > 0);
-      return $translate(['impac.widget.sales_summary.value_sold_taxes', 'impac.widget.sales_summary.value_sold_no_taxes', 'impac.widget.sales_summary.quantity_sold', 'impac.widget.sales_summary.value_purchased_taxes', 'impac.widget.sales_summary.value_purchased_no_taxes', 'impac.widget.sales_summary.quantity_purchased']).then(function(translations) {
+      if ($scope.isDataFound) {
         $scope.filterOptions = [
           {
-            label: translations['impac.widget.sales_summary.value_sold_taxes'],
+            label: $translate.instant('impac.widget.sales_summary.value_sold_taxes'),
             value: 'gross_value_sold'
           }, {
-            label: translations['impac.widget.sales_summary.value_sold_no_taxes'],
+            label: $translate.instant('impac.widget.sales_summary.value_sold_no_taxes'),
             value: 'net_value_sold'
           }, {
-            label: translations['impac.widget.sales_summary.quantity_sold'],
+            label: $translate.instant('impac.widget.sales_summary.quantity_sold'),
             value: 'quantity_sold'
           }, {
-            label: translations['impac.widget.sales_summary.value_purchased_taxes'],
+            label: $translate.instant('impac.widget.sales_summary.value_purchased_taxes'),
             value: 'gross_value_purchased'
           }, {
-            label: translations['impac.widget.sales_summary.value_purchased_no_taxes'],
+            label: $translate.instant('impac.widget.sales_summary.value_purchased_no_taxes'),
             value: 'net_value_purchased'
           }, {
-            label: translations['impac.widget.sales_summary.quantity_purchased'],
+            label: $translate.instant('impac.widget.sales_summary.quantity_purchased'),
             value: 'quantity_purchased'
           }
         ];
@@ -14644,7 +12182,7 @@ $translateProvider.translations("zh-HK", {
         return $scope.filter = angular.copy(_.find($scope.filterOptions, function(o) {
           return o.value === w.metadata.filter;
         }) || $scope.filterOptions[0]);
-      });
+      }
     };
     $scope.drawTrigger = $q.defer();
     w.format = function() {
@@ -14913,6 +12451,1743 @@ $translateProvider.translations("zh-HK", {
       controller: 'WidgetSalesTopOpportunitiesCtrl'
     };
   });
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.account', []);
+
+  module.controller('SettingAccountCtrl', ["$scope", "$filter", function($scope, $filter) {
+    var formatAmount, setting, w;
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "account";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      w.selectedAccount = w.selectedAccount || null;
+      if ((w.content != null) && (w.content.account_list != null) && (w.metadata != null) && (w.metadata.account_uid != null)) {
+        w.selectedAccount = _.find(w.content.account_list, function(acc) {
+          return acc.uid === w.metadata.account_uid;
+        });
+        return setting.isInitialized = true;
+      }
+    };
+    setting.toMetadata = function() {
+      if (w.selectedAccount != null) {
+        return {
+          account_uid: w.selectedAccount.uid
+        };
+      }
+    };
+    formatAmount = function(anAccount) {
+      var balance;
+      balance = anAccount.current_balance || anAccount.balance || 0.0;
+      return $filter('mnoCurrency')(balance, anAccount.currency);
+    };
+    $scope.formatLabel = function(anAccount) {
+      if (anAccount.company != null) {
+        return anAccount.company + " - " + anAccount.name + " (" + (formatAmount(anAccount)) + ")";
+      } else {
+        return anAccount.name + " (" + (formatAmount(anAccount)) + ")";
+      }
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingAccount', ["$templateCache", "$translate", function($templateCache, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        label: '@',
+        showLabel: '=?',
+        onAccountSelected: '&'
+      },
+      link: function(scope, element) {
+        if (!scope.label) {
+          return scope.label = $translate.instant('impac.widget.settings.account.label');
+        }
+      },
+      template: $templateCache.get('widgets-settings/account.tmpl.html'),
+      controller: 'SettingAccountCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.accounting-behaviour', []);
+
+  module.directive('settingAccountingBehaviour', ["$templateCache", "$timeout", function($templateCache, $timeout) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        defaultBehaviour: '=?'
+      },
+      template: $templateCache.get('widgets-settings/accounting-behaviour.tmpl.html'),
+      link: function(scope) {
+        var setting, w;
+        w = scope.parentWidget;
+        setting = {};
+        setting.key = "accounting-behaviour";
+        setting.initialize = function() {
+          return $timeout(function() {
+            if ((scope.defaultBehaviour != null) && scope.defaultBehaviour === 'pnl') {
+              return scope.selectedBehaviour = 'pnl';
+            } else {
+              return scope.selectedBehaviour = 'bls';
+            }
+          });
+        };
+        setting.toMetadata = function() {
+          return {
+            accounting_behaviour: scope.selectedBehaviour
+          };
+        };
+        w.settings.push(setting);
+        return scope.deferred.resolve(setting);
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.accounts-list', []);
+
+  module.controller('SettingAccountsListCtrl', ["$scope", "$timeout", "ImpacWidgetsSvc", function($scope, $timeout, ImpacWidgetsSvc) {
+    var restoreSavedAccounts, setting, w;
+    w = $scope.parentWidget;
+    w.moveAccountToAnotherList = function(account, src, dst, triggerUpdate) {
+      if (triggerUpdate == null) {
+        triggerUpdate = true;
+      }
+      if (_.isEmpty(src) || _.isEmpty(account)) {
+        return;
+      }
+      dst || (dst = []);
+      _.remove(src, function(acc) {
+        return account.uid === acc.uid;
+      });
+      dst.push(account);
+      if (triggerUpdate) {
+        ImpacWidgetsSvc.updateWidgetSettings(w, false);
+      }
+      return null;
+    };
+    setting = {};
+    setting.key = "accounts-list";
+    setting.initialize = function() {
+      setting.isInitialized = false;
+      w.remainingAccounts = [];
+      w.selectedAccounts = [];
+      if ((w.content != null) && !_.isEmpty(w.content.complete_list)) {
+        w.remainingAccounts = angular.copy(w.content.complete_list);
+        return $timeout(function() {
+          restoreSavedAccounts();
+          return setting.isInitialized = true;
+        });
+      }
+    };
+    setting.toMetadata = function() {
+      if (setting.isInitialized) {
+        return {
+          accounts_list: _.map(w.selectedAccounts, (function(acc) {
+            return acc.uid;
+          }))
+        };
+      }
+    };
+    restoreSavedAccounts = function() {
+      var acc, accUid, accountsList, i, len, results;
+      if (_.isEmpty(w.metadata.accounts_list) && _.isEmpty($scope.accountsList)) {
+        return;
+      }
+      accountsList = _.isEmpty($scope.accountsList) ? w.metadata.accounts_list : $scope.accountsList;
+      results = [];
+      for (i = 0, len = accountsList.length; i < len; i++) {
+        accUid = accountsList[i];
+        acc = _.find(w.content.complete_list, function(acc) {
+          return acc.uid === accUid;
+        });
+        results.push(w.moveAccountToAnotherList(acc, w.remainingAccounts, w.selectedAccounts, false));
+      }
+      return results;
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingAccountsList', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        accountsList: '=?'
+      },
+      controller: 'SettingAccountsListCtrl'
+    };
+  });
+
+}).call(this);
+
+
+/*
+ *     Attach KPIs onto widget with a form for picking target mode and value. View widget's
+ *     attached KPIs, manage set targets, alerts and delete.
+ *     **NOTE: this component is not in use, and requires fixes/improvements to be used.**
+ */
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.attach-kpis', []);
+
+  module.directive('settingAttachKpis', ["$templateCache", "ImpacWidgetsSvc", "ImpacKpisSvc", "$translate", function($templateCache, ImpacWidgetsSvc, ImpacKpisSvc, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        attachedKpis: '=?',
+        widgetEngine: '=',
+        widgetId: '=',
+        extraParams: '=?',
+        deferred: '=',
+        showExtraParam: '=?'
+      },
+      template: $templateCache.get('widgets-settings/attach-kpis.tmpl.html'),
+      controller: ["$scope", function($scope) {
+        var loadKpisData, settings, w;
+        w = $scope.parentWidget;
+        settings = {};
+        settings.initialize = function() {
+          return loadKpisData();
+        };
+        settings.toMetadata = function() {};
+        w.settings.push(settings);
+        $scope.formatKpiName = function(endpoint) {
+          return ImpacKpisSvc.formatKpiName(endpoint);
+        };
+        $scope.hasValidTarget = function() {
+          return ImpacKpisSvc.validateKpiTarget($scope.kpi);
+        };
+        $scope.attachKpi = function() {
+          var param, paramValues, params, ref, target0;
+          params = {};
+          if (!$scope.hasValidTarget()) {
+            return;
+          }
+          target0 = {};
+          target0[$scope.kpi.limit.mode] = $scope.kpi.limit.value;
+          params.targets = {};
+          params.targets[$scope.kpi.watchables[0]] = [target0];
+          params.widget_id = $scope.widgetId;
+          ref = $scope.extraParams;
+          for (param in ref) {
+            paramValues = ref[param];
+            params.extra_params || (params.extra_params = {});
+            params.extra_params[param] = paramValues.uid;
+          }
+          console.log('attachKpis: ', $scope.kpi.endpoint, $scope.elementWatched, params);
+          return ImpacKpisSvc.create('impac', $scope.kpi.endpoint, $scope.elementWatched, params).then(function(kpi) {
+            console.log('attached KPI: ', kpi);
+            return $scope.attachedKpis.push(kpi);
+          });
+        };
+        $scope.deleteKpi = function(kpi) {
+          return ImpacKpisSvc["delete"](kpi, {
+            widget_id: $scope.widgetId
+          }).then(function() {
+            return _.remove($scope.attachedKpis, function(k) {
+              return k.id === kpi.id;
+            });
+          });
+        };
+        $scope.formatAttachedKpiTitle = function(kpi) {
+          if (!(kpi.data && kpi.targets && $scope.elementWatched)) {
+            return '';
+          }
+          return ImpacKpisSvc.formatKpiTarget(kpi.targets[$scope.elementWatched][0], kpi.data[$scope.elementWatched].unit, $scope.possibleTargets);
+        };
+        $scope.attachedKpis || ($scope.attachedKpis = []);
+        $scope.possibleTargets = [
+          {
+            label: $translate.instant('impac.widget.settings.attach_kpis.over'),
+            mode: 'min'
+          }, {
+            label: $translate.instant('impac.widget.settings.attach_kpis.below'),
+            mode: 'max'
+          }
+        ];
+        $scope.kpi = {
+          limit: {
+            mode: $scope.possibleTargets[0].mode
+          }
+        };
+        ImpacKpisSvc.getAttachableKpis($scope.widgetEngine).then(function(kpiTemplates) {
+          $scope.availableKpis = angular.copy(kpiTemplates);
+          angular.extend($scope.kpi, $scope.availableKpis[0]);
+          $scope.selectedParam = _.keys($scope.extraParams)[0];
+          return $scope.elementWatched = ($scope.kpi.watchables != null) && $scope.kpi.watchables[0];
+        });
+        loadKpisData = function() {};
+        loadKpisData();
+        return $scope.deferred.resolve($scope.parentWidget);
+      }]
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.chart-filters', []);
+
+  module.controller('SettingChartFiltersCtrl', ["$scope", function($scope) {
+    var setting, w;
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "chart-filters";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      if ((w.content != null) && (w.content.chart_filter != null) && ($scope.filterCriteria = w.content.chart_filter.criteria)) {
+        $scope.maxEntities = w.content.chart_filter.max;
+        $scope.entityType = w.content.chart_filter.entity_type;
+        $scope.filterLabel = w.content.chart_filter.filter_label.replace(/_/g, " ");
+        if ($scope.filterCriteria === "number") {
+          $scope.filterValuePercentage = 80;
+          $scope.filterValueNumber = w.content.chart_filter.value;
+        } else {
+          $scope.filterValuePercentage = w.content.chart_filter.value;
+          $scope.filterValueNumber = Math.round($scope.maxEntities / 2);
+        }
+        return setting.isInitialized = true;
+      }
+    };
+    setting.toMetadata = function() {
+      var filterValue;
+      if ((w.content != null) && (w.content.chart_filter != null)) {
+        if ($scope.filterCriteria === "percentage") {
+          filterValue = $scope.filterValuePercentage;
+        } else {
+          filterValue = $scope.filterValueNumber;
+        }
+        return {
+          chart_filter: {
+            criteria: $scope.filterCriteria,
+            value: filterValue
+          }
+        };
+      } else {
+        return {};
+      }
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingChartFilters', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '='
+      },
+      template: $templateCache.get('widgets-settings/chart-filters.tmpl.html'),
+      controller: 'SettingChartFiltersCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.dates-picker', []);
+
+  module.directive('settingDatesPicker', ["$templateCache", "$filter", "ImpacWidgetsSvc", "$timeout", "$compile", function($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=?',
+        deferred: '=',
+        fromDate: '=from',
+        toDate: '=to',
+        keepToday: '=',
+        onUse: '&?',
+        onChangeCb: '&?onChange',
+        minDate: '=?',
+        updateOnPick: '=?',
+        template: '=?'
+      },
+      template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
+      link: function(scope, element) {
+        var applyHtml, buildDates, fromDateHtml, isToToday, setting, templatesContainer, toDateHtml, w;
+        w = scope.parentWidget;
+        setting = {};
+        setting.key = "dates-picker";
+        scope.calendarFrom = {
+          opened: false,
+          value: new Date(new Date().getFullYear(), 0, 1),
+          toggle: function() {
+            scope.calendarFrom.opened = !scope.calendarFrom.opened;
+            return scope.calendarTo.opened = false;
+          }
+        };
+        scope.calendarTo = {
+          opened: false,
+          value: new Date(),
+          toggle: function() {
+            scope.calendarFrom.opened = false;
+            return scope.calendarTo.opened = !scope.calendarTo.opened;
+          }
+        };
+        scope.template || (scope.template = "<div style=\"display: flex; flex-wrap: wrap;\">\n  <div style=\"display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;\">\n    <span class=\"sdp-from-label\" style=\"padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;\" translate>impac.widget.settings.dates_picker.from</span> <from-date style=\"flex-grow: 2;\">\n  </div>\n  <div style=\"display: flex; flex-grow: 1; justify-content: space-around; margin: 2px 0px;\">\n    <span class=\"sdp-to-label\" style=\"padding-top: 3px; min-width: 32px; flex-grow: 1; text-align: center;\" translate>impac.widget.settings.dates_picker.to</span> <to-date style=\"flex-grow: 2;\">\n  </div>\n</div>");
+        fromDateHtml = "<div style=\"display: inline-block;\">\n  <button class=\"btn btn-sm btn-default date-button\" ng-click=\"calendarFrom.toggle()\" uib-datepicker-popup ng-model=\"calendarFrom.value\" is-open=\"calendarFrom.opened\" ng-change=\"onChange()\" min-date=\"minDate\" max-date=\"calendarTo.value\" ng-focus=\"onUse()\" ATTRS>\n    {{ calendarFrom.value | date : 'yyyy-MM-dd' }}\n  </button>\n</div>";
+        toDateHtml = "<div style=\"display: inline-block;\">\n  <button class=\"btn btn-sm btn-default date-button\" ng-click=\"calendarTo.toggle()\" uib-datepicker-popup ng-model=\"calendarTo.value\" is-open=\"calendarTo.opened\" ng-change=\"onChange()\" min-date=\"calendarFrom.value\" ng-focus=\"onUse()\" ATTRS>\n    {{ calendarTo.value | date : 'yyyy-MM-dd' }}\n  </button>\n</div>";
+        applyHtml = "<button class=\"btn btn-sm btn-success\" uib-tooltip=\"{{'impac.widget.settings.dates_picker.tooltip.apply_changes' | translate}}\" ng-show=\"changed && !parentWidget.isEditMode\" ng-click=\"applyChanges()\" ng-focus=\"onUse()\" >\n  <i class=\"fa fa-check\"/>\n</button>";
+        scope.template = scope.template.replace(/>/, " ng-click='onUse()'>");
+        scope.template = scope.template.replace(/<from-date([^>]*)>/g, "" + (fromDateHtml.replace('ATTRS', '$1')));
+        scope.template = scope.template.replace(/<to-date([^>]*)>/g, "" + (toDateHtml.replace('ATTRS', '$1')));
+        scope.template = scope.template.replace(/<apply([^>]*)>/g, "" + (applyHtml.replace('ATTRS', '$1')));
+        templatesContainer = element.find('#template-container');
+        templatesContainer.html(scope.template).show();
+        $compile(templatesContainer.contents())(scope);
+        setting.initialize = function() {
+          return $timeout(function() {
+            var d, m, parsedFrom, parsedTo, y;
+            scope.changed = false;
+            if (Date.parse(scope.fromDate)) {
+              parsedFrom = scope.fromDate.split('-');
+              y = parsedFrom[0];
+              m = parsedFrom[1] - 1;
+              d = parsedFrom[2];
+              scope.calendarFrom.value = new Date(y, m, d);
+            } else {
+              scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1);
+            }
+            if (Date.parse(scope.toDate) && !scope.keepToday) {
+              parsedTo = scope.toDate.split('-');
+              y = parsedTo[0];
+              m = parsedTo[1] - 1;
+              d = parsedTo[2];
+              return scope.calendarTo.value = new Date(y, m, d);
+            } else {
+              return scope.calendarTo.value = new Date();
+            }
+          });
+        };
+        isToToday = function() {
+          return (scope.calendarTo.value.getFullYear() === new Date().getFullYear()) && (scope.calendarTo.value.getMonth() === new Date().getMonth()) && (scope.calendarTo.value.getDate() === new Date().getDate());
+        };
+        setting.toMetadata = function() {
+          return {
+            hist_parameters: {
+              from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd'),
+              to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd'),
+              period: "RANGE",
+              keep_today: isToToday()
+            }
+          };
+        };
+        scope.onChange = function() {
+          scope.showApplyButton();
+          if (!_.isUndefined(scope.onChangeCb)) {
+            return scope.onChangeCb()(buildDates());
+          }
+        };
+        buildDates = function() {
+          return {
+            from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd'),
+            to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd'),
+            keepToday: isToToday()
+          };
+        };
+        scope.showApplyButton = function() {
+          if (scope.updateOnPick) {
+            return scope.applyChanges();
+          } else {
+            return scope.changed = true;
+          }
+        };
+        scope.applyChanges = function() {
+          ImpacWidgetsSvc.updateWidgetSettings(w, true);
+          return scope.changed = false;
+        };
+        scope.showTitle = function() {
+          return element.hasClass('part');
+        };
+        if (w) {
+          w.settings.push(setting);
+        }
+        return scope.deferred.resolve(setting);
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.formula', []);
+
+  module.controller('SettingFormulaCtrl', ["$scope", "$filter", "$timeout", "$translate", function($scope, $filter, $timeout, $translate) {
+    var AUTHORIZED_REGEXP, evaluateFormula, formatFormula, getFormula, interpolateInFormula, isRatio, prepareFormula, setting, translateEvaluatedFormula, w;
+    w = $scope.parentWidget;
+    w.formula = '';
+    AUTHORIZED_REGEXP = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$");
+    setting = {};
+    setting.key = "formula";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      if ((w.metadata != null) && (w.metadata.formula != null)) {
+        w.formula = w.metadata.formula;
+        return $timeout(function() {
+          prepareFormula();
+          return setting.isInitialized = true;
+        });
+      } else {
+        return w.formula = '';
+      }
+    };
+    setting.toMetadata = function() {
+      prepareFormula();
+      if (w.isFormulaCorrect) {
+        return {
+          formula: w.formula
+        };
+      } else {
+        return {
+          formula: ''
+        };
+      }
+    };
+    getFormula = function() {
+      return w.formula;
+    };
+    w.formatAmount = function(anAccount) {
+      return $filter('mnoCurrency')(anAccount.current_balance, anAccount.currency);
+    };
+    $scope.$watch(getFormula, function(e) {
+      return prepareFormula();
+    });
+    prepareFormula = function() {
+      var evaluatedFormula, interpolatedFormula;
+      interpolatedFormula = interpolateInFormula(w.formula, w.selectedAccounts, 'current_balance');
+      if ((evaluatedFormula = evaluateFormula(interpolatedFormula))) {
+        w.evaluatedFormula = formatFormula(evaluatedFormula, w.formula, w.selectedAccounts);
+        w.legend = interpolateInFormula(w.formula, w.selectedAccounts, 'name');
+        w.isFormulaCorrect = true;
+      } else {
+        w.evaluatedFormula = 'invalid expression';
+        w.legend = '...';
+        w.isFormulaCorrect = false;
+      }
+      return w.evaluatedFormulaTranslate = translateEvaluatedFormula(w.evaluatedFormula);
+    };
+    translateEvaluatedFormula = function(formula) {
+      switch (formula) {
+        case 'invalid expression':
+          return $translate.instant('impac.widget.formula.invalid_expression');
+        case 'Infinity':
+          return $translate.instant('impac.widget.formula.infinity');
+        case '-Infinity':
+          return $translate.instant('impac.widget.formula.minus_infinity');
+        default:
+          return formula;
+      }
+    };
+    interpolateInFormula = function(sourceFormula, selectedAccounts, accountMember) {
+      var account, i, interpolation, j, len, pattern;
+      interpolation = sourceFormula;
+      if (_.isEmpty(selectedAccounts)) {
+        return interpolation;
+      }
+      for (i = j = 0, len = selectedAccounts.length; j < len; i = ++j) {
+        account = selectedAccounts[i];
+        pattern = new RegExp("\\{" + (i + 1) + "\\}", 'g');
+        interpolation = interpolation.replace(pattern, " " + account[accountMember] + " ");
+      }
+      return interpolation;
+    };
+    evaluateFormula = function(interpolatedFormula) {
+      var e, evaluation;
+      if (!interpolatedFormula.match(AUTHORIZED_REGEXP)) {
+        return false;
+      }
+      try {
+        evaluation = eval(interpolatedFormula).toFixed(2);
+        if (isFinite(evaluation)) {
+          return evaluation;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        e = error;
+        return false;
+      }
+    };
+    isRatio = function(sourceFormula) {
+      return sourceFormula.match(/\//g);
+    };
+    formatFormula = function(evaluation, sourceFormula, selectedAccounts) {
+      var currency, firstAccount;
+      if (isRatio(sourceFormula) || _.isEmpty(selectedAccounts)) {
+        return evaluation;
+      }
+      firstAccount = selectedAccounts[0];
+      if (!(currency = firstAccount.currency)) {
+        return evaluation;
+      }
+      return $filter('mnoCurrency')(evaluation, currency);
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingFormula', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '='
+      },
+      controller: 'SettingFormulaCtrl'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var module,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  module = angular.module('impac.components.widgets-settings.hist-mode', []);
+
+  module.controller('SettingHistModeCtrl', ["$scope", "$translate", "$timeout", "ImpacWidgetsSvc", "ImpacTheming", "ImpacUtilities", function($scope, $translate, $timeout, ImpacWidgetsSvc, ImpacTheming, ImpacUtilities) {
+    var buildCurrentLabel, setting, w;
+    w = $scope.parentWidget;
+    w.isHistoryMode = false;
+    $scope.forwardParams = {
+      accountingBehaviour: function() {
+        return $scope.accountingBehaviour;
+      }
+    };
+    $scope.toggleHistMode = function(mode) {
+      var ref;
+      if ((w.isHistoryMode && mode === 'history') || (!w.isHistoryMode && mode === 'current')) {
+        return;
+      }
+      w.isHistoryMode = !w.isHistoryMode;
+      ImpacWidgetsSvc.updateWidgetSettings(w, false);
+      return ref = $scope.onToggle(), indexOf.call(angular.isDefined($scope.onToggle), ref) >= 0;
+    };
+    buildCurrentLabel = function() {
+      var label, labels, needPrefix, prefix;
+      labels = ImpacTheming.get().widgetSettings.histModeChoser.currentLabels;
+      if (($scope.accountingBehaviour != null) && labels[$scope.accountingBehaviour]) {
+        needPrefix = !$scope.endDate || ($scope.endDate === moment().format('YYYY-MM-DD'));
+        label = labels[$scope.accountingBehaviour];
+        prefix = labels[$scope.accountingBehaviour] + '.prefix';
+        return $translate([prefix, label]).then(function(translations) {
+          return $scope.currentLabel = needPrefix ? translations[prefix] + " " + translations[label] : translations[label];
+        });
+      } else {
+        return $translate(labels["default"]).then(function(label) {
+          return $scope.currentLabel = label;
+        });
+      }
+    };
+    setting = {};
+    setting.key = "hist-mode";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      return $timeout(function() {
+        var mode;
+        if ((w.metadata != null) && (w.metadata.hist_parameters != null) && (mode = w.metadata.hist_parameters.mode)) {
+          w.isHistoryMode = mode === 'history' ? true : false;
+        }
+        buildCurrentLabel();
+        $scope.forwardParams.histParams = w.metadata && w.metadata.hist_parameters;
+        setting.isInitialized = true;
+        return $scope;
+      });
+    };
+    setting.toMetadata = function() {
+      var mode;
+      mode = w.isHistoryMode ? 'history' : 'current';
+      return {
+        hist_parameters: {
+          mode: mode
+        }
+      };
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingHistMode', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        onToggle: '&',
+        accountingBehaviour: '@?',
+        endDate: '=?'
+      },
+      template: $templateCache.get('widgets-settings/hist-mode.tmpl.html'),
+      controller: 'SettingHistModeCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.limit-entries', []);
+
+  module.controller('SettingLimitEntriesCtrl', ["$scope", function($scope) {
+    var setting;
+    setting = {};
+    setting.key = 'limit-entries';
+    setting.initialize = function() {
+      return true;
+    };
+    setting.toMetadata = function() {
+      return {
+        limit_entries: $scope.selected
+      };
+    };
+    $scope.parentWidget.settings.push(setting);
+    return $scope.deferred.resolve(setting);
+  }]);
+
+  module.directive('settingLimitEntries', ["$templateCache", "ImpacWidgetsSvc", function($templateCache, ImpacWidgetsSvc) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        selected: '=',
+        max: '=?',
+        options: '=?',
+        entriesLabel: '=?'
+      },
+      link: function(scope, elements, attrs) {
+        if (!((scope.options != null) && scope.options.length > 0)) {
+          scope.options = [5, 15, 50];
+        }
+        scope.selectOption = function(anOption) {
+          scope.selected = anOption;
+          return ImpacWidgetsSvc.updateWidgetSettings(scope.parentWidget, false);
+        };
+        return scope.isOptionValid = function(anOption) {
+          return (scope.max == null) || anOption < scope.max;
+        };
+      },
+      controller: 'SettingLimitEntriesCtrl',
+      template: $templateCache.get('widgets-settings/limit-entries.tmpl.html')
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.offsets', []);
+
+  module.directive('settingOffsets', ["$templateCache", "ImpacUtilities", function($templateCache, ImpacUtilities) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        offsetsKey: '@',
+        initialOffsets: '=',
+        currency: '=',
+        intervalsCount: '=',
+        period: '=',
+        showIntervalsMult: '=',
+        textPlaceholder: '@?'
+      },
+      template: $templateCache.get('widgets-settings/offsets.tmpl.html'),
+      link: function(scope) {
+        var authorized_regex, computedFormula, placeholder, setting, w;
+        w = scope.parentWidget;
+        authorized_regex = new RegExp("^(\\{|\\d|\\}|\\/|\\+|-|\\*|\\(|\\)|\\s|\\.)*$");
+        setting = {
+          key: "offsets-" + scope.offsetsKey
+        };
+        setting.initialize = function() {
+          var i, len, offsetValue, ref;
+          scope.offsets = [];
+          ref = scope.initialOffsets || [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            offsetValue = ref[i];
+            scope.offsets.push(offsetValue);
+          }
+          scope.offsetFormula = "";
+          scope.periodWord = ImpacUtilities.getPeriodWord(scope.period);
+          return scope.placeholder = placeholder(scope.period || 'MONTHLY');
+        };
+        setting.toMetadata = function() {
+          var metadata;
+          metadata = {
+            offset: {}
+          };
+          metadata.offset[scope.offsetsKey] = scope.offsets;
+          return metadata;
+        };
+        scope.addOffset = function() {
+          var result;
+          result = computedFormula();
+          if (result) {
+            scope.offsets.push(result);
+          }
+          return scope.offsetFormula = "";
+        };
+        scope.removeOffset = function(offsetIndex) {
+          return scope.offsets.splice(offsetIndex, 1);
+        };
+        scope.addOffsetOnEnter = function(event) {
+          if (event.keyCode === 13) {
+            return scope.addOffset();
+          }
+        };
+        placeholder = function(inputPeriod) {
+          var period;
+          if (scope.textPlaceholder != null) {
+            return scope.textPlaceholder;
+          }
+          period = inputPeriod.charAt(0).toUpperCase() + inputPeriod.slice(1).toLowerCase();
+          return period + " adjustment";
+        };
+        computedFormula = function() {
+          if (scope.offsetFormula.match(authorized_regex)) {
+            return eval(scope.offsetFormula);
+          }
+        };
+        if (w) {
+          w.settings.push(setting);
+        }
+        return scope.deferred.resolve(setting);
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.organizations', []);
+
+  module.controller('SettingOrganizationsCtrl', ["$scope", "$log", "ImpacDashboardsSvc", function($scope, $log, ImpacDashboardsSvc) {
+    var setting, w;
+    w = $scope.parentWidget;
+    w.selectedOrganizations = {};
+    $scope.isOrganizationSelected = function(orgUid) {
+      return !!w.selectedOrganizations[orgUid];
+    };
+    $scope.toggleSelectOrganization = function(orgUid) {
+      w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid];
+      if (angular.isDefined($scope.onSelect)) {
+        return $scope.onSelect({
+          orgs: w.selectedOrganizations
+        });
+      }
+    };
+    setting = {};
+    setting.key = "organizations";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      return ImpacDashboardsSvc.load().then(function(config) {
+        var i, len, org, ref;
+        $scope.dashboardOrganizations = config.currentDashboard.data_sources;
+        if ((w.metadata != null) && (w.metadata.organization_ids != null)) {
+          ref = $scope.dashboardOrganizations;
+          for (i = 0, len = ref.length; i < len; i++) {
+            org = ref[i];
+            w.selectedOrganizations[org.uid] = _.contains(w.metadata.organization_ids, org.uid);
+          }
+          return setting.isInitialized = true;
+        }
+      });
+    };
+    setting.toMetadata = function() {
+      var newOrganizations;
+      newOrganizations = _.compact(_.map(w.selectedOrganizations, function(checked, uid) {
+        if (checked) {
+          return uid;
+        }
+      }));
+      if (_.isEmpty(newOrganizations)) {
+        newOrganizations = [_.first($scope.dashboardOrganizations).uid];
+      }
+      return {
+        organization_ids: newOrganizations
+      };
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingOrganizations', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        onSelect: '&?'
+      },
+      template: $templateCache.get('widgets-settings/organizations.tmpl.html'),
+      controller: 'SettingOrganizationsCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.param-selector', []);
+
+  module.controller('SettingParamSelectorCtrl', ["$scope", "ImpacWidgetsSvc", function($scope, ImpacWidgetsSvc) {
+    var setting, w;
+    $scope.showOptions = false;
+    $scope.toggleShowOptions = function() {
+      return $scope.showOptions = !$scope.showOptions;
+    };
+    $scope.onInit = function() {
+      $scope.selectedOption = {};
+      return angular.extend($scope.selectedOption, $scope.selected);
+    };
+    $scope.selectOption = function(anOption) {
+      if (anOption.value !== $scope.selected.value) {
+        angular.extend($scope.selected, anOption);
+        if (!$scope.noReload) {
+          $scope.parentWidget.isLoading = true;
+        }
+        ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget, !$scope.noReload);
+        if (angular.isDefined($scope.onSelect)) {
+          $scope.onSelect();
+        }
+      }
+      return $scope.toggleShowOptions();
+    };
+    $scope.getTruncateValue = function() {
+      return parseInt($scope.truncateNo) || 20;
+    };
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "param-selector";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      if (w.content != null) {
+        return setting.isInitialized = true;
+      }
+    };
+    setting.toMetadata = function() {
+      var param;
+      param = {};
+      if (!_.isEmpty($scope.selected)) {
+        param[$scope.param] = $scope.selected.value;
+      }
+      return param;
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingParamSelector', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        param: '@',
+        options: '=',
+        selected: '=',
+        truncateNo: '@',
+        onSelect: '&'
+      },
+      link: function(scope, elements, attrs) {
+        scope.noReload = typeof attrs.noReload !== 'undefined';
+        return scope.truncateNo = attrs.truncateNo || 20;
+      },
+      template: function(elements, attrs) {
+        return $templateCache.get(attrs.classic ? 'widgets-settings/param-selector-classic.tmpl.html' : 'widgets-settings/param-selector.tmpl.html');
+      },
+      controller: 'SettingParamSelectorCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.params-checkboxes', []);
+
+  module.controller('SettingParamsCheckboxesCtrl', ["$scope", function($scope) {
+    var setting, w;
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "params-checkboxes";
+    setting.initialize = function() {};
+    setting.toMetadata = function() {
+      var param;
+      param = {};
+      param[$scope.param] = _.map($scope.options, function(opt) {
+        return {
+          id: opt.id,
+          value: opt.value
+        };
+      });
+      return param;
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingParamsCheckboxes', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        param: '@',
+        options: '='
+      },
+      template: $templateCache.get('widgets-settings/params-checkboxes.tmpl.html'),
+      controller: 'SettingParamsCheckboxesCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.params-picker', []);
+
+  module.controller('SettingParamsPickerCtrl', ["$scope", function($scope) {
+    var setting, w;
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "params-picker";
+    setting.isInitialized = false;
+    setting.initialize = function() {
+      $scope.sortableOptions = {
+        'ui-floating': true,
+        tolerance: 'pointer'
+      };
+      $scope.applyToDashboard = w.metadata[$scope.param] && w.metadata[$scope.param].reach === 'dashboard';
+      $scope.toggleReach = function() {
+        return setting.reach = $scope.applyToDashboard ? 'dashboard' : 'widget';
+      };
+      $scope.toggleReach();
+      if (_.isEmpty($scope.options)) {
+        return setting.isInitialized = true;
+      }
+    };
+    setting.toMetadata = function() {
+      var param;
+      param = {};
+      param[$scope.param] = {
+        values: _.compact(_.map($scope.options, function(statusOption) {
+          if (statusOption.selected) {
+            return statusOption.value || statusOption.label;
+          }
+        })),
+        reach: setting.reach
+      };
+      return param;
+    };
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingParamsPicker', ["$templateCache", "$translate", function($templateCache, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        param: '@',
+        options: '=',
+        hasReach: '=',
+        description: '@'
+      },
+      link: function(scope, elements, attrs) {
+        var paramText;
+        paramText = $translate.instant('impac.widget.settings.params-picker.' + scope.param);
+        scope.formattedParam = _.includes(paramText, 'impac.widget.settings.params-picker') ? scope.param.replace(/_/g, ' ') : paramText;
+        if (scope.description == null) {
+          return scope.description = $translate.instant('impac.widget.settings.params-picker.description');
+        }
+      },
+      template: $templateCache.get('widgets-settings/params-picker.tmpl.html'),
+      controller: 'SettingParamsPickerCtrl'
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.time-period', []);
+
+  module.directive('settingTimePeriod', ["$templateCache", "$q", "$log", "$timeout", "ImpacTheming", "$translate", function($templateCache, $q, $log, $timeout, ImpacTheming, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        histParams: '=?',
+        hideChartInterval: '=?',
+        applyChangesCallback: '&?'
+      },
+      template: $templateCache.get('widgets-settings/time-period.tmpl.html'),
+      link: function(scope) {
+        var getPeriod, getSetting, getUsedSettingKey, initPeriod, initUsedSetting, settingsPromises, updateFromDate, updateTimeRangePeriod, w;
+        w = scope.parentWidget;
+        scope.timePeriodSetting = {
+          key: "time-period",
+          settings: [],
+          isEditMode: true
+        };
+        scope.timeSliderDeferred = $q.defer();
+        scope.datesPickerDeferred = $q.defer();
+        scope.timePresetsDeferred = $q.defer();
+        settingsPromises = [scope.timeSliderDeferred.promise, scope.datesPickerDeferred.promise, scope.timePresetsDeferred.promise];
+        scope.resetPreset = $q.defer();
+        $translate(["impac.widget.settings.time_period.period.daily", "impac.widget.settings.time_period.period.weekly", "impac.widget.settings.time_period.period.monthly", "impac.widget.settings.time_period.period.quarterly", "impac.widget.settings.time_period.period.yearly", "impac.widget.settings.time_period.period.days", "impac.widget.settings.time_period.period.weeks", "impac.widget.settings.time_period.period.months", "impac.widget.settings.time_period.period.quarters", "impac.widget.settings.time_period.period.years"]).then(function(translations) {
+          return scope.periods = [
+            {
+              label: translations["impac.widget.settings.time_period.period.daily"],
+              plural: "days",
+              value: "DAILY"
+            }, {
+              label: translations["impac.widget.settings.time_period.period.weekly"],
+              plural: "weeks",
+              value: "WEEKLY"
+            }, {
+              label: translations["impac.widget.settings.time_period.period.monthly"],
+              plural: "months",
+              value: "MONTHLY"
+            }, {
+              label: translations["impac.widget.settings.time_period.period.quarterly"],
+              plural: "quarters",
+              value: "QUARTERLY"
+            }, {
+              label: translations["impac.widget.settings.time_period.period.yearly"],
+              plural: "years",
+              value: "YEARLY"
+            }
+          ];
+        });
+        scope.maxNumberOfPeriods = 20;
+        if ((ImpacTheming.get().widgetSettings != null) && (ImpacTheming.get().widgetSettings.timePeriod != null) && !_.isEmpty(ImpacTheming.get().widgetSettings.timePeriod.presets)) {
+          scope.presets = angular.copy(ImpacTheming.get().widgetSettings.timePeriod.presets);
+        }
+        scope.applyPreset = function(histParams) {
+          initPeriod(histParams);
+          return initUsedSetting(histParams);
+        };
+        scope.timePeriodSetting.initialize = function() {
+          return $timeout(function() {
+            initPeriod();
+            getSetting('time-presets').initialize();
+            return scope.showApplyButton = angular.isDefined(scope.applyChangesCallback);
+          });
+        };
+        scope.timePeriodSetting.toMetadata = function() {
+          var histParams, metadata, sourceSetting;
+          sourceSetting = getSetting(getUsedSettingKey());
+          if (sourceSetting != null) {
+            histParams = sourceSetting.toMetadata().hist_parameters;
+          }
+          histParams.period = getPeriod();
+          if ((scope.histParams != null) && (scope.histParams.mode != null)) {
+            histParams.mode = scope.histParams.mode;
+          }
+          metadata = {
+            hist_parameters: histParams
+          };
+          return metadata;
+        };
+        scope.titleize = function(word) {
+          if (word !== "FYEARLY") {
+            return "" + (word.slice(0, 1).toUpperCase()) + (word.slice(1).toLowerCase());
+          } else {
+            return "Yearly (financial)";
+          }
+        };
+        getPeriod = function() {
+          if (scope.timePeriodSetting.period != null) {
+            return scope.timePeriodSetting.period;
+          } else {
+            return initPeriod();
+          }
+        };
+        scope.isTimeSliderUsed = function() {
+          return getUsedSettingKey() === 'time-slider';
+        };
+        scope.isDatesPickerUsed = function() {
+          return getUsedSettingKey() === 'dates-picker';
+        };
+        getUsedSettingKey = function() {
+          if (scope.usedSetting != null) {
+            return scope.usedSetting;
+          } else {
+            return initUsedSetting();
+          }
+        };
+        getSetting = function(key) {
+          return _.find(scope.timePeriodSetting.settings, function(set) {
+            return set.key === key;
+          });
+        };
+        initPeriod = function(histParams) {
+          if (histParams == null) {
+            histParams = null;
+          }
+          if (histParams == null) {
+            histParams = scope.histParams;
+          }
+          if ((histParams != null) && (histParams.period != null) && _.find(scope.periods, function(period) {
+            return period.value === histParams.period;
+          })) {
+            scope.timePeriodSetting.period = angular.copy(histParams.period);
+          } else {
+            scope.timePeriodSetting.period = "MONTHLY";
+          }
+          return scope.timePeriodSetting.period;
+        };
+        initUsedSetting = function(histParams) {
+          var minDate, newLetter, pattern, tr;
+          if (histParams == null) {
+            histParams = null;
+          }
+          if (histParams == null) {
+            histParams = scope.histParams;
+          }
+          if ((histParams != null) && (histParams.from != null)) {
+            scope.usedSetting = 'dates-picker';
+            scope.toDate = histParams.to;
+            minDate = scope.getMinDate(scope.toDate);
+            if (moment(histParams.from, "YYYY-MM-DD").isBefore(minDate)) {
+              scope.fromDate = minDate;
+            } else {
+              scope.fromDate = histParams.from;
+            }
+            scope.keepToday = histParams.keep_today;
+            getSetting('dates-picker').initialize();
+          } else {
+            scope.usedSetting = 'time-slider';
+            if ((histParams != null) && (histParams.time_range != null)) {
+              tr = histParams.time_range;
+              pattern = /([a-z])/;
+              newLetter = pattern.exec(tr)[1];
+              scope.timePeriodSetting.period = angular.copy(_.find(scope.periods, function(p) {
+                return p.value.slice(0, 1).toLowerCase() === newLetter;
+              }).value);
+              scope.timePeriodSetting.timeRange = tr;
+            }
+            getSetting('time-slider').initialize();
+          }
+          return scope.usedSetting;
+        };
+        scope.updateSettings = function() {
+          if (scope.usedSetting === 'time-slider') {
+            scope.resetPreset.notify('choose-period');
+          } else if (scope.usedSetting === 'dates-picker') {
+            scope.resetPreset.notify('choose-dates');
+          }
+          updateTimeRangePeriod();
+          return updateFromDate();
+        };
+        updateTimeRangePeriod = function() {
+          var periodLetter, set, tr;
+          if (scope.isTimeSliderUsed()) {
+            set = getSetting('time-slider');
+            tr = set.toMetadata().hist_parameters.time_range;
+            periodLetter = getPeriod().slice(0, 1).toLowerCase();
+            scope.timePeriodSetting.timeRange = tr.replace(/[a-z]/, periodLetter);
+            set.initialize();
+          }
+          return scope.timePeriodSetting.timeRange;
+        };
+        updateFromDate = function() {
+          var fromDate, minDate, set, toDate;
+          if (scope.isDatesPickerUsed()) {
+            set = getSetting('dates-picker');
+            fromDate = set.toMetadata().hist_parameters.from;
+            toDate = set.toMetadata().hist_parameters.to;
+            minDate = scope.getMinDate();
+            if (moment(fromDate, "YYYY-MM-DD").isBefore(minDate)) {
+              scope.toDate = toDate;
+              scope.fromDate = minDate;
+              set.initialize();
+            }
+          }
+          return scope.fromDate;
+        };
+        scope.useTimeSlider = function() {
+          scope.usedSetting = 'time-slider';
+          return scope.updateSettings();
+        };
+        scope.useDatesPicker = function() {
+          scope.usedSetting = 'dates-picker';
+          return scope.updateSettings();
+        };
+        scope.getMinDate = function(toDate) {
+          var currentPeriod, periodWord, sourceSetting, to;
+          if (toDate == null) {
+            toDate = void 0;
+          }
+          to = moment();
+          if (toDate != null) {
+            to = moment(toDate, "YYYY-MM-DD");
+          } else if ((scope.usedSetting != null) && scope.isDatesPickerUsed()) {
+            sourceSetting = getSetting('dates-picker');
+            to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD");
+          }
+          currentPeriod = getPeriod();
+          periodWord = _.find(scope.periods, function(period) {
+            return currentPeriod === period.value;
+          }).plural;
+          return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD');
+        };
+        w.settings.push(scope.timePeriodSetting);
+        return $q.all(settingsPromises).then(function() {
+          return scope.deferred.resolve(scope.timePeriodSetting);
+        });
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.time-presets', []);
+
+  module.directive('settingTimePresets', ["$templateCache", "ImpacMainSvc", "$timeout", "ImpacUtilities", "ImpacTheming", "$translate", function($templateCache, ImpacMainSvc, $timeout, ImpacUtilities, ImpacTheming, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        presets: '=?',
+        onSelect: '&?',
+        onChooseDates: '&?',
+        onChoosePeriod: '&?',
+        histParams: '=?',
+        resetPromise: '=?'
+      },
+      template: $templateCache.get('widgets-settings/time-presets.tmpl.html'),
+      link: function(scope) {
+        var fyEndMonth, initPreset, showSlider, w;
+        w = scope.parentWidget;
+        scope.setting = {};
+        scope.setting.key = "time-presets";
+        scope.financialYearEndMonth = 6;
+        fyEndMonth = scope.financialYearEndMonth;
+        ImpacMainSvc.load().then(function() {
+          return fyEndMonth = ImpacMainSvc.getFinancialYearEndMonth();
+        })["finally"](function() {
+          var fyStartDate, prevFyEndDate, prevFyStartDate, toDate;
+          fyStartDate = ImpacUtilities.financialYearDates(fyEndMonth).start;
+          prevFyStartDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).start, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD');
+          prevFyEndDate = moment(ImpacUtilities.financialYearDates(fyEndMonth).end, 'YYYY-MM-DD').subtract(1, 'year').format('YYYY-MM-DD');
+          toDate = moment().format('YYYY-MM-DD');
+          return $translate(['impac.common.period.preset_in_words.calendar_year_to_date', 'impac.common.period.preset_in_words.financial_year_to_date', 'impac.common.period.preset_in_words.previous_financial_year', 'impac.common.period.preset_in_words.last_6_months', 'impac.common.period.preset_in_words.last_4_quarters', 'impac.common.period.preset_in_words.last_4_weeks', 'impac.common.period.preset_in_words.choose_period', 'impac.common.period.preset_in_words.choose_dates']).then(function(translations) {
+            scope.presets || (scope.presets = [
+              {
+                label: translations['impac.common.period.preset_in_words.calendar_year_to_date'],
+                value: {
+                  from: moment().startOf('year').format('YYYY-MM-DD'),
+                  to: toDate,
+                  period: 'MONTHLY'
+                }
+              }, {
+                label: translations['impac.common.period.preset_in_words.financial_year_to_date'],
+                value: {
+                  from: fyStartDate,
+                  to: toDate,
+                  period: 'MONTHLY'
+                }
+              }, {
+                label: translations['impac.common.period.preset_in_words.previous_financial_year'],
+                value: {
+                  from: prevFyStartDate,
+                  to: prevFyEndDate,
+                  period: 'MONTHLY'
+                }
+              }, {
+                label: translations['impac.common.period.preset_in_words.last_6_months'],
+                value: {
+                  time_range: '-6m',
+                  to: toDate
+                }
+              }, {
+                label: translations['impac.common.period.preset_in_words.last_4_quarters'],
+                value: {
+                  time_range: '-4q',
+                  to: toDate
+                }
+              }, {
+                label: translations['impac.common.period.preset_in_words.last_4_weeks'],
+                value: {
+                  time_range: '-4w',
+                  to: toDate
+                }
+              }
+            ]);
+            if (angular.isDefined(scope.onChooseDates) && showSlider()) {
+              scope.presets.unshift({
+                label: translations['impac.common.period.preset_in_words.choose_period'],
+                value: 'choose-period'
+              });
+            }
+            if (angular.isDefined(scope.onChooseDates)) {
+              return scope.presets.unshift({
+                label: translations['impac.common.period.preset_in_words.choose_dates'],
+                value: 'choose-dates'
+              });
+            }
+          });
+        });
+        if (scope.resetPromise != null) {
+          scope.resetPromise.then(null, null, function(key) {
+            return scope.selectedPreset = _.find(scope.presets, function(p) {
+              return p.value === key;
+            });
+          });
+        }
+        showSlider = function() {
+          return (ImpacTheming.get().widgetSettings != null) && (ImpacTheming.get().widgetSettings.timePeriod != null) && ImpacTheming.get().widgetSettings.timePeriod.showSlider;
+        };
+        initPreset = function() {
+          if (scope.histParams != null) {
+            scope.selectedPreset = _.find(scope.presets, function(p) {
+              return _.every(p.value, function(v, k) {
+                return scope.histParams[k] === (angular.isFunction(v) ? v(fyEndMonth) : v);
+              });
+            });
+            if ((scope.selectedPreset == null) && (scope.histParams.time_range != null) && showSlider()) {
+              scope.selectedPreset = scope.presets[1];
+            }
+          }
+          if (scope.selectedPreset == null) {
+            return scope.selectedPreset = scope.presets[0];
+          }
+        };
+        scope.presetSelected = function() {
+          if ((scope.selectedPreset != null) && (scope.selectedPreset.value === "choose-dates")) {
+            return scope.onChooseDates();
+          } else if ((scope.selectedPreset != null) && (scope.selectedPreset.value === "choose-period")) {
+            return scope.onChoosePeriod();
+          } else {
+            return scope.onSelect({
+              histParams: scope.setting.toMetadata().hist_parameters
+            });
+          }
+        };
+        scope.setting.initialize = function() {
+          initPreset();
+          scope.presetSelected();
+          return true;
+        };
+        scope.setting.toMetadata = function() {
+          var result;
+          result = {};
+          if (!_.isEmpty(scope.selectedPreset.value)) {
+            _.forEach(scope.selectedPreset.value, function(value, key) {
+              if (angular.isFunction(value)) {
+                return result[key] = value(fyEndMonth);
+              } else {
+                return result[key] = value;
+              }
+            });
+          }
+          return {
+            hist_parameters: result
+          };
+        };
+        w.settings.push(scope.setting);
+        return scope.deferred.resolve(scope.setting);
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.time-slider', []);
+
+  module.directive('settingTimeSlider', ["$templateCache", "$timeout", "ImpacMainSvc", "ImpacUtilities", "$translate", function($templateCache, $timeout, ImpacMainSvc, ImpacUtilities, $translate) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        timeRange: '=?',
+        onUse: '&?'
+      },
+      template: $templateCache.get('widgets-settings/time-slider.tmpl.html'),
+      link: function(scope) {
+        var PERIODS, getNumberOfPeriods, getPeriod, getPeriodWord, getTimeRange, initFinancialYearEndMonth, initNumberOfPeriods, initPeriod, setting, w;
+        w = scope.parentWidget;
+        setting = {};
+        setting.key = "time-slider";
+        PERIODS = ['d', 'w', 'm', 'q', 'y', 'f'];
+        setting.initialize = function() {
+          return $timeout(function() {
+            initNumberOfPeriods();
+            initPeriod();
+            initFinancialYearEndMonth();
+            return true;
+          });
+        };
+        setting.toMetadata = function() {
+          var histParams;
+          histParams = {
+            to: scope.toDate().format('YYYY-MM-DD'),
+            time_range: getTimeRange()
+          };
+          if (getPeriod() === 'f') {
+            histParams.from = scope.fromDate().format('YYYY-MM-DD');
+          }
+          return {
+            hist_parameters: histParams
+          };
+        };
+        initNumberOfPeriods = function() {
+          var n, nPattern, tr;
+          tr = scope.timeRange;
+          scope.numberOfPeriods = moment().month();
+          if (tr == null) {
+            return scope.numberOfPeriods;
+          }
+          nPattern = /^-?([0-9]{1,2})[a-z]?$/;
+          n = nPattern.exec(tr);
+          if ((n != null) && n[1] && parseInt(n[1])) {
+            scope.numberOfPeriods = parseInt(n[1]);
+          }
+          return scope.numberOfPeriods;
+        };
+        initPeriod = function() {
+          var p, pPattern, period, tr;
+          tr = scope.timeRange;
+          scope.period = "m";
+          if (tr == null) {
+            return "m";
+          }
+          pPattern = /^-?[0-9]{0,2}([a-z])$/;
+          p = pPattern.exec(tr);
+          period = _.find(PERIODS, function(authPeriod) {
+            return (p != null) && (p[1] === authPeriod);
+          });
+          if (period != null) {
+            scope.period = period;
+          }
+          return scope.period;
+        };
+        initFinancialYearEndMonth = function() {
+          scope.financialYearEndMonth = 6;
+          return ImpacMainSvc.load().then(function(config) {
+            if ((config != null) && (config.currentOrganization != null) && parseInt(config.currentOrganization.financial_year_end_month)) {
+              return scope.financialYearEndMonth = parseInt(config.currentOrganization.financial_year_end_month);
+            }
+          });
+        };
+        getPeriod = function() {
+          if (scope.period != null) {
+            return scope.period;
+          } else {
+            return initPeriod();
+          }
+        };
+        getPeriodWord = function() {
+          return ImpacUtilities.getPeriodWord(getPeriod());
+        };
+        getNumberOfPeriods = function() {
+          if (scope.numberOfPeriods != null) {
+            return scope.numberOfPeriods;
+          } else {
+            return initNumberOfPeriods();
+          }
+        };
+        getTimeRange = function() {
+          var n, p;
+          n = getNumberOfPeriods();
+          p = getPeriod();
+          return "-" + n + p;
+        };
+        scope.formatPeriod = function() {
+          return ImpacUtilities.formatPeriod(getNumberOfPeriods(), getPeriod());
+        };
+        scope.formatDate = function(aDate) {
+          return aDate.format('Do MMM YYYY');
+        };
+        scope.fromDate = function() {
+          var financialYearStartYear, n, word;
+          n = getNumberOfPeriods();
+          word = getPeriodWord();
+          if (word.slice(0, 1) === "f") {
+            financialYearStartYear = moment().year() - 1;
+            if (moment().month() >= 6) {
+              financialYearStartYear = moment().year();
+            }
+            financialYearStartYear = financialYearStartYear - n;
+            return moment(financialYearStartYear + "-" + (scope.financialYearEndMonth + 1) + "-01", "YYYY-M-DD");
+          } else if (word.slice(0, 1) === "w") {
+            return moment().subtract(n, word).startOf('isoweek');
+          } else {
+            return moment().subtract(n, word).startOf(word);
+          }
+        };
+        scope.toDate = function() {
+          return moment();
+        };
+        w.settings.push(setting);
+        return scope.deferred.resolve(setting);
+      }
+    };
+  }]);
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets-settings.width', []);
+
+  module.controller('SettingWidthCtrl', ["$scope", "$element", "$timeout", "$log", "ImpacWidgetsSvc", "ImpacDashboardsSvc", function($scope, $element, $timeout, $log, ImpacWidgetsSvc, ImpacDashboardsSvc) {
+    var elem, hideOnResize, i, len, ref, setting, w;
+    w = $scope.parentWidget;
+    setting = {};
+    setting.key = "width";
+    setting.isInitialized = false;
+    ref = $element.parents();
+    for (i = 0, len = ref.length; i < len; i++) {
+      elem = ref[i];
+      if (angular.element(elem).hasClass('content')) {
+        $scope.contentElements = angular.element(elem).children();
+        break;
+      }
+    }
+    hideOnResize = function(elements) {
+      var j, len1;
+      if (!(elements && elements.length > 0)) {
+        return;
+      }
+      for (j = 0, len1 = elements.length; j < len1; j++) {
+        elem = elements[j];
+        angular.element(elem).animate({
+          opacity: 0
+        }, 0);
+      }
+      return $timeout(function() {
+        var k, len2, results;
+        results = [];
+        for (k = 0, len2 = elements.length; k < len2; k++) {
+          elem = elements[k];
+          results.push(angular.element(elem).animate({
+            opacity: 1
+          }, 200));
+        }
+        return results;
+      }, 300);
+    };
+    w.toggleExpanded = function(save) {
+      if (save == null) {
+        save = true;
+      }
+      $scope.expanded = !$scope.expanded;
+      if (save) {
+        ImpacWidgetsSvc.updateWidgetSettings(w, false, true);
+      }
+      hideOnResize($scope.contentElements);
+      if ($scope.expanded) {
+        return w.width = parseInt($scope.max);
+      } else {
+        return w.width = parseInt($scope.min);
+      }
+    };
+    w.isExpanded = function() {
+      return $scope.expanded;
+    };
+    setting.initialize = function() {
+      if (w.width != null) {
+        $scope.expanded = w.width === parseInt($scope.max);
+        return setting.isInitialized = true;
+      }
+    };
+    setting.toMetadata = function() {
+      var newWidth;
+      if ($scope.expanded) {
+        newWidth = $scope.max;
+      } else {
+        newWidth = $scope.min;
+      }
+      return {
+        width: parseInt(newWidth)
+      };
+    };
+    ImpacDashboardsSvc.pdfModeEnabled().then(null, null, function() {
+      $scope.pdfMode = true;
+      $scope.initiallyExpanded = !!$scope.expanded;
+      if (!$scope.initiallyExpanded) {
+        return w.toggleExpanded(false);
+      }
+    });
+    ImpacDashboardsSvc.pdfModeCanceled().then(null, null, function() {
+      $scope.pdfMode = false;
+      if (!$scope.initiallyExpanded) {
+        return w.toggleExpanded(false);
+      }
+    });
+    w.settings.push(setting);
+    return $scope.deferred.resolve($scope.parentWidget);
+  }]);
+
+  module.directive('settingWidth', ["$templateCache", function($templateCache) {
+    return {
+      restrict: 'A',
+      scope: {
+        parentWidget: '=',
+        deferred: '=',
+        min: '@',
+        max: '@'
+      },
+      template: $templateCache.get('widgets-settings/width.tmpl.html'),
+      controller: 'SettingWidthCtrl'
+    };
+  }]);
 
 }).call(this);
 

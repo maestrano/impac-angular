@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.info-panel',[])
 
-module.directive('commonInfoPanel', ($templateCache) ->
+module.directive('commonInfoPanel', ($templateCache, ImpacUtilities) ->
   return {
     restrict: 'A'
     scope: {
@@ -19,9 +19,13 @@ module.directive('commonInfoPanel', ($templateCache) ->
         scope.onClose()
 
       scope.getWidgetTemplateName = ->
-        cat_array = (w.metadata.template || w.endpoint).split('/')
-        cat_array = cat_array.slice(cat_array.length - 2, cat_array.length)
-        result = "#{cat_array[0]} - #{cat_array[1].replace('_', ' ')}"
-        return result
+        cssClass = ImpacUtilities.fetchWidgetCssClass(w)
+        return "" unless cssClass
+
+        cssClassArray = cssClass.split('-')
+        widgetCategory = cssClassArray.slice(0,1)
+        widgetName = cssClassArray.slice(1, cssClassArray.length).join(' ')
+
+        return "#{widgetCategory} - #{widgetName}"
   }
 )

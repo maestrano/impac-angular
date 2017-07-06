@@ -25,11 +25,6 @@ gulp.task('scripts', function () {
 gulp.task('locales', function () {
   return gulp.src(path.join(conf.paths.src, '**/locales/*.json'))
     .pipe(gulp.dest(conf.paths.dist))
-    .pipe($.angularTranslate({
-      module: 'maestrano.impac',
-      standalone: false,
-      filename: 'impac-angular.locales.js'}))
-    .pipe(gulp.dest(conf.paths.tmp + '/scripts')) // Output locales.js
 })
 
 // Scripts to run impac.version in the console (need to refresh first)

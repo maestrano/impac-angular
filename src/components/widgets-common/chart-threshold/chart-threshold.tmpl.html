@@ -1,0 +1,18 @@
+<div class="attach-panel" ng-if="$ctrl.showPanel">
+  <div class="attach-panel-text">
+    <span class="panel-text-label">{{$ctrl.kpiCreateLabel}}: </span>
+    <input type="text" class="panel-text-input" ng-model="$ctrl.draftTarget.value">
+    <span class="panel-text-currency" ng-bind="$ctrl.widget.metadata.currency"></span>
+  </div>
+  <div class="action-buttons">
+    <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()" ng-disabled="$ctrl.loading">Cancel</button>
+    <button class="btn btn-primary has-spinner" ng-click="$ctrl.saveKpi()">
+      <i ng-show="$ctrl.loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+      <span ng-hide="$ctrl.loading">{{$ctrl.isEditingKpi ? 'Update' : 'Save'}}</span>
+    </button>
+    <button ng-if="$ctrl.isEditingKpi" class="btn btn-danger has-spinner" ng-click="$ctrl.deleteKpi()">
+      <i ng-show="$ctrl.loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+      <span ng-hide="$ctrl.loading">Delete</span>
+    </button>
+  </div>
+</div>
