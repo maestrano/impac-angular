@@ -85,18 +85,25 @@ module.run(function($http, DevSession) {
 // -------------------------------------------------------
 module.config(function($translateProvider) {
   $translateProvider.useMissingTranslationHandlerLog();
+  $translateProvider.useStaticFilesLoader(
+    {
+      prefix: 'locales/',
+      suffix: '.json'
+    }
+  );
 });
 
 // --
 // Impac! Angular Provider Service Configurations.
 // -------------------------------------------------------
-module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
+module.run(function ($translate, ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, ImpacDeveloper, DevUser, DevSettings) {
 
   var defaults = DevSettings.defaults();
 
   // Configure ImpacRoutes
   // -------------------------------------------------------
   ImpacRoutes.configureRoutes(DevSettings.buildRoutesConfig(defaults.mnoeUrl, defaults.impacUrl, defaults.multipleWatchableMode));
+  ImpacRoutes.configureBolts('v2', defaults.bolts)
 
 
   // Configure ImpacTheming - aesthetic and feature customisations across the app
@@ -104,7 +111,8 @@ module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, Impac
   ImpacTheming.configure({
     dhbConfig: {
       showDhbHeading: true,
-      dhbHeadingText: 'Your business at a glance, in real-time'
+      dhbHeadingText: 'Your business at a glance, in real-time',
+      multiCompany: true
     },
     dhbSelectorConfig: {
       selectorType: 'dropdown',
@@ -131,4 +139,6 @@ module.run(function (ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTheming, Impac
   // -------------------------------------------------------
   ImpacLinking.linkData(DevSettings.buildLinkingConfig(defaults.orgUid, defaults.mnoeUrl));
 
+  // Locale to be used
+  $translate.use('en-AU');
 });

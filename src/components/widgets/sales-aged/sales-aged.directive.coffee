@@ -22,23 +22,18 @@ module.controller('WidgetSalesAgedCtrl', ($scope, $q, ChartFormatterSvc, $filter
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.aged_sales) && !_.isEmpty(w.content.dates)
+    $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.aged_sales) && !_.isEmpty(w.content.dates)
 
-      $translate([
-        "impac.widget.sales_aged.value_sold_taxes",
-        "impac.widget.sales_aged.value_sold_no_taxes",
-        "impac.widget.sales_aged.quantity_sold"]).then(
-          (translations) ->
-            $scope.filterOptions = [
-              {label: translations["impac.widget.sales_aged.value_sold_taxes"], value: 'gross_value_sold'},
-              {label: translations["impac.widget.sales_aged.value_sold_no_taxes"], value: 'net_value_sold'},
-              {label: translations["impac.widget.sales_aged.quantity_sold"], value: 'quantity_sold'}
-            ]
+    if $scope.isDataFound
+      $scope.filterOptions = [
+        {label: $translate.instant("impac.widget.sales_aged.value_sold_taxes"), value: 'gross_value_sold'},
+        {label: $translate.instant("impac.widget.sales_aged.value_sold_no_taxes"), value: 'net_value_sold'},
+        {label: $translate.instant("impac.widget.sales_aged.quantity_sold"), value: 'quantity_sold'}
+      ]
 
-            $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-                w.metadata && w.metadata.filter == o.value
-              ) || $scope.filterOptions[0])
-        )
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+          w.metadata && w.metadata.filter == o.value
+        ) || $scope.filterOptions[0])
 
   $scope.getTotal = (anIndex) ->
     if $scope.isDataFound && anIndex >=0 && anIndex < w.content.aged_sales[$scope.filter.value].length

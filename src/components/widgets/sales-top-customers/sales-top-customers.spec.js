@@ -4,15 +4,22 @@ describe('<> sales-top-customers widget', function () {
   var scope, widget, $q, $window, ImpacUtilities, moment;
 
   var template = angular.element('<div widget-sales-top-customers />');
-
-  // Injects services needed by the directive & this spec
+  
   beforeEach(function () {
-    module('maestrano.impac');
+    module('maestrano.impac', function ($translateProvider) {
+      // Stubs the en-AU language with locale file
+      jasmine.getJSONFixtures().fixturesPath = "base/dist/locales/";
+      $translateProvider.translations('en-AU', getJSONFixture("en-AU.json"));
+      $translateProvider.preferredLanguage('en-AU');
+    })
+
+    // Injects services needed by the directive & this spec
     inject(function (_$q_, _$window_, _ImpacUtilities_) {
       $q = _$q_;
       $window = _$window_;
       ImpacUtilities = _ImpacUtilities_;
     });
+
     moment = $window.moment
   });
 

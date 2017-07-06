@@ -30,6 +30,7 @@ angular
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
+        multiCompany: false
       # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'
@@ -114,13 +115,6 @@ angular
         tagging:
           enabled: true
 
-      translateSettings:
-        preferredLanguage: 'en-gb'
-        fallbackLanguage: ''
-        customLocaleFiles:
-          prefix: ''
-          suffix: '.json'
-
 
     #=======================================
     # Public methods available in config
@@ -129,7 +123,7 @@ angular
       angular.merge(options, configOptions)
 
     #=======================================
-    _$get = () ->
+    _$get = ($window, ImpacUtilities) ->
       service = @
       #=======================================
       # Public methods available as service
@@ -137,9 +131,49 @@ angular
       service.get = ->
         return options
 
+      # Methods for generating parsing / generating colors
+      service.color =
+        ###
+        #   @desc Generates a random shade of the given hexcode color.
+        ###
+        generateRandomShade: (hexcode)->
+          baseHsl = $window.Color(hexcode).hsl()
+          shade   = $window.Color().hsl(
+              baseHsl.h
+              ImpacUtilities.getRandomInteger(40, 100)
+              ImpacUtilities.getRandomInteger(50, 85)
+            )
+            .rgb()
+          "rgb(#{shade.r}, #{shade.g}, #{shade.b})"
+
+        ###
+        #   @desc Generates a palette of shades starting from the given hexcode color
+        #   @param {string} [hexcode] A color hexcode to base the palette from.
+        #   @param {integer} [amount] The amount of colour needed.
+        #   @param {Array<number>} [options.lightnessRange] A minimum and maximum lightness range.
+        ###
+        generateShadesPalette: (hexcode, amount, options = {})->
+          options.lightnessRange ||= [50, 90]
+          baseHsl   = $window.Color(hexcode).hsl()
+          increment = options.lightnessRange.slice(0,2).reduce((min, max)-> max - min) / amount
+          palette   = []
+          counter   = 0
+          while counter < amount
+            shade = $window.Color().hsl(
+                baseHsl.h
+                baseHsl.s
+                options.lightnessRange[0]
+              )
+              .rgb()
+            palette.push("rgb(#{shade.r}, #{shade.g}, #{shade.b})")
+            options.lightnessRange[0] += increment
+            counter++
+          return palette
+
+
       return service
     # inject service dependencies here, and declare in _$get function args.
-    _$get.$inject = [];
+    _$get.$inject = ['$window', 'ImpacUtilities']
     # attach provider function onto the provider object
     provider.$get = _$get
 

@@ -203,8 +203,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       self.canAccessAnalyticsData(self.currentOrganization)
 
     $scope.createDashboardModal.isMultiCompanyAvailable = ->
-      # TODO: re-enable somewhere
-      $scope.createDashboardModal.organizations.length > 1 && $scope.createDashboardModal.multiOrganizationReporting
+      $scope.createDashboardModal.organizations.length > 1 && ImpacTheming.get().dhbConfig.multiCompany
 
     $scope.createDashboardModal.canAccessAnalyticsData = (organization) ->
       organization.current_user_role && (
@@ -292,10 +291,20 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     $scope.getWidgetsForSelectedCategory = ->
       if $scope.selectedCategory? && $scope.widgetsTemplates?
         return _.select $scope.widgetsTemplates, (template) ->
+
+          # Category defined by the widget's template
           if template.metadata && template.metadata.template
             widgetCategory = template.metadata.template.split('/')[0]
+          
+          # Category defined by the bolt
+          else if template.metadata && template.metadata.bolt_path
+            bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == template.metadata.bolt_path
+            widgetCategory = bolt.category
+          
+          # Category defined by the widget endpoint
           else
             widgetCategory = template.endpoint.split('/')[0]
+
           widgetCategory == $scope.selectedCategory
       else
         return []

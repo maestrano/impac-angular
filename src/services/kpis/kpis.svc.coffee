@@ -1,6 +1,6 @@
 angular
   .module('impac.services.kpis', [])
-  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming) ->
+  .service('ImpacKpisSvc', ($log, $http, $filter, $q, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacAlerts, ImpacEvents, IMPAC_EVENTS, ImpacUtilities, ImpacTheming, toastr) ->
 
     _self = @
 
@@ -26,12 +26,15 @@ angular
 
     @getAttachableKpis = (widgetEngine) ->
       deferred = $q.defer()
-      _self.load().then(->
-        templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
-          return false unless _.isArray(kpiTemplate.attachables)
-          _.includes(kpiTemplate.attachables, widgetEngine)
-        )
-        deferred.resolve(templates)
+      _self.load().then(
+        ->
+          templates = _.select(_self.getKpisTemplates(), (kpiTemplate) ->
+            return false unless _.isArray(kpiTemplate.attachables)
+            _.includes(kpiTemplate.attachables, widgetEngine)
+          )
+          deferred.resolve(templates)
+        ->
+          deferred.reject()
       )
       deferred.promise
 
@@ -91,35 +94,12 @@ angular
 
             params.sso_session = ssoSessionId if ssoSessionId
 
-            promises = impac: index(params)
-
-            # Get local kpis
-            if ImpacRoutes.kpis.local()
-              promises.local = $http.get(ImpacRoutes.kpis.local())
-
-            return $q.all(promises).then(
-              (response) ->
-                # Clear store
-                _.remove(_self.config.kpisTemplates, -> true)
-
-                if response.impac? && response.impac.data? && !_.isEmpty(response.impac.data.kpis)
-                  # fill array with new values from Impac! api
-                  for template in response.impac.data.kpis
-                    template.source ||= 'impac'
-                    _self.config.kpisTemplates.push template
-
-                if response.local && response.local.data? && !_.isEmpty(response.local.data.kpis)
-                  # fill array with new values from local endpoints
-                  for template in response.local.data.kpis
-                    template.source = 'local'
-                    _self.config.kpisTemplates.push template
-
-                $log.info("Impac! - KpisSvc: loaded")
-
-              (err) ->
-                $log.error('Impac! - KpisSvc: Cannot retrieve kpis templates list', err)
-                $q.reject(err)
-            ).finally(-> _self.locked = false )
+            fetchKpisTemplates(params).finally(->
+              _self.locked = false
+              $log.info("Impac! - KpisSvc: loaded")
+            )
+          (err)->
+            $log.error('Impac! - KpisSvc: failed to load.', err)
         ).finally(-> _self.locked = false )
 
       else
@@ -158,11 +138,6 @@ angular
     #====================================
     # Formatting methods
     #====================================
-    # TODO: to be replaced with @validateKpiTargets when attach-kpi is extended to handle
-    # targets for multiple watchables.
-    @validateKpiTarget = (kpi)->
-      (kpi.limit && kpi.limit.value && kpi.limit.mode)
-
     @validateKpiTargets = (targetsByWatchable)->
       return false if _.isEmpty targetsByWatchable
       _.every(targetsByWatchable, (targets)->
@@ -211,12 +186,53 @@ angular
     # CRUD methods
     #====================================
 
-    # Retrieve all the available kpis from Impac!
-    # Note: index is a private method that should be called only by load()
-    index = (params) ->
-      host = ImpacRoutes.kpis.index()
-      url = [host,decodeURIComponent( $.param( params ) )].join('?')
-      return $http.get(url)
+    # Retrieve all the available kpis from various sources
+    # Note: fetchKpisTemplates is a private method that should be called only by load()
+    fetchKpisTemplates = (params)->
+      kpisTemplates = []
+      kpisTemplatesPromises = []
+
+      # Templates from Impac! api
+      # Serialize nested params as inline
+      impacUrl = [ImpacRoutes.kpis.index(), decodeURIComponent( $.param( params ) )].join('?')
+      kpisTemplatesPromises.push $http.get(impacUrl).then(
+        (response)->
+          for template in response.data.kpis
+            template.source ||= 'impac'
+            kpisTemplates.push template
+        (error) ->
+          $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from Impac!")
+      )
+
+      # Templates from local endpoints
+      if ImpacRoutes.kpis.local()
+        $http.get(ImpacRoutes.kpis.local()).then(
+          (response)->
+            # fill array with new values from local endpoints
+            for template in response.data.kpis
+              template.source = 'local'
+              _self.config.kpisTemplates.push template
+          (error) ->
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from local", "#{ImpacRoutes.kpis.local()}")
+        )
+
+      # Templates from each registered Bolt
+      for bolt in ImpacRoutes.bolts()
+        kpisTemplatesPromises.push $http.get("#{bolt.path}/kpis").then(
+          (response) ->
+            for template in response.data.kpis
+              template.metadata ||= {}
+              template.metadata.bolt_path = bolt.path
+              kpisTemplates.push(template)
+          (error) ->
+            $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{bolt.path}/kpis")
+        )
+
+      $q.all(kpisTemplatesPromises).then(->
+        _.remove(_self.config.kpisTemplates, -> true)
+        for template in kpisTemplates
+          _self.config.kpisTemplates.push template
+      )
 
     # Retrieve data for kpi from api
     @show = (kpi, refreshCache=false) ->
@@ -282,7 +298,7 @@ angular
             params.metadata = {} unless params.metadata?
             params.metadata.hist_parameters = dates
           ).finally( ->
-            angular.extend params, opts
+            angular.merge params, opts
 
             url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)
 
@@ -296,6 +312,7 @@ angular
                 deferred.resolve(kpi)
               (err) ->
                 $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                toastr.error('Unable to create KPI', 'Error')
                 deferred.reject(err)
             )
           )
@@ -304,7 +321,7 @@ angular
       )
       return deferred.promise
 
-    @update = (kpi, params) ->
+    @update = (kpi, params = {}, showKpi = true) ->
       kpi.isLoading = true
       _self.load().then(->
 
@@ -324,7 +341,7 @@ angular
               ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
               angular.extend(kpi, success.data)
               _self.buildKpiWatchables(kpi)
-              _self.show(kpi)
+              if showKpi then _self.show(kpi) else kpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
               $q.reject(err)

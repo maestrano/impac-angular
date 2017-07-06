@@ -1,9 +1,68 @@
 # Impac! Frontend Changelog
 
+### v1.5.2 | 2017 - Week 27
+
+#### Adds
+- Re-adds the ability to enable multi-company dashboards
+- [IMPAC-598] Better UI for threshold KPI
+
+#### Fixes
+- Delegate i18n configuration to the host app
+- [IMPAC-592] Use `$translate.instant` in synchronous `initContext` methods
+
+#### Config changes
+- Multi-company dashboards enable/disable option to Theming service
+```javascript
+dhbConfig: {
+  multiCompany: true
+}
+```
+- Remove `translateSettings` from ThemingSvc
+- Host application must configure `$translateProvider`:
+- - indicate how to load the locale files
+- - configure `preferredLanguage` and `fallbackLanguage`
+- - manage the active language using `$translate.use`
+
+#### Dependencies
+- Mno-enterprise >= 3.3.0
+- Mno-enterprise Angular >= 1.1.0
+
+-------------------------------------------------------------
+
+### v1.5.1 | 2017 - Week 23
+
+#### Adds
+- Routes to Bolt widgets and KPIs (discovery + show)
+- Template for Cash Balance widget
+- Template for Cash Projection widget
+- Component for chart-threshold setting
+- Attach threshold KPI to Cash Projection chart
+- Adds a HighchartsFactory for creating & updating highchart objects 
+
+#### Fixes
+- Settings Time Slider not displaying range period label
+- Multi-currency broken on EBITDA widget
+
+#### Config changes
+- Default route to Impac! KPIs endpoints is now `api/v1/kpis`
+
+#### Dependencies
+- Impac! API >= v1.5.8
+
+-------------------------------------------------------------
+
 ### v1.5.0 | 2017 - Week 20
 
 #### Adds
 - Internationalization
+- Upgrades Angular to v1.6
+- Upgrades Angular Bootstrap to v2.3
+- [IMPAC-99] Change routes for widgets :index and :show
+- sso_session now passed as basic_auth param for widgets :show
+
+#### Fixes
+- Uses Firefox instead of PhantomJS for tests fixing issues with Angular v1.6
+- [IMPAC-465] Fix dates picker positioning
 
 #### Config Changes
 - Internationalization options for angular-translate via ImpacThemingSvc
@@ -18,6 +77,10 @@ translateSettings: {
   }
 }
 ```
+
+#### Dependencies
+- Impac! API >= 1.5.0
+- Mno-enterprise > v3.1.2
 
 -------------------------------------------------------------
 

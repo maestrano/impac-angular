@@ -27,30 +27,21 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
       buildFxTotals()
       $scope.ratesDate = moment.now()
 
-    $translate([
-      'impac.widget.sales_list.value_sold_taxes',
-      'impac.widget.sales_list.value_sold_no_taxes',
-      'impac.widget.sales_list.quantity_sold',
-      'impac.widget.sales_list.value_purchased_taxes',
-      'impac.widget.sales_list.value_purchased_no_taxes',
-      'impac.widget.sales_list.quantity_purchased']).then(
-      (translations) ->
-        $scope.filterOptions = [
-          {label: translations['impac.widget.sales_list.value_sold_taxes'], value: 'gross_value_sold'},
-          {label: translations['impac.widget.sales_list.value_sold_no_taxes'], value: 'net_value_sold'},
-          {label: translations['impac.widget.sales_list.quantity_sold'], value: 'quantity_sold'},
-          {label: translations['impac.widget.sales_list.value_purchased_taxes'], value: 'gross_value_purchased'},
-          {label: translations['impac.widget.sales_list.value_purchased_no_taxes'], value: 'net_value_purchased'},
-          {label: translations['impac.widget.sales_list.quantity_purchased'], value: 'quantity_purchased'}
-        ]
+      $scope.filterOptions = [
+        {label: $translate.instant('impac.widget.sales_list.value_sold_taxes'), value: 'gross_value_sold'},
+        {label: $translate.instant('impac.widget.sales_list.value_sold_no_taxes'), value: 'net_value_sold'},
+        {label: $translate.instant('impac.widget.sales_list.quantity_sold'), value: 'quantity_sold'},
+        {label: $translate.instant('impac.widget.sales_list.value_purchased_taxes'), value: 'gross_value_purchased'},
+        {label: $translate.instant('impac.widget.sales_list.value_purchased_no_taxes'), value: 'net_value_purchased'},
+        {label: $translate.instant('impac.widget.sales_list.quantity_purchased'), value: 'quantity_purchased'}
+      ]
 
-        $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
-          o.value == w.metadata.filter
-        ) || $scope.filterOptions[0])
-    )
-    
-    $scope.unCollapsed = w.metadata.unCollapsed || []
-    sortData()
+      $scope.filter = angular.copy(_.find($scope.filterOptions, (o) ->
+        o.value == w.metadata.filter
+      ) || $scope.filterOptions[0])
+
+      $scope.unCollapsed = w.metadata.unCollapsed || []
+      sortData()
 
   $scope.toggleCollapsed = (categoryName) ->
     if categoryName?
@@ -105,9 +96,9 @@ module.controller('WidgetSalesListCtrl', ($scope, $q, ChartFormatterSvc, ImpacWi
               saleFxTotals.push({
                 currency: currency,
                 amount: amount,
-                rate: total.rate  
+                rate: total.rate
               })
-        
+
         sale.formattedFxTotals = saleFxTotals unless _.isEmpty(saleFxTotals)
 
   # Mini-settings

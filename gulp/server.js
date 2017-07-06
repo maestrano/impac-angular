@@ -20,7 +20,8 @@ function browserSyncInit(baseDir, browser) {
   routes = {
     '/bower_components': 'bower_components',
     '/dist': 'dist',
-    '/assets': 'workspace/assets'
+    '/assets': 'workspace/assets',
+    '/locales': 'src/locales'
   };
 
   var server = {
@@ -50,5 +51,9 @@ gulp.task('serve', ['workspace', 'watch'], function () {
 // If rebuilding the library on every change is using too much cpu,
 // or you want to manually build.
 gulp.task('serve:noreload', ['workspace'], function () {
+  browserSyncInit(conf.paths.workspace);
+});
+
+gulp.task('serve:nobuild', function () {
   browserSyncInit(conf.paths.workspace);
 });
