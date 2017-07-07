@@ -1,0 +1,10 @@
+<div ng-if="$ctrl.hasTemplates()">
+  <label class="control-label" translate>Templates</label>
+  <div class="templates">
+    <ul class="list-unstyled">
+      <li class="template" ng-repeat="template in $ctrl.templates track by $index" ng-click="$ctrl.templateOnClick(template)" ng-class="{ 'selected': $ctrl.isSelected(template) }">
+        <span ng-bind="template.name"></span>
+      </li>
+    </ul>
+  </div>
+</div>

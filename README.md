@@ -216,6 +216,9 @@ angular
     dhbConfig:
       showDhbHeading: false
       dhbHeadingText: 'Impac!'
+      designerMode:
+        enabled: false
+        dhbLabelName: 'Template'
     dhbSelectorConfig:
       selectorType: 'dropdown'
       customTmplPath: null

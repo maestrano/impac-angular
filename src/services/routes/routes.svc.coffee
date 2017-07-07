@@ -18,6 +18,12 @@ angular
         update: null
         del: null
 
+      dashboardTemplates:
+        index: null
+        create: null
+        update: null
+        del: null
+
       widgets:
         index: null
         show: null
@@ -46,13 +52,13 @@ angular
         appInstancesSync: null
 
     # Default bolts (proxied by Impac! API) - to be defined in configuration
-    bolts = 
+    bolts =
       version: 'v2'
       engines: []
 
     #=======================================
     # Local helper methods
-    #=======================================    
+    #=======================================
     isBoltValid = (bolt) ->
       console.warn('Bolt has no provider', bolt) unless bolt.provider
       console.warn('Bolt has no name', bolt) unless bolt.name
@@ -69,7 +75,7 @@ angular
       for bolt in engines
         unless isBoltValid(bolt)
           console.warn('Default bolts will be used:', bolts)
-          return false 
+          return false
       angular.extend(bolts, { version: version, engines: engines })
 
     #=======================================
@@ -107,6 +113,13 @@ angular
             defaults.dashboards.del.replace(':id', id)
           else
             service.dashboards.show(id)
+
+      service.dashboardTemplates =
+        index: ->
+          if defaults.dashboardTemplates.index
+            defaults.dashboardTemplates.index
+          else
+            "#{defaults.mnoHub}/admin/dashboard_templates"
 
       service.widgets =
         index: (dashboard_id) ->
