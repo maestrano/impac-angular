@@ -2,6 +2,8 @@
 
 ### v1.5.3 | 2017 - Week 28
 
+#### Adds
+- [IMPAC-506] Add currency rates service (requires Impac! >= v1.5.10)
 
 -------------------------------------------------------------
 
