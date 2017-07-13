@@ -158,7 +158,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       dashboard.organization_ids = _.pluck(organizations, 'id')
       dashboard.metadata = _.omit(dashboard.metadata, ['organization_ids'])
 
-      ImpacDashboardsSvc.create(dashboard).then(
+      promise = if dashboard.id
+        ImpacDashboardsSvc.copy(dashboard)
+      else
+        ImpacDashboardsSvc.create(dashboard)
+
+      promise.then(
         (dashboard) ->
           self.errors = ''
           self.instance.close()
