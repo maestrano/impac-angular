@@ -49,7 +49,7 @@
                   <strong>{{getLastValue(statement) | mnoCurrency : statement.currency}}</strong>
                 </div>
 
-                <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
+                <div class="selection-tag" ng-if="isSelected(statement)" ng-style="{ 'background-color': getSelectLineColor(statement) }"/>
               </div>
 
               <!-- Accounts lines -->
@@ -63,7 +63,7 @@
                       {{getLastValue(employee) | mnoCurrency : employee.currency}}
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(employee, statement.name)" style="background-color: {{ getSelectLineColor(employee, statement.name) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(employee, statement.name)" ng-style="{ 'background-color': getSelectLineColor(employee, statement.name) }"/>
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@
 
             <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
               <div class="col-xs-7">
-                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+                <i class="fa fa-circle" ng-style="{ 'margin': '0px 8px', 'color': getElementChartColor($index) }" />
                 {{getName(element) | titleize}}
               </div>
               <div class="col-xs-5 text-right">

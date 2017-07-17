@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-506] Add currency rates service (requires Impac! >= v1.5.10)
+- [IMPAC-631] Use ngStyle when binding values instead of angular expressions fixing IE support
 
 -------------------------------------------------------------
 

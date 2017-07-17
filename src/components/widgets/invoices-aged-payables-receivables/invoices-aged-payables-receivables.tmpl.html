@@ -50,7 +50,7 @@
                   <strong>{{getTotalSum(payables) | mnoCurrency : payables.currency}}</strong>
                 </div>
 
-                <div class="selection-tag" ng-if="isSelected(payables)" style="background-color: {{ getSelectLineColor(payables) }}"/>
+                <div class="selection-tag" ng-if="isSelected(payables)" ng-style="{ 'background-color': getSelectLineColor(payables) }"/>
               </div>
 
               <div class="row" uib-collapse="isCollapsed(payables)">
@@ -68,7 +68,7 @@
                       </span>
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(supplier, payables.name)" style="background-color: {{ getSelectLineColor(supplier, payables.name) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(supplier, payables.name)" ng-style="{ 'background-color': getSelectLineColor(supplier, payables.name) }"/>
                   </div>
                 </div>
               </div>
@@ -91,7 +91,7 @@
                   <strong>{{getTotalSum(receivables) | mnoCurrency : receivables.currency}}</strong>
                 </div>
 
-                <div class="selection-tag" ng-if="isSelected(receivables)" style="background-color: {{ getSelectLineColor(receivables) }}"/>
+                <div class="selection-tag" ng-if="isSelected(receivables)" ng-style="{ 'background-color': getSelectLineColor(receivables) }"/>
               </div>
 
               <div class="row" uib-collapse="isCollapsed(receivables)">
@@ -109,7 +109,7 @@
                       </span>
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(customer, receivables.name)" style="background-color: {{ getSelectLineColor(customer, receivables.name) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(customer, receivables.name)" ng-style="{ 'background-color': getSelectLineColor(customer, receivables.name) }"/>
                   </div>
                 </div>
               </div>
@@ -184,7 +184,7 @@
 
             <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
               <div class="col-xs-2">
-                <i class="fa fa-circle" style="margin: 0px 8px; color: {{getElementChartColor($index)}}" />
+                <i class="fa fa-circle" ng-style="{ 'margin': '0px 8px', 'color': getElementChartColor($index) }" />
               </div>
               <div class="col-xs-6">
                 {{getName(element) | titleize}}
