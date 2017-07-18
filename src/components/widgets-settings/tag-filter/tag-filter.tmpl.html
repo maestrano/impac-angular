@@ -8,7 +8,7 @@
         <span ng-hide="$index==0">AND</span>
       </div>
       <div class="col-xs-8 tags-col">
-        <tags-input ng-model="rule.tags" replace-spaces-with-dashes="false" >
+        <tags-input ng-model="rule.tags" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
           <auto-complete source="loadTagList($query)" min-length="1" max-results-to-show="5" debounce-delay="0" load-on-down-arrow="true"></auto-complete>
         </tags-input>
       </div>
