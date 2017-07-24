@@ -16,8 +16,8 @@
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend" style="max-height: 115px;">
         <div class="title">
-          <i class="fa fa-circle" ng-style="{ 'color': assetsColor }" translate="impac.widget.acc_ass_vs_liab.asset.many"></i> |
-          <i class="fa fa-circle" ng-style="{ 'color': liabilitiesColor }" translate="impac.widget.acc_ass_vs_liab.liability.many"></i>
+          <i class="fa fa-circle" ng-style="{ 'color': assetsColor }"><span translate="impac.widget.acc_ass_vs_liab.asset.many"></span></i> |
+          <i class="fa fa-circle" ng-style="{ 'color': liabilitiesColor }"><span translate="impac.widget.acc_ass_vs_liab.liability.many"></span></i>
         </div>
         <div class="row">
           <div ng-repeat="data in companiesList" ng-class="{'col-md-6': (widget.content.companies.length > 1), 'col-md-12': (widget.content.companies.length == 1)}">
