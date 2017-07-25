@@ -12,6 +12,7 @@
 - [IMPAC-637] Fix customer details fields always empty
 - [IMPAC-638] Improve employees list period filter options by adding 'yearly' and 'hourly'.
 - [IMPAC-635] Fix sales top customers table display glitch
+- [IMPAC-634] Fix payroll summary chart not rendering
 
 -------------------------------------------------------------
 
