@@ -2622,245 +2622,6 @@ body {
   .fa.success { color: @flurogreen; }
 }
 
-chart-threshold {
-
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
-      }
-    }
-
-    .panel-text-label {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-    .panel-text-input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-    }
-    .panel-text-currency {
-      font-weight: bold;
-      color: #000;
-    }
-  }
-
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
-      display: inline-block;
-    }
-
-    & > .btn.has-spinner {
-      i { padding: 0 15px; }
-    }
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-    white-space: normal;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -2882,17 +2643,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
-
-  .price {
-    .center-bold(0px);
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2905,6 +2655,22 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
+  }
+}
+
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+
+  .price {
+    .center-bold(0px);
+  }
+}
 
 .analytics .widget-item .content.accounts-balance-sheet {
   .tall-widget();
@@ -3112,29 +2878,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-detailed-classifications {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 540px;
-  }
-
-  .account-class-title {
-    margin-bottom: 8px;
-    margin-left: 11px;
-  }
-
-  .time-period-info {
-    text-align: right;
-  }
-
-  .widget-line.header.sorting  {
-    border-bottom: 1px solid #ccc;
-  }
-}
-
-
-
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -3163,6 +2906,29 @@ chart-threshold {
     overflow: visible;
   }
 }
+
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+
+  .time-period-info {
+    text-align: right;
+  }
+
+  .widget-line.header.sorting  {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+
 
 .analytics .widget-item .content.accounts-expense-weight {
   .legend {
@@ -3757,6 +3523,245 @@ chart-threshold {
     }
   }
 }
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+    }
+
+    & > .btn.has-spinner {
+      i { padding: 0 15px; }
+    }
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+
+  .confirm-delete-popover {
+    position: absolute;
+    top: 90px;
+    left: 15%;
+    width: 70%;
+    background-color: #17262d;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 50;
+    color: white;
+    text-align: center;
+    cursor: default;
+    .box-shadow(0px 0px 25px 4px black);
+    border: solid 1px @impac-widget-background-color;
+    white-space: normal;
+
+    h4 {
+      color: @impac-widget-top-buttons-color;
+      font-weight: bold;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -3770,25 +3775,6 @@ chart-threshold {
 
 }
 
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: 20px;
-  }
-}
 .analytics .settings.attach-kpis {
   .attach-kpi {
     padding: 8px 5px;
@@ -3888,6 +3874,25 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: 20px;
+  }
+}
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
@@ -3989,25 +3994,6 @@ chart-threshold {
   button { width: 30px; }
 }
 
-.analytics .settings.organizations {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 
@@ -4084,6 +4070,25 @@ chart-threshold {
   }
 }
 
+.analytics .settings.organizations {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
