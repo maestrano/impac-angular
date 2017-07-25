@@ -11,6 +11,7 @@
 - [IMPAC-640] Add spacing between assets vs liabilities legend labels
 - [IMPAC-637] Fix customer details fields always empty
 - [IMPAC-638] Improve employees list period filter options by adding 'yearly' and 'hourly'.
+- [IMPAC-635] Fix sales top customers table display glitch
 
 -------------------------------------------------------------
 
