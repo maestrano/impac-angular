@@ -24,10 +24,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
   $scope.sortedColumn = 'employee'
 
   periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
-  $translate('impac.widget.settings.time_period.period.' + periodName).then(
-    (translation) ->
-      $scope.period_translation = _.capitalize(translation.toLowerCase())
-  )
+  $scope.periodTranslation = $translate.instant("impac.widget.settings.time_period.period.#{periodName}")
 
   # Widget specific methods
   w.initContext = ->
@@ -52,7 +49,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     ChartFormatterSvc.getColor(index)
 
   $scope.getLastValue = (element) ->
-    element.totals[element.totals.length - 2] if element.totals?
+    (element.totals && element.totals[element.totals.length - 1]) || 0
 
   $scope.getTotalSum = (element) ->
     _.reduce(element.totals, (memo, num) ->
@@ -235,11 +232,12 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
       else
         # Current chart
-        pieData = _.map $scope.selectedElements, (elem) ->
+        pieData = _.map($scope.selectedElements, (elem) ->
           {
             label: $filter('titleize')($scope.getName({name: elem.name})),
             value: $scope.getLastValue(elem),
           }
+        )
         pieOptions = {
           showTooltips: true,
           percentageInnerCutout: 50,

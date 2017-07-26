@@ -54,7 +54,7 @@
                   <strong>{{getTotalForPeriod(statement) | mnoCurrency : statement.currency}}</strong>
                 </div>
 
-                <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
+                <div class="selection-tag" ng-if="isSelected(statement)" ng-style="{ 'background-color': getSelectLineColor(statement) }"/>
               </div>
 
               <div class="row" uib-collapse="isCollapsed(statement)">
@@ -71,7 +71,7 @@
                       {{getTotalForPeriod(sale) | mnoCurrency : sale.currency}}
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(sale, statement.name)" style="background-color: {{ getSelectLineColor(sale, statement.name) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(sale, statement.name)" ng-style="{ 'background-color': getSelectLineColor(sale, statement.name) }"/>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@
 
             <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
               <div class="col-xs-1">
-                <i class="fa fa-circle" style="color: {{getElementChartColor($index)}}" />
+                <i class="fa fa-circle" ng-style="{ 'color': getElementChartColor($index) }" />
               </div>
               <div class="col-xs-7">
                 {{element.name | titleize}}

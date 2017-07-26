@@ -51,7 +51,7 @@
             <div class="col-xs-12" ng-if="isComparisonMode()">
               <div class="row widget-line" ng-repeat="groupedAccount in account.accounts track by $index">
                 <div class="col-xs-1">
-                  <i class="fa fa-circle" style="color: {{getAccountColor(groupedAccount)}}" />
+                  <i class="fa fa-circle" ng-style="{ 'color': getAccountColor(groupedAccount) }" />
                 </div>
                 <div class="col-xs-6">
                   {{groupedAccount.name}}
@@ -67,7 +67,7 @@
 
             <!-- Simple comparison between accounts -->
             <div ng-if="!isComparisonMode()" class="col-xs-1">
-              <i class="fa fa-circle" style="color: {{getAccountColor(account)}}" />
+              <i class="fa fa-circle" ng-style="{ 'color': getAccountColor(account) }" />
             </div>
             <div ng-if="!isComparisonMode()" class="col-xs-6">
               {{account.name}}

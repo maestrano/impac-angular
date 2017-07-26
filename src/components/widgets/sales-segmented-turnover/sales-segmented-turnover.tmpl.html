@@ -31,7 +31,7 @@
 
           <div class="row widget-line" ng-repeat="range in widget.content.ranges">
             <div class="col-xs-2">
-              <i class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
+              <i class="fa fa-circle" ng-style="{ 'color': getColorByIndex($index) }" />
             </div>
             <div class="col-xs-7">
               {{getRangeLabel(range.label)}}
