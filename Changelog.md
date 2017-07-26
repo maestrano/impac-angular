@@ -1,5 +1,21 @@
 # Impac! Frontend Changelog
 
+### v1.5.3 | 2017 - Week 28
+
+#### Adds
+- [IMPAC-506] Add currency rates service (requires Impac! >= v1.5.10)
+
+#### Fixes
+- Fix widget kpis currency not updated on currency change
+- [IMPAC-631] Use ngStyle when binding values instead of angular expressions fixing IE support
+- [IMPAC-640] Add spacing between assets vs liabilities legend labels
+- [IMPAC-637] Fix customer details fields always empty
+- [IMPAC-638] Improve employees list period filter options by adding 'yearly' and 'hourly'.
+- [IMPAC-635] Fix sales top customers table display glitch
+- [IMPAC-634] Fix payroll summary chart not rendering
+
+-------------------------------------------------------------
+
 ### v1.5.2 | 2017 - Week 27
 
 #### Adds

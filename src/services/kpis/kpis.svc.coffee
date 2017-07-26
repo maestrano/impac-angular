@@ -109,12 +109,12 @@ angular
     @massAssignAll = (metadata) ->
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
-          _self.update(k, {metadata: metadata}).then(->
-            _self.show(k).then(
-              (renderedKpi)-> # success
-              (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
-            )
-          )
+          _self.update(k, {metadata: metadata})
+        for w in _self.getCurrentDashboard().widgets
+          for k in w.kpis
+            _self.update(k, {metadata: metadata}, false)
+
+        return
       )
 
     @isRefreshing = false
