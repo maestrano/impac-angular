@@ -127,6 +127,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       self.model = { name: '' }
       self.errors = ''
       self.isLoading = false
+      $scope.createDashboardModal.isTemplate = false
       self.dhbLabelName = ImpacTheming.getDhbLabelName()
       self.instance = $uibModal.open(self.config)
 
@@ -221,6 +222,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       )
 
     $scope.createDashboardModal.onSelectTemplate = ({ template })->
+      $scope.createDashboardModal.isTemplate = !_.isEmpty(template)
       $scope.createDashboardModal.model = template
 
     #====================================
