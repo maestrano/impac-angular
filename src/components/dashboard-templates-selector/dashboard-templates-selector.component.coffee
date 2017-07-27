@@ -9,6 +9,7 @@ module.component('dashboardTemplatesSelector', {
     ctrl.$onInit = ->
       ctrl.templates = []
       ctrl.selectedTemplate = {}
+      ctrl.isTemplatesMode = false
       ImpacDhbTemplatesSvc.index().then(
         (templates)->
           ctrl.templates = templates
@@ -25,6 +26,11 @@ module.component('dashboardTemplatesSelector', {
 
     ctrl.isSelected = (template)->
       _.isEqual(template, ctrl.selectedTemplate)
+
+    ctrl.toggleTemplatesMode = ->
+      ctrl.isTemplatesMode = !ctrl.isTemplatesMode
+      # Clear selected template
+      ctrl.templateOnClick({}) unless ctrl.isTemplatesMode
 
     return ctrl
 })

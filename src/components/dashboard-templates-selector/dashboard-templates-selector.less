@@ -1,4 +1,19 @@
 dashboard-templates-selector {
+  .templates-header {
+    display: flex;
+    .templates-toggle {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      font-size: 20px;
+      i.fa {
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+      }
+    }
+  }
   .templates {
     border: 1px solid #ccc;
     box-shadow: inset 0px 0px 1px 0px #ccc;
