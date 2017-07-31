@@ -17,6 +17,7 @@ angular
         create: null
         update: null
         del: null
+        copy: null
 
       dashboardTemplates:
         index: null
@@ -108,18 +109,25 @@ angular
             defaults.dashboards.update.replace(':id', id)
           else
             service.dashboards.show(id)
+
         delete: (id) ->
           if defaults.dashboards.del
             defaults.dashboards.del.replace(':id', id)
           else
             service.dashboards.show(id)
 
+        copy: (sourceId) ->
+          if defaults.dashboards.copy
+            defaults.dashboards.copy.replace(':id', sourceId)
+          else
+            "#{service.dashboards.show(sourceId)}/copy"
+
       service.dashboardTemplates =
         index: ->
           if defaults.dashboardTemplates.index
             defaults.dashboardTemplates.index
           else
-            "#{defaults.mnoHub}/admin/dashboard_templates"
+            "#{defaults.mnoHub}/impac/dashboard_templates"
 
       service.widgets =
         index: (dashboard_id) ->

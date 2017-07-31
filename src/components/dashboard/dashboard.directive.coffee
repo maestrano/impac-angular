@@ -127,6 +127,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       self.model = { name: '' }
       self.errors = ''
       self.isLoading = false
+      $scope.createDashboardModal.isTemplate = false
       self.dhbLabelName = ImpacTheming.getDhbLabelName()
       self.instance = $uibModal.open(self.config)
 
@@ -158,7 +159,12 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       dashboard.organization_ids = _.pluck(organizations, 'id')
       dashboard.metadata = _.omit(dashboard.metadata, ['organization_ids'])
 
-      ImpacDashboardsSvc.create(dashboard).then(
+      promise = if dashboard.id
+        ImpacDashboardsSvc.copy(dashboard)
+      else
+        ImpacDashboardsSvc.create(dashboard)
+
+      promise.then(
         (dashboard) ->
           self.errors = ''
           self.instance.close()
@@ -216,6 +222,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       )
 
     $scope.createDashboardModal.onSelectTemplate = ({ template })->
+      $scope.createDashboardModal.isTemplate = !_.isEmpty(template)
       $scope.createDashboardModal.model = template
 
     #====================================
