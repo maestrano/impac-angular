@@ -124,7 +124,7 @@ angular
                 (success) ->
                   $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
                   deferred.resolve(_self.config)
-                (errors) ->
+                (error) ->
                   deferred.reject(error)
               )
               .finally( -> _self.loadLocked = false )
@@ -142,7 +142,7 @@ angular
         $timeout(->
           _self.load(force).then(
             (success) -> deferred.resolve(success)
-            (errors) -> deferred.reject(errors)
+            (error) -> deferred.reject(error)
           )
         , 1000)
 

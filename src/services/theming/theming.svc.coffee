@@ -30,6 +30,7 @@ angular
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
+        multiCompany: false
         designerMode:
           enabled: false
           dhbLabelName: 'Template'

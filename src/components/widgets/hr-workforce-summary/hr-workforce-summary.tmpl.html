@@ -35,7 +35,7 @@
         <div class="widget-lines-container">
           <div class="row widget-line" ng-repeat="data in widget.content.summary.data">
             <div class="col-xs-2">
-              <i class="fa fa-circle" style="color: {{getColorByIndex($index)}}" />
+              <i class="fa fa-circle" ng-style="{ 'color': getColorByIndex($index) }" />
             </div>
             <div class="col-xs-7">
               {{widget.content.summary.filter == "salary_range" ? formatSalaryRange(data) : data.label}}

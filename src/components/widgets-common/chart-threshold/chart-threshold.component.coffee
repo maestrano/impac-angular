@@ -23,7 +23,9 @@ module.component('chartThreshold', {
       # -------
       ctrl.kpi = {}
       ctrl.showPanel = false
-      ctrl.draftTarget = ''
+      ctrl.isEditingKpi = false
+      ctrl.loading = false
+      ctrl.draftTarget = value: ''
       ctrl.chartShrinkSize ||= 38
       ctrl.disabled ||= false
       ctrl.kpiTargetMode ||= 'min'
@@ -42,47 +44,83 @@ module.component('chartThreshold', {
     ctrl.createKpi = (target)->
       return if ctrl.disabled
       # Only 1 kpi per widget is supported & prevent panel showing if target is currently drafting
-      return unless target && _.isEmpty(ctrl.widget.kpis) && _.isEmpty(ctrl.draftTarget)
-      ctrl.draftTarget = target
-      # As this method can be called from parent component, dirty checking in this ctrl
-      # scope are not checked, this ensures value change is detected as per usual.
-      $timeout(->
-        ctrl.showPanel = true
-        shrinkChart()
-      )
+      return unless target && _.isEmpty(ctrl.widget.kpis) && _.isEmpty(ctrl.draftTarget.value)
+      ctrl.draftTarget.value = target
+      toggleKpiPanel()
+      return
+
+    ctrl.editKpi = (options)->
+      return if ctrl.showPanel || ctrl.disabled || _.isEmpty(ctrl.widget.kpis)
+      ctrl.isEditingKpi = true
+      angular.extend(ctrl.draftTarget, options)
+      toggleKpiPanel()
       return
 
     ctrl.cancelCreateKpi = ->
-      ctrl.draftTarget = ''
-      ctrl.showPanel = false
-      growChart()
+      toggleKpiPanel()
+      $timeout(->
+        ctrl.draftTarget.value = ''
+        ctrl.isEditingKpi = false
+        ctrl.loading = false
+      , 100)
       return
 
     ctrl.saveKpi = ->
+      return if ctrl.loading
+      ctrl.loading = true
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.watchables[0]] = [{
-        "#{ctrl.kpiTargetMode}": ctrl.draftTarget
+        "#{ctrl.kpiTargetMode}": ctrl.draftTarget.value
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
-      # TODO: improve the way the hist_params are applied onto widget kpis
-      if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
-        params.metadata.hist_parameters = widgetHistParams
+      promise = if ctrl.isEditingKpi
+        ImpacKpisSvc.update(getKpi(), params, false)
       else
-        params.metadata.hist_parameters = ImpacUtilities.yearDates()
-      params.widget_id = ctrl.widget.id
-      ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
+        # TODO: improve the way the hist_params are applied onto widget kpis
+        if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
+          params.metadata.hist_parameters = widgetHistParams
+        else
+          params.metadata.hist_parameters = ImpacUtilities.yearDates()
+        params.widget_id = ctrl.widget.id
+        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params)
+      promise.then(
         (kpi)->
           ctrl.widget.kpis.push(kpi)
           ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+        (err)->
+          toastr.error('Failed to save KPI', 'Error')
+      ).finally(->
+        ctrl.cancelCreateKpi()
+      )
+
+    ctrl.deleteKpi = ->
+      return if ctrl.loading
+      ctrl.loading = true
+      kpiDesc = "#{ctrl.widget.name} #{(kpi = getKpi()).element_watched}"
+      ImpacKpisSvc.delete(kpi).then(
+        ->
+          toastr.success("Deleted #{kpiDesc} KPI")
+          _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
+          ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
+        ->
+          toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
       ).finally(->
         ctrl.cancelCreateKpi()
       )
 
     # Private
 
+    getKpi = ->
+      _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
+
     onChartNotify = (chart)->
       ctrl.chart = chart
+      validateHistParameters()
       Highcharts.addEvent(chart.container, 'click', onChartClick)
+      thresholdSeries = _.select(chart.series, (s)-> s.name.toLowerCase().includes('threshold'))
+      _.each(thresholdSeries, (t)->
+        Highcharts.addEvent(t, 'click', (event)-> onThresholdClick(t))
+      )
       return
 
     onChartClick = (event)->
@@ -95,10 +133,22 @@ module.component('chartThreshold', {
       if !value || _.isNaN(value) then return else value = value.toFixed(2)
       ctrl.createKpi(value)
 
+    onThresholdClick = (thresholdSerie)->
+      thresholdValue = (opts = thresholdSerie.options).data[opts.data.length - 1]
+      ctrl.editKpi(kpiId: opts.kpiId, value: thresholdValue)
+
     disableAttachability = (logMsg)->
       ctrl.disabled = true
       toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
       $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
+
+    # As this method can be called from parent component or an event callback,
+    # $timeout to ensure value change is detected as per usual.
+    toggleKpiPanel = ->
+      $timeout(->
+        if ctrl.showPanel then growChart() else shrinkChart()
+        ctrl.showPanel = !ctrl.showPanel
+      )
 
     shrinkChart = ->
       return unless ctrl.chart
@@ -110,6 +160,13 @@ module.component('chartThreshold', {
       ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.chartShrinkSize, false)
       ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
 
+    # Disable threshold when selected time period is strictly in the past
+    validateHistParameters = ->
+      widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
+      # Widget histParams are YTD by default (when undefined on metadata),
+      # therefore in the past by default
+      ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day')
+      return
 
     return ctrl
 })

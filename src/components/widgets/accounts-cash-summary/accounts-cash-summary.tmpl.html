@@ -55,7 +55,7 @@
                   <strong>{{getLastVariance(statement)}}</strong>
                 </div>
 
-                <div class="selection-tag" ng-if="isSelected(statement)" style="background-color: {{ getSelectLineColor(statement) }}"/>
+                <div class="selection-tag" ng-if="isSelected(statement)" ng-style="{ 'background-color': getSelectLineColor(statement) }"/>
               </div>
 
               <!-- Accounts lines -->
@@ -72,7 +72,7 @@
                       {{getLastVariance(account)}}
                     </div>
 
-                    <div class="selection-tag" ng-if="isSelected(account, statement.name)" style="background-color: {{ getSelectLineColor(account) }}"/>
+                    <div class="selection-tag" ng-if="isSelected(account, statement.name)" ng-style="{ 'background-color': getSelectLineColor(account) }"/>
                   </div>
                 </div>
               </div>

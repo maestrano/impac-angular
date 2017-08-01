@@ -13,18 +13,39 @@ dhbSettings:
 
 -------------------------------------------------------------
 
-### v1.5.3 | 2017 - Week 30
+### v1.5.3 | 2017 - Week 28
+
+#### Adds
+- [IMPAC-506] Add currency rates service (requires Impac! >= v1.5.10)
+
+#### Fixes
+- Fix widget kpis currency not updated on currency change
+- [IMPAC-631] Use ngStyle when binding values instead of angular expressions fixing IE support
+- [IMPAC-640] Add spacing between assets vs liabilities legend labels
+- [IMPAC-637] Fix customer details fields always empty
+- [IMPAC-638] Improve employees list period filter options by adding 'yearly' and 'hourly'.
+- [IMPAC-635] Fix sales top customers table display glitch
+- [IMPAC-634] Fix payroll summary chart not rendering
 
 -------------------------------------------------------------
 
-### v1.5.2 | 2017 - Week 24
+### v1.5.2 | 2017 - Week 27
 
 #### Adds
+- Re-adds the ability to enable multi-company dashboards
+- [IMPAC-598] Better UI for threshold KPI
 
 #### Fixes
 - Delegate i18n configuration to the host app
+- [IMPAC-592] Use `$translate.instant` in synchronous `initContext` methods
 
 #### Config changes
+- Multi-company dashboards enable/disable option to Theming service
+```javascript
+dhbConfig: {
+  multiCompany: true
+}
+```
 - Remove `translateSettings` from ThemingSvc
 - Host application must configure `$translateProvider`:
 - - indicate how to load the locale files

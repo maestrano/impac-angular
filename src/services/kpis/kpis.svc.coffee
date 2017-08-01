@@ -109,12 +109,12 @@ angular
     @massAssignAll = (metadata) ->
       _self.load().then(->
         for k in _self.getCurrentDashboard().kpis
-          _self.update(k, {metadata: metadata}).then(->
-            _self.show(k).then(
-              (renderedKpi)-> # success
-              (errorResponse)-> $log.error("Unable to refresh all Kpis: #{errorResponse}")
-            )
-          )
+          _self.update(k, {metadata: metadata})
+        for w in _self.getCurrentDashboard().widgets
+          for k in w.kpis
+            _self.update(k, {metadata: metadata}, false)
+
+        return
       )
 
     @isRefreshing = false
@@ -321,7 +321,7 @@ angular
       )
       return deferred.promise
 
-    @update = (kpi, params) ->
+    @update = (kpi, params = {}, showKpi = true) ->
       kpi.isLoading = true
       _self.load().then(->
 
@@ -341,7 +341,7 @@ angular
               ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
               angular.extend(kpi, success.data)
               _self.buildKpiWatchables(kpi)
-              _self.show(kpi)
+              if showKpi then _self.show(kpi) else kpi
             (err) ->
               $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
               $q.reject(err)
