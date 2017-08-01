@@ -27,6 +27,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # Dashboard Settings
     # -------------------------------------
     $scope.dhbSettingsConfig = ImpacTheming.get().dhbSettings
+    $scope.createFromTemplateEnabled = $scope.dhbSettingsConfig.createFromTemplateEnabled
 
     # kpis
     # -------------------------------------
@@ -212,8 +213,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       self.canAccessAnalyticsData(self.currentOrganization)
 
     $scope.createDashboardModal.isMultiCompanyAvailable = ->
-      # TODO: re-enable somewhere
-      $scope.createDashboardModal.organizations.length > 1 && $scope.createDashboardModal.multiOrganizationReporting
+      $scope.createDashboardModal.organizations.length > 1 && ImpacTheming.get().dhbConfig.multiCompany
 
     $scope.createDashboardModal.canAccessAnalyticsData = (organization) ->
       organization.current_user_role && (

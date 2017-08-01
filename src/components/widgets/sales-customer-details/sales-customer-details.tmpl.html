@@ -23,27 +23,27 @@
         <div class="details-container">
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.email</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().email || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.email || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.phone</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().phone || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.phone || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.website</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().website || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.website || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.contact</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().contact || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.contact || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.city</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().city || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.city || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.sales_customer_details.label.country</label></div>
-            <div class="col-md-8"><pre>{{getCustomer().country || '-'}}</pre></div>
+            <div class="col-md-8"><pre>{{selectedCustomer.country || '-'}}</pre></div>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@
         <div class="details-container">
           <div class="row" style="border-bottom: solid 1px #e6e6e6; margin-bottom: 10px; padding-bottom: 5px;">
             <div class="col-md-3"><label translate>impac.widget.sales_customer_details.label.address</label></div>
-            <div class="col-md-9"><pre>{{formatAddress(getCustomer().full_address) || '-'}}</pre></div>
+            <div class="col-md-9"><pre>{{formatAddress(selectedCustomer.full_address) || '-'}}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-12 center legend">{{'impac.widget.sales_customer_details.from' | translate}} {{getFromDate() | date : 'd MMM yyyy'}} {{'impac.widget.sales_customer_details.to' | translate}} {{getToDate() | date : 'd MMM yyyy'}}:</div>

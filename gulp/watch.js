@@ -11,9 +11,8 @@ var conf = require('./conf');
 var browserSync = require('browser-sync');
 
 gulp.task('watch', function () {
-  gulp.watch('bower_components/**/*', ['workspace', browserSync.reload]);
-  gulp.watch('src/**/*', ['build', browserSync.reload]);
-  gulp.watch('workspace/**/*', function (event) {
+  gulp.watch('src/**/*', { interval: 1500 }, ['build', browserSync.reload]);
+  gulp.watch('workspace/**/*', { interval: 1500 }, function (event) {
     browserSync.reload(event.path);
   });
 });

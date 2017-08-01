@@ -20,7 +20,12 @@ chart-threshold {
       color: @impac-widget-text-color;
       font-size: 13px;
     }
-    .panel-text-value {
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
       font-weight: bold;
       color: #000;
     }
@@ -32,6 +37,10 @@ chart-threshold {
     button {
       padding: 3px 6px;
       display: inline-block;
+    }
+
+    & > .btn.has-spinner {
+      i { padding: 0 15px; }
     }
   }
 }

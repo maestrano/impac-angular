@@ -30,6 +30,7 @@ angular
       dhbConfig:
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
+        multiCompany: false
         designerMode:
           enabled: false
           dhbLabelName: 'Template'
@@ -101,6 +102,7 @@ angular
           productDescriptor: 'Impac!'
         currency:
           locked: false
+        createFromTemplateEnabled: false
       widgetSettings:
         histModeChoser:
           currentLabels:
