@@ -4,22 +4,25 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
   return {
     restrict: 'A',
     scope: {
-      currency: '='
+      currency: '=' # deprecated - current currency is now retrieved using ImpacDashboardsSvc
     },
     link: (scope, element, attrs) ->
       scope.locked = ImpacTheming.get().dhbSettings.currency.locked
 
+      init = (dhb) ->
+        scope.currentDhb = dhb
+        scope.data =
+          currency: dhb.currency
+          savedCurrency: dhb.currency
+
+      ImpacDashboardsSvc.dashboardChanged().then(null, null, (newDhb) -> init(newDhb))
+
       ImpacMainSvc.load().then(
         (mainConfig) ->
-          ImpacDashboardsSvc.load().then ->
-            # scope initialization
-            scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
-            scope.currencies = mainConfig.currencies
+          scope.currencies = mainConfig.currencies
+          ImpacDashboardsSvc.load().then (config) ->
+            init(config.currentDashboard)
       )
-
-      scope.data =
-        currency: scope.currency
-        savedCurrency: scope.currency
 
       scope.massAssignCurrency = ->
         data = {currency: scope.data.currency}
@@ -32,7 +35,6 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
             toastr.error("Unable to select currency '#{scope.data.currency}'", 'Error')
             scope.data.currency = scope.data.savedCurrency
         )
-
 
     template: $templateCache.get('dashboard-settings/currency.tmpl.html'),
   }

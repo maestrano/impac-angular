@@ -3,7 +3,10 @@
 ### v1.5.4 | 2017 - Week 31
 
 #### Adds
-- Ability to create dashboards from templates
+- [IMPAC-603] Ability to create dashboards from templates
+
+#### Fixes
+- [IMPAC-619] Fix currency drop-down update when changing dashboard
 
 ### Config changes
 ```coffeescript
