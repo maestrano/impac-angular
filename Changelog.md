@@ -7,6 +7,7 @@
 
 #### Fixes
 - [IMPAC-619] Fix currency drop-down update when changing dashboard
+- Fix alerts settings button when no alert is attached to a KPI
 
 ### Config changes
 ```coffeescript
