@@ -1,5 +1,22 @@
 # Impac! Frontend Changelog
 
+### v1.5.4 | 2017 - Week 31
+
+#### Adds
+- Ability to create dashboards from templates
+
+### Config changes
+```coffeescript
+dhbSettings:
+  createFromTemplateEnabled: false
+```
+
+-------------------------------------------------------------
+
+### v1.5.3 | 2017 - Week 30
+
+-------------------------------------------------------------
+
 ### v1.5.2 | 2017 - Week 24
 
 #### Adds

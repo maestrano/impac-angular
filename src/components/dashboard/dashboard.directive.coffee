@@ -27,6 +27,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # Dashboard Settings
     # -------------------------------------
     $scope.dhbSettingsConfig = ImpacTheming.get().dhbSettings
+    $scope.createFromTemplateEnabled = $scope.dhbSettingsConfig.createFromTemplateEnabled
 
     # kpis
     # -------------------------------------

@@ -70,7 +70,7 @@
       </form>
 
       <!-- Create from Templates -->
-      <dashboard-templates-selector on-select="onSelectTemplate($event)"></dashboard-templates-selector>
+      <dashboard-templates-selector on-select="onSelectTemplate($event)" ng-if="createFromTemplateEnabled"></dashboard-templates-selector>
 
       <!-- End row col -->
     </div>

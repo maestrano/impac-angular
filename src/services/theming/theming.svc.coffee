@@ -101,6 +101,7 @@ angular
           productDescriptor: 'Impac!'
         currency:
           locked: false
+        createFromTemplateEnabled: false
       widgetSettings:
         histModeChoser:
           currentLabels:
