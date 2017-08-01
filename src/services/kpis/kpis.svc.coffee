@@ -405,7 +405,7 @@ angular
 
       return $q.all(promises).then(
         (success) ->
-          kpi.alerts ||= {}
+          kpi.alerts ||= []
           for resp in success
             # if "deleted" is received, remove the alert from the kpi.alerts array
             if resp.data.deleted
