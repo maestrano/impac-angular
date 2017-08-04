@@ -1,5 +1,22 @@
 # Impac! Frontend Changelog
 
+### v1.5.4 | 2017 - Week 31
+
+#### Adds
+- [IMPAC-603] Ability to create dashboards from templates
+
+#### Fixes
+- [IMPAC-619] Fix currency drop-down update when changing dashboard
+- Fix alerts settings button when no alert is attached to a KPI
+
+### Config changes
+```coffeescript
+dhbSettings:
+  createFromTemplateEnabled: false
+```
+
+-------------------------------------------------------------
+
 ### v1.5.3 | 2017 - Week 28
 
 #### Adds

@@ -38,35 +38,6 @@ describe('<> dashboard-setting-currency', function () {
     });
   });
 
-  describe('.link', function(){
-    beforeEach(function() {
-      subjectScope = compile();
-      spyOn(subjectScope, 'massAssignCurrency').and.stub();
-      subjectScope.$digest();
-    });
-
-    it('defines scope.currency', function () {
-      expect(subjectScope.currency).toEqual('cur1');
-    })
-
-    it('defines the scope.data object', function () {
-      expect(subjectScope.data.currency).toEqual('cur1')
-      expect(subjectScope.data.savedCurrency).toEqual('cur1')
-    })
-
-    it('defines scope.currentDhb', function() {
-      expect(subjectScope.currentDhb).toEqual(currentDhb);
-    });
-
-    it('defines scope.currencies', function() {
-      expect(subjectScope.currencies).toEqual(currencies);
-    });
-
-    it('defines scope.massAssignCurrency()', function() {
-      expect(subjectScope.massAssignCurrency).toBeDefined();
-    });
-  });
-
   describe('#massAssignCurrency()', function() {
     var updateSpy;
     beforeEach(function() {

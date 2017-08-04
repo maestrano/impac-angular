@@ -121,7 +121,8 @@ module.run(function ($translate, ImpacLinking, ImpacAssets, ImpacRoutes, ImpacTh
     dhbSettings: {
       syncApps: {
         show: function() { return false; }
-      }
+      },
+      createFromTemplateEnabled: true
     }
   });
 
