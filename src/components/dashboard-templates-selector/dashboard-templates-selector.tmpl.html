@@ -1,0 +1,21 @@
+<div ng-hide="$ctrl.hasTemplates() || $ctrl.hideLoader" class="loader" align="center">
+  <div>
+    <i class="fa fa-spinner fa-pulse fa-3x"></i>
+  </div>
+</div>
+
+<div ng-if="$ctrl.hasTemplates()">
+  <div class="templates-header">
+    <label class="control-label" translate>Create from Template:</label>
+    <div class="templates-toggle">
+      <i ng-class="{'fa-toggle-off': !$ctrl.isTemplatesMode, 'fa-toggle-on': $ctrl.isTemplatesMode}" class="fa" ng-click="$ctrl.toggleTemplatesMode()"></i>
+    </div>
+  </div>
+  <div class="templates" ng-if="$ctrl.isTemplatesMode">
+    <ul class="list-unstyled">
+      <li class="template" ng-repeat="template in $ctrl.templates track by $index" ng-click="$ctrl.templateOnClick(template)" ng-class="{ 'selected': $ctrl.isSelected(template) }">
+        <span ng-bind="template.name"></span>
+      </li>
+    </ul>
+  </div>
+</div>

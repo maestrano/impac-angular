@@ -277,6 +277,25 @@ angular
 
         return deferred.promise
 
+    @copy = (dashboard) ->
+      $q.reject('The dashboard you are trying to copy does not have an id') unless dashboard.id
+
+      data = { dashboard: dashboard }
+
+      _self.load().then(
+        (config) ->
+          $http.post(ImpacRoutes.dashboards.copy(dashboard.id), data).then(
+            (success) ->
+              newDhb = success.data
+              _self.config.dashboards.push(newDhb)
+              _self.setCurrentDashboard(newDhb.id)
+              $q.resolve(newDhb)
+
+            (error) ->
+              $log.error("Impac! - DashboardsSvc: Cannot copy dashboard with parameters: #{angular.toJson(dashboard)}", error)
+              $q.reject(error)
+          )
+      )
 
     @delete = (id) ->
       deferred = $q.defer()
