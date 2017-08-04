@@ -10,12 +10,15 @@ module.component('dashboardTemplatesSelector', {
       ctrl.templates = []
       ctrl.selectedTemplate = {}
       ctrl.isTemplatesMode = false
+      ctrl.hideLoader = false
       ImpacDhbTemplatesSvc.index().then(
         (templates)->
           ctrl.templates = templates
         ->
-          ctrl.hideLoader = true
           toastr.error('Failed to retrieve dashboard templates. You can still create your dashboard from scratch.', 'Error')
+      ).finally(
+        ->
+          ctrl.hideLoader = true
       )
 
     ctrl.hasTemplates = ->
