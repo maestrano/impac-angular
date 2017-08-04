@@ -1,3 +1,9 @@
+<div ng-hide="$ctrl.hasTemplates() || $ctrl.hideLoader" class="loader" align="center">
+  <div>
+    <i class="fa fa-spinner fa-pulse fa-3x"></i>
+  </div>
+</div>
+
 <div ng-if="$ctrl.hasTemplates()">
   <div class="templates-header">
     <label class="control-label" translate>Create from Template:</label>

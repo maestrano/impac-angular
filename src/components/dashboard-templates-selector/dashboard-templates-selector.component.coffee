@@ -14,7 +14,8 @@ module.component('dashboardTemplatesSelector', {
         (templates)->
           ctrl.templates = templates
         ->
-          toastr.error('Failed to retrieve dashboard templates', 'Error')
+          ctrl.hideLoader = true
+          toastr.error('Failed to retrieve dashboard templates. You can still create your dashboard from scratch.', 'Error')
       )
 
     ctrl.hasTemplates = ->
