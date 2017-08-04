@@ -31,6 +31,9 @@ angular
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
         multiCompany: false
+        designerMode:
+          enabled: false
+          dhbLabelName: 'Template'
       # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'
@@ -99,7 +102,7 @@ angular
           productDescriptor: 'Impac!'
         currency:
           locked: false
-
+        createFromTemplateEnabled: false
       widgetSettings:
         histModeChoser:
           currentLabels:
@@ -128,6 +131,10 @@ angular
       #=======================================
       service.get = ->
         return options
+
+      service.getDhbLabelName = ->
+        designerModeOpts = options.dhbConfig.designerMode
+        if designerModeOpts.enabled then designerModeOpts.dhbLabelName else 'Dashboard'
 
       # Methods for generating parsing / generating colors
       service.color =
