@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.5.5 | 2017 - Week 32
+
+#### Fixes
+- [PF-162] Limit logo size and use single icon for dashboard create btn
+
+-------------------------------------------------------------
+
 ### v1.5.4 | 2017 - Week 31
 
 #### Adds
