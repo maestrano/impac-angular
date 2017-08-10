@@ -23,11 +23,12 @@
   </div>
 
   <div class="confirm-delete-popover" ng-show="showConfirmDelete">
-    <h4 translate>impac.widget.common.top_buttons.delete.title</h4>
+    <div class="title" translate>impac.widget.common.top_buttons.delete.title</div>
+    <p translate>impac.widget.common.top_buttons.delete.message</p>
     <p translate>impac.widget.common.top_buttons.delete.explanation</p>
     <div ng-hide="isDeletePopoverLoading">
-      <button ng-click="toggleDeleteMode()" class="btn btn-sm btn-default" translate>impac.widget.common.top_buttons.delete.cancel</button>
-      <button ng-click="deleteWidget()" class="btn btn-sm btn-danger" style="margin-left: 10px;" translate>impac.widget.common.top_buttons.delete.delete</button>
+      <button ng-click="toggleDeleteMode()" class="btn btn-xs btn-default" translate>impac.widget.common.top_buttons.delete.cancel</button>
+      <button ng-click="deleteWidget()" class="btn btn-xs btn-danger" translate>impac.widget.common.top_buttons.delete.delete</button>
     </div>
     <div ng-show="isDeletePopoverLoading" class="loader" align="center">
       <div>

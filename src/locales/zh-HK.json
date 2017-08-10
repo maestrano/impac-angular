@@ -145,7 +145,8 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "你好 {name}",
 
-  "impac.widget.common.top_buttons.delete.title": "你好 你好 你好 你好 你好 你好 你好 你好?",
+  "impac.widget.common.top_buttons.delete.title": "你好 你好",
+  "impac.widget.common.top_buttons.delete.message": "你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.widget.common.top_buttons.delete.explanation": "(你好 你好 你好 你好 你好)",
   "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
   "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",

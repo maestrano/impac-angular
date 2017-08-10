@@ -149,7 +149,8 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "Delete {name}",
 
-  "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
+  "impac.widget.common.top_buttons.delete.title": "Delete widget",
+  "impac.widget.common.top_buttons.delete.message": "Are you sure you want to delete this widget?",
   "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
   "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
   "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
