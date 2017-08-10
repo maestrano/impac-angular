@@ -25,15 +25,20 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     w.isLoading ||= true
     ImpacWidgetsSvc.show(w, refreshCache).then(
       (updatedWidget) ->
+        # Request demo data if no data found
+        if _.isEmpty updatedWidget.content
+          ImpacWidgetsSvc.show(updatedWidget, refreshCache, true)
+    ).finally(
+      ->
         #TODO: Accessibility should be treated differently (in service?)
         if $scope.isAccessibility
           $scope.initialWidth = w.width
           w.width = 12
         else if $scope.initialWidth
           w.width = $scope.initialWidth
-
-    ).finally( ->
-      w.isLoading = false
+        
+        # Deactivate loader
+        w.isLoading = false
     )
 
   $scope.initSettings = ->

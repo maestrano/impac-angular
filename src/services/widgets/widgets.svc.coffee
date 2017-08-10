@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -63,7 +63,7 @@ angular
       _self.update(widget, { metadata: meta }).then(
         (updatedWidget) ->
           if needContentReload
-            _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+            _self.show(updatedWidget, false, updatedWidget.demoData).finally( -> updatedWidget.isLoading = false )
       )
 
     # TODO: move logic in ImpacDashboardsSvc
@@ -90,7 +90,7 @@ angular
               wgt.isLoading = true
               _self.update(wgt, { metadata: wgt.metadata }).then(
                 (updatedWidget) ->
-                  _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
+                  _self.show(updatedWidget, false, updatedWidget.demoData).finally( -> updatedWidget.isLoading = false )
               )
       )
 
@@ -131,7 +131,7 @@ angular
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
           for w in currentDhb.widgets
             w.isLoading = true
-            _self.show(w, refreshCache).then(
+            _self.show(w, refreshCache, w.demoData).then(
               (renderedWidget) -> renderedWidget.isLoading = false
               # TODO: better error management
               (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
@@ -147,8 +147,10 @@ angular
     # CRUD methods
     # ====================================
 
-    @show = (widget, refreshCache=false) ->
+    @show = (widget, refreshCache=false, demo = false) ->
       deferred = $q.defer()
+
+      demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
 
       _self.load().then(
         ->
@@ -157,7 +159,7 @@ angular
             deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
 
           else
-            params = { metadata: widget.metadata }
+            params = { metadata: widget.metadata, demo_data: demoData }
             params.refresh_cache = true if refreshCache
 
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
@@ -179,7 +181,7 @@ angular
                 # Pushes new content to widget
                 content = success.data.content || success.data[widget.endpoint] || {}
                 name = success.data.name
-                angular.extend widget, {content: content, originalName: name}
+                angular.extend widget, {content: content, originalName: name, demoData: demoData}
 
                 # Initializes widget's context, and determines if the data has been found
                 widget.initContext() if angular.isDefined(widget.initContext)
