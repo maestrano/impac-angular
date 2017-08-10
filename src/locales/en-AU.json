@@ -68,8 +68,11 @@
   "impac.common.reduce":                   "reduce",
   "impac.common.expand":                   "expand",
 
-  "impac.data_not_found_config.main_message":     "Data not found",
-  "impac.data_not_found_config.link_message":     "Are you missing an app?",
+  "impac.data_not_found_config.title":            "Data not found",
+  "impac.data_not_found_config.main_message":     "You don't seem to have any data to display on this widget...",
+  "impac.data_not_found_config.link_message":     "Add an app",
+  "impac.data_not_found_config.see_example":      "See an example",
+  "impac.data_not_found_config.demo_data":        "Demo data",
   "impac.data_not_found_config.find_why":         "Find out why",
   "impac.widget.settings.hist.history":           "history",
   "impac.widget.settings.time_period.title":      "Time period selection",

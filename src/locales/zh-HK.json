@@ -68,8 +68,11 @@
   "impac.common.reduce":                   "你好",
   "impac.common.expand":                   "你好",
 
+  "impac.data_not_found_config.title":            "你好 你好 你好",
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
-  "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
+  "impac.data_not_found_config.link_message":     "你好 你好",
+  "impac.data_not_found_config.see_example":      "你好 你好",
+  "impac.data_not_found_config.demo_data":        "你好 你好",
   "impac.data_not_found_config.find_why":         "你好 你好 你好",
   "impac.widget.settings.hist.history":           "你好",
   "impac.widget.settings.time_period.title":      "你好 你好 你好",
