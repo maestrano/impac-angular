@@ -232,18 +232,31 @@ angular
           $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
 
+    # Remove blacklisted templates, authorize whitelisted ones
+    isTemplateAllowed = (template) ->
+      # Directly returns false if the template is not defined in the library
+      return false unless ImpacUtilities.fetchWidgetTemplatePath(template)
+
+      settings = ImpacTheming.get().widgetSelectorConfig
+      templateUid = ImpacUtilities.fetchWidgetCssClass(template)
+
+      if !_.isEmpty(settings.whitelist)
+        return _.includes(settings.whitelist, templateUid)
+      else if !_.isEmpty(settings.blacklist)
+        return !_.includes(settings.blacklist, templateUid)
+      else
+        return true
+
     @setWidgetsTemplates = (srcTemplates) ->
       return false if _.isEmpty(srcTemplates)
       srcTemplates = ImpacDeveloper.stubWidgetsTemplates(srcTemplates) if ImpacDeveloper.isEnabled()
 
-      # Shortcut reference
-      dstTemplates = _self.config.widgetsTemplates
-
       # Clears the existing templates list without removing the reference
+      dstTemplates = _self.config.widgetsTemplates
       dstTemplates.length = 0
       # Builds the templates list, omitting the widgets that aren't implemented in the library
       for template in srcTemplates
-        dstTemplates.push template if ImpacUtilities.fetchWidgetTemplatePath(template)
+        dstTemplates.push(template) if isTemplateAllowed(template)
 
       return dstTemplates
 

@@ -4,9 +4,20 @@
 
 #### Adds
 - Add MMK to currencies list
+- [IMPAC-647] Ability to whitelist / blacklist widgets templates
 
 #### Fixes
 - [PF-162] Limit logo size and use single icon for dashboard create btn
+
+### Config changes
+```coffeescript
+# whitelist takes precedence over blacklist
+# when both are empty, all templates are displayed
+widgetSelectorConfig:
+  whitelist: []
+  blacklist: []
+```
+
 
 -------------------------------------------------------------
 
