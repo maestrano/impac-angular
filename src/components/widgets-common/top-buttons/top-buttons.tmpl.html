@@ -16,24 +16,9 @@
       <span class="text-hide" translate>impac.widget.common.top_buttons.info_popup.edit</span>
     </button>
 
-    <button class="btn top-button btn-close" ng-click="toggleDeleteMode()" ng-show="parentWidget.hasDeleteAbility">
+    <button class="btn top-button btn-close" ng-click="onToggleDeleteWidget()" ng-show="parentWidget.hasDeleteAbility">
       <i class="fa fa-times-circle-o fa-lg"></i>
       <span class="text-hide" translate>impac.widget.common.top_buttons.info_popup.delete</span>
     </button>
-  </div>
-
-  <div class="confirm-delete-popover" ng-show="showConfirmDelete">
-    <div class="title" translate>impac.widget.common.top_buttons.delete.title</div>
-    <p translate>impac.widget.common.top_buttons.delete.message</p>
-    <p translate>impac.widget.common.top_buttons.delete.explanation</p>
-    <div ng-hide="isDeletePopoverLoading">
-      <button ng-click="toggleDeleteMode()" class="btn btn-xs btn-default" translate>impac.widget.common.top_buttons.delete.cancel</button>
-      <button ng-click="deleteWidget()" class="btn btn-xs btn-danger" translate>impac.widget.common.top_buttons.delete.delete</button>
-    </div>
-    <div ng-show="isDeletePopoverLoading" class="loader" align="center">
-      <div>
-        <i class="fa fa-spinner fa-pulse fa-4x"></i>
-      </div>
-    </div>
   </div>
 </div>

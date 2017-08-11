@@ -111,6 +111,10 @@ module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
       scope.toggleEditTitle = ->
         scope.editTitle = !scope.editTitle
 
+      scope.showDeleteWidget = false
+      scope.toggleDeleteWidget = ->
+        scope.showDeleteWidget = !scope.showDeleteWidget
+
     ,template: $templateCache.get('widget/widget.tmpl.html')
   }
 )

@@ -1,0 +1,15 @@
+<div class="delete-widget">
+  <div class="overlay" ng-show="messageVisible" />
+  <div class="title" translate>impac.widget.common.top_buttons.delete.title</div>
+  <p translate>impac.widget.common.top_buttons.delete.message</p>
+  <p translate>impac.widget.common.top_buttons.delete.explanation</p>
+  <div ng-hide="loading">
+    <button ng-click="onDismiss()" class="btn btn-xs btn-default" translate>impac.widget.common.top_buttons.delete.cancel</button>
+    <button ng-click="deleteWidget()" class="btn btn-xs btn-danger" translate>impac.widget.common.top_buttons.delete.delete</button>
+  </div>
+  <div ng-show="loading" class="loader" align="center">
+    <div>
+      <i class="fa fa-spinner fa-pulse fa-4x"></i>
+    </div>
+  </div>
+</div>
