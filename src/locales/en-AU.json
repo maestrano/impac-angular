@@ -76,7 +76,6 @@
   "impac.widget.settings.time_period.time_range": "Time Range:",
   "impac.widget.settings.time_period.chart_interval": "Chart Interval:",
   "impac.widget.settings.time_period.chart_note": "Note: Chart is limited to {nbOfPeriods} intervals:",
-  "impac.widget.settings.time_period.period.hourly": "HOURLY",
   "impac.widget.settings.time_period.period.daily": "DAILY",
   "impac.widget.settings.time_period.period.weekly": "WEEKLY",
   "impac.widget.settings.time_period.period.monthly": "MONTHLY",
