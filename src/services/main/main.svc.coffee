@@ -11,7 +11,7 @@ angular
       organizations: []
       currentOrganization: {}
       userData: {}
-      currencies: ["USD","AUD","CAD","CNY","EUR","GBP","HKD","INR","JPY","NZD","SGD","PHP","AED","IDR"]
+      currencies: ["USD","AUD","CAD","CNY","EUR","GBP","HKD","INR","JPY","NZD","SGD","PHP","AED","IDR","MMK"]
 
     @getSsoSessionId = ->
       _self.config.userData.sso_session
