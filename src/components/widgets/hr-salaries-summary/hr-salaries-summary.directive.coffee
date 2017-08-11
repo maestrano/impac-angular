@@ -29,7 +29,6 @@ module.controller('WidgetHrSalariesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
     if $scope.isDataFound
       $scope.periodOptions = [
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly").toLowerCase()), value: "yearly"},
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.quarterly").toLowerCase()), value: "quarterly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly").toLowerCase()), value: "monthly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly").toLowerCase()), value: "weekly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.daily").toLowerCase()), value: "daily"}

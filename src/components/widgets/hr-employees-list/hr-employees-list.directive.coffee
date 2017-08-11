@@ -22,7 +22,6 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate)
 
       $scope.periodOptions = [
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly")), value: "yearly"},
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.quarterly")), value: "quarterly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly")), value: "monthly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly")), value: "weekly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.daily")), value: "daily"}
