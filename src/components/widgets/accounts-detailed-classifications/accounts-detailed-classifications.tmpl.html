@@ -13,7 +13,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)" class="widget-lines-container">
+    <div class="widget-lines-container">
 
       <!-- Tab header -->
       <div ng-hide="multiEntity" class="row widget-line header">
@@ -73,6 +73,6 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 </div>

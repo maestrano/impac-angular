@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode" class="widget-lines-container">
 
-    <div class="row selector" ng-show="(isDataFound==true)">
+    <div class="row selector">
       <div class="col-xs-12 text-right">
         <a ng-click="toggleTransactions()">{{transactionsCollapsed ? 'impac.widget.sales_top_customers.show' : 'impac.widget.sales_top_customers.hide' | translate}} {{'impac.widget.sales_top_customers.details' | translate}}</a> |
         <div setting-param-selector parent-widget="widget" param="limit_entries" options="limitEntriesOptions" selected="limitEntriesSelected" class="param-selector" deferred="::paramSelectorDeferred" no-reload/>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Content lines -->
-    <div class="row lines-group" ng-show="(isDataFound==true)" ng-repeat="entity in getEntities() | limitTo: limitEntriesSelected.value">
+    <div class="row lines-group" ng-repeat="entity in getEntities() | limitTo: limitEntriesSelected.value">
       <div class="col-xs-12">
 
         <div class="row widget-line">
@@ -66,11 +66,7 @@
       </div>
     </div>
 
-    <!-- Data not found line -->
-    <div class="row widget-line" ng-show="(isDataFound==false)">
-      <div class="col-xs-12" translate>impac.widget.sales_top_customers.no_sales</div>
-    </div>
-
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

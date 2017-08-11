@@ -19,14 +19,11 @@
       <span setting-dates-picker parent-widget="widget" from="widget.metadata.hist_parameters.from" to="widget.metadata.hist_parameters.to" keep-today="widget.metadata.hist_parameters.keep_today" deferred="::datesPickerDeferred" template="::datesPickerTemplate"/>
     </div>
 
-    <div class="chart-container" ng-show="(isDataFound==true)">
+    <div class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
     </div>
 
-    <div class="data-not-found" ng-show="(isDataFound==false)">
-      <div class="message" translate="impac.widget.sales_summary.no_data_found"></div>
-    </div>
-
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

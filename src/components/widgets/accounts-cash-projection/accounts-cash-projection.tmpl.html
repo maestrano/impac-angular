@@ -15,8 +15,7 @@
 
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
-    <!-- Data found -->
-    <div ng-show="(isDataFound==true)" class="">
+    <div>
       <!-- Set KPI target threshold panel -->
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
 
@@ -52,7 +51,6 @@
       </div>
     </div>
 
-    <!-- No data found -->
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width" />
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 </div>

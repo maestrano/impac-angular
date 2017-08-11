@@ -16,7 +16,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)">
+    <div>
       <!-- Will be hidden once an account is selected -->
       <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
 
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>
