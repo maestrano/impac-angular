@@ -1405,6 +1405,8 @@ body {
     img {
       float: left;
       margin-right: 15px;
+      max-width: 200px;
+      max-height: 150px;
       &.pdf-mode:hover { cursor: pointer; }
     }
     .caption {
@@ -2669,18 +2671,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
 chart-threshold {
 
   .attach-panel {
@@ -2725,6 +2715,18 @@ chart-threshold {
     & > .btn.has-spinner {
       i { padding: 0 15px; }
     }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
   }
 }
 
@@ -3219,22 +3221,6 @@ chart-threshold {
   }
 }
 
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    margin: 0;
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-  label {
-    display: flex;
-    justify-content: center;
-    line-height: 14px;
-  }
-}
-
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -3275,6 +3261,22 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+  }
+}
+
 .analytics .settings.time-period {
   padding: 0px 5px;
 
