@@ -1,5 +1,26 @@
 # Impac! Frontend Changelog
 
+### v1.5.5 | 2017 - Week 32
+
+#### Adds
+- Add MMK to currencies list
+- [IMPAC-647] Ability to whitelist / blacklist widgets templates
+
+#### Fixes
+- [PF-162] Limit logo size and use single icon for dashboard create btn
+- Remove HOURLY period from HR widgets and replace it by DAILY
+
+### Config changes
+```coffeescript
+# whitelist takes precedence over blacklist
+# when both are empty, all templates are displayed
+widgetSelectorConfig:
+  whitelist: []
+  blacklist: []
+```
+
+-------------------------------------------------------------
+
 ### v1.5.4 | 2017 - Week 31
 
 #### Adds

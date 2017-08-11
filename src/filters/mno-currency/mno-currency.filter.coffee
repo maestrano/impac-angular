@@ -21,6 +21,7 @@ angular.module('impac.filters.mno-currency', []).filter('mnoCurrency', ($filter)
       PHP: '₱'
       AED: ''
       IDR: 'Rp'
+      MMK: ''
     }
 
     return "" unless amount?
