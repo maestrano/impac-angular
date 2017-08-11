@@ -7,6 +7,7 @@
 
 #### Fixes
 - [PF-162] Limit logo size and use single icon for dashboard create btn
+- Remove HOURLY period from HR widgets and replace it by QUARTERLY / DAILY
 
 -------------------------------------------------------------
 
