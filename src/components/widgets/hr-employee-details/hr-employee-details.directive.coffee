@@ -25,27 +25,19 @@ module.controller('WidgetHrEmployeeDetailsCtrl', ($scope, $q, $filter, $translat
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.employees)
 
-      $translate([
-        'impac.widget.settings.time_period.period.yearly',
-        'impac.widget.settings.time_period.period.monthly',
-        'impac.widget.settings.time_period.period.weekly',
-        'impac.widget.settings.time_period.period.hourly']).then(
-        (translation) ->
+      $scope.periodOptions = [
+        {label: _.capitalize($translate.instant('impac.widget.settings.time_period.period.yearly')), value: 'yearly'},
+        {label: _.capitalize($translate.instant('impac.widget.settings.time_period.period.monthly')), value: 'monthly'},
+        {label: _.capitalize($translate.instant('impac.widget.settings.time_period.period.weekly')), value: 'weekly'},
+        {label: _.capitalize($translate.instant('impac.widget.settings.time_period.period.daily')), value: 'daily'}
+      ]
 
-          $scope.periodOptions = [
-            {label: _.capitalize(translation['impac.widget.settings.time_period.period.yearly']), value: 'yearly'},
-            {label: _.capitalize(translation['impac.widget.settings.time_period.period.monthly']), value: 'monthly'},
-            {label: _.capitalize(translation['impac.widget.settings.time_period.period.weekly']), value: 'weekly'},
-            {label: _.capitalize(translation['impac.widget.settings.time_period.period.hourly']), value: 'hourly'}
-          ]
-
-          if w.metadata && w.metadata.period
-            $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-                o.value == w.metadata.period.toLowerCase()
-              ) || $scope.periodOptions[0])
-          else
-            $scope.period = angular.copy($scope.periodOptions[0])
-      )
+      if w.metadata && w.metadata.period
+        $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
+            o.value == w.metadata.period.toLowerCase()
+          ) || $scope.periodOptions[0])
+      else
+        $scope.period = angular.copy($scope.periodOptions[0])
 
       $scope.employeesOptions = _.map(w.content.employees, (e) ->
         {
