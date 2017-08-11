@@ -86,6 +86,10 @@ angular
       # options for the widget selector panel.
       widgetSelectorConfig:
         path: null
+        # whitelist takes precedence over blacklist
+        # when both are empty, all templates are displayed
+        whitelist: []
+        blacklist: []
       # add chart(widget) tile feature & configurations.
       addChartTile:
         show: false

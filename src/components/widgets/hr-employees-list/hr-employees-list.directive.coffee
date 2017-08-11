@@ -21,11 +21,10 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate)
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
 
       $scope.periodOptions = [
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly")), value: "weekly"},
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly")), value: "monthly"},
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.hourly")), value: "hourly"},
-        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.quarterly")), value: "quarterly"},
         {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly")), value: "yearly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly")), value: "monthly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly")), value: "weekly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.daily")), value: "daily"}
       ]
 
       $scope.period = angular.copy(
