@@ -2,6 +2,9 @@
 
 ### v1.5.5 | 2017 - Week 32
 
+#### Adds
+- Add MMK to currencies list
+
 #### Fixes
 - [PF-162] Limit logo size and use single icon for dashboard create btn
 
