@@ -42,6 +42,9 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
       else
         $translate.instant("impac.widget.account_expense_weight.comparator.total_exp")
 
+  $scope.displayAccount = ->
+    $scope.updateSettings(false).then ->
+      w.format()
 
   # Chart formating function
   # --------------------------------------

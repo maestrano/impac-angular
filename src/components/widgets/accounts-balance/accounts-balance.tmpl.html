@@ -6,8 +6,6 @@
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-account parent-widget="widget" on-account-selected="updateKpiExtraParams('account', widget.selectedAccount)" class="part" deferred="::accountBackDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
-    <!-- ATTACH KPI FEATURE HAS BEEN DISABLED UNTIL FURTHER NOTICE. -->
-    <!-- <div setting-attach-kpis parent-widget="widget" attached-kpis="widget.kpis" widget-engine="widget.category" widget-id="widget.id" extra-params="kpiExtraParams" class="part" deferred="::attachKpisDeferred" /> -->
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_balance.cancel</button>
@@ -16,26 +14,24 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div>
-      <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
+    <!-- Will be hidden once an account is selected -->
+    <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
 
-      <!-- All the below divs will remain hidden until an account is selected -->
-      <div ng-show="widget.selectedAccount">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
+    <!-- All the below divs will remain hidden until an account is selected -->
+    <div ng-show="widget.selectedAccount">
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
 
-        <div ng-hide="widget.isHistoryMode">
-          <h3>{{getName()}}</h3>
-          <div class="price">
-             {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
-          </div>
-          <div class="currency">{{getCurrency()}}</div>
+      <div ng-hide="widget.isHistoryMode">
+        <h3>{{getName()}}</h3>
+        <div class="price">
+           {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
         </div>
+        <div class="currency">{{getCurrency()}}</div>
+      </div>
 
-        <div class="chart-container" ng-show="widget.isHistoryMode">
-          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-          <div class="legend">{{getName()}}</div>
-        </div>
+      <div class="chart-container" ng-show="widget.isHistoryMode">
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        <div class="legend">{{getName()}}</div>
       </div>
     </div>
 
