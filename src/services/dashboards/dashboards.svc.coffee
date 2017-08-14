@@ -124,7 +124,7 @@ angular
                 (success) ->
                   $log.info("Impac! - DashboardsSvc: loaded (force=#{force})")
                   deferred.resolve(_self.config)
-                (errors) ->
+                (error) ->
                   deferred.reject(error)
               )
               .finally( -> _self.loadLocked = false )
@@ -142,7 +142,7 @@ angular
         $timeout(->
           _self.load(force).then(
             (success) -> deferred.resolve(success)
-            (errors) -> deferred.reject(errors)
+            (error) -> deferred.reject(error)
           )
         , 1000)
 
@@ -232,18 +232,31 @@ angular
           $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
 
+    # Remove blacklisted templates, authorize whitelisted ones
+    isTemplateAllowed = (template) ->
+      # Directly returns false if the template is not defined in the library
+      return false unless ImpacUtilities.fetchWidgetTemplatePath(template)
+
+      settings = ImpacTheming.get().widgetSelectorConfig
+      templateUid = ImpacUtilities.fetchWidgetCssClass(template)
+
+      if !_.isEmpty(settings.whitelist)
+        return _.includes(settings.whitelist, templateUid)
+      else if !_.isEmpty(settings.blacklist)
+        return !_.includes(settings.blacklist, templateUid)
+      else
+        return true
+
     @setWidgetsTemplates = (srcTemplates) ->
       return false if _.isEmpty(srcTemplates)
       srcTemplates = ImpacDeveloper.stubWidgetsTemplates(srcTemplates) if ImpacDeveloper.isEnabled()
 
-      # Shortcut reference
-      dstTemplates = _self.config.widgetsTemplates
-
       # Clears the existing templates list without removing the reference
+      dstTemplates = _self.config.widgetsTemplates
       dstTemplates.length = 0
       # Builds the templates list, omitting the widgets that aren't implemented in the library
       for template in srcTemplates
-        dstTemplates.push template if ImpacUtilities.fetchWidgetTemplatePath(template)
+        dstTemplates.push(template) if isTemplateAllowed(template)
 
       return dstTemplates
 
@@ -277,6 +290,25 @@ angular
 
         return deferred.promise
 
+    @copy = (dashboard) ->
+      $q.reject('The dashboard you are trying to copy does not have an id') unless dashboard.id
+
+      data = { dashboard: dashboard }
+
+      _self.load().then(
+        (config) ->
+          $http.post(ImpacRoutes.dashboards.copy(dashboard.id), data).then(
+            (success) ->
+              newDhb = success.data
+              _self.config.dashboards.push(newDhb)
+              _self.setCurrentDashboard(newDhb.id)
+              $q.resolve(newDhb)
+
+            (error) ->
+              $log.error("Impac! - DashboardsSvc: Cannot copy dashboard with parameters: #{angular.toJson(dashboard)}", error)
+              $q.reject(error)
+          )
+      )
 
     @delete = (id) ->
       deferred = $q.defer()

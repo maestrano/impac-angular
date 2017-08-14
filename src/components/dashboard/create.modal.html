@@ -1,6 +1,6 @@
 <div class="modal-header">
   <div class="close" type="button" ng-click="instance.close()" >×</div>
-  <h3 translate>impac.dashboard.create.create_new_dashboard</h3>
+  <h3 translate translate-values="{name: dhbLabelName}">impac.dashboard.create.create_new_dashboard</h3>
 </div>
 
 <div class="modal-body">
@@ -20,7 +20,7 @@
     <div class="col-sm-10 col-sm-offset-1">
       <form class="form-horizontal" role="form">
         <div class="form-group">
-          <label class="col-sm-2 control-label" translate>impac.dashboard.create.name</label>
+          <label class="col-sm-2 control-label">{{ (isTemplate ? 'impac.dashboard.create.rename' : 'impac.dashboard.create.name') | translate }}</label>
           <div class="col-sm-10">
             <input type='text' class="form-control" ng-model="model.name" placeholder="{{'impac.dashboard.create.placeholder.cash_accounts' | translate}}" required>
           </div>
@@ -69,6 +69,9 @@
         </div>
       </form>
 
+      <!-- Create from Templates -->
+      <dashboard-templates-selector on-select="onSelectTemplate($event)" ng-if="createFromTemplateEnabled"></dashboard-templates-selector>
+
       <!-- End row col -->
     </div>
 
@@ -85,7 +88,7 @@
       <button class="btn btn-shaded" ng-click="instance.dismiss()" ng-hide="isLoading" translate>impac.dashboard.create.cancel</button>
       <button class="btn btn-primary" ng-click="proceed()" ng-disabled="isProceedDisabled()">
         <i class="fa fa-spinner fa-pulse loader" ng-if="isLoading"></i>
-        {{'impac.dashboard.create.add' | translate}}
+        {{'impac.dashboard.create.create' | translate}}
       </button>
     </div>
   </div>

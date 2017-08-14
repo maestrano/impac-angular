@@ -20,7 +20,7 @@
   <kpis-bar ng-if="showKpisBar()" kpis="currentDhb.kpis"></kpis-bar>
 
   <!-- Dashboards selection/creation/deletion -->
-  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode"></dashboard-selector>
+  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode" dhb-label-name="dhbLabelName"></dashboard-selector>
 
   <div id="sub-menu" uib-collapse="!showSubMenu">
     <i class="fa fa-times" ng-click="hideSubMenu()" />
@@ -37,7 +37,7 @@
   <!-- Widgets selection container -->
   <div id="widget-selector" uib-collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
     <div class="title">
-      <p class="instruction" translate>impac.dashboard.select_the_widgets</p>
+      <p class="instruction" translate translate-values="{name: dhbLabelName}">impac.dashboard.select_the_widgets</p>
       <span class="widget-added badge" translate>impac.dashboard.widget_added</span>
       <i class="fa fa-times-circle close-selector" ng-if="showCloseWidgetSelectorButton()" ng-click="displayWidgetSelector(false)"/>
     </div>
@@ -114,14 +114,14 @@
           <div class="row top-buffer-4">
             <div class="col-md-8 col-md-offset-2">
               <div class="info-text">
-                <p><b translate>{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
+                <p><b translate translate-values="{name: dhbLabelName}">{{dhbErrorsConfig.firstTimeCreated.first}}</b></p>
                 <p translate>{{dhbErrorsConfig.firstTimeCreated.second}}</p>
               </div>
             </div>
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> {{'impac.dashboard.create_a_dashboard' | translate}}</button>
+          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-pencil-square-o'></span> {{ 'impac.dashboard.create_a_dashboard' | translate:{name: dhbLabelName} }}</button>
         </div>
       </div>
 

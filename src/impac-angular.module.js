@@ -25,6 +25,7 @@ angular.module('impac.components',
   [
     'impac.components.dashboard',
     'impac.components.dashboard-selector',
+    'impac.components.dashboard-templates-selector',
     'impac.components.dashboard-settings',
     'impac.components.kpis-bar',
     'impac.components.kpi',
@@ -155,12 +156,14 @@ angular.module('impac.services',
     'impac.services.main',
     'impac.services.kpis',
     'impac.services.dashboards',
+    'impac.services.dashboard-templates',
     'impac.services.widgets',
     'impac.services.developer',
     'impac.services.pusher',
     'impac.services.alerts',
     'impac.services.notifications',
     'impac.services.events',
+    'impac.services.currency-rates'
   ]
 );
 /*

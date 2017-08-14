@@ -1,7 +1,7 @@
 {
   "name": "impac-angular",
   "description": "Impac! Front-End Library",
-  "version": "1.5.2",
+  "version": "1.5.6",
   "main": [
     "dist/impac-angular.js",
     "dist/impac-angular.less",

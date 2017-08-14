@@ -216,6 +216,9 @@ angular
     dhbConfig:
       showDhbHeading: false
       dhbHeadingText: 'Impac!'
+      designerMode:
+        enabled: false
+        dhbLabelName: 'Template'
       multiCompany: false
     dhbSelectorConfig:
       selectorType: 'dropdown'
@@ -249,7 +252,8 @@ angular
         show: -> true
         productDescriptor: 'Impac!'
       currency:
-          locked: false
+        locked: false
+      createFromTemplateEnabled: false
 
     ImpacThemingProvider.configure(options)
 

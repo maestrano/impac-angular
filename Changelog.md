@@ -1,5 +1,63 @@
 # Impac! Frontend Changelog
 
+### v1.5.6 |
+
+-------------------------------------------------------------
+
+### v1.5.5 | 2017 - Week 32
+
+#### Adds
+- Add MMK to currencies list
+- [IMPAC-647] Ability to whitelist / blacklist widgets templates
+
+#### Fixes
+- [PF-162] Limit logo size and use single icon for dashboard create btn
+- Remove HOURLY period from HR widgets and replace it by DAILY
+
+### Config changes
+```coffeescript
+# whitelist takes precedence over blacklist
+# when both are empty, all templates are displayed
+widgetSelectorConfig:
+  whitelist: []
+  blacklist: []
+```
+
+-------------------------------------------------------------
+
+### v1.5.4 | 2017 - Week 31
+
+#### Adds
+- [IMPAC-603] Ability to create dashboards from templates
+
+#### Fixes
+- [IMPAC-619] Fix currency drop-down update when changing dashboard
+- Fix alerts settings button when no alert is attached to a KPI
+
+### Config changes
+```coffeescript
+dhbSettings:
+  createFromTemplateEnabled: false
+```
+
+-------------------------------------------------------------
+
+### v1.5.3 | 2017 - Week 28
+
+#### Adds
+- [IMPAC-506] Add currency rates service (requires Impac! >= v1.5.10)
+
+#### Fixes
+- Fix widget kpis currency not updated on currency change
+- [IMPAC-631] Use ngStyle when binding values instead of angular expressions fixing IE support
+- [IMPAC-640] Add spacing between assets vs liabilities legend labels
+- [IMPAC-637] Fix customer details fields always empty
+- [IMPAC-638] Improve employees list period filter options by adding 'yearly' and 'hourly'.
+- [IMPAC-635] Fix sales top customers table display glitch
+- [IMPAC-634] Fix payroll summary chart not rendering
+
+-------------------------------------------------------------
+
 ### v1.5.2 | 2017 - Week 27
 
 #### Adds

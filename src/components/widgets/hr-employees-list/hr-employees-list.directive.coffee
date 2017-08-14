@@ -19,22 +19,18 @@ module.controller('WidgetHrEmployeesListCtrl', ($scope, $q, $filter, $translate)
   # --------------------------------------
   w.initContext = ->
     if $scope.isDataFound = !_.isEmpty(w.content) && !_.isEmpty(w.content.total) && !_.isEmpty(w.content.employees)
-      $translate([
-        "impac.widget.settings.time_period.period.weekly",
-        "impac.widget.settings.time_period.period.monthly",
-        "impac.widget.settings.time_period.period.quarterly",
-        "impac.widget.settings.time_period.period.hourly"]).then(
-        (translations) ->
-          $scope.periodOptions = [
-            {label: _.capitalize(translations["impac.widget.settings.time_period.period.weekly"]), value: "weekly"},
-            {label: _.capitalize(translations["impac.widget.settings.time_period.period.monthly"]), value: "monthly"},
-            {label: _.capitalize(translations["impac.widget.settings.time_period.period.quarterly"]), value: "quarterly"},
-            {label: _.capitalize(translations["impac.widget.settings.time_period.period.hourly"]), value: "hourly"}
-          ]
 
-          $scope.period = angular.copy(_.find($scope.periodOptions, (o) ->
-              o.value == w.content.total.period.toLowerCase()
-            ) || $scope.periodOptions[0])
+      $scope.periodOptions = [
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.yearly")), value: "yearly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.monthly")), value: "monthly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.weekly")), value: "weekly"},
+        {label: _.capitalize($translate.instant("impac.widget.settings.time_period.period.daily")), value: "daily"}
+      ]
+
+      $scope.period = angular.copy(
+        _.find($scope.periodOptions, (o) ->
+          o.value == w.content.total.period.toLowerCase()
+        ) || $scope.periodOptions[0]
       )
 
   $scope.getSingleCompanyName = ->

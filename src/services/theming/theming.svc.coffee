@@ -31,6 +31,9 @@ angular
         showDhbHeading: false
         dhbHeadingText: 'Impac!'
         multiCompany: false
+        designerMode:
+          enabled: false
+          dhbLabelName: 'Template'
       # configurations for the dashboard selector feature.
       dhbSelectorConfig:
         selectorType: 'dropdown'
@@ -83,6 +86,10 @@ angular
       # options for the widget selector panel.
       widgetSelectorConfig:
         path: null
+        # whitelist takes precedence over blacklist
+        # when both are empty, all templates are displayed
+        whitelist: []
+        blacklist: []
       # add chart(widget) tile feature & configurations.
       addChartTile:
         show: false
@@ -99,7 +106,7 @@ angular
           productDescriptor: 'Impac!'
         currency:
           locked: false
-
+        createFromTemplateEnabled: false
       widgetSettings:
         histModeChoser:
           currentLabels:
@@ -130,6 +137,10 @@ angular
       #=======================================
       service.get = ->
         return options
+
+      service.getDhbLabelName = ->
+        designerModeOpts = options.dhbConfig.designerMode
+        if designerModeOpts.enabled then designerModeOpts.dhbLabelName else 'Dashboard'
 
       # Methods for generating parsing / generating colors
       service.color =

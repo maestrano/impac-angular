@@ -85,8 +85,9 @@ module.directive('alertsConfig', ($uibModal, $templateCache, $compile, $translat
 
       $scope.showAlertsSettings = ->
         # All the alerts that are already in kpi.alerts must appear as "active"
-        for alert in $scope.kpi.alerts
-          $scope.alerts[alert.service].active = true
+        if angular.isDefined($scope.kpi.alerts)
+          for alert in $scope.kpi.alerts
+            $scope.alerts[alert.service].active = true
 
         $scope.modal = $uibModal.open(alertsSettingsModal.options)
 
