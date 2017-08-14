@@ -13,9 +13,6 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-
-    <div class="no-data-block" translate="impac.widget.account_balance_sheets.not_found" translate-values="{fromDate: fromDate, toDate: toDate}"></div>
-
     <div class="widget-lines-container no-scroll">
       <div class="row widget-line header">
         <div class="col-sm-6 col-sm-offset-6 col-xs-12">
@@ -23,7 +20,6 @@
         </div>
       </div>
       <div class="row widget-line header">
-        </div>
         <div class="col-sm-5 col-sm-offset-1 col-xs-12 text-left sortable-title" ng-click="sort('account')">
           {{'impac.widget.account_balance_sheets.accounts' | translate}}
           <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
@@ -44,7 +40,6 @@
     </div>
 
     <div class="widget-lines-container">
-
       <!-- Groups of statements with their accounts -->
       <div class="row lines-group" ng-repeat="category in categories" >
         <div class="col-xs-12">
@@ -90,7 +85,6 @@
       </div>
     </div>
 
-
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
-
 </div>
