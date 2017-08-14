@@ -5,7 +5,8 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
-
+    <div setting-attach-kpis parent-widget="widget" attached-kpis="widget.kpis" widget-engine="widget.category" widget-id="widget.id" extra-params="kpiExtraParams" class="part" deferred="::attachKpisDeferred" />
+    
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.sales_margin.cancel</button>
       <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.sales_margin.save</button>

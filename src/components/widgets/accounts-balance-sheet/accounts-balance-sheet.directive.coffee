@@ -8,10 +8,12 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.datesPickerDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.datesPickerDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
   $scope.datesPickerTemplate = """

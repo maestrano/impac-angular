@@ -7,10 +7,12 @@ module.controller('WidgetAccountsAssetsSummaryCtrl', ($scope, $q, ChartFormatter
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
+  $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.chartDeferred.promise
+    $scope.attachKpisDeferred.promise
   ]
 
 
