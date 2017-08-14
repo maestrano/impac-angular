@@ -4,6 +4,7 @@
     <h4 translate>impac.widget.account_balance_sheets.settings.title</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-tag-filter ng-show="filterTagsEnabled == true" parent-widget="widget" class="part" deferred="::tagFilterDeferred" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.account_balance_sheets.cancel</button>
@@ -96,7 +97,13 @@
           </div>
         </div>
       </div>
+      <div class="row widget-line header" ng-show="isReportFiltered()">
+        <div class="col-xs-12 text-center">
+          <strong translate>impac.widget.settings.tag-filter.report_filtered</strong>
+        </div>
+      </div>
     </div>
+
 
   </div>
 

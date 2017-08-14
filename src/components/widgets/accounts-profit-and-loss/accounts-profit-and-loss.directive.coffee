@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-profit-and-loss',[])
 
-module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities, $translate) ->
+module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatterSvc, $filter, ImpacWidgetsSvc, ImpacUtilities, $translate, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -11,6 +11,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
+  $scope.tagFilterDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -18,10 +19,12 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
+    $scope.tagFilterDeferred.promise
   ]
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
+  $scope.filterTagsEnabled = ImpacTheming.get().widgetSettings.tagging.enabled
 
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
@@ -45,6 +48,9 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
     (translation) ->
       $scope.period_translation = _.capitalize(translation.toLowerCase())
   )
+
+  $scope.isReportFiltered = ->
+    w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0
 
   # Widget specific methods
   # --------------------------------------
