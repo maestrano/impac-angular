@@ -13,7 +13,7 @@ module.controller('SettingHistModeCtrl', ($scope, $translate, $timeout, ImpacWid
   $scope.toggleHistMode = (mode) ->
     return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
     w.isHistoryMode = !w.isHistoryMode
-    ImpacWidgetsSvc.updateWidgetSettings(w,false)
+    ImpacWidgetsSvc.updateWidgetSettings(w, false)
     $scope.onToggle() in angular.isDefined $scope.onToggle
 
   buildCurrentLabel = ->
