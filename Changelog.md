@@ -1,6 +1,19 @@
 # Impac! Frontend Changelog
 
-### v1.5.6 |
+### v1.5.6 | 2017 - Week 33
+
+#### Adds
+- [IMPAC-448] Add tracking tags setting to PnL and BalanceSheet widgets
+
+#### Config changes
+```coffeescript
+widgetSettings:
+  tagging:
+    enabled: true
+```
+
+#### Dependencies
+- Impac! v1.5.10 (if tracking tags enabled)
 
 -------------------------------------------------------------
 
@@ -14,7 +27,7 @@
 - [PF-162] Limit logo size and use single icon for dashboard create btn
 - Remove HOURLY period from HR widgets and replace it by DAILY
 
-### Config changes
+#### Config changes
 ```coffeescript
 # whitelist takes precedence over blacklist
 # when both are empty, all templates are displayed
@@ -34,7 +47,7 @@ widgetSelectorConfig:
 - [IMPAC-619] Fix currency drop-down update when changing dashboard
 - Fix alerts settings button when no alert is attached to a KPI
 
-### Config changes
+#### Config changes
 ```coffeescript
 dhbSettings:
   createFromTemplateEnabled: false
