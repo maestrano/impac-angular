@@ -198,7 +198,7 @@
   "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
   "impac.kpi.extra_param_label.verb":             "Select",
 
-  "impac.kpi_bar.you_can_now":                    "You can now attach KPIs to your {name}",
+  "impac.kpi_bar.you_can_attach":                 "Click to attach KPIs to your {name}",
   "impac.kpi_bar.no_kpis":                        "No KPIs are available for your {name}",
   "impac.kpi_bar.add_to_dashboard":               "Add to {name}",
   "impac.kpi_bar.new":                            "New!",

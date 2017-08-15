@@ -194,7 +194,7 @@
   "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
   "impac.kpi.extra_param_label.verb":             "你好",
 
-  "impac.kpi_bar.you_can_now":                    "你好 你好 你好 你好 你好 你好 你好 {name}",
+  "impac.kpi_bar.you_can_attach":                 "你好 你好 你好 你好 你好 你好 你好 {name}",
   "impac.kpi_bar.no_kpis":                        "你好 你好 你好 你好 你好 你好 {name}",
   "impac.kpi_bar.add_to_dashboard":               "你好 你好 {name}",
   "impac.kpi_bar.new":                            "你好!",
