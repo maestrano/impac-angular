@@ -190,7 +190,13 @@ angular
               content = success.data.content || success.data[widget.endpoint] || {}
               if _.isEmpty(content)
                 # Reload the widget with param `demo` set at `true` (to retrieve stub data)
-                _self.show(widget, refreshCache, true)
+                if demoData
+                  # If we were already trying to load the widget in demo mode, we resolve the widget without content
+                  # TODO: display an error box?
+                  $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
+                  $q.resolve(widget)
+                else
+                  _self.show(widget, refreshCache, true)
 
               else
                 # Push new content to widget, and initialize it
