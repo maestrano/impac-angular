@@ -94,10 +94,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
+  # No support for multiple KPIs & watchables yet.
   getThresholds = ->
-    targets = w.kpis? && w.kpis[0] && w.kpis[0].targets
-    return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-    [{ kpiId: w.kpis[0].id, value: targets.threshold[0].min }]
+    return unless (kpi = w.kpis && w.kpis[0]) &&
+                  (watchable = kpi.watchables && kpi.watchables[0]) &&
+                  (targets = watchable && watchable.targets)
+    _.map(targets, (t)-> kpiId: kpi.id, value: t.min, triggered: t.trigger_state, triggered_interval_index: t.triggered_interval_index)
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

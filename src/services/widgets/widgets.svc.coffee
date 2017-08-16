@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacKpisSvc, toastr, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -98,7 +98,7 @@ angular
     # @returns Promise
     @massAssignAll = (metadata, refreshCache=false) ->
       return $q.reject('undefined metadata') if _.isEmpty(metadata)
-      
+
       _self.load().then(
         (_widget) ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -164,11 +164,11 @@ angular
 
             # By default, widget is to be fetched from legacy Impac! API (v1)
             route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
-            
+
             # If bolt_path is defined, widget is to be fetched from a bolt
             if widget.metadata['bolt_path']
               route = "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}"
-            
+
             url = [route, decodeURIComponent( $.param(params) )].join('?')
 
             authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
@@ -187,12 +187,22 @@ angular
                 for setting in widget.settings
                   setting.initialize() if angular.isDefined(setting.initialize)
 
-                # Formats the chart when necessary
-                if angular.isDefined(widget.format)
-                  widget.format()
-
-                deferred.resolve widget
-
+                # Fetches Widget KPIs calculations
+                kpiPromises = _.map(widget.kpis, (k)->
+                  ImpacKpisSvc.show(k).then(
+                    (response)->
+                      dataKey = ImpacKpisSvc.getApiV2KpiDataKey(k)
+                      angular.extend(k, response.data[dataKey])
+                    (err)->
+                      toastr.error('An error occured while retrieving your Threshold KPIs', 'Error')
+                  )
+                )
+                $q.all(kpiPromises).then(
+                  ->
+                    # Formats the chart when necessary
+                    widget.format() if angular.isDefined(widget.format)
+                    deferred.resolve widget
+                )
               (errorResponse) ->
                 # We still initialize the widget with the last saved settings (should be saved in metadata)
                 widget.initContext() if angular.isDefined(widget.initContext)
@@ -260,7 +270,7 @@ angular
               (success) ->
                 angular.extend widget, success.data
                 $q.resolve(widget)
-              
+
               (updateError) ->
                 $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
                 $q.reject(updateError)

@@ -27,7 +27,8 @@ module.component('chartThreshold', {
       ctrl.loading = false
       ctrl.draftTarget = value: ''
       ctrl.chartShrinkSize ||= 38
-      ctrl.disabled ||= false
+      # Disable ability to attach widget kpi unless a bolt widget
+      ctrl.disabled ||= isCmpDisabled()
       ctrl.kpiTargetMode ||= 'min'
       ctrl.kpiCreateLabel ||= 'Get alerted when the target threshold goes below'
       # Get attachable kpi templates
@@ -74,7 +75,10 @@ module.component('chartThreshold', {
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
-        ImpacKpisSvc.update(getKpi(), params, false)
+        ImpacKpisSvc.update(getKpi(), params, false).then(
+          (kpi)->
+            angular.extend(getKpi(), kpi)
+        )
       else
         # TODO: improve the way the hist_params are applied onto widget kpis
         if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
@@ -82,12 +86,26 @@ module.component('chartThreshold', {
         else
           params.metadata.hist_parameters = ImpacUtilities.yearDates()
         params.widget_id = ctrl.widget.id
-        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params)
+        ImpacKpisSvc.create(
+          ctrl.widget.metadata.bolt_path, ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params
+        ).then(
+          (kpi)->
+            ctrl.widget.kpis.push(kpi)
+            kpi
+        )
       promise.then(
         (kpi)->
-          ctrl.widget.kpis.push(kpi)
-          ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
-        (err)->
+          ImpacKpisSvc.show(kpi).then(
+            (response)->
+              dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
+              angular.extend(kpi, response.data[dataKey])
+            ()->
+              toastr.error('An error occuring while trying to fetch the updated threshold KPI')
+          ).finally(
+            ->
+              ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+          )
+        ->
           toastr.error('Failed to save KPI', 'Error')
       ).finally(->
         ctrl.cancelCreateKpi()
@@ -167,6 +185,13 @@ module.component('chartThreshold', {
       # therefore in the past by default
       ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day')
       return
+
+    isCmpDisabled = ->
+      if _.isEmpty(ctrl.widget.metadata.bolt_path)
+        $log.error("chart-threshold.component not compatible with #{ctrl.widget.name} - no bolt path defined")
+        true
+      else
+        false
 
     return ctrl
 })

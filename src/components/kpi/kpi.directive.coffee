@@ -15,8 +15,10 @@ angular
         # Private Methods
         # -------------------------
         fetchKpiData = ->
-          ImpacKpisSvc.show($scope.kpi).then((renderedKpi)->
-            angular.extend $scope.kpi, renderedKpi
+          ImpacKpisSvc.show($scope.kpi).then((response)->
+
+            applyFetchedData(response)
+
             # Extra Params
             # Get the corresponding template of the KPI loaded
             kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
@@ -51,6 +53,19 @@ angular
         onToggleSettingsCb = -> animateKpiPanels()
 
         onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
+
+        applyFetchedData = (response)->
+          # Calculation
+          $scope.kpi.data = response.data.kpi.calculation
+
+          # Configuration
+          # When the kpi initial configuration is partial, we update it with what the API has picked by default
+          updatedConfig = response.data.kpi.configuration || {}
+          missingParams = _.select(['targets','extra_params'], (param) -> !$scope.kpi[param]? && updatedConfig[param]?)
+          angular.extend $scope.kpi, _.pick(updatedConfig, missingParams)
+
+          # Layout
+          $scope.kpi.layout = response.data.kpi.layout
 
         applyPlaceholderValues = ->
           _.forEach($scope.kpi.watchables, (watchable)->
@@ -139,7 +154,11 @@ angular
           params.targets = $scope.targets
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
-          ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
+          unless _.isEmpty(params)
+            ImpacKpisSvc.update($scope.kpi, params).then(
+              (response)->
+                applyFetchedData(response)
+            )
           form.$setPristine()
           # smoother update transition
           $timeout ->

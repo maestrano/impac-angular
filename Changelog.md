@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
+- [IMPAC-622] Add threshold tooltip when triggered
 
 #### Fixes
 
