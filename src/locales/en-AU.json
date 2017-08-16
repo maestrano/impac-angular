@@ -127,6 +127,10 @@
   "impac.widget.settings.limit_entries.display": "Display",
   "impac.widget.settings.limit_entries.entries": "entries",
 
+  "impac.widget.settings.tag-filter.filter_title":  "Filter report on tags:",
+  "impac.widget.settings.tag-filter.add_filter":  "Add filter:",
+  "impac.widget.settings.tag-filter.report_filtered":  "*Report is currently tag filtered",
+
   "impac.dashboard_selector.delete_widget.description": "Are you sure you want to delete this {name}?",
   "impac.dashboard_selector.bootstrap_tabs.add_widget": "Add Widget",
   "impac.dashboard_selector.bootstrap_tabs.source": "Source:",
