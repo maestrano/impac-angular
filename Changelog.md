@@ -9,7 +9,7 @@
 ```coffeescript
 widgetSettings:
   tagging:
-    enabled: true
+    enabled: false
 ```
 
 #### Dependencies

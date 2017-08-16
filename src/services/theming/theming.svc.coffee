@@ -120,7 +120,7 @@ angular
         timePeriod:
           showSlider: true
         tagging:
-          enabled: true
+          enabled: false
 
 
     #=======================================
