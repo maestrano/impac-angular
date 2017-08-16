@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacTheming, ImpacKpisSvc, toastr, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -94,7 +94,7 @@ angular
     # @returns Promise
     @massAssignAll = (metadata, refreshCache=false) ->
       return $q.reject('undefined metadata') if _.isEmpty(metadata)
-      
+
       _self.load().then(
         (_widget) ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -183,7 +183,7 @@ angular
             # By default, widget is to be fetched from legacy Impac! API (v1)
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
             ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
-          
+
           url = [route, decodeURIComponent( $.param(params) )].join('?')
 
           authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
@@ -201,20 +201,30 @@ angular
                   $q.resolve(widget)
                 else
                   _self.show(widget, { refreshCache: refreshCache, demo: true })
-
               else
                 # Push new content to widget, and initialize it
                 name = success.data.name
                 angular.extend widget, { content: content, originalName: name, demoData: demoData }
-                initWidget(widget)
-                $q.resolve(widget)
-
+                # Fetches Widget KPIs calculations
+                kpiPromises = _.map(widget.kpis, (k)->
+                  ImpacKpisSvc.show(k).then(
+                    (response)->
+                      dataKey = ImpacKpisSvc.getApiV2KpiDataKey(k)
+                      angular.extend(k, response.data[dataKey])
+                    (err)->
+                      toastr.error('An error occured while retrieving your Threshold KPIs', 'Error')
+                  )
+                )
+                $q.all(kpiPromises).then(
+                  ->
+                    initWidget(widget)
+                    $q.resolve(widget)
+                )
             (showError) ->
               initWidget(widget)
               widget.processError(showError.data.error) if angular.isDefined(widget.processError) && showError.data? && showError.data.error
               $q.reject(showError)
           )
-
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
           $q.reject(loadError)
@@ -273,10 +283,10 @@ angular
               (success) ->
                 angular.extend widget, success.data
                 if needContentReload
-                  _self.show(widget) 
+                  _self.show(widget)
                 else
                   $q.resolve(widget)
-              
+
               (updateError) ->
                 $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
                 $q.reject(updateError)

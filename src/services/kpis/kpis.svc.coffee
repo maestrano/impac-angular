@@ -175,6 +175,12 @@ angular
       templ = _self.getKpiTemplate(kpiEndpoint, kpiWatchable)
       ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}
 
+    @getApiV2KpiDataKey = (kpi)->
+      # Formats the kpi endpoint to select the key name
+      # e.g response.cash_projection = { triggered: true, ... }
+      # TODO: maybe the 'kpi' of endpoint 'kpis/cash_projection' should be removed?
+      kpi.endpoint.split('kpis/').pop()
+
     # TODO: mno & impac should be change to deal with `watchables`, instead
     # of element_watched, and extra_watchables. The first element of watchables should be
     # considered the primary watchable, a.k.a element_watched.
@@ -252,26 +258,23 @@ angular
               host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
             when 'local'
               host = ImpacRoutes.kpis.local()
+            else
+              if _.isEmpty(kpi.source)
+                err = { message: 'Impac! - KpisSvc: cannot show a KPI without a valid source' }
+                $log.error(err.message)
+                return $q.reject(err)
+              # Retreive KPI from external source (bolts)
+              host = kpi.source
 
           url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
           return $http.get(url).then(
             (response) ->
-              kpiResp = response.data.kpi
-              # Calculation
-              kpi.data = kpiResp.calculation
-
-              # Configuration
-              # When the kpi initial configuration is partial, we update it with what the API has picked by default
-              updatedConfig = kpiResp.configuration || {}
-              missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-              angular.extend kpi, _.pick(updatedConfig, missingParams)
-
-              # Layout
-              kpi.layout = kpiResp.layout
-
-              return kpi
-
+              # This gives flexibility to the subscriber to deal with the two objects. This
+              # is needed because of the two quite different types of KPIs that flow through
+              # this service (dashboard kpis & widget kpis).
+              kpi: kpi
+              data: response.data
             (err) ->
               $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
               $q.reject(err)
