@@ -1,0 +1,26 @@
+<h5 translate>impac.widget.settings.tag-filter.filter_title</h5>
+<div class="settings tag-filter" >
+
+  <div class="tag-lines-container">
+    <div class="row tag-line" ng-repeat="rule in settingsTags" >
+      <div class="col-xs-2">
+        <span style="font-weight: bold;" ng-hide="$index>0" translate>impac.widget.settings.tag-filter.add_filter</span>
+        <span ng-hide="$index==0">AND</span>
+      </div>
+      <div class="col-xs-8 tags-col">
+        <tags-input ng-model="rule.tags" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+          <auto-complete source="loadTagList($query)" min-length="1" max-results-to-show="5" debounce-delay="0" load-on-down-arrow="true"></auto-complete>
+        </tags-input>
+      </div>
+      <div class="col-xs-2 text-center">
+        <button class="btn btn-sm btn-default" ng-click="delRule($index)" title="Remove filter">-</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-2 text-center">
+        <button class="btn btn-sm btn-default" ng-click="addRule()" title="Add filter">+</button>
+      </div>
+    </div>
+  </div>
+</div>

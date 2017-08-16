@@ -119,6 +119,8 @@ angular
             default: "impac.widget.theming.hist.default.prefix"
         timePeriod:
           showSlider: true
+        tagging:
+          enabled: false
 
 
     #=======================================
