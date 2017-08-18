@@ -63,7 +63,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     ImpacDashboardsSvc.tick()
 )
 
-module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
+module.directive('impacWidget', ($templateCache, ImpacUtilities, ImpacWidgetsSvc) ->
   return {
     restrict: 'A',
     scope: {
@@ -105,6 +105,10 @@ module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
       scope.showDeleteWidget = false
       scope.toggleDeleteWidget = ->
         scope.showDeleteWidget = !scope.showDeleteWidget
+
+      scope.deleteWidget = ->
+        ImpacWidgetsSvc.delete(scope.widget)
+        .then(null, (e) -> scope.widget.errors = ImpacUtilities.processRailsError(e))
 
     ,template: $templateCache.get('widget/widget.tmpl.html')
   }

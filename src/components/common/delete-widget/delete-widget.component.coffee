@@ -3,9 +3,9 @@ module = angular.module('impac.components.common.delete-widget',[])
 module.component('commonDeleteWidget', {
   templateUrl: 'common/delete-widget.tmpl.html'
   bindings:
-    parentWidget: '<'
+    onDelete: '&'
     onDismiss: '&'
-  controller: (ImpacWidgetsSvc, ImpacUtilities) ->
+  controller: ->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -13,9 +13,7 @@ module.component('commonDeleteWidget', {
 
     ctrl.deleteWidget = ->
       ctrl.loading = true
-      ImpacWidgetsSvc.delete(ctrl.parentWidget)
-      .then(null, (e) -> ctrl.parentWidget.errors = ImpacUtilities.processRailsError(e))
-      .finally(-> ctrl.loading = false)
+      ctrl.onDelete().finally(-> ctrl.loading = false)
 
     return ctrl
 })
