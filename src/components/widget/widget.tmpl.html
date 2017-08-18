@@ -23,7 +23,7 @@
 
   <div ng-hide="widget.isLoading" ng-include="::templatePath" />
   
-  <div common-delete-widget ng-if="showDeleteWidget" parent-widget="widget" on-dismiss="toggleDeleteWidget()" />
+  <common-delete-widget ng-if="showDeleteWidget" parent-widget="widget" on-dismiss="toggleDeleteWidget()" />
 </div>
 
 <div common-info-panel parent-widget="widget" on-close="toggleInfoPanel()" ng-show="isInfoPanelDisplayed()" />
