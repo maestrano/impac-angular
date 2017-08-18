@@ -118,7 +118,7 @@ angular
       )
 
     @isRefreshing = false
-    @refreshAll = (refreshCache=false) ->
+    @refreshAll = (refreshCache = false) ->
       return $q.resolve() if _self.isRefreshing
 
       _self.isRefreshing = true
@@ -127,7 +127,7 @@ angular
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
           promises = []
           for w in currentDhb.widgets
-            promises.push _self.show(w, refreshCache).then(
+            promises.push _self.show(w, { refreshCache: refreshCache }).then(
               (renderedWidget) ->
                 $q.resolve(renderedWidget)
               (errorResponse) ->
@@ -162,7 +162,11 @@ angular
 
     # Calls Legacy Impac! or bolt API to render a widget
     # If no content is returned, the endpoint will be called again with `demo` = `true` to retrieve stub data
-    @show = (widget, refreshCache = false, demo = false) ->
+    # default opts: { refreshCache: false, demo: false }
+    @show = (widget, opts = {}) ->
+      refreshCache = !!opts.refreshCache
+      demo = !!opts.demo
+
       widget.isLoading = true
       _self.load().then(
         (loaded) ->
@@ -196,7 +200,7 @@ angular
                   $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
                   $q.resolve(widget)
                 else
-                  _self.show(widget, refreshCache, true)
+                  _self.show(widget, { refreshCache: refreshCache, demo: true })
 
               else
                 # Push new content to widget, and initialize it

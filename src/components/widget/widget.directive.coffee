@@ -22,7 +22,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
   )
 
   $scope.showWidget = (refreshCache = false) ->
-    ImpacWidgetsSvc.show(w, refreshCache).finally(
+    ImpacWidgetsSvc.show(w, { refreshCache: refreshCache }).finally(
       ->
         #TODO: Accessibility should be treated differently (in service?)
         if $scope.isAccessibility
