@@ -126,11 +126,6 @@ describe('<> ImpacWidgetsSvc', function () {
     it('does not update the other widgets', function () {
       expect(svc.update).not.toHaveBeenCalledWith(dashboard.widgets[1], {metadata: dashboard.widgets[1].metadata});
     });
-
-    it('renders the updated widgets', function () {
-      expect(svc.show).toHaveBeenCalledWith(dashboard.widgets[0]);
-      expect(svc.show).toHaveBeenCalledWith(dashboard.widgets[2]);
-    });
   });
 
   describe('#massAssignAll(:metadata)', function() {
@@ -159,8 +154,17 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       it('updates all the widgets with the specified metadata', function() {
-        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
-        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        $rootScope.$apply();
+        expect(svc.update).toHaveBeenCalledWith(
+          { id: 1, name: 'w-1', metadata: { organization_ids: ['org-1'] } },
+          { metadata: { organization_ids: ['org-1'], currency: 'EUR' } },
+          false
+        );
+        expect(svc.update).toHaveBeenCalledWith(
+          { id: 2, name: 'w-2', metadata: { organization_ids: ['org-1'] } },
+          { metadata: { organization_ids: ['org-1'], currency: 'EUR' } },
+          false
+        );
       });
 
       it('calls svc.refreshAll, without clearing the cache', function(){
@@ -221,8 +225,8 @@ describe('<> ImpacWidgetsSvc', function () {
       });
 
       it('does not push the corresponding widget to the update list', function() {
-        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
-        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}, isLoading: true}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
+        expect(svc.update).toHaveBeenCalledWith({id: 1, name: 'w-1', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}}, false);
+        expect(svc.update).toHaveBeenCalledWith({id: 2, name: 'w-2', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}}, false);
         expect(svc.update).not.toHaveBeenCalledWith({id: 3, name: 'w-3', metadata: {organization_ids: ['org-1']}}, {metadata: {organization_ids: ['org-1'], currency: 'EUR'}});
       });
     });
@@ -330,6 +334,7 @@ describe('<> ImpacWidgetsSvc', function () {
       describe('on http success', function() {
         beforeEach(function() {
           spyOn($http, "put").and.returnValue($q.resolve({data: opts}));
+          spyOn($http, "get").and.returnValue($q.resolve({data: opts}));
 
           subject = svc.update(widget,opts);
           $rootScope.$apply();

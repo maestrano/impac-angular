@@ -14,7 +14,7 @@
 
   <div align="center" ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)" class="row">
+    <div class="row">
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred"></div>
 
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

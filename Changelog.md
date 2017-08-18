@@ -1,5 +1,32 @@
 # Impac! Frontend Changelog
 
+### v1.6.0 | 2017 - Week 33
+
+#### Adds
+- [IMPAC-648] Show demo data when none can be found
+
+#### Config changes
+```coffeescript
+# Old
+dataNotFoundConfig:
+  mainMessage: 'impac.data_not_found_config.main_message'
+  linkMessage: 'impac.data_not_found_config.link_message'
+
+# New
+dataNotFoundConfig:
+  content:
+    mainMessage: 'impac.data_not_found_config.main_message'
+    linkMessage: 'impac.data_not_found_config.link_message'
+    title: 'impac.data_not_found_config.title'
+    seeExample: 'impac.data_not_found_config.see_example'
+    demoData: 'impac.data_not_found_config.demo_data'
+```
+
+#### Dependencies
+- Impac! v1.6.0 (demo data endpoints for widgets)
+
+-------------------------------------------------------------
+
 ### v1.5.6 | 2017 - Week 33
 
 #### Adds

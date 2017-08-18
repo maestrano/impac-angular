@@ -21,25 +21,21 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
       )
   )
 
-  $scope.showWidget = (refreshCache=false) ->
-    w.isLoading ||= true
-    ImpacWidgetsSvc.show(w, refreshCache).then(
-      (updatedWidget) ->
+  $scope.showWidget = (refreshCache = false) ->
+    ImpacWidgetsSvc.show(w, { refreshCache: refreshCache }).finally(
+      ->
         #TODO: Accessibility should be treated differently (in service?)
         if $scope.isAccessibility
           $scope.initialWidth = w.width
           w.width = 12
         else if $scope.initialWidth
           w.width = $scope.initialWidth
-
-    ).finally( ->
-      w.isLoading = false
     )
 
   $scope.initSettings = ->
     ImpacWidgetsSvc.initWidgetSettings(w)
 
-  $scope.updateSettings = (needContentReload=true) ->
+  $scope.updateSettings = (needContentReload = true) ->
     ImpacWidgetsSvc.updateWidgetSettings(w, needContentReload)
 
   $scope.getColClass = ->
@@ -67,7 +63,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     ImpacDashboardsSvc.tick()
 )
 
-module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
+module.directive('impacWidget', ($templateCache, ImpacUtilities, ImpacWidgetsSvc) ->
   return {
     restrict: 'A',
     scope: {
@@ -105,6 +101,14 @@ module.directive('impacWidget', ($templateCache, ImpacUtilities) ->
 
       scope.toggleEditTitle = ->
         scope.editTitle = !scope.editTitle
+
+      scope.showDeleteWidget = false
+      scope.toggleDeleteWidget = ->
+        scope.showDeleteWidget = !scope.showDeleteWidget
+
+      scope.deleteWidget = ->
+        ImpacWidgetsSvc.delete(scope.widget)
+        .then(null, (e) -> scope.widget.errors = ImpacUtilities.processRailsError(e))
 
     ,template: $templateCache.get('widget/widget.tmpl.html')
   }

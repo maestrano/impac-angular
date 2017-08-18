@@ -197,6 +197,16 @@
 @kpi-settings-alert-config-background-hover:   @mblue;
 @kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
 
+// Widgets pop-ups
+//--------------------------------------
+@impac-widget-popup-title-background-color:    #192831;
+@impac-widget-popup-message-background-color:  rgb(244, 248, 249);
+@impac-widget-popup-title-text-color:          white;
+@impac-widget-popup-message-text-color:        @impac-widget-text-color;
+
+// Demo data mode
+@impac-widget-demo-data-link-color:            @mgreen;
+
 .font(@size,@weight,@color) {
   font-weight:@weight;
   font-size:@size;
@@ -1951,6 +1961,44 @@ body {
   ////////
 }
 
+dashboard-templates-selector {
+  .templates-header {
+    display: flex;
+    .templates-toggle {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      font-size: 20px;
+      i.fa {
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+      }
+    }
+  }
+  .templates {
+    border: 1px solid #ccc;
+    box-shadow: inset 0px 0px 1px 0px #ccc;
+    height: 130px;
+    overflow: auto;
+    border-radius: 2px;
+
+    .template {
+      padding: 5px 10px;
+      color: @impac-widget-text-color;
+      border-bottom: 1px solid #ececec;
+      &:hover {
+        cursor: pointer;
+        background-color: lighten(@impac-dashboard-templates-selected-background-color, 20%);
+      }
+      &.selected {
+        background-color: @impac-dashboard-templates-selected-background-color;
+      }
+    }
+  }
+}
+
 .analytics .impac-kpi .kpi {
   position: relative;
   max-width: 220px;
@@ -2187,44 +2235,6 @@ body {
 
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
-}
-
-dashboard-templates-selector {
-  .templates-header {
-    display: flex;
-    .templates-toggle {
-      display: flex;
-      flex-grow: 1;
-      justify-content: flex-end;
-      font-size: 20px;
-      i.fa {
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-      }
-    }
-  }
-  .templates {
-    border: 1px solid #ccc;
-    box-shadow: inset 0px 0px 1px 0px #ccc;
-    height: 130px;
-    overflow: auto;
-    border-radius: 2px;
-
-    .template {
-      padding: 5px 10px;
-      color: @impac-widget-text-color;
-      border-bottom: 1px solid #ececec;
-      &:hover {
-        cursor: pointer;
-        background-color: lighten(@impac-dashboard-templates-selected-background-color, 20%);
-      }
-      &.selected {
-        background-color: @impac-dashboard-templates-selected-background-color;
-      }
-    }
-  }
 }
 
 .analytics kpis-bar > .kpis {
@@ -2516,42 +2526,119 @@ dashboard-templates-selector {
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
-  font-size: 18px;
-  color: @impac-widget-text-color;
-  img {
-    opacity: 0.8;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    // fix for mobile, prevents images from extended the width of the widget.
-    max-width: 100%;
+  font-size: 13px;
+  color: @impac-widget-popup-message-text-color;
+
+  .overlay {
+    background-color: white;
+    position: absolute;
+    height: ~"calc(100% - 4px)";
+    width: ~"calc(100% - 4px)";
+    top: 2px;
+    left: 2px;
+    opacity: 0.6;
+    z-index: 3;
   }
+
   .message {
     position: absolute;
-    top: 50%;
+    top: 125px;
     left: 50%;
+    padding-bottom: 10px;
     transform: translate(-50%, -50%);
-    width: 70%;
-    background-color: rgb(244, 248, 249);
-    padding: 10px 0px;
+    width: 85%;
+    background-color: @impac-widget-popup-message-background-color;
     border-radius: 4px;
-    border: solid 1px @impac-widget-borders-color;
+    box-shadow: 0px 0px 25px 0px;
+    z-index: 4;
+
+    .title {
+      padding: 2px;
+      background-color: @impac-widget-popup-title-background-color;
+      color: @impac-widget-popup-title-text-color;
+      margin: -1px -1px 10px -1px;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    .btn { margin-top: 5px; }
+  }
+
+  .example {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    color: @impac-widget-popup-title-text-color;
+    background-color: @impac-widget-popup-title-background-color;
+    padding: 3px;
+    z-index: 6;
+
     a {
-      color: @impac-widget-link-color;
-      display: block;
-      font-size: 16px;
       font-weight: normal;
+      color: @impac-widget-demo-data-link-color;
     }
   }
 }
 
 .analytics .kpi .data-not-found {
   .message {
-    width: 100%;
-    font-size: 16px;
-    a { font-size: 14px; }
+    width: 90%;
+    padding-bottom: 0px;
+    border: solid 1px silver;
+    box-shadow: none;
+    p { margin: 5px; }
+  }
+  .overlay, .title, .btn, .example { display: none; }
+}
+
+.analytics common-delete-widget {
+  text-align: center;
+  font-size: 13px;
+  color: @impac-widget-popup-message-text-color;
+  
+  .overlay {
+    background-color: white;
+    position: absolute;
+    height: ~"calc(100% - 4px)";
+    width: ~"calc(100% - 4px)";
+    top: 2px;
+    left: 2px;
+    opacity: 0.6;
+    z-index: 5;
+  }
+
+  .message {
+    z-index: 6;
+    position: absolute;
+    min-height: 160px;
+    padding-bottom: 10px;
+    top: 45px;
+    left: 7%;
+    width: 86%;
+    background-color: @impac-widget-popup-message-background-color;
+    border-radius: 4px;
+    box-shadow: 0px 0px 25px 0px;
+
+    .title {
+      padding: 2px;
+      background-color: @impac-widget-popup-title-background-color;
+      color: @impac-widget-popup-title-text-color;
+      margin: -1px -1px 10px -1px;
+      text-transform: uppercase;
+    }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+
+    p { padding: 0px 10px; }
+
+    button.btn { margin-top: 20px; }
   }
 }
 
@@ -2560,6 +2647,9 @@ dashboard-templates-selector {
   select {
     margin-top: 4px;
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -2668,9 +2758,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 chart-threshold {
 
   .attach-panel {
@@ -2718,6 +2805,18 @@ chart-threshold {
   }
 }
 
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
 .analytics .widget-item .editable-title {
   width: 100%;
   flex: 1;
@@ -2762,18 +2861,6 @@ chart-threshold {
         }
       }
     }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
   }
 }
 
@@ -2881,33 +2968,6 @@ chart-threshold {
       }
     }
   }
-
-  .confirm-delete-popover {
-    position: absolute;
-    top: 90px;
-    left: 15%;
-    width: 70%;
-    background-color: #17262d;
-    padding: 10px;
-    border-radius: 4px;
-    z-index: 50;
-    color: white;
-    text-align: center;
-    cursor: default;
-    .box-shadow(0px 0px 25px 4px black);
-    border: solid 1px @impac-widget-background-color;
-    white-space: normal;
-
-    h4 {
-      color: @impac-widget-top-buttons-color;
-      font-weight: bold;
-    }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -2925,9 +2985,6 @@ chart-threshold {
       text-align: center;
       border-bottom: dashed 1px @impac-widget-borders-color;
     }
-  }
-  p {
-    font-weight: bold;
   }
 }
 
@@ -3539,7 +3596,7 @@ chart-threshold {
       margin-bottom: 5px;
     }
   }
-  .title {
+  .row.title {
     text-align: center;
     margin-bottom: 10px;
     font-size: 14px;
@@ -3557,7 +3614,7 @@ chart-threshold {
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
-    max-height: 340px;
+    max-height: 275px;
     .widget-line.main {
       .selectable();
     }

@@ -13,7 +13,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)">
+    <div>
       <div setting-hist-mode parent-widget= "widget" deferred="::histModeDeferred" />
 
       <div ng-hide="widget.isHistoryMode" class="current">
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>
