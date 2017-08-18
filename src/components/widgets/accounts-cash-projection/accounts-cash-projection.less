@@ -1,8 +1,23 @@
 .analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
 
-  .cash-projection-chart { 
-    height: ~"calc(@{impac-big-widget-size} - 50px)"; 
+  .cash-projection-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .highcharts-legend-item {
+
+    rect.highcharts-point {
+      display: none;
+    }
+
+    span {
+      width: 110px;
+      text-align: center;
+      img {
+        text-align: center;
+      }
+    }
   }
 
   .offset-box {
