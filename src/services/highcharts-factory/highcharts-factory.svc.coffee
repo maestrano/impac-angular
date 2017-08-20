@@ -24,7 +24,7 @@ angular
                  useHTML: true
           labelFormatter: ->
             name = this.name
-            img = "<img src = 'dist/images/#{name.replace(' ', '-').toLowerCase()}.png' width = '55px' height = '25px'><br>"
+            img = "<img src='dist/images/#{name.replace(' ', '-').toLowerCase()}.png' width = '55px' height = '25px'><br>"
             return img + '	' + name
         xAxis:
           startOnTick: false
