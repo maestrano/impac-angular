@@ -1,6 +1,6 @@
 angular
 .module('impac.services.highcharts-factory', [])
-.factory('HighchartsFactory', ($filter)->
+.factory('HighchartsFactory', ($filter, ImpacAssets)->
 
   templates =
     line: Object.freeze
@@ -24,7 +24,8 @@ angular
                  useHTML: true
           labelFormatter: ->
             name = this.name
-            img = "<img src='dist/images/#{name.replace(' ', '-').toLowerCase()}.png' width = '55px' height = '25px'><br>"
+            imgSrc = ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
+            img = "<img src='#{imgSrc}'><br>"
             return img + '	' + name
         xAxis:
           startOnTick: false

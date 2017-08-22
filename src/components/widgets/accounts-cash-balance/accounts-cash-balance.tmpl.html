@@ -25,8 +25,10 @@
           <div class="header" ng-repeat="header in groupedTable.headers">
             <h4 ng-bind="header | titleize"></h4>
             <div class="group-item" ng-repeat="item in groupedTable.groups[$index]" ng-click="legendItemOnClick(item)">
-              <i ng-style="{'color': getLegendItemColor(item)}" class="fa {{getLegendItemIcon(item)}}" aria-hidden="true"></i>
-              <div class="plot-line-icon" style="background-color:{{getLegendItemColor(item)}};"></div>&nbsp;
+              <i ng-style="{'color': getLegendItemColor(item)}" class="fa {{getLegendItemCheckBox(item)}}" aria-hidden="true"></i>
+              <div>
+                <svg ng-include="getLegendItemIcon(item)" class="legend-item-icon" style="fill: {{getLegendItemColor(item)}};"></svg>
+              </div>&nbsp;
               <span ng-bind="item.name"></span>
             </div>
           </div>
