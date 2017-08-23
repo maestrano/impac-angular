@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, HighchartsFactory) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory) ->
 
   w = $scope.widget
 
@@ -64,8 +64,20 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       thresholds: getThresholds()
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-    $scope.chart.render(w.content.chart, options)
+    # Extend default chart formatters to add custom legend img icon
+    defaultFormattersConfig = $scope.chart.formatters()
+    $scope.chart.formatters = ->
+      angular.merge(defaultFormattersConfig, {
+        legend:
+          useHTML: true
+          labelFormatter: ->
+            name = this.name
+            imgSrc = ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
+            img = "<img src='#{imgSrc}'><br>"
+            return img + '	' + name
+      })
 
+    $scope.chart.render(w.content.chart, options)
     $scope.chartDeferred.notify($scope.chart.hc)
 
   $scope.chartId = ->

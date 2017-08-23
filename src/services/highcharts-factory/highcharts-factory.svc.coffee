@@ -17,16 +17,6 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-          useHTML: true
-          plotOptions :
-             series:
-               dataLabels:
-                 useHTML: true
-          labelFormatter: ->
-            name = this.name
-            imgSrc = ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
-            img = "<img src='#{imgSrc}'><br>"
-            return img + '	' + name
         xAxis:
           startOnTick: false
           minPadding: 0
