@@ -3,8 +3,20 @@
 ### v1.5.6 | 2017 - Week 35
 
 #### Adds
+- [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
 
 #### Fixes
+
+#### Config changes
+- New image asset files via the assets.svc
+```coffeescript
+cashFlowLegendIcon: ':default/cash-flow.png'
+payablesLegendIcon: ':default/payables.png'
+projectedCashLegendIcon: ':default/projected-cash.png' 
+receivablesLegendIcon: ':default/receivables.png' 
+plotLineLegendIcon: ':default/plot-line-icon.svg' 
+areaLegendIcon: ':default/area-icon.svg' 
+```
 
 -------------------------------------------------------------
 
