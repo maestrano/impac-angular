@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.6.1 | 2017 - Week 35
+
+#### Fixes
+- Update doc with v1.6.0 changes
+
+-------------------------------------------------------------
+
 ### v1.6.0 | 2017 - Week 33
 
 #### Adds
