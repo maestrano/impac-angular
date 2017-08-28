@@ -6,6 +6,7 @@
 - [IMPAC-648] Show demo data when none can be found
 
 #### Config changes
+- Changes to the theming.svc to improve the data not found message & customisability
 ```coffeescript
 # Old
 dataNotFoundConfig:
@@ -33,6 +34,7 @@ dataNotFoundConfig:
 - [IMPAC-448] Add tracking tags setting to PnL and BalanceSheet widgets
 
 #### Config changes
+- Changes to the theming.svc to enable / disable widget tagging
 ```coffeescript
 widgetSettings:
   tagging:
@@ -55,6 +57,7 @@ widgetSettings:
 - Remove HOURLY period from HR widgets and replace it by DAILY
 
 #### Config changes
+- Changes to the theming.svc to whitelist & blacklist widget templates
 ```coffeescript
 # whitelist takes precedence over blacklist
 # when both are empty, all templates are displayed
@@ -75,6 +78,7 @@ widgetSelectorConfig:
 - Fix alerts settings button when no alert is attached to a KPI
 
 #### Config changes
+- Changes to the theming.svc to enable / disable ability to create from a dashboard template
 ```coffeescript
 dhbSettings:
   createFromTemplateEnabled: false
