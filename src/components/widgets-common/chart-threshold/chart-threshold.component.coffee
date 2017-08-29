@@ -103,7 +103,16 @@ module.component('chartThreshold', {
         )
       promise.then(
         (kpi)->
-          ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+          ImpacKpisSvc.show(kpi).then(
+            (response)->
+              dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
+              angular.extend(kpi, response.data[dataKey])
+          ).finally(
+            ->
+              ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+          )
+        ->
+          toastr.error("Failed to save #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -111,15 +120,13 @@ module.component('chartThreshold', {
     ctrl.deleteKpi = ->
       return if ctrl.loading
       ctrl.loading = true
-      kpiDesc = "#{ctrl.widget.name} #{(kpi = getKpi()).element_watched}"
-      ImpacKpisSvc.delete(kpi).then(
+      ImpacKpisSvc.delete(getKpi()).then(
         ->
-          toastr.success("Deleted #{kpiDesc} KPI")
-          _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
-          ctrl.chart.removeThreshold(kpi.id)
+          toastr.success("Deleted #{ctrl.kpi.element_watched} KPI", getWidgetName())
+          _.remove(ctrl.widget.kpis, (k)-> k.id == getKpi().id)
           ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
         ->
-          toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
+          toastr.error("Failed to delete #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -128,6 +135,9 @@ module.component('chartThreshold', {
 
     getKpi = ->
       _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
+
+    getWidgetName = ->
+      _.startCase "#{ctrl.widget.name} widget"
 
     onChartNotify = (chart)->
       ctrl.chart = chart
@@ -150,8 +160,8 @@ module.component('chartThreshold', {
 
     disableAttachability = (logMsg)->
       ctrl.disabled = true
-      toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
-      $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
+      toastr.warning('Chart KPIs are disabled!', getWidgetName())
+      $log.warn("Impac! - #{getWidgetName()}: #{logMsg}") if logMsg
 
     # As this method can be called from parent component or an event callback,
     # $timeout to ensure value change is detected as per usual.
@@ -171,17 +181,26 @@ module.component('chartThreshold', {
       ctrl.chart.hc.setSize(null, ctrl.chart.hc.chartHeight + ctrl.chartShrinkSize, false)
       ctrl.chart.hc.container.parentElement.style.height = "#{ctrl.chart.hc.chartHeight}px"
 
-    # Disable threshold when selected time period is strictly in the past
-    validateHistParameters = ->
-      widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
-      ctrl.disabled = widgetHistParams? && moment(widgetHistParams.to) <= moment.utc().startOf('day')
-      return !ctrl.disabled
-
     # Validate and build threshold data from widget kpi templates
     buildThresholdsFromKpis = ->
       targets = ctrl.widget.kpis? && ctrl.widget.kpis[0] && ctrl.widget.kpis[0].targets
       return [] unless ImpacKpisSvc.validateKpiTargets(targets)
       [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor }]
+
+    # Disable threshold when selected time period is strictly in the past
+    validateHistParameters = ->
+      widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
+      # Widget histParams are YTD by default (when undefined on metadata),
+      # therefore in the past by default
+      ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day')
+      return
+
+    isCmpDisabled = ->
+      if _.isEmpty(ctrl.widget.metadata.bolt_path)
+        $log.error("chart-threshold.component not compatible with #{getWidgetName()} - no bolt path defined")
+        true
+      else
+        false
 
     return ctrl
 })

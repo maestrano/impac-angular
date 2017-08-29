@@ -175,6 +175,12 @@ angular
       templ = _self.getKpiTemplate(kpiEndpoint, kpiWatchable)
       ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}
 
+    @getApiV2KpiDataKey = (kpi)->
+      # Formats the kpi endpoint to select the key name
+      # e.g response.cash_projection = { triggered: true, ... }
+      # TODO: maybe the 'kpi' of endpoint 'kpis/cash_projection' should be removed?
+      kpi.endpoint.split('kpis/').pop()
+
     # TODO: mno & impac should be change to deal with `watchables`, instead
     # of element_watched, and extra_watchables. The first element of watchables should be
     # considered the primary watchable, a.k.a element_watched.

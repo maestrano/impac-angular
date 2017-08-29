@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacTheming, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -209,9 +209,22 @@ angular
                 # Push new content to widget, and initialize it
                 name = success.data.name
                 angular.extend widget, { content: content, originalName: name, demoData: demoData }
-                initWidget(widget)
-                $q.resolve(widget)
 
+                # Fetches Widget KPIs calculations
+                kpiPromises = _.map(widget.kpis, (k)->
+                  ImpacKpisSvc.show(k).then(
+                    (response)->
+                      dataKey = ImpacKpisSvc.getApiV2KpiDataKey(k)
+                      angular.extend(k, response.data[dataKey])
+                    (err)->
+                      $log.error('Impac! - WidgetsSvc: Cannot retrieve Widget KPI: ', err)
+                  )
+                )
+                $q.all(kpiPromises).then(
+                  ->
+                    initWidget(widget)
+                    $q.resolve(widget)
+                )
             (showError) ->
               initWidget(widget)
               widget.processError(showError.data.error) if angular.isDefined(widget.processError) && showError.data? && showError.data.error
