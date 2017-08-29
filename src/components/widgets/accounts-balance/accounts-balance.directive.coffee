@@ -12,7 +12,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
-  # $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
@@ -21,7 +20,6 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     $scope.chartDeferred.promise
-    # $scope.attachKpisDeferred.promise
   ]
 
   $scope.kpiExtraParams = {}

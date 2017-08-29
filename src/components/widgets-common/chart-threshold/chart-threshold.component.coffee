@@ -36,7 +36,11 @@ module.component('chartThreshold', {
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
         (templates)->
           return disableAttachability('No valid KPI Templates found') if _.isEmpty(templates) || _.isEmpty(templates[0].watchables)
+          # Widgets can have multiple possible attachable KPIs, only one is currently supported.
           angular.extend(ctrl.kpi, angular.copy(templates[0]))
+          # The watchables are currently not selectable by the user, only one element_watched
+          # is supported.
+          ctrl.kpi.element_watched = ctrl.kpi.watchables[0]
         ->
           disableAttachability()
       )
@@ -75,7 +79,7 @@ module.component('chartThreshold', {
       return if ctrl.loading
       ctrl.loading = true
       params = targets: {}, metadata: {}
-      params.targets[ctrl.kpi.watchables[0]] = [{
+      params.targets[ctrl.kpi.element_watched] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
 
@@ -92,7 +96,7 @@ module.component('chartThreshold', {
       else
         params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
         params.widget_id = ctrl.widget.id
-        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
+        ImpacKpisSvc.create(ctrl.kpi, params).then(
           (kpi)->
             ctrl.widget.kpis.push(kpi)
             kpi
