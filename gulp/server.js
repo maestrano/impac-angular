@@ -21,7 +21,8 @@ function browserSyncInit(baseDir, browser) {
     '/bower_components': 'bower_components',
     '/dist': 'dist',
     '/assets': 'workspace/assets',
-    '/locales': 'src/locales'
+    '/locales': 'src/locales', 
+    '/fonts': 'bower_components/bootstrap/fonts'
   };
 
   var server = {
