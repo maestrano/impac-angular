@@ -221,8 +221,7 @@ angular
         kpisTemplatesPromises.push $http.get("#{bolt.path}/kpis").then(
           (response) ->
             for template in response.data.kpis
-              template.metadata ||= {}
-              template.metadata.bolt_path = bolt.path
+              template.source = bolt.path
               kpisTemplates.push(template)
           (error) ->
             $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{bolt.path}/kpis")
@@ -281,14 +280,14 @@ angular
           $q.reject({error: { message: 'Impac! - KpisSvc: Service is not initialized' }})
       ).finally ( -> kpi.isLoading = false )
 
-    @create = (source, endpoint, elementWatched, opts={}) ->
+    @create = (kpi, opts = {}) ->
       deferred = $q.defer()
       _self.load().then(
         ->
           params = {
-            source: source
-            endpoint: endpoint
-            element_watched: elementWatched
+            source: kpi.source || 'impac'
+            endpoint: kpi.endpoint
+            element_watched: kpi.element_watched
             metadata:
               currency: _self.getCurrentDashboard().currency
           }
@@ -311,7 +310,7 @@ angular
                 _self.buildKpiWatchables(kpi)
                 deferred.resolve(kpi)
               (err) ->
-                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{kpi.endpoint}", err)
                 toastr.error('Unable to create KPI', 'Error')
                 deferred.reject(err)
             )
