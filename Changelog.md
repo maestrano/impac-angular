@@ -2,8 +2,12 @@
 
 ### v1.6.1 | 2017 - Week 35
 
+#### Adds
+- Serve glyphicons in the developer workspace
+
 #### Fixes
 - Update doc with v1.6.0 changes
+- [IMPAC-658] Fix dependency to xeditable
 
 -------------------------------------------------------------
 
