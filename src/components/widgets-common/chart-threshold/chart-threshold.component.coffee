@@ -101,14 +101,12 @@ module.component('chartThreshold', {
             (response)->
               dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
               angular.extend(kpi, response.data[dataKey])
-            ()->
-              toastr.error('An error occuring while trying to fetch the updated threshold KPI')
           ).finally(
             ->
               ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
           )
         ->
-          toastr.error('Failed to save KPI', 'Error')
+          toastr.error("Failed to save #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -116,14 +114,13 @@ module.component('chartThreshold', {
     ctrl.deleteKpi = ->
       return if ctrl.loading
       ctrl.loading = true
-      kpiDesc = "#{ctrl.widget.name} #{(kpi = getKpi()).element_watched}"
-      ImpacKpisSvc.delete(kpi).then(
+      ImpacKpisSvc.delete(getKpi()).then(
         ->
-          toastr.success("Deleted #{kpiDesc} KPI")
-          _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
+          toastr.success("Deleted #{ctrl.kpi.element_watched} KPI", getWidgetName())
+          _.remove(ctrl.widget.kpis, (k)-> k.id == getKpi().id)
           ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
         ->
-          toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
+          toastr.error("Failed to delete #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -132,6 +129,9 @@ module.component('chartThreshold', {
 
     getKpi = ->
       _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
+
+    getWidgetName = ->
+      _.startCase "#{ctrl.widget.name} widget"
 
     onChartNotify = (chart)->
       ctrl.chart = chart
@@ -159,8 +159,8 @@ module.component('chartThreshold', {
 
     disableAttachability = (logMsg)->
       ctrl.disabled = true
-      toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
-      $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
+      toastr.warning('Chart KPIs are disabled!', getWidgetName())
+      $log.warn("Impac! - #{getWidgetName()}: #{logMsg}") if logMsg
 
     # As this method can be called from parent component or an event callback,
     # $timeout to ensure value change is detected as per usual.
@@ -190,7 +190,7 @@ module.component('chartThreshold', {
 
     isCmpDisabled = ->
       if _.isEmpty(ctrl.widget.metadata.bolt_path)
-        $log.error("chart-threshold.component not compatible with #{ctrl.widget.name} - no bolt path defined")
+        $log.error("chart-threshold.component not compatible with #{getWidgetName()} - no bolt path defined")
         true
       else
         false

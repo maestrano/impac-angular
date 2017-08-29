@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacTheming, ImpacKpisSvc, toastr, ImpacEvents, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacTheming, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -212,7 +212,7 @@ angular
                       dataKey = ImpacKpisSvc.getApiV2KpiDataKey(k)
                       angular.extend(k, response.data[dataKey])
                     (err)->
-                      toastr.error('An error occured while retrieving your Threshold KPIs', 'Error')
+                      $log.error('Impac! - WidgetsSvc: Cannot retrieve Widget KPI: ', err)
                   )
                 )
                 $q.all(kpiPromises).then(
