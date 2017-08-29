@@ -85,7 +85,7 @@ angular
     addThresholds: (options = @options)->
       return if _.isEmpty(@hc)
       # Remove existing thresholds
-      _.each(@hc.series, (s)-> s.remove() if s.name.toLowerCase().includes('threshold'))
+      _.remove(@hc.series, (s) -> _.includes(s.name.toLowerCase(), 'threshold'))
       return @hc if _.isEmpty(options.thresholds)
       # Determine the indexes length of the cash projection intervals
       projectionIntervalLength = @data.labels.slice(todayIndex(@data.labels), @data.labels.length).length
