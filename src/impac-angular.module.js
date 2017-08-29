@@ -15,7 +15,8 @@ angular.module('maestrano.impac',
     'ui.bootstrap',
     'emguo.poller',
     'toastr',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'xeditable'
   ]);
 
 /*
