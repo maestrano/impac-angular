@@ -22,6 +22,10 @@ plotLineLegendIcon: ':default/plot-line-icon.svg'
 areaLegendIcon: ':default/area-icon.svg' 
 ```
 
+### Dependencies
+- Impac! v1.6.1 (kpis#show endpoint)
+- Impac! Finance Bolt v0.4.0 (kpis#show endpoint & render method)
+
 -------------------------------------------------------------
 
 ### v1.6.0 | 2017 - Week 33
