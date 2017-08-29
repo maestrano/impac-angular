@@ -4,10 +4,22 @@
 
 #### Adds
 - Serve glyphicons in the developer workspace
+- [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
 
 #### Fixes
 - Update doc with v1.6.0 changes
 - [IMPAC-658] Fix dependency to xeditable
+
+#### Config changes
+- New image asset files via the assets.svc
+```coffeescript
+cashFlowLegendIcon: ':default/cash-flow.png'
+payablesLegendIcon: ':default/payables.png'
+projectedCashLegendIcon: ':default/projected-cash.png' 
+receivablesLegendIcon: ':default/receivables.png' 
+plotLineLegendIcon: ':default/plot-line-icon.svg' 
+areaLegendIcon: ':default/area-icon.svg' 
+```
 
 -------------------------------------------------------------
 

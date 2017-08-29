@@ -264,18 +264,20 @@ angular
 
 #### Dashboard Assets
 
-Provide custom image files with the ImpacAssets Provider.
+Provide custom image files with the ImpacAssets Provider. If customising an svg, make sure to customise it with another svg.
 
-To use the default widget asset files provided, see [Using Default Assets](#using-default-assets).
+To use or configure the default widget asset files provided, see [Using Default Assets](#using-default-assets).
 
 ##### API
 
 **impacTitleLogo**<br>
 _type_: String<br>
+_default_: `'/images/impac-title-logo.png'`<br>
 _usage_: Main branding logo for the dashboard.
 
 **impacDashboardBackground**<br>
 _type_: String<br>
+_default_: `'/images/impac-dashboard-background.png'`<br>
 _usage_: Dashboard Background image displayed when when no widgets are added.
 
 ##### Example
@@ -287,7 +289,6 @@ angular
     options =
       impacTitleLogo: '/images/impac-title-logo.png'
       impacDashboardBackground: '/images/impac-dashboard-background.png'
-
 
     ImpacAssetsProvider.configure(options)
 ```
@@ -425,7 +426,7 @@ angular
 
 #### Widget Assets
 
-Provide custom image files with the ImpacAssets Provider.
+Provide custom image files with the ImpacAssets Provider. If customising an svg, make sure to customise it with another svg.
 
 To use the default widget asset files provided, see [Using Default Assets](#using-default-assets).
 
@@ -433,8 +434,38 @@ To use the default widget asset files provided, see [Using Default Assets](#usin
 
 **currencyConversionsIcon**
 _type_: String<br>
-_default_: `'/images/impac-title-logo.png'`<br>
-_usage_:  Icon displayed to trigger conversions rate tooltips on widgets. A default image is provided for this option.
+_default_: `'/images/currency-icon.png'`<br>
+_usage_:  Icon displayed to trigger conversions rate tooltips on widgets. 
+
+**cashFlowLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/cash-flow.png'`<br>
+_usage_: Icon displayed for the chart series representing your cashflow in the Cash Projection widget.
+
+**payablesLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/payables.png'`<br>
+_usage_: Icon displayed for the chart series representing payables in the Cash Projection widget. 
+
+**receivablesLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/receivables.png'`<br>
+_usage_: Icon displayed for the chart series representing receivables in the Cash Projection widget. 
+
+**projectedCashLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/projected-cash.png'`<br>
+_usage_: Icon displayed for the chart series representing projected cash in the Cash Projection widget. 
+
+**plotLineLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/plot-line-icon.svg'`<br>
+_usage_: Icon displayed for the chart series using a 'line' as a series type in the widgets (Highcharts only). 
+
+**areaLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/area-icon.svg'`<br>
+_usage_: Icon displayed for the chart series using a 'area' as a series type in the widgets (Highcharts only). 
 
 ##### Example
 ```coffeescript
@@ -444,6 +475,12 @@ angular
 
     options =
       currencyConversionsIcon: '/images/currency-icon.png'
+      cashFlowLegendIcon: '/images/cash-flow.png'
+      payablesLegendIcon: '/images/payables.png'
+      receivablesLegendIcon: '/images/receivables.png'
+      projectedCashLegendIcon: '/images/projected-cash.png'
+      plotLineLegendIcon: '/images/plot-line-icon.svg'
+      areaLegendIcon: '/images/area-icon.svg'
 
     ImpacAssetsProvider.configure(options)
 ```
