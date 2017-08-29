@@ -22,6 +22,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
 
   # Widget specific methods
   # --------------------------------------
+
   w.initContext = ->
     $scope.movedAccount = {}
     # defines the available options for params-checkboxes.directive
@@ -101,11 +102,11 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
-  w.format = ->
-    inputData = {labels: [], values: []}
-    # Waiting for next digest cycle to ensure w.selectedAccounts have been pre-populated
-    # by any saved accounts.
-    $timeout () ->
+  $timeout ->
+    w.format = ->
+      inputData = {labels: [], values: []}
+      # Waiting for next digest cycle to ensure w.selectedAccounts have been pre-populated
+      # by any saved accounts.
       for account in w.selectedAccounts
         if $scope.isComparisonMode()
           for groupedAccount in account.accounts
@@ -128,7 +129,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
-
+  , 0
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
