@@ -102,34 +102,35 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # Chart formating function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
-  $timeout ->
-    w.format = ->
-      inputData = {labels: [], values: []}
-      # Waiting for next digest cycle to ensure w.selectedAccounts have been pre-populated
-      # by any saved accounts.
-      for account in w.selectedAccounts
-        if $scope.isComparisonMode()
-          for groupedAccount in account.accounts
-            inputData.labels.push groupedAccount.name
-            inputData.values.push groupedAccount.current_balance
-        else
-          inputData.labels.push account.name
-          inputData.values.push account.current_balance
+  w.format = ->
+    inputData = {labels: [], values: []}
+    # Waiting for next digest cycle to ensure w.selectedAccounts have been pre-populated
+    # by any saved accounts.
+    $timeout ->
+      $scope.$apply ->
+        for account in w.selectedAccounts
+          if $scope.isComparisonMode()
+            for groupedAccount in account.accounts
+              inputData.labels.push groupedAccount.name
+              inputData.values.push groupedAccount.current_balance
+          else
+            inputData.labels.push account.name
+            inputData.values.push account.current_balance
 
-      while inputData.values.length < 15
-        inputData.labels.push ""
-        inputData.values.push null
+        while inputData.values.length < 15
+          inputData.labels.push ""
+          inputData.values.push null
 
-      options = {
-        showTooltips: false,
-        showXLabels: false,
-        barDatasetSpacing: 9,
-      }
-      chartData = ChartFormatterSvc.barChart(inputData,options)
+        options = {
+          showTooltips: false,
+          showXLabels: false,
+          barDatasetSpacing: 9,
+        }
 
-      # calls chart.draw()
-      $scope.drawTrigger.notify(chartData)
-  , 0
+        chartData = ChartFormatterSvc.barChart(inputData,options)
+        # calls chart.draw()
+        $scope.drawTrigger.notify(chartData)
+    , 0
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
