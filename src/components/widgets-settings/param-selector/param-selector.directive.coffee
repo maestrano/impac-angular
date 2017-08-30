@@ -14,8 +14,7 @@ module.controller('SettingParamSelectorCtrl', ($scope, ImpacWidgetsSvc) ->
   $scope.selectOption = (anOption) ->
     if anOption.value != $scope.selected.value
       angular.extend $scope.selected, anOption
-      $scope.parentWidget.isLoading = true unless $scope.noReload
-      ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget,!$scope.noReload)
+      ImpacWidgetsSvc.updateWidgetSettings($scope.parentWidget, !$scope.noReload)
       $scope.onSelect() if angular.isDefined $scope.onSelect
     $scope.toggleShowOptions()
 

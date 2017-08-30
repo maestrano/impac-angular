@@ -14,32 +14,29 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)">
-      <!-- Will be hidden once an account is selected -->
-      <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an expense account' on-account-selected="updateSettings()" deferred="::accountFrontDeferred" />
+    <!-- Will be hidden once an account is selected -->
+    <div setting-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an expense account' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" />
 
-      <div ng-show="widget.selectedAccount">
-        <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" accounting-behaviour="pnl" />
+    <div ng-show="widget.selectedAccount">
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" on-toggle="widget.format()" accounting-behaviour="pnl" />
 
-        <div class="chart-container">
-          <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-        </div>
-
-        <div class="legend">
-          <div class="title">
-            {{getName()}} to {{getComparator() | titleize}}
-            <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
-          </div>
-          <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
-            <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
-            <br />
-          </span>
-        </div>
+      <div class="chart-container">
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       </div>
 
+      <div class="legend">
+        <div class="title">
+          {{getName()}} to {{getComparator() | titleize}}
+          <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
+        </div>
+        <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
+          <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
+          <br />
+        </span>
+      </div>
     </div>
-
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

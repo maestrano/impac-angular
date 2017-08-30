@@ -19,7 +19,7 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
-    <div ng-show="(isDataFound==true)">
+    <div>
 
       <!-- Ratio details -->
       <div class="col-md-6 left-panel" ng-class="{simulation: simulationMode}">
@@ -92,7 +92,6 @@
 
     </div>
 
-    <!-- No data found -->
-    <div ng-show="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width" />
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 </div>

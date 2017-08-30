@@ -1,7 +1,7 @@
 {
   "name": "impac-angular",
   "description": "Impac! Front-End Library",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "main": [
     "dist/impac-angular.js",
     "dist/impac-angular.less",
@@ -29,6 +29,7 @@
     "angular-xeditable": "~0.5.0",
     "angular-toastr": "~1.7.0",
     "bootstrap": "~3.3.5",
+    "ng-tags-input": "~3.2.0",
     "Chart.js": "~2.1.4",
     "lodash": "~3.10.1",
     "components-font-awesome": "~4.5.0",

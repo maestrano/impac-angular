@@ -56,8 +56,12 @@ angular
         enableAlerts: true
       # options for the data-not-found display panel messages.
       dataNotFoundConfig:
-        mainMessage: 'impac.data_not_found_config.main_message'
-        linkMessage: 'impac.data_not_found_config.link_message'
+        content:
+          mainMessage: 'impac.data_not_found_config.main_message'
+          linkMessage: 'impac.data_not_found_config.link_message'
+          title: 'impac.data_not_found_config.title'
+          seeExample: 'impac.data_not_found_config.see_example'
+          demoData: 'impac.data_not_found_config.demo_data'
         linkUrl: '/apps'
         linkTarget: '_blank'
         linkUrlCallback: null
@@ -119,6 +123,8 @@ angular
             default: "impac.widget.theming.hist.default.prefix"
         timePeriod:
           showSlider: true
+        tagging:
+          enabled: false
 
 
     #=======================================

@@ -15,7 +15,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)">
+    <div>
       <!-- multi-companies mode -->
       <div ng-show="widget.metadata.organization_ids.length > 1 && canSelectComparisonMode || isComparisonMode()">
         <div setting-params-checkboxes options="comparisonModeOptions" param="comparison_mode" parent-widget="widget" deferred="::paramsCheckboxesDeferred"/>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

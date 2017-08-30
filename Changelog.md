@@ -1,5 +1,49 @@
 # Impac! Frontend Changelog
 
+### v1.6.0 | 2017 - Week 33
+
+#### Adds
+- [IMPAC-648] Show demo data when none can be found
+
+#### Config changes
+```coffeescript
+# Old
+dataNotFoundConfig:
+  mainMessage: 'impac.data_not_found_config.main_message'
+  linkMessage: 'impac.data_not_found_config.link_message'
+
+# New
+dataNotFoundConfig:
+  content:
+    mainMessage: 'impac.data_not_found_config.main_message'
+    linkMessage: 'impac.data_not_found_config.link_message'
+    title: 'impac.data_not_found_config.title'
+    seeExample: 'impac.data_not_found_config.see_example'
+    demoData: 'impac.data_not_found_config.demo_data'
+```
+
+#### Dependencies
+- Impac! v1.6.0 (demo data endpoints for widgets)
+
+-------------------------------------------------------------
+
+### v1.5.6 | 2017 - Week 33
+
+#### Adds
+- [IMPAC-448] Add tracking tags setting to PnL and BalanceSheet widgets
+
+#### Config changes
+```coffeescript
+widgetSettings:
+  tagging:
+    enabled: false
+```
+
+#### Dependencies
+- Impac! v1.5.10 (if tracking tags enabled)
+
+-------------------------------------------------------------
+
 ### v1.5.5 | 2017 - Week 32
 
 #### Adds
@@ -10,7 +54,7 @@
 - [PF-162] Limit logo size and use single icon for dashboard create btn
 - Remove HOURLY period from HR widgets and replace it by DAILY
 
-### Config changes
+#### Config changes
 ```coffeescript
 # whitelist takes precedence over blacklist
 # when both are empty, all templates are displayed
@@ -30,7 +74,7 @@ widgetSelectorConfig:
 - [IMPAC-619] Fix currency drop-down update when changing dashboard
 - Fix alerts settings button when no alert is attached to a KPI
 
-### Config changes
+#### Config changes
 ```coffeescript
 dhbSettings:
   createFromTemplateEnabled: false

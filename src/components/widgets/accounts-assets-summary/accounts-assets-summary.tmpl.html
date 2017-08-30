@@ -12,7 +12,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)" class="chart-container">
+    <div class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">
         <div class="title" ng-show="widget.metadata.organization_ids.length==1">{{widget.content.summary[0].company}} {{classification}}</div>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

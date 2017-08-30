@@ -2,26 +2,7 @@ module = angular.module('impac.components.widgets-common.top-buttons', [])
 module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities) ->
 
   w = $scope.parentWidget
-
-  $scope.showConfirmDelete = false
-  $scope.isDeletePopoverLoading = false
-
   w.isEditMode = false
-
-  $scope.deleteWidget = ->
-    $scope.isDeletePopoverLoading = true
-    ImpacWidgetsSvc.delete(w).then(
-      (success) ->
-        return true
-      (errors) ->
-        w.errors = ImpacUtilities.processRailsError(errors)
-    ).finally(
-      ->
-        $scope.isDeletePopoverLoading = false
-    )
-
-  $scope.toggleDeleteMode = ->
-    $scope.showConfirmDelete = !$scope.showConfirmDelete
 
   $scope.toggleEditMode = ->
     if !w.isLoading
@@ -44,6 +25,7 @@ module.directive('commonTopButtons', ($templateCache) ->
       parentWidget: '='
       onRefresh: '='
       onToggleInfoPanel: '&'
+      onToggleDeleteWidget: '&'
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'

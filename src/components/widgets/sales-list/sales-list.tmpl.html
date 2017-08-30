@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div class="widget-lines-container" ng-show="(isDataFound==true)">
+    <div class="widget-lines-container">
 
       <div class="row lines-group" ng-repeat="company in widget.content.summary" >
         <div class="col-xs-12">
@@ -73,7 +73,5 @@
       </div>
     </div>
   </div>
-  <div class="data-not-found" ng-show="(isDataFound==false)">
-    <div class="message" translate="impac.widget.sales_list.no_data_found"></div>
-  </div>
+  <div ng-show="widget.demoData" common-data-not-found />
 </div>

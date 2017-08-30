@@ -14,14 +14,14 @@
   </div>
 
   <div align="center" ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)" class="chart-container">
+    <div class="chart-container">
       <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
       <div class="legend">
         <span translate>impac.widget.sales_cycle.your_sales_cycle</span>
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

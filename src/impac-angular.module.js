@@ -113,7 +113,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.time-slider',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
-    'impac.components.widgets-settings.offsets',
+    'impac.components.widgets-settings.tag-filter',
+    'impac.components.widgets-settings.offsets'
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -136,7 +137,8 @@ angular.module('impac.components.widgets-common',
 );
 angular.module('impac.components.common',
   [
-    'impac.components.common.data-not-found'
+    'impac.components.common.data-not-found',
+    'impac.components.common.delete-widget'
   ]
 );
 /*

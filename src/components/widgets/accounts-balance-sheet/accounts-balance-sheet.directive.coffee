@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-balance-sheet',[])
 
-module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, $translate) ->
+module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc, ImpacMainSvc, ImpacUtilities, $translate, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -8,10 +8,12 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
   $scope.datesPickerDeferred = $q.defer()
+  $scope.tagFilterDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.datesPickerDeferred.promise
+    $scope.tagFilterDeferred.promise
   ]
 
   $scope.datesPickerTemplate = """
@@ -27,6 +29,10 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
 
   $scope.ascending = true
   $scope.sortedColumn = 'account'
+  $scope.filterTagsEnabled = ImpacTheming.get().widgetSettings.tagging.enabled
+
+  $scope.isReportFiltered = ->
+    w.metadata? && w.metadata.filter_query? && Object.keys(w.metadata.filter_query).length >0
 
   # Init dates
   # --------------------------------------

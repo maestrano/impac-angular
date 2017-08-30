@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode" class="widget-lines-container">
 
-    <div ng-show="(isDataFound==true)" setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
+    <div setting-limit-entries parent-widget="widget" deferred="::limitEntriesDeferred" selected="limitEntriesSelected" max="widget.content.entities.length" entries-label="limitEntriesLabel" />
 
 
     <!-- LARGE WIDGET -->
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width > 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width > 3" class="row widget-line" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-sm-4"><b>{{entity.name}}</b></div>
       <div class="col-sm-7">
         <div class="row">
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Content lines -->
-    <div ng-if="widget.width <= 3" class="row widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
+    <div ng-if="widget.width <= 3" class="row widget-line" ng-repeat="entity in widget.content.entities | limitTo:limitEntriesSelected" tooltip-placement="bottom" uib-tooltip-html="invoiceTooltips[entity.id]" tooltip-animation="false" tooltip-append-to-body="true" tooltip-class="impac-widgets-tooltip">
       <div class="col-xs-12"><b>{{entity.name}}</b></div>
       <div class="col-xs-8" ng-show="orderBy == 'paid '"><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></div>
       <div class="col-xs-8" ng-show="orderBy == 'due '"><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></div>
@@ -69,12 +69,7 @@
       </div>
     </div>
 
-
-    <!-- Data not found line -->
-    <div class="row widget-line" ng-show="(isDataFound==false)">
-      <div class="col-xs-12" translate translate-values="{orderBy: orderBy, entityType: entityType}">impac.widget.invoices_list.no_invoice</div>
-    </div>
-
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, IMPAC_EVENTS) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
 
     _self = @
     # ====================================
@@ -40,7 +40,7 @@ angular
         setting.initialize()
       return true
 
-    @updateWidgetSettings = (widget, needContentReload=true, ignoreReach=false) ->
+    @updateWidgetSettings = (widget, needContentReload = true, ignoreReach = false) ->
       widget.isEditMode = false
       if _.isEmpty(widget.settings)
         $log.warn("Impac! - WidgetsSvc: Tried to update widget: #{widget.id} with no settings", widget)
@@ -53,18 +53,13 @@ angular
       if (changedGlobalSetting && !ignoreReach)
         return _self.updateAllSimilarWidgets(ImpacDashboardsSvc.getCurrentDashboard(), changedGlobalSetting)
 
-      widget.isLoading = true if needContentReload
       meta = _.reduce(
         _.map( widget.settings, (set) -> set.toMetadata() ),
         (result={}, setMeta) ->
           angular.merge(result, setMeta)
       )
 
-      _self.update(widget, { metadata: meta }).then(
-        (updatedWidget) ->
-          if needContentReload
-            _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
-      )
+      _self.update(widget, { metadata: meta }, needContentReload)
 
     # TODO: move logic in ImpacDashboardsSvc
     # Sets setting for all widgets with same name
@@ -77,6 +72,7 @@ angular
       # Write new setting metadata to current dashboard
       ImpacDashboardsSvc.update(dashboard.id, { metadata: dashboard.metadata }).then(
         (updatedDashboard)->
+          promises = []
           for wgt in dashboard.widgets
             # Retrieve the name of parameters attached to the widget
             # TODO: export to a helper function in WidgetsSvc
@@ -87,11 +83,11 @@ angular
             # The widget's metadata are updated only if the correct setting is attached to the widget
             if settingKey in wgtSettingsKeys
               angular.extend wgt.metadata, setting.toMetadata()
-              wgt.isLoading = true
-              _self.update(wgt, { metadata: wgt.metadata }).then(
-                (updatedWidget) ->
-                  _self.show(updatedWidget).finally( -> updatedWidget.isLoading = false )
-              )
+              promises.push _self.update(wgt, { metadata: wgt.metadata })
+            else
+              promises.push $q.resolve(wgt)
+
+          $q.all(promises)
       )
 
     # @desc    Assigns a metadata parameter to all the widgets of the current dashboard
@@ -115,101 +111,117 @@ angular
             for widget in currentDhb.widgets
               newMetadata = angular.merge({}, widget.metadata, metadata)
               # If the metadata has not changed, we don't push the promise
-              unless _.isEqual(widget.metadata, newMetadata)
-                widget.isLoading = true
-                promises.push _self.update(widget, {metadata: newMetadata})
+              promises.push _self.update(widget, {metadata: newMetadata}, false) unless _.isEqual(widget.metadata, newMetadata)
 
             $q.all(promises).then( (results) -> _self.refreshAll(refreshCache) )
 
       )
 
     @isRefreshing = false
-    @refreshAll = (refreshCache=false) ->
-      unless _self.isRefreshing
-        _self.isRefreshing = true
-        _self.load().then( ->
+    @refreshAll = (refreshCache = false) ->
+      return $q.resolve() if _self.isRefreshing
+
+      _self.isRefreshing = true
+      _self.load().then(
+        ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
+          promises = []
           for w in currentDhb.widgets
-            w.isLoading = true
-            _self.show(w, refreshCache).then(
-              (renderedWidget) -> renderedWidget.isLoading = false
+            promises.push _self.show(w, { refreshCache: refreshCache }).then(
+              (renderedWidget) ->
+                $q.resolve(renderedWidget)
+              (errorResponse) ->
               # TODO: better error management
-              (errorResponse) -> $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
+                $log.error(errorResponse.data.error) if (errorResponse.data? && errorResponse.data.error)
+                $q.reject(errorResponse)
             )
-        ).finally(->
+          $q.all(promises)
+      ).finally(
+        ->
           # throttles refreshAll calls (temporary fix until rx.angular.js is implemented)
-          $timeout(->
-            _self.isRefreshing = false
-          , 3000)
-        )
+          $timeout(
+            ->
+              _self.isRefreshing = false
+            3000
+          )
+      )
 
     # ====================================
     # CRUD methods
     # ====================================
 
-    @show = (widget, refreshCache=false) ->
-      deferred = $q.defer()
+    initWidget = (widget) ->
+      # Init
+      widget.initContext() if angular.isDefined(widget.initContext)
+      # Init settings
+      unless _.isEmpty(widget.settings)
+        for setting in widget.settings
+          setting.initialize() if angular.isDefined(setting.initialize)
+      # Draw chart
+      widget.format() if angular.isDefined(widget.format)
 
+    # Calls Legacy Impac! or bolt API to render a widget
+    # If no content is returned, the endpoint will be called again with `demo` = `true` to retrieve stub data
+    # default opts: { refreshCache: false, demo: false }
+    @show = (widget, opts = {}) ->
+      refreshCache = !!opts.refreshCache
+      demo = !!opts.demo
+
+      widget.isLoading = true
       _self.load().then(
-        ->
-          unless isWidgetInCurrentDashboard(widget.id)
-            $log.info("Impac! - WidgetsSvc: Trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
-            deferred.reject("trying to load a widget (id: #{widget.id}) that is not in currentDashboard")
+        (loaded) ->
+          demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
+          params =
+            metadata: widget.metadata
+            demo_data: demoData
+          params.refresh_cache = true if refreshCache
 
-          else
-            params = { metadata: widget.metadata }
-            params.refresh_cache = true if refreshCache
-
-            dashboard = ImpacDashboardsSvc.getCurrentDashboard()
-
-            # By default, widget is to be fetched from legacy Impac! API (v1)
-            route = ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
-            
+          route = if widget.metadata['bolt_path']
             # If bolt_path is defined, widget is to be fetched from a bolt
-            if widget.metadata['bolt_path']
-              route = "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}"
-            
-            url = [route, decodeURIComponent( $.param(params) )].join('?')
+            "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}"
+          else
+            # By default, widget is to be fetched from legacy Impac! API (v1)
+            dashboard = ImpacDashboardsSvc.getCurrentDashboard()
+            ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
+          
+          url = [route, decodeURIComponent( $.param(params) )].join('?')
 
-            authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
-            config = { headers: {'Authorization': authHeader } }
+          authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
+          config = { headers: {'Authorization': authHeader } }
 
-            $http.get(url, config).then(
-              (success) ->
-                # Pushes new content to widget
-                content = success.data.content || success.data[widget.endpoint] || {}
+          $http.get(url, config).then(
+            (success) ->
+              content = success.data.content || success.data[widget.endpoint] || {}
+              if _.isEmpty(content)
+                # Reload the widget with param `demo` set at `true` (to retrieve stub data)
+                if demoData
+                  # If we were already trying to load the widget in demo mode, we resolve the widget without content
+                  # TODO: display an error box?
+                  $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
+                  $q.resolve(widget)
+                else
+                  _self.show(widget, { refreshCache: refreshCache, demo: true })
+
+              else
+                # Push new content to widget, and initialize it
                 name = success.data.name
-                angular.extend widget, {content: content, originalName: name}
+                angular.extend widget, { content: content, originalName: name, demoData: demoData }
+                initWidget(widget)
+                $q.resolve(widget)
 
-                # Initializes widget's context, and determines if the data has been found
-                widget.initContext() if angular.isDefined(widget.initContext)
-                # Initializes each widget's setting
-                for setting in widget.settings
-                  setting.initialize() if angular.isDefined(setting.initialize)
+            (showError) ->
+              initWidget(widget)
+              widget.processError(showError.data.error) if angular.isDefined(widget.processError) && showError.data? && showError.data.error
+              $q.reject(showError)
+          )
 
-                # Formats the chart when necessary
-                if angular.isDefined(widget.format)
-                  widget.format()
-
-                deferred.resolve widget
-
-              (errorResponse) ->
-                # We still initialize the widget with the last saved settings (should be saved in metadata)
-                widget.initContext() if angular.isDefined(widget.initContext)
-                for setting in widget.settings
-                  setting.initialize() if angular.isDefined(setting.initialize)
-
-                # We process the error
-                widget.processError(errorResponse.data.error) if angular.isDefined(widget.processError) && errorResponse.data? && errorResponse.data.error
-                deferred.reject(errorResponse)
-            )
-
-        (error) ->
+        (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
-          deferred.reject(error)
+          $q.reject(loadError)
+      ).finally(
+        ->
+          widget.isLoading = false
       )
-
-      return deferred.promise
 
     @create = (params) ->
       _self.load().then(
@@ -239,7 +251,8 @@ angular
           $q.reject(loadError)
       )
 
-    @update = (widget, opts) ->
+    @update = (widget, opts, needContentReload = true) ->
+      widget.isLoading = needContentReload
       _self.load().then(
         (_widget) ->
           if !isWidgetInCurrentDashboard(widget.id)
@@ -259,7 +272,10 @@ angular
             request.then(
               (success) ->
                 angular.extend widget, success.data
-                $q.resolve(widget)
+                if needContentReload
+                  _self.show(widget) 
+                else
+                  $q.resolve(widget)
               
               (updateError) ->
                 $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
@@ -269,6 +285,9 @@ angular
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
           $q.reject(loadError)
+      ).finally(
+        ->
+          widget.isLoading = false
       )
 
     @delete = (widgetToDelete) ->

@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)">
+    <div>
 
       <div class="legend">
         {{'impac.widget.sales_opportunities.total_potential' | translate}} <b>{{widget.content.total_potential | mnoCurrency : widget.content.currency || "AUD"}}</b> - <b>{{widget.content.eligible_opportunities}}</b> {{'impac.widget.sales_opportunities.eligible_opportunities' | translate}}
@@ -32,7 +32,7 @@
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>
