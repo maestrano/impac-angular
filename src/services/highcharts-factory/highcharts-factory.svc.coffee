@@ -116,7 +116,7 @@ angular
       chart
 
     # Render a threshold serie dataLabel when KPI triggered
-    renderThresholdTooltip: (chart)->
+    renderThresholdTooltip: (chart, options = @options)->
       thresholdSerie = _.find(chart.series, (s)->
         s.options.triggered && s.name.toLowerCase() == 'threshold kpi'
       )
@@ -124,7 +124,11 @@ angular
       cashSerie = _.find(chart.series, (s)-> s.name.toLowerCase() == 'projected cash')
 
       return removePointDataLabels(@triggeredPoint) unless thresholdSerie.options.triggered
-      labelText = 'You have reached your threshold'
+      # The first cash projection interval date string below the threshold
+      triggeredIntervalDate = $filter('mnoDate')(
+        @data.labels[thresholdSerie.options.triggered_interval_index], options.period
+      )
+      labelText = "The cash projection reaches the threshold on #{triggeredIntervalDate}"
       # The first cash projection interval point below the threshold
       @triggeredPoint = cashSerie.points[thresholdSerie.options.triggered_interval_index]
       # Updating dataLabels have no animation, adds delay to improve UI.
@@ -132,15 +136,17 @@ angular
         @triggeredPoint.update(
           dataLabels:
             enabled: true
-            format: '<span class="threshold-tooltip" style="cursor: pointer;">You have reached you threshold</span>'
+            format: """
+              <span class="threshold-tooltip" style="cursor: pointer;">#{labelText}</span>
+            """
             verticalAlign: 'bottom'
             crop: false
             overflow: 'none'
             y: -20
             shape: 'callout'
-            backgroundColor: 'rgba(0, 0, 0, 0.75)'
+            backgroundColor: _.get(options, 'thresholdsTooltipBackgroundColor', 'rgba(0, 0, 0, 0.75)')
             style:
-              color: '#FFFFFF'
+              color: _.get(options, 'thresholdTooltipColor', '#FFFFFF')
               textOutline: 'none'
         )
         angular.element('.threshold-tooltip').on('click', =>
