@@ -10,6 +10,8 @@
 #### Fixes
 - Update doc with v1.6.0 changes
 - [IMPAC-658] Fix dependency to xeditable
+- Fix chart-threshold panel action btns outline glitch on loading
+- Improve success/error toastrs for widget kpis
 
 #### Config changes
 - New image asset files via the assets.svc
