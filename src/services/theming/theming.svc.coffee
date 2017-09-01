@@ -166,6 +166,7 @@ angular
         #   @param {string} [hexcode] A color hexcode to base the palette from.
         #   @param {integer} [amount] The amount of colour needed.
         #   @param {Array<number>} [options.lightnessRange] A minimum and maximum lightness range.
+        #   @param {Array<number>} [options.reverse] Reverse the order of the palette (darker -> lighter or lighter -> darker)
         ###
         generateShadesPalette: (hexcode, amount, options = {})->
           options.lightnessRange ||= [50, 90]
@@ -183,7 +184,7 @@ angular
             palette.push("rgb(#{shade.r}, #{shade.g}, #{shade.b})")
             options.lightnessRange[0] += increment
             counter++
-          return palette
+          return if options.reverse then palette.reverse() else palette
 
 
       return service

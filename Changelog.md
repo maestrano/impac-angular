@@ -5,6 +5,7 @@
 #### Adds
 - Serve glyphicons in the developer workspace
 - [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
+- [IMPAC-616] Add stacking highcharts columns for overdue transactions in cash projection widget
 
 #### Fixes
 - Update doc with v1.6.0 changes

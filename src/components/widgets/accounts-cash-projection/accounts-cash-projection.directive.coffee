@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory, BoltResources, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -86,6 +86,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.fromDate = hist.from
       $scope.toDate = hist.to
 
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'receivables'), '#89a876')
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'payables'), '#d16378')
+
   dateFilter = (timestamp) ->
     pickedDate = moment.unix(timestamp / 1000).format('YYYY-MM-DD')
     if pickedDate == moment().format('YYYY-MM-DD') then "lte #{pickedDate}" else pickedDate
@@ -122,6 +125,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       currency: w.metadata.currency
       showToday: true
       showLegend: true
+      stacking: 'normal'
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
     $scope.chart.render(w.content.chart, options)
@@ -145,6 +149,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
+
+  setStackedSeriesColors = (series, color)->
+    palette = ImpacTheming.color.generateShadesPalette(color, series.length, reverse: true)
+    for serie, i in series
+      serie.color = palette[i]
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
