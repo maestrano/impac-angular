@@ -8,6 +8,7 @@
     }
   }
   .chart-container {
-    max-height: 125px;
+    @media print { max-height: auto !important; }
+    @media print { max-width: auto !important; }
   }
 }
