@@ -17,16 +17,40 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-        xAxis:
-          startOnTick: false
-          minPadding: 0
-          tickInterval: 1
-          min: 0
         yAxis:
           title: null
           startOnTick: true
           minPadding: 0
         series: series
+        rangeSelector:
+          buttons: [
+            {
+              type: 'month'
+              count: 1
+              text: '1m'
+            },
+            {
+              type: 'month'
+              count: 3
+              text: '3m'
+            },
+            {
+              type: 'month'
+              count: 6
+              text: '6m'
+            },
+            {
+              type: 'year'
+              count: 1
+              text: '1y'
+            },
+            {
+              type: 'all'
+              text: 'All'
+            }
+          ]
+          selected: 2
+
 
   class Chart
     constructor: (@id, @data = {}, @options = {})->
@@ -38,7 +62,7 @@ angular
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       if _.isEmpty(@hc)
-        @hc = Highcharts.chart(@id, chartConfig)
+        @hc = Highcharts.stockChart(@id, chartConfig)
       else
         @hc.update(chartConfig)
       @addThresholds()
@@ -52,18 +76,19 @@ angular
       xAxis:
         labels:
           formatter: ->
-            $filter('mnoDate')(labels[this.value], options.period)
+            moment.unix(this.value / 1000).format('Do MMM YYYY')
       yAxis:
         labels:
           formatter: ->
             $filter('mnoCurrency')(this.value, options.currency, false, 0)
       tooltip:
+        shared: false
         formatter: ->
-          date = $filter('mnoDate')(labels[this.x], options.period)
+          date = moment.unix(this.x / 1000).format('Do MMM YYYY')
           amount = $filter('mnoCurrency')(this.y, options.currency, false)
           name = this.series.name
           # If point is in the past, "My Projected Stuff" => "My Stuff"
-          if moment(labels[this.x]) < moment().startOf('day')
+          if this.x < moment().startOf('day').unix() * 1000
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
@@ -72,7 +97,7 @@ angular
       xAxis:
         plotLines: [{
           color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: todayIndex(@data.labels)
+          value: moment.utc().startOf('day').unix() * 1000  
           width: 1
           label:
             text: null

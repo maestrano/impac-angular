@@ -63,7 +63,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     options =
       chartType: 'line'
       currency: w.metadata.currency
-      period: getPeriod()
       showToday: true
       showLegend: true
       thresholds: getThresholds()
