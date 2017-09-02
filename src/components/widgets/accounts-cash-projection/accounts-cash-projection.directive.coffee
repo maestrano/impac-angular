@@ -41,6 +41,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     projectedSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Projected cash"
 
+    cashFlowSerie = _.find w.content.chart.series, (serie) ->
+      serie.name == "Cash flow"
+    cashFlowSerie.data = []
+    cashFlowSerie.type = 'area'
+
     totalOffset = 0.0
     if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
       totalOffset += _.sum(w.metadata.offset.current)
