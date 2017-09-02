@@ -49,7 +49,7 @@ angular
               text: 'All'
             }
           ]
-          selected: 2
+          inputEnabled: false
 
 
   class Chart

@@ -7,7 +7,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
@@ -38,6 +37,8 @@
         <div id="{{chartId()}}" class="cash-balance-chart"></div>
       </div>
     </div>
+
+    <div setting-dates-picker class="dates-picker" parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" period="period" keep-today="keepToday" update-on-pick="true"/>
 
     <div ng-show="widget.demoData" common-data-not-found />
   </div>

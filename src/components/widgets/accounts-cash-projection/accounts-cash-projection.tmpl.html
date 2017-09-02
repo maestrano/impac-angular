@@ -4,7 +4,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
@@ -48,7 +47,9 @@
         <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
           Save
         </button>
+        <div setting-dates-picker class="dates-picker" parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" period="period" keep-today="keepToday" update-on-pick="true"/>
       </div>
+
     </div>
 
     <div ng-show="widget.demoData" common-data-not-found />

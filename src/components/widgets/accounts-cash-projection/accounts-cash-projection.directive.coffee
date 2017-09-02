@@ -6,13 +6,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timePeriodDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
   $scope.intervalsOffsetsDeferred = $q.defer()
   $scope.currentOffsetsDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
-    $scope.timePeriodDeferred.promise,
+    $scope.datesPickerDeferred.promise,
     $scope.intervalsOffsetsDeferred.promise,
     $scope.currentOffsetsDeferred.promise
   ]
@@ -27,6 +27,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.chartThresholdOptions = {
     label: 'Get alerted when the cash projection goes below'
   }
+
+  # Dates picker defaults
+  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
+  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
+  $scope.period = 'DAILY'
+  $scope.keepToday = false
 
   # Widget specific methods
   # --------------------------------------
@@ -57,6 +63,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
 
     $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
+
+    if hist = w.metadata.hist_parameters
+      $scope.fromDate = hist.from
+      $scope.toDate = hist.to
 
 
   w.format = ->

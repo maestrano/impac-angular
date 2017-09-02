@@ -6,12 +6,18 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timePeriodDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
-    $scope.timePeriodDeferred.promise
+    $scope.datesPickerDeferred.promise
   ]
+
+  # Dates picker defaults
+  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
+  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
+  $scope.period = 'DAILY'
+  $scope.keepToday = false
 
   # Widget specific methods
   # --------------------------------------
@@ -25,6 +31,10 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     # chartColors = ImpacTheming.get().chartColors
     # Set chart accounts series colors by account bias ('positive' / 'negative')
     setSeriesColors(w.content.chart.series, { positive: '#3FC4FF', negative: '#e50228'})
+
+    if hist = w.metadata.hist_parameters
+      $scope.fromDate = hist.from
+      $scope.toDate = hist.to
 
   $scope.legendItemOnClick = (account)->
     serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
