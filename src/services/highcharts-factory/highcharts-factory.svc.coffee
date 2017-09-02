@@ -116,12 +116,4 @@ angular
         }, true)
 
       return @hc
-
-    # Private methods
-    # --
-
-    todayIndex = (labels)->
-      projection_date = _.find(labels, (date)-> moment(date) >= moment().startOf('day'))
-      _.indexOf(labels, projection_date)
-
 )

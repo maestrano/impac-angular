@@ -41,8 +41,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.isDataFound = w.content?
 
     # Offset will be applied to all intervals after today
-    todayInterval = w.content.chart.series[0].zones[0].value
-    $scope.intervalsCount = w.content.chart.labels.length - todayInterval
+    todayInterval = _.findIndex w.content.chart.series[0].data, (vector) ->
+      vector[0] >= moment.now()
+    $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
 
     projectedSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Projected cash"
