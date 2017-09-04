@@ -108,13 +108,15 @@ angular
 
     @massAssignAll = (metadata) ->
       _self.load().then(->
+        promises = []
         for k in _self.getCurrentDashboard().kpis
-          _self.update(k, {metadata: metadata})
+          promises.push _self.update(k, {metadata: metadata})
         for w in _self.getCurrentDashboard().widgets
+          w.isLoading = true
           for k in w.kpis
-            _self.update(k, {metadata: metadata}, false)
+            promises.push _self.update(k, {metadata: metadata})
 
-        return
+        $q.all(promises)
       )
 
     @isRefreshing = false
