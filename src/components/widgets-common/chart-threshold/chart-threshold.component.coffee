@@ -81,6 +81,7 @@ module.component('chartThreshold', {
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.element_watched] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
+        currency: ImpacKpisSvc.getCurrentDashboard().currency
       }]
 
       unless ImpacKpisSvc.validateKpiTargets(params.targets)

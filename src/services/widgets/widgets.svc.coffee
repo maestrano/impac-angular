@@ -211,11 +211,11 @@ angular
                 angular.extend widget, { content: content, originalName: name, demoData: demoData }
 
                 # Fetches Widget KPIs calculations
-                kpiPromises = _.map(widget.kpis, (k)->
-                  ImpacKpisSvc.show(k).then(
+                kpiPromises = _.map(widget.kpis, (kpi)->
+                  ImpacKpisSvc.show(kpi).then(
                     (response)->
-                      dataKey = ImpacKpisSvc.getApiV2KpiDataKey(k)
-                      angular.extend(k, response.data[dataKey])
+                      dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
+                      angular.extend(kpi, response.data[dataKey])
                     (err)->
                       $log.error('Impac! - WidgetsSvc: Cannot retrieve Widget KPI: ', err)
                   )
@@ -268,7 +268,7 @@ angular
       )
 
     @update = (widget, opts, needContentReload = true) ->
-      widget.isLoading = needContentReload
+      widget.isLoading = needContentReload unless widget.isLoading
       _self.load().then(
         (_widget) ->
           if !isWidgetInCurrentDashboard(widget.id)
