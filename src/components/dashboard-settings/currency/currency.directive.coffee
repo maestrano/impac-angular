@@ -29,8 +29,10 @@ module.directive('dashboardSettingCurrency', ($templateCache, $log, ImpacMainSvc
         ImpacDashboardsSvc.update(scope.currentDhb.id, data).then(
           ->
             scope.data.savedCurrency = scope.data.currency
-            ImpacWidgetsSvc.massAssignAll(data)
-            ImpacKpisSvc.massAssignAll(data)
+            ImpacKpisSvc.massAssignAll(data).finally(
+              ->
+                ImpacWidgetsSvc.massAssignAll(data)
+            )
           ->
             toastr.error("Unable to select currency '#{scope.data.currency}'", 'Error')
             scope.data.currency = scope.data.savedCurrency

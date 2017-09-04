@@ -75,7 +75,8 @@ module.component('chartThreshold', {
       ctrl.loading = true
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.element_watched] = [{
-        "#{ctrl.kpiTargetMode}": ctrl.draftTarget.value
+        "#{ctrl.kpiTargetMode}": ctrl.draftTarget.value,
+        currency: ImpacKpisSvc.getCurrentDashboard().currency
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
