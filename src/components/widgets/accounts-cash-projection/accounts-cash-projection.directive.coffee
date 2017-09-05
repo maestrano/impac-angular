@@ -69,8 +69,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.fromDate = hist.from
       $scope.toDate = hist.to
 
+  legendFormatter = ->
+    series = this
+    imgSrc = ImpacAssets.get(_.camelCase(series.name + 'LegendIcon'))
+    "<img src='#{imgSrc}'><br>  #{series.name}"
 
   w.format = ->
+    # Chart basic options
     options =
       chartType: 'line'
       currency: w.metadata.currency
@@ -79,20 +84,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       thresholds: getThresholds()
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-    # Extend default chart formatters to add custom legend img icon
-    defaultFormattersConfig = $scope.chart.formatters()
-    $scope.chart.formatters = ->
-      angular.merge(defaultFormattersConfig, {
-        legend:
-          useHTML: true
-          labelFormatter: ->
-            name = this.name
-            imgSrc = ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
-            img = "<img src='#{imgSrc}'><br>"
-            return img + '	' + name
-      })
-
     $scope.chart.render(w.content.chart, options)
+
+    # Chart customization
+    $scope.chart.addCustomLegend(legendFormatter)
+
     $scope.chartDeferred.notify($scope.chart.hc)
 
   $scope.chartId = ->

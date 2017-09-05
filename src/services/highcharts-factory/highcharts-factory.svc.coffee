@@ -116,4 +116,11 @@ angular
         }, true)
 
       return @hc
+
+    # Extend default chart formatters to add custom legend img icon
+    addCustomLegend: (formatterCallback, useHTML = true) ->
+      @hc.legend.update({
+        useHTML: useHTML
+        labelFormatter: formatterCallback
+      }, true)
 )
