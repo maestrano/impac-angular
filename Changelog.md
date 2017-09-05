@@ -3,6 +3,7 @@
 ### v1.6.2 | 2017 - Week 39
 
 #### Adds
+- [IMPAC-693] Add currency conversion to KPI targets
 
 #### Fixes
 

@@ -210,9 +210,9 @@ angular
                 # Fetches Widget KPIs calculations
                 kpiPromises = _.map(widget.kpis, (kpi)->
                   ImpacKpisSvc.show(kpi).then(
-                    (response)->
+                    (kpiData)->
                       dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
-                      angular.extend(kpi, response.data[dataKey])
+                      angular.extend(kpi, kpiData[dataKey])
                     (err)->
                       $log.error('Impac! - WidgetsSvc: Cannot retrieve Widget KPI: ', err)
                   )
