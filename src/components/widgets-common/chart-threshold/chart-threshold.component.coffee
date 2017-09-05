@@ -99,9 +99,9 @@ module.component('chartThreshold', {
       promise.then(
         (kpi)->
           ImpacKpisSvc.show(kpi).then(
-            (response)->
+            (kpiData)->
               dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
-              angular.extend(kpi, response.data[dataKey])
+              angular.extend(kpi, kpiData[dataKey])
           ).finally(
             ->
               ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)

@@ -109,13 +109,20 @@ angular
     @massAssignAll = (metadata) ->
       _self.load().then(->
         promises = []
-        for k in _self.getCurrentDashboard().kpis
-          promises.push _self.update(k, {metadata: metadata})
-        for w in _self.getCurrentDashboard().widgets
+        _.each(_self.getCurrentDashboard().kpis, (k)->
+          promises.push(
+            _self.update(k, {metadata: metadata}).then(
+              (kpiData)->
+                _self.applyFetchedDataToDhbKpi(k, kpiData)
+            )
+          )
+        )
+        _.each(_self.getCurrentDashboard().widgets, (w)->
           w.isLoading = true
-          for k in w.kpis
-            promises.push _self.update(k, {metadata: metadata})
-
+          _.each(w.kpis, (k)->
+            promises.push(_self.update(k, {metadata: metadata}))
+          )
+        )
         $q.all(promises)
       )
 
@@ -189,6 +196,37 @@ angular
     @buildKpiWatchables = (kpi)->
       return unless kpi.element_watched
       kpi.watchables = [kpi.element_watched].concat(kpi.extra_watchables || [])
+
+    # Logic specific to applying newly fetched data to a dhb KPI.
+    # TODO: Redesign all business logic for v1 / v2 dhb & widget KPIs.
+    @applyFetchedDataToDhbKpi = (kpi, fetchedData)->
+      # Calculation
+      kpi.data = fetchedData.kpi.calculation
+
+      # Configuration
+      updatedConfig = fetchedData.kpi.configuration || {}
+      # When the kpi initial configuration is partial, update the extra_params with what the
+      # API has picked by default
+      kpi.extra_params = updatedConfig.extra_params if !kpi.extra_params? && updatedConfig.extra_params?
+      # Apply currency converted targets
+      kpi.targets = updatedConfig.targets
+
+      # Layout
+      kpi.layout = fetchedData.kpi.layout
+
+      # Extra Params
+      # Get the corresponding template of the KPI loaded
+      kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
+      # Set the kpi name from the template
+      kpi.name = kpiTemplate? && kpiTemplate.name
+      # If the template contains extra params we add it to the KPI
+      if kpiTemplate? && kpiTemplate.extra_params?
+        kpi.possibleExtraParams = kpiTemplate.extra_params
+        # Init the extra params select boxes with the first param
+        _.forIn(kpi.possibleExtraParams, (paramValues, param)->
+          (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
+        )
+      kpi
 
     #====================================
     # CRUD methods
@@ -271,11 +309,7 @@ angular
 
           return $http.get(url).then(
             (response) ->
-              # This gives flexibility to the subscriber to deal with the two objects. This
-              # is needed because of the two quite different types of KPIs that flow through
-              # this service (dashboard kpis & widget kpis).
-              kpi: kpi
-              data: response.data
+              response.data
             (err) ->
               $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
               $q.reject(err)

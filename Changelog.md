@@ -6,6 +6,7 @@
 - Serve glyphicons in the developer workspace
 - [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
 - [IMPAC-622] Add threshold tooltip when triggered
+- [IMPAC-693] Add currency conversion to KPI targets
 
 #### Fixes
 - Update doc with v1.6.0 changes
