@@ -1,6 +1,6 @@
 angular
   .module('impac.components.kpi', [])
-  .directive('impacKpi', ($log, $timeout, $templateCache, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS, $translate) ->
+  .directive('impacKpi', ($log, $timeout, $templateCache, $translate, ImpacKpisSvc, ImpacEvents, IMPAC_EVENTS, MNO_CURRENCIES) ->
     return {
       restrict: 'EA'
       scope: {
@@ -16,49 +16,27 @@ angular
         # Private Methods
         # -------------------------
         fetchKpiData = ->
-          ImpacKpisSvc.show($scope.kpi).then((renderedKpi)->
-            angular.extend $scope.kpi, renderedKpi
-            # Extra Params
-            # Get the corresponding template of the KPI loaded
-            kpiTemplate = ImpacKpisSvc.getKpiTemplate($scope.kpi.endpoint, $scope.kpi.element_watched)
-            # Set the kpi name from the template
-            $scope.kpi.name = kpiTemplate? && kpiTemplate.name
-            # If the template contains extra params we add it to the KPI
-            if kpiTemplate? && kpiTemplate.extra_params?
-              $scope.kpi.possibleExtraParams = kpiTemplate.extra_params
-              # Init the extra params select boxes with the first param
-              _.forIn($scope.kpi.possibleExtraParams, (paramValues, param)->
-                ($scope.kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
-              )
-
-            # Targets
-            watchablesWithoutTargets = false
-            _.forEach($scope.kpi.watchables, (watchable)->
-              # No targets found - initialise a target form model for watchable
-              if _.isEmpty (existingTargets = $scope.getTargets(watchable))
-                $scope.addTargetToWatchable(watchable)
-                watchablesWithoutTargets = true
-
-              # Targets found - bind existing targets to the form model
-              else
-                $scope.targets[watchable] = angular.copy(existingTargets)
-            )
-            # All watchables must have at least one target.
-            $scope.displayEditSettings() if watchablesWithoutTargets
+          ImpacKpisSvc.show($scope.kpi).then(
+            (kpiData)->
+              ImpacKpisSvc.applyFetchedDataToDhbKpi($scope.kpi, kpiData)
+              initTargetsForm(true)
           )
 
-        onUpdateSettingsCb = (force)-> $scope.updateSettings() if $scope.kpi.isEditing || force
+        onUpdateSettingsCb = (force)->
+          $scope.updateSettings() if $scope.kpi.isEditing || force
 
-        onToggleSettingsCb = -> animateKpiPanels()
+        onToggleSettingsCb = ->
+          initTargetsForm()
+          animateKpiPanels()
 
-        onUpdateDatesCb = -> fetchKpiData() unless $scope.kpi.static
+        onUpdateDatesCb = ->
+          fetchKpiData() unless $scope.kpi.static
 
         applyPlaceholderValues = ->
-          _.forEach($scope.kpi.watchables, (watchable)->
+          _.each $scope.kpi.watchables, (watchable)->
             data = $scope.getTargetPlaceholder(watchable)
             (target = {})[data.mode] = data.value
             $scope.targets[watchable] = [target]
-          )
           $scope.updateSettings(true)
 
         animateKpiPanels = ()->
@@ -70,6 +48,27 @@ angular
           $timeout ->
             element.animate({opacity: 1}, 150)
           , 200
+
+        initTargetsForm = (toggleKpiIsEditing = false)->
+          if _.isEmpty($scope.kpi.targets)
+            _.each $scope.kpi.watchables, (watchable)->
+              (newTarget = {})[$scope.getTargetPlaceholder(watchable).mode] = ''
+              ($scope.targets[watchable] ||= []).push(newTarget)
+            displayEditSettings() if toggleKpiIsEditing
+          else
+            $scope.targets = angular.copy($scope.kpi.targets)
+
+        displayEditSettings = ->
+          $scope.kpi.isEditing = true
+
+        hideEditSettings = ->
+          $scope.kpi.isEditing = false
+
+        hasContent = ->
+          !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
+
+        hasValidTargets = ->
+          ImpacKpisSvc.validateKpiTargets($scope.targets)
 
         # Load
         # -------------------------
@@ -101,28 +100,12 @@ angular
 
         # Linked methods
         # -------------------------
-        $scope.addTargetToWatchable = (watchable)->
-          return if _.has($scope.targets, watchable)
-          (newTarget = {})[$scope.getTargetPlaceholder(watchable).mode] = ''
-          ($scope.targets[watchable] ||= []).push(newTarget)
-
-        $scope.displayEditSettings = ->
-          $scope.kpi.isEditing = true
-
-        $scope.hideEditSettings = ->
-          $scope.kpi.isEditing = false
-
-        $scope.hasValidTargets = ->
-          ImpacKpisSvc.validateKpiTargets($scope.targets)
-
-        $scope.hasContent = ->
-          !!($scope.kpi && $scope.kpi.layout && $scope.kpi.data)
 
         $scope.showKpiContent = ->
-          !$scope.isLoading() && $scope.hasContent()
+          !$scope.isLoading() && hasContent()
 
         $scope.isDataNotFound = ->
-          !$scope.hasContent()
+          !hasContent()
 
         $scope.isLoading = ->
           $scope.kpi.isLoading
@@ -131,20 +114,27 @@ angular
           $scope.updateSettings(true)
 
         $scope.updateSettings = (force)->
-          params = {}
+          params = { targets: {} }
           touched = (form = $scope["kpi#{$scope.kpi.id}SettingsForm"]) && form.$dirty
-          hasValidTargets = $scope.hasValidTargets()
 
-          return $scope.cancelUpdateSettings(hasValidTargets) unless touched && hasValidTargets || force
+          return $scope.cancelUpdateSettings(hasValidTargets()) unless touched && hasValidTargets() || force
 
-          params.targets = $scope.targets
+          # Apply targets to params, adding dashboard currency as target base currency
+          _.each($scope.targets, (targets, watchable)->
+            curr = ImpacKpisSvc.getCurrentDashboard().currency
+            params.targets[watchable] = _.map(targets, (t)-> angular.merge(t, currency: curr))
+          )
           params.extra_params = $scope.kpi.extra_params unless _.isEmpty($scope.kpi.extra_params)
 
-          ImpacKpisSvc.update($scope.kpi, params) unless _.isEmpty(params)
+          unless _.isEmpty(params)
+            ImpacKpisSvc.update($scope.kpi, params).then(
+              (kpiData)->
+                ImpacKpisSvc.applyFetchedDataToDhbKpi($scope.kpi, kpiData)
+            )
           form.$setPristine()
           # smoother update transition
           $timeout ->
-            $scope.hideEditSettings()
+            hideEditSettings()
           , 200
 
         $scope.cancelUpdateSettings = (hasValidTargets)->
@@ -156,16 +146,13 @@ angular
             $scope.targets = angular.copy($scope.kpi.targets)
           # smoother delete transition
           $timeout ->
-            $scope.hideEditSettings()
+            hideEditSettings()
           , 200
 
         $scope.deleteKpi = ->
           return if $scope.kpi.static
           $scope.kpi.isLoading = true
           ImpacKpisSvc.delete($scope.kpi).then((success) -> $scope.onDelete()).finally(-> $scope.kpi.isLoading = false)
-
-        $scope.isTriggered = ->
-          $scope.kpi.layout? && $scope.kpi.layout.triggered
 
         $scope.isEditing = ->
           return false unless $scope.userAccesses.kpis.update
@@ -174,21 +161,17 @@ angular
         $scope.getFormTargetValueInput = (watchable, targetIndex)->
           $scope["kpi#{$scope.kpi.id}SettingsForm"]["#{watchable}TargetValue#{targetIndex}"]
 
-        $scope.getTargets = (watchable)->
-          ($scope.kpi.targets? && $scope.kpi.targets[watchable]) || []
-
         $scope.getTargetUnit = (watchable)->
           unit = ($scope.kpi.data? && $scope.kpi.data[watchable].unit) || $scope.getTargetPlaceholder(watchable).unit || ''
-          if unit == 'currency' then ImpacKpisSvc.getCurrentDashboard().currency else unit
+          if MNO_CURRENCIES[unit]? then ImpacKpisSvc.getCurrentDashboard().currency else unit
 
         $scope.getTargetPlaceholder = (watchable)->
           ImpacKpisSvc.getKpiTargetPlaceholder($scope.kpi.endpoint, watchable)
 
         $scope.getRealValue = ->
-          kpi = $scope.kpi
-          return "" if _.isEmpty(kpi.data)
-          value = kpi.data[kpi.watchables[0]].value
-          unit = kpi.data[kpi.watchables[0]].unit
+          return "" if _.isEmpty($scope.kpi.data) || _.isEmpty($scope.kpi.watchables)
+          value = $scope.kpi.data[$scope.kpi.watchables[0]].value
+          unit = $scope.kpi.data[$scope.kpi.watchables[0]].unit
           [value, unit].join(' ').trim()
 
         # Add / remove placeholder for impac-material nice-ness.

@@ -20,3 +20,21 @@ module.constant('LOCALES',
     { id: 'zh-HK', name: 'Chinese (HK)' }
   ]
 )
+
+module.constant('MNO_CURRENCIES',
+  USD: '$'
+  AUD: '$'
+  CAD: '$'
+  CNY: '¥'
+  EUR: '€'
+  GBP: '£'
+  HKD: '$'
+  INR: ''
+  JPY: '¥'
+  NZD: '$'
+  SGD: '$'
+  PHP: '₱'
+  AED: ''
+  IDR: 'Rp'
+  MMK: ''
+)
