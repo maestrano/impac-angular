@@ -123,4 +123,16 @@ angular
         useHTML: useHTML
         labelFormatter: formatterCallback
       }, true)
+
+    # Adds events to series objects
+    addSeriesEvent: (eventName, callback) ->
+      return if _.isEmpty(@hc)
+      eventHash = {}
+      eventHash[eventName] = callback
+      @hc.update({
+        plotOptions:
+          series:
+            events: eventHash
+      })
+      return @hc
 )

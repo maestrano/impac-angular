@@ -69,6 +69,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.fromDate = hist.from
       $scope.toDate = hist.to
 
+
+  # Sets the transactions list resources type and displays it
+  onClickBar = (event) ->
+    series = this
+    resources = switch(series.name)
+      when 'Payables'
+        'bills'
+      when 'Receivables'
+        'invoices'
+    return unless resources?
   legendFormatter = ->
     series = this
     imgSrc = ImpacAssets.get(_.camelCase(series.name + 'LegendIcon'))
@@ -88,6 +98,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
     # Chart customization
     $scope.chart.addCustomLegend(legendFormatter)
+    $scope.chart.addSeriesEvent('click', onClickBar)
 
     $scope.chartDeferred.notify($scope.chart.hc)
 
