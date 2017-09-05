@@ -23,7 +23,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.movedAccount = {}
+    $scope.movedAccount = []
     # defines the available options for params-checkboxes.directive
     $translate('impac.widget.account_comp.compare_mode_opt').then((label)->
       $scope.comparisonModeOptions = [{
