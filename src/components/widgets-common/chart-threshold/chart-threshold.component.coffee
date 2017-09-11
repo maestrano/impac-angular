@@ -159,8 +159,6 @@ module.component('chartThreshold', {
     # Disable threshold when selected time period is strictly in the past
     validateHistParameters = ->
       widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
-      # Widget histParams are YTD by default (when undefined on metadata),
-      # therefore in the past by default
       ctrl.disabled = widgetHistParams? && moment(widgetHistParams.to) <= moment.utc().startOf('day')
       return
 
