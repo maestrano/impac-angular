@@ -6,13 +6,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timePeriodDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
   $scope.intervalsOffsetsDeferred = $q.defer()
   $scope.currentOffsetsDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
-    $scope.timePeriodDeferred.promise,
+    $scope.datesPickerDeferred.promise,
     $scope.intervalsOffsetsDeferred.promise,
     $scope.currentOffsetsDeferred.promise
   ]
@@ -28,6 +28,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     label: 'Get alerted when the cash projection goes below'
   }
 
+  # Dates picker defaults
+  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
+  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
+  $scope.period = 'DAILY'
+  $scope.keepToday = false
+
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -35,11 +41,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.isDataFound = w.content?
 
     # Offset will be applied to all intervals after today
-    todayInterval = w.content.chart.series[0].zones[0].value
-    $scope.intervalsCount = w.content.chart.labels.length - todayInterval
+    todayInterval = _.findIndex w.content.chart.series[0].data, (vector) ->
+      vector[0] >= moment.now()
+    $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
 
     projectedSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Projected cash"
+
+    cashFlowSerie = _.find w.content.chart.series, (serie) ->
+      serie.name == "Cash flow"
+    cashFlowSerie.data = []
+    cashFlowSerie.type = 'area'
 
     totalOffset = 0.0
     if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
@@ -53,12 +65,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
     $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
 
+    if hist = w.metadata.hist_parameters
+      $scope.fromDate = hist.from
+      $scope.toDate = hist.to
+
 
   w.format = ->
     options =
       chartType: 'line'
       currency: w.metadata.currency
-      period: getPeriod()
       showToday: true
       showLegend: true
       thresholds: getThresholds()
