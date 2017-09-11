@@ -116,4 +116,23 @@ angular
         }, true)
 
       return @hc
+
+    # Extend default chart formatters to add custom legend img icon
+    addCustomLegend: (formatterCallback, useHTML = true) ->
+      @hc.legend.update({
+        useHTML: useHTML
+        labelFormatter: formatterCallback
+      }, true)
+
+    # Adds events to series objects
+    addSeriesEvent: (eventName, callback) ->
+      return if _.isEmpty(@hc)
+      eventHash = {}
+      eventHash[eventName] = callback
+      @hc.update({
+        plotOptions:
+          series:
+            events: eventHash
+      })
+      return @hc
 )

@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
 
   w = $scope.widget
 
@@ -33,6 +33,31 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
   $scope.period = 'DAILY'
   $scope.keepToday = false
+
+  # Transactions List component
+  $scope.trxList = { display: false }
+
+  $scope.trxList.show = ->
+    $scope.trxList.display = true
+
+  $scope.trxList.hide = ->
+    $scope.trxList.display = false
+
+  $scope.trxList.fetch = (currentPage = 1) ->
+    params = angular.merge(
+      $scope.trxList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids')
+        page:
+          number: currentPage
+      }
+    )
+    BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(
+      (response) ->
+        # Update trxList object with dynamic values
+        $scope.trxList.transactions = _.map(response.data.data, (trx) -> trx.attributes)
+        $scope.trxList.totalRecords = response.data.meta.record_count
+    )
+
 
   # Widget specific methods
   # --------------------------------------
@@ -69,8 +94,37 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.fromDate = hist.from
       $scope.toDate = hist.to
 
+  dateFilter = (timestamp) ->
+    pickedDate = moment.unix(timestamp / 1000).format('YYYY-MM-DD')
+    if pickedDate == moment().format('YYYY-MM-DD') then "lte #{pickedDate}" else pickedDate
+
+  # Sets the transactions list resources type and displays it
+  onClickBar = (event) ->
+    series = this
+    resources = switch(series.name)
+      when 'Payables'
+        'bills'
+      when 'Receivables'
+        'invoices'
+    return unless resources?
+
+    # Init trxList object with static values
+    $scope.trxList.resources = resources
+    $scope.trxList.totalDue = event.point.y
+    $scope.trxList.params = {
+      filter:
+        due_date: dateFilter(event.point.x)
+        status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
+    }
+    $scope.trxList.fetch().finally(-> $scope.trxList.show())
+
+  legendFormatter = ->
+    series = this
+    imgSrc = ImpacAssets.get(_.camelCase(series.name + 'LegendIcon'))
+    "<img src='#{imgSrc}'><br>  #{series.name}"
 
   w.format = ->
+    # Chart basic options
     options =
       chartType: 'line'
       currency: w.metadata.currency
@@ -79,20 +133,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       thresholds: getThresholds()
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-    # Extend default chart formatters to add custom legend img icon
-    defaultFormattersConfig = $scope.chart.formatters()
-    $scope.chart.formatters = ->
-      angular.merge(defaultFormattersConfig, {
-        legend:
-          useHTML: true
-          labelFormatter: ->
-            name = this.name
-            imgSrc = ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
-            img = "<img src='#{imgSrc}'><br>"
-            return img + '	' + name
-      })
-
     $scope.chart.render(w.content.chart, options)
+
+    # Chart customization
+    $scope.chart.addCustomLegend(legendFormatter)
+    $scope.chart.addSeriesEvent('click', onClickBar)
+
     $scope.chartDeferred.notify($scope.chart.hc)
 
   $scope.chartId = ->

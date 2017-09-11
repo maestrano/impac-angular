@@ -21,7 +21,7 @@
     </a>
   </div>
 
-  <div ng-hide="widget.isLoading" ng-include="::templatePath" />
+  <div ng-hide="widget.isLoading" class="content-template-wrapper" ng-include="::templatePath" />
   
   <common-delete-widget ng-if="showDeleteWidget" on-dismiss="toggleDeleteWidget()" on-delete="deleteWidget()" />
 </div>
