@@ -93,14 +93,15 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
           # scaleSteps: 4,
           # scaleStepWidth: 25,
           # scaleStartValue: 0,
-          scales: { yAxes: [
-            { ticks: {
-                suggestedMin: 0
-                suggestedMax: 100
-                maxTicksLimit: 5
+          scales:
+            yAxes: [
+              {
+                ticks:
+                  suggestedMin: 0
+                  suggestedMax: 100
+                  maxTicksLimit: 5
               }
-            }
-          ]}
+            ]
           showXLabels: false
           pointDot: false
           currency: '%'
