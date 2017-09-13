@@ -745,8 +745,8 @@
   "impac.components.sync_apps.status.sync_failed":        "Sync failed. Please contact support.",
   "impac.components.sync_apps.status.please_link":        "Please link your application.",
   "impac.components.sync_apps.status.could_not_retrieve": "Couldn't retrieve sync status.",
-  "impac.components.sync_apps.all":                       "All",
-  "impac.components.sync_apps.applications_are_synced":   "applications are synced in real-time.",
+  "impac.components.sync_apps.all_applications_are_synced":   "All applications are synced in real-time.",
+  "impac.components.sync_apps.all_other_applications_are_synced":   "All other applications are synced in real-time.",
   "impac.components.sync_apps.synchronization_status":    "Synchronization status",
   "impac.components.sync_apps.ok":                        "OK"
 }
