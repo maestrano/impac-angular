@@ -733,6 +733,7 @@
   "impac.components.currency.choose_currency": "Choose currency...",
 
   "impac.components.pdf_mode.print":  "Print",
+  "impac.components.pdf_mode.print_tooltip": "Print Dashboard",
   "impac.components.pdf_mode.cancel": "@:impac.common.action.cancel",
 
   "impac.components.sync_apps.syncing":                   "Syncing...",
