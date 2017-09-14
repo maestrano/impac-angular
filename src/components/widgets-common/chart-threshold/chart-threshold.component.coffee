@@ -14,6 +14,7 @@ module.component('chartThreshold', {
     disabled: '<?'
     kpiTargetMode: '<?'
     kpiCreateLabel: '<?'
+    thresholdColor: '@'
     onComplete: '&?'
   controller: ($timeout, $log, ImpacKpisSvc, ImpacUtilities, toastr)->
     ctrl = this
@@ -30,6 +31,7 @@ module.component('chartThreshold', {
       ctrl.disabled ||= false
       ctrl.kpiTargetMode ||= 'min'
       ctrl.kpiCreateLabel ||= 'Get alerted when the target threshold goes below'
+      ctrl.thresholdColor ||= 'rgba(0, 0, 0, 0.7)'
       # Get attachable kpi templates
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
         (templates)->
@@ -74,17 +76,23 @@ module.component('chartThreshold', {
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
-        ImpacKpisSvc.update(getKpi(), params, false)
+        ImpacKpisSvc.update(getKpi(), params, false).then(
+          (kpi)->
+            # Remove old threshold from chart
+            ctrl.chart.removeThreshold(kpi.id)
+            angular.extend(getKpi(), kpi)
+        )
       else
         params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
         params.widget_id = ctrl.widget.id
-        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params)
+        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
+          (kpi)->
+            ctrl.widget.kpis.push(kpi)
+            kpi
+        )
       promise.then(
         (kpi)->
-          ctrl.widget.kpis.push(kpi)
           ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
-        (err)->
-          toastr.error('Failed to save KPI', 'Error')
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -97,6 +105,7 @@ module.component('chartThreshold', {
         ->
           toastr.success("Deleted #{kpiDesc} KPI")
           _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
+          ctrl.chart.removeThreshold(kpi.id)
           ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
         ->
           toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
@@ -111,12 +120,10 @@ module.component('chartThreshold', {
 
     onChartNotify = (chart)->
       ctrl.chart = chart
-      validateHistParameters()
-      Highcharts.addEvent(chart.container, 'click', onChartClick)
-      thresholdSeries = _.filter(chart.series, (s) -> _.includes(s.name.toLowerCase(), 'threshold'))
-      _.each(thresholdSeries, (t)->
-        Highcharts.addEvent(t, 'click', (event)-> onThresholdClick(t))
-      )
+      return unless validateHistParameters()
+      Highcharts.addEvent(chart.hc.container, 'click', onChartClick)
+      _.each buildThresholdsFromKpis(), (threshold)->
+        ctrl.chart.addThreshold(threshold)
       return
 
     onChartClick = (event)->
@@ -148,19 +155,25 @@ module.component('chartThreshold', {
 
     shrinkChart = ->
       return unless ctrl.chart
-      ctrl.chart.setSize(null, ctrl.chart.chartHeight - ctrl.chartShrinkSize, false)
-      ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
+      ctrl.chart.hc.setSize(null, ctrl.chart.hc.chartHeight - ctrl.chartShrinkSize, false)
+      ctrl.chart.hc.container.parentElement.style.height = "#{ctrl.chart.hc.chartHeight}px"
 
     growChart = ->
       return unless ctrl.chart
-      ctrl.chart.setSize(null, ctrl.chart.chartHeight + ctrl.chartShrinkSize, false)
-      ctrl.chart.container.parentElement.style.height = "#{ctrl.chart.chartHeight}px"
+      ctrl.chart.hc.setSize(null, ctrl.chart.hc.chartHeight + ctrl.chartShrinkSize, false)
+      ctrl.chart.hc.container.parentElement.style.height = "#{ctrl.chart.hc.chartHeight}px"
 
     # Disable threshold when selected time period is strictly in the past
     validateHistParameters = ->
       widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
       ctrl.disabled = widgetHistParams? && moment(widgetHistParams.to) <= moment.utc().startOf('day')
-      return
+      return !ctrl.disabled
+
+    # Validate and build threshold data from widget kpi templates
+    buildThresholdsFromKpis = ->
+      targets = ctrl.widget.kpis? && ctrl.widget.kpis[0] && ctrl.widget.kpis[0].targets
+      return [] unless ImpacKpisSvc.validateKpiTargets(targets)
+      [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor, onClickEvent: onThresholdClick }]
 
     return ctrl
 })

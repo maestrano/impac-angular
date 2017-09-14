@@ -45,7 +45,6 @@ angular
         @hc = Highcharts.stockChart(@id, chartConfig)
       else
         @hc.update(chartConfig)
-      @addThresholds()
       return @
 
     template: ->
@@ -77,7 +76,7 @@ angular
       xAxis:
         plotLines: [{
           color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: moment.utc().startOf('day').unix() * 1000  
+          value: moment.utc().startOf('day').unix() * 1000
           width: 1
           label:
             text: null
@@ -87,42 +86,36 @@ angular
             y: -5
         }]
 
-    addThresholds: (options = @options)->
+    addThreshold: (thresholdOptions)->
       return if _.isEmpty(@hc)
-      # Remove existing thresholds
-      for s in @hc.series
-        s.remove() if s? && _.includes(s.name.toLowerCase(), 'threshold')
+      # Initialize data matrix
+      data = angular.copy @data.series[0].data
+      for vector in data
+        # When in the past, set y-axis value at null
+        if !thresholdOptions.fullLengthThresholds && moment.unix(vector[0] / 1000) < moment.utc().startOf('day')
+          vector[1] = null
+        # When in the future, set y-axis value at thresholdOptions.value
+        else
+          vector[1] = parseFloat(thresholdOptions.value)
+      # Build & add threshold serie
+      threshold = angular.extend(
+        { data: data, showInLegend: false, marker: { enabled: false } },
+        thresholdOptions
+      )
+      thresholdSerie = @hc.addSeries(threshold)
+      Highcharts.addEvent(thresholdSerie, 'click', (_event)-> thresholdOptions.onClickEvent(thresholdSerie))
+      thresholdSerie
 
-      return @hc if _.isEmpty(options.thresholds)
-
-      for threshold in options.thresholds
-        # Initialize data matrix
-        data = angular.copy @data.series[0].data
-        for vector in data
-          # When in the past, set y-axis value at null
-          if !options.fullLengthThresholds && moment.unix(vector[0] / 1000) < moment.utc().startOf('day')
-            vector[1] = null
-          # When in the future, set y-axis value at threshold.value
-          else
-            vector[1] = parseFloat(threshold.value)
-
-        @hc.addSeries({
-          name: 'Threshold KPI'
-          kpiId: threshold.kpiId
-          data: data
-          color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
-          showInLegend: false
-          marker: { enabled: false }
-        }, true)
-
-      return @hc
+    removeThreshold: (kpiId)->
+      thresholdSerie = _.find(@hc.series, (s)-> s.options.kpiId == kpiId)
+      thresholdSerie.remove() if thresholdSerie?
 
     # Extend default chart formatters to add custom legend img icon
     addCustomLegend: (formatterCallback, useHTML = true) ->
       @hc.legend.update({
         useHTML: useHTML
         labelFormatter: formatterCallback
-      }, true)
+      })
 
     # Adds events to series objects
     addSeriesEvent: (eventName, callback) ->
