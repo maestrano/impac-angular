@@ -123,7 +123,9 @@ module.component('chartThreshold', {
       return unless validateHistParameters()
       Highcharts.addEvent(chart.hc.container, 'click', onChartClick)
       _.each buildThresholdsFromKpis(), (threshold)->
-        ctrl.chart.addThreshold(threshold)
+        thresholdSerie = ctrl.chart.findThreshold(threshold.kpiId)
+        thresholdSerie = ctrl.chart.addThreshold(threshold) unless thresholdSerie?
+        ctrl.chart.addThresholdEvent(thresholdSerie, 'click', onThresholdClick)
       return
 
     onChartClick = (event)->
@@ -173,7 +175,7 @@ module.component('chartThreshold', {
     buildThresholdsFromKpis = ->
       targets = ctrl.widget.kpis? && ctrl.widget.kpis[0] && ctrl.widget.kpis[0].targets
       return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-      [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor, onClickEvent: onThresholdClick }]
+      [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor }]
 
     return ctrl
 })
