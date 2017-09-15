@@ -103,13 +103,18 @@ angular
         { data: data, showInLegend: false, marker: { enabled: false } },
         thresholdOptions
       )
-      thresholdSerie = @hc.addSeries(threshold)
-      Highcharts.addEvent(thresholdSerie, 'click', (_event)-> thresholdOptions.onClickEvent(thresholdSerie))
-      thresholdSerie
+      @hc.addSeries(threshold)
 
     removeThreshold: (kpiId)->
-      thresholdSerie = _.find(@hc.series, (s)-> s.options.kpiId == kpiId)
+      thresholdSerie = @findThreshold(kpiId)
       thresholdSerie.remove() if thresholdSerie?
+
+    findThreshold: (kpiId)->
+      _.find(@hc.series, (s)-> s.options.kpiId == kpiId)
+
+    addThresholdEvent: (thresholdSerie, eventName, callback)->
+      return unless thresholdSerie? && eventName? && _.isFunction(callback)
+      Highcharts.addEvent(thresholdSerie, eventName, (_event)-> callback(thresholdSerie))
 
     # Extend default chart formatters to add custom legend img icon
     addCustomLegend: (formatterCallback, useHTML = true) ->
