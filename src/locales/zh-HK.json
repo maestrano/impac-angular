@@ -68,9 +68,11 @@
   "impac.common.reduce":                   "你好",
   "impac.common.expand":                   "你好",
 
+  "impac.data_not_found_config.title":            "你好 你好 你好",
   "impac.data_not_found_config.main_message":     "你好 你好 你好",
-  "impac.data_not_found_config.link_message":     "你好 你好 你好 你好 你好?",
-  "impac.data_not_found_config.find_why":         "你好 你好 你好",
+  "impac.data_not_found_config.link_message":     "你好 你好",
+  "impac.data_not_found_config.see_example":      "你好 你好",
+  "impac.data_not_found_config.demo_data":        "你好 你好",
   "impac.widget.settings.hist.history":           "你好",
   "impac.widget.settings.time_period.title":      "你好 你好 你好",
   "impac.widget.settings.time_period.time_range": "你好 你好:",
@@ -142,7 +144,8 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "你好 {name}",
 
-  "impac.widget.common.top_buttons.delete.title": "你好 你好 你好 你好 你好 你好 你好 你好?",
+  "impac.widget.common.top_buttons.delete.title": "你好 你好",
+  "impac.widget.common.top_buttons.delete.message": "你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.widget.common.top_buttons.delete.explanation": "(你好 你好 你好 你好 你好)",
   "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
   "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
@@ -190,7 +193,7 @@
   "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
   "impac.kpi.extra_param_label.verb":             "你好",
 
-  "impac.kpi_bar.you_can_now":                    "你好 你好 你好 你好 你好 你好 你好 {name}",
+  "impac.kpi_bar.you_can_attach":                 "你好 你好 你好 你好 你好 你好 你好 {name}",
   "impac.kpi_bar.no_kpis":                        "你好 你好 你好 你好 你好 你好 {name}",
   "impac.kpi_bar.add_to_dashboard":               "你好 你好 {name}",
   "impac.kpi_bar.new":                            "你好!",

@@ -70,17 +70,13 @@ module.component('chartThreshold', {
       ctrl.loading = true
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.watchables[0]] = [{
-        "#{ctrl.kpiTargetMode}": ctrl.draftTarget.value
+        "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
         ImpacKpisSvc.update(getKpi(), params, false)
       else
-        # TODO: improve the way the hist_params are applied onto widget kpis
-        if ctrl.widget.metadata && (widgetHistParams = ctrl.widget.metadata.hist_parameters)
-          params.metadata.hist_parameters = widgetHistParams
-        else
-          params.metadata.hist_parameters = ImpacUtilities.yearDates()
+        params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
         params.widget_id = ctrl.widget.id
         ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params)
       promise.then(
@@ -117,7 +113,7 @@ module.component('chartThreshold', {
       ctrl.chart = chart
       validateHistParameters()
       Highcharts.addEvent(chart.container, 'click', onChartClick)
-      thresholdSeries = _.select(chart.series, (s)-> s.name.toLowerCase().includes('threshold'))
+      thresholdSeries = _.filter(chart.series, (s) -> _.includes(s.name.toLowerCase(), 'threshold'))
       _.each(thresholdSeries, (t)->
         Highcharts.addEvent(t, 'click', (event)-> onThresholdClick(t))
       )
@@ -126,15 +122,15 @@ module.component('chartThreshold', {
     onChartClick = (event)->
       # Check whether click event fired is from the 'reset zoom' button
       return if event.srcElement.textContent == 'Reset zoom'
-      # Gaurd for tooltips / other chart areas that don't return a yAxis value
+      # Guard for tooltips / other chart areas that don't return a yAxis value
       return unless event.yAxis && event.yAxis[0]
       value = event.yAxis[0].value
-      # Gaurd for click events fired outside of the yAxis values range
+      # Guard for click events fired outside of the yAxis values range
       if !value || _.isNaN(value) then return else value = value.toFixed(2)
       ctrl.createKpi(value)
 
     onThresholdClick = (thresholdSerie)->
-      thresholdValue = (opts = thresholdSerie.options).data[opts.data.length - 1]
+      thresholdValue = (opts = thresholdSerie.options).data[opts.data.length - 1][1].toFixed(2)
       ctrl.editKpi(kpiId: opts.kpiId, value: thresholdValue)
 
     disableAttachability = (logMsg)->
@@ -163,9 +159,7 @@ module.component('chartThreshold', {
     # Disable threshold when selected time period is strictly in the past
     validateHistParameters = ->
       widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
-      # Widget histParams are YTD by default (when undefined on metadata),
-      # therefore in the past by default
-      ctrl.disabled = _.isEmpty(widgetHistParams) || moment(widgetHistParams.to) <= moment().startOf('day')
+      ctrl.disabled = widgetHistParams? && moment(widgetHistParams.to) <= moment.utc().startOf('day')
       return
 
     return ctrl

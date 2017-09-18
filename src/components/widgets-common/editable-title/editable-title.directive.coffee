@@ -10,7 +10,7 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc, ImpacDash
         return $translate.instant('impac.widget.editable_title.incorrect_name');
       else
         data = { name: w.name }
-        ImpacWidgetsSvc.update(w,data)
+        ImpacWidgetsSvc.update(w, data, false)
 
     $scope.getTooltip = ->
       if $scope.pdfMode

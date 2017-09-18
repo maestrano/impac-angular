@@ -1,17 +1,13 @@
-<div class="data-not-found">
-  <img id="not-found-bg" />
-  <div class="message">
-    {{content.mainMessage | translate}}
-
-    <a ng-show="showAlertsTrigger" ng-click="onDisplayAlerts()">
-      <i class="fa fa-warning" />{{'impac.data_not_found_config.find_why' | translate}}
-    </a>
-    <a ng-if="hasCallbackUrl" ng-hide="showAlertsTrigger" ng-click="content.linkUrlCallback()" translate>
-      {{content.linkMessage}}
-    </a>
-    <a ng-if="!hasCallbackUrl" ng-hide="showAlertsTrigger" ng-href="{{content.linkUrl}}" target="{{content.linkTarget}}" translate>
-      {{content.linkMessage}}
-    </a>
-
+<div class="data-not-found" ng-if="!designerMode">
+  <div class="overlay" ng-show="messageVisible" />
+  <div class="message" ng-show="messageVisible" >
+    <div class="title" translate>{{ content.title }}</div>
+    <p translate>{{ content.mainMessage }}</p>
+    <button class="btn btn-xs btn-default" ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</button>
+    <button class="btn btn-xs btn-warning" ng-click="hide()" translate>{{ content.seeExample }}</button>
+  </div>
+  <div class="example" ng-hide="messageVisible">
+    {{ content.demoData | translate }} - 
+    <a ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</a>
   </div>
 </div>

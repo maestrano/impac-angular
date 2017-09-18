@@ -33,6 +33,7 @@ module.exports = function(config) {
       'bower_components/angular-xeditable/dist/js/xeditable.js',
       'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/ng-tags-input/ng-tags-input.js',
       'bower_components/Chart.js/dist/Chart.js',
       'bower_components/lodash/lodash.js',
       'bower_components/angular-poller/angular-poller.min.js',

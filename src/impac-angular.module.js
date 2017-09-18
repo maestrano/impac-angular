@@ -15,7 +15,8 @@ angular.module('maestrano.impac',
     'ui.bootstrap',
     'emguo.poller',
     'toastr',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'xeditable'
   ]);
 
 /*
@@ -137,7 +138,9 @@ angular.module('impac.components.widgets-common',
 );
 angular.module('impac.components.common',
   [
-    'impac.components.common.data-not-found'
+    'impac.components.common.data-not-found',
+    'impac.components.common.delete-widget',
+    'impac.components.common.transactions-list'
   ]
 );
 /*
@@ -163,7 +166,8 @@ angular.module('impac.services',
     'impac.services.alerts',
     'impac.services.notifications',
     'impac.services.events',
-    'impac.services.currency-rates'
+    'impac.services.currency-rates',
+    'impac.services.bolt-resources'
   ]
 );
 /*

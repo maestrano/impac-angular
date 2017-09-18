@@ -49,7 +49,7 @@ angular.module('impacWorkspace').service('DevUser', function ($log, $http, $q, A
     return _self.getUserData(mnoeUrl).then(
       function (user) {
         var orgs = (user.organizations || []);
-        var orga = orgs.find(function(orga) { return orga.uid == orgUid });
+        var orga = _.find(orgs, function (orga) { return orga.uid == orgUid });
         var orgId = (orga && orga.id) || orgs[0].id || null;
 
         return { organizations: orgs, currentOrgId: orgId };

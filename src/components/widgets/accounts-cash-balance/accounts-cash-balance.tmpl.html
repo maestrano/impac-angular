@@ -7,7 +7,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
@@ -19,25 +18,28 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
-    <div ng-show="(isDataFound==true)" class="data-container">
+    <div class="data-container">
       <div class="left-panel">
         <div id="cash-balance-legend">
           <div class="header" ng-repeat="header in groupedTable.headers">
             <h4 ng-bind="header | titleize"></h4>
             <div class="group-item" ng-repeat="item in groupedTable.groups[$index]" ng-click="legendItemOnClick(item)">
-              <i ng-style="{'color': getLegendItemColor(item)}" class="fa {{getLegendItemIcon(item)}}" aria-hidden="true"></i>
+              <i ng-style="{'color': getLegendItemColor(item)}" class="fa" ng-class="getLegendItemCheckBox(item)" aria-hidden="true"></i>
+              <div>
+                <svg ng-include="getLegendItemIcon(item)" class="legend-item-icon" ng-style="{'fill': getLegendItemColor(item)}"></svg>
+              </div>&nbsp;
               <span ng-bind="item.name"></span>
             </div>
           </div>
         </div>
       </div>
       <div class="right-panel">
-        <div class="top-bar"></div>
         <div id="{{chartId()}}" class="cash-balance-chart"></div>
       </div>
     </div>
 
-    <!-- No data found -->
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+    <div setting-dates-picker class="dates-picker" parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" period="period" keep-today="keepToday" update-on-pick="true"/>
+
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 </div>

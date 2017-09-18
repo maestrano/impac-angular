@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)" class="center">
+    <div class="center">
 
       <div setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" no-reload truncate-no="60" on-select="widget.format()" style="text-align: center;" deferred="::paramSelectorDeferred"/>
 
@@ -70,7 +70,7 @@
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

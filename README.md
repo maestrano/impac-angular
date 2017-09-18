@@ -113,7 +113,10 @@ _usage_: Retrieving organizations and current organization id.
 Impac! Angular provides some default assets. To use these assets there are some steps that need to be made.
 
 Assets within `bower_components` are not publicly accessible by browsers, so for this you will need a JS build tool (e.g gulp/grunt) to build the provided assets into your application. The default assets can found in `bower_components/impac-angular/dist/images`.
-The default location Impac! Angular will look for these assets in runtime is `/images`. To configure this location, see the ImpacAssetsProvider configuration below. Some common places for this would be: `/public/images`, or `dist/images`.
+
+Once you have built the provided images to an accessible location, the default location Impac! Angular will look for these assets in runtime is `/images`. To configure this location, see the ImpacAssetsProvider configuration below. Some common places for this would be: `/public/images`, or `dist/images`. 
+ 
+To provide custom image files, see [Dashboard Assets](#dashboard-assets) and [Widget Assets](#widget-assets). 
 
 ##### Example
 ```coffeescript
@@ -180,7 +183,7 @@ Adjust Less styling by over-riding Less Variables in the parent application.
 
 ### Customising the Dashboard
 
-#### Theming
+#### Dashboard Theming
 
 Feature configuration with the ImpacTheming Provider
 
@@ -259,20 +262,22 @@ angular
 
 ```
 
-#### Assets
+#### Dashboard Assets
 
-Provide custom image files with the ImpacAssets Provider.
+Provide custom image files with the ImpacAssets Provider. If customising an svg, make sure to customise it with another svg.
 
-To use the default widget asset files provided, see [Using Default Assets](#using-default-assets).
+To use or configure the default widget asset files provided, see [Using Default Assets](#using-default-assets).
 
 ##### API
 
 **impacTitleLogo**<br>
 _type_: String<br>
+_default_: `'/images/impac-title-logo.png'`<br>
 _usage_: Main branding logo for the dashboard.
 
 **impacDashboardBackground**<br>
 _type_: String<br>
+_default_: `'/images/impac-dashboard-background.png'`<br>
 _usage_: Dashboard Background image displayed when when no widgets are added.
 
 ##### Example
@@ -285,11 +290,10 @@ angular
       impacTitleLogo: '/images/impac-title-logo.png'
       impacDashboardBackground: '/images/impac-dashboard-background.png'
 
-
     ImpacAssetsProvider.configure(options)
 ```
 
-#### Styles
+#### Dashboard Styles
 
 Adjust Less styling by over-riding Less Variables in the parent application.
 
@@ -346,7 +350,7 @@ Adjust Less styling by over-riding Less Variables in the parent application.
 
 ### Customising the Widgets
 
-#### Theming
+#### Widget Theming
 
 Feature configuration with the ImpacTheming Provider
 
@@ -391,8 +395,12 @@ angular
           "#ff1844"
         ]
         dataNotFoundConfig:
-          mainMessage: 'Data not found'
-          linkMessage: 'Are you missing an app?'
+          content:
+            mainMessage: 'You don\'t seem to have any data to display on this widget...'
+            linkMessage: 'Add an app'
+            title: 'Data not found'
+            seeExample: 'See an example'
+            demoData: 'Demo data'
           linkUrl: '/apps'
           linkTarget: '_blank'
           linkUrlCallback: null
@@ -416,23 +424,48 @@ angular
     ImpacThemingProvider.configure(options)
 ```
 
-#### Assets
+#### Widget Assets
 
-Provide custom image files with the ImpacAssets Provider.
+Provide custom image files with the ImpacAssets Provider. If customising an svg, make sure to customise it with another svg.
 
 To use the default widget asset files provided, see [Using Default Assets](#using-default-assets).
 
 ##### API
 
-**dataNotFound**<br>
-_type_: String<br>
-_default_: `''`<br>
-_usage_: Relative path to a directory containing screenshots that are displayed as a background-image for widgets when the "data not found" case is met. The files in this directory need to be organised & named to match the widget engine path. See [Impac! API docs](http://maestrano.github.io/impac/), go to a widget and look at the **engine** value (e.g `accounts/accounting_values/turnover`). You don't have to provide all images, you could provide images for some select widgets, impac-angular will display the default image if a custom one is not found.
-
 **currencyConversionsIcon**
 _type_: String<br>
-_default_: `'/images/impac-title-logo.png'`<br>
-_usage_:  Icon displayed to trigger conversions rate tooltips on widgets. A default image is provided for this option.
+_default_: `'/images/currency-icon.png'`<br>
+_usage_:  Icon displayed to trigger conversions rate tooltips on widgets. 
+
+**cashFlowLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/cash-flow.png'`<br>
+_usage_: Icon displayed for the chart series representing your cashflow in the Cash Projection widget.
+
+**payablesLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/payables.png'`<br>
+_usage_: Icon displayed for the chart series representing payables in the Cash Projection widget. 
+
+**receivablesLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/receivables.png'`<br>
+_usage_: Icon displayed for the chart series representing receivables in the Cash Projection widget. 
+
+**projectedCashLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/projected-cash.png'`<br>
+_usage_: Icon displayed for the chart series representing projected cash in the Cash Projection widget. 
+
+**plotLineLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/plot-line-icon.svg'`<br>
+_usage_: Icon displayed for the chart series using a 'line' as a series type in the widgets (Highcharts only). 
+
+**areaLegendIcon**<br>
+_type_: String<br>
+_default_: `'/images/area-icon.svg'`<br>
+_usage_: Icon displayed for the chart series using a 'area' as a series type in the widgets (Highcharts only). 
 
 ##### Example
 ```coffeescript
@@ -441,13 +474,18 @@ angular
   .config (ImpacAssetsProvider) ->
 
     options =
-      dataNotFound: '/images/data-not-found/'
       currencyConversionsIcon: '/images/currency-icon.png'
+      cashFlowLegendIcon: '/images/cash-flow.png'
+      payablesLegendIcon: '/images/payables.png'
+      receivablesLegendIcon: '/images/receivables.png'
+      projectedCashLegendIcon: '/images/projected-cash.png'
+      plotLineLegendIcon: '/images/plot-line-icon.svg'
+      areaLegendIcon: '/images/area-icon.svg'
 
     ImpacAssetsProvider.configure(options)
 ```
 
-#### Styles
+#### Widget Styles
 
 Adjust Less styling by over-riding Less Variables in the parent application.
 
@@ -513,9 +551,9 @@ Adjust Less styling by over-riding Less Variables in the parent application.
 @impac-widget-sales-break-even-text-color:     #1de9b6;
 ```
 
-### Customising the KPIs & Alerting
+### Customising the KPIs and Alerting
 
-#### Linking
+#### KPIs and Alerting Linking
 Alerts use [Pusher.com](https://pusher.com/) (an external service which handles the sending of web-socket notification from our server to the browser), which required the client (Impac! Angular) is configured with a Client Key for authentication. This configuration is provided through the ImpacLinking Provider.
 
 ##### API
@@ -542,7 +580,7 @@ _usage_: Configure Impac! Angular with a Pusher client key.
 
 ```
 
-#### Theming
+#### KPIs and Alerting Theming
 
 Feature configuration with the ImpacTheming Provider.
 
@@ -571,7 +609,7 @@ angular
     ImpacThemingProvider.configure(options)
 ```
 
-#### Styles
+#### KPIs and Alerting Styles
 
 Adjust Less styling by over-riding Less Variables in the parent application.
 

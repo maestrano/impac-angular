@@ -1,17 +1,23 @@
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, HighchartsFactory) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, HighchartsFactory) ->
 
   w = $scope.widget
 
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.timePeriodDeferred = $q.defer()
+  $scope.datesPickerDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
-    $scope.timePeriodDeferred.promise
+    $scope.datesPickerDeferred.promise
   ]
+
+  # Dates picker defaults
+  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
+  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
+  $scope.period = 'DAILY'
+  $scope.keepToday = false
 
   # Widget specific methods
   # --------------------------------------
@@ -21,12 +27,14 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
 
     # Custom chart legend
     $scope.groupedTable = w.content.grouped_table
-
     # TODO: theming config for positive/negative hex codes (or move to API)
     # chartColors = ImpacTheming.get().chartColors
-
     # Set chart accounts series colors by account bias ('positive' / 'negative')
     setSeriesColors(w.content.chart.series, { positive: '#3FC4FF', negative: '#e50228'})
+
+    if hist = w.metadata.hist_parameters
+      $scope.fromDate = hist.from
+      $scope.toDate = hist.to
 
   $scope.legendItemOnClick = (account)->
     serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
@@ -34,10 +42,14 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     visibility = if serie.visible then false else true
     serie.setVisible(visibility)
 
-  $scope.getLegendItemIcon = (account)->
+  $scope.getLegendItemCheckBox = (account)->
     serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
     return 'fa-check-square-o' unless serie
     if serie.visible then 'fa-check-square-o' else 'fa-square-o'
+
+  $scope.getLegendItemIcon = (account)->
+    serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
+    if serie.type == 'area' then ImpacAssets.get('areaLegendIcon') else ImpacAssets.get('plotLineLegendIcon')
 
   $scope.getLegendItemColor = (account)->
     serie = $scope.chart? && $scope.chart.hc? && getSerieByAccount($scope.chart.hc.series, account)
@@ -73,7 +85,6 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     $timeout ->
       $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
       $scope.chart.render(w.content.chart, options)
-
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

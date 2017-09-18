@@ -1,11 +1,63 @@
 # Impac! Frontend Changelog
 
+### v1.6.1 | 2017 - Week 35
+
+#### Adds
+- Serve glyphicons in the developer workspace
+- [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
+
+#### Fixes
+- Update doc with v1.6.0 changes
+- [IMPAC-658] Fix dependency to xeditable
+
+#### Config changes
+- New image asset files via the assets.svc
+```coffeescript
+cashFlowLegendIcon: ':default/cash-flow.png'
+payablesLegendIcon: ':default/payables.png'
+projectedCashLegendIcon: ':default/projected-cash.png' 
+receivablesLegendIcon: ':default/receivables.png' 
+plotLineLegendIcon: ':default/plot-line-icon.svg' 
+areaLegendIcon: ':default/area-icon.svg' 
+```
+
+-------------------------------------------------------------
+
+### v1.6.0 | 2017 - Week 33
+
+#### Adds
+- [IMPAC-648] Show demo data when none can be found
+
+#### Config changes
+- Changes to the theming.svc to improve the data not found message & customisability
+```coffeescript
+# Old
+dataNotFoundConfig:
+  mainMessage: 'impac.data_not_found_config.main_message'
+  linkMessage: 'impac.data_not_found_config.link_message'
+
+# New
+dataNotFoundConfig:
+  content:
+    mainMessage: 'impac.data_not_found_config.main_message'
+    linkMessage: 'impac.data_not_found_config.link_message'
+    title: 'impac.data_not_found_config.title'
+    seeExample: 'impac.data_not_found_config.see_example'
+    demoData: 'impac.data_not_found_config.demo_data'
+```
+
+#### Dependencies
+- Impac! v1.6.0 (demo data endpoints for widgets)
+
+-------------------------------------------------------------
+
 ### v1.5.6 | 2017 - Week 33
 
 #### Adds
 - [IMPAC-448] Add tracking tags setting to PnL and BalanceSheet widgets
 
 #### Config changes
+- Changes to the theming.svc to enable / disable widget tagging
 ```coffeescript
 widgetSettings:
   tagging:
@@ -28,6 +80,7 @@ widgetSettings:
 - Remove HOURLY period from HR widgets and replace it by DAILY
 
 #### Config changes
+- Changes to the theming.svc to whitelist & blacklist widget templates
 ```coffeescript
 # whitelist takes precedence over blacklist
 # when both are empty, all templates are displayed
@@ -48,6 +101,7 @@ widgetSelectorConfig:
 - Fix alerts settings button when no alert is attached to a KPI
 
 #### Config changes
+- Changes to the theming.svc to enable / disable ability to create from a dashboard template
 ```coffeescript
 dhbSettings:
   createFromTemplateEnabled: false

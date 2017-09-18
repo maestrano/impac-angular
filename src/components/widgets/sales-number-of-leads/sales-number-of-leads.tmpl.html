@@ -13,7 +13,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)" class="align-center">
+    <div class="align-center">
       <div class="selector">
         {{'impac.widget.sales_number_of_leads.leads_for_this' | translate}} <span setting-param-selector parent-widget="widget" param="period" options="periodOptions" selected="period" deferred="::paramSelectorDeferred" />
       </div>
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

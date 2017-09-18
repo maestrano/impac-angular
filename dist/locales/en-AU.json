@@ -68,8 +68,11 @@
   "impac.common.reduce":                   "reduce",
   "impac.common.expand":                   "expand",
 
-  "impac.data_not_found_config.main_message":     "Data not found",
-  "impac.data_not_found_config.link_message":     "Are you missing an app?",
+  "impac.data_not_found_config.title":            "Data not found",
+  "impac.data_not_found_config.main_message":     "You don't seem to have any data to display on this widget...",
+  "impac.data_not_found_config.link_message":     "Add an app",
+  "impac.data_not_found_config.see_example":      "See an example",
+  "impac.data_not_found_config.demo_data":        "Demo data",
   "impac.data_not_found_config.find_why":         "Find out why",
   "impac.widget.settings.hist.history":           "history",
   "impac.widget.settings.time_period.title":      "Time period selection",
@@ -146,7 +149,8 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "Delete {name}",
 
-  "impac.widget.common.top_buttons.delete.title": "Are you sure you want to delete this widget ?",
+  "impac.widget.common.top_buttons.delete.title": "Delete widget",
+  "impac.widget.common.top_buttons.delete.message": "Are you sure you want to delete this widget?",
   "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
   "impac.widget.common.top_buttons.delete.cancel": "@:impac.common.action.cancel",
   "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
@@ -194,7 +198,7 @@
   "impac.kpi.below":                              "@:impac.widget.settings.attach_kpis.below",
   "impac.kpi.extra_param_label.verb":             "Select",
 
-  "impac.kpi_bar.you_can_now":                    "You can now attach KPIs to your {name}",
+  "impac.kpi_bar.you_can_attach":                 "Click to attach KPIs to your {name}",
   "impac.kpi_bar.no_kpis":                        "No KPIs are available for your {name}",
   "impac.kpi_bar.add_to_dashboard":               "Add to {name}",
   "impac.kpi_bar.new":                            "New!",
