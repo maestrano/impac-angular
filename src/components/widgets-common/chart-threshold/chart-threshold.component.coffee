@@ -113,7 +113,7 @@ module.component('chartThreshold', {
       ctrl.chart = chart
       validateHistParameters()
       Highcharts.addEvent(chart.container, 'click', onChartClick)
-      thresholdSeries = _.select(chart.series, (s)-> s.name.toLowerCase().includes('threshold'))
+      thresholdSeries = _.filter(chart.series, (s) -> _.includes(s.name.toLowerCase(), 'threshold'))
       _.each(thresholdSeries, (t)->
         Highcharts.addEvent(t, 'click', (event)-> onThresholdClick(t))
       )

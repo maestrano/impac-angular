@@ -17,7 +17,7 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred" />
 
-        <h3 class="left" translate>impac.widget.hr_salaries_summary.average_rate</h3>
+        <h3 class="left" ng-class="widget.isExpanded() ? 'left' : 'reduced-left'" translate>impac.widget.hr_salaries_summary.average_rate</h3>
         <div class="price">
            {{widget.content.total.average_rate | mnoCurrency : widget.content.total.currency}}
         </div>

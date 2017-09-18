@@ -91,7 +91,7 @@ angular
       return if _.isEmpty(@hc)
       # Remove existing thresholds
       for s in @hc.series
-        s.remove() if s? && s.name.toLowerCase().includes('threshold')
+        s.remove() if s? && _.includes(s.name.toLowerCase(), 'threshold')
 
       return @hc if _.isEmpty(options.thresholds)
 
