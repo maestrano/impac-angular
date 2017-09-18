@@ -17,16 +17,20 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-        xAxis:
-          startOnTick: false
-          minPadding: 0
-          tickInterval: 1
-          min: 0
         yAxis:
           title: null
           startOnTick: true
           minPadding: 0
         series: series
+        rangeSelector:
+          buttons: [
+            { type: 'month', count: 1, text: '1m' },
+            { type: 'month', count: 3, text: '3m' },
+            { type: 'month', count: 6, text: '6m' },
+            { type: 'year', count: 1, text: '1y' },
+            { type: 'all', text: 'All' }
+          ]
+          inputEnabled: false
 
   class Chart
     constructor: (@id, @data = {}, @options = {})->
@@ -38,7 +42,7 @@ angular
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       if _.isEmpty(@hc)
-        @hc = Highcharts.chart(@id, chartConfig)
+        @hc = Highcharts.stockChart(@id, chartConfig)
       else
         @hc.update(chartConfig)
       @addThresholds()
@@ -48,31 +52,32 @@ angular
       @_template.get(@data.series, @options)
 
     formatters: ->
-      [labels, options] = [@data.labels, @options]
+      currency = @options.currency
       xAxis:
         labels:
           formatter: ->
-            $filter('mnoDate')(labels[this.value], options.period)
+            moment.unix(this.value / 1000).format('Do MMM YYYY')
       yAxis:
         labels:
           formatter: ->
-            $filter('mnoCurrency')(this.value, options.currency, false, 0)
+            $filter('mnoCurrency')(this.value, currency, false, 0)
       tooltip:
+        shared: false
         formatter: ->
-          date = $filter('mnoDate')(labels[this.x], options.period)
-          amount = $filter('mnoCurrency')(this.y, options.currency, false)
+          date = moment.unix(this.x / 1000).format('Do MMM YYYY')
+          amount = $filter('mnoCurrency')(this.y, currency, false)
           name = this.series.name
           # If point is in the past, "My Projected Stuff" => "My Stuff"
-          if moment(labels[this.x]) < moment().startOf('day')
+          if moment.unix(this.x / 1000) < moment.utc().startOf('day')
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
     todayMarker: ->
-      return {} unless @options.showToday && !_.isEmpty(@data.labels)
+      return {} unless @options.showToday
       xAxis:
         plotLines: [{
           color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: todayIndex(@data.labels)
+          value: moment.utc().startOf('day').unix() * 1000  
           width: 1
           label:
             text: null
@@ -85,35 +90,49 @@ angular
     addThresholds: (options = @options)->
       return if _.isEmpty(@hc)
       # Remove existing thresholds
-      _.remove(@hc.series, (s) -> _.includes(s.name.toLowerCase(), 'threshold'))
+      for s in @hc.series
+        s.remove() if s? && _.includes(s.name.toLowerCase(), 'threshold')
+
       return @hc if _.isEmpty(options.thresholds)
-      # Determine the indexes length of the cash projection intervals
-      projectionIntervalLength = @data.labels.slice(todayIndex(@data.labels), @data.labels.length).length
+
       for threshold in options.thresholds
-        data = if options.fullLengthThresholds then [] else new Array(@data.labels.length - projectionIntervalLength).fill(null)
-        serie =
+        # Initialize data matrix
+        data = angular.copy @data.series[0].data
+        for vector in data
+          # When in the past, set y-axis value at null
+          if !options.fullLengthThresholds && moment.unix(vector[0] / 1000) < moment.utc().startOf('day')
+            vector[1] = null
+          # When in the future, set y-axis value at threshold.value
+          else
+            vector[1] = parseFloat(threshold.value)
+
+        @hc.addSeries({
           name: 'Threshold KPI'
           kpiId: threshold.kpiId
           data: data
           color: _.get(options, 'thresholdsColor', 'rgba(255, 0, 0, 0.5)')
           showInLegend: false
           marker: { enabled: false }
-        if options.fullLengthThresholds
-          # Set the thresholds for all intervals, creating a full length horizontal bar
-          thresholdBar = _.map(@data.labels, -> parseFloat(threshold.value))
-        else
-          # Set the thresholds for the projection intervals, creating a horizontal bar
-          thresholdBar = _.map(new Array(projectionIntervalLength), -> parseFloat(threshold.value))
-        serie.data.push.apply(serie.data, thresholdBar)
-        # Note: series can only be added after initial render via the `addSeries` method.
-        @hc.addSeries(serie, true)
-      @hc
+        }, true)
 
-    # Private methods
-    # --
+      return @hc
 
-    todayIndex = (labels)->
-      projection_date = _.find(labels, (date)-> moment(date) >= moment().startOf('day'))
-      _.indexOf(labels, projection_date)
+    # Extend default chart formatters to add custom legend img icon
+    addCustomLegend: (formatterCallback, useHTML = true) ->
+      @hc.legend.update({
+        useHTML: useHTML
+        labelFormatter: formatterCallback
+      }, true)
 
+    # Adds events to series objects
+    addSeriesEvent: (eventName, callback) ->
+      return if _.isEmpty(@hc)
+      eventHash = {}
+      eventHash[eventName] = callback
+      @hc.update({
+        plotOptions:
+          series:
+            events: eventHash
+      })
+      return @hc
 )

@@ -4,7 +4,6 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
@@ -15,7 +14,11 @@
 
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
-    <div>
+    <!-- Transactions list -->
+    <transactions-list ng-show="trxList.display" on-hide="trxList.hide()" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-page-changed="trxList.fetch(page)"></transactions-list>
+
+    <!-- Chart -->
+    <div ng-hide="trxList.display">
       <!-- Set KPI target threshold panel -->
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
 
@@ -48,7 +51,9 @@
         <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
           Save
         </button>
+        <div setting-dates-picker class="dates-picker" parent-widget="widget" deferred="::datesPickerDeferred" from="fromDate" to="toDate" period="period" keep-today="keepToday" update-on-pick="true"/>
       </div>
+
     </div>
 
     <div ng-show="widget.demoData" common-data-not-found />
