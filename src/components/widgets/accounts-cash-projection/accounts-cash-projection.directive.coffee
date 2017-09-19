@@ -6,13 +6,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.datesPickerDeferred = $q.defer()
   $scope.intervalsOffsetsDeferred = $q.defer()
   $scope.currentOffsetsDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
-    $scope.datesPickerDeferred.promise,
     $scope.intervalsOffsetsDeferred.promise,
     $scope.currentOffsetsDeferred.promise
   ]
@@ -27,12 +25,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.chartThresholdOptions = {
     label: 'Get alerted when the cash projection goes below'
   }
-
-  # Dates picker defaults
-  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
-  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
-  $scope.period = 'DAILY'
-  $scope.keepToday = false
 
   # Transactions List component
   $scope.trxList = { display: false }
