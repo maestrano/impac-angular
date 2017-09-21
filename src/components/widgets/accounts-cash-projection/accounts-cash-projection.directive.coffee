@@ -58,7 +58,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         $scope.trxList.totalRecords = response.data.meta.record_count
     )
 
-
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
@@ -77,6 +76,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       serie.name == "Cash flow"
     cashFlowSerie.data = []
     cashFlowSerie.type = 'area'
+    cashFlowSerie.showInLegend = false
 
     totalOffset = 0.0
     if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
@@ -118,10 +118,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     }
     $scope.trxList.fetch().finally(-> $scope.trxList.show())
 
+  imgSrc = (name) -> ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
+  imgTemplate = (src, name) -> "<img src='#{src}'><br>#{name}"
   legendFormatter = ->
-    series = this
-    imgSrc = ImpacAssets.get(_.camelCase(series.name + 'LegendIcon'))
-    "<img src='#{imgSrc}'><br>  #{series.name}"
+    name = this.name
+    return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
+    imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
   w.format = ->
     # Chart basic options
