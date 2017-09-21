@@ -28,6 +28,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     label: 'Get alerted when the cash projection goes below'
   }
 
+  # Define metadata for overdue transactions ranges
+  settingsRanges = key: 'ranges'
+  settingsRanges.initialize = ->
+    angular.extend($scope.widget.metadata, this.toMetadata())
+  settingsRanges.toMetadata = ->
+    ranges: [
+      { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
+      { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
+      { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
+    ]
+  $scope.widget.settings.push(settingsRanges)
+
   # Dates picker defaults
   $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
   $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
@@ -70,11 +82,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       vector[0] >= moment.now()
     $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
 
-    projectedSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Projected cash"
+    projectedSerie = _.find(w.content.chart.series, (s) -> s.name == "Projected cash")
 
-    cashFlowSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Cash flow"
+    cashFlowSerie = _.find(w.content.chart.series, (s) -> s.name == "Cash flow")
     cashFlowSerie.data = []
     cashFlowSerie.type = 'area'
 
