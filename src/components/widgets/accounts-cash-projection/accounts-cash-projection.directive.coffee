@@ -9,12 +9,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.datesPickerDeferred = $q.defer()
   $scope.intervalsOffsetsDeferred = $q.defer()
   $scope.currentOffsetsDeferred = $q.defer()
+  $scope.rangesDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
     $scope.datesPickerDeferred.promise,
     $scope.intervalsOffsetsDeferred.promise,
-    $scope.currentOffsetsDeferred.promise
+    $scope.currentOffsetsDeferred.promise,
+    $scope.rangesDeferred.promise
   ]
 
   # Simulation mode
@@ -29,16 +31,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   }
 
   # Define metadata for overdue transactions ranges
-  settingsRanges = key: 'ranges'
-  settingsRanges.initialize = ->
-    angular.extend($scope.widget.metadata, this.toMetadata())
-  settingsRanges.toMetadata = ->
-    ranges: [
-      { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
-      { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
-      { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
-    ]
-  $scope.widget.settings.push(settingsRanges)
+  w.metadata.ranges = [
+    { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
+    { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
+    { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
+  ]
+  $scope.rangesDeferred.resolve()
 
   # Dates picker defaults
   $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
@@ -88,6 +86,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     cashFlowSerie.data = []
     cashFlowSerie.type = 'area'
 
+    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
+
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'receivables'), '#89a876')
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'payables'), '#d16378')
+
     totalOffset = 0.0
     if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
       totalOffset += _.sum(w.metadata.offset.current)
@@ -98,14 +101,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     if projectedSerie?
       $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
 
-    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
-
     if hist = w.metadata.hist_parameters
       $scope.fromDate = hist.from
       $scope.toDate = hist.to
-
-    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'receivables'), '#89a876')
-    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'payables'), '#d16378')
 
   dateFilter = (timestamp) ->
     pickedDate = moment.unix(timestamp / 1000).format('YYYY-MM-DD')
@@ -114,11 +112,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
     series = this
-    resources = switch(series.name)
-      when 'Payables'
-        'bills'
-      when 'Receivables'
-        'invoices'
+    trxType = (series.name + '-' + series.stackKey).toLowerCase()
+    resources = if trxType.match('payables')
+      'bills'
+    else if trxType.match('receivables')
+      'invoices'
     return unless resources?
 
     # Init trxList object with static values
