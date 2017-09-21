@@ -130,7 +130,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       currency: w.metadata.currency
       showToday: true
       showLegend: true
-      thresholds: getThresholds()
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
     $scope.chart.render(w.content.chart, options)
@@ -139,7 +138,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
 
-    $scope.chartDeferred.notify($scope.chart.hc)
+    $scope.chartDeferred.notify($scope.chart)
 
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
@@ -154,11 +153,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
   getPeriod = ->
     w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
-
-  getThresholds = ->
-    targets = w.kpis? && w.kpis[0] && w.kpis[0].targets
-    return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-    [{ kpiId: w.kpis[0].id, value: targets.threshold[0].min }]
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
