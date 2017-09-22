@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-expense-weight',[])
 
-module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
+module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate, $timeout) ->
 
   w = $scope.widget
 
@@ -42,6 +42,9 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
       else
         $translate.instant("impac.widget.account_expense_weight.comparator.total_exp")
 
+  $scope.displayAccount = ->
+    $scope.updateSettings(false).then ->
+      $timeout -> (w.format())
 
   # Chart formating function
   # --------------------------------------
@@ -72,8 +75,8 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
           showXLabels: false,
           currency: "(ratio)"
         }
-        # chartData = ChartFormatterSvc.lineChart(lineData,lineOptions, true)
-        chartData = ChartFormatterSvc.combinedBarChart(lineData,lineOptions, false, true)
+        # chartData = ChartFormatterSvc.lineChart(lineData, lineOptions, true)
+        chartData = ChartFormatterSvc.combinedBarChart(lineData, lineOptions, false, true)
 
       else
         companies = _.map w.content.summary, (s) -> s.company
@@ -85,29 +88,28 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
 
         inputData = {labels: companies, values: ratios}
 
-
         options = {
           # scaleOverride: true,
           # scaleSteps: 4,
           # scaleStepWidth: 25,
           # scaleStartValue: 0,
-          scales: { yAxes: [
-            { ticks: {
-              suggestedMin: 0
-              suggestedMax: 100
-              maxTicksLimit: 5
+          scales:
+            yAxes: [
+              {
+                ticks:
+                  suggestedMin: 0
+                  suggestedMax: 100
+                  maxTicksLimit: 5
               }
-            }
-          ]}
+            ]
           showXLabels: false
           pointDot: false
           currency: '%'
         }
-        chartData = ChartFormatterSvc.lineChart([inputData],options)
+        chartData = ChartFormatterSvc.lineChart([inputData], options)
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
-
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

@@ -16,6 +16,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       minDate: '=?'
       updateOnPick: '=?'
       template: '=?'
+      period: '=?'
     },
     template: $templateCache.get('widgets-settings/dates-picker.tmpl.html'),
 
@@ -112,7 +113,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
           hist_parameters:
             from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
             to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
-            period: "RANGE"
+            period: scope.period || "RANGE"
             keep_today: isToToday()
         }
 

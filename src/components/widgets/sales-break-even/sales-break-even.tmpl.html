@@ -14,7 +14,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)" class="align-center">
+    <div class="align-center">
 
       <div class="legend">{{'impac.widget.sales_break_even.from' | translate}} {{widget.content.period.from | date : 'd MMM yyyy'}} {{'impac.widget.sales_break_even.to' | translate}} {{widget.content.period.to | date : 'd MMM yyyy'}}</div>
 
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

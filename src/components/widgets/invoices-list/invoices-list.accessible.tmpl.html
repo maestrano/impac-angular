@@ -21,13 +21,10 @@
       <td translate>impac.widget.invoices_list.invoiced</td>
     </tr>
 
-    <!-- Data not found line -->
-    <tr class="widget-line" ng-show="(isDataFound==false)">
-      <td translate translate-values="{orderBy: orderBy, entityType: entityType}">impac.widget.invoices_list.no_invoice</td>
-    </tr>
+    <div ng-show="widget.demoData" common-data-not-found />
     
     <!-- Content lines -->
-    <tr class="widget-line" ng-show="(isDataFound==true)" ng-repeat="entity in widget.content.entities">
+    <tr class="widget-line" ng-repeat="entity in widget.content.entities">
       <td>{{entity.name}}</td>
       <td><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></td>
       <td><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></td>

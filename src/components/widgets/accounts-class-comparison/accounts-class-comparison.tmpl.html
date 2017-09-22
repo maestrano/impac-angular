@@ -13,7 +13,7 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <div ng-show="(isDataFound==true)">
+    <div>
       <!-- account classification selectors -->
       <div setting-param-selector parent-widget="widget" param="classification" options="classifications" selected="selectedClassification" class="row param-selector" deferred="::paramSelectorDeferred" on-select="widget.format()" no-reload/>
       <!---->
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>

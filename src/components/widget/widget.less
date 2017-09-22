@@ -46,6 +46,13 @@
       min-height: 250px !important;
       max-height: auto !important;
     }
+
+    // Avoid content to leak out of widget's box
+    .content-template-wrapper {
+      height: 100%;
+      overflow: auto;
+      overflow-x: hidden;
+    }
   }
 
   &.pdf-mode .content {

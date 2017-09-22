@@ -10,11 +10,16 @@ angular
     # a defaultImagesPath of which is the parent apps responsibility to make publically available.
     # See the README.md for more information on this.
     paths =
-      dataNotFound: ''
       defaultImagesPath: '/images'
       impacTitleLogo: ':default/impac-title-logo.png'
       impacDashboardBackground: ':default/impac-dashboard-background.png'
       currencyConversionsIcon: ':default/currency-conversions.png'
+      cashFlowLegendIcon: ':default/cash-flow.png'
+      payablesLegendIcon: ':default/payables.png'
+      projectedCashLegendIcon: ':default/projected-cash.png'
+      receivablesLegendIcon: ':default/receivables.png'
+      plotLineLegendIcon: ':default/plot-line-icon.svg'
+      areaLegendIcon: ':default/area-icon.svg'
 
     #=======================================
     # Public methods available in config

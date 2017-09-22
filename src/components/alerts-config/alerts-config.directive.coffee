@@ -43,7 +43,7 @@ module.directive('alertsConfig', ($uibModal, $templateCache, $compile, $translat
           emailAlert = _.find($scope.kpi.alerts, (alert) -> alert.service == 'email')
           if emailAlert && $scope.members
             emailAlertRecipients = emailAlert.recipients.map((recipient) -> recipient.id)
-            _.forEach($scope.members, (member) -> member.active = true if emailAlertRecipients.includes(member.id))
+            _.forEach($scope.members, (member) -> member.active = true if _.includes(emailAlertRecipients, member.id))
           else if $scope.members
             defaultActiveMember = _.find($scope.members, (member) -> member.email == config.userData.email) || $scope.members[0]
             defaultActiveMember.active = true if defaultActiveMember

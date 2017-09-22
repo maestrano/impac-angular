@@ -15,7 +15,7 @@
 
   <div ng-hide="widget.isEditMode">
 
-    <div ng-show="(isDataFound==true)">
+    <div>
       <!-- multi-companies mode -->
       <div ng-show="widget.metadata.organization_ids.length > 1 && canSelectComparisonMode || isComparisonMode()">
         <div setting-params-checkboxes options="comparisonModeOptions" param="comparison_mode" parent-widget="widget" deferred="::paramsCheckboxesDeferred"/>
@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-6">
           <div class="input-group">
-            <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount)"></select>
+            <select ng-model="movedAccount[0]" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class="form-control" ng-show="widget.hasEditAbility" ng-change="addAccount(movedAccount[0])"></select>
           </div>
         </div>
       </div>
@@ -85,14 +85,14 @@
 
       <div class="row" ng-show="hasAccountsSelected() && !pdfMode">
         <div class="col-xs-12 input-group add-account">
-          <select ng-model="movedAccount" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount)" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
+          <select ng-model="movedAccount[0]" ng-options="account.name + ' (' + formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts track by account.uid" class="form-control" ng-show="widget.hasDeleteAbility" ng-change="addAccount(movedAccount[0])" ng-disabled="widget.selectedAccounts.length >= 15 || widget.remainingAccounts.length == 0 || isComparisonMode()">
             <option value="" disabled selected translate>impac.widget.account_comp.account.add</option>
           </select>
         </div>
       </div>
     </div>
 
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.endpoint" width="::widget.width"/>
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
 </div>
