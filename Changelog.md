@@ -1,5 +1,13 @@
 # Impac! Frontend Changelog
 
+### v1.5.7 | 2017 - Week 38
+
+#### Fixes
+- IMPAC-649 : Fix accounts comparison widget display
+- IMPAC-650 : Fix expense weight widget display
+
+-------------------------------------------------------------
+
 ### v1.5.6 | 2017 - Week 33
 
 #### Adds
