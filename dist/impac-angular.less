@@ -986,7 +986,6 @@ body {
   }
 
   .widget-item .content, kpis-bar .kpi {
-
     ::-webkit-scrollbar {
       width: 6px;
       background-color: transparent;
@@ -2438,6 +2437,13 @@ dashboard-templates-selector {
       min-height: 250px !important;
       max-height: auto !important;
     }
+
+    // Avoid content to leak out of widget's box
+    .content-template-wrapper {
+      height: 100%;
+      overflow: auto;
+      overflow-x: hidden;
+    }
   }
 
   &.pdf-mode .content {
@@ -2555,9 +2561,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
@@ -2669,6 +2672,9 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 chart-threshold {
@@ -3154,6 +3160,8 @@ chart-threshold {
   .widget-lines-container {
     font-size: 11px;
     max-height: @impac-widget-accounts-comparison-lines-container-max-height;
+    margin-bottom: 65px;
+    overflow: auto;
   }
 
   .settings.params-checkboxes {
@@ -3226,9 +3234,6 @@ chart-threshold {
     .title {
       text-align: center;
     }
-  }
-  .chart-container {
-    max-height: 125px;
   }
 }
 
