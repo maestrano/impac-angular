@@ -21,7 +21,7 @@
     </a>
   </div>
 
-  <div ng-hide="widget.isLoading" ng-include="::templatePath" />
+  <div ng-hide="widget.isLoading" class="content-template-wrapper" ng-include="::templatePath" />
 </div>
 
 <div common-info-panel parent-widget="widget" on-close="toggleInfoPanel()" ng-show="isInfoPanelDisplayed()" />
