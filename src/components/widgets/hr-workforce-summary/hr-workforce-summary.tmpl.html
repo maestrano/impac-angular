@@ -17,7 +17,7 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="3" max="6" class="settings width" deferred="::widthDeferred" />
 
-        <h3 class="left" translate>impac.widget.hr_workforce_summary.total_workforce</h3>
+        <h3 class="left" ng-class="widget.isExpanded() ? 'left' : 'reduced-left'" translate>impac.widget.hr_workforce_summary.total_workforce</h3>
         <div class="price">
            {{getTotalWorkforce() | mnoCurrency : getCurrency()}}
         </div>
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="right-panel" ng-class="{'col-md-12': !widget.isExpanded(), 'col-md-6': widget.isExpanded()}">
+      <div class="right-panel" ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <h3 class="right">{{'impac.widget.hr_workforce_summary.filter' | translate}} <span setting-param-selector parent-widget="widget" param="filter" options="filterOptions" selected="filter" deferred="::paramSelectorDeferred2"/></h3>
         <div class="chart-container">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>

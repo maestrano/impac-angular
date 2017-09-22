@@ -23,7 +23,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.movedAccount = {}
+    $scope.movedAccount = []
     # defines the available options for params-checkboxes.directive
     $translate('impac.widget.account_comp.compare_mode_opt').then((label)->
       $scope.comparisonModeOptions = [{
@@ -105,7 +105,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
     inputData = {labels: [], values: []}
     # Waiting for next digest cycle to ensure w.selectedAccounts have been pre-populated
     # by any saved accounts.
-    $timeout () ->
+    $timeout ->
       for account in w.selectedAccounts
         if $scope.isComparisonMode()
           for groupedAccount in account.accounts
@@ -128,7 +128,7 @@ module.controller('WidgetAccountsComparisonCtrl', ($scope, $q, ChartFormatterSvc
 
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
-
+    , 500
   # Widget is ready: can trigger the "wait for settigns to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)

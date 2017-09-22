@@ -2,14 +2,13 @@
   .tall-widget();
 
   .data-container {
-    height: ~"calc(@{impac-big-widget-size} - 20px)";
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
     width: 100%;
-    display: flex;
   }
 
   .left-panel {
-    flex: 0;
-    min-width: 180px;
+    width: 180px;
+    display: inline-block;
     overflow: auto;
   }
 
@@ -37,20 +36,24 @@
     }
   }
 
-  .right-panel {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
+  .legend-item-icon {
+    width: 16px;
+    height: 16px;
+  }
 
-    .top-bar {
-      flex: 0;
-      min-height: 50px;
-    }
+  .right-panel {
+    width: ~"calc(100% - 180px)";
+    float: right;
 
     // Highchart container
     .cash-balance-chart {
-      flex: 1;
+      height: ~"calc(@{impac-big-widget-size} - 50px)";
     }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
   }
 }

@@ -16,7 +16,7 @@ module.exports = function(config) {
       // 'karma-mocha',
       // 'karma-chai',
       // 'karma-sinon-chai',
-      'karma-firefox-launcher',
+      'karma-chrome-launcher',
       'karma-mocha-reporter',
       'karma-jasmine'
     ],
@@ -43,7 +43,7 @@ module.exports = function(config) {
       'bower_components/messageformat/messageformat.js',
       'bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/highcharts/highcharts.js',
+      'bower_components/highcharts/highstock.js',
       'bower_components/color/one-color-all.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scenario/angular-scenario.js',
@@ -97,7 +97,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

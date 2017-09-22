@@ -1,11 +1,52 @@
 # Impac! Frontend Changelog
 
+### v1.6.1 | 2017 - Week 38
+
+#### Adds
+- Serve glyphicons in the developer workspace
+- [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
+- [IMPAC-617] : Cash projection transactions list
+- [IMPAC-618/667] : Better time management on cashflow widgets
+- [IMPAC-621] : Better formatting of Accounts classifications
+
+#### Fixes
+- Apply v1.5.7
+- Update doc with v1.6.0 changes
+- [IMPAC-641] : Fixes on cashflow widgets (IE11)
+- [IMPAC-654] : Fix IE Js errors
+- [IMPAC-658] : Dependency to xeditable (widgets name edition)
+
+#### Config changes
+- New image asset files via the assets.svc
+```coffeescript
+cashFlowLegendIcon: ':default/cash-flow.png'
+payablesLegendIcon: ':default/payables.png'
+projectedCashLegendIcon: ':default/projected-cash.png' 
+receivablesLegendIcon: ':default/receivables.png' 
+plotLineLegendIcon: ':default/plot-line-icon.svg' 
+areaLegendIcon: ':default/area-icon.svg' 
+```
+
+#### Dependencies
+- Bolt v1.0.0 (needs resources API to display transactions list)
+
+-------------------------------------------------------------
+
+### v1.5.7 | 2017 - Week 38
+
+#### Fixes
+- IMPAC-649 : Fix accounts comparison widget display
+- IMPAC-650 : Fix expense weight widget display
+
+-------------------------------------------------------------
+
 ### v1.6.0 | 2017 - Week 33
 
 #### Adds
 - [IMPAC-648] Show demo data when none can be found
 
 #### Config changes
+- Changes to the theming.svc to improve the data not found message & customisability
 ```coffeescript
 # Old
 dataNotFoundConfig:
