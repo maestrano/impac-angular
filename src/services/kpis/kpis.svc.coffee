@@ -108,13 +108,22 @@ angular
 
     @massAssignAll = (metadata) ->
       _self.load().then(->
-        for k in _self.getCurrentDashboard().kpis
-          _self.update(k, {metadata: metadata})
-        for w in _self.getCurrentDashboard().widgets
-          for k in w.kpis
-            _self.update(k, {metadata: metadata}, false)
-
-        return
+        promises = []
+        _.each(_self.getCurrentDashboard().kpis, (k)->
+          promises.push(
+            _self.update(k, {metadata: metadata}).then(
+              (kpiData)->
+                _self.applyFetchedDataToDhbKpi(k, kpiData)
+            )
+          )
+        )
+        _.each(_self.getCurrentDashboard().widgets, (w)->
+          w.isLoading = true
+          _.each(w.kpis, (k)->
+            promises.push(_self.update(k, {metadata: metadata}))
+          )
+        )
+        $q.all(promises)
       )
 
     @isRefreshing = false
@@ -175,12 +184,48 @@ angular
       templ = _self.getKpiTemplate(kpiEndpoint, kpiWatchable)
       ((templ? && templ.target_placeholders?) && templ.target_placeholders[kpiWatchable]) || {}
 
+    @getApiV2KpiDataKey = (kpi)->
+      # Formats the kpi endpoint to select the key name
+      # e.g response.cash_projection = { triggered: true, ... }
+      # TODO: maybe the 'kpi' of endpoint 'kpis/cash_projection' should be removed?
+      kpi.endpoint.split('kpis/').pop()
+
     # TODO: mno & impac should be change to deal with `watchables`, instead
     # of element_watched, and extra_watchables. The first element of watchables should be
     # considered the primary watchable, a.k.a element_watched.
     @buildKpiWatchables = (kpi)->
       return unless kpi.element_watched
       kpi.watchables = [kpi.element_watched].concat(kpi.extra_watchables || [])
+
+    # Logic specific to applying newly fetched data to a dhb KPI.
+    @applyFetchedDataToDhbKpi = (kpi, fetchedData)->
+      # Calculation
+      kpi.data = fetchedData.kpi.calculation
+
+      # Configuration
+      updatedConfig = fetchedData.kpi.configuration || {}
+      # When the kpi initial configuration is partial, update the extra_params with what the
+      # API has picked by default
+      kpi.extra_params = updatedConfig.extra_params if !kpi.extra_params? && updatedConfig.extra_params?
+      # Apply currency converted targets
+      kpi.targets = updatedConfig.targets
+
+      # Layout
+      kpi.layout = fetchedData.kpi.layout
+
+      # Extra Params
+      # Get the corresponding template of the KPI loaded
+      kpiTemplate = _self.getKpiTemplate(kpi.endpoint, kpi.element_watched)
+      # Set the kpi name from the template
+      kpi.name = kpiTemplate? && kpiTemplate.name
+      # If the template contains extra params we add it to the KPI
+      if kpiTemplate? && kpiTemplate.extra_params?
+        kpi.possibleExtraParams = kpiTemplate.extra_params
+        # Init the extra params select boxes with the first param
+        _.forIn(kpi.possibleExtraParams, (paramValues, param)->
+          (kpi.extra_params ||= {})[param] = paramValues[0].id if paramValues[0]
+        )
+      kpi
 
     #====================================
     # CRUD methods
@@ -221,8 +266,7 @@ angular
         kpisTemplatesPromises.push $http.get("#{bolt.path}/kpis").then(
           (response) ->
             for template in response.data.kpis
-              template.metadata ||= {}
-              template.metadata.bolt_path = bolt.path
+              template.source = bolt.path
               kpisTemplates.push(template)
           (error) ->
             $log.error("Impac! - KpisSvc: cannot retrieve kpis templates from bolt", "#{bolt.path}/kpis")
@@ -252,26 +296,19 @@ angular
               host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
             when 'local'
               host = ImpacRoutes.kpis.local()
+            else
+              if _.isEmpty(kpi.source)
+                err = { message: 'Impac! - KpisSvc: cannot show a KPI without a valid source' }
+                $log.error(err.message)
+                return $q.reject(err)
+              # Retreive KPI from external source (bolts)
+              host = kpi.source
 
           url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
           return $http.get(url).then(
             (response) ->
-              kpiResp = response.data.kpi
-              # Calculation
-              kpi.data = kpiResp.calculation
-
-              # Configuration
-              # When the kpi initial configuration is partial, we update it with what the API has picked by default
-              updatedConfig = kpiResp.configuration || {}
-              missingParams = _.select ['targets','extra_params'], ( (param) -> !kpi[param]? && updatedConfig[param]?)
-              angular.extend kpi, _.pick(updatedConfig, missingParams)
-
-              # Layout
-              kpi.layout = kpiResp.layout
-
-              return kpi
-
+              response.data
             (err) ->
               $log.error 'Impac! - KpisSvc: Could not retrieve KPI (show) at: ' + kpi.endpoint, err
               $q.reject(err)
@@ -281,14 +318,14 @@ angular
           $q.reject({error: { message: 'Impac! - KpisSvc: Service is not initialized' }})
       ).finally ( -> kpi.isLoading = false )
 
-    @create = (source, endpoint, elementWatched, opts={}) ->
+    @create = (kpi, opts = {}) ->
       deferred = $q.defer()
       _self.load().then(
         ->
           params = {
-            source: source
-            endpoint: endpoint
-            element_watched: elementWatched
+            source: kpi.source || 'impac'
+            endpoint: kpi.endpoint
+            element_watched: kpi.element_watched
             metadata:
               currency: _self.getCurrentDashboard().currency
           }
@@ -311,7 +348,7 @@ angular
                 _self.buildKpiWatchables(kpi)
                 deferred.resolve(kpi)
               (err) ->
-                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{endpoint}", err)
+                $log.error("Impac! - KpisSvc: Unable to create kpi endpoint=#{kpi.endpoint}", err)
                 toastr.error('Unable to create KPI', 'Error')
                 deferred.reject(err)
             )
@@ -324,28 +361,22 @@ angular
     @update = (kpi, params = {}, showKpi = true) ->
       kpi.isLoading = true
       _self.load().then(->
-
-        filtered_params = {}
-        filtered_params.name = params.name if params.name?
-        filtered_params.settings = params.metadata if params.metadata?
-        filtered_params.targets = params.targets if params.targets?
-        filtered_params.extra_params = params.extra_params if params.extra_params?
+        filtered_params = _.pick(params, ['name', 'metadata', 'targets', 'extra_params'])
+        return if _.isEmpty(filtered_params)
 
         url = ImpacRoutes.kpis.update(_self.getCurrentDashboard().id, kpi.id)
-
-        if !_.isEmpty filtered_params
-          $http.put(url, {kpi: params}).then(
-            (success) ->
-              # Alerts can be created by default on kpi#update (dashboard.kpis), check for
-              # new alerts and register them with Pusher.
-              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-              angular.extend(kpi, success.data)
-              _self.buildKpiWatchables(kpi)
-              if showKpi then _self.show(kpi) else kpi
-            (err) ->
-              $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
-              $q.reject(err)
-          )
+        $http.put(url, {kpi: filtered_params}).then(
+          (success) ->
+            # Alerts can be created by default on kpi#update (dashboard.kpis), check for
+            # new alerts and register them with Pusher.
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+            angular.extend(kpi, success.data)
+            _self.buildKpiWatchables(kpi)
+            if showKpi then _self.show(kpi) else kpi
+          (err) ->
+            $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
+            $q.reject(err)
+        )
       ).finally(->
         kpi.isLoading = false
       )

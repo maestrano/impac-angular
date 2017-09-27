@@ -36,7 +36,11 @@ module.component('chartThreshold', {
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
         (templates)->
           return disableAttachability('No valid KPI Templates found') if _.isEmpty(templates) || _.isEmpty(templates[0].watchables)
+          # Widgets can have multiple possible attachable KPIs, only one is currently supported.
           angular.extend(ctrl.kpi, angular.copy(templates[0]))
+          # The watchables are currently not selectable by the user, only one element_watched
+          # is supported.
+          ctrl.kpi.element_watched = ctrl.kpi.watchables[0]
         ->
           disableAttachability()
       )
@@ -71,28 +75,42 @@ module.component('chartThreshold', {
       return if ctrl.loading
       ctrl.loading = true
       params = targets: {}, metadata: {}
-      params.targets[ctrl.kpi.watchables[0]] = [{
+      params.targets[ctrl.kpi.element_watched] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
+        currency: ImpacKpisSvc.getCurrentDashboard().currency
       }]
       return unless ImpacKpisSvc.validateKpiTargets(params.targets)
       promise = if ctrl.isEditingKpi
-        ImpacKpisSvc.update(getKpi(), params, false).then(
-          (kpi)->
+        kpi = getKpi()
+        ImpacKpisSvc.update(kpi, params, false).then(
+          (updatedKpi)->
             # Remove old threshold from chart
             ctrl.chart.removeThreshold(kpi.id)
-            angular.extend(getKpi(), kpi)
+            angular.extend(kpi, updatedKpi)
         )
       else
-        params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
+        params.metadata.hist_parameters = {
+          from: moment.utc().format('YYYY-MM-DD')
+          to: moment.utc(getChartExtremes().xAxis.max).format('YYYY-MM-DD')
+        }
         params.widget_id = ctrl.widget.id
-        ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
+        ImpacKpisSvc.create(ctrl.kpi, params).then(
           (kpi)->
             ctrl.widget.kpis.push(kpi)
             kpi
         )
       promise.then(
         (kpi)->
-          ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+          ImpacKpisSvc.show(kpi).then(
+            (kpiData)->
+              dataKey = ImpacKpisSvc.getApiV2KpiDataKey(kpi)
+              angular.extend(kpi, kpiData[dataKey])
+          ).finally(
+            ->
+              ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
+          )
+        ->
+          toastr.error("Failed to save #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -100,15 +118,15 @@ module.component('chartThreshold', {
     ctrl.deleteKpi = ->
       return if ctrl.loading
       ctrl.loading = true
-      kpiDesc = "#{ctrl.widget.name} #{(kpi = getKpi()).element_watched}"
+      kpi = getKpi()
       ImpacKpisSvc.delete(kpi).then(
         ->
-          toastr.success("Deleted #{kpiDesc} KPI")
+          toastr.success("Deleted #{ctrl.kpi.element_watched} KPI", getWidgetName())
           _.remove(ctrl.widget.kpis, (k)-> k.id == kpi.id)
           ctrl.chart.removeThreshold(kpi.id)
           ctrl.onComplete($event: {}) if _.isFunction(ctrl.onComplete)
         ->
-          toastr.error("Failed to delete #{kpiDesc} KPI", 'Error')
+          toastr.error("Failed to delete #{ctrl.kpi.element_watched} KPI", getWidgetName())
       ).finally(->
         ctrl.cancelCreateKpi()
       )
@@ -118,17 +136,19 @@ module.component('chartThreshold', {
     getKpi = ->
       _.find(ctrl.widget.kpis, (k)-> k.id == ctrl.draftTarget.kpiId)
 
+    getWidgetName = ->
+      _.startCase "#{ctrl.widget.name} widget"
+
     onChartNotify = (chart)->
       ctrl.chart = chart
-      return unless validateHistParameters()
       Highcharts.addEvent(chart.hc.container, 'click', onChartClick)
       _.each buildThresholdsFromKpis(), (threshold)->
-        thresholdSerie = ctrl.chart.findThreshold(threshold.kpiId)
-        thresholdSerie = ctrl.chart.addThreshold(threshold) unless thresholdSerie?
+        thresholdSerie = ctrl.chart.updateThreshold(threshold)
         ctrl.chart.addThresholdEvent(thresholdSerie, 'click', onThresholdClick)
       return
 
     onChartClick = (event)->
+      return unless hasFutureChartMaxDate()
       # Check whether click event fired is from the 'reset zoom' button
       return if event.srcElement.textContent == 'Reset zoom'
       # Guard for tooltips / other chart areas that don't return a yAxis value
@@ -144,8 +164,8 @@ module.component('chartThreshold', {
 
     disableAttachability = (logMsg)->
       ctrl.disabled = true
-      toastr.warning("Chart threshold KPI disabled!", "#{ctrl.widget.name} Widget")
-      $log.warn("Impac! - #{ctrl.widget.name} Widget: #{logMsg}") if logMsg
+      toastr.warning('Chart KPIs are disabled!', getWidgetName())
+      $log.warn("Impac! - #{getWidgetName()}: #{logMsg}") if logMsg
 
     # As this method can be called from parent component or an event callback,
     # $timeout to ensure value change is detected as per usual.
@@ -165,17 +185,34 @@ module.component('chartThreshold', {
       ctrl.chart.hc.setSize(null, ctrl.chart.hc.chartHeight + ctrl.chartShrinkSize, false)
       ctrl.chart.hc.container.parentElement.style.height = "#{ctrl.chart.hc.chartHeight}px"
 
-    # Disable threshold when selected time period is strictly in the past
-    validateHistParameters = ->
-      widgetHistParams = ctrl.widget.metadata && ctrl.widget.metadata.hist_parameters
-      ctrl.disabled = widgetHistParams? && moment(widgetHistParams.to) <= moment.utc().startOf('day')
-      return !ctrl.disabled
+    hasFutureChartMaxDate = ->
+      return false unless ctrl.chart && ctrl.chart.hc
+      moment.utc(getChartExtremes().xAxis.max) > moment()
 
-    # Validate and build threshold data from widget kpi templates
+    getChartExtremes = ->
+      xAxis: ctrl.chart.hc.xAxis[0].getExtremes()
+
+    # No support for multiple KPIs & watchables yet.
     buildThresholdsFromKpis = ->
-      targets = ctrl.widget.kpis? && ctrl.widget.kpis[0] && ctrl.widget.kpis[0].targets
-      return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-      [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor }]
+      return unless (kpi = ctrl.widget.kpis && ctrl.widget.kpis[0]) &&
+                    (watchable = kpi.watchables && kpi.watchables[0]) &&
+                    (targets = watchable && watchable.targets)
+      _.map(targets, (t)->
+        name: 'Alert Threshold'
+        kpiId: kpi.id
+        value: t.min
+        triggered: t.trigger_state
+        triggered_interval_index: t.triggered_interval_index
+        color: ctrl.thresholdColor
+      )
+
+
+    isCmpDisabled = ->
+      if _.isEmpty(ctrl.widget.metadata.bolt_path)
+        $log.error("chart-threshold.component not compatible with #{getWidgetName()} - no bolt path defined")
+        true
+      else
+        false
 
     return ctrl
 })

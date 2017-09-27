@@ -2,35 +2,21 @@ describe('<> mno-currency filter', function () {
   'use strict';
 
   var $filter;
-
-  var SYMBOLS = {
-    USD: '$',
-    AUD: '$',
-    CAD: '$',
-    CNY: '¥',
-    EUR: '€',
-    GBP: '£',
-    HKD: '$',
-    INR: '',
-    JPY: '¥',
-    NZD: '$',
-    SGD: '$',
-    PHP: '₱',
-    AED: '',
-    IDR: 'Rp'
-  }
+  var MNO_CURRENCIES;
 
   beforeEach(function () {
+    module('maestrano.impac');
     module('impac.filters.mno-currency');
 
-    inject(function (_$filter_) {
+    inject(function (_$filter_, _MNO_CURRENCIES_) {
       $filter = _$filter_;
+      MNO_CURRENCIES = _MNO_CURRENCIES_;
     });
   });
 
   describe('when ISOmode is default or explicity true', function () {
     it('suffixes currencies with the correct ISO code', function () {
-      var keys = Object.keys(SYMBOLS);
+      var keys = Object.keys(MNO_CURRENCIES);
       for (var i = 0; i < keys.length; i++) {
         expect($filter('mnoCurrency')(1456.60, keys[i])).toContain(keys[i]);
         expect($filter('mnoCurrency')(1456.60, keys[i], true)).toContain(keys[i]);
@@ -38,7 +24,7 @@ describe('<> mno-currency filter', function () {
     });
 
     it('formats all currency types correctly', function () {
-      var keys = Object.keys(SYMBOLS);
+      var keys = Object.keys(MNO_CURRENCIES);
       for (var i = 0; i < keys.length; i++) {
         expect($filter('mnoCurrency')(1456.60, keys[i])).toEqual('1,456.60 ' + keys[i]);
         expect($filter('mnoCurrency')(1456.60, keys[i], true)).toEqual('1,456.60 ' + keys[i]);
@@ -48,15 +34,15 @@ describe('<> mno-currency filter', function () {
 
   describe('when ISOmode is false', function () {
     it('prefixes currencies with the correct currency symbol', function () {
-      var keys = Object.keys(SYMBOLS);
+      var keys = Object.keys(MNO_CURRENCIES);
       for (var i = 0; i < keys.length; i++) {
-        expect($filter('mnoCurrency')(1456.60, keys[i], false)).toContain(SYMBOLS[keys[i]]);
+        expect($filter('mnoCurrency')(1456.60, keys[i], false)).toContain(MNO_CURRENCIES[keys[i]]);
       }
     });
     it('formats all currency types correctly', function () {
-      var keys = Object.keys(SYMBOLS);
+      var keys = Object.keys(MNO_CURRENCIES);
       for (var i = 0; i < keys.length; i++) {
-        expect($filter('mnoCurrency')(1456.60, keys[i], false)).toEqual(SYMBOLS[keys[i]] + '1,456.60');
+        expect($filter('mnoCurrency')(1456.60, keys[i], false)).toEqual(MNO_CURRENCIES[keys[i]] + '1,456.60');
       }
     });
   });
