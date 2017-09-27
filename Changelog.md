@@ -1,5 +1,16 @@
 # Impac! Frontend Changelog
 
+### v1.6.2 | 2017 - Week 39
+
+#### Adds
+- [IMPAC-693] Add currency conversion to KPI targets
+
+#### Fixes
+
+#### Config changes
+
+-------------------------------------------------------------
+
 ### v1.6.1 | 2017 - Week 38
 
 #### Adds

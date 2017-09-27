@@ -114,7 +114,7 @@ angular
           opts = {}
           opts.extra_watchables = _.filter(kpi.watchables, (w)-> w != kpi.element_watched)
 
-          ImpacKpisSvc.create(kpi.source || 'impac', kpi.endpoint, kpi.element_watched, opts).then(
+          ImpacKpisSvc.create(kpi, opts).then(
             (success) ->
               $scope.kpis.push(success)
             (error) ->
