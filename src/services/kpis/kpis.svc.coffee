@@ -301,6 +301,13 @@ angular
               host = ImpacRoutes.kpis.show(_self.getCurrentDashboard().id, kpi.id)
             when 'local'
               host = ImpacRoutes.kpis.local()
+            else
+              if _.isEmpty(kpi.source)
+                err = { message: 'Impac! - KpisSvc: cannot show a KPI without a valid source' }
+                $log.error(err.message)
+                return $q.reject(err)
+              # Retreive KPI from external source (bolts)
+              host = kpi.source
 
           url = formatShowQuery(host, kpi.endpoint, kpi.element_watched, params)
 
@@ -359,28 +366,22 @@ angular
     @update = (kpi, params = {}, showKpi = true) ->
       kpi.isLoading = true
       _self.load().then(->
-
-        filtered_params = {}
-        filtered_params.name = params.name if params.name?
-        filtered_params.settings = params.metadata if params.metadata?
-        filtered_params.targets = params.targets if params.targets?
-        filtered_params.extra_params = params.extra_params if params.extra_params?
+        filtered_params = _.pick(params, ['name', 'metadata', 'targets', 'extra_params'])
+        return if _.isEmpty(filtered_params)
 
         url = ImpacRoutes.kpis.update(_self.getCurrentDashboard().id, kpi.id)
-
-        if !_.isEmpty filtered_params
-          $http.put(url, {kpi: params}).then(
-            (success) ->
-              # Alerts can be created by default on kpi#update (dashboard.kpis), check for
-              # new alerts and register them with Pusher.
-              ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
-              angular.extend(kpi, success.data)
-              _self.buildKpiWatchables(kpi)
-              if showKpi then _self.show(kpi) else kpi
-            (err) ->
-              $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
-              $q.reject(err)
-          )
+        $http.put(url, {kpi: filtered_params}).then(
+          (success) ->
+            # Alerts can be created by default on kpi#update (dashboard.kpis), check for
+            # new alerts and register them with Pusher.
+            ImpacEvents.notifyCallbacks(IMPAC_EVENTS.addOrRemoveAlerts)
+            angular.extend(kpi, success.data)
+            _self.buildKpiWatchables(kpi)
+            if showKpi then _self.show(kpi) else kpi
+          (err) ->
+            $log.error("Impac! - KpisSvc: Unable to update KPI #{kpi.id}", err)
+            $q.reject(err)
+        )
       ).finally(->
         kpi.isLoading = false
       )

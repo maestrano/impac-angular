@@ -105,6 +105,10 @@ angular
       thresholdSerie = @findThreshold(kpiId)
       thresholdSerie.remove() if thresholdSerie?
 
+    updateThreshold: (threshold)->
+      @removeThreshold(threshold.kpiId)
+      @addThreshold(threshold)
+
     findThreshold: (kpiId)->
       _.find(@hc.series, (s)-> s.options.kpiId == kpiId)
 
