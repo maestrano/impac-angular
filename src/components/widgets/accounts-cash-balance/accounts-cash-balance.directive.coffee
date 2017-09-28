@@ -6,18 +6,8 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  $scope.datesPickerDeferred = $q.defer()
 
-  settingsPromises = [
-    $scope.orgDeferred.promise,
-    $scope.datesPickerDeferred.promise
-  ]
-
-  # Dates picker defaults
-  $scope.fromDate = moment().subtract(3, 'months').format('YYYY-MM-DD')
-  $scope.toDate = moment().add(1, 'month').format('YYYY-MM-DD')
-  $scope.period = 'DAILY'
-  $scope.keepToday = false
+  settingsPromises = [$scope.orgDeferred.promise]
 
   # Widget specific methods
   # --------------------------------------

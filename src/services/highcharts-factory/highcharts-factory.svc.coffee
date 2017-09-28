@@ -24,13 +24,14 @@ angular
         series: series
         rangeSelector:
           buttons: [
+            { type: 'month', count: 4, text: 'def.' },
             { type: 'month', count: 1, text: '1m' },
             { type: 'month', count: 3, text: '3m' },
             { type: 'month', count: 6, text: '6m' },
             { type: 'year', count: 1, text: '1y' },
             { type: 'all', text: 'All' }
           ]
-          inputEnabled: false
+          selected: 0
 
   class Chart
     constructor: (@id, @data = {}, @options = {})->

@@ -1,15 +1,31 @@
 # Impac! Frontend Changelog
 
-### v1.6.1 | 2017 - Week 35
+### v1.6.2 | 2017 - Week 39
+
+#### Adds
+- [IMPAC-616] Add stacking highcharts columns for overdue transactions in cash projection widget
+
+#### Fixes
+
+#### Config changes
+
+-------------------------------------------------------------
+
+### v1.6.1 | 2017 - Week 38
 
 #### Adds
 - Serve glyphicons in the developer workspace
 - [IMPAC-613] Adds custom legend icons for Cash Projection & Cash Balance widgets
-- [IMPAC-616] Add stacking highcharts columns for overdue transactions in cash projection widget
+- [IMPAC-617] : Cash projection transactions list
+- [IMPAC-618/667] : Better time management on cashflow widgets
+- [IMPAC-621] : Better formatting of Accounts classifications
 
 #### Fixes
+- Apply v1.5.7
 - Update doc with v1.6.0 changes
-- [IMPAC-658] Fix dependency to xeditable
+- [IMPAC-641] : Fixes on cashflow widgets (IE11)
+- [IMPAC-654] : Fix IE Js errors
+- [IMPAC-658] : Dependency to xeditable (widgets name edition)
 
 #### Config changes
 - New image asset files via the assets.svc
@@ -21,6 +37,17 @@ receivablesLegendIcon: ':default/receivables.png'
 plotLineLegendIcon: ':default/plot-line-icon.svg' 
 areaLegendIcon: ':default/area-icon.svg' 
 ```
+
+#### Dependencies
+- Bolt v1.0.0 (needs resources API to display transactions list)
+
+-------------------------------------------------------------
+
+### v1.5.7 | 2017 - Week 38
+
+#### Fixes
+- IMPAC-649 : Fix accounts comparison widget display
+- IMPAC-650 : Fix expense weight widget display
 
 -------------------------------------------------------------
 
@@ -58,7 +85,6 @@ dataNotFoundConfig:
 - [IMPAC-448] Add tracking tags setting to PnL and BalanceSheet widgets
 
 #### Config changes
-- Changes to the theming.svc to enable / disable widget tagging
 ```coffeescript
 widgetSettings:
   tagging:
@@ -81,7 +107,6 @@ widgetSettings:
 - Remove HOURLY period from HR widgets and replace it by DAILY
 
 #### Config changes
-- Changes to the theming.svc to whitelist & blacklist widget templates
 ```coffeescript
 # whitelist takes precedence over blacklist
 # when both are empty, all templates are displayed
@@ -102,7 +127,6 @@ widgetSelectorConfig:
 - Fix alerts settings button when no alert is attached to a KPI
 
 #### Config changes
-- Changes to the theming.svc to enable / disable ability to create from a dashboard template
 ```coffeescript
 dhbSettings:
   createFromTemplateEnabled: false
