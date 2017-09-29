@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacAssets, HighchartsFactory, BoltResources, ImpacTheming) ->
 
   w = $scope.widget
 
@@ -8,11 +8,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.orgDeferred = $q.defer()
   $scope.intervalsOffsetsDeferred = $q.defer()
   $scope.currentOffsetsDeferred = $q.defer()
+  $scope.rangesDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
     $scope.intervalsOffsetsDeferred.promise,
-    $scope.currentOffsetsDeferred.promise
+    $scope.currentOffsetsDeferred.promise,
+    $scope.rangesDeferred.promise
   ]
 
   # Simulation mode
@@ -25,6 +27,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   $scope.chartThresholdOptions = {
     label: 'Get alerted when the cash projection goes below'
   }
+
+  # Define metadata for overdue transactions ranges
+  w.metadata.ranges = [
+    { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
+    { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
+    { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
+  ]
+  $scope.rangesDeferred.resolve()
 
   # Transactions List component
   $scope.trxList = { display: false }
@@ -61,14 +71,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       vector[0] >= moment.now()
     $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
 
-    projectedSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Projected cash"
+    projectedSerie = _.find(w.content.chart.series, (s) -> s.name == "Projected cash")
 
-    cashFlowSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Cash flow"
+    cashFlowSerie = _.find(w.content.chart.series, (s) -> s.name == "Cash flow")
     cashFlowSerie.data = []
     cashFlowSerie.type = 'area'
     cashFlowSerie.showInLegend = false
+
+    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
+
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'receivables'), '#89a876')
+    setStackedSeriesColors(_.select(w.content.chart.series, (s)-> s.stack == 'payables'), '#d16378')
 
     totalOffset = 0.0
     if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
@@ -79,8 +92,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
 
     if projectedSerie?
       $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
-
-    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
 
     if hist = w.metadata.hist_parameters
       $scope.fromDate = hist.from
@@ -93,11 +104,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
     series = this
-    resources = switch(series.name)
-      when 'Payables'
-        'bills'
-      when 'Receivables'
-        'invoices'
+    trxType = (series.name + '-' + series.stackKey).toLowerCase()
+    resources = if trxType.match('payables')
+      'bills'
+    else if trxType.match('receivables')
+      'invoices'
     return unless resources?
 
     # Init trxList object with static values
@@ -111,11 +122,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.trxList.fetch().finally(-> $scope.trxList.show())
 
   imgSrc = (name) -> ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
+
   imgTemplate = (src, name) -> "<img src='#{src}'><br>#{name}"
+
   legendFormatter = ->
     name = this.name
     return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
     imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
+
+  setStackedSeriesColors = (series, color)->
+    palette = ImpacTheming.color.generateShadesPalette(color, series.length, reverse: true)
+    for serie, i in series
+      serie.color = palette[i]
 
   w.format = ->
     # Chart basic options
@@ -145,8 +163,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.updateSettings()
     $scope.toggleSimulationMode()
 
-  getPeriod = ->
-    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

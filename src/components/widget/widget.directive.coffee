@@ -11,7 +11,7 @@ module.controller('ImpacWidgetCtrl', ($scope, $log, $q, $timeout, ImpacWidgetsSv
     # each promise corresponds to a setting, and will be resolved once the setting is ready
     (promises) ->
       $q.all(promises).then(
-        (success) ->
+        ->
           $scope.showWidget()
 
         (error) ->

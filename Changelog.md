@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-693] Add currency conversion to KPI targets
+- [IMPAC-616] Add stacking highcharts columns for overdue transactions in cash projection widget
 
 #### Fixes
 
