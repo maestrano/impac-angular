@@ -2240,6 +2240,136 @@ dashboard-templates-selector {
   min-height: 80px;
 }
 
+.widget-item {
+  transition: width 0.3s;
+  padding: @impac-padding-between-widgets;
+  &.pdf-mode {
+    width: 100%;
+    padding: ~"@{impac-padding-between-widgets} 0px";
+  }
+}
+
+.widget-item .top-line {
+  position: relative;
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 12px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+
+  display: flex;
+  flex-direction: row;
+
+  z-index: 4;
+}
+
+.widget-item {
+  .content {
+    position: relative;
+    padding: 9px;
+    border-radius: @impac-widget-content-border-radius;
+    border: @impac-widget-border;
+    border-top: none;
+    background-color: @impac-widget-background-color;
+
+    vertical-align: top;
+    .box-shadow(0px 1px 8px -4px);
+    .short-widget();
+
+    .edit {
+      .edit-panel-style();
+    }
+
+    &.accessible {
+      height: auto !important;
+      min-height: 250px !important;
+      max-height: auto !important;
+    }
+
+    // Avoid content to leak out of widget's box
+    .content-template-wrapper {
+      height: 100%;
+      overflow: auto;
+      overflow-x: hidden;
+    }
+  }
+
+  &.pdf-mode .content {
+    height: 100% !important;
+    min-height: 250px !important;
+    max-height: none !important;
+    .collapse {
+      display: inherit;
+    }
+    .fa-plus-square-o:before {
+      content: "\f147";
+    }
+    .legend {
+      max-height: none !important;
+    }
+    .chart-container {
+      max-height: none;
+    }
+    .widget-lines-container {
+      max-height: none !important;
+    }
+    .data-not-found .message {
+      position: inherit;
+      width: 100%;
+    }
+  }
+}
+
+.widget-item.pdf-mode .include-to-pdf{
+  &.title {
+    position: absolute;
+    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
+    z-index: 3;
+    padding-right: 1px;
+    h6 {
+      padding: 10px;
+      background-color: #FFC928;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  &.tick {
+    i {
+      position: absolute;
+      top: 35%;
+      left: 46%;
+      font-size: 100px;
+      opacity: .5;
+      z-index: 2;
+      color: black;
+    }
+  }
+  .widget-hover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 9px;
+    top: 0;
+    right: 0;
+    -webkit-transition: all ease .5s;
+    -moz-transition: all ease .5s;
+    transition: all ease .5s;
+    z-index: 1;
+    &:hover {
+      opacity: .5;
+      background: #CCCFD0;
+    }
+  }
+}
+
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
+}
+
 .analytics kpis-bar > .kpis {
   position: relative;
   .actions {
@@ -2402,136 +2532,6 @@ dashboard-templates-selector {
 }
 
 .analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
-
-.widget-item {
-  transition: width 0.3s;
-  padding: @impac-padding-between-widgets;
-  &.pdf-mode {
-    width: 100%;
-    padding: ~"@{impac-padding-between-widgets} 0px";
-  }
-}
-
-.widget-item .top-line {
-  position: relative;
-  cursor: move;
-  background-color: @impac-widget-title-bg;
-  padding: 9px 9px 0px 12px;
-  border-radius: @impac-widget-title-border-radius;
-  border: @impac-widget-border;
-  border-bottom: none;
-  min-height: 41px;
-  .box-shadow(0px 1px 8px -4px);
-
-  display: flex;
-  flex-direction: row;
-
-  z-index: 4;
-}
-
-.widget-item {
-  .content {
-    position: relative;
-    padding: 9px;
-    border-radius: @impac-widget-content-border-radius;
-    border: @impac-widget-border;
-    border-top: none;
-    background-color: @impac-widget-background-color;
-
-    vertical-align: top;
-    .box-shadow(0px 1px 8px -4px);
-    .short-widget();
-
-    .edit {
-      .edit-panel-style();
-    }
-
-    &.accessible {
-      height: auto !important;
-      min-height: 250px !important;
-      max-height: auto !important;
-    }
-
-    // Avoid content to leak out of widget's box
-    .content-template-wrapper {
-      height: 100%;
-      overflow: auto;
-      overflow-x: hidden;
-    }
-  }
-
-  &.pdf-mode .content {
-    height: 100% !important;
-    min-height: 250px !important;
-    max-height: none !important;
-    .collapse {
-      display: inherit;
-    }
-    .fa-plus-square-o:before {
-      content: "\f147";
-    }
-    .legend {
-      max-height: none !important;
-    }
-    .chart-container {
-      max-height: none;
-    }
-    .widget-lines-container {
-      max-height: none !important;
-    }
-    .data-not-found .message {
-      position: inherit;
-      width: 100%;
-    }
-  }
-}
-
-.widget-item.pdf-mode .include-to-pdf{
-  &.title {
-    position: absolute;
-    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
-    z-index: 3;
-    padding-right: 1px;
-    h6 {
-      padding: 10px;
-      background-color: #FFC928;
-      text-align: center;
-      margin: 0;
-    }
-  }
-  &.tick {
-    i {
-      position: absolute;
-      top: 35%;
-      left: 46%;
-      font-size: 100px;
-      opacity: .5;
-      z-index: 2;
-      color: black;
-    }
-  }
-  .widget-hover {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 9px;
-    top: 0;
-    right: 0;
-    -webkit-transition: all ease .5s;
-    -moz-transition: all ease .5s;
-    transition: all ease .5s;
-    z-index: 1;
-    &:hover {
-      opacity: .5;
-      background: #CCCFD0;
-    }
-  }
-}
-
-// Fix overflow for large sums/text in .widget-lines-container tables
-.widget-item .widget-lines-container .widget-line > [class*='col-'] {
-  overflow-wrap: break-word;
-}
 
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
@@ -3381,6 +3381,29 @@ chart-threshold {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.hr-employee-details {
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    max-height: none;
+    @media (min-width: @screen-md-min) { max-height: 200px; }
+    .scrollable();
+  }
+  .right-panel {
+    .details-container {
+      @media (min-width: @screen-md-min) { max-height: 220px; }
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+}
+
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3412,29 +3435,18 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.hr-employee-details {
-  font-size: 12px;
-  .details-container {
-    padding: 0px;
-    max-height: none;
-    @media (min-width: @screen-md-min) { max-height: 200px; }
-    .scrollable();
-  }
-  .right-panel {
-    .details-container {
-      @media (min-width: @screen-md-min) { max-height: 220px; }
-    }
-    .legend {
-      margin-bottom: 5px;
-    }
-  }
-  .title {
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
     text-align: center;
-    margin-bottom: 10px;
-    font-size: 14px;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
   }
 }
-
 .analytics .widget-item .content.hr-employees-list {
   .legend {
     margin-bottom: 9px;
@@ -3449,18 +3461,6 @@ chart-threshold {
     .widget-lines-container {
       text-align: left;
     }
-  }
-}
-.analytics .widget-item .content.hr-leaves-balance{
-  .employee-name {
-    text-align: center;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 33px;
-    text-align: center;
   }
 }
 .analytics .widget-item .content.hr-leaves-schedule{
@@ -3483,6 +3483,9 @@ chart-threshold {
     color: @impac-widget-text-color;
   }
 }
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -3490,9 +3493,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.hr-payroll-taxes {
-  // Nothing special yet for this template
-}
 .analytics .widget-item {
   .content.hr-salaries-summary {
     .expandable-filterable-widget();
@@ -3565,9 +3565,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
 
@@ -3633,6 +3630,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -3687,10 +3687,6 @@ chart-threshold {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-leads-list {
@@ -3813,16 +3809,6 @@ chart-threshold {
   .funnel-widget();
 }
 
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-  	 max-height: 215px;
-    .widget-line.header {
-      .selectable();
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -3848,6 +3834,16 @@ chart-threshold {
     }
 
     .fa.fa-info-circle { float: left; }
+  }
+}
+
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+  	 max-height: 215px;
+    .widget-line.header {
+      .selectable();
+    }
   }
 }
 
@@ -3924,6 +3920,10 @@ chart-threshold {
     }
   }
 }
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -3971,6 +3971,22 @@ chart-threshold {
   .tooltip-inner { text-transform: none; }
 
   .dropdown-menu > li > div > table { outline: none; }
+}
+
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -4023,22 +4039,6 @@ chart-threshold {
       height: 0px;
     }
   }
-}
-
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
 }
 
 .analytics .settings.offsets {
@@ -4194,25 +4194,6 @@ chart-threshold {
     }
   }
 }
-.analytics .settings.time-period {
-  padding: 0px 5px;
-
-  select {
-    height: 22px;
-    width: 100%;
-  }
-  
-  & > .row {
-    margin: 0px -5px 7px -5px;
-    & > div {
-      padding: 0px 5px;
-      position: static;
-    }
-
-    .sub-setting { padding: 5px; }
-  }
-}
-
 .analytics .settings.tag-filter {
   padding: 0px 5px;
 
@@ -4246,6 +4227,25 @@ chart-threshold {
 
       .host { position: static; }
     }
+  }
+}
+
+.analytics .settings.time-period {
+  padding: 0px 5px;
+
+  select {
+    height: 22px;
+    width: 100%;
+  }
+  
+  & > .row {
+    margin: 0px -5px 7px -5px;
+    & > div {
+      padding: 0px 5px;
+      position: static;
+    }
+
+    .sub-setting { padding: 5px; }
   }
 }
 
