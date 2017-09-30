@@ -45,7 +45,13 @@ angular
       if _.isEmpty(@hc)
         @hc = Highcharts.stockChart(@id, chartConfig)
       else
+        # chart.update with series included in options is causing the column stacks order to
+        # be rendered in the incorrect order. Updating the series individually seems to fix this..
+        # TODO: Why is this happening? What's the best way to approach this?
+        delete chartConfig.series
         @hc.update(chartConfig)
+        _.each @data.series, (serie, i)=>
+          @hc.series[i].update(serie, false)
       return @
 
     template: ->
