@@ -34,7 +34,7 @@ module.directive('settingOffsets', ($templateCache, ImpacUtilities) ->
 
       setting.toMetadata = ->
         metadata = { offset: {} }
-        metadata.offset[scope.offsetsKey] = scope.offsets
+        metadata.offset[scope.offsetsKey] = scope.offsets unless _.isEmpty(scope.offsets)
         metadata
 
       scope.addOffset = ->
