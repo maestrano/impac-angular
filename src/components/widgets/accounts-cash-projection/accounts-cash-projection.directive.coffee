@@ -28,12 +28,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     label: 'Get alerted when the cash projection goes below'
   }
 
-  # Define metadata for overdue transactions ranges
-  w.metadata.ranges = [
-    { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
-    { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
-    { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
-  ]
+  settingsRanges = key: 'ranges'
+  settingsRanges.initialize = ->
+    angular.extend($scope.widget.metadata, this.toMetadata())
+  settingsRanges.toMetadata = ->
+    ranges: [
+      { name: '>60 days', to: moment().subtract(61,'d').format('YYYY-MM-DD') },
+      { name: '30-60 days', from: moment().subtract(60,'d').format('YYYY-MM-DD'), to: moment().subtract(30,'d').format('YYYY-MM-DD') },
+      { name: '<30 days', from: moment().subtract(29,'d').format('YYYY-MM-DD'), to: moment().format('YYYY-MM-DD') }
+    ]
+  # Apply metadata on-load
+  settingsRanges.initialize()
+  w.settings.push(settingsRanges)
   $scope.rangesDeferred.resolve()
 
   # Transactions List component
