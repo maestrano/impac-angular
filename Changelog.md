@@ -1,5 +1,20 @@
 # Impac! Frontend Changelog
 
+### v1.6.2 | 2017 - Week 39
+
+#### Fixes
+- Apply v1.5.8
+
+-------------------------------------------------------------
+
+### v1.5.8 | 2017 - Week 39
+
+#### Fixes
+- Change overflow attribute to auto for widget selector (IE11)
+- IMPAC-680: Fix Developer Toolkit HTTPS CORS by removing '.json' extension from auth paths
+
+-------------------------------------------------------------
+
 ### v1.6.1 | 2017 - Week 38
 
 #### Adds
@@ -176,7 +191,7 @@ dhbConfig: {
 - Template for Cash Projection widget
 - Component for chart-threshold setting
 - Attach threshold KPI to Cash Projection chart
-- Adds a HighchartsFactory for creating & updating highchart objects 
+- Adds a HighchartsFactory for creating & updating highchart objects
 
 #### Fixes
 - Settings Time Slider not displaying range period label
@@ -282,7 +297,7 @@ translateSettings: {
 
 -------------------------------------------------------------
 
-### v1.4.11 | 2017 - Week 17 
+### v1.4.11 | 2017 - Week 17
 
 #### Adds
 - Apply widget settings on custom calc modal proceed (save)
@@ -338,8 +353,8 @@ translateSettings: {
 ### v1.4.8 | Week 4
 
 #### Adds
-- [IMPAC-331] KPIs display layout labels and current value on first add 
-- [IMPAC-335] Alerts can have multiple recipients 
+- [IMPAC-331] KPIs display layout labels and current value on first add
+- [IMPAC-335] Alerts can have multiple recipients
 - [IMPAC-162] Add time period setting to Accounts Comparison
 - [IMPAC-466] Add time period setting to Custom Calculation
 - [IMPAC-467] Add time period setting to Accounts Classes Comparison

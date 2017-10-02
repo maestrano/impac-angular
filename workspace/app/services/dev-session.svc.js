@@ -8,9 +8,11 @@ angular.module('impacWorkspace').service('DevSession', function ($log, $http, $c
 
   // Create a session and xsrf token - ping mnoe api so we get a valid XSRF cookie.
   this.create = function () {
-    return $http.get(DevSettings.defaults().mnoeUrl.host + '/mnoe/auth/users/sign_in.json')
+    return $http.get(DevSettings.defaults().mnoeUrl.host + '/mnoe/auth/users/sign_in')
       .then(function() {
         _self.setCsrfHttpHeader();
+      }, function(err) {
+        $log.error('Failed to create xsrf token: ', err)
       });
   };
 
