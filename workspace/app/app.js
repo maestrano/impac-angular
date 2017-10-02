@@ -53,11 +53,11 @@ module.config(function (AuthProvider, DevSettingsProvider) {
   var mnoeHostUrl = DevSettingsProvider.$get().defaults().mnoeUrl.host;
   // Customize login
   AuthProvider.loginMethod('POST');
-  AuthProvider.loginPath(mnoeHostUrl + '/mnoe/auth/users/sign_in.json');
+  AuthProvider.loginPath(mnoeHostUrl + '/mnoe/auth/users/sign_in');
 
   // Customize logout
   AuthProvider.logoutMethod('DELETE');
-  AuthProvider.logoutPath(mnoeHostUrl + '/mnoe/auth/users/sign_out.json');
+  AuthProvider.logoutPath(mnoeHostUrl + '/mnoe/auth/users/sign_out');
 
   // Customize register
   AuthProvider.registerMethod('POST');

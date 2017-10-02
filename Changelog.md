@@ -4,6 +4,7 @@
 
 #### Fixes
 - Change overflow attribute to auto for widget selector (IE11)
+- IMPAC-680: Fix Developer Toolkit HTTPS CORS by removing '.json' extension from auth paths
 
 -------------------------------------------------------------
 
