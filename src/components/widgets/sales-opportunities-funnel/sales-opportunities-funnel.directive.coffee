@@ -137,6 +137,7 @@ module.controller('WidgetSalesOpportunitiesFunnelCtrl', ($scope, $q, ChartFormat
       sortedOppGroups = []
       angular.forEach $scope.assigneesOptions, (assigneeOption) ->
         assigneeId = assigneeOption.value
+        assigneeOption.label = "Not assigned" if assigneeOption.label.toLowerCase() == "unknown"
         sortedOppGroups.push(assigneeName: assigneeOption.label, opps: oppGroups[assigneeId]) if oppGroups[assigneeId]
 
       return sortedOppGroups
