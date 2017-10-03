@@ -16,7 +16,6 @@ angular
       _self.refreshAll(true)
     )
 
-
     # ====================================
     # Load and initialize
     # ====================================
@@ -25,7 +24,6 @@ angular
         $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()])
       else
         $q.resolve()
-
 
     isWidgetInCurrentDashboard = (widgetId) ->
       currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -94,7 +92,7 @@ angular
     # @returns Promise
     @massAssignAll = (metadata, refreshCache=false) ->
       return $q.reject('undefined metadata') if _.isEmpty(metadata)
-      
+
       _self.load().then(
         (_widget) ->
           currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -114,7 +112,6 @@ angular
               promises.push _self.update(widget, {metadata: newMetadata}, false) unless _.isEqual(widget.metadata, newMetadata)
 
             $q.all(promises).then( (results) -> _self.refreshAll(refreshCache) )
-
       )
 
     @isRefreshing = false
@@ -149,7 +146,6 @@ angular
     # ====================================
     # CRUD methods
     # ====================================
-
     initWidget = (widget) ->
       # Init
       widget.initContext() if angular.isDefined(widget.initContext)
@@ -183,7 +179,7 @@ angular
             # By default, widget is to be fetched from legacy Impac! API (v1)
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
             ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
-          
+
           url = [route, decodeURIComponent( $.param(params) )].join('?')
 
           authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
@@ -237,6 +233,8 @@ angular
           request.then(
             (success) ->
               newWidget = success.data
+              # :TODO: ADD LAYOUTS TO PERMITTED PARAMS IN MNOE/MNOHUB in lieu of:
+              newWidget.layouts = params.layouts if params.layouts
               dashboard.widgets.push(newWidget)
               ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
               $q.resolve(newWidget)
@@ -273,10 +271,10 @@ angular
               (success) ->
                 angular.extend widget, success.data
                 if needContentReload
-                  _self.show(widget) 
+                  _self.show(widget)
                 else
                   $q.resolve(widget)
-              
+
               (updateError) ->
                 $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
                 $q.reject(updateError)
