@@ -157,9 +157,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
-  $scope.chartThresholdOptions = {
-    label: 'Get alerted when the cash projection goes below'
-  }
 
   # == Sub-Components - Add Forecast Popup ========================================================
   $scope.addForecastPopup =

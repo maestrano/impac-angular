@@ -1,44 +1,52 @@
 chart-threshold {
-
   .attach-panel {
     padding: 5px 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
     background-color: rgba(20, 132, 228, 0.16);
 
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
+    & > div {
+      padding-right: 5px;
+
+      &.target { text-align: center; }
+    }
+
+    @media (max-width: @screen-md-max) {
+      flex-direction: column;
+      align-items: center;
+      > div {
+        padding: 5px;
       }
     }
 
-    .panel-text-label {
+    .text {
       text-transform: uppercase;
       font-weight: bold;
       color: @impac-widget-text-color;
       font-size: 13px;
     }
-    .panel-text-input {
+
+    input {
       border-radius: 3px;
       border: 1px white;
       padding: 3px;
     }
-    .panel-text-currency {
+
+    .currency {
       font-weight: bold;
       color: #000;
     }
-  }
 
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
+    .actions {
       display: inline-block;
-      &.loading {
-        padding: 3px 20px;
+      padding: 0 2px;
+      button {
+        padding: 3px 6px;
+        display: inline-block;
+        &.loading {
+          padding: 3px 20px;
+        }
       }
     }
   }
