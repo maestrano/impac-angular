@@ -1,0 +1,43 @@
+.analytics .widget-item .content.legal-signed-documents {
+  .tall-widget();
+
+  a {
+    font-weight: normal;
+    color: @mblue;
+  }
+
+  .widget-lines-container {
+    max-height: 530px;
+    .widget-line {
+      cursor: pointer;
+      &:hover {
+        background-color: #e6edee;
+      }
+    }
+
+    .fa.fa-check {
+      color: @impac-positive;
+    }
+    .fa.fa-times {
+      color: @impac-negative;
+    }
+    .fa.fa-question-circle {
+      color: @mblue;
+    }
+  }
+
+  .right-panel {
+    img.sample {
+      max-height: 490px;
+      -webkit-filter: blur(2px);
+    }
+    img.gdrive {
+      max-height: 25px;
+      margin-left: 5px;
+      margin-top: -3px;
+    }
+    .bottom {
+      margin-top: 20px;
+    }
+  }
+}
