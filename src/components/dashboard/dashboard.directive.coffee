@@ -280,6 +280,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
             return $translate.instant('impac.dashboard.category_name.hr_or_payroll')
           when 'sales'
             return $translate.instant('impac.dashboard.category_name.sales')
+          when 'legal'
+            'Legal'
           else
             return false
       else
@@ -296,6 +298,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
             return {top: '93px'}
           when 'sales'
             return {top: '123px'}
+          when 'legal'
+            return {top: '153px'}
           else
             return {top: '9999999px'}
       else

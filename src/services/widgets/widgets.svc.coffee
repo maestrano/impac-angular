@@ -229,10 +229,10 @@ angular
           dashboard = ImpacDashboardsSvc.getCurrentDashboard()
 
           # form a http request or a stubbed request which returns a promise.
-          if ImpacDeveloper.isWidgetStubbed(params)
-            request = ImpacDeveloper.createWidgetStub(params, dashboard)
-          else
-            request = $http.post(ImpacRoutes.widgets.create(dashboard.id), params)
+          # if ImpacDeveloper.isWidgetStubbed(params)
+          #   request = ImpacDeveloper.createWidgetStub(params, dashboard)
+          # else
+          request = $http.post(ImpacRoutes.widgets.create(dashboard.id), params)
 
           request.then(
             (success) ->

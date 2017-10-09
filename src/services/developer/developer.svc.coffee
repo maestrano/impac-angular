@@ -16,7 +16,29 @@ angular
       # enables this service across impac-angular.
       status: false
       # ability to add stubbed widget templates to api response for developer widget creation.
-      widgetsTemplates: []
+      widgetsTemplates: [
+        {
+          endpoint: 'legal/news_feed',
+          name: 'News feed',
+          desc: 'Google news related to recent legal events',
+          icon: 'list',
+          width: 6
+        },
+        {
+          endpoint: 'legal/invoiced_hours',
+          name: 'Invoiced hours',
+          desc: 'Number of hours invoiced over a given time period',
+          icon: 'pie-chart',
+          width: 6
+        },
+        {
+          endpoint: 'legal/signed_documents',
+          name: 'Signed documents',
+          desc: 'Access the list of documents recently signed or requested',
+          icon: 'list',
+          width: 12
+        }
+      ]
     }
 
     #=======================================
