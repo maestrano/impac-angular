@@ -39,6 +39,7 @@ module.controller('WidgetLegalNewsFeedCtrl', ($scope, $q, $http, $timeout, Impac
       {
         limit: 10
         dateFormat: 'DD/MM/YYYY'
+        ssl: true
         entryTemplate: '
           <div class="row entry">
             <div class="col-xs-4 text-center">
