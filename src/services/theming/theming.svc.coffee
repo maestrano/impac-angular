@@ -126,6 +126,14 @@ angular
         tagging:
           enabled: false
 
+      # date-formatter settings for widgets
+      dateFormatterSettings:
+        'hr/employee_details': "MM-DD-YYYY"
+        'sales/summary': "YYYY/MM/DD"
+
+        'dates-picker': "DD-MM-YYYY"
+        'time-period': "MM_DD_YYYY"
+
 
     #=======================================
     # Public methods available in config

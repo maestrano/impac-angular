@@ -153,6 +153,7 @@ angular.module('impac.services',
     'impac.services.theming',
     'impac.services.assets',
     'impac.services.chart-formatter',
+    'impac.services.date-formatter',
     'impac.services.highcharts-factory',
     'impac.services.message-bus',
     'impac.services.utilities',
@@ -178,6 +179,7 @@ angular.module('impac.filters',
     'impac.filters.titleize',
     'impac.filters.truncate',
     'impac.filters.mno-currency',
-    'impac.filters.mno-date'
+    'impac.filters.mno-date',
+    'impac.filters.moment-date'
   ]
 );

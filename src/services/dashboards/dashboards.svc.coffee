@@ -1,11 +1,13 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities, ImpacDateFormatter) ->
     #====================================
     # Initialization and getters
     #====================================
 
     _self = @
+    _ = window._
+    moment = window.moment
     @config = {}
 
     @config.dashboards = []
@@ -110,12 +112,20 @@ angular
               orgId = success.currentOrganization.id
 
               # Retrieve dashboards with widgets and kpis settings
-              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
-                (response) ->
-                  _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
-                (error) ->
-                  $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
-              )
+              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId))
+                .then(
+                  (success) ->
+                    success.data.forEach (o) ->
+                      o.widgets.forEach (widget) ->
+                        ImpacDateFormatter.formatDateString widget, widget.endpoint
+                    return success
+                )
+                .then(
+                  (response) ->
+                    _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
+                  (error) ->
+                    $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
+                )
 
               widgetsTemplatesPromise = fetchWidgetsTemplates()
 
@@ -157,6 +167,8 @@ angular
       widgetsTemplatesPromises.push $http.get(widgetsTemplatesUrl()).then(
         (response) ->
           for widgetTemplate in response.data.widgets
+            if _.get(widgetTemplate, 'metadata.hist_parameters.from') && _.get(widgetTemplate, 'metadata.hist_parameters.to')
+              widgetTemplate.metadata.hist_parameters.from = moment(widgetTemplate.metadata.hist_parameters).format('DD-MM-YYYY');
             widgetsTemplates.push(widgetTemplate)
         (error) ->
           $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", widgetsTemplatesUrl())

@@ -2673,9 +2673,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 .analytics .dashboard-settings.sync-apps {
   .show-status {
     margin-right: 5px;
@@ -2780,6 +2777,220 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+.analytics .dashboard-settings.pdf-mode {
+}
+
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+      &.loading {
+        padding: 3px 20px;
+      }
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -2912,6 +3123,18 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
 .analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
 
@@ -2976,18 +3199,6 @@ dashboard-templates-selector {
 
   transactions-list {
     font-size: 12px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
   }
 }
 
@@ -3141,20 +3352,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3170,6 +3367,20 @@ dashboard-templates-selector {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3252,6 +3463,13 @@ dashboard-templates-selector {
     text-align: center;
   }
 }
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 145px;
+  }
+}
+
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3272,13 +3490,6 @@ dashboard-templates-selector {
     color: @impac-widget-text-color;
   }
 }
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 145px;
-  }
-}
-
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -3365,6 +3576,19 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3409,19 +3633,6 @@ dashboard-templates-selector {
     }
   }
 }
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .widget-lines-container {
-    max-height: 530px;
-  }
-  .right-panel .widget-lines-container {
-    max-height: 250px;
-  }
-  .currency-conversions {
-    img { margin-top: -2px; }
-  }
-}
-
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -3640,12 +3851,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
-  }
-}
 .analytics .widget-item .content.sales-top-customers {
   .selector {
     border-bottom: dashed 1px #E6E6E6;
@@ -3665,6 +3870,12 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -3713,217 +3924,6 @@ dashboard-templates-selector {
     }
   }
 }
-chart-threshold {
-
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
-      }
-    }
-
-    .panel-text-label {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-    .panel-text-input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-    }
-    .panel-text-currency {
-      font-weight: bold;
-      color: #000;
-    }
-  }
-
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
-      display: inline-block;
-      &.loading {
-        padding: 3px 20px;
-      }
-    }
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -4177,6 +4177,22 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+  }
+}
+
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 
@@ -4234,22 +4250,6 @@ chart-threshold {
         background-color: lighten(@impac-widget-param-selector-color,5%);
       }
     }
-  }
-}
-
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    margin: 0;
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-  label {
-    display: flex;
-    justify-content: center;
-    line-height: 14px;
   }
 }
 
