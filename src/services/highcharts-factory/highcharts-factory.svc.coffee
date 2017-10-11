@@ -9,6 +9,8 @@ angular
           type: 'line'
           zoomType: 'x'
           spacingTop: 20
+          events:
+            click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
         title: null
         credits:
           enabled: false
@@ -133,5 +135,5 @@ angular
           series:
             events: eventHash
       })
-      return @hc
+      @hc
 )

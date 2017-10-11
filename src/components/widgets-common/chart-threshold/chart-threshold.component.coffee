@@ -121,7 +121,7 @@ module.component('chartThreshold', {
     onChartNotify = (chart)->
       ctrl.chart = chart
       return unless validateHistParameters()
-      Highcharts.addEvent(chart.hc.container, 'click', onChartClick)
+      ctrl.chart.options.chartOnClickCallbacks.push(onChartClick)
       _.each buildThresholdsFromKpis(), (threshold)->
         thresholdSerie = ctrl.chart.findThreshold(threshold.kpiId)
         thresholdSerie = ctrl.chart.addThreshold(threshold) unless thresholdSerie?
@@ -129,12 +129,7 @@ module.component('chartThreshold', {
       return
 
     onChartClick = (event)->
-      # Check whether click event fired is from the 'reset zoom' button
-      return if event.srcElement.textContent == 'Reset zoom'
-      # Guard for tooltips / other chart areas that don't return a yAxis value
-      return unless event.yAxis && event.yAxis[0]
-      value = event.yAxis[0].value
-      # Guard for click events fired outside of the yAxis values range
+      value = event.yAxis && event.yAxis[0] && event.yAxis[0].value
       if !value || _.isNaN(value) then return else value = value.toFixed(2)
       ctrl.createKpi(value)
 
