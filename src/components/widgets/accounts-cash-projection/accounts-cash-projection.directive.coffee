@@ -27,13 +27,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   }
 
   # Transactions List component
-  $scope.trxList = { display: false }
+  $scope.trxList = { display: false, updated: false }
 
   $scope.trxList.show = ->
     $scope.trxList.display = true
 
   $scope.trxList.hide = ->
-    ImpacWidgetsSvc.show(w).then(-> $scope.trxList.display = false)
+    $scope.trxList.display = false
+    if $scope.trxList.updated
+      ImpacWidgetsSvc.show(w).then(-> $scope.trxList.updated = false)
 
   $scope.trxList.fetch = (currentPage = 1) ->
     params = angular.merge(
@@ -59,7 +61,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       $scope.trxList.resources,
       trxId,
       { expected_payment_date: moment.utc(date).format('YYYY-MM-DD') }
-    )
+    ).then(-> $scope.trxList.updated = true)
 
   # Widget specific methods
   # --------------------------------------
