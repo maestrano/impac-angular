@@ -52,13 +52,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
         $scope.trxList.totalRecords = response.data.meta.record_count
     )
 
-  # Timestamps stored in the back-end are in UTC => the new date must be converted in UTC too
+  # JS date is in local time zone => format it to send a UTC date at 00:00:00
   $scope.trxList.updateExpectedDate = (trxId, date) ->
     BoltResources.update(
       w.metadata.bolt_path,
       $scope.trxList.resources,
       trxId,
-      { expected_payment_date: moment.utc(date) }
+      { expected_payment_date: moment.utc(date).format('YYYY-MM-DD') }
     )
 
   # Widget specific methods

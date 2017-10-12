@@ -1,7 +1,7 @@
 angular
 .module('impac.services.highcharts-factory', [])
 .factory('HighchartsFactory', ($filter)->
-  
+
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
