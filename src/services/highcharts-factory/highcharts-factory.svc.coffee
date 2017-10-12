@@ -1,7 +1,7 @@
 angular
 .module('impac.services.highcharts-factory', [])
 .factory('HighchartsFactory', ($filter)->
-
+  
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
@@ -58,7 +58,7 @@ angular
       xAxis:
         labels:
           formatter: ->
-            moment.unix(this.value / 1000).format('Do MMM YYYY')
+            moment(this.value).format('Do MMM YYYY')
       yAxis:
         labels:
           formatter: ->
@@ -66,11 +66,11 @@ angular
       tooltip:
         shared: false
         formatter: ->
-          date = moment.unix(this.x / 1000).format('Do MMM YYYY')
+          date = moment(this.x).format('Do MMM YYYY')
           amount = $filter('mnoCurrency')(this.y, currency, false)
           name = this.series.name
           # If point is in the past, "My Projected Stuff" => "My Stuff"
-          if moment.unix(this.x / 1000) < moment.utc().startOf('day')
+          if moment(this.x) < moment().startOf('day')
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
@@ -95,7 +95,7 @@ angular
       data = angular.copy @data.series[0].data
       for vector in data
         # When in the past, set y-axis value at null
-        if !thresholdOptions.fullLengthThresholds && moment.unix(vector[0] / 1000) < moment.utc().startOf('day')
+        if !thresholdOptions.fullLengthThresholds && moment(vector[0]) < moment().startOf('day')
           vector[1] = null
         # When in the future, set y-axis value at thresholdOptions.value
         else

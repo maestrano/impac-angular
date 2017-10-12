@@ -5,6 +5,7 @@ module.component('transactionsList', {
   bindings:
     onHide: '&'
     onPageChanged: '&'
+    onUpdateExpectedDate: '&'
     transactions: '<'
     totalDue: '<'
     currency: '<'
@@ -14,6 +15,13 @@ module.component('transactionsList', {
 
     ctrl.$onInit = ->
       ctrl.currentPage = 1
+
+      for trx in ctrl.transactions
+        trx.datePicker =
+          opened: false
+          date: moment(trx.expected_payment_date).toDate()
+          toggle: ->
+            this.opened = !this.opened
 
     return ctrl
 })
