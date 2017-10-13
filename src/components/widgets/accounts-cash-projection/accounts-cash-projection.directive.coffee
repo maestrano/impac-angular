@@ -133,6 +133,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
     imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
+  onZoom = (event) ->
+    metadataHash = angular.merge w.metadata, {
+      xAxis:
+        max: event.max
+        min: event.min
+    }
+    ImpacWidgetsSvc.update(w, { metadata: metadataHash }, false)
+
   w.format = ->
     # Chart basic options
     options =
@@ -141,6 +149,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       currency: w.metadata.currency
       showToday: true
       showLegend: true
+      withZooming:
+        defaults: w.metadata.xAxis
+        callback: onZoom
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
     $scope.chart.render(w.content.chart, options)

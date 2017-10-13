@@ -5,6 +5,15 @@ angular
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
+        zoomingOptions = _.get(options, 'withZooming')
+        xAxisOptions = if zoomingOptions?
+          {
+            events:
+              setExtremes: zoomingOptions.callback
+            max: _.get(zoomingOptions.defaults, 'max')
+            min: _.get(zoomingOptions.defaults, 'min')
+          }
+
         chart:
           type: 'line'
           zoomType: 'x'
@@ -19,6 +28,7 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
+        xAxis: xAxisOptions
         yAxis:
           title: null
           startOnTick: true
@@ -33,7 +43,7 @@ angular
             { type: 'year', count: 1, text: '1y' },
             { type: 'all', text: 'All' }
           ]
-          selected: 0
+          selected: (if _.get(xAxisOptions, 'min') then null else 0)
 
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
 
