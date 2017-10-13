@@ -29,6 +29,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Transactions List component
   $scope.trxList = { display: false, updated: false }
 
+  todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
+
   $scope.trxList.show = ->
     $scope.trxList.display = true
 
@@ -60,7 +62,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
       w.metadata.bolt_path,
       $scope.trxList.resources,
       trxId,
-      { expected_payment_date: moment.utc(date).format('YYYY-MM-DD') }
+      { expected_payment_date: moment(date).format('YYYY-MM-DD') }
     ).then(-> $scope.trxList.updated = true)
 
   # Widget specific methods
@@ -70,8 +72,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     $scope.isDataFound = w.content?
 
     # Offset will be applied to all intervals after today
-    todayInterval = _.findIndex w.content.chart.series[0].data, (vector) ->
-      vector[0] >= moment.now()
+    todayInterval = _.findIndex w.content.chart.series[0].data, (dataMat) ->
+      dataMat[0] >= todayUTC
     $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
 
     projectedSerie = _.find w.content.chart.series, (serie) ->
@@ -102,7 +104,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
   # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
   dateFilter = (timestamp) ->
     pickedDate = moment.utc(timestamp)
-    if pickedDate <= moment() then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
+    if pickedDate <= todayUTC then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
 
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->

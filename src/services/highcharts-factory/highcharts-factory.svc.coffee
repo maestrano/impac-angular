@@ -35,6 +35,8 @@ angular
           ]
           selected: 0
 
+  todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
+
   class Chart
     constructor: (@id, @data = {}, @options = {})->
       @_template = templates[@options.chartType]
@@ -58,7 +60,7 @@ angular
       xAxis:
         labels:
           formatter: ->
-            moment(this.value).format('Do MMM YYYY')
+            moment.utc(this.value).format('Do MMM YYYY')
       yAxis:
         labels:
           formatter: ->
@@ -66,11 +68,11 @@ angular
       tooltip:
         shared: false
         formatter: ->
-          date = moment(this.x).format('Do MMM YYYY')
+          date = moment.utc(this.x).format('Do MMM YYYY')
           amount = $filter('mnoCurrency')(this.y, currency, false)
           name = this.series.name
           # If point is in the past, "My Projected Stuff" => "My Stuff"
-          if moment(this.x) < moment().startOf('day')
+          if moment(this.x) < todayUTC
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
@@ -79,7 +81,7 @@ angular
       xAxis:
         plotLines: [{
           color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
-          value: moment.utc().startOf('day').unix() * 1000
+          value: todayUTC.unix() * 1000
           width: 1
           label:
             text: null
@@ -95,7 +97,7 @@ angular
       data = angular.copy @data.series[0].data
       for vector in data
         # When in the past, set y-axis value at null
-        if !thresholdOptions.fullLengthThresholds && moment(vector[0]) < moment().startOf('day')
+        if !thresholdOptions.fullLengthThresholds && moment(vector[0]) < todayUTC
           vector[1] = null
         # When in the future, set y-axis value at thresholdOptions.value
         else
