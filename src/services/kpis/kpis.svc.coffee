@@ -239,7 +239,11 @@ angular
       kpi.isLoading = true
       _self.load().then(
         ->
-          params = opts: refresh_cache: refreshCache
+          kpi.settings.utc_offset ||= moment().utcOffset()
+          
+          params =
+            opts:
+              refresh_cache: refreshCache
 
           params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?

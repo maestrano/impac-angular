@@ -170,6 +170,7 @@ angular
       widget.isLoading = true
       _self.load().then(
         (loaded) ->
+          widget.metadata.utc_offset ||= moment().utcOffset()
           demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
           params =
             metadata: widget.metadata
