@@ -170,10 +170,12 @@ angular
       widget.isLoading = true
       _self.load().then(
         (loaded) ->
-          widget.metadata.utc_offset ||= moment().utcOffset()
+          metadata = angular.copy(widget.metadata)
+          metadata.utcOffset ||= moment().utcOffset()
+
           demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
           params =
-            metadata: widget.metadata
+            metadata: metadata
             demo_data: demoData
           params.refresh_cache = true if refreshCache
 

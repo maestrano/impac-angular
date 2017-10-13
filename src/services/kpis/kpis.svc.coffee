@@ -239,7 +239,8 @@ angular
       kpi.isLoading = true
       _self.load().then(
         ->
-          kpi.settings.utc_offset ||= moment().utcOffset()
+          settings = angular.copy(kpi.settings) || {}
+          settings.utc_offset ||= moment().utcOffset()
           
           params =
             opts:
@@ -247,7 +248,7 @@ angular
 
           params.sso_session = _self.getSsoSessionId() if _self.getSsoSessionId()
           params.targets = kpi.targets if kpi.targets?
-          params.metadata = kpi.settings if kpi.settings?
+          params.metadata = settings
           params.extra_params = kpi.extra_params if kpi.extra_params?
           params.extra_watchables = kpi.extra_watchables if kpi.extra_watchables?
 
