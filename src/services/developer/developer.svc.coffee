@@ -37,6 +37,13 @@ angular
           desc: 'Access the list of documents recently signed or requested',
           icon: 'list',
           width: 12
+        },
+        {
+          endpoint: 'legal/billeable_per_employee',
+          name: 'Billeable per employee',
+          desc: 'Show total billed per employee with customers details',
+          icon: 'list',
+          width: 12
         }
       ]
     }
