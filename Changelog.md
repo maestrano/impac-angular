@@ -3,6 +3,7 @@
 ### v1.6.3 | 2017 - Week 42
 
 #### Adds
+- [IMPAC-614] Add editable expected payment date to transactions list
 - [IMPAC-684] Handle timezones
 - Save user zooming options as a metadata
 
