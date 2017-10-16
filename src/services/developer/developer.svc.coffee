@@ -44,6 +44,13 @@ angular
           desc: 'Show total billed per employee with customers details',
           icon: 'list',
           width: 12
+        },
+        {
+          endpoint: 'legal/billeable_per_customer',
+          name: 'Billeable per customer',
+          desc: 'Show total billed per customer with employees details',
+          icon: 'list',
+          width: 12
         }
       ]
     }

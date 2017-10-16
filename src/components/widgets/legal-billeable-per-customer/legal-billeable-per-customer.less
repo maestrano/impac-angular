@@ -1,0 +1,49 @@
+.analytics .widget-item .content.legal-billeable-per-customer {
+  .tall-widget();
+
+  font-size: 12px;
+
+  .right-panel {
+    p {
+      font-size: 14px;
+    }
+
+    .price {
+      margin-top: 5px;
+      text-align: left;
+    }
+
+    .period-container {
+      margin-bottom: 15px;
+      select {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .table {
+    tr.header {
+      th {
+        color: #9ba6a7;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+    }
+
+    tr.entry {
+      color: #626d6d;
+
+      &.clickable {
+        cursor: pointer;
+        &:hover {
+          background-color: #f9f9f9;
+        }
+        &.selected {
+          background-color: aliceblue;
+          border-bottom: solid 2px @mblue;
+          color: @mblue;
+        }
+      }
+    }
+  }
+}
