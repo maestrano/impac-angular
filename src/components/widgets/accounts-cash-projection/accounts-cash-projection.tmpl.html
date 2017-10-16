@@ -15,7 +15,7 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Transactions list -->
-    <transactions-list ng-show="trxList.display" on-hide="trxList.hide()" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-page-changed="trxList.fetch(page)"></transactions-list>
+    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)"></transactions-list>
 
     <!-- Chart -->
     <div ng-hide="trxList.display">
