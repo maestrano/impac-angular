@@ -14,6 +14,7 @@
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
+        <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
         <th>Rate</th>
@@ -22,8 +23,11 @@
         <td>{{ trx.transaction_number }}</td>
         <td>{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
-        <td>{{ trx.transaction_date | date : shortdate }}</td>
-        <td>{{ trx.due_date | date : shortdate }}</td>
+        <td>{{ trx.trxDateUTC }}</td>
+        <td>{{ trx.dueDateUTC }}</td>
+        <td>
+          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.onUpdateExpectedDate({trxId: trx.id, date: trx.datePicker.date})" />
+        </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
         <td>{{ trx.currency_rate }}</td>
