@@ -37,7 +37,7 @@
     <!-- <span ng-if="connector.formatted_date"> - Synced at {{connector.formatted_date}}</span> -->
   </div>
   <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
-    <p>{{'impac.components.sync_apps.all' | translate}} {{realtimeSyncing ? '' : 'other'}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
+    <p>{{realtimeSyncing ? 'impac.components.sync_apps.all_applications_are_synced' : 'impac.components.sync_apps.all_other_applications_are_synced' | translate }}</p>
   </div>
 </script>
 
