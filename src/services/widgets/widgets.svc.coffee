@@ -171,7 +171,7 @@ angular
       _self.load().then(
         (loaded) ->
           metadata = angular.copy(widget.metadata)
-          metadata.utcOffset ||= moment().utcOffset()
+          metadata.utc_offset ||= moment().utcOffset()
 
           demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
           params =
