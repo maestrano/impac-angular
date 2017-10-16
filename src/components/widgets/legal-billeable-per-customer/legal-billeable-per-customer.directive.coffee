@@ -16,6 +16,7 @@ module.controller('WidgetLegalBilleablePerCustomerCtrl', ($scope, $q) ->
 
   BILLED_MIN = 1000
   BILLED_MAX = 5000
+
   EMPLOYEES_MIN = 1
   EMPLOYEES_MAX = 4
   EMPLOYEES = [
@@ -29,6 +30,16 @@ module.controller('WidgetLegalBilleablePerCustomerCtrl', ($scope, $q) ->
     { firstname: 'Marcelle', lastname: 'Paget', title: 'Clerc' },
     { firstname: 'Rodolphe', lastname: 'Hebert', title: 'Clerc' },
     { firstname: 'Philomene', lastname: 'Abraham', title: 'Clerc' }
+  ]
+
+  SUPPLIERS_MIN = 0
+  SUPPLIERS_MAX = 2
+  SUPPLIERS = [
+    { name: 'Mark & Johnson' },
+    { name: 'Roberts Associates' },
+    { name: 'CPG Private Consulting' },
+    { name: 'Euro Lawyers - Intl. Right' },
+    { name: 'Craig Daniels Corporate' }
   ]
 
   $scope.customers =
@@ -86,7 +97,7 @@ module.controller('WidgetLegalBilleablePerCustomerCtrl', ($scope, $q) ->
     base * weight1 * weight2
 
   generateEmployees = ->
-    nbEmployees = Math.random() * (EMPLOYEES_MAX - EMPLOYEES_MIN) + EMPLOYEES_MIN
+    nbEmployees = Math.round(Math.random() * (EMPLOYEES_MAX - EMPLOYEES_MIN) + EMPLOYEES_MIN)
     employeesBase = _.slice(_.shuffle(EMPLOYEES), 0, nbEmployees)
     _.map(employeesBase, (e) ->
       employee = angular.copy(e)
@@ -99,18 +110,33 @@ module.controller('WidgetLegalBilleablePerCustomerCtrl', ($scope, $q) ->
       })
     )
 
-  calculateTotals = (employees) ->
+  generateSuppliers = ->
+    nbSuppliers = Math.round(Math.random() * (SUPPLIERS_MAX - SUPPLIERS_MIN) + SUPPLIERS_MIN)
+    suppliersBase = _.slice(_.shuffle(SUPPLIERS), 0, nbSuppliers)
+    _.map(suppliersBase, (s) ->
+      supplier = angular.copy(s)
+      baseBilled = Math.random() * (BILLED_MAX - BILLED_MIN) + BILLED_MIN
+      angular.merge(supplier, {
+        billed:
+          MONTHLY: weightedBilled(baseBilled, 'Clerc', 'MONTHLY')
+          QUARTERLY: weightedBilled(baseBilled, 'Clerc', 'QUARTERLY')
+          YEARLY: weightedBilled(baseBilled, 'Clerc', 'YEARLY')
+      })
+    )
+
+  calculateTotals = (employees, suppliers) ->
     {
-      MONTHLY: _.sum(employees, (e) -> e.billed['MONTHLY'])
-      QUARTERLY: _.sum(employees, (e) -> e.billed['QUARTERLY'])
-      YEARLY: _.sum(employees, (e) -> e.billed['YEARLY'])
+      MONTHLY: _.sum(employees, (e) -> e.billed['MONTHLY']) + _.sum(suppliers, (s) -> s.billed['MONTHLY'])
+      QUARTERLY: _.sum(employees, (e) -> e.billed['QUARTERLY']) + _.sum(suppliers, (s) -> s.billed['QUARTERLY'])
+      YEARLY: _.sum(employees, (e) -> e.billed['YEARLY']) + _.sum(suppliers, (s) -> s.billed['YEARLY'])
     }
 
   # Generate list of employees for each customer
   prepareEmployees = (customers) ->
     for customer in customers
       customer.employees = generateEmployees()
-      customer.billed = calculateTotals(customer.employees)
+      customer.suppliers = generateSuppliers()
+      customer.billed = calculateTotals(customer.employees, customer.suppliers)
 
   $scope.toggleCustomer = (customer) ->
     for c in $scope.customers.list

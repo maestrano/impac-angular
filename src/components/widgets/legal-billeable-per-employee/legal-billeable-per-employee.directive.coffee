@@ -86,7 +86,7 @@ module.controller('WidgetLegalBilleablePerEmployeeCtrl', ($scope,$q,ChartFormatt
     base * weight1 * weight2
 
   generateCustomers = (title) ->
-    nbCustomers = Math.random() * (CUSTOMERS_MAX - CUSTOMERS_MIN) + CUSTOMERS_MIN
+    nbCustomers = Math.round(Math.random() * (CUSTOMERS_MAX - CUSTOMERS_MIN) + CUSTOMERS_MIN)
     customersBase = _.slice(_.shuffle(CUSTOMERS), 0, nbCustomers)
     _.map(customersBase, (c) ->
       customer = angular.copy(c)

@@ -58,6 +58,19 @@
               </tr>
             </table>
           </div>
+
+          <div class="table-container" ng-show="customers.selected.suppliers.length > 0">
+            <table class="table">
+              <tr class="header">
+                <th>Disbursments and charges</th>
+                <th class="text-right">Total billed</th>
+              </tr>
+              <tr ng-repeat="supplier in customers.selected.suppliers" class="entry">
+                <td>{{ supplier.name }}</td>
+                <td class="text-right">{{ supplier.billed[periods.selected] | mnoCurrency : widget.metadata.currency }}</td>
+              </tr>
+            </table>
+          </div>
         </div>
 
         <div ng-hide="customers.selected" class="text-center">
