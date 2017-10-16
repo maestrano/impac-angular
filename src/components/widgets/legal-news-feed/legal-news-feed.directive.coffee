@@ -9,6 +9,14 @@ module.controller('WidgetLegalNewsFeedCtrl', ($scope, $q, $http, $timeout, Impac
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
+
+  settingsPromises = [
+    $scope.orgDeferred.promise
+  ]
+
+  $scope.loaderUrl = "#{ImpacAssets.get('defaultImagesPath')}/double-ring-loader.gif"
+  $scope.rssId = "rss-feeds-#{w.id}"
+
   $scope.keywords = {
     tags: []
     init: ->
@@ -18,14 +26,24 @@ module.controller('WidgetLegalNewsFeedCtrl', ($scope, $q, $http, $timeout, Impac
       tags = _.map this.tags, (t) -> t.text
       tags.join('%20')
   }
-  $scope.loaderUrl = "#{ImpacAssets.get('defaultImagesPath')}/double-ring-loader.gif"
-  $scope.rssId = "rss-feeds-#{w.id}"
 
-  settingsPromises = [
-    $scope.orgDeferred.promise
-  ]
+  $scope.sources =
+    list: [
+      { value: 'google', label: 'Google News', url: 'https://news.google.com/news/rss/headlines/section/q' },
+      { value: 'village-justice', label: 'Village justice', url: 'https://www.village-justice.com/articles/spip.php?page=backend' },
+      { value: 'legavox', label: 'Legavox', url: 'http://www.legavox.fr/rss/article/flux-article-juridique.xml' },
+      { value: 'editions-legislatives', label: 'Editions legislatives', url: 'http://www.editions-legislatives.fr/rss/rss05.xml' }
+      { value: 'assemblee-nationale', label: 'Assemblee nationale', url: 'http://www2.assemblee-nationale.fr/feeds/detail/documents-parlementaires' }
+    ]
+    init: ->
+      this.selected = w.metadata.source || 'google'
 
-  BASE_URL = 'https://news.google.com/news/rss/headlines/section/q'
+  buildUrl = ->
+    url = _.find($scope.sources.list, (s) -> s.value == $scope.sources.selected).url
+    if $scope.sources.selected == 'google'
+      "#{url}/#{$scope.keywords.format()}/Legal?ned=fr&hl=fr"
+    else
+      url
 
   loadRss = ->
     $scope.loading = true
@@ -33,7 +51,7 @@ module.controller('WidgetLegalNewsFeedCtrl', ($scope, $q, $http, $timeout, Impac
     rssElem = $("##{$scope.rssId}")
     rssElem.empty()
 
-    rssUrl = "#{BASE_URL}/#{$scope.keywords.format()}/Legal?ned=fr&hl=fr"
+    rssUrl = buildUrl()
     rssElem.rss(
       rssUrl,
       {
@@ -56,14 +74,18 @@ module.controller('WidgetLegalNewsFeedCtrl', ($scope, $q, $http, $timeout, Impac
       -> $timeout(-> $scope.loading = false)
     )
 
-  $scope.reload = (tag) ->
+  $scope.reload = ->
     loadRss()
-    ImpacWidgetsSvc.update(w, metadata: { keywords: $scope.keywords.tags }, false)
+    meta =
+      keywords: $scope.keywords.tags
+      source: $scope.sources.selected
+    ImpacWidgetsSvc.update(w, metadata: meta, false)
 
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
     $scope.keywords.init()
+    $scope.sources.init()
     loadRss()
     $scope.isDataFound = true
 

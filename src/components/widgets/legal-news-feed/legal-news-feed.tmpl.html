@@ -12,7 +12,8 @@
   </div>
 
   <div ng-hide="widget.isEditMode">
-    <tags-input ng-model="keywords.tags" replace-spaces-with-dashes="false" add-from-autocomplete-only="false" on-tag-removed="reload()" on-tag-added="reload()">
+    <select ng-model="sources.selected" ng-options="source.value as source.label for source in sources.list" ng-change="reload()" />
+    <tags-input ng-model="keywords.tags" replace-spaces-with-dashes="false" add-from-autocomplete-only="false" on-tag-removed="reload()" on-tag-added="reload()" ng-show="sources.selected == 'google'">
     </tags-input>
     <div id="{{rssId}}" ng-hide="loading"></div>
     <img class="ring-loader" src="{{loaderUrl}}" ng-show="loading" />
