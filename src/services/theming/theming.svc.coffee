@@ -129,9 +129,13 @@ angular
       # date-formatter settings for widgets
       dateFormatterSettings:
         'hr/employee_details': "MM-DD-YYYY"
+        'hr/timesheets': "DD=MM=YYYY"
+        'invoices/aged_payables_receivables': "DD=MM=YYYY"
+        'accounts/profit_and_loss': "DD*MM*YYYY"
         'sales/summary': "YYYY/MM/DD"
 
-        'dates-picker': "DD-MM-YYYY"
+        # common components
+        'dates-picker': "DD/MM/YYYY"
         'time-period': "MM_DD_YYYY"
 
 

@@ -241,17 +241,23 @@ angular
           else
             request = $http.post(ImpacRoutes.widgets.create(dashboard.id), params)
 
-          request.then(
-            (success) ->
-              newWidget = success.data
-              dashboard.widgets.push(newWidget)
-              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
-              $q.resolve(newWidget)
+          request
+            .then(
+              (success) ->
+                ImpacDateFormatter.formatDateString success.data, success.data.endpoint
+                return success
+            )
+            .then(
+              (success) ->
+                newWidget = success.data
+                dashboard.widgets.push(newWidget)
+                ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
+                $q.resolve(newWidget)
 
-            (createError) ->
-              $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
-              $q.reject(createError)
-          )
+              (createError) ->
+                $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
+                $q.reject(createError)
+            )
 
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")

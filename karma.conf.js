@@ -38,6 +38,8 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/angular-poller/angular-poller.min.js',
       'bower_components/moment/moment.js',
+      'bower_components/moment/locale/en-au.js',
+      'bower_components/moment/locale/zh-hk.js',
       'bower_components/pusher/dist/web/pusher.js',
       'bower_components/angular-translate/angular-translate.js',
       'bower_components/messageformat/messageformat.js',

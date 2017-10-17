@@ -26,7 +26,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       setting = {}
       setting.key = "dates-picker"
 
-      if scope.parentWidget
+      if scope.parentWidget && scope.parentWidget.endpoint
         scope.dateFormat = ImpacDateFormatter.getFormatForEntity(scope.parentWidget.endpoint)
       else
         scope.dateFormat = ImpacDateFormatter.getFormatForEntity(setting.key)

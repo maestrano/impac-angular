@@ -2002,6 +2002,169 @@ dashboard-templates-selector {
   }
 }
 
+.analytics kpis-bar > .kpis {
+  position: relative;
+  .actions {
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis,
+    button.im-fab.toggle-show-content {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.toggle-show-content {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: -14px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 33px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.edit-kpis {
+      top: 75px;
+      right: -15px;
+      z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 79px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .content-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .content {
+    padding: 15px;
+    background-color: @kpis-bar-background-color;
+    box-shadow: @kpis-bar-box-shadow;
+
+    @media screen and (min-width: 725px) {
+      padding: 0 60px;
+    }
+
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
+
+    .impac-kpi {
+      .column-gutter(5px);
+
+      @media screen and (min-width: 1200px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .kpi.add {
+        .kpi-show .caption {
+          white-space: inherit;
+        }
+      }
+    }
+
+
+    .title {
+      .text-center {
+        line-height: 3;
+        font-variant: small-caps;
+        font-size: larger;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        background-color: #d1e55c;
+        color: #4f5959;
+        box-shadow: 0px 1px 3px -1px;
+      }
+      .no-kpi-templates {
+        color: #afadb5;
+        font-weight: 500;
+      }
+    }
+
+    .add-bar {
+      border-bottom: dashed 1px;
+    }
+
+    .kpi-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: @kpi-max-height + 20px;
+    }
+
+    .dates-picker-container {
+      width: 40%;
+      margin: 0 auto;
+
+      .sdp-from-label,
+      .sdp-to-label {
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.analytics kpis-bar {
+  display: block;
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  padding: 5px 0px;
+}
+
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
+
 .analytics .impac-kpi .kpi {
   position: relative;
   max-width: 220px;
@@ -2239,169 +2402,6 @@ dashboard-templates-selector {
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
 }
-
-.analytics kpis-bar > .kpis {
-  position: relative;
-  .actions {
-    margin-bottom: 12px;
-    @media screen and (max-width: 675px) {
-      position: relative;
-    }
-
-    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
-
-    a { color: white; }
-
-    button.im-fab.add-kpis,
-    button.im-fab.edit-kpis,
-    button.im-fab.toggle-show-content {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      transition: all 0.28s ease-in;
-      &.im-primary {
-        background: #4c4749;
-        &.disabled {
-          background: #b2b5c1;
-          cursor: not-allowed;
-          a { cursor: not-allowed; }
-        }
-        &:hover:not(.disabled) {
-          background: black;
-        }
-      }
-    }
-
-    button.im-fab.toggle-show-content {
-      top: -15px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: -14px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.add-kpis {
-      top: 30px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 33px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.edit-kpis {
-      top: 75px;
-      right: -15px;
-      z-index: 10;
-      &.editing {
-        background: @kpi-settings-focus-color;
-        &:hover:not(.disabled) {
-          background: lighten(@kpi-settings-focus-color, 15%);
-        }
-      }
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 79px;
-        bottom: 0;
-      }
-    }
-  }
-
-  .content-buttons {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .content {
-    padding: 15px;
-    background-color: @kpis-bar-background-color;
-    box-shadow: @kpis-bar-box-shadow;
-
-    @media screen and (min-width: 725px) {
-      padding: 0 60px;
-    }
-
-    @media screen and (max-width: 675px) {
-      margin-top: 25px;
-    }
-
-    .impac-kpi {
-      .column-gutter(5px);
-
-      @media screen and (min-width: 1200px) {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .kpi.add {
-        .kpi-show .caption {
-          white-space: inherit;
-        }
-      }
-    }
-
-
-    .title {
-      .text-center {
-        line-height: 3;
-        font-variant: small-caps;
-        font-size: larger;
-      }
-      .badge {
-        position: absolute;
-        top: 8px;
-        left: -10px;
-        background-color: #d1e55c;
-        color: #4f5959;
-        box-shadow: 0px 1px 3px -1px;
-      }
-      .no-kpi-templates {
-        color: #afadb5;
-        font-weight: 500;
-      }
-    }
-
-    .add-bar {
-      border-bottom: dashed 1px;
-    }
-
-    .kpi-loader {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: @kpi-max-height + 20px;
-    }
-
-    .dates-picker-container {
-      width: 40%;
-      margin: 0 auto;
-
-      .sdp-from-label,
-      .sdp-to-label {
-        text-transform: uppercase;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-.analytics kpis-bar {
-  display: block;
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  padding: 5px 0px;
-}
-
-.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
 
 .widget-item {
   transition: width 0.3s;
@@ -2673,6 +2673,9 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .dashboard-settings.pdf-mode {
+}
+
 .analytics .dashboard-settings.sync-apps {
   .show-status {
     margin-right: 5px;
@@ -2779,220 +2782,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
-chart-threshold {
-
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
-      }
-    }
-
-    .panel-text-label {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-    .panel-text-input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-    }
-    .panel-text-currency {
-      font-weight: bold;
-      color: #000;
-    }
-  }
-
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
-      display: inline-block;
-      &.loading {
-        padding: 3px 20px;
-      }
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -3023,12 +2812,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-assets-vs-liabilities {
-  .legend > .title span {
-    margin-left: 3px;
-  }
-}
-
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -3037,6 +2820,12 @@ chart-threshold {
 
   .price {
     .center-bold(0px);
+  }
+}
+
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
   }
 }
 
@@ -3123,18 +2912,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
 .analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
 
@@ -3199,6 +2976,18 @@ chart-threshold {
 
   transactions-list {
     font-size: 12px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 
@@ -3352,6 +3141,20 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3367,20 +3170,6 @@ chart-threshold {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3463,13 +3252,6 @@ chart-threshold {
     text-align: center;
   }
 }
-.analytics .widget-item .content.hr-payroll-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-      max-height: 145px;
-  }
-}
-
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3490,6 +3272,13 @@ chart-threshold {
     color: @impac-widget-text-color;
   }
 }
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 145px;
+  }
+}
+
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
@@ -3576,19 +3365,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .widget-lines-container {
-    max-height: 530px;
-  }
-  .right-panel .widget-lines-container {
-    max-height: 250px;
-  }
-  .currency-conversions {
-    img { margin-top: -2px; }
-  }
-}
-
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3633,6 +3409,19 @@ chart-threshold {
     }
   }
 }
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -3851,6 +3640,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-top-customers {
   .selector {
     border-bottom: dashed 1px #E6E6E6;
@@ -3870,12 +3665,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
-  }
-}
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -3935,6 +3724,27 @@ chart-threshold {
     &.focus, &.active { background-color: @impac-widget-link-color; }
   }
 
+}
+
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .analytics .settings.attach-kpis {
@@ -4036,27 +3846,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content .settings.chart-filters {
-  .row {
-    margin: 0px;
-  }
-  input[type="radio"] {
-    margin: 0;
-    margin-right: 3px;
-    padding: 0;
-    width: 13px;
-    height: 13px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    outline: none;
-  }
-  input[type="range"] {
-    height: auto;
-    width: 100%;
-  }
-}
-
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
@@ -4124,22 +3913,6 @@ chart-threshold {
   }
 }
 
-.analytics .settings.limit-entries {
-  color: @impac-widget-limit-entries-color;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: dashed 1px #E6E6E6;
-  padding-bottom: 8px;
-
-  a.option {
-    &.badge {
-      color: white;
-      background-color: @impac-widget-limit-entries-color;
-    }
-  }
-
-}
-
 .analytics .settings.offsets {
   .offset-value {
     font-style: italic;
@@ -4156,6 +3929,22 @@ chart-threshold {
 
   input { width: 75%; }
   button { width: 30px; }
+}
+
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
 }
 
 .analytics .settings.organizations {
@@ -4177,22 +3966,6 @@ chart-threshold {
     }
   }
 }
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    margin: 0;
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-  label {
-    display: flex;
-    justify-content: center;
-    line-height: 14px;
-  }
-}
-
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 
@@ -4250,6 +4023,22 @@ chart-threshold {
         background-color: lighten(@impac-widget-param-selector-color,5%);
       }
     }
+  }
+}
+
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
   }
 }
 
@@ -4359,6 +4148,216 @@ chart-threshold {
     }
     &.expand {
       margin-right: -3px;
+    }
+  }
+}
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+      &.loading {
+        padding: 3px 20px;
+      }
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
     }
   }
 }
