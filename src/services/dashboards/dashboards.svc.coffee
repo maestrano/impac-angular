@@ -212,13 +212,6 @@ angular
       else
         return setDefaultCurrentDashboard()
 
-
-    # TODO: refactor backend controller: dashboards(orgId) should return only the dashboards linked to the organization
-    # and not all the dashboards belonging to the user...
-    belongsToCurrentOrganization = (dashboard, org) ->
-      return _.includes(_.pluck(dashboard.data_sources, 'id'), org.id)
-
-
     @setDashboards = (dashboardsArray=[]) ->
       ImpacMainSvc.loadOrganizations().then(
         (config) ->
@@ -226,8 +219,7 @@ angular
           # Clear array
           _.remove _self.config.dashboards, (-> true)
           for dhb in dashboardsArray
-            if belongsToCurrentOrganization(dhb, curOrg)
-              _self.config.dashboards.push dhb
+            _self.config.dashboards.push dhb
         (error) ->
           $log.error("Impac! - DashboardsSvc: Cannot load user's organizations")
       )
