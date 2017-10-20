@@ -2667,14 +2667,14 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .dashboard-settings.pdf-mode {
+}
+
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -3494,6 +3494,12 @@ chart-threshold {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item {
+  .content.hr-salaries-summary {
+    .expandable-filterable-widget();
+  }
+}
+
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -3509,12 +3515,6 @@ chart-threshold {
     .center-bold(0px);
   }
 }
-.analytics .widget-item {
-  .content.hr-salaries-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3665,6 +3665,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
@@ -3675,9 +3678,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -3822,6 +3822,21 @@ chart-threshold {
       .selectable();
     }
   }
+}
+
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.lines-group.profit {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
 .analytics .widget-item .content.sales-segmented-turnover {
@@ -4141,24 +4156,6 @@ chart-threshold {
 
 }
 
-.analytics .settings.offsets {
-  .offset-value {
-    font-style: italic;
-    font-size: 13px;
-  }
-
-  .offset-value .fa-trash-o {
-    &:hover {
-      color: @brand-danger;
-      cursor: pointer;
-    }
-    margin-left: 10px;
-  }
-
-  input { width: 75%; }
-  button { width: 30px; }
-}
-
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -4178,6 +4175,24 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 

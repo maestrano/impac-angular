@@ -215,7 +215,6 @@ angular
     @setDashboards = (dashboardsArray=[]) ->
       ImpacMainSvc.loadOrganizations().then(
         (config) ->
-          curOrg = config.currentOrganization
           # Clear array
           _.remove _self.config.dashboards, (-> true)
           for dhb in dashboardsArray
