@@ -1,0 +1,164 @@
+<div widget-sales-sales-summary>
+
+  <div class="edit" ng-show="widget.isEditMode">
+    <h4 translate>impac.widget.accounts_profit_and_loss.settings.title</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
+    <div setting-tag-filter ng-show="filterTagsEnabled == true" parent-widget="widget" class="part" deferred="::tagFilterDeferred" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.accounts_profit_and_loss.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.accounts_profit_and_loss.save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+
+    <div class="row">
+      <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
+
+        <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
+
+        <div class="widget-lines-container">
+          <!-- Total mode -->
+          <div class="row widget-line header">
+            <div class="col-xs-12 text-right">
+              <span setting-param-selector parent-widget="widget" param="amount_displayed" options="amountDisplayedOptions" selected="amountDisplayed" deferred="::paramSelectorDeferred" no-reload />
+            </div>
+          </div>
+
+          <!-- Tab header -->
+          <div class="row widget-line header">
+            <div class="col-xs-7 col-xs-offset-1 text-left sortable-title" ng-click="sort('account')">
+              Offers
+              <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+            <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
+              Total Sales
+              <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
+            </div>
+          </div>
+
+          <!-- Groups of statements with their accounts -->
+          <div class="row lines-group" ng-repeat="statement in widget.content.summary" ng-class="{profit: statement.name.indexOf('profit')>0}">
+            <div class="col-xs-12">
+
+              <!-- Statements lines -->
+              <div class="row widget-line" >
+                <div class="col-xs-1" ng-click="toggleCollapsed(statement)">
+                  <i ng-show="(statement.accounts && statement.accounts.length)" class="fa" ng-class="isCollapsed(statement) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
+                </div>
+                <div class="col-xs-7" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getName(statement) | titleize}}</strong>
+                </div>
+                <div class="col-xs-4 text-right" ng-class="getClassColor(getAmount(statement))" ng-click="toggleSelectedElement(statement)">
+                  <strong>{{getAmount(statement) | mnoCurrency : statement.currency}}</strong>
+                </div>
+
+                <div class="selection-tag" ng-if="isSelected(statement)" ng-style="{ 'background-color': getSelectLineColor(statement) }"/>
+              </div>
+
+              <!-- Accounts lines -->
+              <div class="row" uib-collapse="isCollapsed(statement)">
+                <div class="col-xs-12">
+                  <div class="row widget-line" ng-click="toggleSelectedElement(account, statement.name)" ng-repeat="account in statement.accounts" >
+                    <div class="col-xs-7 col-xs-offset-1">
+                      {{account.name}}
+                    </div>
+                    <div class="col-xs-4 text-right" ng-class="getClassColor(getAmount(account))">
+                      {{getAmount(account) | mnoCurrency : account.currency}}
+                    </div>
+
+                    <div class="selection-tag" ng-if="isSelected(account, statement.name)" ng-style="{ 'background-color': getSelectLineColor(account, statement.name) }"/>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row widget-line header" ng-show="isReportFiltered()">
+            <div class="col-xs-12 text-center">
+              <strong translate>impac.widget.settings.tag-filter.report_filtered</strong>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-6 right-panel text-center" ng-show="widget.isExpanded()">
+
+        <div ng-show="hasElements()">
+          <h4>{{::period_translation}} Sales Totals</h4>
+          <div ng-show="selectedElements.length < 2" class="legend">{{getName(selectedElements[0]) | titleize}}</div>
+
+          <div class="chart-container">
+            <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+          </div>
+
+          <div ng-show="selectedElements.length < 2" class="widget-lines-container">
+
+            <!-- Not mobile -->
+            <div class="row">
+              <span ng-repeat="date in dates track by $index" class="hidden-xs">
+                <!-- Separator every 4 items -->
+                <div ng-if="$index % 4 == 0 && $index > 0" class="clearfix dashed"></div>
+
+                <div class="col-sm-3 text-center">
+                  <!-- Date -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12">
+                      {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                    </div>
+                  </div>
+                  <!-- Amount + currency -->
+                  <div class="row widget-line">
+                    <div class="col-sm-12" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                      {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+
+            <!-- Mobile -->
+            <div ng-repeat="date in dates track by $index" class="row widget-line visible-xs">
+              <!-- Date -->
+              <div class="col-xs-6">
+                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+              </div>
+              <!-- Amount + currency -->
+              <div class="col-xs-6 text-right" ng-class="getClassColor(selectedElements[0].totals[$index])">
+                {{selectedElements[0].totals[$index] | mnoCurrency : selectedElements[0].currency}}
+              </div>
+            </div>
+          </div>
+
+          <div ng-hide="selectedElements.length < 2" class="widget-lines-container">
+            <div class="row widget-line" ng-repeat="element in selectedElements track by $index">
+              <div class="col-xs-7 text-left">
+                <i class="fa fa-circle" ng-style="{ 'margin': '0px 8px', 'color': getElementChartColor($index) }" />
+                {{getName(element) | titleize}}
+              </div>
+              <div class="col-xs-5 text-right">
+                <i ng-class="getClassColor(getAmount(element))">
+                  {{getAmount(element) | mnoCurrency : element.currency}}
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-hide="hasElements()" class="no-element" translate>
+          impac.widget.accounts_profit_and_loss.no_elements_selected
+        </div>
+      </div>
+
+    </div>
+
+    <div ng-show="widget.demoData" common-data-not-found />
+  </div>
+
+</div>
