@@ -186,11 +186,12 @@ angular
             # By default, widget is to be fetched from legacy Impac! API (v1)
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
             ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
-          
+
           url = [route, decodeURIComponent( $.param(params) )].join('?')
 
-          authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
-          config = { headers: {'Authorization': authHeader } }
+          if _self.getSsoSessionId()?
+            authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
+            config = { headers: {'Authorization': authHeader } }
 
           $http.get(url, config).then(
             (success) ->
