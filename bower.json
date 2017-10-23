@@ -1,7 +1,7 @@
 {
   "name": "impac-angular",
   "description": "Impac! Front-End Library",
-  "version": "opal-poc.dev",
+  "version": "1.6.3-opal",
   "license": "Copyright 2017 Maestrano Pty Ltd",
   "repository": {
     "type": "git",
