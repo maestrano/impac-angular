@@ -258,15 +258,6 @@ describe('<> ImpacDashboardsSvc', function () {
       });
     });
 
-    it("saves only the dashboards that belong to the current organization", function() {
-      svc.setDashboards(array);
-      $rootScope.$apply();
-      expect(svc.config.dashboards).toEqual([
-        {id: 4, name: 'dash4', data_sources: [{id: 1}]},
-        {id: 6, name: 'dash6', data_sources: [{id: 1},{id: 2}]}
-      ]);
-    });
-
     describe('when :array is not set', function() {
       it('empties the dashboards list', function() {
         svc.setDashboards();
@@ -292,7 +283,7 @@ describe('<> ImpacDashboardsSvc', function () {
       svc.setWidgetsTemplates(array);
       expect(svc.config.widgetsTemplates).toEqual([{ endpoint: 'accounts/balance' }]);
     });
-    
+
     describe('when :array is not defined', function() {
       sharedBehaviorForKeepOriginal();
     });
