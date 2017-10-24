@@ -1,0 +1,36 @@
+<div widget-sales-offer-performance>
+
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4 translate>impac.widget.accounting_values.turnover.settings.title</h4>
+
+    <div setting-offers parent-widget="widget" class="part" deferred="::offersDeferred" />
+    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
+
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()" translate>impac.widget.accounting_values.turnover.cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()" translate>impac.widget.accounting_values.turnover.save</button>
+    </div>
+  </div>
+
+  <div ng-hide="widget.isEditMode">
+    <div>
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
+
+      <div ng-hide="widget.isHistoryMode" class="current">
+        <div class="price">
+           {{ getCurrentPrice() | mnoCurrency : currency_unit : false }}
+        </div>
+        <div class="currency">{{currency}}</div>
+        <div class="legend">{{legend}}</div>
+      </div>
+
+      <div class="history chart-container" ng-show="widget.isHistoryMode">
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+        <div class="legend">{{legend}}</div>
+      </div>
+    </div>
+
+    <div ng-show="widget.demoData" common-data-not-found />
+  </div>
+
+</div>
