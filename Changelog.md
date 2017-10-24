@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.6.4 | 2017 - Week 43
+
+#### Fixes
+- Add timeout on chart zoom update
+
+-------------------------------------------------------------
+
 ### v1.6.3 | 2017 - Week 42
 
 #### Adds

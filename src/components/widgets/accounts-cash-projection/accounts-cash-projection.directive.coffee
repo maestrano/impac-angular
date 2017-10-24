@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout  , ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
 
   w = $scope.widget
 
@@ -133,13 +133,19 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, Impa
     return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
     imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
+  updateLocked = false
+  zoomMetadata = {}
   onZoom = (event) ->
-    metadataHash = angular.merge w.metadata, {
+    zoomMetadata = angular.merge w.metadata, {
       xAxis:
         max: event.max
         min: event.min
     }
-    ImpacWidgetsSvc.update(w, { metadata: metadataHash }, false)
+    unless updateLocked
+      updateLocked = true
+      $timeout ->
+        ImpacWidgetsSvc.update(w, { metadata: zoomMetadata }, false).finally(-> updateLocked = false)
+      , 1000
 
   w.format = ->
     # Chart basic options
