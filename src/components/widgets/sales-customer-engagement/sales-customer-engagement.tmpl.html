@@ -1,0 +1,30 @@
+<div widget-sales-customer-engagement>
+  <!-- Settings Panel -->
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <!-- Buttons displayed on the lower  -->
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <!-- Content Panel -->
+  <div ng-hide="widget.isEditMode">
+    <!-- Transactions list -->
+    <!-- <transactions-list ng-if="trxList.display" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)"></transactions-list> -->
+
+    <!-- Chart -->
+    <div ng-hide="trxList.display">
+      <!-- Product Selector -->
+      <div setting-param-selector parent-widget="widget" param="selected_offer" options="filterOptions" selected="filter" class="param-selector" deferred="::paramSelectorDeferred" on-select="widget.format()"/>
+      <!-- Chart -->
+      <div id="{{chartId()}}" class="customer-engagement-chart"></div>
+    </div>
+
+    <div ng-show="widget.demoData" common-data-not-found />
+  </div>
+</div>
