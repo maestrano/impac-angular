@@ -1,0 +1,10 @@
+<div class="settings offers">
+  <h5 translate>Select Offer</h5>
+
+  <div class="row widget-lines-container">
+    <div class="col-xs-12 widget-line">
+      <strong translate>Offer</strong>
+      <select ng-model="selectedOffer" ng-options="offer as offer.name for offer in parentWidget.content.offers" />
+    </div>
+  </div>
+</div>
