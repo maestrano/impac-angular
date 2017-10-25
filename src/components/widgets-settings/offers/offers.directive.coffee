@@ -14,6 +14,7 @@ module.controller('SettingOffersCtrl', ($scope, $log, ImpacDashboardsSvc) ->
       offer.id == w.content.selected_offer.id
 
   setting.toMetadata = ->
+    w.content.selected_offer = $scope.selectedOffer
     return { offer: w.content.selected_offer }
 
   w.settings.push(setting)
