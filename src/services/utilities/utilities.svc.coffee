@@ -66,7 +66,6 @@ angular
 
         if histParams.from
           fromDate = histParams.from
-#          fromDate = moment(histParams.from).format("DD-MM-YYYY")
 
         # When time-slider is used, hist_parameters.from is not supposed to be defined
         else if histParams.time_range
@@ -76,10 +75,8 @@ angular
           word = _self.getPeriodWord(period)
           if period == "w"
             fromDate = moment().subtract(n, word).startOf('isoweek').format('YYYY-MM-DD')
-#            fromDate = moment().subtract(n, word).startOf('isoweek').format('DD-MM-YYYY')
           else
             fromDate = moment().subtract(n, word).startOf(word).format('YYYY-MM-DD')
-#            fromDate = moment().subtract(n, word).startOf(word).format('DD-MM-YYYY')
 
       resultHash = {
         from: fromDate
@@ -93,12 +90,10 @@ angular
       startYear = moment().year() if moment().month() >= fYearEndMonth
 
       start = moment("#{startYear}-#{fYearEndMonth + 1}-01", 'YYYY-MM-DD')
-#      start = moment("#{startYear}-#{fYearEndMonth + 1}-01", 'DD-MM-YYYY')
       end = angular.copy(start).add(1, 'year').subtract(1, 'day')
 
       resultHash = {
         start: start.format('YYYY-MM-DD')
-#        start: start.format('DD-MM-YYYY')
         end: end.format('YYYY-MM-DD')
       }
 
@@ -107,7 +102,6 @@ angular
     # Get default year-to-date hist parameters
     @yearDates = ()->
       from: moment().startOf('year').format('YYYY-MM-DD')
-#      from: moment().startOf('year').format('DD-MM-YYYY')
       to: moment().format('YYYY-MM-DD')
 
     # Parse a Rails model error and return an array of messages
