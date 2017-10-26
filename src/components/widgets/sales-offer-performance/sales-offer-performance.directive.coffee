@@ -22,33 +22,49 @@ module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $q, ChartFormatter
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
-    $scope.isDataFound = w.content? && w.content.accounting?
+    $scope.isDataFound = w.content? && w.content.performance?
+    $scope.selectedPerformanceSpan = w.content.performance.last if $scope.isDataFound
+    $scope.secondaryPerformanceSpan = w.content.performance.previous if $scope.isDataFound
+    $scope.histParams = $scope.selectedPerformanceSpan.hist_parameters if $scope.isDataFound
+    w.metadata.hist_parameters = $scope.histParams
     $scope.getLegend()
     $scope.getCurrency()
 
+  $scope.switchSpans = ->
+    newSpan = $scope.secondaryPerformanceSpan
+    $scope.secondaryPerformanceSpan = $scope.selectedPerformanceSpan
+    $scope.selectedPerformanceSpan = newSpan
+
+    $scope.histParams = $scope.selectedPerformanceSpan.hist_parameters
+    w.metadata.hist_parameters = $scope.histParams
+    $scope.initSettings() && w.format()
+
   $scope.getCurrentPrice = ->
-    return w.content.accounting.total_period if $scope.isDataFound
+    return $scope.selectedPerformanceSpan.total_period if $scope.isDataFound
+
+  $scope.getSecondaryPrice = ->
+    return $scope.secondaryPerformanceSpan.total_period if $scope.isDataFound
 
   $scope.getCurrency = ->
     if $scope.isDataFound
-      if w.content.accounting.currency_key?
-        $translate(w.content.accounting.currency_key).then((translation) ->
+      if $scope.selectedPerformanceSpan.currency_key?
+        $translate($scope.selectedPerformanceSpan.currency_key).then((translation) ->
           $scope.currency = translation
-          $scope.currency_unit = w.content.accounting.currency
+          $scope.currency_unit = $scope.selectedPerformanceSpan.currency
         )
       else  # Fallback
-        $scope.currency = w.content.accounting.currency
-        $scope.currency_unit = w.content.accounting.currency
+        $scope.currency = $scope.selectedPerformanceSpan.currency
+        $scope.currency_unit = $scope.selectedPerformanceSpan.currency
 
   $scope.getLegend = ->
     if $scope.isDataFound
-      if w.content.accounting.legend_key?
+      if $scope.selectedPerformanceSpan.legend_key?
         # Translate the legend key
-        $translate(w.content.accounting.legend_key).then((translation) ->
+        $translate($scope.selectedPerformanceSpan.legend_key).then((translation) ->
           $scope.legend = translation
         )
       else  # Fallback
-        $scope.legend = w.content.accounting.legend
+        $scope.legend = $scope.selectedPerformanceSpan.legend
 
 
   # Chart formating function
@@ -56,10 +72,10 @@ module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $q, ChartFormatter
   $scope.drawTrigger = $q.defer()
   w.format = ->
     if $scope.isDataFound
-      data = angular.copy(w.content.accounting)
+      data = angular.copy($scope.selectedPerformanceSpan)
 
       period = null
-      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+      period = $scope.histParams.period
       dates = _.map data.dates, (date) ->
         $filter('mnoDate')(date, period)
 
