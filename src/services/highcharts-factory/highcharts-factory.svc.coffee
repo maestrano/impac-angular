@@ -29,10 +29,6 @@ angular
           align: 'left'
           verticalAlign: 'middle'
         xAxis: xAxisOptions
-        yAxis:
-          title: null
-          startOnTick: true
-          minPadding: 0
         series: series
         rangeSelector:
           buttons: [
@@ -72,6 +68,9 @@ angular
           formatter: ->
             moment.utc(this.value).format('Do MMM YYYY')
       yAxis:
+        title: null
+        startOnTick: true
+        minPadding: 0
         labels:
           formatter: ->
             $filter('mnoCurrency')(this.value, currency, false, 0)
