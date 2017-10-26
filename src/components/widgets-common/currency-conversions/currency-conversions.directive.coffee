@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.currency-conversions',[])
-module.directive('commonCurrencyConversions', ($templateCache, ImpacAssets) ->
+module.directive('commonCurrencyConversions', ($templateCache, ImpacAssets, $filter) ->
   return {
     restrict: 'A'
     scope: {
@@ -13,6 +13,6 @@ module.directive('commonCurrencyConversions', ($templateCache, ImpacAssets) ->
       scope.currencyConversionsIcon = ImpacAssets.get('currencyConversionsIcon')
       scope.popoverTemplateUrl = $templateCache.get('widgets-common/details-popover.html')
       scope.popoverTitle = "Currency Conversions Info"
-      scope.formattedRatesDate = moment(scope.ratesDate).format('MMMM Do YYYY')
+      scope.formattedRatesDate = $filter('momentDate')(scope.ratesDate, 'currency-conversions')
   }
 )

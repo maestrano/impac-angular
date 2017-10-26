@@ -1,6 +1,6 @@
 angular
   .module('impac.services.widgets', [])
-  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS, ImpacDateFormatter) ->
+  .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
 
     _self = @
     moment = window.moment
@@ -193,11 +193,6 @@ angular
           $http.get(url, config)
             .then(
               (success) ->
-                ImpacDateFormatter.formatDateString success.data, widget.endpoint
-                return success
-            )
-            .then(
-              (success) ->
                 content = success.data.content || success.data[widget.endpoint] || {}
                 if _.isEmpty(content)
                   # Reload the widget with param `demo` set at `true` (to retrieve stub data)
@@ -244,11 +239,6 @@ angular
           request
             .then(
               (success) ->
-                ImpacDateFormatter.formatDateString success.data, success.data.endpoint
-                return success
-            )
-            .then(
-              (success) ->
                 newWidget = success.data
                 dashboard.widgets.push(newWidget)
                 ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
@@ -283,11 +273,6 @@ angular
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
             request
-              .then(
-                (success) ->
-                  ImpacDateFormatter.formatDateString success.data, success.data.endpoint
-                  return success
-              )
               .then(
                 (success) ->
                   angular.extend widget, success.data

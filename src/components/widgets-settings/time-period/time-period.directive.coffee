@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming, $translate, ImpacDateFormatter) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming, $translate, $filter, ImpacDateFormatter) ->
   return {
     restrict: 'A',
     scope: {
@@ -197,16 +197,13 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       scope.getMinDate = (toDate=undefined) ->
         to = moment()
         if toDate?
-#          to = moment(toDate, "YYYY-MM-DD")
           to = moment(toDate, ImpacDateFormatter.getFormatForEntity('time-period'))
         # Make sure the settings are initialized before trying to retrieve toMetadata()
         else if scope.usedSetting? && scope.isDatesPickerUsed()
           sourceSetting = getSetting('dates-picker')
-#          to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
           to = moment(sourceSetting.toMetadata().hist_parameters.to, ImpacDateFormatter.getFormatForEntity('time-period'))
         currentPeriod = getPeriod()
         periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
-#        return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
         return to.subtract(scope.maxNumberOfPeriods, periodWord).format(ImpacDateFormatter.getFormatForEntity('time-period'))
 
 

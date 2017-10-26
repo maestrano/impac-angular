@@ -8,15 +8,16 @@ angular.module('impac.filters.mno-date', []).filter('mnoDate', ($filter) ->
 
       switch period.toUpperCase()
         when 'DAILY'
-          return $filter('date')(date_string, 'dd MMM')
+          return $filter('momentDate')(date_string, 'mno-date-daily')
         when 'WEEKLY'
-          return $filter('date')(date_string, 'dd MMM')
+          return $filter('momentDate')(date_string, 'mno-date-weekly')
         when 'MONTHLY'
-          return $filter('date')(date_string, 'MMM yyyy')
+          return $filter('momentDate')(date_string, 'mno-date-monthly')
         when 'QUARTERLY'
-          return $filter('date')(date_string, 'MMM yyyy')
+          return $filter('momentDate')(date_string, 'mno-date-quarterly')
         when 'YEARLY'
-          return $filter('date')(date_string, 'yyyy')
+          return $filter('momentDate')(date_string, 'mno-date-yearly')
+
 
     else
       return ""

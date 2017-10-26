@@ -126,17 +126,25 @@ angular
         tagging:
           enabled: false
 
-      # date-formatter settings for widgets
       dateFormatterSettings:
-        'hr/employee_details': "MM-DD-YYYY"
-        'hr/timesheets': "DD=MM=YYYY"
-        'invoices/aged_payables_receivables': "DD=MM=YYYY"
-        'accounts/profit_and_loss': "DD*MM*YYYY"
-        'sales/summary': "YYYY/MM/DD"
-
-        # common components
-        'dates-picker': "DD/MM/YYYY"
-        'time-period': "MM_DD_YYYY"
+        default: 'L'
+        formats:
+          #widgets
+          'hr/employee_details':  "MM-DD-YYYY"
+          'hr/payroll_summary':   "MMM-DD"
+          'sales/break_even':     "DD MMM YYYY"
+          'sales/leads_funnel':   "DD MMM YYYY"
+          #filters
+          'mno-date-daily':       "DD MMM"
+          'mno-date-weekly':      "DD MMM"
+          'mno-date-monthly':     "MMM-YYYY"
+          'mno-date-quarterly':   "MMM YYYY"
+          'mno-date-yearly':      "YYYY"
+          #common components
+          'time-period':          "MM_DD_YYYY"
+          'time-slider':          "Do MM YYYY"
+          'dates-picker':         "YYYY/MM/DD"
+          'currency-conversions': "MMMM Do YYYY"
 
 
     #=======================================

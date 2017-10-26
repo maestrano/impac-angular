@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities, ImpacDateFormatter) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -113,13 +113,6 @@ angular
 
               # Retrieve dashboards with widgets and kpis settings
               dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId))
-                .then(
-                  (success) ->
-                    success.data.forEach (o) ->
-                      o.widgets.forEach (widget) ->
-                        ImpacDateFormatter.formatDateString widget, widget.endpoint
-                    return success
-                )
                 .then(
                   (response) ->
                     _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-slider',[])
 
-module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, ImpacUtilities, $translate) ->
+module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, ImpacUtilities, ImpacDateFormatter, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -91,7 +91,7 @@ module.directive('settingTimeSlider', ($templateCache, $timeout, ImpacMainSvc, I
         return ImpacUtilities.formatPeriod(getNumberOfPeriods(), getPeriod())
 
       scope.formatDate = (aDate) ->
-        return aDate.format('Do MMM YYYY')
+        return aDate.format(ImpacDateFormatter.getFormatForEntity(setting.key))
 
       scope.fromDate = ->
         n = getNumberOfPeriods()

@@ -2,7 +2,7 @@
 
 module = angular.module('impac.components.widgets-settings.dates-picker',[])
 
-module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile, ImpacDateFormatter) ->
+module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc, $timeout, $compile) ->
   return {
     restrict: 'A',
     scope: {
@@ -26,11 +26,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       setting = {}
       setting.key = "dates-picker"
 
-      if scope.parentWidget && scope.parentWidget.endpoint
-        scope.dateFormat = ImpacDateFormatter.getFormatForEntity(scope.parentWidget.endpoint)
-      else
-        scope.dateFormat = ImpacDateFormatter.getFormatForEntity(setting.key)
-
+      scope.setting = setting
       scope.calendarFrom =
         opened: false
         value: new Date(new Date().getFullYear(), 0, 1)
@@ -57,15 +53,15 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       """
       fromDateHtml = """
       <div style="display: inline-block;">
-        <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" uib-datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
-          {{ calendarFrom.value | momentDate : dateFormat }}
+        <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" uib-datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
+          {{ calendarFrom.value | momentDate : setting.key }}
         </button>
       </div>
       """
       toDateHtml = """
       <div style="display: inline-block;">
-        <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" uib-datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
-          {{ calendarTo.value | momentDate : dateFormat }}
+        <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" uib-datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarTo.value" ng-focus="onUse()" ATTRS>
+          {{ calendarTo.value | momentDate : setting.key }}
         </button>
       </div>
       """
@@ -90,26 +86,23 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
         $timeout ->
           scope.changed = false
           # TODO: widget directives parse dates into strings (with $filter('date')), pass it into this directive, then it gets parsed into a date for display. Maybe it could accept a date directly? Maybe we could use moment.js in this component for neater parsing to avoid syntax like below?
-#          if Date.parse(scope.fromDate)
-#            parsedFrom = scope.fromDate.split('-')
-#            y = parsedFrom[0]
-#            m = parsedFrom[1] - 1
-#            d = parsedFrom[2]
-#            scope.calendarFrom.value = new Date(y,m,d)
-#          else
-#            scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
-#
-#          if Date.parse(scope.toDate) && !scope.keepToday
-#            parsedTo = scope.toDate.split('-')
-#            y = parsedTo[0]
-#            m = parsedTo[1] - 1
-#            d = parsedTo[2]
-#            scope.calendarTo.value = new Date(y,m,d)
-#          else
-#            scope.calendarTo.value = new Date()
-          scope.calendarFrom.value = moment(scope.fromDate, scope.dateFormat).toDate()
-          scope.calendarTo.value = moment(scope.toDate, scope.dateFormat).toDate()
-          return
+          if Date.parse(scope.fromDate)
+            parsedFrom = scope.fromDate.split('-')
+            y = parsedFrom[0]
+            m = parsedFrom[1] - 1
+            d = parsedFrom[2]
+            scope.calendarFrom.value = new Date(y,m,d)
+          else
+            scope.calendarFrom.value = new Date(new Date().getFullYear(), 0, 1)
+
+          if Date.parse(scope.toDate) && !scope.keepToday
+            parsedTo = scope.toDate.split('-')
+            y = parsedTo[0]
+            m = parsedTo[1] - 1
+            d = parsedTo[2]
+            scope.calendarTo.value = new Date(y,m,d)
+          else
+            scope.calendarTo.value = new Date()
 
       isToToday = ->
         (scope.calendarTo.value.getFullYear() == new Date().getFullYear()) &&
@@ -119,10 +112,8 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       setting.toMetadata = ->
         return {
           hist_parameters:
-#            from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
-            from: moment(scope.calendarFrom.value).format(scope.dateFormat)
-#            to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
-            to: moment(scope.calendarTo.value).format(scope.dateFormat)
+            from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
+            to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
             period: scope.period || "RANGE"
             keep_today: isToToday()
         }
@@ -133,10 +124,8 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
 
       buildDates = ->
         {
-#          from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
-          from: moment(scope.calendarFrom.value).format(scope.dateFormat)
-#          to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
-          to: moment(scope.calendarTo.value).format(scope.dateFormat)
+          from: $filter('date')(scope.calendarFrom.value, 'yyyy-MM-dd')
+          to: $filter('date')(scope.calendarTo.value, 'yyyy-MM-dd')
           keepToday: isToToday()
         }
 

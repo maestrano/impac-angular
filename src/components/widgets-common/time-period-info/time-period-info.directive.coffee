@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.time-period-info',[])
-module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $translate, ImpacDateFormatter) ->
+module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $translate, $filter) ->
   return {
     restrict: 'A'
     scope: {
@@ -27,7 +27,8 @@ module.directive('commonTimePeriodInfo', ($templateCache, ImpacUtilities, $trans
       getDateInfo = ->
         dates = ImpacUtilities.selectedTimeRange(scope.context.histParams)
 
-        ImpacDateFormatter.formatDateString(dates, 'time-period')
+        dates.from = $filter('momentDate')(dates.from, 'time-period')
+        dates.to = $filter('momentDate')(dates.to, 'time-period')
 
         if getBehaviour() == 'bls'
            $translate('impac.widget.common.time_period_info.to', {dateTo: "#{dates.to}"}).then((label) -> scope.date = yieldCaption(label))

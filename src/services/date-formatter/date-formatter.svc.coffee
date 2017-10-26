@@ -5,10 +5,10 @@ angular
     @getFormatForEntity = (entity = '') ->
 
       settings = ImpacTheming.get()
-      if settings.dateFormatterSettings && settings.dateFormatterSettings[entity]
-        format = settings.dateFormatterSettings[entity]
+      if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]
+        format = settings.dateFormatterSettings.formats[entity]
       else
-        format = 'L'
+        format = settings.dateFormatterSettings.default
       return format
 
     @formatDateString = (obj, widgetEndpoint = '') ->
