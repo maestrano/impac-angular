@@ -119,6 +119,32 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
         callback: onZoom
 
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
+    defaultFormatters = $scope.chart.formatters()
+    $scope.chart.formatters = ->
+      currency = @options.currency
+      primaryYAxis = angular.merge(
+        offset: 30,
+        labels: formatter: -> $filter('mnoCurrency')(this.value, currency, false)
+        defaultFormatters.yAxis
+      )
+      tooltip:
+        shared: false
+        formatter: ->
+          name = this.series.name
+          date = moment.utc(this.x).format('Do MMM YYYY')
+          amount = if _.get(this.series.options, 'yAxis') == 0
+            amount = $filter('mnoCurrency')(this.y, currency, false)
+          else
+            this.y
+          "<strong>#{date}</strong><br>#{name}: #{amount}"
+      xAxis: defaultFormatters.xAxis
+      yAxis: [
+        primaryYAxis
+        labels:
+          format: '{value}'
+          style:
+            color: '#a1a2a3'
+      ]
     $scope.chart.render(w.content.chart, options)
 
     # Chart customization
