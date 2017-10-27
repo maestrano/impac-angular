@@ -119,7 +119,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.attach-kpis',
     'impac.components.widgets-settings.tag-filter',
     'impac.components.widgets-settings.offsets',
-    'impac.components.widgets-settings.offers'
+    'impac.components.widgets-settings.offers',
+    'impac.components.widgets-settings.last-time-period'
   ]
 );
 angular.module('impac.components.dashboard-settings',
