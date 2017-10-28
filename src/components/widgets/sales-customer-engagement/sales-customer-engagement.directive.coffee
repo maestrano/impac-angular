@@ -5,11 +5,9 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
 
   # Define settings
   # --------------------------------------
-  $scope.orgDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
-    $scope.orgDeferred.promise
     $scope.paramSelectorDeferred.promise
   ]
 
@@ -37,7 +35,7 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
     BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(
       (response) ->
         # Update trxList object with dynamic values
-        $scope.trxList.transactions = _.map(response.data.data, (trx) ->
+        $scope.trxList.customers = _.map(response.data.data, (trx) ->
           angular.merge(trx.attributes, { id: trx.id })
         )
         $scope.trxList.totalRecords = response.data.meta.record_count
@@ -65,38 +63,23 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
           w.metadata && w.metadata.selected_offer == o.value
         ) || $scope.filterOptions[0])
 
-  # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
-  dateFilter = (timestamp) ->
-    pickedDate = moment.utc(timestamp)
-    if pickedDate <= todayUTC then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
-
-  # Sets the transactions list resources type and displays it
+  # Sets the customers list resources type and displays it
   onClickBar = (event) ->
     series = this
-    console.log('onClickBar: ', series)
-    # resources = switch(series.name)
-    #   when 'Payables'
-    #     'bills'
-    #   when 'Receivables'
-    #     'invoices'
-    # return unless resources?
+    resources = 'customers' if series.name.toLowerCase() == 'number of customers'
+    return unless resources?
+    $scope.chart.hc.showLoading()
 
-    # # Init trxList object with static values
-    # $scope.trxList.resources = resources
-    # $scope.trxList.totalDue = event.point.y
-    # $scope.trxList.params = {
-    #   filter:
-    #     expected_payment_date: dateFilter(event.point.x)
-    #     status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
-    # }
-    # $scope.trxList.fetch().finally(-> $scope.trxList.show())
-
-  # imgSrc = (name) -> ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
-  # imgTemplate = (src, name) -> "<img src='#{src}'><br>#{name}"
-  # legendFormatter = ->
-  #   name = this.name
-  #   return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
-  #   imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
+    # Init trxList object with static values
+    $scope.trxList.resources = resources
+    $scope.trxList.params =
+      filter:
+        interval_end_date: moment.utc(event.point.x).toISOString()
+        selected_offer: w.metadata.selected_offer
+    $scope.trxList.fetch().finally(->
+      $scope.chart.hc.hideLoading()
+      $scope.trxList.show()
+    )
 
   onZoom = (event) ->
     metadataHash = angular.merge w.metadata, {
@@ -146,12 +129,10 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
             color: '#a1a2a3'
       ]
     $scope.chart.render(w.content.chart, options)
-
     # Chart customization
-    # $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
+    return
 
-    # $scope.chartDeferred.notify($scope.chart)
 
   $scope.chartId = ->
     "customerEngagementChart-#{w.id}"

@@ -13,7 +13,6 @@ angular
             max: _.get(zoomingOptions.defaults, 'max')
             min: _.get(zoomingOptions.defaults, 'min')
           }
-
         chart:
           type: 'line'
           zoomType: 'x'
@@ -23,6 +22,9 @@ angular
         title: null
         credits:
           enabled: false
+        loading:
+          hideDuration: _.get(options, 'loadingAnimationDuration', 200)
+          showDuration: _.get(options, 'loadingAnimationDuration', 200)
         legend:
           enabled: _.get(options, 'showLegend', true)
           layout: 'vertical'
