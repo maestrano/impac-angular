@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.sales-offer-performance',[])
 
-module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $q, ChartFormatterSvc, $filter, $translate) ->
+module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $timeout, $q, ChartFormatterSvc, $filter, $translate) ->
 
   w = $scope.widget
 
@@ -31,6 +31,8 @@ module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $q, ChartFormatter
     $scope.getCurrency()
 
   $scope.switchSpans = ->
+    # call format in the event that the chart has not been viewed yet
+    w.format()
     newSpan = $scope.secondaryPerformanceSpan
     $scope.secondaryPerformanceSpan = $scope.selectedPerformanceSpan
     $scope.selectedPerformanceSpan = newSpan
