@@ -247,6 +247,12 @@ module.controller('WidgetSalesSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
 
       chartData = ChartFormatterSvc.lineChart(inputData,options)
 
+      periodName = if (h = $scope.widget.metadata.hist_parameters) && h.period then h.period.toLowerCase() else 'monthly'
+      $translate('impac.widget.settings.time_period.period.' + periodName).then(
+        (translation) ->
+          $scope.period_translation = _.capitalize(translation.toLowerCase())
+      )
+
       # calls chart.draw()
       $scope.drawTrigger.notify(chartData)
 
