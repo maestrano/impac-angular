@@ -5,11 +5,9 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
 
   # Define settings
   # --------------------------------------
-  $scope.orgDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
 
   settingsPromises = [
-    $scope.orgDeferred.promise
     $scope.paramSelectorDeferred.promise
   ]
 

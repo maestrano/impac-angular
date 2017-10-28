@@ -3,7 +3,6 @@
   <div class="edit" ng-show="widget.isEditMode">
     <h4 translate>impac.widget.accounts_profit_and_loss.settings.title</h4>
 
-    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
     <div setting-tag-filter ng-show="filterTagsEnabled == true" parent-widget="widget" class="part" deferred="::tagFilterDeferred" />
 

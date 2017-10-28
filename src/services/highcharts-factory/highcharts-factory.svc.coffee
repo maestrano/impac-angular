@@ -13,7 +13,6 @@ angular
             max: _.get(zoomingOptions.defaults, 'max')
             min: _.get(zoomingOptions.defaults, 'min')
           }
-
         chart:
           type: 'line'
           zoomType: 'x'

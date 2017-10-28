@@ -6,7 +6,6 @@ module.controller('WidgetSalesSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
 
   # Define settings
   # --------------------------------------
-  $scope.orgDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
@@ -14,7 +13,6 @@ module.controller('WidgetSalesSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
   $scope.tagFilterDeferred = $q.defer()
 
   settingsPromises = [
-    $scope.orgDeferred.promise
     $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
