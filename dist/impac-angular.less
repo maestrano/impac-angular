@@ -1394,200 +1394,6 @@ body {
   }
 }
 
-#module__dashboard-selector {
-  a {
-    font-weight: normal;
-  }
-  // dashboard selector template wrapper div
-  & > div:first-child {
-    border-bottom: @impac-dashboard-selector-border;
-  }
-
-  .buttons-bar-row {
-    margin-top: 54px;
-    &.pdf-mode { margin-top: 0px; }
-  }
-
-  // container for dashboard selector 'dropdown' template
-  .buttons-bar {
-    padding: 0;
-    position: relative;
-
-    .btn {
-      float: right;
-      margin: 3px;
-      border-radius: @impac-dashboard-buttons-border-radius;
-    }
-
-    .title-container {
-      h1 {
-        margin: 0px;
-        color: black;
-        cursor: auto;
-      }
-    }
-
-    .dropdown-container {
-      .dashboard-title {
-        color: @impac-dashboard-title-color;
-        display: inline;
-        cursor: pointer;
-        &:hover {
-          color: darken(@impac-dashboard-title-color,10%);
-        }
-        i.fa.fa-pencil {
-          margin-left: 20px;
-          font-size: 14px;
-          &:hover {
-            color: @mgreen;
-          }
-        }
-      }
-      .dashboard-select {
-        margin: 5px 0px 10px 30px;
-        height: auto;
-        border-left: 1px solid @impac-dashboard-title-color;
-        border-bottom: 1px solid @impac-dashboard-title-color;
-        width: 300px;
-        background-color: @lightgray;
-        cursor: pointer;
-        .option {
-          color: @impac-dashboard-title-label-color;
-          white-space: nowrap;
-          &:hover {
-            background-color: @impac-widget-background-color;
-          }
-          &.create {
-            background-color: @impac-dashboard-title-color;
-            color: @impac-dashboard-title-label-create-color;
-            height: 30px;
-            padding: 5px 10px 5px 10px;
-            &:hover {
-              background-color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          i.fa.fa-pencil {
-            float: right;
-            padding-top: 7px;
-            text-align: center;
-            width: 15%;
-            height: 30px;
-            &:hover {
-              color: darken(@impac-dashboard-title-color,10%);
-            }
-          }
-          span.name {
-            width: 85%;
-            height: 30px;
-            display: inline-block;
-            padding: 5px 10px 5px 10px;
-          }
-        }
-      }
-      .change-name {
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        width: 60%;
-        background-color: rgb(23, 38, 45);
-        color: white;
-        padding: 10px;
-        border-radius: 4px;
-        text-align: center;
-        .box-shadow(0px 0px 25px 4px black);
-        z-index: 50;
-        border: solid 1px @impac-widget-background-color;
-
-        .form-control {
-          height: 25px;
-          margin-bottom: 10px;
-        }
-      }
-      .data-source-label {
-        color: @impac-dashboard-source-color;
-        padding-left: 3px;
-        margin: 0px;
-      }
-    }
-
-    .loader-container {
-      padding-left: 10px;
-      .loading-spinner {
-        .loader-style();
-        font-size: 40px;
-      }
-    }
-  }
-
-  // angular bootstrap tabs & pills
-  .nav-tabs {
-    border-bottom: 0;
-  }
-  .nav.nav-tabs,
-  .nav.nav-pills {
-
-    // add new tab
-    li:last-child > a {
-      padding-right: 15px;
-      tab-heading a {
-        position: static;
-      }
-    }
-  }
-
-  // TABS
-  .nav.nav-tabs {
-    // tab
-    li > a {
-      padding: @impac-dashboard-selector-tabs-padding;
-      margin: @impac-dashboard-selector-tabs-margin;
-      background-color: @impac-dashboard-selector-tabs-background-color;
-      border: @impac-dashboard-selector-border;
-      color: @impac-dashboard-selector-tabs-color;
-    }
-    // active tab
-    li.active > a {
-      background-color: @impac-dashboard-selector-tabs-active-background-color;
-      color: @impac-dashboard-selector-tabs-active-color;
-    }
-    // add new tab
-    li:last-child > a {
-      // padding-left: 5px;
-    }
-    li:last-child.active > a {
-      background-color: @impac-dashboard-selector-tabs-background-color;
-    }
-  }
-
-  // PILLS
-  // TODO: Add less variables for customisation.
-  .nav.nav-pills {
-    // tab
-    li > a {
-      min-width: 0px;
-      padding-right: 8px;
-    }
-    // add a new tab
-    li:last-child tab-heading a {
-      margin-left: 2px;
-    }
-    // add a new tab
-    li:last-child.active > a {
-      background-color: #f4f4f4;
-    }
-  }
-  // tab icons
-  tab-heading a.close-link {
-    border-bottom: 0px solid;
-    margin-left: 12px;
-    position: relative;
-    top: -9px;
-    right: 1px;
-    color: @impac-dashboard-selector-tabs-color;
-  }
-  ////////
-}
-
 .analytics {
   padding-top: @impac-dashboard-padding-top;
   margin-left: @impac-dashboard-margin-left;
@@ -1963,6 +1769,200 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+
+#module__dashboard-selector {
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
+
+  .buttons-bar-row {
+    margin-top: 54px;
+    &.pdf-mode { margin-top: 0px; }
+  }
+
+  // container for dashboard selector 'dropdown' template
+  .buttons-bar {
+    padding: 0;
+    position: relative;
+
+    .btn {
+      float: right;
+      margin: 3px;
+      border-radius: @impac-dashboard-buttons-border-radius;
+    }
+
+    .title-container {
+      h1 {
+        margin: 0px;
+        color: black;
+        cursor: auto;
+      }
+    }
+
+    .dropdown-container {
+      .dashboard-title {
+        color: @impac-dashboard-title-color;
+        display: inline;
+        cursor: pointer;
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
+        i.fa.fa-pencil {
+          margin-left: 20px;
+          font-size: 14px;
+          &:hover {
+            color: @mgreen;
+          }
+        }
+      }
+      .dashboard-select {
+        margin: 5px 0px 10px 30px;
+        height: auto;
+        border-left: 1px solid @impac-dashboard-title-color;
+        border-bottom: 1px solid @impac-dashboard-title-color;
+        width: 300px;
+        background-color: @lightgray;
+        cursor: pointer;
+        .option {
+          color: @impac-dashboard-title-label-color;
+          white-space: nowrap;
+          &:hover {
+            background-color: @impac-widget-background-color;
+          }
+          &.create {
+            background-color: @impac-dashboard-title-color;
+            color: @impac-dashboard-title-label-create-color;
+            height: 30px;
+            padding: 5px 10px 5px 10px;
+            &:hover {
+              background-color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          i.fa.fa-pencil {
+            float: right;
+            padding-top: 7px;
+            text-align: center;
+            width: 15%;
+            height: 30px;
+            &:hover {
+              color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          span.name {
+            width: 85%;
+            height: 30px;
+            display: inline-block;
+            padding: 5px 10px 5px 10px;
+          }
+        }
+      }
+      .change-name {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 60%;
+        background-color: rgb(23, 38, 45);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        .box-shadow(0px 0px 25px 4px black);
+        z-index: 50;
+        border: solid 1px @impac-widget-background-color;
+
+        .form-control {
+          height: 25px;
+          margin-bottom: 10px;
+        }
+      }
+      .data-source-label {
+        color: @impac-dashboard-source-color;
+        padding-left: 3px;
+        margin: 0px;
+      }
+    }
+
+    .loader-container {
+      padding-left: 10px;
+      .loading-spinner {
+        .loader-style();
+        font-size: 40px;
+      }
+    }
+  }
+
+  // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
+  .nav.nav-tabs,
+  .nav.nav-pills {
+
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+
+  // TABS
+  .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
+    // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
+    li:last-child.active > a {
+      background-color: @impac-dashboard-selector-tabs-background-color;
+    }
+  }
+
+  // PILLS
+  // TODO: Add less variables for customisation.
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a.close-link {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
+  }
+  ////////
+}
 
 dashboard-templates-selector {
   .templates-header {
@@ -2533,6 +2533,21 @@ dashboard-templates-selector {
   overflow-wrap: break-word;
 }
 
+#customers-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+    tr.total { font-weight: bold; }
+    input.btn.btn-xs { margin-top: -2px; }
+  }
+}
+
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
@@ -2783,9 +2798,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -2813,6 +2825,9 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-vs-liabilities {
   .legend > .title span {
     margin-left: 3px;
@@ -3241,6 +3256,18 @@ dashboard-templates-selector {
     }
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
+    text-align: center;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3268,21 +3295,15 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.hr-leaves-balance{
-  .employee-name {
-    text-align: center;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 33px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item {
+  .content.hr-salaries-summary {
+    .expandable-filterable-widget();
+  }
+}
+
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -3298,12 +3319,6 @@ dashboard-templates-selector {
     .center-bold(0px);
   }
 }
-.analytics .widget-item {
-  .content.hr-salaries-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3335,6 +3350,9 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 
@@ -3355,9 +3373,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
 
@@ -3454,31 +3469,12 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-customer-engagement {
   .tall-widget();
 
   .customer-engagement-chart {
     height: ~"calc(@{impac-big-widget-size} - 50px)";
   }
-
-  // .highcharts-legend-item {
-  //   rect.highcharts-point {
-  //     display: none;
-  //   }
-
-  //   span {
-  //     width: 110px;
-  //     text-align: center;
-  //     img {
-  //       text-align: center;
-  //       width: 55px;
-  //       height: 25px;
-  //     }
-  //   }
-  // }
 
   .dates-picker {
     display: inline-block;
@@ -3491,6 +3487,9 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
@@ -3656,6 +3655,16 @@ dashboard-templates-selector {
   .funnel-widget();
 }
 
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+  	 max-height: 215px;
+    .widget-line.header {
+      .selectable();
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-sales-summary {
   .drill-down-widget();
 
@@ -3665,7 +3674,7 @@ dashboard-templates-selector {
   }
 
   .right-panel .widget-lines-container {
-    max-height: 215px;
+    max-height: 200px;
   }
 
   .row.widget-line.header > [class*='col-'] { position: static; }
@@ -3696,16 +3705,6 @@ dashboard-templates-selector {
     }
 
     .fa.fa-info-circle { float: left; }
-  }
-}
-
-.analytics .widget-item .content.sales-performance {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-  	 max-height: 215px;
-    .widget-line.header {
-      .selectable();
-    }
   }
 }
 
@@ -3887,12 +3886,6 @@ chart-threshold {
   }
 }
 
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 15px;
@@ -3952,6 +3945,12 @@ chart-threshold {
       .value { text-align: justify; }
     }
   }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
 }
 
 .analytics .widget-item .top-line .top-buttons {
@@ -4362,42 +4361,6 @@ chart-threshold {
   }
 }
 
-.analytics .settings.tag-filter {
-  padding: 0px 5px;
-
-  .btn.btn-default {
-    height: 32px;
-    width: 30px;
-  }
-
-  .tag-lines-container {
-    padding: 0px 10px;
-
-    .tag-line {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      .tags-col { position: static; }
-
-      tags-input {
-        .tags {
-          display: flex;
-          border-radius: 4px;
-          border: solid 1px #ccc;
-          .tag-item {
-            background: #79a2bb;
-            border-radius: 4px;
-            color: white;
-          }
-        }
-      }
-
-      .host { position: static; }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -4438,6 +4401,42 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.tag-filter {
+  padding: 0px 5px;
+
+  .btn.btn-default {
+    height: 32px;
+    width: 30px;
+  }
+
+  .tag-lines-container {
+    padding: 0px 10px;
+
+    .tag-line {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .tags-col { position: static; }
+
+      tags-input {
+        .tags {
+          display: flex;
+          border-radius: 4px;
+          border: solid 1px #ccc;
+          .tag-item {
+            background: #79a2bb;
+            border-radius: 4px;
+            color: white;
+          }
+        }
+      }
+
+      .host { position: static; }
+    }
+  }
+}
+
 .analytics .settings.time-period {
   padding: 0px 5px;
 
