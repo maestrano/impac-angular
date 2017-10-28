@@ -22,6 +22,9 @@ angular
         title: null
         credits:
           enabled: false
+        loading:
+          hideDuration: _.get(options, 'loadingAnimationDuration', 200)
+          showDuration: _.get(options, 'loadingAnimationDuration', 200)
         legend:
           enabled: _.get(options, 'showLegend', true)
           layout: 'vertical'

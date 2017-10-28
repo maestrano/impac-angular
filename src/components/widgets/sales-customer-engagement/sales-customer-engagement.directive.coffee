@@ -63,24 +63,23 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
           w.metadata && w.metadata.selected_offer == o.value
         ) || $scope.filterOptions[0])
 
-  # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
-  dateFilter = (timestamp) ->
-    pickedDate = moment.utc(timestamp)
-    if pickedDate <= todayUTC then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
-
   # Sets the customers list resources type and displays it
   onClickBar = (event) ->
     series = this
     resources = 'customers' if series.name.toLowerCase() == 'number of customers'
     return unless resources?
+    $scope.chart.hc.showLoading()
 
-    # # Init trxList object with static values
+    # Init trxList object with static values
     $scope.trxList.resources = resources
     $scope.trxList.params =
       filter:
         interval_end_date: moment.utc(event.point.x).toISOString()
         selected_offer: w.metadata.selected_offer
-    $scope.trxList.fetch().finally(-> $scope.trxList.show())
+    $scope.trxList.fetch().finally(->
+      $scope.chart.hc.hideLoading()
+      $scope.trxList.show()
+    )
 
   onZoom = (event) ->
     metadataHash = angular.merge w.metadata, {
