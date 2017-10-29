@@ -75,7 +75,7 @@ module.controller('WidgetSalesCustomerEngagementCtrl', ($scope, $q, $filter, Imp
     $scope.trxList.params =
       filter:
         interval_end_date: moment.utc(event.point.x).toISOString()
-        selected_offer: w.metadata.selected_offer
+        selected_offer: $scope.filter.value
     $scope.trxList.fetch().finally(->
       $scope.chart.hc.hideLoading()
       $scope.trxList.show()
