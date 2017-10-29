@@ -35,25 +35,13 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
       scope.resetPreset = $q.defer()
 
       # translate periods into the current language and add a key
-      $translate(["impac.widget.settings.time_period.period.daily",
-        "impac.widget.settings.time_period.period.weekly",
-        "impac.widget.settings.time_period.period.monthly",
-        "impac.widget.settings.time_period.period.quarterly",
-        "impac.widget.settings.time_period.period.yearly",
-        "impac.widget.settings.time_period.period.days",
-        "impac.widget.settings.time_period.period.weeks",
-        "impac.widget.settings.time_period.period.months",
-        "impac.widget.settings.time_period.period.quarters",
-        "impac.widget.settings.time_period.period.years"]).then(
-        (translations) ->
-          scope.periods = [
-            {label: translations["impac.widget.settings.time_period.period.daily"], plural: "days", value: "DAILY" },
-            {label: translations["impac.widget.settings.time_period.period.weekly"], plural: "weeks", value: "WEEKLY" },
-            {label: translations["impac.widget.settings.time_period.period.monthly"], plural: "months", value: "MONTHLY" },
-            {label: translations["impac.widget.settings.time_period.period.quarterly"], plural: "quarters", value: "QUARTERLY" },
-            {label: translations["impac.widget.settings.time_period.period.yearly"], plural: "years", value: "YEARLY" }
-          ]
-      )
+      scope.periods = [
+        {label: $translate.instant('impac.widget.settings.time_period.period.daily'), plural: 'days', value: 'DAILY' },
+        {label: $translate.instant('impac.widget.settings.time_period.period.weekly'), plural: 'weeks', value: 'WEEKLY' },
+        {label: $translate.instant('impac.widget.settings.time_period.period.monthly'), plural: 'months', value: 'MONTHLY' },
+        {label: $translate.instant('impac.widget.settings.time_period.period.quarterly'), plural: 'quarters', value: 'QUARTERLY' },
+        {label: $translate.instant('impac.widget.settings.time_period.period.yearly'), plural: 'years', value: 'YEARLY' }
+      ]
       scope.maxNumberOfPeriods = 20
 
       # If the app has defined custom presets, will be passed to presets directive
