@@ -3,8 +3,8 @@ angular
 .service('BoltResources', ($http, ImpacMainSvc) ->
 
   authHeaders = ->
-    auth = 'Basic ' + btoa(ImpacMainSvc.getSsoSessionId())
-    { 'Authorization': auth }
+    ssoSession = ImpacMainSvc.getSsoSessionId()
+    if _.isEmpty(ssoSession) then {} else { 'Authorization': 'Basic ' + btoa(ssoSession) }
 
   buildUrl = (pathArray, paramsHash) ->
     url = pathArray.join('/')
