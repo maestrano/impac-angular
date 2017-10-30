@@ -34,16 +34,6 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
 
       scope.resetPreset = $q.defer()
 
-      # translate periods into the current language and add a key
-      scope.periods = [
-        {label: $translate.instant('impac.widget.settings.time_period.period.daily'), plural: 'days', value: 'DAILY' },
-        {label: $translate.instant('impac.widget.settings.time_period.period.weekly'), plural: 'weeks', value: 'WEEKLY' },
-        {label: $translate.instant('impac.widget.settings.time_period.period.monthly'), plural: 'months', value: 'MONTHLY' },
-        {label: $translate.instant('impac.widget.settings.time_period.period.quarterly'), plural: 'quarters', value: 'QUARTERLY' },
-        {label: $translate.instant('impac.widget.settings.time_period.period.yearly'), plural: 'years', value: 'YEARLY' }
-      ]
-      scope.maxNumberOfPeriods = 20
-
       # If the app has defined custom presets, will be passed to presets directive
       if ImpacTheming.get().widgetSettings? && ImpacTheming.get().widgetSettings.timePeriod? && !_.isEmpty(ImpacTheming.get().widgetSettings.timePeriod.presets)
         scope.presets = angular.copy ImpacTheming.get().widgetSettings.timePeriod.presets
@@ -96,6 +86,14 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         )
 
       initPeriod = (histParams=null)->
+        scope.maxNumberOfPeriods = 20
+        scope.periods = [
+          {label: $translate.instant('impac.widget.settings.time_period.period.daily'), plural: 'days', value: 'DAILY' },
+          {label: $translate.instant('impac.widget.settings.time_period.period.weekly'), plural: 'weeks', value: 'WEEKLY' },
+          {label: $translate.instant('impac.widget.settings.time_period.period.monthly'), plural: 'months', value: 'MONTHLY' },
+          {label: $translate.instant('impac.widget.settings.time_period.period.quarterly'), plural: 'quarters', value: 'QUARTERLY' },
+          {label: $translate.instant('impac.widget.settings.time_period.period.yearly'), plural: 'years', value: 'YEARLY' }
+        ]
         histParams = scope.histParams unless histParams?
         if histParams? && histParams.period? && _.find(scope.periods, (period) -> period.value == histParams.period)
           scope.timePeriodSetting.period = angular.copy(histParams.period)
