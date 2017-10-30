@@ -23,9 +23,10 @@ module.controller('WidgetSalesOfferPerformanceCtrl', ($scope, $timeout, $q, Char
   # --------------------------------------
   w.initContext = ->
     $scope.isDataFound = w.content? && w.content.performance?
-    $scope.selectedPerformanceSpan = w.content.performance.last if $scope.isDataFound
-    $scope.secondaryPerformanceSpan = w.content.performance.previous if $scope.isDataFound
-    $scope.histParams = $scope.selectedPerformanceSpan.hist_parameters if $scope.isDataFound
+    if $scope.isDataFound
+      $scope.selectedPerformanceSpan = w.content.performance.last
+      $scope.secondaryPerformanceSpan = w.content.performance.previous
+      $scope.histParams = $scope.selectedPerformanceSpan.hist_parameters
     w.metadata.hist_parameters = $scope.histParams
     $scope.getLegend()
     $scope.getCurrency()

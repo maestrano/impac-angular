@@ -81,7 +81,6 @@ module.controller('WidgetSalesSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
 
           $scope.selectedElements.push(foundElem) if foundElem
 
-      w.width = 6 unless _.any($scope.selectedElements)
       sortData()
 
   $scope.getElementChartColor = (index) ->
