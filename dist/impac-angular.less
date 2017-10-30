@@ -2689,6 +2689,9 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .dashboard-settings.pdf-mode {
+}
+
 .analytics .dashboard-settings.sync-apps {
   .show-status {
     margin-right: 5px;
@@ -2795,9 +2798,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 chart-threshold {
 
   .attach-panel {
@@ -2853,53 +2853,6 @@ chart-threshold {
   &.popover .popover-title {
     background-color: black;
     color: white;
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
   }
 }
 
@@ -2964,6 +2917,59 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -3001,12 +3007,6 @@ chart-threshold {
       }
     }
   }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -3428,22 +3428,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.hr-employees-list {
-  .legend {
-    margin-bottom: 9px;
-  }
-  .widget-lines-container {
-    text-align: center;
-    .widget-line {
-      .alternate-bg();
-    }
-  }
-  .edit {
-    .widget-lines-container {
-      text-align: left;
-    }
-  }
-}
 .analytics .widget-item .content.hr-employee-details {
   font-size: 12px;
   .details-container {
@@ -3467,6 +3451,22 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
 .analytics .widget-item .content.hr-leaves-balance{
   .employee-name {
     text-align: center;
@@ -3544,23 +3544,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.invoices-aged-payables-receivables {
-  .drill-down-widget();
-
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.astericks-info {
-    margin-top: 15px;
-  }
-
-  .currency-conversions {
-    float: right;
-    margin-left: 3px;
-  }
-}
-
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 
@@ -3584,6 +3567,23 @@ chart-threshold {
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
+.analytics .widget-item .content.invoices-aged-payables-receivables {
+  .drill-down-widget();
+
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.astericks-info {
+    margin-top: 15px;
+  }
+
+  .currency-conversions {
+    float: right;
+    margin-left: 3px;
+  }
+}
+
 .analytics .widget-item .content.sales-aged {
   .tall-widget();
 
@@ -3925,25 +3925,6 @@ chart-threshold {
     margin-bottom: 5px;
   }
 }
-.analytics .widget-item .content.sales-top-customers {
-  .selector {
-    border-bottom: dashed 1px #E6E6E6;
-    padding-bottom: 3px;
-    a { font-weight: normal; }
-    .param-selector { display: inline-block; }
-  }
-  .widget-lines-container {
-    max-height: 235px;
-    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
-
-    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
-    .row > [class*='col-'] { position: static; }
-  }
-  .currency-conversions {
-    img { margin-top: -2px; }
-  }
-}
-
 .analytics .widget-item .content.sales-top-opportunities {
   .opps-container {
     max-height: 195px;
@@ -3992,9 +3973,25 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
+.analytics .widget-item .content.sales-top-customers {
+  .selector {
+    border-bottom: dashed 1px #E6E6E6;
+    padding-bottom: 3px;
+    a { font-weight: normal; }
+    .param-selector { display: inline-block; }
+  }
+  .widget-lines-container {
+    max-height: 235px;
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
+
+    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
+    .row > [class*='col-'] { position: static; }
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
 }
+
 .analytics .settings.accounting-behaviour {
 
   .btn.btn-primary {
@@ -4005,6 +4002,9 @@ chart-threshold {
 
 }
 
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
 .analytics .settings.attach-kpis {
   .attach-kpi {
     padding: 8px 5px;
@@ -4248,24 +4248,6 @@ chart-threshold {
   }
 }
 
-.analytics .settings.offsets {
-  .offset-value {
-    font-style: italic;
-    font-size: 13px;
-  }
-
-  .offset-value .fa-trash-o {
-    &:hover {
-      color: @brand-danger;
-      cursor: pointer;
-    }
-    margin-left: 10px;
-  }
-
-  input { width: 75%; }
-  button { width: 30px; }
-}
-
 .analytics .settings.organizations {
   .widget-lines-container {
     .widget-line {
@@ -4285,6 +4267,24 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
 .analytics .widget-item .content .settings.param-selector {
   display: inline-block;
 
@@ -4345,22 +4345,6 @@ chart-threshold {
   }
 }
 
-.analytics .settings.params-checkboxes {
-  padding: 2px 0px;
-  input {
-    margin: 0;
-    height: inherit;
-  }
-  span {
-    margin-left: 5px;
-  }
-  label {
-    display: flex;
-    justify-content: center;
-    line-height: 14px;
-  }
-}
-
 .analytics .widget-item .content .settings.params-picker {
   padding: 0px 10px;
   .parameter {
@@ -4401,6 +4385,22 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+  }
+}
+
 .analytics .settings.tag-filter {
   padding: 0px 5px;
 
