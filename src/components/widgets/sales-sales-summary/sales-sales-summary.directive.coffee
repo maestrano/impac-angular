@@ -10,19 +10,16 @@ module.controller('WidgetSalesSalesSummaryCtrl', ($scope, $q, ChartFormatterSvc,
   $scope.widthDeferred = $q.defer()
   $scope.chartDeferred = $q.defer()
   $scope.paramSelectorDeferred = $q.defer()
-  $scope.tagFilterDeferred = $q.defer()
 
   settingsPromises = [
     $scope.timePeriodDeferred.promise
     $scope.widthDeferred.promise
     $scope.chartDeferred.promise
     $scope.paramSelectorDeferred.promise
-    $scope.tagFilterDeferred.promise
   ]
 
   $scope.ascending = true
   $scope.sortedColumn = 'offers'
-  $scope.filterTagsEnabled = ImpacTheming.get().widgetSettings.tagging.enabled
 
   setAmountDisplayed = ->
     $scope.amountDisplayed = angular.copy(_.find($scope.amountDisplayedOptions, (o) ->
