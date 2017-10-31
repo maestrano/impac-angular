@@ -3494,6 +3494,12 @@ chart-threshold {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
+.analytics .widget-item {
+  .content.hr-salaries-summary {
+    .expandable-filterable-widget();
+  }
+}
+
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -3509,12 +3515,6 @@ chart-threshold {
     .center-bold(0px);
   }
 }
-.analytics .widget-item {
-  .content.hr-salaries-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3665,6 +3665,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
@@ -3675,9 +3678,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
