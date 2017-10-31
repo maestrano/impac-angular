@@ -2,6 +2,10 @@ angular.module('impac.filters.moment-date', []).filter('momentDate', ($translate
   (date, component) ->
 
     getFormatForEntity = (entity = '') ->
+      periods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly']
+      if periods.includes(entity.toLowerCase())
+        entity = 'period-' + entity.toLowerCase()
+
       settings = ImpacTheming.get()
       if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]
         format = settings.dateFormatterSettings.formats[entity]

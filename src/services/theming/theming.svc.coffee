@@ -134,12 +134,12 @@ angular
 #          'hr/payroll_summary':   "MMM-DD"
 #          'sales/break_even':     "DD MMM YYYY"
 #          'sales/leads_funnel':   "DD MMM YYYY"
-#         filters
-#          'mno-date-daily':       "DD MMM"
-#          'mno-date-weekly':      "DD MMM"
-#          'mno-date-monthly':     "MMM-YYYY"
-#          'mno-date-quarterly':   "MMM YYYY"
-#          'mno-date-yearly':      "YYYY"
+#         periods
+#          'period-daily':       "DD MMM"
+#          'period-weekly':      "DD MMM"
+#          'period-monthly':     "MMM-YYYY"
+#          'period-quarterly':   "MMM YYYY"
+#          'period-yearly':      "YYYY"
 #         common components
 #          'time-period':          "MM_DD_YYYY"
 #          'time-slider':          "Do MM YYYY"

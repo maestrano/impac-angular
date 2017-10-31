@@ -216,7 +216,7 @@ module.controller('WidgetInvoicesAgedPayablesReceivablesCtrl', ($scope, $q, $log
 
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-      dates = _.map(w.content.dates, (date, index) -> $filter('mnoDate')(date, period))
+      dates = _.map(w.content.dates, (date, index) -> $filter('momentDate')(date, period))
 
       angular.forEach($scope.selectedElements, (sElem) ->
         data = angular.copy(sElem)

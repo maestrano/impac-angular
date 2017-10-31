@@ -80,7 +80,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.formatDate = (date) ->
     if w.metadata? && w.metadata.hist_parameters?
-      return $filter('mnoDate')(date, w.metadata.hist_parameters.period)
+      return $filter('momentDate')(date, w.metadata.hist_parameters.period)
     else
       return $filter('date')(date, 'MMM')
 
@@ -194,15 +194,15 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
         inputData = []
         labels = _.map w.content.dates, (date) ->
           if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
-            $filter('mnoDate')(date, 'YEARLY')
+            $filter('momentDate')(date, 'YEARLY')
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "QUARTERLY"
-            $filter('mnoDate')(date, 'QUARTERLY')
+            $filter('momentDate')(date, 'QUARTERLY')
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "MONTHLY"
-            $filter('mnoDate')(date, 'MONTHLY')
+            $filter('momentDate')(date, 'MONTHLY')
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "WEEKLY"
-            $filter('mnoDate')(date, 'WEEKLY')
+            $filter('momentDate')(date, 'WEEKLY')
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "DAILY"
-            $filter('mnoDate')(date, 'DAILY')
+            $filter('momentDate')(date, 'DAILY')
           else
             $filter('date')(date, 'MMM')
         angular.forEach($scope.selectedElements, (sElem) ->
