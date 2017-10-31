@@ -160,8 +160,6 @@ angular
       widgetsTemplatesPromises.push $http.get(widgetsTemplatesUrl()).then(
         (response) ->
           for widgetTemplate in response.data.widgets
-            if _.get(widgetTemplate, 'metadata.hist_parameters.from') && _.get(widgetTemplate, 'metadata.hist_parameters.to')
-              widgetTemplate.metadata.hist_parameters.from = moment(widgetTemplate.metadata.hist_parameters).format('DD-MM-YYYY');
             widgetsTemplates.push(widgetTemplate)
         (error) ->
           $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", widgetsTemplatesUrl())

@@ -128,24 +128,24 @@ angular
 
       dateFormatterSettings:
         default: 'L'
-        formats:
-          #widgets
-          'hr/employee_details':  "MM-DD-YYYY"
-          'hr/payroll_summary':   "MMM-DD"
-          'sales/break_even':     "DD MMM YYYY"
-          'sales/leads_funnel':   "DD MMM YYYY"
-          #filters
-          'mno-date-daily':       "DD MMM"
-          'mno-date-weekly':      "DD MMM"
-          'mno-date-monthly':     "MMM-YYYY"
-          'mno-date-quarterly':   "MMM YYYY"
-          'mno-date-yearly':      "YYYY"
-          #common components
-          'time-period':          "MM_DD_YYYY"
-          'time-slider':          "Do MM YYYY"
-          'dates-picker':         "YYYY/MM/DD"
-          'currency-conversions': "MMMM Do YYYY"
-
+        formats: {
+#         widgets
+#          'hr/employee_details':  "MM-DD-YYYY"
+#          'hr/payroll_summary':   "MMM-DD"
+#          'sales/break_even':     "DD MMM YYYY"
+#          'sales/leads_funnel':   "DD MMM YYYY"
+#         filters
+#          'mno-date-daily':       "DD MMM"
+#          'mno-date-weekly':      "DD MMM"
+#          'mno-date-monthly':     "MMM-YYYY"
+#          'mno-date-quarterly':   "MMM YYYY"
+#          'mno-date-yearly':      "YYYY"
+#         common components
+#          'time-period':          "MM_DD_YYYY"
+#          'time-slider':          "Do MM YYYY"
+#          'dates-picker':         "YYYY/MM/DD"
+#          'currency-conversions': "MMMM Do YYYY"
+        }
 
     #=======================================
     # Public methods available in config
