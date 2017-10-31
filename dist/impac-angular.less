@@ -1511,7 +1511,7 @@ body {
 
     .section-lines {
       overflow-x: hidden;
-      overflow-y: scroll;
+      overflow-y: auto;
       height: 200px;
       margin-right: -10px;
       margin-left: 0px;
@@ -2663,6 +2663,7 @@ dashboard-templates-selector {
     max-height: ~"calc(@{impac-big-widget-size} - 60px)";
     overflow: auto;
     tr.total { font-weight: bold; }
+    input.btn.btn-xs { margin-top: -2px; }
   }
 }
 
@@ -3023,6 +3024,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
+  }
+}
+
 .analytics .widget-item .content.accounts-balance {
   h3 {
     .left-thin(30px);
@@ -3031,12 +3038,6 @@ chart-threshold {
 
   .price {
     .center-bold(0px);
-  }
-}
-
-.analytics .widget-item .content.accounts-assets-vs-liabilities {
-  .legend > .title span {
-    margin-left: 3px;
   }
 }
 
