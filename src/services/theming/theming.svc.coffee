@@ -140,6 +140,7 @@ angular
 #          'period-monthly':     "MMM-YYYY"
 #          'period-quarterly':   "MMM YYYY"
 #          'period-yearly':      "YYYY"
+#          'period-default':     "MMM"
 #         common components
 #          'time-period':          "MM_DD_YYYY"
 #          'time-slider':          "Do MM YYYY"

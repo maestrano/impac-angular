@@ -2,7 +2,7 @@ angular.module('impac.filters.moment-date', []).filter('momentDate', ($translate
   (date, component) ->
 
     getFormatForEntity = (entity = '') ->
-      periods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly']
+      periods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'default']
       if periods.includes(entity.toLowerCase())
         entity = 'period-' + entity.toLowerCase()
 

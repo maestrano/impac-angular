@@ -82,7 +82,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     if w.metadata? && w.metadata.hist_parameters?
       return $filter('momentDate')(date, w.metadata.hist_parameters.period)
     else
-      return $filter('date')(date, 'MMM')
+      return $filter('momentDate')(date, 'default')
 
   $scope.sort = (col) ->
     if $scope.sortedColumn == col
@@ -204,7 +204,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "DAILY"
             $filter('momentDate')(date, 'DAILY')
           else
-            $filter('date')(date, 'MMM')
+            $filter('momentDate')(date, 'default')
         angular.forEach($scope.selectedElements, (sElem) ->
           data = angular.copy(sElem)
           inputData.push({title: data.name, labels: labels, values: data.totals})
