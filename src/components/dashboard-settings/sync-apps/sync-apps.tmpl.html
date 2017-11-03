@@ -4,14 +4,15 @@
   <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="'mouseenter'" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
     <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
     <span class="ng-hide" ng-show="isSyncing" translate>impac.components.sync_apps.syncing</span>
-    <span ng-hide="isSyncing" translate>impac.components.sync_apps.show_sync_status</span>
+    <span ng-hide="isSyncing || !has_running_apps" translate>impac.components.sync_apps.show_sync_status</span>
+    <span class="ng-hide" ng-show="!has_running_apps" translate>impac.components.sync_apps.no_apps_running</span>
   </span>
 
-  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="hasError && !isSyncing">
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="(hasError && !isSyncing) || !has_running_apps">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
-  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="!hasError && !isSyncing">
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="!hasError && !isSyncing && has_running_apps">
     <i class="fa fa-check"></i>
   </div>
 
@@ -23,7 +24,7 @@
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
+  <div ng-if="has_running_apps" class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
     <div class="badge">{{connector.status}}</div>
     <strong>{{connector.name}}</strong> -
     <span ng-switch="connector.status">
@@ -37,7 +38,7 @@
     <!-- <span ng-if="connector.formatted_date"> - Synced at {{connector.formatted_date}}</span> -->
   </div>
   <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
-    <p>{{'impac.components.sync_apps.all' | translate}} {{realtimeSyncing ? '' : 'other'}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
+    <p ng-show="has_running_cube">{{'impac.components.sync_apps.all' | translate}} {{realtimeSyncing ? '' : 'other'}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
   </div>
 </script>
 
