@@ -6,8 +6,6 @@ angular
     #====================================
 
     _self = @
-    _ = window._
-    moment = window.moment
     @config = {}
 
     @config.dashboards = []
@@ -112,13 +110,12 @@ angular
               orgId = success.currentOrganization.id
 
               # Retrieve dashboards with widgets and kpis settings
-              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId))
-                .then(
-                  (response) ->
-                    _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
-                  (error) ->
-                    $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
-                )
+              dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
+                (response) ->
+                  _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
+                (error) ->
+                  $log.error("Impac! - DashboardsSvc: cannot retrieve dashboards list for org: #{orgId}")
+              )
 
               widgetsTemplatesPromise = fetchWidgetsTemplates()
 
