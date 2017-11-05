@@ -187,7 +187,8 @@ angular.module('impac.filters',
     'impac.filters.titleize',
     'impac.filters.truncate',
     'impac.filters.mno-currency',
-    'impac.filters.mno-date'
+    'impac.filters.mno-date',
+    'impac.filters.moment-date'
   ]
 );
 
@@ -357,15 +358,15 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         }
         switch (period.toUpperCase()) {
           case 'DAILY':
-            return $filter('date')(date_string, 'dd MMM');
+            return $filter('momentDate')(date_string, 'mno-date-daily');
           case 'WEEKLY':
-            return $filter('date')(date_string, 'dd MMM');
+            return $filter('momentDate')(date_string, 'mno-date-weekly');
           case 'MONTHLY':
-            return $filter('date')(date_string, 'MMM yyyy');
+            return $filter('momentDate')(date_string, 'mno-date-monthly');
           case 'QUARTERLY':
-            return $filter('date')(date_string, 'MMM yyyy');
+            return $filter('momentDate')(date_string, 'mno-date-quarterly');
           case 'YEARLY':
-            return $filter('date')(date_string, 'yyyy');
+            return $filter('momentDate')(date_string, 'mno-date-yearly');
         }
       } else {
         return "";
@@ -376,9 +377,46 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 }).call(this);
 
 (function() {
+  angular.module('impac.filters.moment-date', []).filter('momentDate', ["$translate", "ImpacTheming", function($translate, ImpacTheming) {
+    return function(date, component) {
+      var d, getFormatForEntity, moment;
+      getFormatForEntity = function(entity) {
+        var format, periods, settings;
+        if (entity == null) {
+          entity = '';
+        }
+        periods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'default'];
+        if (periods.includes(entity.toLowerCase())) {
+          entity = 'period-' + entity.toLowerCase();
+        }
+        settings = ImpacTheming.get();
+        if (settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]) {
+          format = settings.dateFormatterSettings.formats[entity];
+        } else {
+          format = settings.dateFormatterSettings["default"];
+        }
+        return format;
+      };
+      moment = window.moment;
+      moment.locale($translate.use().toLowerCase());
+      if (date) {
+        d = moment(date);
+        if (d.isValid()) {
+          return d.format(getFormatForEntity(component));
+        } else if ((d = moment(date, "DD-MM-YYYY")) && d.isValid()) {
+          return d.format(getFormatForEntity(component));
+        }
+      }
+      return '';
+    };
+  }]);
+
+}).call(this);
+
+(function() {
   angular.module('impac.filters.titleize', []).filter('titleize', function() {
     return function(s) {
-      s = s === void 0 || s === null ? '' : s;
+      s = (s === void 0 || s === null) ? '' : s;
       return s.toString().toLowerCase().replace(/\b([a-z])/g, function(ch) {
         return ch.toUpperCase();
       });
@@ -2518,9 +2556,28 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 }).call(this);
 
 (function() {
-  angular.module('impac.services.dashboards', []).service('ImpacDashboardsSvc', ["$q", "$http", "$log", "$timeout", "ImpacMainSvc", "ImpacRoutes", "ImpacTheming", "ImpacDeveloper", "ImpacUtilities", function($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) {
-    var _self, belongsToCurrentOrganization, fetchWidgetsTemplates, isTemplateAllowed, needConfigurationLoad, setDefaultCurrentDashboard, widgetsTemplatesUrl;
+  angular.module('impac.services.dashboard-templates', []).service('ImpacDhbTemplatesSvc', ["$q", "$http", "$log", "ImpacRoutes", "ImpacDashboardsSvc", function($q, $http, $log, ImpacRoutes, ImpacDashboardsSvc) {
+    var _self;
     _self = this;
+    this.index = function() {
+      return $http.get(ImpacRoutes.dashboardTemplates.index()).then(function(response) {
+        return response.data || [];
+      }, function(err) {
+        $log.err('Impac! DashboardTemplatesSvc: failed to retrieve dashboard templates', err);
+        return $q.reject();
+      });
+    };
+    return this;
+  }]);
+
+}).call(this);
+
+(function() {
+  angular.module('impac.services.dashboards', []).service('ImpacDashboardsSvc', ["$q", "$http", "$log", "$timeout", "ImpacMainSvc", "ImpacRoutes", "ImpacTheming", "ImpacDeveloper", "ImpacUtilities", function($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) {
+    var _, _self, belongsToCurrentOrganization, fetchWidgetsTemplates, isTemplateAllowed, moment, needConfigurationLoad, setDefaultCurrentDashboard, widgetsTemplatesUrl;
+    _self = this;
+    _ = window._;
+    moment = window.moment;
     this.config = {};
     this.config.dashboards = [];
     this.getDashboards = function() {
@@ -2894,20 +2951,11 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 
 }).call(this);
 
+
+/* Can be removed */
+
 (function() {
-  angular.module('impac.services.dashboard-templates', []).service('ImpacDhbTemplatesSvc', ["$q", "$http", "$log", "ImpacRoutes", "ImpacDashboardsSvc", function($q, $http, $log, ImpacRoutes, ImpacDashboardsSvc) {
-    var _self;
-    _self = this;
-    this.index = function() {
-      return $http.get(ImpacRoutes.dashboardTemplates.index()).then(function(response) {
-        return response.data || [];
-      }, function(err) {
-        $log.err('Impac! DashboardTemplatesSvc: failed to retrieve dashboard templates', err);
-        return $q.reject();
-      });
-    };
-    return this;
-  }]);
+
 
 }).call(this);
 
@@ -4076,60 +4124,6 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 }).call(this);
 
 (function() {
-  angular.module('impac.services.notifications', []).service('ImpacNotifications', ["$log", "Pusher", "ImpacTheming", "ImpacEvents", "IMPAC_EVENTS", "toastr", function($log, Pusher, ImpacTheming, ImpacEvents, IMPAC_EVENTS, toastr) {
-    var EVENTS, _self;
-    _self = this;
-    ImpacEvents.registerCb(IMPAC_EVENTS.addOrRemoveAlerts, function() {
-      return _self.load();
-    });
-    EVENTS = {
-      kpi_target_alert: function(response) {
-        var notification;
-        notification = response.data;
-        toastr.warning(notification.subject);
-        return ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpiTargetAlert, notification);
-      }
-    };
-    this.load = function() {
-      if (!ImpacTheming.get().alertsConfig.enableAlerts) {
-        return;
-      }
-      return ImpacEvents.notifyCallbacks(IMPAC_EVENTS.impacNotificationsLoad, function(alerts) {
-        var activeChannel, alert, channels, i, j, len, len1, pusher, pusherAlerts, ref, results;
-        pusher = Pusher.init();
-        pusherAlerts = _.map(alerts, function(alert) {
-          if (!(alert.service === 'inapp' && _.has(alert.metadata, 'pusher'))) {
-            return null;
-          }
-          return _.pick(alert.metadata, ['pusher']);
-        });
-        pusherAlerts = _.uniq(_.compact(pusherAlerts));
-        channels = _.uniq(_.map(pusherAlerts, function(a) {
-          return a.pusher.channel;
-        }));
-        ref = pusher.socket.allChannels();
-        for (i = 0, len = ref.length; i < len; i++) {
-          activeChannel = ref[i];
-          if (channels.indexOf(activeChannel) < 0) {
-            pusher.disconnectChannel(activeChannel.name);
-          } else {
-            pusher.unbindAll(activeChannel.name);
-          }
-        }
-        results = [];
-        for (j = 0, len1 = pusherAlerts.length; j < len1; j++) {
-          alert = pusherAlerts[j];
-          results.push(pusher.bind(alert.pusher.channel, alert.pusher.event, EVENTS[alert.pusher.event]));
-        }
-        return results;
-      });
-    };
-    return _self;
-  }]);
-
-}).call(this);
-
-(function() {
   angular.module('impac.services.pusher', []).service('Pusher', ["$window", "ImpacLinking", function($window, ImpacLinking) {
     var _self;
     _self = this;
@@ -4184,6 +4178,60 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         return;
       }
       return _self.socket.unsubscribe(channel);
+    };
+    return _self;
+  }]);
+
+}).call(this);
+
+(function() {
+  angular.module('impac.services.notifications', []).service('ImpacNotifications', ["$log", "Pusher", "ImpacTheming", "ImpacEvents", "IMPAC_EVENTS", "toastr", function($log, Pusher, ImpacTheming, ImpacEvents, IMPAC_EVENTS, toastr) {
+    var EVENTS, _self;
+    _self = this;
+    ImpacEvents.registerCb(IMPAC_EVENTS.addOrRemoveAlerts, function() {
+      return _self.load();
+    });
+    EVENTS = {
+      kpi_target_alert: function(response) {
+        var notification;
+        notification = response.data;
+        toastr.warning(notification.subject);
+        return ImpacEvents.notifyCallbacks(IMPAC_EVENTS.kpiTargetAlert, notification);
+      }
+    };
+    this.load = function() {
+      if (!ImpacTheming.get().alertsConfig.enableAlerts) {
+        return;
+      }
+      return ImpacEvents.notifyCallbacks(IMPAC_EVENTS.impacNotificationsLoad, function(alerts) {
+        var activeChannel, alert, channels, i, j, len, len1, pusher, pusherAlerts, ref, results;
+        pusher = Pusher.init();
+        pusherAlerts = _.map(alerts, function(alert) {
+          if (!(alert.service === 'inapp' && _.has(alert.metadata, 'pusher'))) {
+            return null;
+          }
+          return _.pick(alert.metadata, ['pusher']);
+        });
+        pusherAlerts = _.uniq(_.compact(pusherAlerts));
+        channels = _.uniq(_.map(pusherAlerts, function(a) {
+          return a.pusher.channel;
+        }));
+        ref = pusher.socket.allChannels();
+        for (i = 0, len = ref.length; i < len; i++) {
+          activeChannel = ref[i];
+          if (channels.indexOf(activeChannel) < 0) {
+            pusher.disconnectChannel(activeChannel.name);
+          } else {
+            pusher.unbindAll(activeChannel.name);
+          }
+        }
+        results = [];
+        for (j = 0, len1 = pusherAlerts.length; j < len1; j++) {
+          alert = pusherAlerts[j];
+          results.push(pusher.bind(alert.pusher.channel, alert.pusher.event, EVENTS[alert.pusher.event]));
+        }
+        return results;
+      });
     };
     return _self;
   }]);
@@ -4595,6 +4643,10 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         tagging: {
           enabled: false
         }
+      },
+      dateFormatterSettings: {
+        "default": 'L',
+        formats: {}
       }
     };
     provider.configure = function(configOptions) {
@@ -4863,8 +4915,9 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   angular.module('impac.services.widgets', []).service('ImpacWidgetsSvc', ["$q", "$http", "$log", "$timeout", "ImpacRoutes", "ImpacMainSvc", "ImpacDashboardsSvc", "ImpacDeveloper", "ImpacEvents", "ImpacTheming", "IMPAC_EVENTS", function($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) {
-    var _self, initWidget, isWidgetInCurrentDashboard;
+    var _self, initWidget, isWidgetInCurrentDashboard, moment;
     _self = this;
+    moment = window.moment;
     this.getSsoSessionId = ImpacMainSvc.getSsoSessionId;
     ImpacEvents.registerCb(IMPAC_EVENTS.kpiTargetAlert, function(notification) {
       return _self.refreshAll(true);
@@ -5259,10 +5312,10 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 (function() {
   var module;
 
-  module = angular.module('impac.components.common.transactions-list', []);
+  module = angular.module('impac.components.common.delete-widget', []);
 
-  module.component('transactionsList', {
-    templateUrl: 'common/transactions-list.tmpl.html',
+  module.component('commonDeleteWidget', {
+    templateUrl: 'common/delete-widget.tmpl.html',
     bindings: {
       onHide: '&',
       onPageChanged: '&',
@@ -5294,6 +5347,12 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           });
         }
         return results;
+      };
+      ctrl.deleteWidget = function() {
+        ctrl.loading = true;
+        return ctrl.onDelete()["finally"](function() {
+          return ctrl.loading = false;
+        });
       };
       return ctrl;
     }
@@ -5807,7 +5866,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 
   module = angular.module('impac.components.widgets-common.currency-conversions', []);
 
-  module.directive('commonCurrencyConversions', ["$templateCache", "ImpacAssets", function($templateCache, ImpacAssets) {
+  module.directive('commonCurrencyConversions', ["$templateCache", "ImpacAssets", "$filter", function($templateCache, ImpacAssets, $filter) {
     return {
       restrict: 'A',
       scope: {
@@ -5820,7 +5879,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         scope.currencyConversionsIcon = ImpacAssets.get('currencyConversionsIcon');
         scope.popoverTemplateUrl = $templateCache.get('widgets-common/details-popover.html');
         scope.popoverTitle = "Currency Conversions Info";
-        return scope.formattedRatesDate = moment(scope.ratesDate).format('MMMM Do YYYY');
+        return scope.formattedRatesDate = $filter('momentDate')(scope.ratesDate, 'currency-conversions');
       }
     };
   }]);
@@ -5921,7 +5980,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 
   module = angular.module('impac.components.widgets-common.time-period-info', []);
 
-  module.directive('commonTimePeriodInfo', ["$templateCache", "ImpacUtilities", "$translate", function($templateCache, ImpacUtilities, $translate) {
+  module.directive('commonTimePeriodInfo', ["$templateCache", "ImpacUtilities", "$translate", "$filter", function($templateCache, ImpacUtilities, $translate, $filter) {
     return {
       restrict: 'A',
       scope: {
@@ -5966,6 +6025,8 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         getDateInfo = function() {
           var dates;
           dates = ImpacUtilities.selectedTimeRange(scope.context.histParams);
+          dates.from = $filter('momentDate')(dates.from, 'time-period');
+          dates.to = $filter('momentDate')(dates.to, 'time-period');
           if (getBehaviour() === 'bls') {
             return $translate('impac.widget.common.time_period_info.to', {
               dateTo: "" + dates.to
@@ -7963,7 +8024,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(data.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData = {
           labels: dates,
@@ -8295,7 +8356,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(datesSource, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         lineData = {
           title: data.name,
@@ -8333,6 +8394,128 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
     return {
       restrict: 'A',
       controller: 'WidgetAccountsBalanceCtrl'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var module;
+
+  module = angular.module('impac.components.widgets.accounts-cash-balance', []);
+
+  module.controller('WidgetAccountsCashBalanceCtrl', ["$scope", "$q", "$timeout", "$filter", "ImpacTheming", "ImpacAssets", "HighchartsFactory", function($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, HighchartsFactory) {
+    var getPeriod, getSerieByAccount, setSeriesColors, settingsPromises, w;
+    w = $scope.widget;
+    $scope.orgDeferred = $q.defer();
+    settingsPromises = [$scope.orgDeferred.promise];
+    w.initContext = function() {
+      var hist;
+      $scope.isDataFound = w.content.chart != null;
+      $scope.groupedTable = w.content.grouped_table;
+      setSeriesColors(w.content.chart.series, {
+        positive: '#3FC4FF',
+        negative: '#e50228'
+      });
+      if (hist = w.metadata.hist_parameters) {
+        $scope.fromDate = hist.from;
+        return $scope.toDate = hist.to;
+      }
+    };
+    $scope.legendItemOnClick = function(account) {
+      var serie, visibility;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return;
+      }
+      visibility = serie.visible ? false : true;
+      return serie.setVisible(visibility);
+    };
+    $scope.getLegendItemCheckBox = function(account) {
+      var serie;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return 'fa-check-square-o';
+      }
+      if (serie.visible) {
+        return 'fa-check-square-o';
+      } else {
+        return 'fa-square-o';
+      }
+    };
+    $scope.getLegendItemIcon = function(account) {
+      var serie;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (serie.type === 'area') {
+        return ImpacAssets.get('areaLegendIcon');
+      } else {
+        return ImpacAssets.get('plotLineLegendIcon');
+      }
+    };
+    $scope.getLegendItemColor = function(account) {
+      var serie;
+      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
+      if (!serie) {
+        return '#000';
+      }
+      return serie.color;
+    };
+    getPeriod = function() {
+      return (w.metadata != null) && (w.metadata.hist_parameters != null) && w.metadata.hist_parameters.period || 'MONTHLY';
+    };
+    getSerieByAccount = function(series, account) {
+      return _.find(series, function(serie) {
+        return (serie.id || serie.options && serie.options.id) === account.id;
+      });
+    };
+    setSeriesColors = function(series, chartColors) {
+      var bias, groupedSeries, i, palette, results, serie;
+      groupedSeries = _.groupBy(series, function(serie) {
+        return serie.bias;
+      });
+      results = [];
+      for (bias in groupedSeries) {
+        series = groupedSeries[bias];
+        if (!chartColors[bias]) {
+          continue;
+        }
+        palette = ImpacTheming.color.generateShadesPalette(chartColors[bias], series.length);
+        results.push((function() {
+          var j, len, results1;
+          results1 = [];
+          for (i = j = 0, len = series.length; j < len; i = ++j) {
+            serie = series[i];
+            results1.push(serie.color = palette[i]);
+          }
+          return results1;
+        })());
+      }
+      return results;
+    };
+    $scope.chartId = function() {
+      return "cashBalanceChart-" + w.id;
+    };
+    w.format = function() {
+      var options;
+      options = {
+        chartType: 'line',
+        currency: w.metadata.currency,
+        period: getPeriod(),
+        showToday: true,
+        showLegend: false
+      };
+      return $timeout(function() {
+        $scope.chart || ($scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options));
+        return $scope.chart.render(w.content.chart, options);
+      });
+    };
+    return $scope.widgetDeferred.resolve(settingsPromises);
+  }]);
+
+  module.directive('widgetAccountsCashBalance', function() {
+    return {
+      restrict: 'A',
+      controller: 'WidgetAccountsCashBalanceCtrl'
     };
   });
 
@@ -8494,95 +8677,129 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
 (function() {
   var module;
 
-  module = angular.module('impac.components.widgets.accounts-cash-balance', []);
+  module = angular.module('impac.components.widgets.accounts-cash-projection', []);
 
   module.controller('WidgetAccountsCashBalanceCtrl', ["$scope", "$q", "$timeout", "$filter", "ImpacTheming", "ImpacAssets", "ImpacWidgetsSvc", "HighchartsFactory", function($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, ImpacWidgetsSvc, HighchartsFactory) {
     var getPeriod, getSerieByAccount, onZoom, setSeriesColors, settingsPromises, updateLocked, w, zoomMetadata;
     w = $scope.widget;
     $scope.orgDeferred = $q.defer();
-    settingsPromises = [$scope.orgDeferred.promise];
-    w.initContext = function() {
-      var hist;
-      $scope.isDataFound = w.content.chart != null;
-      $scope.groupedTable = w.content.grouped_table;
-      setSeriesColors(w.content.chart.series, {
-        positive: '#3FC4FF',
-        negative: '#e50228'
+    $scope.intervalsOffsetsDeferred = $q.defer();
+    $scope.currentOffsetsDeferred = $q.defer();
+    settingsPromises = [$scope.orgDeferred.promise, $scope.intervalsOffsetsDeferred.promise, $scope.currentOffsetsDeferred.promise];
+    $scope.simulationMode = false;
+    $scope.intervalsCount = 0;
+    $scope.chartDeferred = $q.defer();
+    $scope.chartPromise = $scope.chartDeferred.promise;
+    $scope.chartThresholdOptions = {
+      label: 'Get alerted when the cash projection goes below'
+    };
+    $scope.trxList = {
+      display: false
+    };
+    $scope.trxList.show = function() {
+      return $scope.trxList.display = true;
+    };
+    $scope.trxList.hide = function() {
+      return $scope.trxList.display = false;
+    };
+    $scope.trxList.fetch = function(currentPage) {
+      var params;
+      if (currentPage == null) {
+        currentPage = 1;
+      }
+      params = angular.merge($scope.trxList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids'),
+        page: {
+          number: currentPage
+        }
       });
+      return BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(function(response) {
+        $scope.trxList.transactions = _.map(response.data.data, function(trx) {
+          return trx.attributes;
+        });
+        return $scope.trxList.totalRecords = response.data.meta.record_count;
+      });
+    };
+    w.initContext = function() {
+      var cashFlowSerie, hist, projectedSerie, todayInterval, totalOffset;
+      $scope.isDataFound = w.content != null;
+      todayInterval = _.findIndex(w.content.chart.series[0].data, function(vector) {
+        return vector[0] >= moment.now();
+      });
+      $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval;
+      projectedSerie = _.find(w.content.chart.series, function(serie) {
+        return serie.name === "Projected cash";
+      });
+      cashFlowSerie = _.find(w.content.chart.series, function(serie) {
+        return serie.name === "Cash flow";
+      });
+      cashFlowSerie.data = [];
+      cashFlowSerie.type = 'area';
+      cashFlowSerie.showInLegend = false;
+      totalOffset = 0.0;
+      if (w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0) {
+        totalOffset += _.sum(w.metadata.offset.current);
+      }
+      if (w.metadata.offset && w.metadata.offset.per_interval && w.metadata.offset.per_interval.length > 0) {
+        totalOffset += _.sum(w.metadata.offset.per_interval);
+      }
+      if (projectedSerie != null) {
+        $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset;
+      }
+      $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day');
       if (hist = w.metadata.hist_parameters) {
         $scope.fromDate = hist.from;
         return $scope.toDate = hist.to;
       }
     };
-    $scope.legendItemOnClick = function(account) {
-      var serie, visibility;
-      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
-      if (!serie) {
+    dateFilter = function(timestamp) {
+      var pickedDate;
+      pickedDate = moment.unix(timestamp / 1000).format('YYYY-MM-DD');
+      if (pickedDate === moment().format('YYYY-MM-DD')) {
+        return "lte " + pickedDate;
+      } else {
+        return pickedDate;
+      }
+    };
+    onClickBar = function(event) {
+      var resources, series;
+      series = this;
+      resources = (function() {
+        switch (series.name) {
+          case 'Payables':
+            return 'bills';
+          case 'Receivables':
+            return 'invoices';
+        }
+      })();
+      if (resources == null) {
         return;
       }
-      visibility = serie.visible ? false : true;
-      return serie.setVisible(visibility);
-    };
-    $scope.getLegendItemCheckBox = function(account) {
-      var serie;
-      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
-      if (!serie) {
-        return 'fa-check-square-o';
-      }
-      if (serie.visible) {
-        return 'fa-check-square-o';
-      } else {
-        return 'fa-square-o';
-      }
-    };
-    $scope.getLegendItemIcon = function(account) {
-      var serie;
-      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
-      if (serie.type === 'area') {
-        return ImpacAssets.get('areaLegendIcon');
-      } else {
-        return ImpacAssets.get('plotLineLegendIcon');
-      }
-    };
-    $scope.getLegendItemColor = function(account) {
-      var serie;
-      serie = ($scope.chart != null) && ($scope.chart.hc != null) && getSerieByAccount($scope.chart.hc.series, account);
-      if (!serie) {
-        return '#000';
-      }
-      return serie.color;
-    };
-    getPeriod = function() {
-      return (w.metadata != null) && (w.metadata.hist_parameters != null) && w.metadata.hist_parameters.period || 'MONTHLY';
-    };
-    getSerieByAccount = function(series, account) {
-      return _.find(series, function(serie) {
-        return (serie.id || serie.options && serie.options.id) === account.id;
-      });
-    };
-    setSeriesColors = function(series, chartColors) {
-      var bias, groupedSeries, i, palette, results, serie;
-      groupedSeries = _.groupBy(series, function(serie) {
-        return serie.bias;
-      });
-      results = [];
-      for (bias in groupedSeries) {
-        series = groupedSeries[bias];
-        if (!chartColors[bias]) {
-          continue;
+      $scope.trxList.resources = resources;
+      $scope.trxList.totalDue = event.point.y;
+      $scope.trxList.params = {
+        filter: {
+          due_date: dateFilter(event.point.x),
+          status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
         }
-        palette = ImpacTheming.color.generateShadesPalette(chartColors[bias], series.length);
-        results.push((function() {
-          var j, len, results1;
-          results1 = [];
-          for (i = j = 0, len = series.length; j < len; i = ++j) {
-            serie = series[i];
-            results1.push(serie.color = palette[i]);
-          }
-          return results1;
-        })());
+      };
+      return $scope.trxList.fetch()["finally"](function() {
+        return $scope.trxList.show();
+      });
+    };
+    imgSrc = function(name) {
+      return ImpacAssets.get(_.camelCase(name + 'LegendIcon'));
+    };
+    imgTemplate = function(src, name) {
+      return "<img src='" + src + "'><br>" + name;
+    };
+    legendFormatter = function() {
+      var name;
+      name = this.name;
+      if (name !== 'Projected cash') {
+        return imgTemplate(imgSrc(name), name);
       }
-      return results;
+      return imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow');
     };
     $scope.chartId = function() {
       return "cashBalanceChart-" + w.id;
@@ -8612,7 +8829,6 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
       options = {
         chartType: 'line',
         currency: w.metadata.currency,
-        period: getPeriod(),
         showToday: true,
         showLegend: false,
         withZooming: {
@@ -8620,18 +8836,38 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           callback: onZoom
         }
       };
-      return $timeout(function() {
-        $scope.chart || ($scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options));
-        return $scope.chart.render(w.content.chart, options);
-      });
+      $scope.chart || ($scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options));
+      $scope.chart.render(w.content.chart, options);
+      $scope.chart.addCustomLegend(legendFormatter);
+      $scope.chart.addSeriesEvent('click', onClickBar);
+      return $scope.chartDeferred.notify($scope.chart);
+    };
+    $scope.chartId = function() {
+      return "cashProjectionChart-" + w.id;
+    };
+    $scope.toggleSimulationMode = function(init) {
+      if (init == null) {
+        init = false;
+      }
+      if (init) {
+        $scope.initSettings();
+      }
+      return $scope.simulationMode = !$scope.simulationMode;
+    };
+    $scope.saveSimulation = function() {
+      $scope.updateSettings();
+      return $scope.toggleSimulationMode();
+    };
+    getPeriod = function() {
+      return (w.metadata != null) && (w.metadata.hist_parameters != null) && w.metadata.hist_parameters.period || 'MONTHLY';
     };
     return $scope.widgetDeferred.resolve(settingsPromises);
   }]);
 
-  module.directive('widgetAccountsCashBalance', function() {
+  module.directive('widgetAccountsCashProjection', function() {
     return {
       restrict: 'A',
-      controller: 'WidgetAccountsCashBalanceCtrl'
+      controller: 'WidgetAccountsCashProjectionCtrl'
     };
   });
 
@@ -9078,7 +9314,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(w.content.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData = {
           labels: dates,
@@ -9816,7 +10052,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
             period = w.metadata.hist_parameters.period;
           }
           dates = _.map(w.content.dates, function(date) {
-            return $filter('mnoDate')(date, period);
+            return $filter('momentDate')(date, period);
           });
           if ($scope.isNetProfitDisplayed) {
             datasets = [
@@ -9931,7 +10167,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(w.content.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         all_values_are_positive = true;
         ref = w.content.values.payables;
@@ -10027,8 +10263,8 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
         $scope.unCollapsed = w.metadata.unCollapsed || [];
         if (w.metadata && (histParams = w.metadata.hist_parameters)) {
           dates = ImpacUtilities.selectedTimeRange(histParams);
-          firstDate = $filter('mnoDate')(dates.from, getPeriod());
-          lastDate = $filter('mnoDate')(dates.to, getPeriod());
+          firstDate = $filter('momentDate')(dates.from, getPeriod());
+          lastDate = $filter('momentDate')(dates.to, getPeriod());
           $scope.amountDisplayedOptions[1].label = firstDate + " to " + lastDate;
           $scope.amountDisplayedOptions[0].label = lastDate;
         }
@@ -10255,7 +10491,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
             period = w.metadata.hist_parameters.period;
           }
           dates = _.map(w.content.dates, function(date) {
-            return $filter('mnoDate')(date, period);
+            return $filter('momentDate')(date, period);
           });
           inputData.push({
             title: data.name,
@@ -10404,7 +10640,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(data.layout.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData = {
           labels: dates,
@@ -10858,22 +11094,9 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
     };
     $scope.formatDate = function(date) {
       if ((w.metadata != null) && (w.metadata.hist_parameters != null)) {
-        switch (w.metadata.hist_parameters.period) {
-          case 'DAILY':
-            return $filter('date')(date, 'dd-MMM');
-          case 'WEEKLY':
-            return $filter('date')(date, 'dd-MMM');
-          case 'MONTHLY':
-            return $filter('date')(date, 'MMM');
-          case 'QUARTERLY':
-            return $filter('date')(date, 'MMM-yy');
-          case 'YEARLY':
-            return $filter('date')(date, 'yyyy');
-          default:
-            return $filter('date')(date, 'MMM');
-        }
+        return $filter('momentDate')(date, w.metadata.hist_parameters.period);
       } else {
-        return $filter('date')(date, 'MMM');
+        return $filter('momentDate')(date, 'default');
       }
     };
     $scope.sort = function(col) {
@@ -11031,13 +11254,17 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           inputData = [];
           labels = _.map(w.content.dates, function(date) {
             if (w.metadata.hist_parameters && w.metadata.hist_parameters.period === "YEARLY") {
-              return $filter('date')(date, 'yyyy');
+              return $filter('momentDate')(date, 'YEARLY');
             } else if (w.metadata.hist_parameters && w.metadata.hist_parameters.period === "QUARTERLY") {
-              return $filter('date')(date, 'MMM-yy');
-            } else if (w.metadata.hist_parameters && (w.metadata.hist_parameters.period === "WEEKLY" || w.metadata.hist_parameters.period === "DAILY")) {
-              return $filter('date')(date, 'dd-MMM');
+              return $filter('momentDate')(date, 'QUARTERLY');
+            } else if (w.metadata.hist_parameters && w.metadata.hist_parameters.period === "MONTHLY") {
+              return $filter('momentDate')(date, 'MONTHLY');
+            } else if (w.metadata.hist_parameters && w.metadata.hist_parameters.period === "WEEKLY") {
+              return $filter('momentDate')(date, 'WEEKLY');
+            } else if (w.metadata.hist_parameters && w.metadata.hist_parameters.period === "DAILY") {
+              return $filter('momentDate')(date, 'DAILY');
             } else {
-              return $filter('date')(date, 'MMM');
+              return $filter('momentDate')(date, 'default');
             }
           });
           angular.forEach($scope.selectedElements, function(sElem) {
@@ -11885,7 +12112,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(w.content.dates, function(date, index) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         angular.forEach($scope.selectedElements, function(sElem) {
           var data;
@@ -12163,7 +12390,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         $scope.formattedDates = _.map(w.content.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData.push({
           title: $scope.filter.label,
@@ -12524,7 +12751,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
             period = w.metadata.hist_parameters.period;
           }
           dates = _.map(w.content.dates, function(date) {
-            return $filter('mnoDate')(date, period);
+            return $filter('momentDate')(date, period);
           });
           inputData.push({
             title: data.name,
@@ -12895,7 +13122,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         formattedDates = _.map(w.content.dates, function(aDate) {
-          return $filter('mnoDate')(aDate, period);
+          return $filter('momentDate')(aDate, period);
         });
         inputData = [
           {
@@ -13027,7 +13254,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(w.content.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData = {
           title: data.name,
@@ -13564,7 +13791,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
           period = w.metadata.hist_parameters.period;
         }
         dates = _.map(w.content.dates, function(date) {
-          return $filter('mnoDate')(date, period);
+          return $filter('momentDate')(date, period);
         });
         inputData = {
           title: $translate.instant('impac.widget.sales_margin.gross_margin'),
@@ -14342,7 +14569,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
     formatDate = function(date) {
       var period;
       period = (w.metadata != null) && (w.metadata.hist_parameters != null) ? w.metadata.hist_parameters.period : null;
-      return $filter('mnoDate')(date, period);
+      return $filter('momentDate')(date, period);
     };
     $scope.getCloseDate = function(anOpp) {
       var theDate;
@@ -14431,7 +14658,7 @@ $templateCache.put("widgets-settings/width.tmpl.html","<i class=\"fa fa-angle-do
             period = w.metadata.hist_parameters.period;
           }
           dates = _.map(w.content.dates, function(date) {
-            return $filter('mnoDate')(date, period);
+            return $filter('momentDate')(date, period);
           });
           inputData.push({
             title: data.name,

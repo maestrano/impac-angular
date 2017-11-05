@@ -126,6 +126,27 @@ angular
         tagging:
           enabled: false
 
+      dateFormatterSettings:
+        default: 'L'
+        formats: {
+#         widgets
+#          'hr/employee_details':  "MM-DD-YYYY"
+#          'hr/payroll_summary':   "MMM-DD"
+#          'sales/break_even':     "DD MMM YYYY"
+#          'sales/leads_funnel':   "DD MMM YYYY"
+#         periods
+#          'period-daily':       "DD MMM"
+#          'period-weekly':      "DD MMM"
+#          'period-monthly':     "MMM-YYYY"
+#          'period-quarterly':   "MMM YYYY"
+#          'period-yearly':      "YYYY"
+#          'period-default':     "MMM"
+#         common components
+#          'time-period':          "MM_DD_YYYY"
+#          'time-slider':          "Do MM YYYY"
+#          'dates-picker':         "YYYY/MM/DD"
+#          'currency-conversions': "MMMM Do YYYY"
+        }
 
     #=======================================
     # Public methods available in config

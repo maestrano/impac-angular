@@ -194,17 +194,25 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         scope.usedSetting = 'dates-picker'
         scope.updateSettings()
 
+      scope.getFormatForEntity = (entity = '') ->
+        settings = ImpacTheming.get()
+        if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]
+          format = settings.dateFormatterSettings.formats[entity]
+        else
+          format = settings.dateFormatterSettings.default
+        return format
+
       scope.getMinDate = (toDate=undefined) ->
         to = moment()
         if toDate?
-          to = moment(toDate, "YYYY-MM-DD")
+          to = moment(toDate, scope.getFormatForEntity('time-period'))
         # Make sure the settings are initialized before trying to retrieve toMetadata()
         else if scope.usedSetting? && scope.isDatesPickerUsed()
           sourceSetting = getSetting('dates-picker')
-          to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
+          to = moment(sourceSetting.toMetadata().hist_parameters.to, scope.getFormatForEntity('time-period'))
         currentPeriod = getPeriod()
         periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
-        return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
+        return to.subtract(scope.maxNumberOfPeriods, periodWord).format(scope.getFormatForEntity('time-period'))
 
 
       w.settings.push(scope.timePeriodSetting)

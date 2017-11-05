@@ -1054,7 +1054,6 @@ img {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   display: inline-block;
   max-width: 100%;
@@ -2475,7 +2474,6 @@ output {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
@@ -3370,7 +3368,6 @@ input[type="button"].btn-block {
 }
 .fade {
   opacity: 0;
-  -webkit-transition: opacity 0.15s linear;
   transition: opacity 0.15s linear;
 }
 .fade.in {
@@ -3392,11 +3389,8 @@ tbody.collapse.in {
   position: relative;
   height: 0;
   overflow: hidden;
-  -webkit-transition-property: height, visibility;
   transition-property: height, visibility;
-  -webkit-transition-duration: 0.35s;
   transition-duration: 0.35s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
 .caret {
@@ -4897,7 +4891,6 @@ a.badge:focus {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  -webkit-transition: border 0.2s ease-in-out;
   transition: border 0.2s ease-in-out;
 }
 .thumbnail > img,
@@ -5023,12 +5016,10 @@ a.thumbnail.active {
   text-align: center;
   background-color: #00e5f0;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-transition: width 0.6s ease;
   transition: width 0.6s ease;
 }
 .progress-striped .progress-bar,
 .progress-bar-striped {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 40px 40px;
 }
@@ -5041,28 +5032,24 @@ a.thumbnail.active {
   background-color: #00e5f0;
 }
 .progress-striped .progress-bar-success {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-info {
   background-color: #00e5f0;
 }
 .progress-striped .progress-bar-info {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-warning {
   background-color: #977bf0;
 }
 .progress-striped .progress-bar-warning {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-danger {
   background-color: #e01f74;
 }
 .progress-striped .progress-bar-danger {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .media {
@@ -5751,7 +5738,6 @@ button.close {
 .modal.fade .modal-dialog {
   -webkit-transform: translate(0, -25%);
   transform: translate(0, -25%);
-  -webkit-transition: -webkit-transform 0.3s ease-out;
   transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
   transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
@@ -6105,7 +6091,6 @@ button.close {
 .carousel-inner > .item {
   display: none;
   position: relative;
-  -webkit-transition: 0.6s ease-in-out left;
   transition: 0.6s ease-in-out left;
 }
 .carousel-inner > .item > img,
@@ -6114,7 +6099,6 @@ button.close {
 }
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
-    -webkit-transition: -webkit-transform 0.6s ease-in-out;
     transition: -webkit-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
@@ -6188,7 +6172,6 @@ button.close {
   background-color: rgba(0, 0, 0, 0);
 }
 .carousel-control.left {
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
@@ -6196,7 +6179,6 @@ button.close {
 .carousel-control.right {
   left: auto;
   right: 0;
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
@@ -7001,7 +6983,6 @@ body {
     height: 80% !important;
   }
   * {
-    -webkit-transition: none !important;
     transition: none !important;
   }
 }
@@ -7071,7 +7052,6 @@ body {
   padding-top: 20px;
 }
 .analytics.show-dhb {
-  -webkit-transition: opacity 1s;
   transition: opacity 1s;
   opacity: 1;
 }
@@ -7604,7 +7584,6 @@ dashboard-templates-selector .templates .template.selected {
   background-color: white;
   margin: 10px 0 10px 0;
   border-bottom: 1px solid white;
-  -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
 }
 @media screen and (max-width: 768px) {
@@ -7666,7 +7645,6 @@ dashboard-templates-selector .templates .template.selected {
   flex-direction: row;
   margin-bottom: 5px;
   background-color: grey;
-  -webkit-transition: background 0.2s ease-in;
   transition: background 0.2s ease-in;
 }
 .analytics .impac-kpi .kpi .top-line.triggered {
@@ -7705,7 +7683,6 @@ dashboard-templates-selector .templates .template.selected {
 .analytics .impac-kpi .kpi .kpi-show .kpi-text {
   padding: 7px 0;
   color: grey;
-  -webkit-transition: color 0.2s ease-in;
   transition: color 0.2s ease-in;
 }
 .analytics .impac-kpi .kpi .kpi-show .kpi-text > span {
@@ -7730,7 +7707,6 @@ dashboard-templates-selector .templates .template.selected {
   font-size: 16px;
   padding: 10px 0;
   color: grey;
-  -webkit-transition: color 0.2s ease-in;
   transition: color 0.2s ease-in;
 }
 .analytics .impac-kpi .kpi .kpi-show .kpi-icon.triggered {
@@ -7948,7 +7924,6 @@ dashboard-templates-selector .templates .template.selected {
   color: #b3b3b3;
   font-size: 1.25rem;
   font-weight: normal;
-  -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
 }
 .analytics .impac-kpi .kpi .kpi-edit .im-form-group .im-bar,
@@ -7966,7 +7941,6 @@ dashboard-templates-selector .templates .template.selected {
   bottom: -0.078125rem;
   position: absolute;
   background: #358fdc;
-  -webkit-transition: left 0.28s ease, width 0.28s ease;
   transition: left 0.28s ease, width 0.28s ease;
   z-index: 2;
 }
@@ -7983,7 +7957,6 @@ dashboard-templates-selector .templates .template.selected {
   line-height: 1.9;
   width: 100%;
   color: transparent;
-  -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
   box-shadow: none;
 }
@@ -8112,7 +8085,6 @@ dashboard-templates-selector .templates .template.selected {
   margin: 0.3125rem;
   width: 1.25rem;
   height: 1.25rem;
-  -webkit-transition: -webkit-transform 0.28s ease;
   transition: -webkit-transform 0.28s ease;
   transition: transform 0.28s ease;
   transition: transform 0.28s ease, -webkit-transform 0.28s ease;
@@ -8155,7 +8127,6 @@ dashboard-templates-selector .templates .template.selected {
   z-index: 0;
   border: 0.15625rem solid currentColor;
   border-radius: 0.078125rem;
-  -webkit-transition: border-color 0.28s ease;
   transition: border-color 0.28s ease;
 }
 .analytics .impac-kpi .kpi .kpi-edit .im-checkbox .im-helper::before,
@@ -8171,7 +8142,6 @@ dashboard-templates-selector .templates .template.selected {
           transform-origin: left top;
   border-radius: 0.3125rem;
   content: '';
-  -webkit-transition: opacity 0.28s ease, height 0s linear 0.28s;
   transition: opacity 0.28s ease, height 0s linear 0.28s;
   opacity: 0;
 }
@@ -8203,7 +8173,6 @@ dashboard-templates-selector .templates .template.selected {
 .analytics .impac-kpi .kpi .kpi-edit .im-checkbox input:checked ~ .im-helper::before,
 .analytics .impac-kpi .kpi .kpi-no-data .im-checkbox input:checked ~ .im-helper::before {
   opacity: 1;
-  -webkit-transition: height 0.28s ease;
   transition: height 0.28s ease;
 }
 .analytics .impac-kpi .kpi .kpi-edit .im-checkbox input:checked ~ .im-helper::after,
@@ -8213,8 +8182,7 @@ dashboard-templates-selector .templates .template.selected {
 .analytics .impac-kpi .kpi .kpi-edit .im-checkbox input:checked ~ .im-helper::before,
 .analytics .impac-kpi .kpi .kpi-no-data .im-checkbox input:checked ~ .im-helper::before {
   height: 1.5rem;
-  -webkit-transition-delay: 0.28s;
-          transition-delay: 0.28s;
+  transition-delay: 0.28s;
 }
 .analytics .impac-kpi .kpi .kpi-edit .im-radio + .im-radio,
 .analytics .impac-kpi .kpi .kpi-no-data .im-radio + .im-radio,
@@ -8227,7 +8195,6 @@ dashboard-templates-selector .templates .template.selected {
   font-size: 1.04166667rem;
   color: #e01f74;
   overflow: hidden;
-  -webkit-transition: all 0.28s cubic-bezier(0.55, 0, 0.55, 0.2);
   transition: all 0.28s cubic-bezier(0.55, 0, 0.55, 0.2);
   opacity: 0;
   margin-top: 0;
@@ -8286,7 +8253,6 @@ dashboard-templates-selector .templates .template.selected {
 }
 .analytics .impac-kpi .kpi .kpi-edit .im-button:hover,
 .analytics .impac-kpi .kpi .kpi-no-data .im-button:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #2583d3;
 }
@@ -8333,7 +8299,6 @@ dashboard-templates-selector .templates .template.selected {
 }
 .analytics .impac-kpi .kpi .kpi-edit button.im-fab.im-primary:hover,
 .analytics .impac-kpi .kpi .kpi-no-data button.im-fab.im-primary:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #2583d3;
 }
@@ -8343,7 +8308,6 @@ dashboard-templates-selector .templates .template.selected {
 }
 .analytics .impac-kpi .kpi .kpi-edit button.im-fab.im-warn:hover,
 .analytics .impac-kpi .kpi .kpi-no-data button.im-fab.im-warn:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #ca1c68;
 }
@@ -8499,7 +8463,6 @@ dashboard-templates-selector .templates .template.selected {
   color: #b3b3b3;
   font-size: 1.25rem;
   font-weight: normal;
-  -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
 }
 .analytics kpis-bar > .kpis .actions .im-form-group .im-bar {
@@ -8515,7 +8478,6 @@ dashboard-templates-selector .templates .template.selected {
   bottom: -0.078125rem;
   position: absolute;
   background: #358fdc;
-  -webkit-transition: left 0.28s ease, width 0.28s ease;
   transition: left 0.28s ease, width 0.28s ease;
   z-index: 2;
 }
@@ -8530,7 +8492,6 @@ dashboard-templates-selector .templates .template.selected {
   line-height: 1.9;
   width: 100%;
   color: transparent;
-  -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
   box-shadow: none;
 }
@@ -8622,7 +8583,6 @@ dashboard-templates-selector .templates .template.selected {
   margin: 0.3125rem;
   width: 1.25rem;
   height: 1.25rem;
-  -webkit-transition: -webkit-transform 0.28s ease;
   transition: -webkit-transform 0.28s ease;
   transition: transform 0.28s ease;
   transition: transform 0.28s ease, -webkit-transform 0.28s ease;
@@ -8659,7 +8619,6 @@ dashboard-templates-selector .templates .template.selected {
   z-index: 0;
   border: 0.15625rem solid currentColor;
   border-radius: 0.078125rem;
-  -webkit-transition: border-color 0.28s ease;
   transition: border-color 0.28s ease;
 }
 .analytics kpis-bar > .kpis .actions .im-checkbox .im-helper::before,
@@ -8673,7 +8632,6 @@ dashboard-templates-selector .templates .template.selected {
           transform-origin: left top;
   border-radius: 0.3125rem;
   content: '';
-  -webkit-transition: opacity 0.28s ease, height 0s linear 0.28s;
   transition: opacity 0.28s ease, height 0s linear 0.28s;
   opacity: 0;
 }
@@ -8699,7 +8657,6 @@ dashboard-templates-selector .templates .template.selected {
 .analytics kpis-bar > .kpis .actions .im-checkbox input:checked ~ .im-helper::after,
 .analytics kpis-bar > .kpis .actions .im-checkbox input:checked ~ .im-helper::before {
   opacity: 1;
-  -webkit-transition: height 0.28s ease;
   transition: height 0.28s ease;
 }
 .analytics kpis-bar > .kpis .actions .im-checkbox input:checked ~ .im-helper::after {
@@ -8707,8 +8664,7 @@ dashboard-templates-selector .templates .template.selected {
 }
 .analytics kpis-bar > .kpis .actions .im-checkbox input:checked ~ .im-helper::before {
   height: 1.5rem;
-  -webkit-transition-delay: 0.28s;
-          transition-delay: 0.28s;
+  transition-delay: 0.28s;
 }
 .analytics kpis-bar > .kpis .actions .im-radio + .im-radio,
 .analytics kpis-bar > .kpis .actions .im-checkbox + .im-checkbox {
@@ -8718,7 +8674,6 @@ dashboard-templates-selector .templates .template.selected {
   font-size: 1.04166667rem;
   color: #e01f74;
   overflow: hidden;
-  -webkit-transition: all 0.28s cubic-bezier(0.55, 0, 0.55, 0.2);
   transition: all 0.28s cubic-bezier(0.55, 0, 0.55, 0.2);
   opacity: 0;
   margin-top: 0;
@@ -8763,7 +8718,6 @@ dashboard-templates-selector .templates .template.selected {
   z-index: 1;
 }
 .analytics kpis-bar > .kpis .actions .im-button:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #2583d3;
 }
@@ -8802,7 +8756,6 @@ dashboard-templates-selector .templates .template.selected {
   background: #358fdc;
 }
 .analytics kpis-bar > .kpis .actions button.im-fab.im-primary:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #2583d3;
 }
@@ -8810,7 +8763,6 @@ dashboard-templates-selector .templates .template.selected {
   background: #e01f74;
 }
 .analytics kpis-bar > .kpis .actions button.im-fab.im-warn:hover {
-  -webkit-transition: background 0.1s ease-in;
   transition: background 0.1s ease-in;
   background: #ca1c68;
 }
@@ -8824,7 +8776,6 @@ dashboard-templates-selector .templates .template.selected {
   width: 40px;
   height: 40px;
   font-size: 18px;
-  -webkit-transition: all 0.28s ease-in;
   transition: all 0.28s ease-in;
 }
 .analytics kpis-bar > .kpis .actions button.im-fab.add-kpis.im-primary,
@@ -8975,7 +8926,6 @@ dashboard-templates-selector .templates .template.selected {
   display: none;
 }
 .widget-item {
-  -webkit-transition: width 0.3s;
   transition: width 0.3s;
   padding: 12px;
 }
@@ -9146,7 +9096,6 @@ dashboard-templates-selector .templates .template.selected {
   padding: 9px;
   top: 0;
   right: 0;
-  -webkit-transition: all ease .5s;
   transition: all ease .5s;
   z-index: 1;
 }
@@ -9705,21 +9654,6 @@ chart-threshold .action-buttons button.loading {
 .analytics .widget-item .content.accounts-assets-vs-liabilities .legend > .title span {
   margin-left: 3px;
 }
-.analytics .widget-item .content.accounts-balance h3 {
-  font-weight: 300;
-  font-size: 14px;
-  color: #5B6667;
-  text-align: left;
-  margin-top: 30px;
-  text-align: center;
-}
-.analytics .widget-item .content.accounts-balance .price {
-  font-weight: 900;
-  font-size: 22px;
-  color: #5B6667;
-  text-align: center;
-  margin-top: 0px;
-}
 .analytics .widget-item .content.accounts-balance-sheet {
   min-height: 565px;
 }
@@ -9762,6 +9696,21 @@ chart-threshold .action-buttons button.loading {
   color: #5B6667;
   text-align: center;
   margin: 15px 0px;
+}
+.analytics .widget-item .content.accounts-balance h3 {
+  font-weight: 300;
+  font-size: 14px;
+  color: #5B6667;
+  text-align: left;
+  margin-top: 30px;
+  text-align: center;
+}
+.analytics .widget-item .content.accounts-balance .price {
+  font-weight: 900;
+  font-size: 22px;
+  color: #5B6667;
+  text-align: center;
+  margin-top: 0px;
 }
 .analytics .widget-item .content.accounts-cash-balance {
   min-height: 565px;

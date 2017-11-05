@@ -30,7 +30,7 @@
         <div class="widget-lines-container">
           <div class="row widget-line header">
             <div class="col-xs-5">
-              {{'impac.widget.sales_performance.from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_performance.to' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | mnoDate : widget.metadata.hist_parameters.period}}
+              {{'impac.widget.sales_performance.from' | translate}} {{widget.content.dates[0] | momentDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_performance.to' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | momentDate : widget.metadata.hist_parameters.period}}
             </div>
             <div class="col-xs-3 text-right" translate>impac.widget.sales_performance.win_ratio</div>
             <div class="col-xs-4 text-right" translate>impac.widget.sales_performance.total_won</div>

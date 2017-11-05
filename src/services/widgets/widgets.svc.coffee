@@ -3,6 +3,7 @@ angular
   .service 'ImpacWidgetsSvc', ($q, $http, $log, $timeout, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacDeveloper, ImpacEvents, ImpacTheming, IMPAC_EVENTS) ->
 
     _self = @
+    moment = window.moment
     # ====================================
     # Getters
     # ====================================
@@ -192,30 +193,31 @@ angular
           authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
           config = { headers: {'Authorization': authHeader } }
 
-          $http.get(url, config).then(
-            (success) ->
-              content = success.data.content || success.data[widget.endpoint] || {}
-              if _.isEmpty(content)
-                # Reload the widget with param `demo` set at `true` (to retrieve stub data)
-                if demoData
-                  # If we were already trying to load the widget in demo mode, we resolve the widget without content
-                  # TODO: display an error box?
-                  $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
-                  $q.resolve(widget)
+          $http.get(url, config)
+            .then(
+              (success) ->
+                content = success.data.content || success.data[widget.endpoint] || {}
+                if _.isEmpty(content)
+                  # Reload the widget with param `demo` set at `true` (to retrieve stub data)
+                  if demoData
+                    # If we were already trying to load the widget in demo mode, we resolve the widget without content
+                    # TODO: display an error box?
+                    $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
+                    $q.resolve(widget)
+                  else
+                    _self.show(widget, { refreshCache: refreshCache, demo: true })
+
                 else
-                  _self.show(widget, { refreshCache: refreshCache, demo: true })
+                  # Push new content to widget, and initialize it
+                  name = success.data.name
+                  angular.extend widget, { content: content, originalName: name, demoData: demoData }
+                  initWidget(widget)
+                  $q.resolve(widget)
 
-              else
-                # Push new content to widget, and initialize it
-                name = success.data.name
-                angular.extend widget, { content: content, originalName: name, demoData: demoData }
+              (showError) ->
                 initWidget(widget)
-                $q.resolve(widget)
-
-            (showError) ->
-              initWidget(widget)
-              widget.processError(showError.data.error) if angular.isDefined(widget.processError) && showError.data? && showError.data.error
-              $q.reject(showError)
+                widget.processError(showError.data.error) if angular.isDefined(widget.processError) && showError.data? && showError.data.error
+                $q.reject(showError)
           )
 
         (loadError) ->
@@ -237,17 +239,18 @@ angular
           else
             request = $http.post(ImpacRoutes.widgets.create(dashboard.id), params)
 
-          request.then(
-            (success) ->
-              newWidget = success.data
-              dashboard.widgets.push(newWidget)
-              ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
-              $q.resolve(newWidget)
+          request
+            .then(
+              (success) ->
+                newWidget = success.data
+                dashboard.widgets.push(newWidget)
+                ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
+                $q.resolve(newWidget)
 
-            (createError) ->
-              $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
-              $q.reject(createError)
-          )
+              (createError) ->
+                $log.error("Impac! - WidgetsSvc: Cannot create widget on dashboard #{dashboard.id}")
+                $q.reject(createError)
+            )
 
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
@@ -272,18 +275,19 @@ angular
             else
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
-            request.then(
-              (success) ->
-                angular.extend widget, success.data
-                if needContentReload
-                  _self.show(widget) 
-                else
-                  $q.resolve(widget)
-              
-              (updateError) ->
-                $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
-                $q.reject(updateError)
-            )
+            request
+              .then(
+                (success) ->
+                  angular.extend widget, success.data
+                  if needContentReload
+                    _self.show(widget)
+                  else
+                    $q.resolve(widget)
+
+                (updateError) ->
+                  $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
+                  $q.reject(updateError)
+              )
 
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
@@ -304,16 +308,17 @@ angular
           else
             request = $http.delete(ImpacRoutes.widgets.delete(dashboard.id, widgetToDelete.id))
 
-          request.then(
-            (success) ->
-              _.remove dashboard.widgets, (widget) ->
-                widget.id == widgetToDelete.id
-              $q.resolve(success)
+          request
+            .then(
+              (success) ->
+                _.remove dashboard.widgets, (widget) ->
+                  widget.id == widgetToDelete.id
+                $q.resolve(success)
 
-            (deleteError) ->
-              $log.error("Impac! - WidgetsSvc: Error while trying to delete widget: #{widgetToDelete.id}")
-              $q.reject(deleteError)
-          )
+              (deleteError) ->
+                $log.error("Impac! - WidgetsSvc: Error while trying to delete widget: #{widgetToDelete.id}")
+                $q.reject(deleteError)
+            )
 
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")

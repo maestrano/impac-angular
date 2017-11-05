@@ -20,7 +20,7 @@
       <div ng-class="widget.isExpanded() ? 'col-md-6' : 'col-md-12'">
         <div setting-width parent-widget="widget" min="6" max="12" class="settings width" deferred="::widthDeferred" />
 
-        <div class="legend">{{'impac.widget.sales_leads_funnel.legend.your_leads' | translate}} {{widget.content.from | date : 'd MMM yyyy'}} {{'impac.widget.sales_leads_funnel.legend.to' | translate}} {{widget.content.to | date : 'd MMM yyyy'}}</div>
+        <div class="legend">{{'impac.widget.sales_leads_funnel.legend.your_leads' | translate}} {{widget.content.from | momentDate : "sales/leads_funnel"}} {{'impac.widget.sales_leads_funnel.legend.to' | translate}} {{widget.content.to | momentDate : "sales/leads_funnel"}}</div>
 
         <div class="funnel-container">
           <div class="tile" ng-repeat="elem in funnel" ng-click="toggleSelectStatus(elem.status)">

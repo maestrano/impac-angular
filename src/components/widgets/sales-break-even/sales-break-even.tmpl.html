@@ -16,7 +16,7 @@
 
     <div class="align-center">
 
-      <div class="legend">{{'impac.widget.sales_break_even.from' | translate}} {{widget.content.period.from | date : 'd MMM yyyy'}} {{'impac.widget.sales_break_even.to' | translate}} {{widget.content.period.to | date : 'd MMM yyyy'}}</div>
+      <div class="legend">{{'impac.widget.sales_break_even.from' | translate}} {{widget.content.period.from | momentDate : "sales/break_even"}} {{'impac.widget.sales_break_even.to' | translate}} {{widget.content.period.to | momentDate : "sales/break_even"}}</div>
 
       <div class="block to-date">
         <div class="title" translate>impac.widget.sales_break_even.title.sales</div>

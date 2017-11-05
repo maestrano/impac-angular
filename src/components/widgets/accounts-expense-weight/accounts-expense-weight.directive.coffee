@@ -55,7 +55,7 @@ module.controller('WidgetAccountsExpenseWeightCtrl', ($scope, $q, ChartFormatter
         period = null
         period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
         dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
+          $filter('momentDate')(date, period)
 
         datasets = _.map w.content.summary, (s) -> { title: s.company, values: s.ratios }
 
