@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-balance', [])
-module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, HighchartsFactory) ->
+module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, ImpacWidgetsSvc, HighchartsFactory) ->
 
   w = $scope.widget
 
@@ -63,6 +63,20 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   $scope.chartId = ->
     "cashBalanceChart-#{w.id}"
 
+  updateLocked = false
+  zoomMetadata = {}
+  onZoom = (event) ->
+    zoomMetadata = angular.merge w.metadata, {
+      xAxis:
+        max: event.max
+        min: event.min
+    }
+    unless updateLocked
+      updateLocked = true
+      $timeout ->
+        ImpacWidgetsSvc.update(w, { metadata: zoomMetadata }, false).finally(-> updateLocked = false)
+      , 1000
+
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
     options =
@@ -71,6 +85,9 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
       period: getPeriod()
       showToday: true
       showLegend: false
+      withZooming:
+        defaults: w.metadata.xAxis
+        callback: onZoom
 
     $timeout ->
       $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)

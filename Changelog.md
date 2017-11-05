@@ -1,5 +1,24 @@
 # Impac! Frontend Changelog
 
+### v1.6.4 | 2017 - Week 43
+
+#### Fixes
+- Add timeout on chart zoom update
+
+-------------------------------------------------------------
+
+### v1.6.3 | 2017 - Week 42
+
+#### Adds
+- [IMPAC-614] Add editable expected payment date to transactions list
+- [IMPAC-684] Handle timezones
+- Save user zooming options as a metadata
+
+#### Fixes
+- [IMPAC-663] Fix unwanted triggering of create threshold panel
+
+-------------------------------------------------------------
+
 ### v1.6.2 | 2017 - Week 39
 
 #### Fixes
