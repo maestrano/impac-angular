@@ -8,20 +8,20 @@ angular.module('impac.filters.moment-date', []).filter('momentDate', ($translate
 
       settings = ImpacTheming.get()
       if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]
-        format = settings.dateFormatterSettings.formats[entity]
+        settings.dateFormatterSettings.formats[entity]
       else
-        format = settings.dateFormatterSettings.default
-      return format
+        settings.dateFormatterSettings.default
 
     moment = window.moment
     moment.locale($translate.use().toLowerCase())
 
-    if date
-      d = moment(date)
+    return '' unless date
 
-      if d.isValid()
-        return d.format(getFormatForEntity(component))
-      else if (d = moment(date, "DD-MM-YYYY")) && d.isValid()
-        return d.format(getFormatForEntity(component))
+    d = moment(date)
+    return d.format(getFormatForEntity(component)) if d.isValid()
+
+    d = moment(date, "DD-MM-YYYY")
+    return d.format(getFormatForEntity(component)) if d.isValid()
+
     return ''
 )
