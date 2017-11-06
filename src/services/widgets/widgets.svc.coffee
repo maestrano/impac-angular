@@ -272,19 +272,18 @@ angular
             else
               request = $http.put(ImpacRoutes.widgets.update(dashboard.id, widget.id), data)
 
-            request
-              .then(
-                (success) ->
-                  angular.extend widget, success.data
-                  if needContentReload
-                    _self.show(widget)
-                  else
-                    $q.resolve(widget)
+            request.then(
+              (success) ->
+                angular.extend widget, success.data
+                if needContentReload
+                  _self.show(widget)
+                else
+                  $q.resolve(widget)
 
-                (updateError) ->
-                  $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
-                  $q.reject(updateError)
-              )
+              (updateError) ->
+                $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
+                $q.reject(updateError)
+            )
 
         (loadError) ->
           $log.error("Impac! - WidgetsSvc: Error while trying to load the service")
