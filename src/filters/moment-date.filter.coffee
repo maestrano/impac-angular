@@ -1,27 +1,16 @@
 angular.module('impac.filters.moment-date', []).filter('momentDate', ($translate, ImpacTheming) ->
   (date, component) ->
 
-    getFormatForEntity = (entity = '') ->
-      periods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'default']
-      if periods.includes(entity.toLowerCase())
-        entity = 'period-' + entity.toLowerCase()
-
-      settings = ImpacTheming.get()
-      if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[entity]
-        settings.dateFormatterSettings.formats[entity]
-      else
-        settings.dateFormatterSettings.default
-
-    moment = window.moment
     moment.locale($translate.use().toLowerCase())
 
-    return '' unless date
+    validPeriods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'default']
+    if !_.isEmpty(component) && validPeriods.includes(component.toLowerCase())
+      component = 'period-' + component.toLowerCase()
 
-    d = moment(date)
-    return d.format(getFormatForEntity(component)) if d.isValid()
+    settings = ImpacTheming.get()
+    format = settings.dateFormatterSettings.default
+    if settings.dateFormatterSettings.formats && settings.dateFormatterSettings.formats[component]
+      format = settings.dateFormatterSettings.formats[component]
 
-    d = moment(date, "DD-MM-YYYY")
-    return d.format(getFormatForEntity(component)) if d.isValid()
-
-    return ''
+    return moment(date).format(format)
 )
