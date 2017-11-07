@@ -8,6 +8,14 @@
   .table-container {
     max-height: ~"calc(@{impac-big-widget-size} - 60px)";
     overflow: auto;
+    
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+
     tr.total {
       font-weight: bold;
       &.invoices {
@@ -17,6 +25,5 @@
         background-color: lighten(#c76379, 20%);
       }
     }
-    input.btn.btn-xs { margin-top: -2px; }
   }
 }
