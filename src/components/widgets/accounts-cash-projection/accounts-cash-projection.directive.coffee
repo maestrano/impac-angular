@@ -32,7 +32,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   settingsPromises = [$scope.orgDeferred.promise]
 
   # == Sub-Components - Transactions list =========================================================
-  $scope.trxList = { display: false, updated: false }
+  $scope.trxList = { display: false, updated: false, transactions: [] }
 
   $scope.trxList.show = ->
     $scope.trxList.display = true
@@ -47,18 +47,28 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     params = angular.merge(
       $scope.trxList.params, {
         metadata: _.pick(w.metadata, 'organization_ids')
-        page:
-          number: currentPage
+        page: { number: currentPage }
       }
     )
     BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(
       (response) ->
-        # Update trxList object with dynamic values
-        $scope.trxList.transactions = _.map(response.data.data, (trx) ->
-          angular.merge(trx.attributes, { id: trx.id })
-        )
+        # Clear transactions list and replace by newly fetched ones
+        _.remove($scope.trxList.transactions, -> true)
+        for trx in response.data.data
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
         $scope.trxList.totalRecords = response.data.meta.record_count
-    )
+    ).finally(-> $scope.trxList.show())
+
+  # Init trxList object with static values
+  $scope.trxList.updateParams = (resources, filter) ->
+    $scope.trxList.resources = resources
+    $scope.trxList.params = { filter: filter }
+
+  # Fetch and show all invoices or bills
+  $scope.trxList.showAll = (resources = 'invoices') ->
+    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED'] }
+    $scope.trxList.updateParams(resources, filter)
+    $scope.trxList.fetch()
 
   # JS date is in local time zone => format it to send a UTC date at 00:00:00
   $scope.trxList.updateExpectedDate = (trxId, date) ->
@@ -68,6 +78,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId,
       { expected_payment_date: moment(date).format('YYYY-MM-DD') }
     ).then(-> $scope.trxList.updated = true)
+
+  $scope.trxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.trxList.resources
+    $scope.trxList.resources = resourcesType
+    $scope.trxList.fetch()
 
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
@@ -87,15 +102,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         'invoices'
     return unless resources?
 
-    # Init trxList object with static values
-    $scope.trxList.resources = resources
-    $scope.trxList.totalDue = event.point.y
-    $scope.trxList.params = {
-      filter:
-        expected_payment_date: dateFilter(event.point.x)
-        status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
-    }
-    $scope.trxList.fetch().finally(-> $scope.trxList.show())
+    filter =
+      expected_payment_date: dateFilter(event.point.x)
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
+    $scope.trxList.updateParams(resources, filter)
+    $scope.trxList.fetch()
 
   # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->

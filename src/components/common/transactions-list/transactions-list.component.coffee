@@ -6,17 +6,23 @@ module.component('transactionsList', {
     onHide: '&'
     onPageChanged: '&'
     onUpdateExpectedDate: '&'
+    onChangeResources: '&'
     transactions: '<'
-    totalDue: '<'
     currency: '<'
     totalRecords: '<'
+    resourcesType: '<'
   controller: ->
     ctrl = this
 
     ctrl.$onInit = ->
       ctrl.currentPage = 1
+      ctrl.totalAmount = 0.0
+      ctrl.totalBalance = 0.0
 
       for trx in ctrl.transactions
+        ctrl.totalAmount += trx.amount
+        ctrl.totalBalance += trx.balance
+
         # dates are sent in UTC by the API
         trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
         trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
@@ -28,6 +34,11 @@ module.component('transactionsList', {
           date: new Date(m.year(), m.month(), m.date())
           toggle: ->
             this.opened = !this.opened
+
+    ctrl.changeResourcesType = ->
+      ctrl
+        .onChangeResources({ resourcesType: ctrl.resourcesType })
+        .then(-> ctrl.$onInit())
 
     return ctrl
 })

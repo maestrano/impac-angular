@@ -1,10 +1,20 @@
 <div id="transactions-list">
-  <div class="top">
-    <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})"></ul>
-    <a ng-click="$ctrl.onHide()" class="back-link">
-      <i class="fa fa-chevron-left"></i>
-      Back to chart
-    </a>
+  <div class="row top">
+    <div class="col-xs-4 pull-left">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">
+        <i class="fa fa-chevron-left" />
+        Back to chart
+      </label>
+    </div>
+    <div class="col-xs-4 text-center">
+      <div class="btn-group">
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See invoices</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See bills</label>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})" />
+    </div>
   </div>
   <div class="table-container">
     <table class="table table-striped">
@@ -17,7 +27,6 @@
         <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
-        <th>Rate</th>
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
         <td>{{ trx.transaction_number }}</td>
@@ -30,12 +39,11 @@
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
-        <td>{{ trx.currency_rate }}</td>
       </tr>
-      <tr class="info total">
-        <td colspan="6">TOTAL DUE</td>
-        <td class="text-right">{{ $ctrl.totalDue | mnoCurrency : $ctrl.currency }}</td>
-        <td></td>
+      <tr class="total" ng-class="$ctrl.resourcesType">
+        <td colspan="6">TOTAL</td>
+        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
+        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
       </tr>
     </table>
   </div>

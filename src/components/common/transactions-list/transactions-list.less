@@ -8,7 +8,15 @@
   .table-container {
     max-height: ~"calc(@{impac-big-widget-size} - 60px)";
     overflow: auto;
-    tr.total { font-weight: bold; }
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(#8eab71, 15%);
+      }
+      &.bills {
+        background-color: lighten(#c76379, 15%);
+      }
+    }
     input.btn.btn-xs { margin-top: -2px; }
   }
 }

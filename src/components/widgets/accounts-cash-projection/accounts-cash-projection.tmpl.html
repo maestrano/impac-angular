@@ -13,7 +13,7 @@
 
   <!-- Widget content -->
   <div ng-hide="widget.isEditMode">
-    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)"></transactions-list>
+    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)" on-change-resources="trxList.changeResourcesType(resourcesType)"></transactions-list>
 
     <div ng-hide="trxList.display">
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
@@ -23,7 +23,7 @@
 
       <!-- Bottom buttons -->
       <div class="text-left">
-        <button class="btn btn-sm btn-default" ng-click="" title="See all due invoices and bills, and forecast">
+        <button class="btn btn-sm btn-default" ng-click="trxList.showAll()" title="See all due invoices and bills, and forecast">
           <i class="fa fa-list" />
           See all transactions
         </button>
