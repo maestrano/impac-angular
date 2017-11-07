@@ -19,6 +19,7 @@
   <div class="table-container">
     <table class="table table-striped">
       <tr>
+        <th>{{ $ctrl.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
         <th>Title</th>
         <th>Status</th>
@@ -29,6 +30,7 @@
         <th class="text-right">Balance</th>
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
+        <td>{{ trx.issuer.name }}</td>
         <td>{{ trx.transaction_number }}</td>
         <td>{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
@@ -41,7 +43,7 @@
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
-        <td colspan="6">TOTAL</td>
+        <td colspan="7">TOTAL</td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
       </tr>
