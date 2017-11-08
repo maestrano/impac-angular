@@ -1,5 +1,23 @@
 # Impac! Frontend Changelog
 
+### v1.6.5 | 2017 - Week 45
+
+#### Adds
+- New `.widget-popup()` mixin (delete widget, demo mode box...)
+- UI improvements on Cash Projection widget:
+  - Added button to display all transactions
+  - Can now reset expected payment date
+  - Differentiation of invoices / bills on transactions list
+  - Currency rate removed from transactions list
+  - Empty Customer/Supplier column added
+- [IMPAC-670] Ability to create and delete forecast transactions on Cash Projection widget
+
+#### Dependencies
+- Impac! v1.6.5 (new v2 resources routes)
+- Finance Bolt v1.3.0 (new routes + transaction status FORECAST)
+
+-------------------------------------------------------------
+
 ### v1.6.4 | 2017 - Week 43
 
 #### Fixes
