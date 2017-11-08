@@ -91,6 +91,22 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     label: 'Get alerted when the cash projection goes below'
   }
 
+  # == Sub-Components - Add Forecast Popup ========================================================
+  $scope.addForecastPopup =
+    display: false
+    trx:
+      datePicker:
+        opened: false
+        date: new Date()
+        toggle: -> this.opened = !this.opened
+    resourcesType: 'invoices'
+    hide: -> this.display = false
+    show: -> this.display = true
+    toggle: -> this.display = !this.display
+    isValid: -> !_.isEmpty(this.trx.name) && !isNaN(Number(this.trx.amount)) && Number(this.trx.amount) != 0
+
+  $scope.tempDate = moment().add(10, 'weeks').toDate()
+
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
