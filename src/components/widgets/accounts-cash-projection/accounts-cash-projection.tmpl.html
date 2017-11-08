@@ -27,7 +27,7 @@
           <i class="fa fa-list" />
           See all transactions
         </button>
-        <button class="btn btn-sm btn-default" ng-click="addForecastPopup.toggle()" title="Create a new forecast transaction">
+        <button class="btn btn-sm btn-default" ng-click="addForecastPopup.show()" title="Create a new forecast transaction">
           <i class="fa fa-pencil" />
           Add forecast
         </button>
@@ -83,7 +83,7 @@
 
       <div class="bottom text-center">
         <button class="btn btn-sm btn-default" ng-click="addForecastPopup.hide()">Cancel</button>
-        <button class="btn btn-sm btn-success" ng-click="addForecastPopup.hide()" ng-disabled="!addForecastPopup.isValid()">Save</button>
+        <button class="btn btn-sm btn-success" ng-click="addForecastPopup.createTransaction()" ng-disabled="!addForecastPopup.isValid()">Save</button>
       </div>
     </div>
   </div>

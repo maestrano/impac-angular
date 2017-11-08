@@ -102,8 +102,23 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     resourcesType: 'invoices'
     hide: -> this.display = false
     show: -> this.display = true
-    toggle: -> this.display = !this.display
     isValid: -> !_.isEmpty(this.trx.name) && !isNaN(Number(this.trx.amount)) && Number(this.trx.amount) != 0
+    createTransaction: ->
+      this.hide()
+      BoltResources.create(
+        w.metadata.bolt_path,
+        this.resourcesType,
+        {
+          title: this.trx.name,
+          amount: this.trx.amount,
+          balance: this.trx.amount,
+          transaction_date: moment(),
+          due_date: this.trx.datePicker.date,
+          status: 'FORECAST',
+          currency: w.metadata.currency
+        },
+        { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+      )
 
   $scope.tempDate = moment().add(10, 'weeks').toDate()
 
@@ -152,6 +167,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     cashFlowSerie.data = []
     cashFlowSerie.type = 'area'
     cashFlowSerie.showInLegend = false
+
+    # Fetch companies from Bolt and save first id
+    # TODO: multi-companies?
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'companies',
+      { metadata: _.pick(w.metadata, 'organization_ids') }
+    ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
