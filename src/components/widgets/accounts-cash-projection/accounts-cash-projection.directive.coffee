@@ -66,7 +66,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED'] }
+    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
@@ -83,6 +83,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     return if resourcesType == $scope.trxList.resources
     $scope.trxList.resources = resourcesType
     $scope.trxList.fetch()
+
+  $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
+    _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
+    BoltResources.destroy(
+      w.metadata.bolt_path,
+      resourcesType,
+      trxId
+    ).then(-> $scope.trxList.updated = true)
 
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
@@ -110,15 +118,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         this.resourcesType,
         {
           title: this.trx.name,
+          transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
           amount: this.trx.amount,
           balance: this.trx.amount,
-          transaction_date: moment(),
-          due_date: this.trx.datePicker.date,
+          transaction_date: moment().format('YYYY-MM-DD'),
+          due_date: moment(this.trx.datePicker.date).format('YYYY-MM-DD'),
           status: 'FORECAST',
           currency: w.metadata.currency
         },
         { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
-      )
+      ).then(-> ImpacWidgetsSvc.show(w))
 
   $scope.tempDate = moment().add(10, 'weeks').toDate()
 
@@ -135,7 +144,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
     filter =
       expected_payment_date: dateFilter(event.point.x)
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 

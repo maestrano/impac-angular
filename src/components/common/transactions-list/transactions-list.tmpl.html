@@ -28,6 +28,7 @@
         <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
+        <th />
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
         <td>{{ trx.issuer.name }}</td>
@@ -44,11 +45,15 @@
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
+        <td>
+          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
+        </td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
         <td colspan="7">TOTAL</td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
+        <td />
       </tr>
     </table>
   </div>

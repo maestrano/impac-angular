@@ -7,6 +7,7 @@ module.component('transactionsList', {
     onPageChanged: '&'
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
+    onDeleteTransaction: '&'
     transactions: '<'
     currency: '<'
     totalRecords: '<'
