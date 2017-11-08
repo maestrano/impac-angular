@@ -33,5 +33,9 @@ angular
         relationships: relationships
     $http.post(url, body, { headers: authHeaders() })
 
+  @destroy = (boltPath, resourcesName, resourceId) ->
+    url = [boltPath, resourcesName, resourceId].join('/')
+    $http.delete(url, { headers: authHeaders() })
+
   return
 )
