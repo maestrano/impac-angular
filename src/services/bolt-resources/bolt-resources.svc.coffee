@@ -24,5 +24,14 @@ angular
         attributes: attributes
     $http.put(url, body, { headers: authHeaders() })
 
+  @create = (boltPath, resourcesName, attributes, relationships) ->
+    url = [boltPath, resourcesName].join('/')
+    body =
+      data:
+        type: resourcesName
+        attributes: attributes
+        relationships: relationships
+    $http.post(url, body, { headers: authHeaders() })
+
   return
 )
