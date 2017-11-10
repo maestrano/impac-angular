@@ -101,35 +101,27 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # == Sub-Components - Add Forecast Popup ========================================================
   $scope.addForecastPopup =
-    display: false
-    trx:
-      datePicker:
-        opened: false
-        date: new Date()
-        toggle: -> this.opened = !this.opened
     resourcesType: 'invoices'
-    hide: -> this.display = false
+    display: false
     show: -> this.display = true
-    isValid: -> !_.isEmpty(this.trx.name) && !isNaN(Number(this.trx.amount)) && Number(this.trx.amount) != 0
-    createTransaction: ->
-      this.hide()
-      BoltResources.create(
-        w.metadata.bolt_path,
-        this.resourcesType,
-        {
-          title: this.trx.name,
-          transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
-          amount: this.trx.amount,
-          balance: this.trx.amount,
-          transaction_date: moment().format('YYYY-MM-DD'),
-          due_date: moment(this.trx.datePicker.date).format('YYYY-MM-DD'),
-          status: 'FORECAST',
-          currency: w.metadata.currency
-        },
-        { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
-      ).then(-> ImpacWidgetsSvc.show(w))
-
-  $scope.tempDate = moment().add(10, 'weeks').toDate()
+    hide: -> this.display = false
+  
+  $scope.addForecastPopup.createTransaction = (trx) ->
+    BoltResources.create(
+      w.metadata.bolt_path,
+      this.resourcesType,
+      {
+        title: trx.name,
+        transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
+        amount:trx.amount,
+        balance: trx.amount,
+        transaction_date: moment().format('YYYY-MM-DD'),
+        due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
+        status: 'FORECAST',
+        currency: w.metadata.currency
+      },
+      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+    ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it

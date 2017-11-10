@@ -37,54 +37,5 @@
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
-  <!-- Add forecast popup -->
-  <div class="add-forecast-popup" ng-show="addForecastPopup.display">
-    <div class="overlay" />
-    <div class="message" >
-      <div class="title">Create a forecast transaction</div>
-      
-      <div class="form text-left">
-        <label>Name:</label>
-        <input type="text" class="form-control" ng-model="addForecastPopup.trx.name" placeholder="New Deal won" />
-
-        <label>Amount:</label>
-        <input type="text" class="form-control" ng-model="addForecastPopup.trx.amount" placeholder="1500.00" />
-
-        <label>Expected payment date:</label>
-        <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="addForecastPopup.trx.datePicker.date" ng-click="addForecastPopup.trx.datePicker.toggle()" is-open="addForecastPopup.trx.datePicker.opened" close-text="Close" on-open-focus="false" />
-
-        <label>Type:</label>
-        <div class="btn-group">
-          <label class="btn btn-sm btn-default" ng-model="addForecastPopup.resourcesType" uib-btn-radio="'invoices'">Invoice</label>
-          <label class="btn btn-sm btn-default" ng-model="addForecastPopup.resourcesType" uib-btn-radio="'bills'">Bill</label>
-        </div>
-
-        <div class="coming-soon">
-          <div class="badge pull-right">Coming soon!</div>
-          
-          <label style="padding-top: 0px;">Repeat every:</label>
-          <div class="btn-group">
-            <select disabled="true">
-              <option>3</option>
-            </select>
-            <select disabled="true">
-              <option>Weeks</option>
-            </select>
-          </div>
-
-          <label>Ends:</label>
-          <div class="btn-group">
-            <input type="radio" disabled="true" checked="true" style="margin-top: 0px;"> Never<br />
-            <input type="radio" disabled="true"> After <select disabled="true"><option>10</option></select> occurences<br />
-            <input type="radio" disabled="true"> On <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="tempDate" disabled="true" />
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom text-center">
-        <button class="btn btn-sm btn-default" ng-click="addForecastPopup.hide()">Cancel</button>
-        <button class="btn btn-sm btn-success" ng-click="addForecastPopup.createTransaction()" ng-disabled="!addForecastPopup.isValid()">Save</button>
-      </div>
-    </div>
-  </div>
+  <transactions-add ng-if="addForecastPopup.display" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
 </div>
