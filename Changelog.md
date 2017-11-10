@@ -1,5 +1,24 @@
 # Impac! Frontend Changelog
 
+### v1.6.5 | 2017 - Week 45
+
+#### Adds
+- Dates are now consistent across the different widgets and settings
+- Dates formats can be configured using the ThemingSvc (default is using the locale (`.format('L')`)
+
+#### Config changes
+- Configure dates format (ThemingSvc)
+```coffeescript
+  dateFormatterSettings:
+    default: 'L'
+    # Specific formatting can be defined per widget or other components:
+    # formats:
+    #  'hr/employee_details':  "MM-DD-YYYY"
+    #  'time-period':          "MM_DD_YYYY"
+```
+
+-------------------------------------------------------------
+
 ### v1.6.4 | 2017 - Week 43
 
 #### Fixes

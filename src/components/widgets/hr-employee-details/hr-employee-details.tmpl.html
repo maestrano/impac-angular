@@ -38,7 +38,7 @@
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.hr_employee_details.label.date_of_birth</label></div>
-            <div class="col-md-8"><pre>{{getEmployee().dob || "-" }}</pre></div>
+            <div class="col-md-8"><pre>{{getEmployee().dob | momentDate: "hr/employee_details"  || "-" }}</pre></div>
           </div>
           <div class="row">
             <div class="col-md-4"><label translate>impac.widget.hr_employee_details.label.gender</label></div>

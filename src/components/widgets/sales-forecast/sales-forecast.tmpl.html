@@ -30,7 +30,7 @@
 
             <div class="row widget-line" ng-class="{main: widget.content.opportunities.slice(6)[$index].length > 0}" ng-click="collapsed = !collapsed" >
               <div class="col-xs-6">
-                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                {{date | momentDate : widget.metadata.hist_parameters.period}}
               </div>
               <div class="col-xs-6 text-right">
                 <strong>{{widget.content.totals.slice(6)[$index] | mnoCurrency : widget.content.currency}}</strong>

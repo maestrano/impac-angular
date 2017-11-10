@@ -53,7 +53,7 @@ module.controller('WidgetSalesForecastCtrl', ($scope, $q, ChartFormatterSvc, $fi
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       formattedDates = _.map w.content.dates, (aDate) ->
-        $filter('mnoDate')(aDate, period)
+        $filter('momentDate')(aDate, period)
 
       inputData = [{
         title: $translate.instant('impac.widget.sales_forecast.sales_performance'),

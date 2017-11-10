@@ -72,7 +72,7 @@ module.controller('WidgetAccountsBalanceCtrl', ($scope, $q, ChartFormatterSvc, $
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map datesSource, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       lineData = {title: data.name, labels: dates, values: data.balances}
       barData = {

@@ -186,7 +186,7 @@ module.controller('WidgetAccountsCashSummaryCtrl', ($scope, $q, ChartFormatterSv
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       inputData = {labels: dates, datasets: [{title: data.label, values: data.cash_flows}]}
       all_values_are_positive = true

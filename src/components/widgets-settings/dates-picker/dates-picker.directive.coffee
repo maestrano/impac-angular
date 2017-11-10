@@ -26,6 +26,7 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       setting = {}
       setting.key = "dates-picker"
 
+      scope.setting = setting
       scope.calendarFrom =
         opened: false
         value: new Date(new Date().getFullYear(), 0, 1)
@@ -52,15 +53,15 @@ module.directive('settingDatesPicker', ($templateCache, $filter, ImpacWidgetsSvc
       """
       fromDateHtml = """
       <div style="display: inline-block;">
-        <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" uib-datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarTo.value" ng-focus="onUse()" ATTRS>
-          {{ calendarFrom.value | date : 'yyyy-MM-dd' }}
+        <button class="btn btn-sm btn-default date-button" ng-click="calendarFrom.toggle()" uib-datepicker-popup ng-model="calendarFrom.value" is-open="calendarFrom.opened" ng-change="onChange()" min-date="minDate" max-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
+          {{ calendarFrom.value | momentDate : setting.key }}
         </button>
       </div>
       """
       toDateHtml = """
       <div style="display: inline-block;">
-        <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" uib-datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarFrom.value" ng-focus="onUse()" ATTRS>
-          {{ calendarTo.value | date : 'yyyy-MM-dd' }}
+        <button class="btn btn-sm btn-default date-button" ng-click="calendarTo.toggle()" uib-datepicker-popup ng-model="calendarTo.value" is-open="calendarTo.opened" ng-change="onChange()" min-date="calendarTo.value" ng-focus="onUse()" ATTRS>
+          {{ calendarTo.value | momentDate : setting.key }}
         </button>
       </div>
       """
