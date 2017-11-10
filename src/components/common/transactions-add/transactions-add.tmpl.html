@@ -1,0 +1,49 @@
+<div id="transactions-add">
+  <div class="overlay" />
+  <div class="message" >
+    <div class="title">Create a manual transaction</div>
+    
+    <div class="form text-left">
+      <label>Description:</label>
+      <input type="text" class="form-control" ng-model="$ctrl.trx.name" placeholder="Transaction description" />
+
+      <label>Amount:</label>
+      <input type="text" class="form-control" ng-model="$ctrl.trx.amount" placeholder="1500.00" />
+
+      <label>Expected payment date:</label>
+      <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.trx.datePicker.date" ng-click="$ctrl.trx.datePicker.toggle()" is-open="$ctrl.trx.datePicker.opened" close-text="Close" on-open-focus="false" />
+
+      <label>Type:</label>
+      <div class="btn-group">
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'bills'">Money out</label>
+      </div>
+
+      <div class="coming-soon">
+        <div class="badge pull-right">Coming soon!</div>
+        
+        <label style="padding-top: 0px;">Repeat every:</label>
+        <div class="btn-group">
+          <select disabled="true">
+            <option>3</option>
+          </select>
+          <select disabled="true">
+            <option>Weeks</option>
+          </select>
+        </div>
+
+        <label>Ends:</label>
+        <div class="btn-group">
+          <input type="radio" disabled="true" checked="true" style="margin-top: 0px;"> Never<br />
+          <input type="radio" disabled="true"> After <select disabled="true"><option>10</option></select> occurences<br />
+          <input type="radio" disabled="true"> On <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.tempDate" disabled="true" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom text-center">
+      <button class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">Cancel</button>
+      <button class="btn btn-sm btn-success" ng-click="$ctrl.createTransaction()" ng-disabled="!$ctrl.isValid()">Save</button>
+    </div>
+  </div>
+</div>

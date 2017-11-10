@@ -190,7 +190,7 @@ module.controller('WidgetSalesComparisonCtrl', ($scope, $q, $filter, ChartFormat
         period = null
         period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
         dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
+          $filter('momentDate')(date, period)
 
         inputData.push({title: data.name, labels: dates, values: data.totals[$scope.filter.value]})
 

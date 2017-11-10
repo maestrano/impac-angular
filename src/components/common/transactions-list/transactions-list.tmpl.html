@@ -1,14 +1,25 @@
 <div id="transactions-list">
-  <div class="top">
-    <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})"></ul>
-    <a ng-click="$ctrl.onHide()" class="back-link">
-      <i class="fa fa-chevron-left"></i>
-      Back to chart
-    </a>
+  <div class="row top">
+    <div class="col-xs-4 pull-left">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">
+        <i class="fa fa-chevron-left" />
+        Back to chart
+      </label>
+    </div>
+    <div class="col-xs-4 text-center">
+      <div class="btn-group">
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})" />
+    </div>
   </div>
   <div class="table-container">
     <table class="table table-striped">
       <tr>
+        <th>{{ $ctrl.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
         <th>Title</th>
         <th>Status</th>
@@ -17,25 +28,32 @@
         <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
-        <th>Rate</th>
+        <th />
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
+        <td>{{ trx.issuer.name }}</td>
         <td>{{ trx.transaction_number }}</td>
         <td>{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
         <td>
-          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.onUpdateExpectedDate({trxId: trx.id, date: trx.datePicker.date})" />
+          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeExpectedDate(trx)" />
+          <button class="btn btn-xs btn-danger reset-date" ng-if="trx.showReset" title="Reset expected payment date to due date" ng-click="$ctrl.resetExpectedDate(trx)">
+            <i class="fa fa-clock-o" />
+          </button>
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
-        <td>{{ trx.currency_rate }}</td>
+        <td>
+          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
+        </td>
       </tr>
-      <tr class="info total">
-        <td colspan="6">TOTAL DUE</td>
-        <td class="text-right">{{ $ctrl.totalDue | mnoCurrency : $ctrl.currency }}</td>
-        <td></td>
+      <tr class="total" ng-class="$ctrl.resourcesType">
+        <td colspan="7">TOTAL</td>
+        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
+        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
+        <td />
       </tr>
     </table>
   </div>

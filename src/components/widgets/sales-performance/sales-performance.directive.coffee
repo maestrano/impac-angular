@@ -70,7 +70,7 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
 
   formatDate = (date) ->
     period = if w.metadata? && w.metadata.hist_parameters? then w.metadata.hist_parameters.period else null
-    return $filter('mnoDate')(date, period)
+    return $filter('momentDate')(date, period)
 
   $scope.getCloseDate = (anOpp) ->
     if anOpp? && anOpp.sales_stage_changes? && anOpp.sales_stage_changes.length > 0
@@ -148,7 +148,7 @@ module.controller('WidgetSalesPerformanceCtrl', ($scope, $q, $filter, ChartForma
         period = null
         period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
         dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
+          $filter('momentDate')(date, period)
 
         inputData.push({title: data.name, labels: dates, values: data.totals})
         angular.forEach(data.totals, (value) ->

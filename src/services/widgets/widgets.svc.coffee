@@ -276,10 +276,10 @@ angular
               (success) ->
                 angular.extend widget, success.data
                 if needContentReload
-                  _self.show(widget) 
+                  _self.show(widget)
                 else
                   $q.resolve(widget)
-              
+
               (updateError) ->
                 $log.error("Impac! - WidgetsSvc: Cannot update widget: #{widget.id}")
                 $q.reject(updateError)

@@ -110,7 +110,7 @@
                   <!-- Date -->
                   <div class="row widget-line">
                     <div class="col-sm-12">
-                      {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                      {{date | momentDate : widget.metadata.hist_parameters.period}}
                     </div>
                   </div>
                   <!-- Amount + currency -->
@@ -127,7 +127,7 @@
             <div ng-repeat="date in dates track by $index" class="row widget-line visible-xs">
               <!-- Date -->
               <div class="col-xs-6">
-                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                {{date | momentDate : widget.metadata.hist_parameters.period}}
               </div>
               <!-- Amount + currency -->
               <div class="col-xs-6 text-right" ng-class="getClassColor(selectedElements[0].totals[$index])">

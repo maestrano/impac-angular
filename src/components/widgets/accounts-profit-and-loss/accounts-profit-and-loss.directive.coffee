@@ -65,8 +65,8 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
 
         dates = ImpacUtilities.selectedTimeRange(histParams)
 
-        firstDate = $filter('mnoDate')(dates.from, getPeriod())
-        lastDate = $filter('mnoDate')(dates.to, getPeriod())
+        firstDate = $filter('momentDate')(dates.from, getPeriod())
+        lastDate = $filter('momentDate')(dates.to, getPeriod())
 
         $scope.amountDisplayedOptions[1].label = "#{firstDate} to #{lastDate}"
         $scope.amountDisplayedOptions[0].label = lastDate
@@ -231,7 +231,7 @@ module.controller('WidgetAccountsProfitAndLossCtrl', ($scope, $q, ChartFormatter
         period = null
         period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
         dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
+          $filter('momentDate')(date, period)
 
         inputData.push({title: data.name, labels: dates, values: data.totals})
 

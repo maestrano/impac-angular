@@ -27,11 +27,11 @@
               <i ng-show="sortedColumn == 'account'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-3 text-right sortable-title" ng-click="sort('total')">
-              {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              {{getLastDate() | momentDate : widget.metadata.hist_parameters.period}}
               <i ng-show="sortedColumn == 'total'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-3 text-right sortable-title" ng-click="sort('variance')">
-              {{'impac.widget.account_cash_smry.vs' | translate}}{{getPrevDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              {{'impac.widget.account_cash_smry.vs' | translate}}{{getPrevDate() | momentDate : widget.metadata.hist_parameters.period}}
               <i ng-show="sortedColumn == 'variance'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
           </div>
@@ -106,7 +106,7 @@
                   <!-- Date -->
                   <div class="row widget-line">
                     <div class="col-sm-12">
-                      {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                      {{date | momentDate : widget.metadata.hist_parameters.period}}
                     </div>
                   </div>
                   <!-- Amount + currency -->
@@ -129,7 +129,7 @@
             <div ng-repeat="date in dates track by $index" class="row widget-line visible-xs">
               <!-- Date -->
               <div class="col-xs-4">
-                {{date | mnoDate : widget.metadata.hist_parameters.period}}
+                {{date | momentDate : widget.metadata.hist_parameters.period}}
               </div>
               <!-- Amount + currency -->
               <div class="col-xs-4 text-right">
