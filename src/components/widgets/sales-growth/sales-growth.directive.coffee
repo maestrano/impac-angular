@@ -79,7 +79,7 @@ module.controller('WidgetSalesGrowthCtrl', ($scope, $q, ChartFormatterSvc, $filt
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       inputData = {title: data.name, labels: dates, values: data.totals}
       all_values_are_positive = true

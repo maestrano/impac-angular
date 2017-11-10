@@ -3,6 +3,8 @@
 ### v1.6.5 | 2017 - Week 45
 
 #### Adds
+- Dates are now consistent across the different widgets and settings
+- Dates formats can be configured using the ThemingSvc (default is using the locale (`.format('L')`)
 - New `.widget-popup()` mixin (delete widget, demo mode box...)
 - UI improvements on Cash Projection widget:
   - Added button to display all transactions
@@ -11,6 +13,17 @@
   - Currency rate removed from transactions list
   - Empty Customer/Supplier column added
 - [IMPAC-670] Ability to create and delete forecast transactions on Cash Projection widget
+
+#### Config changes
+- Configure dates format (ThemingSvc)
+```coffeescript
+  dateFormatterSettings:
+    default: 'L'
+    # Specific formatting can be defined per widget or other components:
+    # formats:
+    #  'hr/employee_details':  "MM-DD-YYYY"
+    #  'time-period':          "MM_DD_YYYY"
+```
 
 #### Dependencies
 - Impac! v1.6.5 (new v2 resources routes)

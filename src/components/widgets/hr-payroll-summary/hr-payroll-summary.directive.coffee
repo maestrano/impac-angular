@@ -80,21 +80,9 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
 
   $scope.formatDate = (date) ->
     if w.metadata? && w.metadata.hist_parameters?
-      switch w.metadata.hist_parameters.period
-        when 'DAILY'
-          return $filter('date')(date, 'dd-MMM')
-        when 'WEEKLY'
-          return $filter('date')(date, 'dd-MMM')
-        when 'MONTHLY'
-          return $filter('date')(date, 'MMM')
-        when 'QUARTERLY'
-          return $filter('date')(date, 'MMM-yy')
-        when 'YEARLY'
-          return $filter('date')(date, 'yyyy')
-        else
-          return $filter('date')(date, 'MMM')
+      return $filter('momentDate')(date, w.metadata.hist_parameters.period)
     else
-      return $filter('date')(date, 'MMM')
+      return $filter('momentDate')(date, 'default')
 
   $scope.sort = (col) ->
     if $scope.sortedColumn == col
@@ -194,7 +182,7 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
     else if $scope.sortedColumn == 'total'
       sortEmployeesBy( (el) -> $scope.getLastValue(el) )
 
-  # Chart formating function
+  # Chart formatting function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
@@ -206,13 +194,17 @@ module.controller('WidgetHrPayrollSummaryCtrl', ($scope, $q, ChartFormatterSvc, 
         inputData = []
         labels = _.map w.content.dates, (date) ->
           if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "YEARLY"
-            $filter('date')(date, 'yyyy')
+            $filter('momentDate')(date, 'YEARLY')
           else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "QUARTERLY"
-            $filter('date')(date, 'MMM-yy')
-          else if w.metadata.hist_parameters && (w.metadata.hist_parameters.period == "WEEKLY" || w.metadata.hist_parameters.period == "DAILY")
-            $filter('date')(date, 'dd-MMM')
+            $filter('momentDate')(date, 'QUARTERLY')
+          else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "MONTHLY"
+            $filter('momentDate')(date, 'MONTHLY')
+          else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "WEEKLY"
+            $filter('momentDate')(date, 'WEEKLY')
+          else if w.metadata.hist_parameters && w.metadata.hist_parameters.period == "DAILY"
+            $filter('momentDate')(date, 'DAILY')
           else
-            $filter('date')(date, 'MMM')
+            $filter('momentDate')(date, 'default')
         angular.forEach($scope.selectedElements, (sElem) ->
           data = angular.copy(sElem)
           inputData.push({title: data.name, labels: labels, values: data.totals})

@@ -126,6 +126,12 @@ angular
         tagging:
           enabled: false
 
+      dateFormatterSettings:
+        default: 'L'
+        # Specific formatting can be defined per widget or other components:
+        # formats:
+        #  'hr/employee_details':  "MM-DD-YYYY"
+        #  'time-period':          "MM_DD_YYYY"
 
     #=======================================
     # Public methods available in config

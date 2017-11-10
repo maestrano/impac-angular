@@ -65,7 +65,7 @@ module.controller('WidgetSalesAgedCtrl', ($scope, $q, ChartFormatterSvc, $filter
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       $scope.formattedDates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       inputData.push({title: $scope.filter.label, labels: $scope.formattedDates, values: values})
 

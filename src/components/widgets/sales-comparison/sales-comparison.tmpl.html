@@ -28,7 +28,7 @@
 
           <div class="row widget-line header">
             <div class="col-xs-8 sortable-title" ng-click="sort('sales')">
-              {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+              {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | momentDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | momentDate : widget.metadata.hist_parameters.period}}
               <i ng-show="sortedColumn == 'sales'" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </div>
             <div class="col-xs-4 text-right sortable-title" ng-click="sort('total')">
@@ -92,7 +92,7 @@
 
             <div class="row widget-line header">
               <div class="col-xs-12">
-                {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | mnoDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | mnoDate : widget.metadata.hist_parameters.period}}
+                {{'impac.widget.sales_comparison.total_sales_from' | translate}} {{widget.content.dates[0] | momentDate : widget.metadata.hist_parameters.period}} {{'impac.widget.sales_comparison.to' | translate}} {{getLastDate() | momentDate : widget.metadata.hist_parameters.period}}
               </div>
             </div>
 

@@ -12,7 +12,7 @@
   <!-- Dates pickers -->
   <div class="row" ng-show="isDatesPickerUsed()">
     <div class="col-xs-12">
-      <div setting-dates-picker class="sub-setting" parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" min-date="getMinDate()" from="fromDate" to="toDate" keep-today="keepToday" on-use="useDatesPicker()" />
+      <div setting-dates-picker class="sub-setting" parent-widget="timePeriodSetting" deferred="::datesPickerDeferred" min-date="formattedMinDate()" from="fromDate" to="toDate" keep-today="keepToday" on-use="useDatesPicker()" />
     </div>
   </div>
 
