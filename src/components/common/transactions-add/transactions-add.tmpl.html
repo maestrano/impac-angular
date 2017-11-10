@@ -1,11 +1,11 @@
 <div id="transactions-add">
   <div class="overlay" />
   <div class="message" >
-    <div class="title">Create a forecast transaction</div>
+    <div class="title">Create a manual transaction</div>
     
     <div class="form text-left">
-      <label>Name:</label>
-      <input type="text" class="form-control" ng-model="$ctrl.trx.name" placeholder="New Deal won" />
+      <label>Description:</label>
+      <input type="text" class="form-control" ng-model="$ctrl.trx.name" placeholder="Transaction description" />
 
       <label>Amount:</label>
       <input type="text" class="form-control" ng-model="$ctrl.trx.amount" placeholder="1500.00" />
@@ -15,8 +15,8 @@
 
       <label>Type:</label>
       <div class="btn-group">
-        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Invoice</label>
-        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'bills'">Bill</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'bills'">Money out</label>
       </div>
 
       <div class="coming-soon">
