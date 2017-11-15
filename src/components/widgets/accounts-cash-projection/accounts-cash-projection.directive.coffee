@@ -9,6 +9,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Used by onZoom callback
   updateLocked = false
   zoomMetadata = {}
+  # Stack the invoices and bills based on their age
+  w.metadata.ranges = ['-60d', '-30d']
 
   # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
   dateFilter = (timestamp) ->
