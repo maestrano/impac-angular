@@ -129,7 +129,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
     series = this
-    resources = switch(series.name)
+    resources = switch(series.userOptions.stack)
       when 'Payables'
         'bills'
       when 'Receivables'
