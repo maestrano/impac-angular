@@ -161,6 +161,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         ImpacWidgetsSvc.update(w, { metadata: zoomMetadata }, false).finally(-> updateLocked = false)
       , 1000
 
+  onClickLegend = ->
+    series = this
+    for s in $scope.chart.hc.series
+      continue if s.userOptions.linkedTo != series.name
+      if series.visible then s.hide() else s.show()
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -198,6 +204,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     # Add events callbacks to chart object
     $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
+    $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
 
     # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)
