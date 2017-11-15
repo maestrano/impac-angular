@@ -1,5 +1,15 @@
 # Impac! Frontend Changelog
 
+### v1.6.6 | 2017 - Week 46
+
+#### Adds
+- [IMPAC-616] Stack invoices and bills on the cash projection widget
+
+#### Dependencies
+- Finance Bolt v1.4.0 - This is a soft dependency: transactions won't be stacked if older versions are used, but the change is backward-compatible
+
+-------------------------------------------------------------
+
 ### v1.6.5 | 2017 - Week 45
 
 #### Adds
