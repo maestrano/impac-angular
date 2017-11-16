@@ -1,0 +1,28 @@
+<div widget-sales-average-purchase-size>
+  <!-- Settings Panel -->
+  <div ng-show="widget.isEditMode" class="edit">
+    <h4>Widget settings</h4>
+
+    <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+
+    <!-- Buttons displayed on the lower  -->
+    <div class="bottom-buttons" align="right">
+      <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
+      <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
+    </div>
+  </div>
+
+  <!-- Content Panel -->
+  <div ng-hide="widget.isEditMode">
+    <!-- Data found -->
+    <div ng-show="(isDataFound==true)" class="">
+      <!-- <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold> -->
+      <!-- Chart -->
+      <div id="{{chartId()}}" class="average-sales-chart"></div>
+
+    </div>
+
+    <!-- No data found -->
+    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+  </div>
+</div>
