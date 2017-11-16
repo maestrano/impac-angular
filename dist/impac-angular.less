@@ -371,6 +371,44 @@
   padding-right: @gutter;
 }
 
+.widget-popup() {
+  text-align: center;
+  font-size: 13px;
+  color: @impac-widget-popup-message-text-color;
+  
+  .overlay {
+    background-color: white;
+    position: absolute;
+    height: ~"calc(100% - 4px)";
+    width: ~"calc(100% - 4px)";
+    top: 2px;
+    left: 2px;
+    opacity: 0.6;
+    z-index: 5;
+  }
+
+  .message {
+    z-index: 6;
+    position: absolute;
+    min-height: 160px;
+    padding-bottom: 10px;
+    top: 45px;
+    left: 7%;
+    width: 86%;
+    background-color: @impac-widget-popup-message-background-color;
+    border-radius: 4px;
+    box-shadow: 0px 0px 25px 0px;
+
+    .title {
+      padding: 2px;
+      background-color: @impac-widget-popup-title-background-color;
+      color: @impac-widget-popup-title-text-color;
+      margin: -1px -1px 10px -1px;
+      text-transform: uppercase;
+    }
+  }
+}
+
 /* ************************************************************************ */
 /*                                IMPAC MATERIAL
 /*                  ------------------------------------------
@@ -2606,49 +2644,59 @@ dashboard-templates-selector {
   .overlay, .title, .btn, .example { display: none; }
 }
 
-.analytics common-delete-widget {
-  text-align: center;
-  font-size: 13px;
-  color: @impac-widget-popup-message-text-color;
-  
-  .overlay {
-    background-color: white;
-    position: absolute;
-    height: ~"calc(100% - 4px)";
-    width: ~"calc(100% - 4px)";
-    top: 2px;
-    left: 2px;
-    opacity: 0.6;
-    z-index: 5;
-  }
-
+#transactions-add {
+  .widget-popup();
   .message {
-    z-index: 6;
-    position: absolute;
-    min-height: 160px;
-    padding-bottom: 10px;
-    top: 45px;
-    left: 7%;
-    width: 86%;
-    background-color: @impac-widget-popup-message-background-color;
-    border-radius: 4px;
-    box-shadow: 0px 0px 25px 0px;
-
-    .title {
-      padding: 2px;
-      background-color: @impac-widget-popup-title-background-color;
-      color: @impac-widget-popup-title-text-color;
-      margin: -1px -1px 10px -1px;
-      text-transform: uppercase;
+    top: 30px;
+    left: 35%;
+    width: 30%;
+    .form {
+      padding: 0px 10px;
+      > label, .coming-soon > label {
+        padding-top: 10px;
+        font-weight: normal;
+        margin-bottom: 3px;
+      }
+      input.form-control {
+        width: 90%;
+        border-radius: 2px;
+        height: 28px;
+        font-size: 13px;
+      }
+      .btn-group {
+        display: block;
+        min-height: 22px;
+        select {
+          border-radius: 2px;
+          height: 28px;
+          margin-top: 0px;
+        }
+      }
+      .coming-soon {
+        margin-top: 15px;
+        padding: 5px;
+        border: solid 1px silver;
+        background-color: white;
+        color: #888888;
+        font-style: italic;
+        .badge {
+          font-weight: normal;
+          background-color: #888888;
+        }
+        .btn-group {
+          margin-left: 10px;
+          input[type="radio"] { margin-top: 5px; }
+          select { height: 22px; }
+          .btn {
+            float: none;
+            border-color: #888888;
+          }
+        }
+      }
     }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
+    .bottom {
+      margin-top: 20px;
     }
-
-    p { padding: 0px 10px; }
-
-    button.btn { margin-top: 20px; }
   }
 }
 
@@ -2662,8 +2710,38 @@ dashboard-templates-selector {
   .table-container {
     max-height: ~"calc(@{impac-big-widget-size} - 60px)";
     overflow: auto;
-    tr.total { font-weight: bold; }
+    
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
     input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+    .fa.fa-times {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(#8eab71, 20%);
+      }
+      &.bills {
+        background-color: lighten(#c76379, 20%);
+      }
+    }
+  }
+}
+
+.analytics common-delete-widget {
+  .widget-popup();
+  .message {
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+    p { padding: 0px 10px; }
+    button.btn { margin-top: 20px; }
   }
 }
 
@@ -2783,217 +2861,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-chart-threshold {
-
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
-      }
-    }
-
-    .panel-text-label {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-    .panel-text-input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-    }
-    .panel-text-currency {
-      font-weight: bold;
-      color: #000;
-    }
-  }
-
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
-      display: inline-block;
-      &.loading {
-        padding: 3px 20px;
-      }
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
@@ -3012,6 +2879,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -3021,12 +2894,6 @@ chart-threshold {
       text-align: center;
       border-bottom: dashed 1px @impac-widget-borders-color;
     }
-  }
-}
-
-.analytics .widget-item .content.accounts-assets-vs-liabilities {
-  .legend > .title span {
-    margin-left: 3px;
   }
 }
 
@@ -3147,39 +3014,6 @@ chart-threshold {
     }
   }
 
-  .offset-box {
-    position: absolute;
-    background-color: white;
-    opacity: 0.9;
-    width: 350px;
-    height: 300px;
-    margin-top: -310px;
-    padding: 20px;
-    border-radius: 4px;
-    border: solid 1px @impac-dashboard-borders-color;
-    overflow-y: auto;
-
-    h3 {
-      text-align: center;
-      text-transform: uppercase;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    h4 {
-      text-align: right;
-      font-size: 14px;
-      border-top: solid 1px #b3cacb;
-      padding-top: 5px;
-    }
-
-    .price {
-      text-align: right;
-      font-size: 20px;
-      margin-top: 0px;
-    }
-  }
-
   .dates-picker {
     display: inline-block;
     float: right;
@@ -3210,6 +3044,35 @@ chart-threshold {
   .widget-lines-container {
     max-height: 94px;
     color: #626d6d;
+  }
+}
+
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .price {
+    .center-bold(75px);
+  }
+
+  .legend {
+    max-height: 125px;
+  }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    overflow: visible;
   }
 }
 
@@ -3275,35 +3138,6 @@ chart-threshold {
   .comparable-error h5 {
     margin-left: 13px;
     color: @impac-negative;
-  }
-}
-
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .price {
-    .center-bold(75px);
-  }
-
-  .legend {
-    max-height: 125px;
-  }
-}
-
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    overflow: visible;
   }
 }
 
@@ -3925,6 +3759,217 @@ chart-threshold {
     }
   }
 }
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+      &.loading {
+        padding: 3px 20px;
+      }
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }

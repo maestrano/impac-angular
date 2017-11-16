@@ -61,7 +61,7 @@ module.controller('WidgetAccountsAccountingValuesCtrl', ($scope, $q, ChartFormat
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map data.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       # inputData = {title: data.type, labels: dates, values: data.values
       inputData = {labels: dates, datasets: [{title: data.type, values: data.values}]}

@@ -1,35 +1,40 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
 module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout  , ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
 
+  # == Context and Helpers ========================================================================
   w = $scope.widget
 
-  # Define settings
-  # --------------------------------------
-  $scope.orgDeferred = $q.defer()
-  $scope.intervalsOffsetsDeferred = $q.defer()
-  $scope.currentOffsetsDeferred = $q.defer()
-
-  settingsPromises = [
-    $scope.orgDeferred.promise,
-    $scope.intervalsOffsetsDeferred.promise,
-    $scope.currentOffsetsDeferred.promise
-  ]
-
-  # Simulation mode
-  $scope.simulationMode = false
-  $scope.intervalsCount = 0
-
-  # Attach KPI
-  $scope.chartDeferred = $q.defer()
-  $scope.chartPromise = $scope.chartDeferred.promise
-  $scope.chartThresholdOptions = {
-    label: 'Get alerted when the cash projection goes below'
-  }
-
-  # Transactions List component
-  $scope.trxList = { display: false, updated: false }
-
+  # Time management
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
+  # Used by onZoom callback
+  updateLocked = false
+  zoomMetadata = {}
+  # Stack the invoices and bills based on their age
+  w.metadata.ranges = ['-60d', '-30d']
+
+  # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
+  dateFilter = (timestamp) ->
+    pickedDate = moment.utc(timestamp)
+    if pickedDate <= todayUTC then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
+
+  # Used by legendFormatter
+  imgSrc = (name) ->
+    ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
+
+  # Used by legendFormatter
+  imgTemplate = (src, name) ->
+    "<img src='#{src}'><br>#{name}"
+
+  # Unique identifier for the chart object in the DOM
+  $scope.chartId = ->
+    "cashProjectionChart-#{w.id}"
+
+  # == Widget Settings ============================================================================
+  $scope.orgDeferred = $q.defer()
+  settingsPromises = [$scope.orgDeferred.promise]
+
+  # == Sub-Components - Transactions list =========================================================
+  $scope.trxList = { display: false, updated: false, transactions: [] }
 
   $scope.trxList.show = ->
     $scope.trxList.display = true
@@ -39,22 +44,33 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     if $scope.trxList.updated
       ImpacWidgetsSvc.show(w).then(-> $scope.trxList.updated = false)
 
+  # Fetches the transactions from the Bolt JSON API endpoint
   $scope.trxList.fetch = (currentPage = 1) ->
     params = angular.merge(
       $scope.trxList.params, {
         metadata: _.pick(w.metadata, 'organization_ids')
-        page:
-          number: currentPage
+        page: { number: currentPage }
       }
     )
     BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(
       (response) ->
-        # Update trxList object with dynamic values
-        $scope.trxList.transactions = _.map(response.data.data, (trx) ->
-          angular.merge(trx.attributes, { id: trx.id })
-        )
+        # Clear transactions list and replace by newly fetched ones
+        _.remove($scope.trxList.transactions, -> true)
+        for trx in response.data.data
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
         $scope.trxList.totalRecords = response.data.meta.record_count
-    )
+    ).finally(-> $scope.trxList.show())
+
+  # Init trxList object with static values
+  $scope.trxList.updateParams = (resources, filter) ->
+    $scope.trxList.resources = resources
+    $scope.trxList.params = { filter: filter }
+
+  # Fetch and show all invoices or bills
+  $scope.trxList.showAll = (resources = 'invoices') ->
+    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
+    $scope.trxList.updateParams(resources, filter)
+    $scope.trxList.fetch()
 
   # JS date is in local time zone => format it to send a UTC date at 00:00:00
   $scope.trxList.updateExpectedDate = (trxId, date) ->
@@ -65,76 +81,74 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       { expected_payment_date: moment(date).format('YYYY-MM-DD') }
     ).then(-> $scope.trxList.updated = true)
 
-  # Widget specific methods
-  # --------------------------------------
-  w.initContext = ->
-    # TODO: what to do when the widget has no data?
-    $scope.isDataFound = w.content?
+  $scope.trxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.trxList.resources
+    $scope.trxList.resources = resourcesType
+    $scope.trxList.fetch()
 
-    # Offset will be applied to all intervals after today
-    todayInterval = _.findIndex w.content.chart.series[0].data, (dataMat) ->
-      dataMat[0] >= todayUTC
-    $scope.intervalsCount = w.content.chart.series[0].data.length - todayInterval
+  $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
+    _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
+    BoltResources.destroy(
+      w.metadata.bolt_path,
+      resourcesType,
+      trxId
+    ).then(-> $scope.trxList.updated = true)
 
-    projectedSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Projected cash"
+  # == Sub-Components - Threshold KPI =============================================================
+  $scope.chartDeferred = $q.defer()
+  $scope.chartPromise = $scope.chartDeferred.promise
+  $scope.chartThresholdOptions = {
+    label: 'Get alerted when the cash projection goes below'
+  }
 
-    cashFlowSerie = _.find w.content.chart.series, (serie) ->
-      serie.name == "Cash flow"
-    cashFlowSerie.data = []
-    cashFlowSerie.type = 'area'
-    cashFlowSerie.showInLegend = false
+  # == Sub-Components - Add Forecast Popup ========================================================
+  $scope.addForecastPopup =
+    resourcesType: 'invoices'
+    display: false
+    show: -> this.display = true
+    hide: -> this.display = false
+  
+  $scope.addForecastPopup.createTransaction = (trx) ->
+    BoltResources.create(
+      w.metadata.bolt_path,
+      this.resourcesType,
+      {
+        title: trx.name,
+        transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
+        amount:trx.amount,
+        balance: trx.amount,
+        transaction_date: moment().format('YYYY-MM-DD'),
+        due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
+        status: 'FORECAST',
+        currency: w.metadata.currency
+      },
+      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+    ).then(-> ImpacWidgetsSvc.show(w))
 
-    totalOffset = 0.0
-    if w.metadata.offset && w.metadata.offset.current && w.metadata.offset.current.length > 0
-      totalOffset += _.sum(w.metadata.offset.current)
-
-    if w.metadata.offset && w.metadata.offset.per_interval && w.metadata.offset.per_interval.length > 0
-      totalOffset += _.sum(w.metadata.offset.per_interval)
-
-    if projectedSerie?
-      $scope.currentProjectedCash = projectedSerie.data[todayInterval] - totalOffset
-
-    $scope.isTimePeriodInThePast = w.metadata.hist_parameters && moment(w.metadata.hist_parameters.to) < moment().startOf('day')
-
-    if hist = w.metadata.hist_parameters
-      $scope.fromDate = hist.from
-      $scope.toDate = hist.to
-
-  # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
-  dateFilter = (timestamp) ->
-    pickedDate = moment.utc(timestamp)
-    if pickedDate <= todayUTC then "lte #{pickedDate.format('YYYY-MM-DD')}" else pickedDate.format('YYYY-MM-DD')
-
+  # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
     series = this
-    resources = switch(series.name)
+    resources = switch(series.userOptions.stack)
       when 'Payables'
         'bills'
       when 'Receivables'
         'invoices'
     return unless resources?
 
-    # Init trxList object with static values
-    $scope.trxList.resources = resources
-    $scope.trxList.totalDue = event.point.y
-    $scope.trxList.params = {
-      filter:
-        expected_payment_date: dateFilter(event.point.x)
-        status: ['AUTHORISED', 'APPROVED', 'SUBMITTED']
-    }
-    $scope.trxList.fetch().finally(-> $scope.trxList.show())
+    filter =
+      expected_payment_date: dateFilter(event.point.x)
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
+    $scope.trxList.updateParams(resources, filter)
+    $scope.trxList.fetch()
 
-  imgSrc = (name) -> ImpacAssets.get(_.camelCase(name + 'LegendIcon'))
-  imgTemplate = (src, name) -> "<img src='#{src}'><br>#{name}"
+  # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->
     name = this.name
     return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
     imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
-  updateLocked = false
-  zoomMetadata = {}
+  # Persists the zooming options on user selection (call to MnoHub to update the metadata)
   onZoom = (event) ->
     zoomMetadata = angular.merge w.metadata, {
       xAxis:
@@ -147,8 +161,33 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         ImpacWidgetsSvc.update(w, { metadata: zoomMetadata }, false).finally(-> updateLocked = false)
       , 1000
 
+  onClickLegend = ->
+    series = this
+    for s in $scope.chart.hc.series
+      continue if s.userOptions.linkedTo != series.name
+      if series.visible then s.hide() else s.show()
+
+  # == Widget =====================================================================================
+  # Executed after the widget content is retrieved from the API
+  w.initContext = ->
+    # Hide Cash Flow series returned by the API
+    cashFlowSerie = _.find w.content.chart.series, (serie) ->
+      serie.name == "Cash flow"
+    cashFlowSerie.data = []
+    cashFlowSerie.type = 'area'
+    cashFlowSerie.showInLegend = false
+
+    # Fetch companies from Bolt and save first id
+    # TODO: multi-companies?
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'companies',
+      { metadata: _.pick(w.metadata, 'organization_ids') }
+    ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
+
+  # Executed after the widget and its settings are initialised and ready
   w.format = ->
-    # Chart basic options
+    # Instantiate and render chart
     options =
       chartType: 'line'
       chartOnClickCallbacks: []
@@ -162,30 +201,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
     $scope.chart.render(w.content.chart, options)
 
-    # Chart customization
+    # Add events callbacks to chart object
     $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
+    $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
 
+    # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)
 
-  $scope.chartId = ->
-    "cashProjectionChart-#{w.id}"
-
-  $scope.toggleSimulationMode = (init = false) ->
-    $scope.initSettings() if init
-    $scope.simulationMode = !$scope.simulationMode
-
-  $scope.saveSimulation = ->
-    $scope.updateSettings()
-    $scope.toggleSimulationMode()
-
-  getPeriod = ->
-    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
-
-  # Widget is ready: can trigger the "wait for settings to be ready"
-  # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
 )
+
 module.directive('widgetAccountsCashProjection', ->
   return {
     restrict: 'A',

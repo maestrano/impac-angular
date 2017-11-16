@@ -42,12 +42,17 @@ describe('<> widget-setting-time-slider', function () {
 
 
   describe('.link', function() {
-    var widget, setting, $timeout;
+    var widget, setting, $timeout, $translate;
     beforeEach(function() {
       widget = subjectScope.parentWidget;
       setting = widget.settings[0];
       
-      inject(function (_$timeout_) { $timeout = _$timeout_; });
+      inject(function (_$timeout_, _$translate_) {
+        $timeout = _$timeout_;
+        $translate = _$translate_;
+      });
+
+      spyOn($translate, 'use').and.callFake(function() { return 'en'; });
     });
 
     var initialize = function() {

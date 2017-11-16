@@ -42,7 +42,7 @@ module.controller('WidgetAccountsPayableReceivableCtrl', ($scope, $q, ChartForma
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       all_values_are_positive = true
       for value in w.content.values.payables

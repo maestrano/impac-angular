@@ -135,7 +135,7 @@
                   {{getTrackedField()}} -
                 </span>
                 <span ng-if="widget.isHistoryMode">
-                  {{'impac.widget.hr_payroll_summary.from' | translate}} {{widget.content.dates[0] | date : "MMM-d"}} {{'impac.widget.hr_payroll_summary.to' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | date : "MMM-d"}}
+                  {{'impac.widget.hr_payroll_summary.from' | translate}} {{widget.content.dates[0] | momentDate : "hr/payroll_summary"}} {{'impac.widget.hr_payroll_summary.to' | translate}} {{widget.content.dates[widget.content.dates.length - 1] | momentDate : "hr/payroll_summary"}}
                 </span>
                 <span ng-if="!widget.isHistoryMode">
                   {{getPeriod()}}
