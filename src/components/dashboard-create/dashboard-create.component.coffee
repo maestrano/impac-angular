@@ -5,7 +5,7 @@ module.component('dashboardCreate', {
   bindings:
     onCreateDashboard: '&'
     labelLocale: '@?'
-    large: '<?'
+    btnClass: '@?'
   controller: ($scope, $uibModal, ImpacTheming, ImpacMainSvc) ->
     ctrl = this
 
