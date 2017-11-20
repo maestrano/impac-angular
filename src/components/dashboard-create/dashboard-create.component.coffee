@@ -1,6 +1,6 @@
 module = angular.module('impac.components.dashboard-create', [])
 
-module.component('dashboardCreate', {
+module.component('impacDashboardCreate', {
   templateUrl: 'dashboard-create/dashboard-create.tmpl.html'
   bindings:
     onCreateDashboard: '&'
