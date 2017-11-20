@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <i class="fa fa-times" ng-click="$close()" />
+  <h1 translate translate-values="{ name: label }">
+    impac.dashboard.create.create_new_dashboard
+  </h1>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 form-horizontal">
+      <div class="row form-group">
+        <label class="col-sm-2 control-label" translate>impac.dashboard.create.name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="dashboard.name" placeholder="{{'impac.dashboard.create.placeholder.cash_accounts' | translate}}"></input>
+        </div>
+      </div>
+
+      <div class="row form-group" ng-if="multiMode.enabled">
+        <label class="col-sm-2 control-label" translate>impac.dashboard.create.source</label>
+        <div class="col-sm-10">
+          <div class="btn-group">
+            <label class="btn btn-info" ng-model="source.mode" uib-btn-radio="'single'" ng-change="init()" translate>impac.dashboard.create.current_company</label>
+            <label class="btn btn-info" ng-model="source.mode" uib-btn-radio="'multi'" translate>impac.dashboard.create.multi_company</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-if="source.mode == 'multi'">
+        <div class="col-sm-10 col-sm-offset-2">
+          <ul class="list-unstyled">
+            <li ng-repeat="org in organizations" >
+              <input type="checkbox" ng-model="org.$selected" ng-disabled="!org.permitted" />
+              {{ org.name }}
+              <i class="fa fa-exclamation-circle text-danger" ng-hide="org.permitted" uib-tooltip="{{'impac.dashboard.create.tooltip.access' | translate}}" />
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <dashboard-templates-selector on-select="templates.select($event)" ng-if="templates.enabled"></dashboard-templates-selector>
+    </div>
+  </div>
+</div>
+<div class="modal-footer text-right">
+  <button class="btn btn-default" ng-click="$close()" ng-disabled="$loading" translate>impac.dashboard.create.cancel</button>
+  <button class="btn btn-success" ng-click="createDashboard(organizations)" ng-disabled="invalid() || $loading">
+    <i class="fa fa-spinner fa-pulse loader" ng-if="$loading" />
+    {{ 'impac.dashboard.create.create' | translate }}
+  </button>
+</div>

@@ -25,7 +25,9 @@
           <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
         </div>
 
-        <div ng-show="showCreateDashboardButton" class="option create" ng-click="onCreateDashboard()"><i class="fa fa-plus" /> {{ 'impac.dashboard_selector.dropdown.create_dashboard' | translate:{name: dhbLabelName} }}</div>
+        <div class="option dashboard-create">
+          <dashboard-create on-create-dashboard="createDashboard(dashboard)" />
+        </div>
       </div>
 
       <div ng-if="showChangeDashboardNameBox" class="change-name">
@@ -50,7 +52,7 @@
 
     <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.dropdown.add_widget' | translate}}</button>
 
-    <button ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()" class='btn btn-warning' ng-show="showCreateDashboardButton" ng-hide="pdfMode"><span class='fa fa-pencil-square-o'></span> {{ 'impac.dashboard_selector.dropdown.create_dashboard' | translate:{name: dhbLabelName} }}</button>
+    <dashboard-create on-create-dashboard="createDashboard(dashboard)" />
 
     <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 

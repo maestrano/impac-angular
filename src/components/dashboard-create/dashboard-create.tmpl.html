@@ -1,0 +1,6 @@
+<div class="dashboard-create">
+  <button class="btn btn-success btn-warning" ng-class="{'btn-lg': $ctrl.large}" ng-click="$ctrl.openModal()">
+    <i class="fa fa-plus" />
+    {{ ($ctrl.labelLocale || 'impac.dashboard_selector.dropdown.create_dashboard') | translate: { name: $ctrl.label } }}
+  </button>
+</div>

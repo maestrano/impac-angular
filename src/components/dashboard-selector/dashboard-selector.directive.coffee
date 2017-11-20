@@ -15,18 +15,13 @@ angular
       # ============================================
       # Select dashboards
       # ============================================
-
       $scope.organizationsNames = ->
         _.pluck $scope.currentDhb.data_sources, 'label'
         .join ", "
 
       $scope.toggleShowDashboardsDropdown = ->
         return if $scope.showChangeDashboardNameBox
-
-        if (ImpacDashboardsSvc.areThereSeveralDashboards() || $scope.showCreateDashboardButton)
-          $scope.showDashboardsDropdown = !$scope.showDashboardsDropdown
-        else
-          $scope.showDashboardsDropdown = false
+        $scope.showDashboardsDropdown = !$scope.showDashboardsDropdown
 
       # Use of timeouts for better fluidity (avoid freezing the display)
       $scope.selectDashboard = (dhbId) ->
@@ -42,11 +37,15 @@ angular
             $scope.isLoading = false
         , 50
 
+      # ============================================
+      # Component: Dashboard Create
+      # ============================================
+      $scope.createDashboard = (dashboard) ->
+        $scope.onCreateDashboard({ dashboard: dashboard })
 
       # ============================================
       # Change dashboard name
       # ============================================
-
       $scope.toggleChangeDashboardNameBox = (dhb) ->
         tmpDhbCpy = angular.copy(dhb)
         $scope.dashboardToChange = {}
@@ -71,21 +70,17 @@ angular
         ImpacDashboardsSvc.update($scope.dashboardToChange.id, {name: $scope.dashboardToChange.name}).then (success) ->
           $scope.showChangeDashboardNameBox = false
 
-
       # ============================================
       # Accessibility
       # ============================================
-
       $scope.toggleAccessibilityMode = ->
         $scope.accessibilityMode = !$scope.accessibilityMode
         angular.forEach $scope.currentDhb.widgets, (w) ->
           w.loadContent()
 
-
       # ============================================
       # Delete dashboard modal
       # ============================================
-
       $scope.deleteDashboardModal = $scope.$new()
 
       $scope.deleteDashboardModal.config = {
@@ -128,7 +123,6 @@ angular
 
       return $scope
 
-
     link: (scope, element, attrs) ->
       # references to services
       # -------------------------------------
@@ -148,7 +142,6 @@ angular
 
       # buttons / display
       # -------------------------------------
-      scope.showCreateDashboardButton = true
       scope.showDashboardsDropdown = false
       scope.showChangeDashboardNameBox = false
       scope.accessibilityMode = false

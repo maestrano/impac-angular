@@ -88,7 +88,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       $scope.displaySecondMsg = true if count >= 3
       ImpacDashboardsSvc.reload(true).then(dhbLoadSuccess, dhbLoadError)
 
-
     # Loader spinner notify trigger
     # -------------------------------------
     ImpacDashboardsSvc.dhbLoader().then(null, null, (triggerLoad)->
@@ -106,130 +105,20 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
         $scope.isLoading=false
       ,timer
 
-
     # ============================================
-    # Create dashboard modal
+    # Dashboard creation
     # ============================================
-
-    $scope.createDashboardModal = $scope.$new()
-
-    $scope.createDashboardModal.config = {
-      backdrop: 'static'
-      template: $templateCache.get('dashboard/create.modal.html')
-      size: 'md'
-      windowClass: 'inverse dhb-create-modal'
-      scope: $scope.createDashboardModal
-    }
-
-    $scope.createDashboardModal.open = ->
-      self = $scope.createDashboardModal
-      return if self.locked
-
-      self.model = { name: '' }
-      self.errors = ''
-      self.isLoading = false
-      $scope.createDashboardModal.isTemplate = false
-      self.dhbLabelName = ImpacTheming.getDhbLabelName()
-      self.instance = $uibModal.open(self.config)
-
-      self.instance.rendered.then (onRender) ->
-        self.locked = true
-      self.instance.result.then (onClose) ->
-        self.locked = false
-      ,(onDismiss) ->
-        self.locked = false
-
-      ImpacMainSvc.loadOrganizations().then (config) ->
-        self.organizations = config.organizations
-        self.currentOrganization = config.currentOrganization
-        self.selectMode('single')
-
-    $scope.createDashboardModal.proceed = ->
-      self = $scope.createDashboardModal
-      return unless self.model.name
-      self.isLoading = true
-      dashboard = self.model
-
-      # Add organizations if multi company dashboard
-      organizations = []
-      if self.mode == 'multi'
-        organizations = _.select(self.organizations, (o) -> o.$selected )
-      else
-        organizations = [ { id: ImpacMainSvc.config.currentOrganization.id } ]
-
-      dashboard.organization_ids = _.pluck(organizations, 'id')
-      dashboard.metadata = _.omit(dashboard.metadata, ['organization_ids'])
-
-      promise = if dashboard.id
+    $scope.createDashboard = (dashboard) ->
+      dashboard.metadata = _.omit(dashboard.metadata, 'organization_ids')
+      if dashboard.id
         ImpacDashboardsSvc.copy(dashboard)
       else
         ImpacDashboardsSvc.create(dashboard)
 
-      promise.then(
-        (dashboard) ->
-          self.errors = ''
-          self.instance.close()
-        , (errors) ->
-          self.isLoading = false
-          self.errors = ImpacUtilities.processRailsError(errors)
-      )
-
-    $scope.createDashboardModal.isProceedDisabled = ->
-      self = $scope.createDashboardModal
-      selectedCompanies = _.select(self.organizations, (o) -> o.$selected)
-
-      # Check that dashboard has a name
-      additional_condition = _.isEmpty self.model.name
-
-      # Check that some companies have been selected
-      additional_condition ||= selectedCompanies.length == 0
-
-      # Check that user can access the analytics data for this company
-      additional_condition ||= _.select(selectedCompanies, (o) -> self.canAccessAnalyticsData(o)).length == 0
-
-      return self.isLoading || additional_condition
-
-    $scope.createDashboardModal.btnBlassFor = (mode) ->
-      self = $scope.createDashboardModal
-      if mode == self.mode
-        "btn btn-sm btn-warning active"
-      else
-        "btn btn-sm btn-default"
-
-    $scope.createDashboardModal.selectMode = (mode) ->
-      self = $scope.createDashboardModal
-      _.each(self.organizations, (o) -> o.$selected = false)
-      self.currentOrganization.$selected = (mode == 'single')
-      self.mode = mode
-
-    $scope.createDashboardModal.isSelectOrganizationShown = ->
-      $scope.createDashboardModal.mode == 'multi'
-
-    $scope.createDashboardModal.isCurrentOrganizationShown = ->
-      $scope.createDashboardModal.mode == 'single'
-
-    $scope.createDashboardModal.canAccessAnalyticsForCurrentOrganization = ->
-      self = $scope.createDashboardModal
-      self.canAccessAnalyticsData(self.currentOrganization)
-
-    $scope.createDashboardModal.isMultiCompanyAvailable = ->
-      $scope.createDashboardModal.organizations.length > 1 && ImpacTheming.get().dhbConfig.multiCompany
-
-    $scope.createDashboardModal.canAccessAnalyticsData = (organization) ->
-      organization.current_user_role && (
-        organization.current_user_role == "Super Admin" ||
-        organization.current_user_role == "Admin"
-      )
-
-    $scope.createDashboardModal.onSelectTemplate = ({ template })->
-      $scope.createDashboardModal.isTemplate = !_.isEmpty(template)
-      $scope.createDashboardModal.model = template
-
     #====================================
     # Widgets selector
     #====================================
-    # TODO: put in separate directive
-
+    # TODO: put in component
     $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
     $scope.forceShowWidgetSelector = false # just to initialize / will be overriden at first load anyway
     $scope.showCloseWidgetSelectorButton = ->

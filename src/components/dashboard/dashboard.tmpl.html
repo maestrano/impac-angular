@@ -20,7 +20,7 @@
   <kpis-bar ng-if="showKpisBar()" kpis="currentDhb.kpis"></kpis-bar>
 
   <!-- Dashboards selection/creation/deletion -->
-  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboardModal.open()" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode" dhb-label-name="dhbLabelName"></dashboard-selector>
+  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboard(dashboard)" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode" dhb-label-name="dhbLabelName"></dashboard-selector>
 
   <div id="sub-menu" uib-collapse="!showSubMenu">
     <i class="fa fa-times" ng-click="hideSubMenu()" />
@@ -121,7 +121,7 @@
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <button ng-click="createDashboardModal.open()" class='btn btn-lg btn-warning'><span class='fa fa-pencil-square-o'></span> {{ 'impac.dashboard.create_a_dashboard' | translate:{name: dhbLabelName} }}</button>
+          <dashboard-create on-create-dashboard="createDashboard(dashboard)" label-locale="impac.dashboard.create_a_dashboard" large="true" />
         </div>
       </div>
 
