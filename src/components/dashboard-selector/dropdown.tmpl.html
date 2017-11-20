@@ -26,7 +26,7 @@
         </div>
 
         <div class="option dashboard-create">
-          <dashboard-create on-create-dashboard="createDashboard(dashboard)" />
+          <dashboard-create on-create-dashboard="createDashboard(dashboard)" btn-class="btn-warning" />
         </div>
       </div>
 
@@ -52,7 +52,7 @@
 
     <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.dropdown.add_widget' | translate}}</button>
 
-    <dashboard-create on-create-dashboard="createDashboard(dashboard)" />
+    <dashboard-create on-create-dashboard="createDashboard(dashboard)" btn-class="btn-warning" />
 
     <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
