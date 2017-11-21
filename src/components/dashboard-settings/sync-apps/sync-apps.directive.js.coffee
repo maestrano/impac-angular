@@ -12,7 +12,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       # Variables initialization
       #====================================
       scope.isSyncing = false
-      scope.realtimeSyncing = false
+      scope.has_connector = false
       scope.hasError = false
       scope.modalOpened = false
       # unused?
@@ -67,7 +67,8 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
         )
         scope.hasError = scope.connectors && scope.connectors.length > 0 && _.any(scope.connectors, (c) -> isError(c))
 
-        scope.has_running_apps = scope.connectors.length > 0 && scope.has_running_cube
+        scope.has_connectors = scope.connectors.length > 0
+        scope.has_running_apps = scope.has_connectors || scope.has_running_cube
 
         for connector in scope.connectors
           formatDate(connector)
