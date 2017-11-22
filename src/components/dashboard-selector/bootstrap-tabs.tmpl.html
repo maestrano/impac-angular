@@ -13,7 +13,7 @@
       <uib-tab ng-repeat="dhb in dashboardsList" ng-click="selectDashboard(dhb.id)" active="dhb.active">
         <uib-tab-heading>
           {{dhb.full_name}}
-          <a href="" class="close-link" ng-if="isDeleteDhbEnabled">
+          <a href="" class="close-link" ng-if="userAccesses.dashboards.destroy">
             <i class="fa fa-times" ng-click="deleteDashboardModal.open()"></i>
           </a>
         </uib-tab-heading>
@@ -23,7 +23,7 @@
           <a href=""><i class="fa fa-wheelchair"></i></a>
         </uib-tab-heading>
       </uib-tab>
-      <uib-tab ng-if="isAddDhbEnabled" ng-click="onCreateDashboard()">
+      <uib-tab ng-if="userAccesses.dashboards.create" ng-click="onCreateDashboard()">
         <uib-tab-heading>
           <a href="">+</a>
         </uib-tab-heading>
@@ -34,7 +34,7 @@
   <div class='buttons-bar hidden-print' ng-class="{'col-md-3': pdfMode, 'col-sm-4': !pdfMode}">
     <div class='actions-panel'>
       <button ng-if='isAccessibilityEnabled && !pdfMode' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-wheelchair'></span></button>
-      <button ng-if="isAddWidgetEnabled && isThereADashboard() && !pdfMode" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.bootstrap_tabs.add_widget' | translate}}</button>
+      <button ng-if="userAccesses.widgets.create && isThereADashboard() && !pdfMode" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.bootstrap_tabs.add_widget' | translate}}</button>
 
       <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 

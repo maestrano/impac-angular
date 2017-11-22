@@ -8,6 +8,7 @@ angular
         kpi: '='
         editMode: '='
         loadReady: '='
+        userAccesses: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 

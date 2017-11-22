@@ -17,10 +17,10 @@
   </div>
 
   <!-- Impac KPI's -->
-  <kpis-bar ng-if="showKpisBar()" kpis="currentDhb.kpis"></kpis-bar>
+  <kpis-bar ng-if="kpisBar.displayed()" kpis="currentDhb.kpis" user-accesses="userAccesses"></kpis-bar>
 
   <!-- Dashboards selection/creation/deletion -->
-  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboard(dashboard)" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode" dhb-label-name="dhbLabelName"></dashboard-selector>
+  <dashboard-selector id="module__dashboard-selector" is-widget-selector-shown="showWidgetSelector()" on-create-dashboard="createDashboard(dashboard)" on-display-widget-selector="displayWidgetSelector()" on-select-dashboard="activateTimer()" pdf-mode="pdfMode" dhb-label-name="dhbLabelName" user-accesses="userAccesses"></dashboard-selector>
 
   <div id="sub-menu" uib-collapse="!showSubMenu">
     <i class="fa fa-times" ng-click="hideSubMenu()" />
@@ -35,7 +35,7 @@
   </div>
 
   <!-- Widgets selection container -->
-  <div id="widget-selector" uib-collapse="!showWidgetSelector()" ng-if="!customWidgetSelector.path">
+  <div id="widget-selector" uib-collapse="!showWidgetSelector()" ng-if="userAccesses.widgets.create && !customWidgetSelector.path">
     <div class="title">
       <p class="instruction" translate translate-values="{name: dhbLabelName}">impac.dashboard.select_the_widgets</p>
       <span class="widget-added badge" translate>impac.dashboard.widget_added</span>
@@ -91,7 +91,7 @@
   <div id="dashboard-settings-panel" ng-if="!dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="row" ng-hide="pdfMode">
     <div class="col-xs-12">
       <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
-      <div dashboard-setting-currency currency="currentDhb.currency" />
+      <div dashboard-setting-currency ng-if="userAccesses.dashboards.update" currency="currentDhb.currency" />
     </div>
   </div>
 
@@ -104,7 +104,6 @@
   </div>
 
   <div id="no-widgets-container" class="row text-center ng-hide" ng-show='(showChooseDhbMsg() || showNoWidgetsMsg())'>
-
     <img ng-src="{{impacDashboardBackground}}" class="bg">
 
     <div class="impac-info-message">
@@ -121,7 +120,7 @@
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <impac-dashboard-create on-create-dashboard="createDashboard(dashboard)" label-locale="impac.dashboard.create_a_dashboard" btn-class="btn-warning btn-lg" />
+          <impac-dashboard-create ng-if="userAccesses.dashboards.create" on-create-dashboard="createDashboard(dashboard)" label-locale="impac.dashboard.create_a_dashboard" btn-class="btn-warning btn-lg" />
         </div>
       </div>
 
@@ -138,7 +137,7 @@
           </div>
         </div>
         <div class="align-center top-buffer-2">
-          <button ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> {{'impac.dashboard.add_new_widget' | translate}}</button>
+          <button ng-if="userAccesses.widgets.create" ng-disabled="showWidgetSelector()" ng-click="displayWidgetSelector()" class='btn btn-lg btn-warning'><span class='fa fa-plus'></span> {{'impac.dashboard.add_new_widget' | translate}}</button>
         </div>
       </div>
     </div>
@@ -159,13 +158,13 @@
     <div id="dashboard-settings-panel" ng-if="dhbSettingsConfig.inWidgetsContainer && !showChooseDhbMsg()" class="col-md-12 in-widgets-container">
       <div>
         <div dashboard-setting-sync-apps ng-if="dhbSettingsConfig.syncApps.show()"/>
-        <div dashboard-setting-currency currency="currentDhb.currency" />
+        <div dashboard-setting-currency ng-if="userAccesses.dashboards.update" currency="currentDhb.currency" />
       </div>
     </div>
     <div class="col-md-12">
       <div id="widgets-container" ui-sortable="sortableOptions" ng-model="currentDhb.widgets" class="row">
         <!-- Widgets -->
-        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getCssClasses()" on-display-alerts="displaySubMenu()" />
+        <div impac-widget widget="widget" is-accessibility="accessibility" parent-dashboard="currentDhb" ng-repeat="widget in currentDhb.widgets" class="widget-item" ng-class="widget.getCssClasses()" on-display-alerts="displaySubMenu()" user-accesses="userAccesses" />
         <!-- Add Widget Tile, enabled & customised in ImpacThemingProvider -->
         <div ng-if="isAddChartEnabled" class="unsortable" ng-click="addChartTileOnClick()">
           <div class="col-md-6 widget-item add-chart">

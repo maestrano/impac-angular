@@ -7,24 +7,19 @@ module.controller('CommonEditableTitleCtrl', ($scope, ImpacWidgetsSvc, ImpacDash
     $scope.updateName = ->
       if w.name.length == 0
         w.name = w.originalName
-        return $translate.instant('impac.widget.editable_title.incorrect_name');
+        $translate.instant('impac.widget.editable_title.incorrect_name');
       else
-        data = { name: w.name }
-        ImpacWidgetsSvc.update(w, data, false)
+        ImpacWidgetsSvc.update(w, { name: w.name }, false)
 
     $scope.getTooltip = ->
       if $scope.pdfMode
-        return ''
+        ''
       else
         tooltipText = $translate.instant('impac.widget.editable_title.tooltip_text');
-        return w.name + if w.hasEditAbility then ' ' + tooltipText else ''
+        "#{w.name} #{tooltipText}"
 
-    ImpacDashboardsSvc.pdfModeEnabled().then(null, null, ->
-      $scope.pdfMode = true
-    )
-    ImpacDashboardsSvc.pdfModeCanceled().then(null, null, ->
-      $scope.pdfMode = false
-    )
+    ImpacDashboardsSvc.pdfModeEnabled().then(null, null, -> $scope.pdfMode = true)
+    ImpacDashboardsSvc.pdfModeCanceled().then(null, null, -> $scope.pdfMode = false)
 )
 
 module.directive('commonEditableTitle', ($templateCache) ->
@@ -33,6 +28,7 @@ module.directive('commonEditableTitle', ($templateCache) ->
     scope: {
       parentWidget: '='
       onToggle: '&'
+      disabled: '='
     },
     template: $templateCache.get('widgets-common/editable-title.tmpl.html'),
     controller: 'CommonEditableTitleCtrl'

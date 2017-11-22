@@ -39,9 +39,6 @@ angular
         selectorType: 'dropdown'
         customTmplPath: null
         accessibilityEnabled: false
-        addWidgetEnabled: true
-        addDhbEnabled: true
-        deleteDhbEnabled: true
         pdfModeEnabled: false
       dhbWidgetsConfig:
         templates:

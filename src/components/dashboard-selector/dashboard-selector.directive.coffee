@@ -9,6 +9,7 @@ angular
       onDisplayWidgetSelector: '&'
       onSelectDashboard: '&'
       pdfMode: '='
+      userAccesses: '='
     }
     controller: ($scope) ->
 
@@ -135,9 +136,6 @@ angular
       # -------------------------------------
       options = ImpacTheming.get().dhbSelectorConfig
       scope.isAccessibilityEnabled = options.accessibilityEnabled
-      scope.isAddWidgetEnabled = options.addWidgetEnabled
-      scope.isAddDhbEnabled = options.addDhbEnabled
-      scope.isDeleteDhbEnabled = options.deleteDhbEnabled
       scope.dhbLabelName = ImpacTheming.getDhbLabelName()
 
       # buttons / display

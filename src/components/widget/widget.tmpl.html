@@ -1,6 +1,6 @@
 <div class="top-line">
-  <div common-editable-title parent-widget="widget" class="editable-title" on-toggle="toggleEditTitle()" />
-  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited() || pdfMode" on-toggle-info-panel="toggleInfoPanel()" on-toggle-delete-widget="toggleDeleteWidget()"/>
+  <div common-editable-title parent-widget="widget" class="editable-title" on-toggle="toggleEditTitle()" disabled="!userAccesses.widgets.update" />
+  <div common-top-buttons parent-widget="widget" on-refresh="showWidget" ng-hide="isInfoPanelDisplayed() || isTitleEdited() || pdfMode" on-toggle-info-panel="toggleInfoPanel()" on-toggle-delete-widget="toggleDeleteWidget()" user-accesses="userAccesses"/>
 </div>
 
 <div ng-if="pdfMode && !widget.ticked" class="include-to-pdf title hidden-print">

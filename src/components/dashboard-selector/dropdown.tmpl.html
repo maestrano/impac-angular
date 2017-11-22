@@ -14,18 +14,18 @@
       <h4 class='dashboard-title'>
         <div style="display: inline-block;" ng-click="toggleShowDashboardsDropdown()">
           {{currentDhb.full_name}}
-          <i class="fa fa-chevron-down" style="font-size: 18px;"></i>
+          <i class="fa fa-chevron-down" ng-if="userAccesses.dashboards.create || dashboardsList.length > 1" style="font-size: 18px;"></i>
         </div>
-        <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
+        <i ng-show="userAccesses.dashboards.update && !showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(currentDhb)"></i>
       </h4>
 
       <div ng-show="showDashboardsDropdown" class='dashboard-select hidden-print'>
         <div ng-hide="dhb.id == currentDhb.id" class='option' ng-repeat="dhb in dashboardsList">
           <span class="name" ng-click="selectDashboard(dhb.id)">{{dhb.full_name}}</span>
-          <i ng-hide="showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
+          <i ng-show="userAccesses.dashboards.update && !showChangeDashboardNameBox" class="fa fa-pencil" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.change_name' | translate}}" tooltip-animation="false" tooltip-append-to-body="true" ng-click="toggleChangeDashboardNameBox(dhb)"/>
         </div>
 
-        <div class="option dashboard-create">
+        <div ng-if="userAccesses.dashboards.create" class="option dashboard-create">
           <impac-dashboard-create on-create-dashboard="createDashboard(dashboard)" btn-class="btn-warning" />
         </div>
       </div>
@@ -50,13 +50,13 @@
   <div class='actions-panel hidden-print' ng-class="{'col-md-3': pdfMode, 'col-md-6': !pdfMode}">
     <button ng-if='isAccessibilityEnabled' ng-click="toggleAccessibilityMode()" class='btn btn-info' ng-disabled="showWidgetSelector" ng-hide="pdfMode"><span class='fa fa-wheelchair'></span></button>
 
-    <button ng-if="isAddWidgetEnabled && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.dropdown.add_widget' | translate}}</button>
+    <button ng-if="userAccesses.widgets.create && isThereADashboard()" ng-click="onDisplayWidgetSelector()" class='btn btn-warning' ng-disabled="isWidgetSelectorShown()" ng-hide="pdfMode"><span class='fa fa-plus'></span> {{'impac.dashboard_selector.dropdown.add_widget' | translate}}</button>
 
-    <impac-dashboard-create on-create-dashboard="createDashboard(dashboard)" btn-class="btn-warning" />
+    <impac-dashboard-create ng-if="userAccesses.dashboards.create" on-create-dashboard="createDashboard(dashboard)" btn-class="btn-warning" />
 
     <div dashboard-settings-pdf-mode ng-if="isThereADashboard() && !isCurrentDashboardEmpty()" />
 
-    <button ng-if="isDeleteDhbEnabled && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.delete' | translate:{name: dhbLabelName} }}" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
+    <button ng-if="userAccesses.dashboards.destroy && isThereADashboard()" ng-click="deleteDashboardModal.open()" class='btn btn-danger hidden-xs' ng-show="isThereADashboard()" uib-tooltip="{{'impac.dashboard_selector.dropdown.tooltip.delete' | translate:{name: dhbLabelName} }}" ng-hide="pdfMode"><span class='fa fa-trash-o'></span> </button>
   </div>
 
 </div>

@@ -26,6 +26,7 @@ module.directive('commonTopButtons', ($templateCache) ->
       onRefresh: '='
       onToggleInfoPanel: '&'
       onToggleDeleteWidget: '&'
+      userAccesses: '='
     },
     template: $templateCache.get('widgets-common/top-buttons.tmpl.html'),
     controller: 'CommonTopButtonsCtrl'

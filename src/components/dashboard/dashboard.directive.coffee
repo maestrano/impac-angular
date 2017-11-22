@@ -2,65 +2,29 @@ module = angular.module('impac.components.dashboard', [])
 
 module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, $log, $timeout, $templateCache, MsgBus, ImpacUtilities, ImpacAssets, ImpacTheming, ImpacRoutes, ImpacMainSvc, ImpacDashboardsSvc, ImpacWidgetsSvc, $translate, ImpacDhbTemplatesSvc) ->
 
-    #====================================
-    # Initialization
-    #====================================
-    # $scope.isLoading = true
-
-    # references to services (bound objects shared between all controllers)
+    # == Initialization ===========================================================================
+    # References (bound objects)
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
     $scope.widgetsTemplates = ImpacDashboardsSvc.getWidgetsTemplates()
 
-    # assets
+    # Assets
     # -------------------------------------
     $scope.impacTitleLogo = ImpacAssets.get('impacTitleLogo')
     $scope.impacDashboardBackground = ImpacAssets.get('impacDashboardBackground')
 
-    # dashboard heading & error messages
+    # Settings (Theming)
     # -------------------------------------
     $scope.showDhbHeading = ImpacTheming.get().dhbConfig.showDhbHeading
     $scope.dhbHeadingText = ImpacTheming.get().dhbConfig.dhbHeadingText
     $scope.dhbErrorsConfig = ImpacTheming.get().dhbErrorsConfig
     $scope.dhbLabelName = ImpacTheming.getDhbLabelName()
-
-    # Dashboard Settings
-    # -------------------------------------
     $scope.dhbSettingsConfig = ImpacTheming.get().dhbSettings
     $scope.createFromTemplateEnabled = $scope.dhbSettingsConfig.createFromTemplateEnabled
-
-    # kpis
-    # -------------------------------------
-    $scope.showKpisBar = ->
-      ImpacDashboardsSvc.areKpisEnabled() && ImpacDashboardsSvc.isThereADashboard()
-
-    # messages
-    # -------------------------------------
-    $scope.showChooseDhbMsg = ->
-      !ImpacDashboardsSvc.isThereADashboard()
-    $scope.showNoWidgetsMsg = ->
-      ImpacDashboardsSvc.isCurrentDashboardEmpty() && ImpacTheming.get().showNoWidgetMsg
-
-    # star
-    # -------------------------------------
-    $scope.starWizardModal = { value:false }
-    MsgBus.publish('starWizardModal',$scope.starWizardModal)
-    $scope.openStarWizard = ->
-      $scope.starWizardModal.value = true
-
-    # Sub menu (alerts)
-    # -------------------------------------
     $scope.marketplaceMyobLink = ImpacTheming.get().dhbSubMenuConfig.marketplaceMyobLink
-    $scope.showSubMenu = false
-    $scope.displaySubMenu = ->
-      $scope.showSubMenu = true
-    $scope.hideSubMenu = ->
-      $scope.showSubMenu = false
-
     $scope.myobMessageConfig = ImpacTheming.get().dhbSubMenuConfig.myobMessage
 
-    # Load dashboards with their widgets
-    # -------------------------------------
+    # == Dashboard loading ========================================================================
     # 'true' forces the reload: will cause the service to update the organization id and other core data that Impac! needs
     # NB: in Maestrano. we don't need to call ImpacDashboardsSvc.load(true) 'from the outside', because the view will
     # reload the <impac-dashboards> on organization change.
@@ -71,6 +35,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     dhbLoadSuccess = (success) ->
       $scope.activateTimer()
       $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
+      $scope.userAccesses = ImpacMainSvc.config.currentOrganization.acl.related
+      $scope.sortableOptions.disabled = !$scope.userAccesses.dashboards.update
 
     dhbLoadError = (error) ->
       # on dashboard failed first load, user should not be able to access dashboard controls.
@@ -78,6 +44,33 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       $scope.isLoading = false
 
     ImpacDashboardsSvc.load(true).then(dhbLoadSuccess, dhbLoadError)
+
+    # == Instance methods =========================================================================
+    # Messages
+    # -------------------------------------
+    $scope.showChooseDhbMsg = ->
+      !ImpacDashboardsSvc.isThereADashboard()
+
+    $scope.showNoWidgetsMsg = ->
+      ImpacDashboardsSvc.isCurrentDashboardEmpty() && ImpacTheming.get().showNoWidgetMsg
+
+    # Star! | TODO: remove
+    # -------------------------------------
+    $scope.starWizardModal = { value:false }
+    MsgBus.publish('starWizardModal', $scope.starWizardModal)
+    
+    $scope.openStarWizard = ->
+      $scope.starWizardModal.value = true
+
+    # Sub menu (alerts)
+    # -------------------------------------
+    $scope.showSubMenu = false
+
+    $scope.displaySubMenu = ->
+      $scope.showSubMenu = true
+    
+    $scope.hideSubMenu = ->
+      $scope.showSubMenu = false
 
     # failed load reloader
     # -------------------------------------
@@ -102,12 +95,39 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       # The timer is only 500ms: to let the time for the dashboard to be loaded
       # timer = 500
       $timeout ->
-        $scope.isLoading=false
+        $scope.isLoading = false
       ,timer
 
-    # ============================================
-    # Dashboard creation
-    # ============================================
+    # == Drap-drop management =====================================================================
+    $scope.sortableOptions = {
+      # When the widget is dropped
+      stop: saveDashboard = ->
+        data = { widgets_order: _.pluck($scope.currentDhb.widgets,'id') }
+        ImpacDashboardsSvc.update($scope.currentDhb.id,data)
+
+      # When the widget is starting to be dragged
+      start: updatePlaceHolderSize = (e, widget) ->
+        # width-1 to avoid return to line (succession of float left divs...)
+        widget.placeholder.css("width",widget.item.width() - 1)
+        widget.placeholder.css("height",widget.item.height())
+
+      # Options
+      cursorAt: {left: 100, top: 20}
+      opacity: 0.5
+      delay: 150
+      tolerance: 'pointer'
+      placeholder: "placeHolderBox"
+      cursor: "move"
+      revert: 250
+      cancel: ".unsortable,.editable-input"
+      # only the top-line with title will provide the handle to drag/drop widgets
+      handle: ".top-line"
+      helper: 'clone'
+    }
+
+    # == Sub-components ===========================================================================
+    # Dashboard Creation
+    # -------------------------------------
     $scope.createDashboard = (dashboard) ->
       dashboard.metadata = _.omit(dashboard.metadata, 'organization_ids')
       if dashboard.id
@@ -115,10 +135,14 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       else
         ImpacDashboardsSvc.create(dashboard)
 
-    #====================================
-    # Widgets selector
-    #====================================
-    # TODO: put in component
+    # Kpis bar
+    # -------------------------------------
+    $scope.kpisBar =
+      displayed: ->
+        $scope.userAccesses? && $scope.userAccesses.kpis.show && ImpacDashboardsSvc.isThereADashboard()
+
+    # Widgets selection | TODO: put in component
+    # -------------------------------------
     $scope.customWidgetSelector = ImpacTheming.get().widgetSelectorConfig
     $scope.forceShowWidgetSelector = false # just to initialize / will be overriden at first load anyway
     $scope.showCloseWidgetSelectorButton = ->
@@ -131,7 +155,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       ImpacDashboardsSvc.isThereADashboard() && ($scope.forceShowWidgetSelector || ImpacDashboardsSvc.isCurrentDashboardEmpty())
 
     # Custom widgets selector
-    # --------------------------
     # Add Chart Tile: optional feature for triggering widget selector, with configurability to
     #                 modify onClick behaviour.
     $scope.isAddChartEnabled = ImpacTheming.get().addChartTile.show
@@ -245,17 +268,8 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       fileInput.trigger('click')
       return true
 
-    #====================================
-    # Dashboard Settings Panel
-    #====================================
-
-    # - in directives -
-
-
-    #====================================
-    # Widget suggestion modal
-    #====================================
-
+    # Widgets suggestions | TODO: put in component or remove?
+    # -------------------------------------
     $scope.widgetSuggestionModal = $scope.$new()
 
     # Modal Widget Suggestion
@@ -318,38 +332,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
           self.error = true
           $log.error 'impac-angular ERROR: Unable to POST widget_suggestion mailer: ', err
         )
-
-
-    #====================================
-    # Drag & Drop management
-    #====================================
-
-    $scope.sortableOptions = {
-      # When the widget is dropped
-      stop: saveDashboard = ->
-        data = { widgets_order: _.pluck($scope.currentDhb.widgets,'id') }
-        ImpacDashboardsSvc.update($scope.currentDhb.id,data)
-
-      # When the widget is starting to be dragged
-      start: updatePlaceHolderSize = (e, widget) ->
-        # width-1 to avoid return to line (succession of float left divs...)
-        widget.placeholder.css("width",widget.item.width() - 1)
-        widget.placeholder.css("height",widget.item.height())
-
-      # Options
-      cursorAt: {left: 100, top: 20}
-      opacity: 0.5
-      delay: 150
-      tolerance: 'pointer'
-      placeholder: "placeHolderBox"
-      cursor: "move"
-      revert: 250
-      # items with the class 'unsortable', are infact, unsortable.
-      cancel: ".unsortable,.editable-input"
-      # only the top-line with title will provide the handle to drag/drop widgets
-      handle: ".top-line"
-      helper: 'clone'
-    }
 
 )
 

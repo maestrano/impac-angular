@@ -1,10 +1,11 @@
 angular
   .module('impac.components.kpis-bar', [])
-  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacDashboardsSvc, ImpacTheming, ImpacEvents, IMPAC_EVENTS) ->
+  .directive('kpisBar', ($templateCache, $q, $timeout, ImpacKpisSvc, ImpacMainSvc, ImpacDashboardsSvc, ImpacTheming, ImpacEvents, IMPAC_EVENTS) ->
     return {
       restrict: 'E'
       scope: {
         kpis: '='
+        userAccesses: '='
       }
       template: $templateCache.get('kpis-bar/kpis-bar.tmpl.html')
 
@@ -164,7 +165,7 @@ angular
           $scope.availableKpis.list.length
 
         $scope.showDatesPicker = ->
-          $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
+          $scope.userAccesses.kpis.update && $scope.isEditing() && $scope.kpis.length && !$scope.hideDatesPicker
 
         # Private methods
         # -------------------------

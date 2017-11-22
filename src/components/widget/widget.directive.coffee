@@ -71,6 +71,7 @@ module.directive('impacWidget', ($templateCache, ImpacUtilities, ImpacWidgetsSvc
       widget: '='
       isAccessibility: '='
       onDisplayAlerts: '&'
+      userAccesses: '='
     },
     controller: 'ImpacWidgetCtrl',
     link: (scope, element) ->
@@ -80,11 +81,6 @@ module.directive('impacWidget', ($templateCache, ImpacUtilities, ImpacWidgetsSvc
       scope.widget.isLoading = true
       scope.widget.settings = []
       scope.pdfMode = false
-      # Unused so far -->
-      scope.widget.hasEditAbility = true
-      scope.widget.hasDeleteAbility = true
-      # <--
-
       scope.cssClass = ImpacUtilities.fetchWidgetCssClass(scope.widget)
       scope.templatePath = ImpacUtilities.fetchWidgetTemplatePath(scope.widget)
 
