@@ -47,6 +47,10 @@ module.controller('WidgetSalesAveragePurchaseSizeCtrl', ($scope, $q, $filter, Im
 
     $scope.chart.formatters = ->
         currency = @options.currency
+        xAxis:
+          labels:
+            formatter: ->
+              moment.utc(this.value).format('Do MMM YYYY')
         yAxis:
           labels:
             formatter: ->

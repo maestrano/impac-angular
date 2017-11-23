@@ -23,6 +23,7 @@ module.controller('WidgetSalesAverageVisitCtrl', ($scope, $q, $filter, ImpacWidg
   $scope.chartId = ->
     "averageVisitChart-#{w.id}"
 
+  $scope.chartDeferred = $q.defer()
   # Widget specific methods
   # --------------------------------------
   w.initContext = ->
