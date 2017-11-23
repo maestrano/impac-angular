@@ -12,7 +12,7 @@
           <i class="fa" ng-class="{'fa-plus': availableKpis.kpiSelectorHidden, 'fa-minus': !availableKpis.kpiSelectorHidden}" />
         </a>
       </button>
-      <button type="button" ng-if="userAccesses.kpis.update || isEditing()" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock, 'editing':isEditing() }" ng-click="toggleEditMode()" ng-if="kpis.length > 0">
+      <button type="button" ng-if="kpis.length > 0 && userAccesses.kpis.update" class="edit-kpis im-fab im-primary" ng-class="{ 'disabled': toggleEditModeLock, 'editing':isEditing() }" ng-click="toggleEditMode()">
         <a href="">
           <i class="fa" ng-class="{ 'fa-cog': !isEditing(), 'fa-floppy-o': isEditing() }" />
         </a>

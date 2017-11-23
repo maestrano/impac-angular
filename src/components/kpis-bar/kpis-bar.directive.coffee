@@ -146,6 +146,7 @@ angular
           , 450)
 
         $scope.isEditing = ->
+          return false unless $scope.userAccesses.kpis.update
           $scope.showEditMode || kpiIsEditing()
 
         $scope.kpisBarUpdateDates = (dates)->
