@@ -1,5 +1,27 @@
 # Impac! Frontend Changelog
 
+### v1.7.0 | 2017 - Week 47
+
+#### Adds
+- Refactor dashboard creation capability to a separate component
+- Base controls on ACL for user / organization
+
+#### Dependencies
+- MnoHub [SPECIFY VERSION]
+- Mno Enterprise [SPECIFY VERSION]
+- Mno Enterprise Angular [SPECIFY VERSION]
+
+#### Config changes
+- Removed deprecated config params:
+```coffeescript
+dhbSelectorConfig:
+  addWidgetEnabled: true
+  addDhbEnabled: true
+  deleteDhbEnabled: true
+```
+
+-------------------------------------------------------------
+
 ### v1.6.6 | 2017 - Week 46
 
 #### Adds
