@@ -7,6 +7,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # -------------------------------------
     $scope.currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
     $scope.widgetsTemplates = ImpacDashboardsSvc.getWidgetsTemplates()
+    $scope.userAccesses = ImpacDashboardsSvc.userAccesses()
 
     # Assets
     # -------------------------------------
@@ -35,8 +36,6 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     dhbLoadSuccess = (success) ->
       $scope.activateTimer()
       $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
-      $scope.userAccesses = ImpacMainSvc.config.currentOrganization.acl.related
-      $scope.sortableOptions.disabled = !$scope.userAccesses.dashboards.update
 
     dhbLoadError = (error) ->
       # on dashboard failed first load, user should not be able to access dashboard controls.
@@ -124,6 +123,9 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       handle: ".top-line"
       helper: 'clone'
     }
+    ImpacDashboardsSvc.dashboardChanged().then(null, null, ->
+      $scope.sortableOptions.disabled = !$scope.userAccesses.dashboards.update
+    )
 
     # == Sub-components ===========================================================================
     # Dashboard Creation
@@ -139,7 +141,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # -------------------------------------
     $scope.kpisBar =
       displayed: ->
-        $scope.userAccesses? && $scope.userAccesses.kpis.show && ImpacDashboardsSvc.isThereADashboard()
+        !_.isEmpty($scope.userAccesses) && $scope.userAccesses.kpis.show && ImpacDashboardsSvc.isThereADashboard()
 
     # Widgets selection | TODO: put in component
     # -------------------------------------
