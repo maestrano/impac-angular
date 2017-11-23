@@ -1,10 +1,10 @@
 angular
 .module('impac.services.highcharts-factory', [])
-.factory('HighchartsFactory', ($filter)->
+.factory('HighchartsFactory', ($filter, HighchartsThemeService)->
 
   templates =
     line: Object.freeze
-      get: (series = [], options = {})->
+      get: (series = [], options = {}, xAxis = [], yAxis = [])->
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -28,11 +28,8 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-        xAxis: xAxisOptions
-        yAxis:
-          title: null
-          startOnTick: true
-          minPadding: 0
+        xAxis: xAxis
+        yAxis: yAxis
         series: series
         rangeSelector:
           buttons: [
@@ -44,6 +41,7 @@ angular
             { type: 'all', text: 'All' }
           ]
           selected: (if _.get(xAxisOptions, 'min') then null else 0)
+
 
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
 
@@ -63,7 +61,7 @@ angular
       return @
 
     template: ->
-      @_template.get(@data.series, @options)
+      @_template.get(@data.series, @options, @data.xAxis, @data.yAxis)
 
     formatters: ->
       currency = @options.currency
