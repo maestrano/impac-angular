@@ -3,7 +3,7 @@
   <div class="actions">
     <button type="button" class="toggle-show-content im-fab im-primary" ng-click="toggleShowContent()">
       <a href="">
-        <i class="fa" ng-class="{ 'fa-chevron-up': showContent, 'fa-chevron-down': !showContent }" />
+        <i class="fa" ng-class="showContent ? 'fa-chevron-up' : 'fa-chevron-down'" />
       </a>
     </button>
     <div class="content-buttons">

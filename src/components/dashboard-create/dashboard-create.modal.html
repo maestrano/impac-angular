@@ -28,9 +28,9 @@
         <div class="col-sm-10 col-sm-offset-2">
           <ul class="list-unstyled">
             <li ng-repeat="org in organizations" >
-              <input type="checkbox" ng-model="org.$selected" ng-disabled="!org.permitted" />
+              <input type="checkbox" ng-model="org.selected" ng-disabled="!org.acl.related.impac.show" />
               {{ org.name }}
-              <i class="fa fa-exclamation-circle text-danger" ng-hide="org.permitted" uib-tooltip="{{'impac.dashboard.create.tooltip.access' | translate}}" />
+              <i class="fa fa-exclamation-circle text-danger" ng-hide="org.acl.related.impac.show" uib-tooltip="{{'impac.dashboard.create.tooltip.access' | translate}}" />
             </li>
           </ul>
         </div>
@@ -41,9 +41,9 @@
   </div>
 </div>
 <div class="modal-footer text-right">
-  <button class="btn btn-default" ng-click="$close()" ng-disabled="$loading" translate>impac.dashboard.create.cancel</button>
-  <button class="btn btn-success" ng-click="createDashboard(organizations)" ng-disabled="invalid() || $loading">
-    <i class="fa fa-spinner fa-pulse loader" ng-if="$loading" />
+  <button class="btn btn-default" ng-click="$close()" ng-disabled="loading" translate>impac.dashboard.create.cancel</button>
+  <button class="btn btn-success" ng-click="createDashboard(organizations)" ng-disabled="invalid() || loading">
+    <i class="fa fa-spinner fa-pulse loader" ng-if="loading" />
     {{ 'impac.dashboard.create.create' | translate }}
   </button>
 </div>

@@ -22,7 +22,7 @@ module.component('impacDashboardCreate', {
 
     unSelectOrgs = ->
       for org in ctrl.modalScope.organizations
-        org.$selected = isCurrentOrg(org)
+        org.selected = isCurrentOrg(org)
 
     initModalScope = (mainConfig) ->
       ctrl.modalScope = angular.merge($scope.$new(), {
@@ -45,17 +45,17 @@ module.component('impacDashboardCreate', {
 
       ctrl.modalScope.createDashboard = (orgs) ->
         mScope = ctrl.modalScope
-        mScope.$loading = true
-        selectedOrganizations = _.filter(orgs, (org) -> org.$selected)
+        mScope.loading = true
+        selectedOrganizations = _.filter(orgs, (org) -> org.selected)
         angular.merge(mScope.dashboard, { organization_ids: _.pluck(selectedOrganizations, 'id') })
         ctrl.onCreateDashboard({ dashboard: mScope.dashboard }).finally(
           ->
-            mScope.$loading = false
+            mScope.loading = false
             ctrl.instance.close()
         )
 
       ctrl.modalScope.invalid = ->
-        _.isEmpty(ctrl.modalScope.dashboard.name) || !_.some(_.pluck(ctrl.modalScope.organizations, '$selected'))
+        _.isEmpty(ctrl.modalScope.dashboard.name) || !_.some(_.pluck(ctrl.modalScope.organizations, 'selected'))
 
     ctrl.openModal = ->
       ctrl.modalScope.dashboard.name = null
