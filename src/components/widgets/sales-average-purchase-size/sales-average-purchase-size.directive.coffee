@@ -5,6 +5,7 @@ module = angular.module('impac.components.widgets.sales-average-purchase-size', 
 module.controller('WidgetSalesAveragePurchaseSizeCtrl', ($scope, $q, $filter, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
 
   w = $scope.widget
+  $scope.isChartDisplayed = true
 
   # Define settings
   # --------------------------------------
@@ -25,7 +26,15 @@ module.controller('WidgetSalesAveragePurchaseSizeCtrl', ($scope, $q, $filter, Im
 
   # # == Sub-Components - Needed? =============================================================
   $scope.chartDeferred = $q.defer()
-  # $scope.chartPromise = $scope.chartDeferred.promise
+
+  # == Chart Events Callbacks =====================================================================
+  # Sets the transactions list resources type and displays it
+  onClickBar = (event) ->
+    $scope.isChartDisplayed = false
+
+  # == Directive Events Callbacks =====================================================================
+  $scope.onButtonBack = () ->
+    $scope.isChartDisplayed = true
 
   # Widget specific methods
   # --------------------------------------
@@ -43,22 +52,32 @@ module.controller('WidgetSalesAveragePurchaseSizeCtrl', ($scope, $q, $filter, Im
 
     $scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options)
 
-    defaultFormatters = $scope.chart.formatters()
-
     $scope.chart.formatters = ->
         currency = @options.currency
-        xAxis:
+        xAxisLabels =
           labels:
             formatter: ->
               moment.utc(this.value).format('Do MMM YYYY')
-        yAxis:
+        yAxisLabels =
           labels:
             formatter: ->
-              $filter('mnoCurrency')(this.value, currency, false, 0)
+              $filter('mnoCurrency')(this.value, currency, false)
+        xAxis: angular.merge([w.content.chart.xAxis[0]], [xAxisLabels])
+        yAxis: angular.merge([w.content.chart.yAxis[0]], [yAxisLabels])
         rangeSelector:
           selected: 4
+        # tooltip:
+        #   shared: false
+        #   backgroundColor: '#FBF7E6'
+        #   formatter: ->
+        #     date = moment.utc(this.x).format('Do MMM YYYY')
+        #     name = this.series.name
+        #     "<strong>#{date}</strong><br>#{name}"
 
     $scope.chart.render(w.content.chart, options)
+
+    # Add events callbacks to chart object
+    $scope.chart.addSeriesEvent('click', onClickBar)
 
     # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)

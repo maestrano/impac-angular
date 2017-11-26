@@ -3119,29 +3119,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-balance-sheet {
-  .tall-widget();
-  .widget-lines-container {
-    .scrollable(scroll);
-    max-height: 490px;
-    @media (max-width: @screen-xs-max) {
-      .row.widget-line {
-        &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
-      }
-    }
-    .row.widget-line.header > [class*='col-'] { position: static; }
-
-    &.no-scroll {
-      overflow: visible;
-    }
-  }
-
-  .no-data-block {
-    .center-thin();
-    margin: 15px 0px;
-  }
-}
-
 .analytics .widget-item .content.accounts-cash-balance {
   .tall-widget();
 
@@ -3199,6 +3176,29 @@ chart-threshold {
     display: inline-block;
     float: right;
     font-size: 12px;
+  }
+}
+
+.analytics .widget-item .content.accounts-balance-sheet {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 490px;
+    @media (max-width: @screen-xs-max) {
+      .row.widget-line {
+        &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
+      }
+    }
+    .row.widget-line.header > [class*='col-'] { position: static; }
+
+    &.no-scroll {
+      overflow: visible;
+    }
+  }
+
+  .no-data-block {
+    .center-thin();
+    margin: 15px 0px;
   }
 }
 

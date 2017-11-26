@@ -12,12 +12,30 @@
     </div>
   </div>
 
+
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
-    <div ng-show="(isDataFound==true)" class="">
+    <!-- Content Panel -->
+
+    <div ng-show="isChartDisplayed" class="">
       <!-- Chart -->
       <div id="{{chartId()}}" class="average-purchase-size-chart"></div>
+
+    </div>
+
+    <!-- <div ng-show="isLoading" class="loader" align="center">
+      <div>
+        <i class="fa fa-spinner fa-pulse fa-3x"></i>
+        <p translate="impac.widget.loader"></p>
+      </div>
+
+    </div> -->
+
+    <div ng-show="!isChartDisplayed" class="">
+      <button ng-if="!isChartDisplayed" ng-click="onButtonBack()"> < Back</button>
+      <!-- Chart -->
+      <div common-info-panel> </div>
 
     </div>
 

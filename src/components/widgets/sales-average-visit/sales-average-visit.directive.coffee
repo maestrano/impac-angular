@@ -41,6 +41,23 @@ module.controller('WidgetSalesAverageVisitCtrl', ($scope, $q, $filter, ImpacWidg
 
     $scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options)
 
+    $scope.chart.formatters = ->
+        currency = @options.currency
+        xAxisLabels =
+          labels:
+            formatter: ->
+              moment.utc(this.value).format('Do MMM YYYY')
+        xAxis: angular.merge([w.content.chart.xAxis[0]], [xAxisLabels])
+        rangeSelector:
+          selected: 4
+        tooltip:
+          shared: false
+          backgroundColor: '#FBF7E6'
+          formatter: ->
+            date = moment.utc(this.x).format('Do MMM YYYY')
+            name = this.series.name
+            "<strong>#{date}</strong><br>#{name}"
+
     $scope.chart.render(w.content.chart, options)
 
     # Notifies parent element that the chart is ready to be displayed

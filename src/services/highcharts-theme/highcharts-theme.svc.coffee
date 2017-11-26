@@ -25,12 +25,12 @@ angular
   tooltip:
     borderWidth: 0
     backgroundColor: 'rgba(219,219,216,0.8)'
-    shadow: false
+    shadow: true
   legend: itemStyle:
     fontWeight: 'bold'
     fontSize: '13px'
   xAxis:
-    labels: style: fontSize: '12px'
+    labels: style: fontSize: '10px'
   yAxis:
     minorTickInterval: 'auto'
     title: style: textTransform: 'uppercase'
