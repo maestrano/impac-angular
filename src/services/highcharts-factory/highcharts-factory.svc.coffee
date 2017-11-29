@@ -4,7 +4,7 @@ angular
 
   templates =
     line: Object.freeze
-      get: (series = [], options = {}, xAxis = [], yAxis = [])->
+      get: (series = [], options = {}, xAxis = [], yAxis = [], plotOptions = {})->
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -18,6 +18,7 @@ angular
           type: 'line'
           zoomType: 'x'
           spacingTop: 20
+          spacingRight: 60
           events:
             click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
         title: null
@@ -31,6 +32,7 @@ angular
         xAxis: xAxis
         yAxis: yAxis
         series: series
+        plotOptions: plotOptions
         rangeSelector:
           buttons: [
             { type: 'month', count: 4, text: 'def.' },
@@ -61,7 +63,7 @@ angular
       return @
 
     template: ->
-      @_template.get(@data.series, @options, @data.xAxis, @data.yAxis)
+      @_template.get(@data.series, @options, @data.xAxis, @data.yAxis, @data.plotOptions)
 
     formatters: ->
       currency = @options.currency
