@@ -8,11 +8,25 @@
     <a href="" ng-click="formulaModal.open()" translate>impac.widget.account_cust_calc.title</a>
   </h3>
 
-  <div class="price" ng-show="widget.isFormulaCorrect">
-    {{widget.evaluatedFormulaTranslate}}
-  </div>
-  <div class="legend" ng-show="widget.isFormulaCorrect">
-    {{widget.legend}}
+  <!-- Calculation result -->
+  <div>
+    <div setting-hist-mode ng-show="widget.isFormulaCorrect" parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
+
+    <div ng-hide="widget.isHistoryMode">
+      <div class="price" ng-show="widget.isFormulaCorrect">
+        {{widget.evaluatedFormulaTranslate}}
+      </div>
+      <div class="legend" ng-show="widget.isFormulaCorrect">
+        {{widget.legend}}
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="history" ng-show="widget.isHistoryMode">
+      <div class="chart-container">
+        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
+      </div>
+    </div>
   </div>
 
   <div ng-show="widget.demoData" common-data-not-found />

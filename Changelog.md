@@ -1,6 +1,12 @@
 # Impac! Frontend Changelog
 
-### v1.7.0 | 2017 - Week 47
+### v1.7.1 | 2017 - Week 49
+
+Applies v1.6.7
+
+-------------------------------------------------------------
+
+### v1.7.0 | 2017 - Week 49
 
 #### Adds
 - Refactor dashboard creation capability to a separate component
@@ -19,6 +25,16 @@ dhbSelectorConfig:
   addDhbEnabled: true
   deleteDhbEnabled: true
 ```
+
+-------------------------------------------------------------
+
+### v1.6.7 | 2017 - Week 49
+
+#### Adds
+- [EMERALDSUP-69] Add history chart to Custom Calculation widget
+
+#### Fixes
+- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
 
 -------------------------------------------------------------
 
