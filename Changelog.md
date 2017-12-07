@@ -7,9 +7,9 @@
 - Base controls on ACL for user / organization
 
 #### Dependencies
-- MnoHub [SPECIFY VERSION]
-- Mno Enterprise [SPECIFY VERSION]
-- Mno Enterprise Angular [SPECIFY VERSION]
+- MnoHub v2.0.0-rc8
+- Mno Enterprise v3.4
+- Mno Enterprise Angular v1.2
 
 #### Config changes
 - Removed deprecated config params:
