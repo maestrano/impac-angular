@@ -1,5 +1,15 @@
 # Impac! Frontend Changelog
 
+### v1.6.7 | 2017 - Week 49
+
+#### Adds
+- [EMERALDSUP-69] Add history chart to Custom Calculation widget
+
+#### Fixes
+- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
 ### v1.6.6 | 2017 - Week 46
 
 #### Adds

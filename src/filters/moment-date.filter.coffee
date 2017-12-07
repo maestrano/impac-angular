@@ -4,7 +4,7 @@ angular.module('impac.filters.moment-date', []).filter('momentDate', ($translate
     moment.locale($translate.use().toLowerCase())
 
     validPeriods = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'default']
-    if !_.isEmpty(component) && validPeriods.includes(component.toLowerCase())
+    if !_.isEmpty(component) && _.includes(validPeriods, component.toLowerCase())
       component = 'period-' + component.toLowerCase()
 
     settings = ImpacTheming.get()
