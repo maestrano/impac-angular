@@ -2,6 +2,9 @@
 
 ### v1.6.7 | 2017 - Week 49
 
+#### Adds
+- Add history chart to Custom Calculation widget
+
 #### Fixes
 - Fixes incompatibilities with IE11
 
