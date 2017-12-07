@@ -10,7 +10,7 @@
 
   <!-- Calculation result -->
   <div>
-    <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
+    <div setting-hist-mode ng-show="widget.isFormulaCorrect" parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="pnl" />
 
     <div ng-hide="widget.isHistoryMode">
       <div class="price" ng-show="widget.isFormulaCorrect">
