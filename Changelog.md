@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.6.7 | 2017 - Week 49
+
+#### Fixes
+- Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
 ### v1.6.6 | 2017 - Week 46
 
 #### Adds
