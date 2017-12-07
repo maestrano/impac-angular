@@ -736,7 +736,6 @@
 
   "impac.components.sync_apps.syncing":                   "Syncing...",
   "impac.components.sync_apps.show_sync_status":          "Show sync status",
-  "impac.components.sync_apps.no_apps_running":           "No apps are running!",
   "impac.components.sync_apps.tooltip.sync_data":         "Sync data and refresh dashboard",
   "impac.components.sync_apps.status.synced_at":          "Synced at",
   "impac.components.sync_apps.status.sync_will_run":      "Sync will run in a few minutes.",
