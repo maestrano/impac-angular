@@ -51,6 +51,14 @@ module.controller('SettingFormulaCtrl', ($scope, $filter, $timeout, $translate) 
       w.isFormulaCorrect = false
     w.evaluatedFormulaTranslate = translateEvaluatedFormula(w.evaluatedFormula);
 
+  # Evaluate formula for the specified index, i.e. at some point in the past
+  w.evaluatedFormula_History = (index) ->
+    interpolation = w.formula
+    for account, i in w.selectedAccounts
+      pattern = new RegExp("\\{#{i+1}\\}", 'g')
+      interpolation = interpolation.replace(pattern, " #{account['balances'][index]} ")
+    evaluateFormula(interpolation)
+
   translateEvaluatedFormula = (formula) ->
     switch formula
       when 'invalid expression' then return $translate.instant('impac.widget.formula.invalid_expression')
