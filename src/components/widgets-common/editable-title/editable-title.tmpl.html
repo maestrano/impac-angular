@@ -1,12 +1,12 @@
-<div ng-show="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" uib-tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
+<div ng-hide="disabled" class="hidden-xs hidden-sm title" editable-text="parentWidget.name" onaftersave="updateName()" onshow="onToggle()" onhide="onToggle()" uib-tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
   {{ parentWidget.name }}
 </div>
 
-<div ng-hide="parentWidget.hasEditAbility" class="hidden-xs hidden-sm title" uib-tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
+<div ng-show="disabled" class="hidden-xs hidden-sm title" uib-tooltip="{{ getTooltip() }}" tooltip-placement="top-left">
   {{ parentWidget.name }}
 </div>
 
-<!-- Title edition no designed for mobile -->
+<!-- Can't edit widget title on mobile -->
 <div class="visible-xs visible-sm title">
   {{ parentWidget.name }}
 </div>

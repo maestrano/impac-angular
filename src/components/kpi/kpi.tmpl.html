@@ -61,7 +61,7 @@
         </alerts-config>
 
         <!-- Remove KPI -->
-        <button type="button" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+        <button type="button" ng-if="userAccesses.kpis.destroy" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
 
@@ -70,7 +70,7 @@
     <!-- Data not found display -->
     <div class="kpi-no-data" ng-if="isDataNotFound()">
       <!-- Remove KPI -->
-      <button type="button" ng-show="isEditing()" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
+      <button type="button" ng-show="isEditing() && userAccesses.kpis.destroy" class="kpi-remove im-fab im-warn" ng-click="deleteKpi()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
       <div common-data-not-found no-image="true" endpoint="::kpi.endpoint"/>

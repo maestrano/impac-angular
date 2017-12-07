@@ -643,11 +643,12 @@
   "impac.dashboard.create.multi_company":             "你好 你好",
   "impac.dashboard.create.now_access_text":           "你好! 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.dashboard.create.select_multi_company":      "你好 你好 你好 \"你好 你好\" 你好 你好 你好 你好 你好 你好 你好.",
-  "impac.dashboard.create.companies":                 "你好",
+  "impac.dashboard.create.source":                 "你好",
   "impac.dashboard.create.tooltip.access":            "你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好 你好",
   "impac.dashboard.create.cancel":                    "@:impac.common.action.cancel",
   "impac.dashboard.create.create":                    "你好",
   "impac.dashboard.create.placeholder.cash_accounts": "你好.你好: 你好 你好 你好",
+  "impac.dashboard.create.templates.create_from":     "你好.你好: 你好 你好",
 
   "impac.dashboard.change_logo":               "你好 你好",
   "impac.dashboard.it_looks_like":             "你好 你好 你好 你好 你好 你好 你好 你好...",

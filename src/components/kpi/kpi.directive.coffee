@@ -8,6 +8,7 @@ angular
         kpi: '='
         editMode: '='
         loadReady: '='
+        userAccesses: '='
       }
       template: $templateCache.get('kpi/kpi.tmpl.html'),
 
@@ -167,6 +168,7 @@ angular
           $scope.kpi.layout? && $scope.kpi.layout.triggered
 
         $scope.isEditing = ->
+          return false unless $scope.userAccesses.kpis.update
           $scope.kpi.isEditing || $scope.editMode
 
         $scope.getFormTargetValueInput = (watchable, targetIndex)->

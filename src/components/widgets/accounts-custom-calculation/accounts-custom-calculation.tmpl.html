@@ -4,7 +4,7 @@
   <div setting-accounts-list parent-widget="widget" deferred="::accountsListDeferred" />
   <div setting-formula parent-widget="widget" deferred="::formulaDeferred" />
 
-  <h3 ng-show="widget.hasEditAbility && !widget.isFormulaCorrect">
+  <h3 ng-hide="widget.isFormulaCorrect">
     <a href="" ng-click="formulaModal.open()" translate>impac.widget.account_cust_calc.title</a>
   </h3>
 
