@@ -12,7 +12,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       # Variables initialization
       #====================================
       scope.isSyncing = false
-      scope.realtimeSyncing = false
+      scope.hasConnector = false
       scope.hasError = false
       scope.modalOpened = false
       # unused?
@@ -58,6 +58,7 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
       # Returns the formatted timezone offset for date display purpose
       processAppInstancesSync = (responseData) ->
         scope.connectors = angular.copy(responseData.connectors) || []
+        scope.hasRunningCube = responseData.hasRunningCube || false
         scope.realtimeSyncing = scope.connectors.length == 0
 
         wasSyncing = scope.isSyncing
@@ -65,6 +66,9 @@ module.directive('dashboardSettingSyncApps', ($templateCache, $log, $http, $filt
           c.status == "PENDING" || c.status == "RUNNING"
         )
         scope.hasError = scope.connectors && scope.connectors.length > 0 && _.any(scope.connectors, (c) -> isError(c))
+
+        scope.hasConnectors = scope.connectors.length > 0
+        scope.hasRunningApps = scope.hasConnectors || scope.hasRunningCube
 
         for connector in scope.connectors
           formatDate(connector)
