@@ -22,7 +22,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "ect": "^0.5.9",
-    "ejs": "~2.4.1",
+    "ejs": "^2.5.7",
     "js-beautify": "^1.6.2",
     "lodash": "^4.6.1",
     "yeoman-generator": "^0.20.2",
