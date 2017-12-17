@@ -1,0 +1,30 @@
+.analytics .widget-item .content.sales-average-purchase-size {
+  .tall-widget();
+
+  .average-purchase-size-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .average-purchase-size-insight {
+    height: ~"calc(@{impac-big-widget-size} - 100px)";
+    padding: 150px;
+  }
+
+  .highcharts-y-primary {
+    fill: 'rgb(68, 208, 218)'
+  }
+
+  .highcharts-y-secondary {
+    fill: 'rgb(208, 68, 218)'
+  }
+
+  .display-metrics {
+    border: 1px solid;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 200;
+    left: 50;
+    zIndex: 10;
+  }
+}
