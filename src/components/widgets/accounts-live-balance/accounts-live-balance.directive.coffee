@@ -5,8 +5,6 @@ module = angular.module('impac.components.widgets.accounts-live-balance', [])
 module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
-  w.selectedAccount ||= null
-  w.accountList ||= []
 
   # Define settings
   # --------------------------------------
@@ -21,55 +19,60 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
   settingsPromises = [
     $scope.orgDeferred.promise
     # $scope.accountFrontDeferred
-    $scope.accountBackDeferred
+    $scope.accountBackDeferred.promise
     $scope.timePeriodDeferred.promise
     # $scope.histModeDeferred.promise
     # $scope.chartDeferred.promise
     # $scope.attachKpisDeferred.promise
   ]
 
+  # TODO update when updating metadata
+  # it updates when refeshing all 
+  $scope.forwardParams = {}
+  $scope.forwardParams.histParams = w.metadata.hist_parameters
+
   # Widget specific methods
   # --------------------------------------
 
   w.initContext = ->
     $scope.isDataFound = w.content?
-    # && !_.isEmpty(w.content.account_list)
 
-  $scope.getName = ->
-    w.selectedAccount.column_1 if w.selectedAccount?
+    $scope.getName = ->
+      w.selectedAccount.name if w.selectedAccount?
 
-  $scope.getTitle = ->
-    w.content.table.table_title if w.content?
+    $scope.getTitle = ->
+      w.content.table.table_title if w.content?
 
-  $scope.getCurrentBalance = ->
-    w.selectedAccount.column_5 if w.selectedAccount?
+    $scope.getOpeningBalance = ->
+      _.find(w.content.figure.metrics, (metric) ->
+        metric.label == 'opening'
+      ) if w.content?
 
-  $scope.getCurrency = ->
-    if w.selectedAccount?
-      w.selectedAccount.currency
-    else
-      if w.content?
-        w.content.table.currency 
+    $scope.getClosingBalance = ->
+      _.find(w.content.figure.metrics, (metric) ->
+        metric.label == 'closing'
+      ) if w.content?
 
-  $scope.getHeaders = ->
-    w.content.table.table_headers if w.content?
+    $scope.getCurrency = ->
+      w.selectedAccount.currency if w.selectedAccount?
 
-  $scope.getTotal = ->
-    return _.find(w.content.table.table_rows, (row) ->
-      row.column_1 == "Total"
-    ) if w.content?
+    $scope.getHeaders = ->
+      w.content.table.table_headers if w.content?
 
-  $scope.displayAccount = ->
-    $scope.updateSettings(false).then ->
-      w.format()
+    $scope.getTotal = ->
+      _.find(w.content.table.table_rows, (row) ->
+        row.column_1 == w.selectedAccount.name
+      ) if w.selectedAccount?
 
-  # $scope.getBehaviour = ->
-  #   w.selectedAccount? && w.selectedAccount.accounting_behaviour
+    $scope.displayAccount = ->
+      $scope.updateSettings(false).then ->
+        w.format()
 
-  $scope.kpiExtraParams = {}
-
-  $scope.updateKpiExtraParams = (key, value)->
-    $scope.kpiExtraParams[key] = angular.copy(value)
+    # Needed for Kpis compatibility?
+    # --------------------------------------
+    $scope.kpiExtraParams = {}
+    $scope.updateKpiExtraParams = (key, value)->
+      $scope.kpiExtraParams[key] = angular.copy(value)
 
   # Chart formatting function
   # --------------------------------------

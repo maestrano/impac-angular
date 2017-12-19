@@ -7,7 +7,8 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
-    <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams('account', widget.selectedAccount)" class="part" deferred="::accountBackDeferred" />
+    <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams()" class="part" deferred="::accountBackDeferred" />
+    <!-- <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams('account', widget.selectedAccount)" class="part" deferred="::accountBackDeferred" /> -->
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
@@ -19,47 +20,33 @@
 
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
-    <!-- Will be hidden once an account is selected -->
-    <!-- <div setting-bolt-account ng-hide="widget.selectedAccount" parent-widget="widget" label='Select an account to monitor' on-account-selected="displayAccount()" deferred="::accountFrontDeferred" /> -->
 
-    <!-- All the below divs will remain hidden until an account is selected -->
-    <!-- <div ng-show="widget.selectedAccount"> -->
-    <div ng-hide="widget.selectedAccount">
-      <h3>Bank Report (Total)</h3>
-      <div class="headers">
+    <!-- The total report is selected on initialization -->
+    <!-- <div ng-hide="widget.isHistoryMode"> -->
+    <!--  TODO: chang to display history mode-->
+    <div show="widget.selectedAccount">
+      <div common-time-period-info context="forwardParams" />
+      <hr>
+      <h3>{{getName()}}</h3>
+      <div class="currency currency-centered">{{getCurrency()}}</div>
+      <hr>
+      <div class="headers legend">
         <div> {{getHeaders().column_2}} </div>
-          <div class="price">
-             <!-- {{ 'TEST' | mnoCurrency : getCurrency() : false }} -->
-            {{getTotal().column_2}}
+          <div class="price positive2">
+            {{getTotal().column_2 ? (getTotal().column_2 | mnoCurrency : getCurrency() : false) : 'N/A' }}
           </div>
         <div> {{getHeaders().column_3}} </div>
-          <div class="price">
-            {{getTotal().column_3}}
+          <div class="price negative2">
+            {{getTotal().column_3 ? (getTotal().column_3 | mnoCurrency : getCurrency() : false) : 'N/A' }}
           </div>
         <div> {{getHeaders().column_4}} </div>
-          <div class="price">
-            {{getTotal().column_4}}
+          <div class="price positive2">
+            {{getTotal().column_4 ? (getTotal().column_4 | mnoCurrency : getCurrency() : false) : 'N/A' }}
           </div>
         <div> {{getHeaders().column_5}} </div>
-          <div class="price">
-            {{getTotal().column_5}}
+          <div class="price negative2">
+            {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : 'N/A' }}
           </div>
-      </div>
-      <div class="currency">{{getCurrency()}}</div>
-    </div>
-
-
-    <div ng-show="widget.selectedAccount">
-      <!-- <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" /> -->
-
-      <!-- <div ng-hide="widget.isHistoryMode"> -->
-      <!--  TODO: chang to display history mode-->
-      <div ng-show="true">
-        <h3>{{getName()}}</h3>
-        <div class="price">
-           {{ getCurrentBalance() | mnoCurrency : getCurrency() : false }}
-        </div>
-        <div class="currency">{{getCurrency()}}</div>
       </div>
 
       <!-- <div class="chart-container" ng-show="widget.isHistoryMode"> -->

@@ -11,33 +11,36 @@ module.controller('SettingBoltAccountCtrl', ($scope, $filter) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    w.selectedAccount = w.selectedAccount || null
-    w.accountList = _.find(w.content.settings.selectors, (selector) ->
-      selector.name == 'account'
-    ).options
-    if w.content? && w.accountList? && w.metadata?
-      # TODO: Do we want a defualt account if provided or table on first call?
-      # && w.metadata.account_uid?
-      # w.selectedAccount = _.find(w.accountList, (acc) ->
-      #   acc.accont_id == w.metadata.account_uid
-      # )
+    w.accountList = setOptions()
+    w.selectedAccount = setSelected()
+    if w.content? && w.accountList? && w.metadata? && w.metadata.account_uid?
+      w.selectedAccount = setSelected(w.metadata.account_uid)
       setting.isInitialized = true
 
   setting.toMetadata = ->
     return { account_uid: w.selectedAccount.account_id } if w.selectedAccount?
 
+  setOptions = (name = 'account')->
+    _.find(w.content.settings.selectors, (selector) ->
+      selector.name == name
+    ).options
+
+  setSelected = (selected = 'total_uid')->
+    _.find(w.accountList, (acc) ->
+      acc.account_id == selected
+    )
+
   formatAmount = (anAccount) ->
     balance = null
-    return $filter('mnoCurrency')(balance,anAccount.currency)
+    return $filter('mnoCurrency')(balance, anAccount.currency)
 
   $scope.formatLabel = (anAccount) ->
-    if anAccount.company?
-      "#{anAccount.company} - #{anAccount.name} (#{formatAmount(anAccount)})"
+    if anAccount.currency?
+      "#{anAccount.name} (#{anAccount.currency})"
     else
-      "#{anAccount.name} (#{formatAmount(anAccount)})"
+      "#{anAccount.name}"
 
   w.settings.push(setting)
-
   # Setting is ready: trigger load content
   # ------------------------------------
   $scope.deferred.resolve($scope.parentWidget)
