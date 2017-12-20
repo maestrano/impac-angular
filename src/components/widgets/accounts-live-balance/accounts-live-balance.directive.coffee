@@ -9,10 +9,9 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
-  # $scope.accountFrontDeferred = $q.defer()
   $scope.accountBackDeferred = $q.defer()
   $scope.timePeriodDeferred = $q.defer()
-  # $scope.histModeDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
   # $scope.chartDeferred = $q.defer()
   # $scope.attachKpisDeferred = $q.defer()
 
@@ -21,15 +20,15 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
     # $scope.accountFrontDeferred
     $scope.accountBackDeferred.promise
     $scope.timePeriodDeferred.promise
-    # $scope.histModeDeferred.promise
+    $scope.histModeDeferred.promise
     # $scope.chartDeferred.promise
     # $scope.attachKpisDeferred.promise
   ]
 
   # TODO update when updating metadata
-  # it updates when refeshing all 
-  $scope.forwardParams = {}
-  $scope.forwardParams.histParams = w.metadata.hist_parameters
+  # it updates when refeshing all
+  # $scope.forwardParams = {}
+  # $scope.forwardParams.histParams = w.metadata.hist_parameters
 
   # Widget specific methods
   # --------------------------------------
