@@ -140,6 +140,7 @@ angular.module('impac.components.common',
   [
     'impac.components.common.data-not-found',
     'impac.components.common.delete-widget',
+    'impac.components.common.transactions-add',
     'impac.components.common.transactions-list'
   ]
 );
@@ -178,6 +179,6 @@ angular.module('impac.filters',
     'impac.filters.titleize',
     'impac.filters.truncate',
     'impac.filters.mno-currency',
-    'impac.filters.mno-date'
+    'impac.filters.moment-date'
   ]
 );

@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-settings.time-period',[])
 
-module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, ImpacTheming, $translate) ->
+module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, $filter, ImpacTheming, $translate) ->
   return {
     restrict: 'A',
     scope: {
@@ -194,7 +194,7 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
         scope.usedSetting = 'dates-picker'
         scope.updateSettings()
 
-      scope.getMinDate = (toDate=undefined) ->
+      scope.getMinDate = (toDate = undefined) ->
         to = moment()
         if toDate?
           to = moment(toDate, "YYYY-MM-DD")
@@ -204,7 +204,10 @@ module.directive('settingTimePeriod', ($templateCache, $q, $log, $timeout, Impac
           to = moment(sourceSetting.toMetadata().hist_parameters.to, "YYYY-MM-DD")
         currentPeriod = getPeriod()
         periodWord = _.find(scope.periods , (period) -> currentPeriod == period.value).plural
-        return to.subtract(scope.maxNumberOfPeriods, periodWord).format('YYYY-MM-DD')
+        return to.subtract(scope.maxNumberOfPeriods, periodWord)
+
+      scope.formattedMinDate = (toDate = undefined) ->
+        $filter('momentDate')(scope.getMinDate(toDate), 'time-period')
 
 
       w.settings.push(scope.timePeriodSetting)

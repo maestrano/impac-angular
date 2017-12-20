@@ -1,7 +1,7 @@
 describe('<> widget-setting-dates-picker', function () {
   'use strict';
 
-  var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend, $timeout;
+  var subject, subjectScope, $templateCache, $filter, ImpacWidgetsSvc, $httpBackend, $timeout, $translate;
   var baseTime = new Date(2016,0,15);
 
   // Compile the directive and return its scope
@@ -30,16 +30,18 @@ describe('<> widget-setting-dates-picker', function () {
     subject = angular.element('<div setting-dates-picker parent-widget="widget" deferred="::deferred" from="from" to="to" keep-today="keepToday" />');
 
     // Inject services called by the directive...
-    inject(function (_$templateCache_, _$filter_, _ImpacWidgetsSvc_, _$httpBackend_, _$timeout_) {
+    inject(function (_$templateCache_, _$filter_, _ImpacWidgetsSvc_, _$httpBackend_, _$timeout_, _$translate_) {
       ImpacWidgetsSvc = _ImpacWidgetsSvc_;
       $templateCache = _$templateCache_;
       $filter = _$filter_;
       $httpBackend = _$httpBackend_;
       $timeout = _$timeout_;
+      $translate = _$translate_;
     });
 
     // ...and stub their methods
     spyOn(ImpacWidgetsSvc, 'updateWidgetSettings').and.stub();
+    spyOn($translate, 'use').and.callFake(function() { return 'en'; });
 
     // Mock today's date as the 15th of Jan.
     jasmine.clock().mockDate(baseTime);

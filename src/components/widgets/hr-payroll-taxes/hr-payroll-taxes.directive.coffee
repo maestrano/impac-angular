@@ -47,7 +47,7 @@ module.controller('WidgetHrPayrollTaxesCtrl', ($scope, $q, ChartFormatterSvc, $f
       period = null
       period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
       dates = _.map w.content.dates, (date) ->
-        $filter('mnoDate')(date, period)
+        $filter('momentDate')(date, period)
 
       inputData = {title: $translate.instant('impac.widget.hr_payroll_taxes.payroll_taxes'), labels: dates, values: w.content.total_tax}
       all_values_are_positive = true

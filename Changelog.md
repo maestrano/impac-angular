@@ -1,5 +1,56 @@
 # Impac! Frontend Changelog
 
+### v1.6.7 | 2017 - Week 49
+
+#### Adds
+- [EMERALDSUP-69] Add history chart to Custom Calculation widget
+
+#### Fixes
+- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
+### v1.6.6 | 2017 - Week 46
+
+#### Adds
+- [IMPAC-616] Stack invoices and bills on the cash projection widget
+
+#### Dependencies
+- Finance Bolt v1.4.0 - This is a soft dependency: transactions won't be stacked if older versions are used, but the change is backward-compatible
+
+-------------------------------------------------------------
+
+### v1.6.5 | 2017 - Week 45
+
+#### Adds
+- Dates are now consistent across the different widgets and settings
+- Dates formats can be configured using the ThemingSvc (default is using the locale (`.format('L')`)
+- New `.widget-popup()` mixin (delete widget, demo mode box...)
+- UI improvements on Cash Projection widget:
+  - Added button to display all transactions
+  - Can now reset expected payment date
+  - Differentiation of invoices / bills on transactions list
+  - Currency rate removed from transactions list
+  - Empty Customer/Supplier column added
+- [IMPAC-670] Ability to create and delete forecast transactions on Cash Projection widget
+
+#### Config changes
+- Configure dates format (ThemingSvc)
+```coffeescript
+  dateFormatterSettings:
+    default: 'L'
+    # Specific formatting can be defined per widget or other components:
+    # formats:
+    #  'hr/employee_details':  "MM-DD-YYYY"
+    #  'time-period':          "MM_DD_YYYY"
+```
+
+#### Dependencies
+- Impac! v1.6.5 (new v2 resources routes)
+- Finance Bolt v1.3.0 (new routes + transaction status FORECAST)
+
+-------------------------------------------------------------
+
 ### v1.6.4 | 2017 - Week 43
 
 #### Fixes

@@ -60,7 +60,7 @@ module.controller('WidgetAccountsExpensesRevenueCtrl', ($scope, $q, ChartFormatt
         period = null
         period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
         dates = _.map w.content.dates, (date) ->
-          $filter('mnoDate')(date, period)
+          $filter('momentDate')(date, period)
 
         if $scope.isNetProfitDisplayed
           datasets = [

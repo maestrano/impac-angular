@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets.accounts-custom-calculation',[])
 
-module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uibModal, $q, $templateCache, ImpacWidgetsSvc) ->
+module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uibModal, $q, $templateCache, $filter, ImpacWidgetsSvc, ChartFormatterSvc) ->
 
   w = $scope.widget
 
@@ -9,11 +9,15 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uib
   $scope.orgDeferred = $q.defer()
   $scope.accountsListDeferred = $q.defer()
   $scope.formulaDeferred = $q.defer()
+  $scope.histModeDeferred = $q.defer()
+  $scope.chartDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.accountsListDeferred.promise
     $scope.formulaDeferred.promise
+    $scope.histModeDeferred.promise
+    $scope.chartDeferred.promise
   ]
 
 
@@ -22,6 +26,38 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uib
   w.initContext = ->
     $scope.movedAccount = {}
     $scope.isDataFound = w.content? && !_.isEmpty(w.content.complete_list)
+
+  $scope.drawTrigger = $q.defer()
+
+  w.format = ->
+    $timeout () ->
+      all_values_are_positive = true
+      inputData = []
+      period = null
+      period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
+
+      dates = _.map w.content.dates, (date) ->
+        $filter('momentDate')(date, period)
+
+      data = _.map w.content.dates, (date, index) ->
+        value = w.evaluatedFormula_History(index)
+        all_values_are_positive &&= value >= 0
+        value
+
+      inputData.push({title: 'Test Data', labels: dates, values: data})
+
+      options = {
+        scaleBeginAtZero: all_values_are_positive,
+        showXLabels: false,
+        datasetFill: true,
+        pointDot: true,
+      }
+
+      chartData = ChartFormatterSvc.lineChart(inputData,options)
+
+      $scope.drawTrigger.notify(chartData)
+    # Workaround to enable calculation to happen after restoreSavedAccounts has finished in SettingAccountsListCtrl
+    , 500
 
   $scope.addAccountToFormula = (account) ->
     return unless account?

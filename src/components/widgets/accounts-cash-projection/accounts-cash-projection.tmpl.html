@@ -5,56 +5,37 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
-    <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
       <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
     </div>
   </div>
 
-  <!-- Content Panel -->
+  <!-- Widget content -->
   <div ng-hide="widget.isEditMode">
-    <!-- Transactions list -->
-    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" total-due="trxList.totalDue" currency="widget.metadata.currency" total-records="trxList.totalRecords" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)"></transactions-list>
+    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)" on-change-resources="trxList.changeResourcesType(resourcesType)" on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"></transactions-list>
 
-    <!-- Chart -->
     <div ng-hide="trxList.display">
-      <!-- Set KPI target threshold panel -->
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
 
       <!-- Chart -->
       <div id="{{chartId()}}" class="cash-projection-chart"></div>
 
-      <!-- Simulation mode box -->
-      <div class="offset-box" ng-show="simulationMode">
-        <h3>Offset your cash projection</h3>
-
-        <h4>For the current interval</h4>
-        <div class="price" ng-if="currentProjectedCash">
-          {{ currentProjectedCash | mnoCurrency : widget.metadata.currency }}
-        </div>
-        <div setting-offsets parent-widget="widget" deferred="::currentOffsetsDeferred" offsets-key='current' initial-offsets='widget.metadata.offset.current' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="false" period='widget.metadata.hist_parameters.period' text-placeholder='Spot adjustment' />
-
-        <h4>For each interval in the future</h4>
-        <div setting-offsets parent-widget="widget" deferred="::intervalsOffsetsDeferred" offsets-key='per_interval' initial-offsets='widget.metadata.offset.per_interval' currency='widget.metadata.currency' intervals-count='intervalsCount' show-intervals-mult="true" period='widget.metadata.hist_parameters.period' />
-      </div>
-
-      <!-- Simulation buttons -->
-      <div class="text-left" ng-hide="isTimePeriodInThePast">
-        <button class="btn btn-sm btn-default" ng-if="simulationMode" ng-click="toggleSimulationMode(true)" title = "Clear changes to simulation">
-          Cancel
+      <!-- Bottom buttons -->
+      <div class="text-left">
+        <button class="btn btn-sm btn-default" ng-click="trxList.showAll()" title="See all due invoices and bills, and forecast">
+          <i class="fa fa-list" />
+          See all transactions
         </button>
-        <button class="btn btn-sm btn-default" ng-if="!simulationMode" ng-click="toggleSimulationMode()" title="Add custom offsets to the cash projection">
-          <i class="fa fa-pencil-square-o" />
-          Simulation
-        </button>
-        <button class="btn btn-sm btn-warning" ng-if="simulationMode" ng-click="saveSimulation()" title="Apply simulation">
-          Save
+        <button class="btn btn-sm btn-default" ng-click="addForecastPopup.show()" title="Create a new forecast transaction">
+          <i class="fa fa-pencil" />
+          Add manual transaction
         </button>
       </div>
-
     </div>
 
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
+
+  <transactions-add ng-if="addForecastPopup.display" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
 </div>
