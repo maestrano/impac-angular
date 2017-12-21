@@ -1,16 +1,16 @@
-<!-- Will be displayed only if specified in configuration and if the organizations has running apps -->
-<div class="dashboard-settings sync-apps" ng-show="hasRunningApps">
+<!-- Will be displayed only if specified in configuration and if the organizations has apps -->
+<div class="dashboard-settings sync-apps" ng-show="hasApps">
   <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="'mouseenter'" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
     <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
     <span class="ng-hide" ng-show="isSyncing" translate>impac.components.sync_apps.syncing</span>
-    <span ng-hide="isSyncing || !hasRunningApps" translate>impac.components.sync_apps.show_sync_status</span>
+    <span ng-hide="isSyncing" translate>impac.components.sync_apps.show_sync_status</span>
   </span>
 
   <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="(hasError && !isSyncing)">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
-  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="!hasError && !isSyncing && hasRunningApps">
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="!hasError && !isSyncing">
     <i class="fa fa-check"></i>
   </div>
 
@@ -22,7 +22,7 @@
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div ng-if="hasRunningApps" class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
+  <div ng-if="hasApps" class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
     <div class="badge">{{connector.status}}</div>
     <strong>{{connector.name}}</strong> -
     <span ng-switch="connector.status">
