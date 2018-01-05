@@ -8,7 +8,6 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams()" class="part" deferred="::accountBackDeferred" />
-    <!-- <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams('account', widget.selectedAccount)" class="part" deferred="::accountBackDeferred" /> -->
     <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
 
     <!-- Buttons displayed on the lower  -->
@@ -21,39 +20,25 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
 
-    <!-- The total report is selected on initialization -->
     <!-- <div ng-hide="widget.isHistoryMode"> -->
-    <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
     <!--  TODO: chang to display history mode-->
     <div show="widget.selectedAccount">
+      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
       <!-- <div common-time-period-info context="forwardParams" /> -->
       <h3>{{getName()}}</h3>
       <div class="currency currency-centered">{{getCurrency()}}</div>
       <hr>
       <div class="headers legend">
-        <div> {{getHeaders().column_2}} </div>
-          <div class="price positive2">
-            {{getTotal().column_2 ? (getTotal().column_2 | mnoCurrency : getCurrency() : false) : 'N/A' }}
-          </div>
-        <div> {{getHeaders().column_3}} </div>
-          <div class="price negative2">
-            {{getTotal().column_3 ? (getTotal().column_3 | mnoCurrency : getCurrency() : false) : 'N/A' }}
-          </div>
-        <div> {{getHeaders().column_4}} </div>
-          <div class="price positive2">
-            {{getTotal().column_4 ? (getTotal().column_4 | mnoCurrency : getCurrency() : false) : 'N/A' }}
-          </div>
-        <div> {{getHeaders().column_5}} </div>
-          <div class="price negative2">
-            {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : 'N/A' }}
-          </div>
+        <div class="price positive2">
+          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'N/A' }}
+        </div>
+        <div class="statement-title"> Statement Balance </div>
+        <div class="spacer"></div>
+        <div class="price negative2">
+          {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : 'N/A' }}
+        </div>
+        <div class="balance-title"> Balance in Xero </div>
       </div>
-
-      <!-- <div class="chart-container" ng-show="widget.isHistoryMode"> -->
-      <!-- <div class="chart-container" ng-show="false">
-        <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-        <div class="legend">{{getName()}}</div>
-      </div> -->
     </div>
 
     <div ng-show="widget.demoData" common-data-not-found />

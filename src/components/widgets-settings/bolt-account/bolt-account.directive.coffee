@@ -11,7 +11,7 @@ module.controller('SettingBoltAccountCtrl', ($scope, $filter) ->
 
   # initialization of time range parameters from widget.content.hist_parameters
   setting.initialize = ->
-    w.accountList = setOptions()
+    w.accountList = setOptions() unless w.content.settings.selectors.length == 0
     w.selectedAccount = setSelected()
     if w.content? && w.accountList? && w.metadata? && w.metadata.account_uid?
       w.selectedAccount = setSelected(w.metadata.account_uid)
