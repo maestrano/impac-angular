@@ -5,6 +5,7 @@ module = angular.module('impac.components.widgets.accounts-live-balance', [])
 module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
+  w.isLiveBalance = true
 
   # Define settings
   # --------------------------------------
@@ -13,105 +14,75 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
   $scope.timePeriodDeferred = $q.defer()
   $scope.histModeDeferred = $q.defer()
   # $scope.chartDeferred = $q.defer()
-  # $scope.attachKpisDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise
-    # $scope.accountFrontDeferred
     $scope.accountBackDeferred.promise
     $scope.timePeriodDeferred.promise
     $scope.histModeDeferred.promise
     # $scope.chartDeferred.promise
-    # $scope.attachKpisDeferred.promise
   ]
-
-  # TODO update when updating metadata
-  # it updates when refeshing all
-  # $scope.forwardParams = {}
-  # $scope.forwardParams.histParams = w.metadata.hist_parameters
 
   # Widget specific methods
   # --------------------------------------
 
+  $scope.isDataFound=true
   w.initContext = ->
     $scope.isDataFound = w.content?
 
-    $scope.getName = ->
-      w.selectedAccount.name if w.selectedAccount?
+  $scope.getName = ->
+    w.selectedAccount.name if w.selectedAccount?
 
-    $scope.getTitle = ->
-      w.content.table.table_title if w.content?
+  $scope.getTitle = ->
+    w.content.table.table_title if w.content?
 
-    $scope.getOpeningBalance = ->
-      _.find(w.content.figure.metrics, (metric) ->
-        metric.label == 'opening'
-      ) if w.content?
+  $scope.getOpeningBalance = ->
+    _.find(w.content.figure.metrics, (metric) ->
+      metric.label == 'opening'
+    ) if w.content?
 
-    $scope.getClosingBalance = ->
-      _.find(w.content.figure.metrics, (metric) ->
-        metric.label == 'closing'
-      ) if w.content?
+  $scope.getClosingBalance = ->
+    _.find(w.content.figure.metrics, (metric) ->
+      metric.label == 'closing'
+    ) if w.content?
 
-    $scope.getCurrency = ->
-      w.selectedAccount.currency if w.selectedAccount?
+  $scope.getCurrency = ->
+    w.selectedAccount.currency if w.selectedAccount?
 
-    $scope.getHeaders = ->
-      w.content.table.table_headers if w.content?
+  $scope.getHeaders = ->
+    w.content.table.table_headers if w.content?
 
-    $scope.getTotal = ->
-      _.find(w.content.table.table_rows, (row) ->
-        row.column_1 == w.selectedAccount.name
-      ) if w.selectedAccount?
+  $scope.getTotal = ->
+    summary = _.find(w.content.table.tables, (table) ->
+      table.table_title == 'Bank Summary'
+    ) if w.content?
+    _.find(summary.table_rows, (row) ->
+      name_match = if w.selectedAccount.name == 'All Accounts' then 'Total' else w.selectedAccount.name
+      row.column_1 == name_match
+    ) if w.selectedAccount?
 
-    $scope.displayAccount = ->
-      $scope.updateSettings(false).then ->
-        w.format()
+  $scope.getStatementBalance = ->
+    statement = _.find(w.content.table.tables, (table) ->
+      table.table_title == 'Bank Statement'
+    ) if w.content?
+    _.find(statement.table_rows, (row) ->
+      row.column_2 == "Closing Balance"
+    ) if statement
 
-    # Needed for Kpis compatibility?
-    # --------------------------------------
-    $scope.kpiExtraParams = {}
-    $scope.updateKpiExtraParams = (key, value)->
-      $scope.kpiExtraParams[key] = angular.copy(value)
+  $scope.displayAccount = ->
+    $scope.updateSettings(false).then ->
+      w.format()
+
+  # Needed for Kpis compatibility?
+  # --------------------------------------
+  $scope.kpiExtraParams = {}
+  $scope.updateKpiExtraParams = (key, value)->
+    $scope.kpiExtraParams[key] = angular.copy(value)
 
   # Chart formatting function
   # --------------------------------------
   $scope.drawTrigger = $q.defer()
   w.format = ->
-    if $scope.isDataFound && w.selectedAccount?
-      # Defines available kpi extra params for the attach-kpi's directive.
-      # $scope.kpiExtraParams.account = angular.copy(w.selectedAccount)
-
-      data = angular.copy(w.selectedAccount)
-      datesSource = data.dates || w.content.dates # w.content.dates should not be used. Placed here in case of frontend hitting old API
-
-      period = null
-      # period = w.metadata.hist_parameters.period if w.metadata? && w.metadata.hist_parameters?
-      # dates = _.map datesSource, (date) ->
-      #   $filter('momentDate')(date, period)
-      #
-      # lineData = {title: data.name, labels: dates, values: data.balances}
-      # barData = {
-      #   labels: dates
-      #   datasets: [ { title: data.name, values: data.balances } ]
-      # }
-      #
-      # all_values_are_positive = true
-      # angular.forEach(data.balances, (value) ->
-      #   all_values_are_positive &&= value >= 0
-      # )
-      #
-      # options = {
-      #   scaleBeginAtZero: all_values_are_positive,
-      #   showXLabels: false,
-      # }
-      #
-      # chartData = ChartFormatterSvc.lineChart([lineData],options)
-      # if $scope.getBehaviour() == 'pnl'
-      #   chartData = ChartFormatterSvc.combinedBarChart(barData,options,false)
-      #
-      # # calls chart.draw()
-      # $scope.drawTrigger.notify(chartData)
-
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

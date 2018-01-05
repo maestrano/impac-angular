@@ -69,7 +69,9 @@
   "impac.common.expand":                   "expand",
 
   "impac.data_not_found_config.title":            "Data not found",
+  "impac.data_not_found_config.liveBTitle":       "Xero not found",
   "impac.data_not_found_config.main_message":     "You don't seem to have any data to display on this widget...",
+  "impac.data_not_found_config.live_b_message":   "Xero has to be added to display data on this widget...",
   "impac.data_not_found_config.link_message":     "Add an app",
   "impac.data_not_found_config.see_example":      "See an example",
   "impac.data_not_found_config.demo_data":        "Demo data",
