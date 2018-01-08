@@ -8,7 +8,7 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
     <div setting-bolt-account parent-widget="widget" on-account-selected="updateKpiExtraParams()" class="part" deferred="::accountBackDeferred" />
-    <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" />
+    <!-- <div setting-time-period parent-widget="widget" class="part" deferred="::timePeriodDeferred" hist-params="widget.metadata.hist_parameters" hide-chart-interval="true"/> -->
 
     <!-- Buttons displayed on the lower  -->
     <div class="bottom-buttons" align="right">
@@ -23,14 +23,14 @@
     <!-- <div ng-hide="widget.isHistoryMode"> -->
     <!--  TODO: chang to display history mode-->
     <div show="widget.selectedAccount">
-      <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" />
+      <!-- <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" /> -->
       <!-- <div common-time-period-info context="forwardParams" /> -->
       <h3>{{getName()}}</h3>
       <div class="currency currency-centered">{{getCurrency()}}</div>
       <hr>
       <div class="headers legend">
         <div class="price positive2">
-          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'N/A' }}
+          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'TODO: Raise toaster' }}
         </div>
         <div class="statement-title"> Statement Balance </div>
         <div class="spacer"></div>
