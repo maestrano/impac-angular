@@ -30,7 +30,7 @@
       <hr>
       <div class="headers legend">
         <div class="price positive2">
-          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'TODO: Raise toaster' }}
+          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'Statement Not Available' }}
         </div>
         <div class="statement-title"> Statement Balance </div>
         <div class="spacer"></div>
