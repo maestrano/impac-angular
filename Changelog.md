@@ -1,5 +1,17 @@
 # Impac! Frontend Changelog
 
+### v1.6.8 | 2018 - Week 3
+
+#### Adds
+- [IMPAC-734] Update generator EJS dep to latest
+- [IMPAC-665] Improve sync status messaging
+- Ability to differentiate bolt widgets from legacy widgets when black/whitelisting (required for Finance Bolt >= 1.5.0)
+
+#### Fixes
+- [EMERALDSUP-69] hide x axis labels from custom calc chart
+
+-------------------------------------------------------------
+
 ### v1.6.7 | 2017 - Week 49
 
 #### Adds
