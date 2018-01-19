@@ -240,6 +240,10 @@ angular
       settings = ImpacTheming.get().widgetSelectorConfig
       templateUid = ImpacUtilities.fetchWidgetCssClass(template)
 
+      if b_path = template.metadata && template.metadata.bolt_path
+        bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == b_path
+        templateUid = "#{bolt.provider}/#{bolt.name}/#{template.endpoint}"
+
       if !_.isEmpty(settings.whitelist)
         return _.includes(settings.whitelist, templateUid)
       else if !_.isEmpty(settings.blacklist)
