@@ -1,13 +1,12 @@
-<!-- Will be displayed only if specified in configuration and if first response has been processed (realtimeSyncing eq true) -->
-<div class="dashboard-settings sync-apps" ng-show="connectors.length || realtimeSyncing">
-
+<!-- Will be displayed only if specified in configuration and if the organizations has apps -->
+<div class="dashboard-settings sync-apps" ng-show="hasApps">
   <span class="show-status" uib-popover-template="'connectors.tmpl.html'" popover-trigger="'mouseenter'" popover-placement="bottom" ng-click="triggerSyncAlertsModal()">
     <i class="fa fa-info" ng-click="triggerSyncAlertsModal()" />
     <span class="ng-hide" ng-show="isSyncing" translate>impac.components.sync_apps.syncing</span>
     <span ng-hide="isSyncing" translate>impac.components.sync_apps.show_sync_status</span>
   </span>
 
-  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="hasError && !isSyncing">
+  <div class="status-btn" ng-click="triggerSyncAlertsModal()" ng-show="(hasError && !isSyncing)">
     <i class="fa fa-exclamation-triangle"></i>
   </div>
 
@@ -15,7 +14,7 @@
     <i class="fa fa-check"></i>
   </div>
 
-  <button id="sync" class="btn btn-primary" ng-click="synchronize()" uib-tooltip="{{'impac.components.sync_apps.tooltip.sync_data' | translate}}" ng-disabled="isSyncing">
+  <button id="sync" class="btn btn-primary" ng-click="synchronize()" uib-tooltip="{{'impac.components.sync_apps.tooltip.sync_data' | translate}}" ng-disabled="isSyncing" ng-show="hasConnectors">
     <i class="fa fa-refresh" ng-class="{ 'fa-spin': isSyncing }" />
   </button>
 
@@ -23,7 +22,7 @@
 
 <!-- ui.bootstrap popover template -->
 <script type="text/ng-template" id="connectors.tmpl.html">
-  <div class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
+  <div ng-if="hasApps" class="connector" ng-repeat="connector in connectors track by $index" ng-class="{ '{{connector.status.toLowerCase()}}': true, 'add-seperator': !$last }">
     <div class="badge">{{connector.status}}</div>
     <strong>{{connector.name}}</strong> -
     <span ng-switch="connector.status">
@@ -36,8 +35,8 @@
     </span>
     <!-- <span ng-if="connector.formatted_date"> - Synced at {{connector.formatted_date}}</span> -->
   </div>
-  <div class="popover-footer" ng-class="{ 'remove-seperator': realtimeSyncing }">
-    <p>{{'impac.components.sync_apps.all' | translate}} {{realtimeSyncing ? '' : 'other'}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
+  <div class="popover-footer" ng-class="{ 'remove-seperator': !hasConnectors }" ng-show="hasRunningCube">
+    <p>{{'impac.components.sync_apps.all' | translate}} {{hasConnectors ? 'other' : ''}} {{'impac.components.sync_apps.applications_are_synced' | translate}}</p>
   </div>
 </script>
 

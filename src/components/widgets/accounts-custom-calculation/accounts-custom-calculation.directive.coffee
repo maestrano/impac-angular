@@ -48,7 +48,7 @@ module.controller('WidgetAccountsCustomCalculationCtrl', ($scope, $timeout, $uib
 
       options = {
         scaleBeginAtZero: all_values_are_positive,
-        showXLabels: true,
+        showXLabels: false,
         datasetFill: true,
         pointDot: true,
       }

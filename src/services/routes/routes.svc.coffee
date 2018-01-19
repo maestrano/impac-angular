@@ -228,9 +228,8 @@ angular
 
       service.bolts = ->
         _.map bolts.engines, (engine) ->
-          {
+          angular.extend engine, {
             path: "#{defaults.impacApi}/#{bolts.version}/#{engine.provider}/#{engine.name}"
-            category: engine.category
           }
 
       return service
