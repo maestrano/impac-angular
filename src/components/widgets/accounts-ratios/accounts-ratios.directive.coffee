@@ -33,6 +33,7 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, $translate, 
   $scope.intervalsCount = 0
   $scope.isPnl = false
   $scope.periodInfoContext = {}
+  $scope.allowXAxisLegend = true
 
   # Prefix for period indicator in simulation mode
   getPrefix = (behaviour) ->
@@ -57,6 +58,7 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, $translate, 
       $scope.periodInfoContext.histParams = w.metadata.hist_parameters
       $scope.periodInfoContext.accountingBehaviour = behaviour
       getPrefix(behaviour).then((label)-> $scope.periodInfoContext.injectBefore = label)
+      $scope.allowXAxisLegend = $scope.allowWidgetLegend()
 
       if behaviour == 'pnl'
         $scope.totalRatio = w.content.calculation.ratio.average
@@ -71,6 +73,9 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, $translate, 
         $scope.totalDenominator = _.last(w.content.calculation.denominator.totals)
         $scope.calculatedNumerator = _.last(w.content.calculation.numerator.values)
         $scope.calculatedDenominator = _.last(w.content.calculation.denominator.values)
+
+  $scope.allowWidgetLegend = ->
+    ['accounts/ratios/current', 'accounts/ratios/debt_service'].indexOf(w.endpoint) == -1
 
   $scope.toggleSimulationMode = (init = false)->
     $scope.initSettings() if init
