@@ -4,12 +4,25 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
   w = $scope.parentWidget
   w.selectedOrganizations = {}
 
+
+  $scope.organizationMode ||= 'multiple'
+  mode = $scope.organizationMode
+
+  multiOrgMode = -> mode == 'multiple'
+
+  singleOrgMode = -> mode == 'single'
+
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
 
   $scope.toggleSelectOrganization = (orgUid) ->
-    w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
-    $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
+    if multiOrgMode()
+      w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
+      $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
+    if singleOrgMode()
+      angular.forEach w.selectedOrganizations, (value, key) ->
+        w.selectedOrganizations[key] = false
+      w.selectedOrganizations[orgUid] = true
 
   # What will be passed to parentWidget
   setting = {}
@@ -22,8 +35,15 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
       (config) ->
         $scope.dashboardOrganizations = config.currentDashboard.data_sources
         if w.metadata? && w.metadata.organization_ids?
+          # Note: For a widget in a dashboard multiple companies, we select the
+          #       first company by default ONLY if the mode is radio.
+          count = 0
           for org in $scope.dashboardOrganizations
-            w.selectedOrganizations[org.uid] = _.contains(w.metadata.organization_ids, org.uid)
+            orgSelection = _.contains(w.metadata.organization_ids, org.uid)
+            w.selectedOrganizations[org.uid] = orgSelection
+            if singleOrgMode() && orgSelection
+              w.selectedOrganizations[org.uid] = if count >= 1 then false else true
+              count += 1
           setting.isInitialized = true
     )
 
@@ -46,6 +66,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      organizationMode: '=?'
       deferred: '='
       onSelect: '&?'
     },
