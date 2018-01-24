@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-settings.organizations',[])
-module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc) ->
+module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc) ->
 
   w = $scope.parentWidget
   w.selectedOrganizations = {}
@@ -19,7 +19,7 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
     if multiOrgMode()
       w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
       $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
-    if singleOrgMode()
+    else if singleOrgMode()
       angular.forEach w.selectedOrganizations, (value, key) ->
         w.selectedOrganizations[key] = false
       w.selectedOrganizations[orgUid] = true
@@ -34,16 +34,23 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
     ImpacDashboardsSvc.load().then(
       (config) ->
         $scope.dashboardOrganizations = config.currentDashboard.data_sources
+
         if w.metadata? && w.metadata.organization_ids?
-          # Note: For a widget in a dashboard multiple companies, we select the
-          #       first company by default ONLY if the mode is radio.
           count = 0
+          widgetOrgIds = w.metadata.organization_ids
+          currentOrganization = ImpacMainSvc.config.currentOrganization
+
           for org in $scope.dashboardOrganizations
-            orgSelection = _.contains(w.metadata.organization_ids, org.uid)
+            orgSelection = _.contains(widgetOrgIds, org.uid)
             w.selectedOrganizations[org.uid] = orgSelection
-            if singleOrgMode() && orgSelection
-              w.selectedOrganizations[org.uid] = if count >= 1 then false else true
-              count += 1
+            if singleOrgMode()
+              if widgetOrgIds.length > 1
+                w.selectedOrganizations[org.uid] = false
+              else if orgSelection
+                w.selectedOrganizations[org.uid] = if count >= 1 then false else true
+                count += 1
+          if singleOrgMode() && widgetOrgIds.length > 1
+            w.selectedOrganizations[currentOrganization.uid] = true
           setting.isInitialized = true
     )
 
