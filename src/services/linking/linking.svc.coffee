@@ -64,24 +64,10 @@ angular
             return $q.reject(err)
       )
 
-      sortOrganizations = (orgs) ->
-        return orgs.sort((a,b) ->
-          wordA = a.name
-          wordB = b.name
-          if wordA > wordB
-            return 1
-          else if wordA < wordB
-            return -1
-          else
-            return 0
-        )
-
       service.getOrganizations = ->
         return required_links.organizations().then(
           (success) ->
             allOrgs = success
-            sortedOrganizations = sortOrganizations(success.organizations)
-            allOrgs.organizations = sortedOrganizations
             return allOrgs
           (err) ->
             return $q.reject(err)
