@@ -67,8 +67,7 @@ angular
       service.getOrganizations = ->
         return required_links.organizations().then(
           (success) ->
-            allOrgs = success
-            return allOrgs
+            return success
           (err) ->
             return $q.reject(err)
         )
