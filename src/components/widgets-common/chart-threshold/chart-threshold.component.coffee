@@ -68,6 +68,7 @@ module.component('chartThreshold', {
       return
 
     ctrl.saveKpi = ->
+
       return if ctrl.loading
       ctrl.loading = true
       params = targets: {}, metadata: {}

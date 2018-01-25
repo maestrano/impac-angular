@@ -194,29 +194,51 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
     # Instantiate and render chart
-    options =
-      chartType: 'line'
-      chartOnClickCallbacks: []
-      currency: w.metadata.currency
-      showToday: true
-      showLegend: true
-      withZooming:
-        defaults: w.metadata.xAxis
-        callback: onZoom
 
+    options = highChartsSettings()
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
     $scope.chart.render(w.content.chart, options)
 
     # Add events callbacks to chart object
     $scope.chart.addCustomLegend(legendFormatter)
-    $scope.chart.addSeriesEvent('click', onClickBar)
-    $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
+    # $scope.chart.addSeriesEvent('click', onClickBar)
+    # $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
 
     # Notifies parent element that the chart is ready to be displayed
+    # debugger;
     $scope.chartDeferred.notify($scope.chart)
+    debugger;
 
   $scope.widgetDeferred.resolve(settingsPromises)
 )
+
+highChartsSettings =->
+  formattingOptions =
+    legend:
+      useHTML: true
+      labelFormatter: legendFormatter
+
+  callBackOptions =
+    chartOnClickCallbacks: []
+    plotOptions:
+      series:
+        events:
+          click: onClickBar
+          legendItemClick: onClickLegend
+
+  formattingOptions =
+    chartType: 'line'
+    currency: w.metadata.currency
+    showToday: true
+    showLegend: true
+    withZooming:
+      defaults: w.metadata.xAxis
+      callback: onZoom
+
+  return angular.merge(formattingOptions, callBackOptions, formattingOptions)
+
+
+
 
 module.directive('widgetAccountsCashProjection', ->
   return {

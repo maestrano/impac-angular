@@ -23,6 +23,9 @@ angular
         title: null
         credits:
           enabled: false
+        plotOptions:
+          series:
+            animation: false
         legend:
           enabled: _.get(options, 'showLegend', true)
           layout: 'vertical'
@@ -52,6 +55,9 @@ angular
       @_template = templates[@options.chartType]
       return
 
+    update: (data) ->
+      @hc.update(data)
+
     render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
@@ -59,7 +65,8 @@ angular
       if _.isEmpty(@hc)
         @hc = Highcharts.stockChart(@id, chartConfig)
       else
-        @hc.update(chartConfig)
+          # @hc.update(chartConfig)
+        @hc = Highcharts.stockChart(@id, chartConfig)
       return @
 
     template: ->
@@ -132,13 +139,17 @@ angular
 
     # Extend default chart formatters to add custom legend img icon
     addCustomLegend: (formatterCallback, useHTML = true) ->
-      @hc.legend.update({
+    #   @hc.legend.update({
+    #     useHTML: useHTML
+    #     labelFormatter: formatterCallback
+    #   })
+      return {
         useHTML: useHTML
         labelFormatter: formatterCallback
-      })
+      }
 
     # Adds events to series objects
-    addSeriesEvent: (eventName, callback) ->
+    addSeriesEvent: (eventNames, callback) ->
       return if _.isEmpty(@hc)
       eventHash = {}
       eventHash[eventName] = callback
@@ -146,6 +157,11 @@ angular
         plotOptions:
           series:
             events: eventHash
+            animation: false
       })
-      @hc
+      # @hc
+      # return if _.isEmpty(@hc)
+      # _.forEach(eventNames, (eventName) -> {
+      #   existingEvents
+      # })
 )
