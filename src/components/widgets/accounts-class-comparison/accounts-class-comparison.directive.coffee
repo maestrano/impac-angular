@@ -34,7 +34,6 @@ module.controller('WidgetAccountsClassComparisonCtrl', ($scope, $q, $filter, Cha
 
   w.initContext = ->
     $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.companies)
-    debugger;
     if $scope.isDataFound
       $scope.timePeriodInfoParams.histParams = w.metadata && w.metadata.hist_parameters
       $scope.classifications = _.map(w.content.summary, (summary) ->
