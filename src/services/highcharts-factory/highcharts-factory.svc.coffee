@@ -5,6 +5,10 @@ angular
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
+
+        chartOnClickCallbacks = _.get(options, 'chartOnClickCallbacks', [])
+        click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
+
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -19,7 +23,10 @@ angular
           zoomType: 'x'
           spacingTop: 20
           events:
-            click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
+            click: click
+        plotOptions:
+          series:
+            events: _.get(options, 'plotOptions.series.events', {})
         title: null
         credits:
           enabled: false
@@ -28,6 +35,8 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
+          useHTML: _.get(options, 'legend.useHTML', false)
+          labelFormatter: _.get(options, 'legend.labelFormatter')
         xAxis: xAxisOptions
         yAxis:
           title: null
@@ -56,10 +65,9 @@ angular
       @data = data if _.isObject(data)
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
-      if _.isEmpty(@hc)
-        @hc = Highcharts.stockChart(@id, chartConfig)
-      else
-        @hc.update(chartConfig)
+      #It is faster to create a new stockChart than to update an existing one.
+        #when data changes.
+      @hc = Highcharts.stockChart(@id, chartConfig)
       return @
 
     template: ->
@@ -129,23 +137,4 @@ angular
     addThresholdEvent: (thresholdSerie, eventName, callback)->
       return unless thresholdSerie? && eventName? && _.isFunction(callback)
       Highcharts.addEvent(thresholdSerie, eventName, (_event)-> callback(thresholdSerie))
-
-    # Extend default chart formatters to add custom legend img icon
-    addCustomLegend: (formatterCallback, useHTML = true) ->
-      @hc.legend.update({
-        useHTML: useHTML
-        labelFormatter: formatterCallback
-      })
-
-    # Adds events to series objects
-    addSeriesEvent: (eventName, callback) ->
-      return if _.isEmpty(@hc)
-      eventHash = {}
-      eventHash[eventName] = callback
-      @hc.update({
-        plotOptions:
-          series:
-            events: eventHash
-      })
-      @hc
 )

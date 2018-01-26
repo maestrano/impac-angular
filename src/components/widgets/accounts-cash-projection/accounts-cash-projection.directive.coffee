@@ -107,7 +107,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     display: false
     show: -> this.display = true
     hide: -> this.display = false
-  
+
   $scope.addForecastPopup.createTransaction = (trx) ->
     BoltResources.create(
       w.metadata.bolt_path,
@@ -188,9 +188,21 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
     # Instantiate and render chart
-    options =
-      chartType: 'line'
+    legendOptions =
+      legend:
+        useHTML: true
+        labelFormatter: legendFormatter
+
+    callBackOptions =
       chartOnClickCallbacks: []
+      plotOptions:
+        series:
+          events:
+            click: onClickBar
+            legendItemClick: onClickLegend
+
+    formattingOptions =
+      chartType: 'line'
       currency: w.metadata.currency
       showToday: true
       showLegend: true
@@ -198,16 +210,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         defaults: w.metadata.xAxis
         callback: onZoom
 
+    options = angular.merge(legendOptions, callBackOptions, formattingOptions)
+
     $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
+
     $scope.chart.render(w.content.chart, options)
 
-    # Add events callbacks to chart object
-    $scope.chart.addCustomLegend(legendFormatter)
-    $scope.chart.addSeriesEvent('click', onClickBar)
-    $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
-
-    # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)
+    # Notifies parent element that the chart is ready to be displayed
+
 
   $scope.widgetDeferred.resolve(settingsPromises)
 )
