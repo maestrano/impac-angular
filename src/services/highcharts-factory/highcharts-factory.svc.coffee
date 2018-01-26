@@ -6,6 +6,9 @@ angular
     line: Object.freeze
       get: (series = [], options = {})->
 
+        chartOnClickCallbacks = _.get(options, 'chartOnClickCallbacks', [])
+        click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
+
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -14,12 +17,13 @@ angular
             max: _.get(zoomingOptions.defaults, 'max')
             min: _.get(zoomingOptions.defaults, 'min')
           }
+
         chart:
           type: 'line'
           zoomType: 'x'
           spacingTop: 20
           events:
-            click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
+            click: click
         plotOptions:
           series:
             events: _.get(options, 'plotOptions.series.events', {})
