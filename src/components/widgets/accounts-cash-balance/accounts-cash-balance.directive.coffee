@@ -4,10 +4,15 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   w = $scope.widget
 
   # Define settings
-  # --------------------------------------
+  # -------------------------------------
   $scope.orgDeferred = $q.defer()
 
   settingsPromises = [$scope.orgDeferred.promise]
+
+  # Setup Highcharts Options
+  # -------------------------------------
+  getPeriod = ->
+    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
 
   # Widget specific methods
   # --------------------------------------
@@ -46,9 +51,6 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     return '#000' unless serie
     serie.color
 
-  getPeriod = ->
-    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
-
   getSerieByAccount = (series, account)->
     _.find(series, (serie)-> (serie.id || serie.options && serie.options.id) == account.id)
 
@@ -79,19 +81,23 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
 
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
-    options =
-      chartType: 'line'
-      currency: w.metadata.currency
-      period: getPeriod()
-      showToday: true
-      showLegend: false
-      withZooming:
+    $timeout ->
+      _highChartOptions =
+        chartType: 'line'
+        currency: w.metadata.currency
+        period: getPeriod()
+        showToday: true
+        showLegend: false
+
+      # Add Custom Highchart Options.
+      $scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart.series, _highChartOptions)
+      $scope.chart.addXAxisOptions({
         defaults: w.metadata.xAxis
         callback: onZoom
+        })
+      $scope.chart.removeLegend()
 
-    $timeout ->
-      $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-      $scope.chart.render(w.content.chart, options)
+      $scope.chart.render()
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
