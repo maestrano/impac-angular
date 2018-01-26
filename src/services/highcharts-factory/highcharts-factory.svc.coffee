@@ -5,9 +5,6 @@ angular
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
-        seriesEvents = if options.plotOptions then options.plotOptions.series.events else {}
-        useHTML = if options.legend then options.legend.useHTML else false
-        labelFormatter = if options.legend then options.legend.labelFormatter else false
 
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
@@ -25,7 +22,7 @@ angular
             click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
         plotOptions:
           series:
-            events: seriesEvents
+            events: _.get(options, 'plotOptions.series.events', {})
         title: null
         credits:
           enabled: false
@@ -34,8 +31,8 @@ angular
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-          useHTML: useHTML
-          labelFormatter: labelFormatter
+          useHTML: _.get(options, 'legend.useHTML', false)
+          labelFormatter: _.get(options, 'legend.labelFormatter')
         xAxis: xAxisOptions
         yAxis:
           title: null
@@ -65,6 +62,7 @@ angular
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       #It is faster to create a new stockChart than to update an existing one.
+        #when data changes.
       @hc = Highcharts.stockChart(@id, chartConfig)
       return @
 
