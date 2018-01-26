@@ -5,6 +5,10 @@ angular
   templates =
     line: Object.freeze
       get: (series = [], options = {})->
+        seriesEvents = if options.plotOptions then options.plotOptions.series.events else {}
+        useHTML = if options.legend then options.legend.useHTML else false
+        labelFormatter = if options.legend then options.legend.labelFormatter else false
+
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -13,24 +17,25 @@ angular
             max: _.get(zoomingOptions.defaults, 'max')
             min: _.get(zoomingOptions.defaults, 'min')
           }
-
         chart:
           type: 'line'
           zoomType: 'x'
           spacingTop: 20
           events:
             click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
+        plotOptions:
+          series:
+            events: seriesEvents
         title: null
         credits:
           enabled: false
-        plotOptions:
-          series:
-            animation: false
         legend:
           enabled: _.get(options, 'showLegend', true)
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
+          useHTML: useHTML
+          labelFormatter: labelFormatter
         xAxis: xAxisOptions
         yAxis:
           title: null
@@ -55,18 +60,12 @@ angular
       @_template = templates[@options.chartType]
       return
 
-    update: (data) ->
-      @hc.update(data)
-
     render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
-      if _.isEmpty(@hc)
-        @hc = Highcharts.stockChart(@id, chartConfig)
-      else
-          # @hc.update(chartConfig)
-        @hc = Highcharts.stockChart(@id, chartConfig)
+      #It is faster to create a new stockChart than to update an existing one.
+      @hc = Highcharts.stockChart(@id, chartConfig)
       return @
 
     template: ->
@@ -136,32 +135,4 @@ angular
     addThresholdEvent: (thresholdSerie, eventName, callback)->
       return unless thresholdSerie? && eventName? && _.isFunction(callback)
       Highcharts.addEvent(thresholdSerie, eventName, (_event)-> callback(thresholdSerie))
-
-    # Extend default chart formatters to add custom legend img icon
-    addCustomLegend: (formatterCallback, useHTML = true) ->
-    #   @hc.legend.update({
-    #     useHTML: useHTML
-    #     labelFormatter: formatterCallback
-    #   })
-      return {
-        useHTML: useHTML
-        labelFormatter: formatterCallback
-      }
-
-    # Adds events to series objects
-    addSeriesEvent: (eventNames, callback) ->
-      return if _.isEmpty(@hc)
-      eventHash = {}
-      eventHash[eventName] = callback
-      @hc.update({
-        plotOptions:
-          series:
-            events: eventHash
-            animation: false
-      })
-      # @hc
-      # return if _.isEmpty(@hc)
-      # _.forEach(eventNames, (eventName) -> {
-      #   existingEvents
-      # })
 )
