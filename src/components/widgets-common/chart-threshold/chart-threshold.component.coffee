@@ -67,18 +67,28 @@ module.component('chartThreshold', {
       , 100)
       return
 
-    ctrl.saveKpi = ->
+    validAlertAmmount = (target) ->
+      ImpacKpisSvc.validateKpiTargets(target)
 
+    handleInvalidAlertAmount = ->
+      toastr.error("Please choose a number one or greater.", 'Error')
+      ctrl.cancelCreateKpi()
+
+    ctrl.saveKpi = ->
       return if ctrl.loading
       ctrl.loading = true
       params = targets: {}, metadata: {}
       params.targets[ctrl.kpi.watchables[0]] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
-      return unless ImpacKpisSvc.validateKpiTargets(params.targets)
+
+      if !validAlertAmmount(params.targets)
+        return handleInvalidAlertAmount()
+
       promise = if ctrl.isEditingKpi
         ImpacKpisSvc.update(getKpi(), params, false).then(
           (kpi)->
+
             # Remove old threshold from chart
             ctrl.chart.removeThreshold(kpi.id)
             angular.extend(getKpi(), kpi)
@@ -93,6 +103,7 @@ module.component('chartThreshold', {
         )
       promise.then(
         (kpi)->
+
           ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
       ).finally(->
         ctrl.cancelCreateKpi()
