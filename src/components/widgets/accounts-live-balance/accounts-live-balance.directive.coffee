@@ -73,9 +73,6 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
   $scope.updateKpiExtraParams = (key, value)->
     $scope.kpiExtraParams[key] = angular.copy(value)
 
-  # Chart formatting function
-  # --------------------------------------
-  $scope.drawTrigger = $q.defer()
   w.format = ->
 
   # Widget is ready: can trigger the "wait for settings to be ready"

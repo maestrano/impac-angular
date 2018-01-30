@@ -9,7 +9,7 @@ module.controller('SettingBoltAccountCtrl', ($scope, $filter) ->
   setting.key = "bolt-account"
   setting.isInitialized = false
 
-  # initialization of time range parameters from widget.content.hist_parameters
+  # initialization of Options list and default selected account
   setting.initialize = ->
     w.accountList = setOptions() unless w.content.settings.selectors.length == 0
     w.selectedAccount = setSelected()
