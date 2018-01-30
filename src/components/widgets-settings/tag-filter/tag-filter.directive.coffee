@@ -37,10 +37,8 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
             condition: 'AND'
             rules: []
           angular.forEach  settingsTag.tags, (filterItem) ->
-            ruletag =
-              value: filterItem.value
-            ruletag.name = filterItem.name if filterItem.name?
-            filterQueryCondition.rules.push(ruletag)
+            ruleTag = asciiParseTag(filterItem, true)
+            filterQueryCondition.rules.push(ruleTag)
 
           filterQueryRules.push (filterQueryCondition) if settingsTag.tags.length != 0
 
@@ -57,12 +55,11 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
             operator: 'OR'
             tags: []
 
-          angular.forEach filterQueryRule.rules, (filterQueryRuleCondition) ->
-            tagtext = _.compact([filterQueryRuleCondition.name,filterQueryRuleCondition.value]).join(":")
-            ruletag =
-              value: filterQueryRuleCondition.value
-              text: tagtext
-            ruletag.name = filterQueryRuleCondition.name if filterQueryRuleCondition.name?
+          angular.forEach filterQueryRule.rules, (rule) ->
+            rule = asciiParseTag(rule)
+            tagtext = _.compact([rule.name,rule.value]).join(":")
+            ruletag = value: rule.value, text: tagtext
+            ruletag.name = rule.name if rule.name?
             settingRule.tags.push(ruletag)
           settingsTags.push(settingRule)
 
@@ -70,14 +67,16 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
 
       loadRules= ->
         return if _.isEmpty(w.metadata.filter_query)
-        scope.settingsTags = filterToSettingTags (w.metadata.filter_query)
+        scope.settingsTags = filterToSettingTags(w.metadata.filter_query)
 
       initiateAutoComplete= ->
         tags = w.content.available_tags || []
         autotags = []
         for org, tag_hash of tags
           angular.forEach tag_hash.tag_references, (tag_ref) ->
+            tag_ref = asciiParseTag(tag_ref)
             angular.forEach tag_ref.tag_reference_values, (tag) ->
+              tag = asciiParseTag(tag)
               tagtext = _.compact([tag_ref.name, tag.value]).join(":")
               ruletag =
                 text: tagtext
@@ -88,6 +87,11 @@ module.directive('settingTagFilter', ($templateCache, $timeout) ->
         scope.loadTagList= (query) ->
           return _.filter(autotags, (e) -> e.text.toLowerCase().indexOf(query.toLowerCase()) > -1)
 
+      asciiParseTag = (rule, encode = false)->
+        meth = if encode then encodeURIComponent else decodeURIComponent
+        _.inject(rule, (res, v, k)->
+          if _.isString(v) then (res[k] = meth(v)) && res else (res[k] = v) && res
+        , {})
 
       scope.addRule = ->
         scope.settingsTags.push ({'operator': 'OR', 'tags': []})
