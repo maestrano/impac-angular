@@ -23,19 +23,17 @@
     <!-- <div ng-hide="widget.isHistoryMode"> -->
     <!--  TODO: chang to display history mode-->
     <div show="widget.selectedAccount">
-      <!-- <div setting-hist-mode parent-widget="widget" deferred="::histModeDeferred" accounting-behaviour="{{ getBehaviour() }}" end-date="widget.metadata.hist_parameters.to" /> -->
-      <!-- <div common-time-period-info context="forwardParams" /> -->
-      <h3>{{getName()}}</h3>
+      <h3>{{widget.selectedAccount.name}}</h3>
       <div class="currency currency-centered">{{getCurrency()}}</div>
       <hr>
       <div class="headers legend">
         <div class="price positive2">
-          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'Statement Not Available' }}
+          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : w.selectedAccount.currency : false) : 'Statement Not Available' }}
         </div>
         <div class="statement-title"> Statement Balance </div>
         <div class="spacer"></div>
         <div class="price negative2">
-          {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : 'N/A' }}
+          {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : w.selectedAccount.currency : false) : 'N/A' }}
         </div>
         <div class="balance-title"> Balance in Xero </div>
       </div>

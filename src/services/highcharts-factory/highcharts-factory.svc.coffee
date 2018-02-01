@@ -52,7 +52,7 @@ angular
       @_template = templates[@options.chartType]
       return
 
-    render: (data, options, renderer_callback)->
+    render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
