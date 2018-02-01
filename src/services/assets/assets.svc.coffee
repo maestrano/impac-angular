@@ -20,6 +20,8 @@ angular
       receivablesLegendIcon: ':default/receivables.png'
       plotLineLegendIcon: ':default/plot-line-icon.svg'
       areaLegendIcon: ':default/area-icon.svg'
+      greenArrowUp: ':default/green-arrow-up.svg'
+      redArrowDown: ':default/red-arrow-down.svg'
 
     #=======================================
     # Public methods available in config
