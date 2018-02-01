@@ -1,0 +1,4444 @@
+/* ************************************************************************ */
+/*                                LESS VARIABLES
+**                This stylesheet should only contain variables.
+/* ************************************************************************ */
+
+/*-----------------------------------------------------------------------*/
+/*                          Color palette                                */
+/*-----------------------------------------------------------------------*/
+@mgreen:                          #dae173;
+@morange:                         #d6782b;
+@mdarkblue:                       #232528;
+@mgrey:                           #cccccc;
+@mlightgrey:                      #999999;
+@mdarkbg:                         #16161B;
+@mblue:                           #358fdc;
+@darkerblue:                      #16252c;
+@darkblue:                        #17262d;
+@darkerblue:                      darken(@darkblue,4%);
+@darkblue2:                       #25333a;
+@mediumblue:                      #626d6d;
+@lightblue:                       #abc4c6;
+@pink:                            #ed1e79;
+@red:                             #FF0000;
+
+@fluroblue:                       #00e5f0;
+@fluroorange:                     #ff7300;
+@flureoyellow:                    #fbd925;
+@flurogreen:                      #47ff00;
+@fluropink:                       #e01f74;
+
+@darkgreen:                       #33d375;
+@green:                           #d1e55c;
+@purple:                          #977bf0;
+@lightgray:                       #e6edee;
+@bluegray:                        #abc4c6;
+@bluegray2:                       #35464c;
+
+@brand-success:                  @fluroblue;
+@brand-warning:                  @purple;
+@brand-info:                     @fluroblue;
+@brand-danger:                   @fluropink;
+@brand-primary:                  @fluroblue;
+
+@impac-positive:                 green;
+@impac-negative:                 @pink;
+@impac-positive2:                #3fc4ff;     // lighter colors used for payables-receivables
+@impac-negative2:                #1de9b6;     // lighter colorsused for payables-receivables
+
+// Spacers
+//----------------------------------------
+@top-buffer-height: @grid-gutter-width/2; // bootstrap variable
+.top-buffer-1 { margin-top: @top-buffer-height; }
+.top-buffer-2 { margin-top: 2*@top-buffer-height; }
+.top-buffer-3 { margin-top: 3*@top-buffer-height; }
+.top-buffer-4 { margin-top: 4*@top-buffer-height; }
+.top-buffer-5 { margin-top: 5*@top-buffer-height; }
+.top-buffer-6 { margin-top: 6*@top-buffer-height; }
+.top-buffer-7 { margin-top: 7*@top-buffer-height; }
+.top-buffer-8 { margin-top: 8*@top-buffer-height; }
+.top-buffer-9 { margin-top: 9*@top-buffer-height; }
+.top-buffer-10 { margin-top: 10*@top-buffer-height; }
+
+// Dashboard
+//--------------------------------------
+@impac-dashboard-padding-top:                   50px;
+@impac-dashboard-sm-padding-top:                @impac-dashboard-padding-top * 3;
+@impac-dashboard-margin-left:                   100px;
+@impac-dashboard-borders-color:                 @lightblue;
+
+// Title
+@impac-dashboard-title-color:                   @purple;
+@impac-dashboard-title-label-color:             @darkblue;
+@impac-dashboard-title-label-create-color:      white;
+@impac-dashboard-source-color:                  @impac-dashboard-title-label-color;
+@impac-dashboard-buttons-border-radius:         4px;
+
+//Info-text
+@impac-dashboard-info-text-color:               white;
+@impac-dashboard-info-text-background-color:    rgba(23,38,45, 0.7);
+@impac-dashboard-info-text-font-size:           25px;
+@impac-dashboard-info-text-font-weight:         300;
+
+// Dashboard Selector
+  // Tabs
+@impac-dashboard-selector-border:               1px solid @impac-dashboard-borders-color;
+@impac-dashboard-selector-tabs-margin:          0 2px 0 0;
+@impac-dashboard-selector-tabs-padding:         10px 8px 10px 15px;
+@impac-dashboard-selector-tabs-background-color: transparent;
+@impac-dashboard-selector-tabs-active-background-color: #ffffff;
+@impac-dashboard-selector-tabs-color:           black;
+@impac-dashboard-selector-tabs-active-color:    @purple;
+
+// Widget selector
+@impac-dashboard-widget-selector-bg:            #233845;
+@impac-dashboard-widget-selector-text-color:    white;
+@impac-dashboard-widget-selector-widget-item-min-height: 0px;
+
+// Widgets container
+@impac-placeholder-border:                      2px dashed @impac-dashboard-borders-color;
+@impac-widgets-container-side-padding:          0px;
+@impac-padding-between-widgets:                 12px;
+@impac-minimum-widget-size:                     250px;
+@impac-big-widget-size:                         565px;
+
+// Buttons
+@impac-btn-shadded-bg:                         @darkblue;
+@impac-btn-shadded-color:                      @mediumblue;
+
+// Dashboard Modals
+@impac-dashboard-loading-spinner:               white;
+@impac-dashboard-templates-selected-background-color: rgba(29, 197, 57, 0.62);
+
+// Widgets
+//--------------------------------------
+// Global
+@impac-widget-link-color:                      @purple;
+@impac-widget-buttons-color:                   @impac-widget-link-color;
+@impac-widget-tile-selected-color:             @impac-widget-link-color;
+@impac-widget-background-color:                white;
+@impac-widget-border:                          solid 1px darken(@lightgray,10%);
+@impac-widget-text-color:                      #5B6667;
+@impac-widget-text-color-medium:               lighten(@impac-widget-text-color,25%);
+@impac-widget-text-color-light:                lighten(@impac-widget-text-color,40%); //#acb0b1
+@impac-widget-borders-color:                   lighten(@impac-widget-text-color-light,10%); //#f3f4f4
+@impac-widget-scrollbar-color:                 #233845;
+@impac-widget-loading-spinner:                 #67BBE9;
+@impac-widget-reverse-color:                   #1E303B;
+@impac-widget-menus-hover-background-color:    #ececec;
+
+// Title
+@impac-widget-title-text-color:                darken(@impac-widget-text-color,5%);
+@impac-widget-title-bg:                        @impac-widget-background-color;
+@impac-widget-title-border:                    solid 1px @impac-widget-borders-color;
+@impac-widget-title-text-transform:            uppercase;
+@impac-widget-title-text-size:                 12px;
+@impac-widget-title-border-radius:             5px 5px 0px 0px;
+@impac-widget-top-buttons-color:               @impac-widget-text-color-light;
+
+// Content
+@impac-widget-content-border-radius:           0px 0px 5px 5px;
+@impac-widget-lines-container-max-height:      200px;
+
+// Settings
+// Param selector
+@impac-widget-param-selector-color:            @impac-widget-link-color;
+// Hist Mode Choser
+@impac-widget-hist-text-transform:             uppercase;
+@impac-widget-hist-text-size:                  12px;
+@impac-widget-hist-text-color:                 @impac-widget-text-color-light;
+// Params picker
+@impac-widget-params-picker-bg:                @impac-widget-reverse-color;
+@impac-widget-params-picker-unchecked-bg:      #c2c4c4;
+// Limit entries
+@impac-widget-limit-entries-color:             @impac-widget-reverse-color;
+
+// Globals and Mixins
+@impac-widget-selectable-color:                @impac-widget-link-color;
+
+// Edit settings
+@impac-widget-sub-bg-color:                    darken(@impac-widget-background-color,6%);
+@impac-widget-sub-bg-color-light:              lighten(@impac-widget-sub-bg-color,5%); //f3f4f4
+
+// Accounts Comparison
+@impac-widget-accounts-comparison-lines-container-max-height: 220px;
+
+// Sales break-even
+@impac-widget-sales-break-even-bg:             rgb(25,40,49);
+@impac-widget-sales-break-even-text-color:     #1de9b6;
+
+// KPIs
+//--------------------------------------
+// Kpi bar
+@kpis-bar-background-color:                    white;
+@kpis-bar-box-shadow:                          0px 1px 8px -4px;
+// Kpi
+@kpi-background-color:                         white;
+@kpi-triggered-border-bottom:                  4px solid @brand-danger;
+@kpi-max-height:                               95px;
+@kpi-editing-max-height:                       90px; // height to be added to the @kpi-max-height when in editing mode.
+@kpi-content-editing-height-buffer:            5px; // height to be minused from the @kpi-editing-max-height to even the kpi height and the kpi content height.
+// Kpi top-line
+@kpi-top-line-background-color:                grey;
+@kpi-top-line-triggered-background-color:      black;
+@kpi-top-line-height:                          7px;
+@kpi-top-line-box-shadow:                      none;
+// kpi content
+@kpi-text-color:                               grey;
+@kpi-text-triggered-color:                     black;
+@kpi-icon-color:                               grey;
+@kpi-icon-triggered-color:                     black;
+// kpi settings
+@kpi-settings-focus-color:                     @mblue;
+@kpi-settings-error-color:                     @brand-danger;
+@kpi-settings-remove-background:               #4c4749;
+@kpi-settings-remove-background-hover:         darken(@brand-danger, 5%);
+@kpi-settings-alert-config-background:         #4c4749;
+@kpi-settings-alert-config-background-hover:   @mblue;
+@kpi-negative-alert-label-background-color:    lighten(#ff0000, 30%);
+
+// Widgets pop-ups
+//--------------------------------------
+@impac-widget-popup-title-background-color:    #192831;
+@impac-widget-popup-message-background-color:  rgb(244, 248, 249);
+@impac-widget-popup-title-text-color:          white;
+@impac-widget-popup-message-text-color:        @impac-widget-text-color;
+
+// Demo data mode
+@impac-widget-demo-data-link-color:            @mgreen;
+
+.font(@size,@weight,@color) {
+  font-weight:@weight;
+  font-size:@size;
+  color:@color;
+}
+
+.center-bold (@margin-top: 30px) {
+  .font(22px, 900, @impac-widget-text-color);
+  text-align: center;
+  margin-top: @margin-top;
+}
+
+.center-thin () {
+  .font(16px, 300, @impac-widget-text-color);
+  text-align: center;
+}
+
+.center-small () {
+  .font(12px, 300, @impac-widget-text-color);
+  text-align: center;
+}
+
+.left-thin (@margin-top: 0px) {
+  .font(14px, 300, @impac-widget-text-color);
+  text-align: left;
+  margin-top: @margin-top;
+}
+
+.widget-height (@height: @impac-minimum-widget-size) {
+  min-height: @height;
+  @media (min-width: @screen-md-min) {
+    height: @height;
+    .chart-container {
+      max-width: @height + 20px;
+      max-height: @height - 125px;
+      margin: auto;
+    }
+  }
+}
+
+.short-widget () {
+  .widget-height();
+  .edit {
+    max-height: @impac-minimum-widget-size - 20px;
+  }
+}
+
+.tall-widget () {
+  .widget-height(@impac-big-widget-size);
+  .edit {
+    max-height: @impac-big-widget-size - 20px;
+    .widget-lines-container {
+      .scrollable(hidden);
+    }
+  }
+}
+
+.scrollable (@scroll-mode: auto) {
+  overflow-y: @scroll-mode;
+  overflow-x: hidden;
+}
+
+.selectable () {
+  cursor: pointer;
+  border: solid 1px @impac-widget-background-color;
+  .selection-tag {
+    display: block;
+    right: 0px;
+    margin-top: -6px;
+    width: 10px;
+    height: 29px;
+    position: absolute;
+  }
+  &:hover {
+    background-color: lighten(@impac-widget-selectable-color, 22%);
+  }
+  &.no-select {
+    cursor: auto;
+    &:hover { color: @mediumblue; }
+  }
+}
+
+.alternate-bg (@even-color: @impac-widget-sub-bg-color) {
+  &:nth-child(even) {
+    background-color: @even-color;
+  }
+  &:nth-child(odd) {
+    background-color: @impac-widget-background-color;
+  }
+}
+
+.edit-panel-style() {
+  .scrollable();
+  color: @impac-widget-text-color;
+  padding: 2px;
+  font-size: 12px;
+
+  .bottom-buttons {
+    .btn {
+      border-radius: 2px;
+      margin-right: 5px;
+      padding: 3px 13px;
+      text-transform: uppercase;
+      font-size: 12px;
+
+      &.btn-default {
+        background-color: #c2c4c4;
+        border: solid 1px darken(#c2c4c4,10%);
+        color: white;
+        &:hover {
+          border: solid 1px darken(#c2c4c4,20%);
+          background-color: darken(#c2c4c4,10%);
+        }
+      }
+    }
+  }
+
+  h4 {
+    margin: 0;
+    margin-bottom: 8px;
+    text-align: left;
+    .font(12px,normal,@impac-widget-text-color-light);
+  }
+
+  .part {
+    margin-bottom: 8px;
+    padding: 10px 0px;
+    background-color: @impac-widget-sub-bg-color-light;
+    // color: #626d6d;
+    border: solid 1px @impac-widget-borders-color;
+
+    h5 {
+      display: block;
+      margin: 0;
+      margin-bottom: 10px;
+      padding: 0px 15px;
+      text-transform: uppercase;
+      .font(12px,normal,@impac-widget-text-color-light);
+    }
+
+    label {
+      font-weight: normal;
+    }
+
+    select.form-control {
+      margin: 0px;
+      border: solid 1px #acb0b1;
+      outline: none;
+      -webkit-box-shadow: none;
+      font-size: 13px;
+      color: #72728b;
+    }
+  }
+}
+
+.loader-style(@color: @impac-widget-loading-spinner) {
+  color: @color;
+}
+
+.column-gutter(@gutter: @grid-gutter-width) {
+  padding-left: @gutter;
+  padding-right: @gutter;
+}
+
+.widget-popup() {
+  text-align: center;
+  font-size: 13px;
+  color: @impac-widget-popup-message-text-color;
+  
+  .overlay {
+    background-color: white;
+    position: absolute;
+    height: ~"calc(100% - 4px)";
+    width: ~"calc(100% - 4px)";
+    top: 2px;
+    left: 2px;
+    opacity: 0.6;
+    z-index: 5;
+  }
+
+  .message {
+    z-index: 6;
+    position: absolute;
+    min-height: 160px;
+    padding-bottom: 10px;
+    top: 45px;
+    left: 7%;
+    width: 86%;
+    background-color: @impac-widget-popup-message-background-color;
+    border-radius: 4px;
+    box-shadow: 0px 0px 25px 0px;
+
+    .title {
+      padding: 2px;
+      background-color: @impac-widget-popup-title-background-color;
+      color: @impac-widget-popup-title-text-color;
+      margin: -1px -1px 10px -1px;
+      text-transform: uppercase;
+    }
+  }
+}
+
+/* ************************************************************************ */
+/*                                IMPAC MATERIAL
+/*                  ------------------------------------------
+** Mixin material styled form inputs, overriding bootstrap's ungodly round-ness.
+/* ************************************************************************ */
+/* DEMO HTML - use this html to test all impac material features.
+<form>
+  <div class="im-form-group">
+    <select>
+      <option>Value 1</option>
+      <option>Value 2</option>
+    </select>
+    <label for="select" class="im-control-label">Selectbox</label><i class="im-bar"></i>
+  </div>
+  <div class="im-form-group">
+    <input type="text" required/>
+    <label for="input" class="im-control-label">Textfield</label><i class="im-bar"></i>
+    <div class="im-messages">
+      <p>This is an error message</p>
+    </div>
+  </div>
+  <div class="im-form-inline">
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
+    <div class="im-form-group">
+      <input type="text" required/>
+      <label for="input" class="im-control-label">Inline</label><i class="im-bar"></i>
+    </div>
+  </div>
+  <div class="im-form-group">
+    <textarea required></textarea>
+    <label for="textarea" class="im-control-label">Textarea</label><i class="im-bar"></i>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox" checked="checked"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <div class="im-form-radio">
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio" checked="checked"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+    <div class="im-radio">
+      <label>
+        <input type="radio" name="radio"/><i class="im-helper"></i>I'm the label from a radio button
+      </label>
+    </div>
+  </div>
+  <div class="im-checkbox">
+    <label>
+      <input type="checkbox"/><i class="im-helper"></i>I'm the label from a checkbox
+    </label>
+  </div>
+  <button type="button" class="im-fab im-primary"><i>♥</i></button>
+  <button type="button" class="im-fab im-warn"><i>♥</i></button>
+</form>
+*/
+
+@body-bg: #fff;
+
+// Shadows
+@shadow-inset: inset 0 2px 2px 0 rgba(0,0,0,.14);
+@shadow-0: 0 0 1px rgba(0, 0, 0, 0);
+@shadow-2: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+@shadow-3: 0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.2),0 1px 8px 0 rgba(0,0,0,.12);
+@shadow-4: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+@shadow-6: 0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12),0 3px 5px -1px rgba(0,0,0,.2);
+@shadow-8: 0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12),0 5px 5px -3px rgba(0,0,0,.2);
+
+// Font Sizes
+@im-font-size: 1.25rem;
+@im-active-font-size: @im-font-size * 0.8;
+@im-active-top: -@im-font-size;
+
+// Margin & Paddings
+@im-gap: @im-font-size * .7;
+@im-spacer: @im-font-size / 8;
+@im-fieldset-margin: 0 0 @im-gap * 2;
+@im-checkbox-gap: @im-font-size * 2;
+@im-checkbox-top: 0;
+@im-radio-margin: @im-font-size / -4;
+
+// Colors
+@im-border-color: #999;
+@im-label-color: lighten(@im-border-color, 10%);
+@im-active-color: darken(@im-border-color, 10%);
+
+// Animation
+@im-transition-speed: 0.28s;
+
+.impac-material (@im-focus-color: #337ab7, @im-error-color: #d9534f, @im-input-color: #333) {
+  /* Flatten der Bootstrap */
+  .well, .navbar-inner, .popover, .btn, .tooltip, input, select, textarea, pre, .progress, .modal, .add-on, .alert, .table-bordered, .nav>.active>a, .dropdown-menu, .tooltip-inner, .badge, .label, .img-polaroid {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    border-collapse: collapse !important;
+    background-image: none !important;
+  }
+
+  body,
+  input,
+  select,
+  textarea {
+    box-sizing: border-box;
+
+    &::after,
+    &::before {
+      box-sizing: border-box;
+    }
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  // The Styles for the form
+  fieldset {
+    margin: @im-fieldset-margin;
+    padding: 0;
+    border: none;
+  }
+
+  .im-form-radio,
+  .im-form-group {
+    position: relative;
+    margin-top: (@im-gap * 1.5);
+    margin-bottom: (@im-gap * 1.5);
+  }
+
+  .im-form-inline {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    > .im-form-group {
+      display: block;
+      flex: 1;
+      position: relative;
+      vertical-align: middle;
+      margin-left: (@im-gap * .2);
+      margin-right: (@im-gap * .2);
+    }
+
+    > .btn {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  }
+
+  .im-form-group {
+    input {
+      height: (@im-font-size * 1.9);
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    select {
+      width: 100%;
+      font-size: @im-font-size;
+      height: (@im-font-size * 1.6);
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      background: none;
+      border: none;
+      line-height: 1.6;
+      box-shadow: none;
+    }
+
+    .im-control-label {
+      position: absolute;
+      top: (@im-font-size / 4);
+      pointer-events: none;
+      padding-left: @im-spacer;
+      z-index: 1;
+      color: @im-label-color;
+      font-size: @im-font-size;
+      font-weight: normal;
+      transition: all @im-transition-speed ease;
+    }
+
+    .im-bar {
+      position: relative;
+      border-bottom: (@im-font-size / 16) solid @im-border-color;
+      display: block;
+
+      &::before {
+        content: '';
+        height: (@im-font-size / 8);
+        width: 0;
+        left: 50%;
+        bottom: (@im-font-size / -16);
+        position: absolute;
+        background: @im-focus-color;
+        transition: left @im-transition-speed ease, width @im-transition-speed ease;
+        z-index: 2;
+      }
+    }
+
+    input,
+    textarea {
+      display: block;
+      background: none;
+      padding: @im-spacer @im-spacer (@im-spacer / 2);
+      font-size: @im-font-size;
+      border-width: 0;
+      border-color: transparent;
+      line-height: 1.9;
+      width: 100%;
+      color: transparent;
+      transition: all @im-transition-speed ease;
+      box-shadow: none;
+    }
+
+    input[type="file"] {
+      line-height: 1;
+
+      ~ .im-bar {
+        display: none;
+      }
+    }
+
+    select,
+    input:focus,
+    input:valid,
+    input.form-file,
+    input.has-value,
+    textarea:focus,
+    textarea:valid,
+    textarea.form-file,
+    textarea.has-value {
+      color: @im-input-color;
+
+      ~ .im-control-label {
+        font-size: @im-active-font-size;
+        color: @im-active-color;
+        top: @im-active-top;
+        left: 0;
+      }
+    }
+
+    select,
+    input,
+    textarea {
+      &:focus {
+        outline: none;
+
+        ~ .im-control-label {
+          color: @im-focus-color;
+        }
+
+        ~ .im-bar {
+          &::before {
+            width: 100%;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Radio & Checkbox
+  .im-checkbox,
+  .im-form-radio {
+    label {
+      position: relative;
+      cursor: pointer;
+      padding-left: @im-checkbox-gap;
+      text-align: left;
+      color: @im-input-color;
+      display: block;
+    }
+
+    input {
+      width: auto;
+      opacity: 0.00000001;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  .im-radio {
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      position: absolute;
+      top: @im-radio-margin;
+      left: @im-radio-margin;
+      cursor: pointer;
+      display: block;
+      font-size: @im-font-size;
+      user-select: none;
+      color: @im-border-color;
+
+      // TODO: improve radio transition - ripple effect like angular md would be cool :)
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: (@im-spacer * 2);
+        width: @im-font-size;
+        height: @im-font-size;
+        transition: transform @im-transition-speed ease;
+        border-radius: 50%;
+        border: (@im-font-size / 8) solid currentColor;
+      }
+
+      &::after {
+        transform: scale(0);
+        background-color: @im-focus-color;
+        border-color: @im-focus-color;
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        &::after {
+            transform: scale(0.5);
+        }
+        &::before {
+          color: @im-focus-color;
+        }
+      }
+    }
+  }
+
+  .im-checkbox {
+    margin-top: (@im-gap * 2);
+    margin-bottom: @im-font-size;
+
+    .im-helper {
+      color: @im-border-color;
+      position: absolute;
+      top: @im-checkbox-top;
+      left: 0;
+      width: @im-font-size;
+      height: @im-font-size;
+      z-index: 0;
+      border: (@im-font-size / 8) solid currentColor;
+      border-radius: (@im-font-size / 16);
+      transition: border-color @im-transition-speed ease;
+
+      &::before,
+      &::after {
+        position: absolute;
+        height: 0;
+        width: (@im-font-size * 0.2);
+        background-color: @im-focus-color;
+        display: block;
+        transform-origin: left top;
+        border-radius: (@im-font-size / 4);
+        content: '';
+        transition: opacity @im-transition-speed ease, height 0s linear @im-transition-speed;
+        opacity: 0;
+      }
+
+      &::before {
+        top: (@im-font-size * 0.65);
+        left: (@im-font-size * 0.38);
+        transform: rotate(-135deg);
+        box-shadow: 0 0 0 (@im-font-size / 16) @body-bg;
+      }
+
+      &::after {
+        top: (@im-font-size * 0.3);
+        left: 0;
+        transform: rotate(-45deg);
+      }
+    }
+
+    label:hover .im-helper {
+      color: @im-focus-color;
+    }
+
+    input:checked {
+      ~ .im-helper {
+        color: @im-focus-color;
+
+        // TODO: improve checked transition.
+        &::after,
+        &::before {
+          opacity: 1;
+          transition: height @im-transition-speed ease;
+        }
+
+        &::after {
+          height: (@im-font-size / 2);
+        }
+
+        &::before {
+          height: (@im-font-size * 1.2);
+          transition-delay: @im-transition-speed;
+        }
+      }
+    }
+  }
+
+  .im-radio + .im-radio,
+  .im-checkbox + .im-checkbox {
+    margin-top: @im-font-size;
+  }
+
+  // Add class onto ng-messages div
+  .im-messages {
+    font-size: @im-font-size / 1.2;
+    color: @im-error-color;
+    overflow: hidden;
+    transition: all @im-transition-speed cubic-bezier(.55,0,.55,.2);
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 5px;
+  }
+
+  .has-error {
+    .legend.legend,
+    &.im-form-group .im-control-label.im-control-label {
+      color: @im-error-color;
+    }
+
+    &.im-form-group,
+    &.im-checkbox,
+    &.im-radio,
+    &.im-form-radio {
+      .im-messages,
+      .im-helper {
+        color: @im-error-color;
+        opacity: 1;
+      }
+    }
+
+    .im-bar {
+      &::before {
+        background: @im-error-color;
+        left: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  .im-button {
+    position: relative;
+    background: lighten(@im-focus-color, 10%);
+    border: 0;
+    font-size: (@im-font-size * 1.1);
+    color: @im-input-color;
+    margin: (@im-gap * .8) 0;
+    padding: (@im-gap / 2) (@im-gap * 2);
+    border-radius: 3px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: @shadow-2;
+
+    span {
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    &:hover {
+      transition: background .1s ease-in;
+      background: darken(@im-focus-color, 5%);
+    }
+
+    &:active {
+      box-shadow: @shadow-inset;
+    }
+
+    a:focus,
+    &:focus {
+      outline: none;
+      text-decoration: none;
+    }
+  }
+
+  button.im-fab {
+    position: relative;
+    height: 46px;
+    width: 46px;
+    flex: 0 0 56px;
+    display: inline-block;
+    padding: 0;
+    margin: 4px;
+    border: 0;
+    border-radius: 100%;
+    overflow: hidden;
+    font-size: 20px;
+    box-shadow: @shadow-4;
+    color: white;
+    &:focus {
+      outline: 0;
+    }
+    &:active {
+      box-shadow: @shadow-inset;
+    }
+    &.im-primary {
+      background: @im-focus-color;
+      &:hover {
+        transition: background .1s ease-in;
+        background: darken(@im-focus-color, 5%);
+      }
+    }
+    &.im-warn {
+      background: @im-error-color;
+      &:hover {
+        transition: background .1s ease-in;
+        background: darken(@im-error-color, 5%);
+      }
+    }
+  }
+
+}
+
+/* ************************************************************************ */
+/*                                GLOBAL STYLES
+**        This stylesheet should only contain styles applied global or in
+**                            2 or more components.
+/* ************************************************************************ */
+
+// Not ideal: intends to force a scrollbar on the window (not on the body),
+// so that the tooltips appended to body are not making the screen flickering.
+// (see when there is only 1 invoices list widget on the dashboard)
+// It is better if the tooltips can be appended to body because otherwise it's
+// messing the alternate-bg() mixing (by adding a child to the parent element)
+body {
+  height: 101% !important;
+}
+
+.analytics {
+
+  // ---------------------------------------------------------------------------
+  // --- Titles
+  // ---------------------------------------------------------------------------
+
+  h2 {
+    margin-top: 2px;
+    font-size: 14px;
+    color: @impac-widget-text-color;
+  }
+
+  h3 {
+    margin: 0px;
+    .left-thin();
+  }
+
+  h4 {
+    color: @impac-widget-text-color;
+    font-size: 16px;
+  }
+
+  // ---------------------------------------------------------------------------
+  // --- Colors
+  // ---------------------------------------------------------------------------
+
+  .positive,.green {
+    color: @impac-positive !important;
+  }
+
+  .negative,.red {
+    color: @impac-negative !important;
+  }
+
+  .positive2 {
+    color: @impac-positive2 !important;
+  }
+
+  .negative2 {
+    color: @impac-negative2 !important;
+  }
+
+  // ---------------------------------------------------------------------------
+  // --- Base elements
+  // ---------------------------------------------------------------------------
+
+  a {
+    font-weight: bold;
+    color: @impac-widget-link-color;
+    cursor: pointer;
+  }
+
+  .input-group {
+    width: 100%;
+  }
+
+  select {
+    margin-top: 5px;
+    background-color: @impac-widget-background-color;
+    height: 32px;
+  }
+
+  pre {
+    font-size: 12px;
+    padding: 0px;
+    margin: 1px 0px 8px 0px;
+    border: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+  }
+
+  .widget-item .content, kpis-bar .kpi {
+    ::-webkit-scrollbar {
+      width: 6px;
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: lighten(@impac-widget-scrollbar-color,35%);
+      border-radius: 10px;
+      &:hover {
+        background-color: lighten(@impac-widget-scrollbar-color,40%);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // --- Common adjustments
+  // ---------------------------------------------------------------------------
+  .nopadding {
+    padding: 0;
+  }
+
+  .nomargin {
+    margin: 0;
+  }
+
+  // ---------------------------------------------------------------------------
+  // --- Custom elements
+  // ---------------------------------------------------------------------------
+
+  .btn.btn-shaded {
+    background-color: @impac-btn-shadded-bg;
+    border: solid 1px darken(@impac-btn-shadded-bg,5%);
+    color: @impac-btn-shadded-color;
+    font-weight: 400;
+
+    &:hover {
+      color: lighten(@impac-btn-shadded-color,5%);
+      background-color: lighten(@impac-btn-shadded-bg,5%);
+    }
+  }
+
+  .price {
+    .center-bold();
+  }
+
+  .currency {
+    .center-thin();
+    color: @impac-widget-text-color-medium;
+  }
+
+  .legend {
+    .center-small();
+    .scrollable();
+    color: @impac-widget-text-color-light;
+  }
+
+  .loader {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      .loader-style();
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .right-panel {
+    border-left: solid 1px #e6e6e6;
+  }
+
+  .selector {
+    text-transform: uppercase;
+    font-size: 12px;
+    color: @mediumblue;
+    text-align: center
+  }
+
+  .tile {
+    background-color: rgb(247,247,247);
+    box-shadow: 0px 7px 10px -7px #17262d;
+    height: 45px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      background-color: darken(#F1F9FF, 3%);
+    }
+    .colored-area {
+      background-color: #3FC4FF;
+      height: 100%;
+      float: right;
+      color: white;
+      text-align: right;
+      padding: 5px 10px;
+      min-width: 8%;
+      &.selected {
+        background-color: @impac-widget-tile-selected-color;
+      }
+    }
+    .main-text {
+      color: @impac-widget-text-color;
+      padding: 20px 0px 0px 5px;
+      height: 100%;
+      font-style: italic;
+      font-weight: bold;
+    }
+  }
+
+  .widget-lines-container {
+    .scrollable();
+    max-height: @impac-widget-lines-container-max-height;
+    text-align: left;
+    font-size: 12px;
+    padding: 0px 15px;
+
+    .row.widget-line {
+      padding: 5px;
+      color: @mediumblue;
+
+      &.header {
+        .font(12px,500,@impac-widget-text-color-medium);
+        text-transform: uppercase;
+      }
+      @media (max-width: @screen-xs-max) {
+        margin: inherit;
+        margin-left: -3px;
+        margin-right: -3px;
+        padding: 2px;
+
+        & > [class*='col-'] {
+          padding-left: 3px;
+          padding-right: 3px;
+        }
+      }
+
+      i.fa {
+        min-width: 12px;
+        min-height: 12px;
+      }
+    }
+
+    .row .dashed {
+      border-bottom: dashed 1px @impac-widget-borders-color;
+      padding-bottom: 3px;
+      margin-bottom: 3px;
+    }
+
+    .row.lines-group {
+      border-top: solid 1px @lightgray;
+    }
+  }
+}
+
+.vertical-scroll {
+  overflow-y: scroll;
+}
+
+.horizontal-scroll {
+  overflow-x: scroll;
+}
+
+// The tooltips should be append to body
+.tooltip.impac-widgets-tooltip .tooltip-inner.ng-binding {
+  text-align: left;
+  background-color: @mdarkblue;
+  max-width: 100%;
+  white-space: nowrap;
+  strong {
+    color: @mgreen;
+  }
+}
+
+.sortable-title {
+  cursor: pointer;
+  div {
+    display: inline-block;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// --- Bootstrap overrides
+// ---------------------------------------------------------------------------
+
+.has-error .form-control {
+  border-color: @brand-danger;
+  &:focus { border-color: @brand-danger }
+}
+
+.has-success .form-control {
+  border-color: @brand-success;
+  &:focus { border-color: @brand-success }
+}
+
+// remove gutters from Boostrap row
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+// remove gutters from Boostrap column
+[class^="col-"].no-gutters,
+[class*=" col-"].no-gutters {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+// --- Reusable widget style mixins
+
+// Payroll-Summary - Profit-and-Loss
+.drill-down-widget () {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 540px;
+    .lines-group .widget-line {
+      .selectable();
+    }
+  }
+
+  .right-panel {
+    .widget-lines-container {
+      .scrollable(auto);
+      max-height: 235px;
+    }
+  }
+
+  .no-element {
+    .center-thin();
+  }
+}
+
+// Top customers summary - Sales cycle...
+.simple-summary-widget() {
+  .chart-container {
+    max-width: 410px;
+  }
+  .legend {
+    max-height: 28px;
+  }
+}
+
+// Invoices list - sales list
+.simple-list-widget() {
+  .widget-lines-container {
+    max-height: 230px;
+    .widget-line {
+      .alternate-bg();
+      &.header {
+        background-color: @impac-widget-background-color;
+      }
+    }
+  }
+}
+
+// Workforce-Summary - Salaries-Summary
+.expandable-filterable-widget() {
+  h3.left {
+    @media (min-width: @screen-md-min) { margin-top: 69px; }
+    text-align: center;
+  }
+  h3.reduced-left {
+    @media (min-width: @screen-md-min) { margin-top: 10px; }
+    text-align: center;
+  }
+  h3.right {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .price {
+    margin-top: 0;
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
+  }
+  .right-panel .chart-container {
+    @media (min-width: @screen-xs-min) and (max-width: @screen-sm-max) { max-width: 320px; }
+  }
+}
+
+// Leads funnel - Opportunities funnel
+.funnel-widget() {
+  .tall-widget();
+  .funnel-container {
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    padding-right: 10px;
+    max-height: @impac-big-widget-size - 60px;
+    overflow: auto;
+  }
+  .right-panel {
+    .widget-lines-container {
+      max-height: @impac-big-widget-size - 20px;
+      margin-right: 10px;
+      .widget-line {
+        cursor: default;
+      }
+    }
+  }
+}
+
+@media print {
+  body { background-color: white !important; }
+  .analytics {
+    padding-top: 0px !important;
+    #module__dashboard-selector .title-container { margin-top: 20px; }
+    .widget-item {
+      page-break-inside: avoid;
+      .content .chart-container {
+        max-width: 270px;
+        margin: auto;
+        canvas {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+      .right-panel {
+        page-break-inside: avoid;
+        border-left: 0;
+        .chart-container {
+          max-width: inherit;
+          max-height: inherit;
+          canvas {
+            width: 80% !important;
+            height: 80% !important;
+          }
+        }
+      }
+    }
+  }
+  * { transition: none !important; }
+}
+
+// NOTE: Do not add styles for the default button or custom injected buttonHtml here.
+//       the parent stylesheet of which this directive is embedded within should
+//       contain the styles.
+
+// Modal kpis alerts settings
+.kpi-alerts-settings {
+  .modal-header { font-size: 20px; }
+
+  .modal-body {
+    line-height: 2;
+
+    ul { margin-top: 10px; }
+
+    ul > li.list-group-item {
+      list-style: none;
+      padding: 6px 15px;
+      color: @impac-widget-text-color-medium;
+      user-select: none;
+
+      .alert-toggle {
+        &:hover { cursor: pointer; }
+      }
+
+      &.active {
+        color: @mblue;
+        font-weight: bold;
+        background-color: transparent;
+        border-color: #c4caca;
+      }
+    }
+
+    .fa.fa-toggle-on, .fa.fa-toggle-off {
+      font-size: 17px;
+      margin-right: 8px;
+    }
+
+    ul.recipients-list {
+      height: 75px;
+      overflow: hidden;
+      overflow-y: scroll;
+      border: 1px solid #c4caca;
+
+      li {
+        border: none;
+      }
+
+    }
+
+    input.recipient-search {
+      color: black;
+      width: 100%;
+    }
+
+    ul.available {
+      margin-top: 0px;
+    }
+  }
+}
+
+.analytics {
+  padding-top: @impac-dashboard-padding-top;
+  margin-left: @impac-dashboard-margin-left;
+
+  // Default small screen behaviour to allow for the common use of top-bars
+  @media screen and (max-width: 992px) {
+    padding-top: @impac-dashboard-sm-padding-top;
+  }
+
+  &.pdf-mode { padding-top: 20px; }
+
+  &.show-dhb {
+    transition: opacity 1s;
+    opacity: 1;
+  }
+  &.hide-dhb {
+    opacity: 0;
+  }
+
+  // contains customisable impac logo, and heading text.
+  #dashboard-heading {
+    img {
+      float: left;
+      margin-right: 15px;
+      max-width: 200px;
+      max-height: 150px;
+      &.pdf-mode:hover { cursor: pointer; }
+    }
+    .caption {
+      font-size: 14px;
+      margin: 5px 0px;
+    }
+  }
+
+  #sub-menu {
+    margin-top: 15px;
+    h3 {
+      font-size: 26px;
+      font-weight: normal;
+      margin-bottom: 10px;
+      color: #233845;
+    }
+
+    .fa.fa-times {
+      margin: 6px;
+      color: lighten(#233845, 15%);
+      cursor: pointer;
+      float: right;
+    }
+  }
+
+  #widget-selector {
+    background-color: @impac-dashboard-widget-selector-bg;
+    color: @impac-dashboard-widget-selector-text-color;
+    padding: 0px 45px 10px 45px;
+    margin: 10px -45px;
+    border-radius: 3px;
+
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+
+    @media (max-width: @screen-xs-max) {
+      padding: 0 15px 10px 15px;
+      margin: 0;
+    }
+
+    .title {
+      padding: 15px 0px;
+      border-bottom: solid 1px lighten(@impac-dashboard-widget-selector-bg,6%);
+      display: flex;
+      align-items: center;
+
+      p.instruction {
+        flex-grow: 1;
+        margin: 0;
+        @media screen and (max-width: @screen-sm-min) {
+          width: 50%;
+          font-size: 13px;
+        }
+      }
+
+      .widget-added.badge {
+        margin-right: 10px;
+        opacity: 0;
+      }
+
+      .fa.close-selector {
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 6px;
+        &:hover {
+          color: @mlightgrey;
+        }
+      }
+    }
+
+    .top-container {
+      margin: 15px 0px;
+      background-color: transparent;
+      border-radius: 3px;
+    }
+
+    .section-header {
+      padding: 10px 20px;
+      font-weight: bold;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-lines {
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: 200px;
+      margin-right: -10px;
+      margin-left: 0px;
+
+      p {
+        padding: 5px;
+        margin: 0px;
+        cursor: pointer;
+
+        &:hover, &.selected {
+          color: @impac-dashboard-widget-selector-text-color;
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: lighten(@impac-dashboard-widget-selector-bg,3%);
+        border-radius: 10px;
+        &:hover {
+          background-color: lighten(@impac-dashboard-widget-selector-bg,6%);
+        }
+      }
+    }
+
+    .categories-section {
+      background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+      padding-bottom: 15px;
+
+      & > .section-lines {
+
+        & > [class*='col-']:first-child {
+          padding: 3px 12px;
+        }
+
+        .line-item:hover {
+          background-color: darken(@impac-dashboard-widget-selector-bg,3%);
+        }
+        .line-item.selected {
+          background-color: @impac-widget-link-color;
+          font-weight: bold;
+          .box-shadow(-2px 2px 10px -4px black);
+        }
+      }
+
+      .arrow-icon {
+        position: absolute;
+        top: 33px;
+        right: -11px;
+        z-index: 1;
+
+        .square {
+          width: 50px;
+          height: 30px;
+          position: absolute;
+          top: 10px;
+          right: 17px;
+          background-color: @impac-widget-link-color;
+        }
+
+        i.fa.fa-caret-right {
+          font-size: 52px;
+          color: @impac-widget-link-color;
+          float: right;
+          position: absolute;
+          top: -1.5px;
+          right: 0px;
+        }
+      }
+    }
+
+    .widgets-section {
+      background-color: darken(@impac-dashboard-widget-selector-bg,3%);
+      padding-bottom: 15px;
+
+      & > .section-header {
+        text-transform: uppercase;
+        font-size: 12px;
+        color: @impac-widget-link-color;
+      }
+
+      & > .section-lines {
+        padding: 3px 0px;
+
+        .fa.fa-plus-circle {
+          float: right;
+          margin-top: 3px;
+        }
+
+        & > .line-items-grid {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          height: 0%;
+
+          & > .grid-item {
+            padding: 0 13px;
+            display: flex;
+            flex-grow: 1;
+            // Applies a flex-basis of 1/3 for each grid item (3 columns per row)
+            flex: 0 31.33%;
+            // Creates a small gutter around each grid item
+            margin: 0 1%;
+            align-items: center;
+            border-bottom: solid 1px @impac-dashboard-widget-selector-bg;
+            min-height: @impac-dashboard-widget-selector-widget-item-min-height;
+
+            @media screen and (max-width: @screen-md-min) {
+              flex: 0 100%;
+            }
+
+            &:hover {
+              background-color: darken(@impac-dashboard-widget-selector-bg,6%);
+              font-weight: normal;
+            }
+
+            p.line-item {
+              flex-grow: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .bottom {
+      height: 20px;
+      & > .suggestion {
+        float: right;
+        opacity: 0.7;
+        a {
+          cursor: pointer;
+          &:hover {
+            color: @fluroblue;
+          }
+        }
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  #dashboard-settings-panel {
+    position: relative;
+    margin-top: 5px;
+    & > div {
+      display: flex;
+      justify-content: flex-end;
+      & > * { margin: 0px 3px; }
+    }
+    select {
+      margin: 0;
+      height: 34px;
+      padding-top: 1px;
+    }
+  }
+
+  // no widgets - empty dashboard.
+  #no-widgets-container {
+    position: relative;
+    min-height: 150px;
+
+    // background image asset
+    img.bg {
+      left: 0;
+      top: 0;
+      min-width: 100%;
+      min-height: 100%;
+    }
+
+    // no widgets message that sits above image asset
+    .impac-info-message {
+      position: absolute;
+      top: 0;
+      width: 100%;
+
+      .info-text {
+        font-size: @impac-dashboard-info-text-font-size;
+        font-weight: @impac-dashboard-info-text-font-weight;
+        padding:20px;
+        min-height: 115px;
+        color: @impac-dashboard-info-text-color;
+        border-radius: 10px;
+        background-color: @impac-dashboard-info-text-background-color;
+      }
+    }
+
+  }
+
+  // parent div section for widgets to be housed.
+  #widgets-section {
+    // container for widgets
+    #widgets-container {
+      // Quick-fix to avoid screen flockering when tooltips are appended to body:
+      // min-height will force a scrollbar to appear...
+      min-height: 700px;
+    }
+
+    .placeHolderBox {
+      margin: @impac-padding-between-widgets;
+      height: 267px;
+      width: 300px;
+      float: left;
+      border: @impac-placeholder-border;
+      background: none;
+    }
+  }
+}
+
+// dashboard failed to load message.
+.analytics.load-failed {
+
+  p { font-size: 22px; }
+
+  .second-msg {
+    p {
+      color: @brand-danger;
+      font-size: 14px;
+    }
+  }
+}
+
+// Tooltips are append to body
+.tooltip.impac-widget-selector-tooltip .tooltip-inner.ng-binding {
+  font-size: 14px;
+}
+
+.dhb-create-modal .dashboard-form {
+
+  // Better aligns form labels with templates section label
+  .col-sm-2.control-label {
+    text-align: left;
+  }
+}
+
+.impac-widget-suggestion .modal-body {
+  input,textarea {
+    width: 100%;
+    color: black;
+  }
+  textarea {
+    height: 150px;
+  }
+  .thanks-message {
+    color: @mgreen;
+  }
+}
+
+// This style applies to dashboard modals, and also the
+// `accounts-custom-calculation/formula.modal.html` modal.
+.modal-footer .loader {
+  .loader-style(@impac-dashboard-loading-spinner)
+}
+
+
+#module__dashboard-selector {
+  a {
+    font-weight: normal;
+  }
+  // dashboard selector template wrapper div
+  & > div:first-child {
+    border-bottom: @impac-dashboard-selector-border;
+  }
+
+  .buttons-bar-row {
+    margin-top: 54px;
+    &.pdf-mode { margin-top: 0px; }
+  }
+
+  // container for dashboard selector 'dropdown' template
+  .buttons-bar {
+    padding: 0;
+    position: relative;
+
+    .btn {
+      float: right;
+      margin: 3px;
+      border-radius: @impac-dashboard-buttons-border-radius;
+    }
+
+    .title-container {
+      h1 {
+        margin: 0px;
+        color: black;
+        cursor: auto;
+      }
+    }
+
+    .dropdown-container {
+      .dashboard-title {
+        color: @impac-dashboard-title-color;
+        display: inline;
+        cursor: pointer;
+        &:hover {
+          color: darken(@impac-dashboard-title-color,10%);
+        }
+        i.fa.fa-pencil {
+          margin-left: 20px;
+          font-size: 14px;
+          &:hover {
+            color: @mgreen;
+          }
+        }
+      }
+      .dashboard-select {
+        margin: 5px 0px 10px 30px;
+        height: auto;
+        border-left: 1px solid @impac-dashboard-title-color;
+        border-bottom: 1px solid @impac-dashboard-title-color;
+        width: 300px;
+        background-color: @lightgray;
+        cursor: pointer;
+        .option {
+          color: @impac-dashboard-title-label-color;
+          white-space: nowrap;
+          &:hover {
+            background-color: @impac-widget-background-color;
+          }
+          &.create {
+            background-color: @impac-dashboard-title-color;
+            color: @impac-dashboard-title-label-create-color;
+            height: 30px;
+            padding: 5px 10px 5px 10px;
+            &:hover {
+              background-color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          i.fa.fa-pencil {
+            float: right;
+            padding-top: 7px;
+            text-align: center;
+            width: 15%;
+            height: 30px;
+            &:hover {
+              color: darken(@impac-dashboard-title-color,10%);
+            }
+          }
+          span.name {
+            width: 85%;
+            height: 30px;
+            display: inline-block;
+            padding: 5px 10px 5px 10px;
+          }
+        }
+      }
+      .change-name {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 60%;
+        background-color: rgb(23, 38, 45);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        .box-shadow(0px 0px 25px 4px black);
+        z-index: 50;
+        border: solid 1px @impac-widget-background-color;
+
+        .form-control {
+          height: 25px;
+          margin-bottom: 10px;
+        }
+      }
+      .data-source-label {
+        color: @impac-dashboard-source-color;
+        padding-left: 3px;
+        margin: 0px;
+      }
+    }
+
+    .loader-container {
+      padding-left: 10px;
+      .loading-spinner {
+        .loader-style();
+        font-size: 40px;
+      }
+    }
+  }
+
+  // angular bootstrap tabs & pills
+  .nav-tabs {
+    border-bottom: 0;
+  }
+  .nav.nav-tabs,
+  .nav.nav-pills {
+
+    // add new tab
+    li:last-child > a {
+      padding-right: 15px;
+      tab-heading a {
+        position: static;
+      }
+    }
+  }
+
+  // TABS
+  .nav.nav-tabs {
+    // tab
+    li > a {
+      padding: @impac-dashboard-selector-tabs-padding;
+      margin: @impac-dashboard-selector-tabs-margin;
+      background-color: @impac-dashboard-selector-tabs-background-color;
+      border: @impac-dashboard-selector-border;
+      color: @impac-dashboard-selector-tabs-color;
+    }
+    // active tab
+    li.active > a {
+      background-color: @impac-dashboard-selector-tabs-active-background-color;
+      color: @impac-dashboard-selector-tabs-active-color;
+    }
+    // add new tab
+    li:last-child > a {
+      // padding-left: 5px;
+    }
+    li:last-child.active > a {
+      background-color: @impac-dashboard-selector-tabs-background-color;
+    }
+  }
+
+  // PILLS
+  // TODO: Add less variables for customisation.
+  .nav.nav-pills {
+    // tab
+    li > a {
+      min-width: 0px;
+      padding-right: 8px;
+    }
+    // add a new tab
+    li:last-child tab-heading a {
+      margin-left: 2px;
+    }
+    // add a new tab
+    li:last-child.active > a {
+      background-color: #f4f4f4;
+    }
+  }
+  // tab icons
+  tab-heading a.close-link {
+    border-bottom: 0px solid;
+    margin-left: 12px;
+    position: relative;
+    top: -9px;
+    right: 1px;
+    color: @impac-dashboard-selector-tabs-color;
+  }
+  ////////
+}
+
+dashboard-templates-selector {
+  .templates-header {
+    display: flex;
+    .templates-toggle {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      font-size: 20px;
+      i.fa {
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+      }
+    }
+  }
+  .templates {
+    border: 1px solid #ccc;
+    box-shadow: inset 0px 0px 1px 0px #ccc;
+    height: 130px;
+    overflow: auto;
+    border-radius: 2px;
+
+    .template {
+      padding: 5px 10px;
+      color: @impac-widget-text-color;
+      border-bottom: 1px solid #ececec;
+      &:hover {
+        cursor: pointer;
+        background-color: lighten(@impac-dashboard-templates-selected-background-color, 20%);
+      }
+      &.selected {
+        background-color: @impac-dashboard-templates-selected-background-color;
+      }
+    }
+  }
+}
+
+.analytics .impac-kpi .kpi {
+  position: relative;
+  max-width: 220px;
+  min-height: @kpi-max-height;
+  max-height: @kpi-max-height;
+  background-color: @kpi-background-color;
+  margin: 10px 0 10px 0;
+  border-bottom: 1px solid @kpi-background-color;
+  transition: all .2s ease-in;
+
+  @media screen and (max-width: 768px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.triggered, &.add:hover {
+    border-bottom: @kpi-triggered-border-bottom;
+  }
+
+  &.add {
+    .kpi-text {
+      .emphasis { visibility: hidden; }
+    }
+  }
+
+  &.add:hover {
+    cursor: pointer;
+    .top-line { background-color: @kpi-top-line-triggered-background-color; }
+    .kpi-text {
+      color: @kpi-text-triggered-color;
+      .emphasis { visibility: visible; }
+    }
+    .kpi-icon {
+      color: @kpi-icon-triggered-color;
+      .fa-plus:before {
+        content: "\f00c";
+      }
+    }
+  }
+
+  &.editing {
+    min-height: @kpi-max-height + @kpi-editing-max-height;
+  }
+
+  &:hover { cursor: default; }
+
+  &.static {
+    .kpi-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  .top-line {
+    width: 100%;
+    position: relative;
+    cursor: move;
+    padding: 9px 9px 0px 12px;
+    border-bottom: none;
+    min-height: @kpi-top-line-height;
+    box-shadow: @kpi-top-line-box-shadow;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    margin-bottom: 5px;
+    background-color: @kpi-top-line-background-color;
+    &.triggered { background-color: @kpi-top-line-triggered-background-color; }
+    transition: background .2s ease-in;
+  }
+
+  .kpi-content {
+    max-height: @kpi-max-height - 5px;
+    &.editing {
+      min-height: @kpi-max-height + @kpi-editing-max-height - @kpi-content-editing-height-buffer;
+      .scrollable();
+    }
+  }
+
+  .kpi-show {
+    white-space: normal;
+    padding: 10px;
+    // small fix for iphone 6 and smaller
+    @media screen and (max-width: 380px) {
+      padding: 10px 3px;
+    }
+
+    .emphasis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .real-value { color: #676767; }
+    }
+
+    .caption {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kpi-text {
+      & > span { display: block; }
+      padding: 7px 0;
+      color: @kpi-text-color;
+      transition: color .2s ease-in;
+      &.triggered { color: @kpi-text-triggered-color; }
+
+      .caption {
+        font-size: 11px;
+        padding-bottom: 2px;
+      }
+
+      @media screen and (max-width: 465px) {
+        .caption { font-size: 10px; }
+        .emphasis { font-size: 11px; }
+      }
+    }
+
+    .kpi-icon {
+      font-size: 16px;
+      padding: 10px 0;
+      color: @kpi-icon-color;
+      transition: color .2s ease-in;
+      &.triggered { color: @kpi-icon-triggered-color; }
+      @media screen and (max-width: 465px) {
+        font-size: 12px;
+        padding: 16px 0;
+      }
+    }
+  }
+
+  .kpi-edit {
+
+    a { color: white; }
+
+    .kpi-name {
+      text-align: center;
+      margin-bottom: 5px;
+      h6 {
+        margin: 0 0 5px 0;
+      }
+    }
+
+    .real-value {
+      text-transform: uppercase;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .alert-caption {
+      text-align: center;
+      font-size: 11px;
+      background: @kpi-negative-alert-label-background-color;
+      border-radius: 3px;
+      width: 100%;
+      margin: 0 auto 5px auto;
+      box-shadow: none;
+      padding: 2px;
+      color: white;
+    }
+
+
+    .kpi-target-watchable,
+    .kpi-target-unit {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    .kpi-target-watchable {
+      margin-bottom: 20px;
+      color: lighten(@kpi-top-line-background-color, 5%);
+    }
+
+    .kpi-target-unit {
+      position: absolute;
+      top: 6px;
+      right: 0;
+      color: lighten(@kpi-top-line-background-color, 10%);
+    }
+
+    .param-name {
+      .small();
+    }
+
+    .btn.btn-xs {
+      margin-top: 4px;
+    }
+  }
+
+  .kpi-edit,
+  .kpi-no-data {
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+  }
+
+  button.kpi-alerts.im-fab.im-primary {
+    position: absolute;
+    top: -12px;
+    right: 15px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-alert-config-background;
+    &:hover {
+      backgroud: @kpi-settings-alert-config-background-hover;
+    }
+  }
+
+  button.kpi-remove.im-fab.im-warn {
+    position: absolute;
+    top: -12px;
+    right: -11px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    background: @kpi-settings-remove-background;
+    &:hover {
+      background: @kpi-settings-remove-background-hover;
+    }
+  }
+
+  .kpi-data-loader {
+    width: 100%;
+    min-height: 95px;
+  }
+}
+
+.analytics kpis-bar > .key-stats .kpi {
+  min-height: 80px;
+}
+
+.analytics kpis-bar > .kpis {
+  position: relative;
+  .actions {
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis,
+    button.im-fab.toggle-show-content {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.toggle-show-content {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: -14px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 33px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.edit-kpis {
+      top: 75px;
+      right: -15px;
+      z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 79px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .content-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .content {
+    padding: 15px;
+    background-color: @kpis-bar-background-color;
+    box-shadow: @kpis-bar-box-shadow;
+
+    @media screen and (min-width: 725px) {
+      padding: 0 60px;
+    }
+
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
+
+    .impac-kpi {
+      .column-gutter(5px);
+
+      @media screen and (min-width: 1200px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .kpi.add {
+        .kpi-show .caption {
+          white-space: inherit;
+        }
+      }
+    }
+
+
+    .title {
+      .text-center {
+        line-height: 3;
+        font-variant: small-caps;
+        font-size: larger;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        background-color: #d1e55c;
+        color: #4f5959;
+        box-shadow: 0px 1px 3px -1px;
+      }
+      .no-kpi-templates {
+        color: #afadb5;
+        font-weight: 500;
+      }
+    }
+
+    .add-bar {
+      border-bottom: dashed 1px;
+    }
+
+    .kpi-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: @kpi-max-height + 20px;
+    }
+
+    .dates-picker-container {
+      width: 40%;
+      margin: 0 auto;
+
+      .sdp-from-label,
+      .sdp-to-label {
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.analytics kpis-bar {
+  display: block;
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  padding: 5px 0px;
+}
+
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
+
+.widget-item {
+  transition: width 0.3s;
+  padding: @impac-padding-between-widgets;
+  &.pdf-mode {
+    width: 100%;
+    padding: ~"@{impac-padding-between-widgets} 0px";
+  }
+}
+
+.widget-item .top-line {
+  position: relative;
+  cursor: move;
+  background-color: @impac-widget-title-bg;
+  padding: 9px 9px 0px 12px;
+  border-radius: @impac-widget-title-border-radius;
+  border: @impac-widget-border;
+  border-bottom: none;
+  min-height: 41px;
+  .box-shadow(0px 1px 8px -4px);
+
+  display: flex;
+  flex-direction: row;
+
+  z-index: 4;
+}
+
+.widget-item {
+  .content {
+    position: relative;
+    padding: 9px;
+    border-radius: @impac-widget-content-border-radius;
+    border: @impac-widget-border;
+    border-top: none;
+    background-color: @impac-widget-background-color;
+
+    vertical-align: top;
+    .box-shadow(0px 1px 8px -4px);
+    .short-widget();
+
+    .edit {
+      .edit-panel-style();
+    }
+
+    &.accessible {
+      height: auto !important;
+      min-height: 250px !important;
+      max-height: auto !important;
+    }
+
+    // Avoid content to leak out of widget's box
+    .content-template-wrapper {
+      height: 100%;
+      overflow: auto;
+      overflow-x: hidden;
+    }
+  }
+
+  &.pdf-mode .content {
+    height: 100% !important;
+    min-height: 250px !important;
+    max-height: none !important;
+    .collapse {
+      display: inherit;
+    }
+    .fa-plus-square-o:before {
+      content: "\f147";
+    }
+    .legend {
+      max-height: none !important;
+    }
+    .chart-container {
+      max-height: none;
+    }
+    .widget-lines-container {
+      max-height: none !important;
+    }
+    .data-not-found .message {
+      position: inherit;
+      width: 100%;
+    }
+  }
+}
+
+.widget-item.pdf-mode .include-to-pdf{
+  &.title {
+    position: absolute;
+    width: ~"calc(100% - 2*@{impac-padding-between-widgets} )";
+    z-index: 3;
+    padding-right: 1px;
+    h6 {
+      padding: 10px;
+      background-color: #FFC928;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  &.tick {
+    i {
+      position: absolute;
+      top: 35%;
+      left: 46%;
+      font-size: 100px;
+      opacity: .5;
+      z-index: 2;
+      color: black;
+    }
+  }
+  .widget-hover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 9px;
+    top: 0;
+    right: 0;
+    -webkit-transition: all ease .5s;
+    -moz-transition: all ease .5s;
+    transition: all ease .5s;
+    z-index: 1;
+    &:hover {
+      opacity: .5;
+      background: #CCCFD0;
+    }
+  }
+}
+
+// Fix overflow for large sums/text in .widget-lines-container tables
+.widget-item .widget-lines-container .widget-line > [class*='col-'] {
+  overflow-wrap: break-word;
+}
+
+.analytics .widget-item .content .data-not-found,
+.analytics .kpi .data-not-found {
+  text-align: center;
+  font-size: 13px;
+  color: @impac-widget-popup-message-text-color;
+
+  .overlay {
+    background-color: white;
+    position: absolute;
+    height: ~"calc(100% - 4px)";
+    width: ~"calc(100% - 4px)";
+    top: 2px;
+    left: 2px;
+    opacity: 0.6;
+    z-index: 3;
+  }
+
+  .message {
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    padding-bottom: 10px;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    background-color: @impac-widget-popup-message-background-color;
+    border-radius: 4px;
+    box-shadow: 0px 0px 25px 0px;
+    z-index: 4;
+
+    .title {
+      padding: 2px;
+      background-color: @impac-widget-popup-title-background-color;
+      color: @impac-widget-popup-title-text-color;
+      margin: -1px -1px 10px -1px;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    .btn { margin-top: 5px; }
+  }
+
+  .example {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    color: @impac-widget-popup-title-text-color;
+    background-color: @impac-widget-popup-title-background-color;
+    padding: 3px;
+    z-index: 6;
+
+    a {
+      font-weight: normal;
+      color: @impac-widget-demo-data-link-color;
+    }
+  }
+}
+
+.analytics .kpi .data-not-found {
+  .message {
+    width: 90%;
+    padding-bottom: 0px;
+    border: solid 1px silver;
+    box-shadow: none;
+    p { margin: 5px; }
+  }
+  .overlay, .title, .btn, .example { display: none; }
+}
+
+#transactions-add {
+  .widget-popup();
+  .message {
+    top: 30px;
+    left: 35%;
+    width: 30%;
+    .form {
+      padding: 0px 10px;
+      > label, .coming-soon > label {
+        padding-top: 10px;
+        font-weight: normal;
+        margin-bottom: 3px;
+      }
+      input.form-control {
+        width: 90%;
+        border-radius: 2px;
+        height: 28px;
+        font-size: 13px;
+      }
+      .btn-group {
+        display: block;
+        min-height: 22px;
+        select {
+          border-radius: 2px;
+          height: 28px;
+          margin-top: 0px;
+        }
+      }
+      .coming-soon {
+        margin-top: 15px;
+        padding: 5px;
+        border: solid 1px silver;
+        background-color: white;
+        color: #888888;
+        font-style: italic;
+        .badge {
+          font-weight: normal;
+          background-color: #888888;
+        }
+        .btn-group {
+          margin-left: 10px;
+          input[type="radio"] { margin-top: 5px; }
+          select { height: 22px; }
+          .btn {
+            float: none;
+            border-color: #888888;
+          }
+        }
+      }
+    }
+    .bottom {
+      margin-top: 20px;
+    }
+  }
+}
+
+.analytics common-delete-widget {
+  .widget-popup();
+  .message {
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+    p { padding: 0px 10px; }
+    button.btn { margin-top: 20px; }
+  }
+}
+
+#transactions-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+    
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+    .fa.fa-times {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(#8eab71, 20%);
+      }
+      &.bills {
+        background-color: lighten(#c76379, 20%);
+      }
+    }
+  }
+}
+
+.analytics .dashboard-settings.pdf-mode {
+}
+
+.analytics .dashboard-settings.currency {
+  text-align: right;
+  select {
+    margin-top: 4px;
+  }
+}
+
+.analytics .dashboard-settings.sync-apps {
+  .show-status {
+    margin-right: 5px;
+    color: @impac-widget-text-color-medium;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .fa.fa-info { margin-right: 2px; }
+  }
+  .status-btn {
+    i {
+      font-size: 16px;
+      &.fa-exclamation-triangle { color: @fluroorange; }
+      &.fa-check { color: @green; }
+    }
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 7px 5px 0px;
+  }
+
+  .popover {
+    max-width: 550px;
+    .connector {
+      padding: 4px 13px;
+      &.add-seperator { border-bottom: 1px solid #ccc; }
+    }
+    .popover-content {
+      padding: 0;
+    }
+    .popover-footer {
+      border-top: 1px solid #ccc;
+      padding: 4px 13px;
+      p {
+        font-weight: bold;
+        margin: 0;
+      }
+      &.remove-seperator { border: 0; }
+    }
+  }
+
+  .badge { float: right; margin-left: 8px; }
+  .success .badge { background-color: @green; }
+  .pending .badge { background-color: @fluroorange; }
+  .running .badge { background-color: @fluroorange; }
+  .error .badge { background-color: @pink; }
+  .failed .badge { background-color: @pink; }
+  .unknown .badge { background-color: @pink; }
+  .disconnected .badge { background-color: @pink; }
+}
+
+#sync-apps-modal {
+  .modal-header {
+    text-align: center;
+    border: 0;
+    box-shadow: 0px 2px 3px 0px #ccc;
+  }
+  .modal-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .modal-list-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+
+    .badge { float: right; }
+    &.success .badge { background-color: @green; }
+    &.pending .badge { background-color: @fluroorange; }
+    &.running .badge { background-color: @fluroorange; }
+    &.error .badge { background-color: @pink; }
+    &.failed .badge { background-color: @pink; }
+    &.unknown .badge { background-color: @pink; }
+    &.disconnected .badge { background-color: @pink; }
+
+    .message {
+      p { margin: 0; }
+      padding: 3px;
+      border-radius: 2px;
+      margin-left: 31px;
+      margin-top: 9px;
+    }
+
+    &.success .message { background-color: rgba(0, 255, 55, 0.08); }
+    &.pending .message { background-color: rgba(255, 118, 0, 0.08); }
+    &.running .message { background-color: rgba(255, 118, 0, 0.08); }
+    &.error .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.failed .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.unknown .message { background-color: rgba(255, 0, 0, 0.08); }
+    &.disconnected .message { background-color: rgba(255, 0, 0, 0.08); }
+
+    &.with-message {
+      cursor: pointer;
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+  }
+  .modal-footer {
+    border: 0;
+  }
+  .fa { padding: 0px 10px; }
+  .fa.error { color: @red; }
+  .fa.warn { color: @fluroorange; }
+  .fa.success { color: @flurogreen; }
+}
+
+chart-threshold {
+
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    > .attach-panel-text {
+      display: inline-block;
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    .panel-text-label {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+    .panel-text-input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+    }
+    .panel-text-currency {
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .action-buttons {
+    display: inline-block;
+    padding: 0 10px;
+    button {
+      padding: 3px 6px;
+      display: inline-block;
+      &.loading {
+        padding: 3px 20px;
+      }
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+    text-align: center;
+  }
+  .legend {
+    text-align: left;
+    max-height: 90px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
+  }
+}
+
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
+    text-align: center;
+  }
+
+  .price {
+    .center-bold(0px);
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-balance {
+  .tall-widget();
+
+  .data-container {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+    width: 100%;
+  }
+
+  .left-panel {
+    width: 180px;
+    display: inline-block;
+    overflow: auto;
+  }
+
+  #cash-balance-legend {
+    .header {
+      .group-item {
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+        margin: 3px;
+        font-size: 13px;
+        padding: 3px;
+        cursor: pointer;
+        user-select: none;
+        &:hover {
+          background-color: @impac-widget-menus-hover-background-color;
+        }
+        i {
+          font-size: 19px;
+          padding: 4px;
+          margin-top: 1px
+        }
+        span { color: @impac-widget-text-color; }
+      }
+    }
+  }
+
+  .legend-item-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .right-panel {
+    width: ~"calc(100% - 180px)";
+    float: right;
+
+    // Highchart container
+    .cash-balance-chart {
+      height: ~"calc(@{impac-big-widget-size} - 50px)";
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
+}
+
+.analytics .widget-item .content.accounts-balance-sheet {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 490px;
+    @media (max-width: @screen-xs-max) {
+      .row.widget-line {
+        &:not(:last-child) { border-bottom: dashed 1px @impac-widget-borders-color; }
+      }
+    }
+    .row.widget-line.header > [class*='col-'] { position: static; }
+
+    &.no-scroll {
+      overflow: visible;
+    }
+  }
+
+  .no-data-block {
+    .center-thin();
+    margin: 15px 0px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-projection {
+  .tall-widget();
+
+  .cash-projection-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .highcharts-legend-item {
+    rect.highcharts-point {
+      display: none;
+    }
+
+    span {
+      width: 110px;
+      text-align: center;
+      img {
+        text-align: center;
+        width: 55px;
+        height: 25px;
+      }
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
+
+  transactions-list {
+    font-size: 12px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
+  }
+}
+
+.analytics .widget-item .content.accounts-comparison {
+  .tall-widget();
+
+  .chart-container {
+    @media print { max-width: 80% !important; }
+  }
+
+  .add-account {
+    position: absolute;
+    right: 40px;
+    bottom: 30px;
+    width: 160px;
+    select {
+      font-size: 13px;
+      background-color: @impac-widget-link-color;
+      color: @impac-widget-background-color;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      &[disabled] {
+        cursor: not-allowed;
+        background-color: lighten(@impac-widget-link-color,10%);
+        &:hover {
+          background-color: lighten(@impac-widget-link-color,10%);
+        }
+      }
+      &:hover {
+        background-color: darken(@impac-widget-link-color,10%);
+      }
+      option {
+        background-color: @impac-widget-background-color;
+        color: lighten(@impac-widget-text-color,40%);
+        &[disabled] {
+          color: @impac-widget-background-color;
+        }
+      }
+    }
+  }
+  button.close {
+    font-size: 15px;
+  }
+  .legend {
+    text-align: left;
+    max-height: 103px;
+  }
+  .row {
+    margin: 0;
+  }
+  .widget-lines-container {
+    font-size: 11px;
+    max-height: @impac-widget-accounts-comparison-lines-container-max-height;
+    margin-bottom: 65px;
+    overflow: auto;
+  }
+
+  .settings.params-checkboxes {
+    margin-left: 13px;
+  }
+
+  .comparable-error h5 {
+    margin-left: 13px;
+    color: @impac-negative;
+  }
+}
+
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .legend { max-height: 125px; }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    overflow: visible;
+  }
+}
+
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+    }
+  }
+}
+
+.analytics .widget-item .content.accounts-detailed-classifications {
+  .tall-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 540px;
+  }
+
+  .account-class-title {
+    margin-bottom: 8px;
+    margin-left: 11px;
+  }
+
+  .time-period-info {
+    text-align: right;
+  }
+
+  .widget-line.header.sorting  {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+
+
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
+  }
+}
+
+.analytics .widget-item .content.accounts-live-balance {
+  h3 {
+    .center-bold(0px);
+    font-size: 18px;
+    text-align: center;
+    text-shadow: 1px;
+  }
+
+  .statement-title {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .balance-title {
+    font-size: 12px;
+  }
+
+  .currency-centered {
+    .center-small()
+  }
+
+  .headers {
+    text-align: center;
+  }
+
+  .spacer {
+    min-height: 30px;
+  }
+
+  .price {
+    .center-bold(0px);
+  }
+
+  .negative2 {
+    font-size: 14px;
+  }
+}
+
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.accounts-profit-and-loss {
+  .drill-down-widget();
+
+  .row.lines-group.profit {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
+
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.widget-line.header > [class*='col-'] { position: static; }
+}
+
+.analytics .widget-item .content.accounts-ratios {
+  
+  .left-panel {
+    max-height: 230px;
+    overflow-y: auto; 
+
+    .separator {
+      border-bottom: solid 1px @impac-widget-text-color;
+      width: 75%;
+    }
+    .member {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .member .price {
+      margin-top: 0px;
+      font-size: 18px;
+    }
+    button { outline: none; }
+  }
+
+  .left-panel.simulation {
+    .member {
+      padding-top: 5px;
+      .legend { display: none; }
+      .price { text-align: right; }
+    }
+    .separator { width: 100%; }
+  }
+}
+
+.analytics .widget-item .content.hr-employee-details {
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    max-height: none;
+    @media (min-width: @screen-md-min) { max-height: 200px; }
+    .scrollable();
+  }
+  .right-panel {
+    .details-container {
+      @media (min-width: @screen-md-min) { max-height: 220px; }
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+}
+
+.analytics .widget-item .content.hr-employees-list {
+  .legend {
+    margin-bottom: 9px;
+  }
+  .widget-lines-container {
+    text-align: center;
+    .widget-line {
+      .alternate-bg();
+    }
+  }
+  .edit {
+    .widget-lines-container {
+      text-align: left;
+    }
+  }
+}
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
+    text-align: center;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
+  }
+}
+.analytics .widget-item .content.hr-leaves-schedule{
+  .fc-button {
+    height: 22px;
+    font-size: 12px;
+    color: @impac-widget-buttons-color;
+    background: white;
+    outline: none;
+    &:hover {
+      color: white;
+      background: @impac-widget-buttons-color;
+    }
+  }
+  .fc-toolbar {
+    margin-bottom: 5px;
+  }
+  .fc-day-grid,.fc-widget-header {
+    font-size: 12px;
+    color: @impac-widget-text-color;
+  }
+}
+.analytics .widget-item .content.hr-payroll-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+      max-height: 145px;
+  }
+}
+
+.analytics .widget-item .content.hr-payroll-taxes {
+  // Nothing special yet for this template
+}
+.analytics .widget-item {
+  .content.hr-salaries-summary {
+    .expandable-filterable-widget();
+  }
+}
+
+.analytics .widget-item .content.hr-superannuation-accruals {
+  h3 {
+    margin-top: 63px;
+    text-align: center;
+  }
+  .legend {
+    margin-top: 23px;
+  }
+  .currency {
+    font-size: 14px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
+.analytics .widget-item .content.hr-timesheets {
+  .currency {
+    font-size: 14px;
+  }
+  .widget-lines-container {
+    max-height: 210px;
+  }
+}
+.analytics .widget-item  {
+  .content.hr-workforce-summary {
+    .expandable-filterable-widget();
+  }
+}
+
+.analytics .widget-item .content.invoices-aged-payables-receivables {
+  .drill-down-widget();
+
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.astericks-info {
+    margin-top: 15px;
+  }
+
+  .currency-conversions {
+    float: right;
+    margin-left: 3px;
+  }
+}
+
+.analytics .widget-item .content.invoices-list {
+  .simple-list-widget();
+
+  .currency-conversions {
+    float: right;
+    margin-right: 3px;
+    margin-top: -2px;
+  }
+
+  .fa.fa-info-circle {
+    float: right;
+    font-size: 15px;
+  }
+
+  .right-column {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
+  }
+}
+
+.analytics .widget-item .content.sales-break-even {
+  .price {
+    .center-bold(0px);
+  }
+  .block {
+    margin: 5px;
+    padding: 0px 10px 5px 10px;
+    text-align: left;
+    box-shadow: 0px 7px 10px -7px #17262d;
+    font-size: 12px;
+    form.editable-wrap .editable-controls input {
+      margin-top: 5px;
+      width: 100px;
+    }
+    &.to-date {
+      background-color: @impac-widget-sub-bg-color;
+      color: @impac-widget-text-color;
+    }
+    &.to-breakeven {
+      margin-top: 10px;
+      background-color: @impac-widget-sales-break-even-bg;
+      color: @impac-widget-sales-break-even-text-color;
+      .title {
+        border-bottom: solid 1px lighten(@impac-widget-sales-break-even-bg, 10%);
+      }
+      .define-text {
+        .center-thin();
+        padding-top: 5px;
+        color: @impac-widget-sales-break-even-text-color;
+      }
+      .price {
+        color: @impac-widget-sales-break-even-text-color;
+      }
+    }
+
+    .title {
+      font-size: 13px;
+      text-align: center;
+      font-variant: small-caps;
+      border-bottom: solid 1px @lightgray;
+      font-weight: 300;
+    }
+  }
+}
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
+.analytics .widget-item .content.sales-customer-details {
+  .loader {
+    font-size: 14px;
+  }
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    @media (min-width: @screen-md-min) { max-height: 194px; }
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .right-panel {
+    .details-container {
+      @media (min-width: @screen-md-min) { max-height: 230px; }
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .row.title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .currency-conversions {
+    float: left;
+    margin-right: 3px;
+  }
+}
+
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
+.analytics .widget-item .content.sales-forecast {
+  .tall-widget();
+  .widget-lines-container {
+    max-height: 275px;
+    .widget-line.main {
+      .selectable();
+    }
+  }
+}
+
+.analytics .widget-item .content.sales-growth {
+  .price {
+    .center-bold(0px);
+  }
+  .legend {
+    max-height: 49px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
+.analytics .widget-item .content.sales-leads-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+  }
+}
+.analytics .widget-item .content.sales-list {
+  .simple-list-widget();
+  .widget-lines-container {
+    .scrollable(scroll);
+    max-height: 170px;
+    &.no-scroll {
+      overflow: visible;
+    }
+  }
+  .selector {
+    margin-bottom: 4px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
+.analytics .widget-item .content.sales-net-sales {
+  .value-container, .operator {
+    // float: left;
+    // text-align: center;
+    line-height: 85px;
+  }
+
+  // .value-container {
+  //   width: 26%;
+  // }
+
+  .value-container .title {
+    line-height: 20px;
+    font-size: 1.2em;
+    padding: 10px 0px;
+  }
+
+  .value-container .value-box {
+    font-size: 1.3em;
+    border-radius: 10px;
+    // border: solid 1px #E4E4E4;
+    // box-shadow: 1px 1px 1px #C5C5C5;
+    border-top: solid 1px #C4CACA;
+    border-bottom: solid 1px #C4CACA;
+    white-space: nowrap;
+  }
+
+  .operator {
+    // @media (min-width: @screen-md-min) { padding-top: 38px; }
+    padding-top: 38px;
+    // width: 10%;
+    font-size: 1.3em;
+  }
+
+  .values {
+    @media (min-width: @screen-md-min) { margin-top: 25px; }
+  }
+}
+
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
+.analytics .widget-item .content.sales-number-of-leads {
+  .stats {
+    margin-top: 35px;
+    font-size: 18px;
+    .stat {
+      margin: 15px 0px 10px 0px;
+      border-bottom: solid 1px @lightgray;
+      span.title {
+        font-weight: bold;
+      }
+      span.nominal {
+        float: right;
+        text-align: right;
+        font-weight: 300;
+      }
+      span.variation {
+        float: right;
+        width: 50px;
+        text-align: right;
+        font-style: italic;
+        font-size: 14px;
+        font-weight: 300;
+        margin-top: 2px;
+      }
+    }
+  }
+}
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
+}
+
+.analytics .widget-item .content.sales-performance {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+  	 max-height: 215px;
+    .widget-line.header {
+      .selectable();
+    }
+  }
+}
+
+.analytics .widget-item .content.sales-segmented-turnover {
+  h3.right {
+    margin-top: 55px;
+    text-align: center;
+  }
+  .selector {
+    margin-bottom: 10px;
+  }
+  .analysis {
+    .center-bold(0px);
+  }
+  .widget-lines-container {
+    max-height: 75px;
+    .widget-line {
+      font-size: 11px;
+    }
+  }
+
+  .right-panel {
+    h3 {
+      margin: 15px 10px 5px 10px;
+      text-align: center;
+    }
+
+    .fa.fa-info-circle { float: left; }
+  }
+}
+
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
+.analytics .widget-item .content.sales-top-customers {
+  .selector {
+    border-bottom: dashed 1px #E6E6E6;
+    padding-bottom: 3px;
+    a { font-weight: normal; }
+    .param-selector { display: inline-block; }
+  }
+  .widget-lines-container {
+    max-height: 235px;
+    .widget-line.sub-line { background-color: @impac-widget-sub-bg-color; }
+
+    // Will allow the params selectors to be displayed on top of the container (without being cut on the right)
+    .row > [class*='col-'] { position: static; }
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
+.analytics .widget-item .content.sales-top-opportunities {
+  .opps-container {
+    max-height: 195px;
+    margin-top: 10px;
+    padding-right: 10px;
+    .scrollable();
+    .tile {
+      height: 40px;
+      font-size: 13px;
+      font-weight: 300;
+      .colored-area {
+        width: 10%;
+        text-align: center;
+        font-size: 20px;
+      }
+      .main-text {
+        color: @impac-widget-text-color;
+        padding: 3px 0px 0px 10px;
+      }
+      &.first {
+        height: 55px;
+        font-size: 15px;
+        font-weight: bold;
+        .colored-area {
+          font-size: 26px;
+          padding-top: 10px;
+          background-color: rgb(255, 110, 65);
+        }
+        .main-text {
+          padding-top: 8px;
+        }
+      }
+      &.second {
+        height: 55px;
+        font-size: 15px;
+        font-weight: 500;
+        .colored-area {
+          font-size: 26px;
+          padding-top: 10px;
+          background-color: #1de9b6;
+        }
+        .main-text {
+          padding-top: 8px;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
+.analytics .settings.accounting-behaviour {
+
+  .btn.btn-primary {
+    background-color: lighten(@impac-widget-link-color, 10%);
+    border: solid 1px @impac-widget-link-color;
+    &.focus, &.active { background-color: @impac-widget-link-color; }
+  }
+
+}
+
+.analytics .settings.attach-kpis {
+  .attach-kpi {
+    padding: 8px 5px;
+
+    form .row {
+      padding-bottom: 5px;
+    }
+
+    .attach-kpi-form {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+
+    form .row.kpi-description {
+      padding: 10px 2px;
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    }
+
+    form.attach-kpi-form {
+      input.attach-target {
+        background-color: white;
+        height: inherit;
+      }
+    }
+
+    .error-messages {
+      color: @brand-danger;
+      width: 120px;
+    }
+  }
+
+  .attached-kpis {
+    padding: 5px;
+  }
+
+  .list-group-item.attached-kpi {
+    padding: 5px 10px;
+
+    .attached-kpi-name {
+      overflow: hidden;
+      width: 75%;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .actions {
+      padding-top: 2px;
+      .alerts-config {
+        display: inline-block;
+        text-align: left;
+        padding-left: 4px;
+        height: 20px;
+        border-radius: 40px;
+        width: 21px;
+        color: @mblue;
+        background-color: white;
+        border: solid 1px @mblue;
+
+        &:hover { cursor: pointer; }
+      }
+      .edit-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @mblue;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @mblue;
+          &:hover { cursor: pointer; }
+        }
+      }
+      .remove-attached-kpi {
+        display: inline-block;
+        i {
+          border-radius: 10px;
+          width: 21px;
+          color: @brand-danger;
+          background-color: white;
+          height: 20px;
+          padding: 3px 5px 5px 5px;
+          border: solid 1px @brand-danger;
+          &:hover { cursor: pointer; }
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
+.analytics .widget-item .content .settings.chart-filters {
+  .row {
+    margin: 0px;
+  }
+  input[type="radio"] {
+    margin: 0;
+    margin-right: 3px;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    outline: none;
+  }
+  input[type="range"] {
+    height: auto;
+    width: 100%;
+  }
+}
+
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
+.analytics .widget-item .content .settings.hist-mode-choser {
+  max-height: 70px;
+
+  [common-time-period-info] {
+    padding-bottom: 8px;
+  }
+
+  .options {
+    width: 150px;
+    margin: auto;
+    padding-bottom: 8px;
+    border-bottom: solid 1px #e6e6e6;
+    .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+    a {
+      .font(@impac-widget-hist-text-size,500,@impac-widget-hist-text-color);
+      text-transform: @impac-widget-hist-text-transform;
+      &.active {
+        color: @impac-widget-link-color;
+      }
+    }
+  }
+  .arrow-container {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top: -14px;
+    margin: auto;
+    &.right {
+      left: 46px;
+    }
+    &.left {
+      left: -30px;
+    }
+    .arrow-border {
+      border-top: 14px solid #e6e6e6;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      width: 0px;
+      height: 0px;
+    }
+    .arrow {
+      border-top: 14px solid @impac-widget-background-color;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      position: relative;
+      top: 12px;
+      width: 0px;
+      height: 0px;
+    }
+  }
+}
+
+.analytics .settings.limit-entries {
+  color: @impac-widget-limit-entries-color;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: dashed 1px #E6E6E6;
+  padding-bottom: 8px;
+
+  a.option {
+    &.badge {
+      color: white;
+      background-color: @impac-widget-limit-entries-color;
+    }
+  }
+
+}
+
+.analytics .settings.offsets {
+  .offset-value {
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .offset-value .fa-trash-o {
+    &:hover {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+    margin-left: 10px;
+  }
+
+  input { width: 75%; }
+  button { width: 30px; }
+}
+
+.analytics .settings.organizations {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+.analytics .widget-item .content .settings.param-selector {
+  display: inline-block;
+
+  &.classic {
+    width: 100%;
+
+    select {
+      width: 100%;
+      height: 25px;
+      border: 1px solid #ccc;
+      text-transform: uppercase;
+      margin: 0px 0px 5px 0px;
+    }
+  }
+
+  a {
+    font-weight: normal;
+    color: @impac-widget-param-selector-color;
+    white-space: nowrap;
+  }
+  .options-container {
+    position: absolute;
+    background-color: white;
+    text-align: left;
+    min-width: 150px;
+    max-height: 200px;
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .box-shadow(rgb(0, 0, 0) 0px 3px 15px -3px);
+
+    .param-selector-label {
+      padding: 3px 5px;
+      .font(inherit,500,black);
+      cursor: text;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 1.9;
+    }
+    .param-selector-label:hover {
+      cursor: pointer;
+      background-color: @impac-widget-param-selector-color;
+      color: white;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: darken(@lightgray,5%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: @impac-widget-param-selector-color;
+      &:hover {
+        background-color: lighten(@impac-widget-param-selector-color,5%);
+      }
+    }
+  }
+}
+
+.analytics .settings.params-checkboxes {
+  padding: 2px 0px;
+  input {
+    margin: 0;
+    height: inherit;
+  }
+  span {
+    margin-left: 5px;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+  }
+}
+
+.analytics .widget-item .content .settings.params-picker {
+  padding: 0px 10px;
+  .parameter {
+    margin: 0px 3px 3px 0px;
+    padding: 3px 5px;
+    background-color: @impac-widget-params-picker-bg;
+    color: white;
+    border: solid 1px @impac-widget-params-picker-bg;
+    border-radius: 4px;
+    cursor: move;
+    font-weight: bold;
+    white-space: nowrap;
+    float: left;
+    input[type="checkbox"] {
+      margin: 0px -3px 0px 3px;
+      vertical-align: middle;
+      height: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+    .badge {
+      margin-right: 3px;
+      font-size: 10px;
+      background-color: darken(@impac-widget-background-color, 5%);
+      color: @impac-widget-params-picker-bg;
+      padding: 2px 6px;
+    }
+
+    &.unchecked {
+      background-color: inherit;
+      font-weight: normal;
+      color: inherit;
+      border-color: @impac-widget-params-picker-unchecked-bg;
+      .badge {
+        background-color: @impac-widget-params-picker-unchecked-bg;
+        color: white;
+      }
+    }
+  }
+}
+.analytics .settings.tag-filter {
+  padding: 0px 5px;
+
+  .btn.btn-default {
+    height: 32px;
+    width: 30px;
+  }
+
+  .tag-lines-container {
+    padding: 0px 10px;
+
+    .tag-line {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .tags-col { position: static; }
+
+      tags-input {
+        .tags {
+          display: flex;
+          border-radius: 4px;
+          border: solid 1px #ccc;
+          .tag-item {
+            background: #79a2bb;
+            border-radius: 4px;
+            color: white;
+          }
+        }
+      }
+
+      .host { position: static; }
+    }
+  }
+}
+
+.analytics .settings.time-period {
+  padding: 0px 5px;
+
+  select {
+    height: 22px;
+    width: 100%;
+  }
+  
+  & > .row {
+    margin: 0px -5px 7px -5px;
+    & > div {
+      padding: 0px 5px;
+      position: static;
+    }
+
+    .sub-setting { padding: 5px; }
+  }
+}
+
+.analytics .widget-item .content .settings.width {
+  float: right;
+  font-size: 14px;
+  i {
+    color: silver;
+    cursor: pointer;
+    &.reduce {
+      margin-right: -10px;
+    }
+    &.expand {
+      margin-right: -3px;
+    }
+  }
+}
