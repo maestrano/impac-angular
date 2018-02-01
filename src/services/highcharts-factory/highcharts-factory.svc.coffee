@@ -52,14 +52,14 @@ angular
       @_template = templates[@options.chartType]
       return
 
-    render: (data, options, renderer_callback)->
+    render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       if _.isEmpty(@hc)
-        @hc = Highcharts.stockChart(@id, chartConfig, renderer_callback)
+        @hc = Highcharts.stockChart(@id, chartConfig)
       else
-        @hc.update(chartConfig, renderer_callback)
+        @hc.update(chartConfig)
       return @
 
     template: ->
