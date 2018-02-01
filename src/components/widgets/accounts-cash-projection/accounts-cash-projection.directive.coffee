@@ -107,7 +107,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     display: false
     show: -> this.display = true
     hide: -> this.display = false
-  
+
   $scope.addForecastPopup.createTransaction = (trx) ->
     BoltResources.create(
       w.metadata.bolt_path,
