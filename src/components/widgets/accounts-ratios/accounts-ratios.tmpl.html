@@ -86,7 +86,7 @@
 
         <div class="history chart-container" ng-show="widget.isHistoryMode">
           <div impac-chart draw-trigger="::drawTrigger.promise" deferred="::chartDeferred"></div>
-          <div ng-show="allowXAxisLegend" class="legend">{{ widget.content.layout.ratio }}</div>
+          <div ng-if="allowXAxisLegend" class="legend">{{ widget.content.layout.ratio }}</div>
         </div>
       </div>
 
