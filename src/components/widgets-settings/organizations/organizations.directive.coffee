@@ -4,13 +4,14 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
   w = $scope.parentWidget
   w.selectedOrganizations = {}
 
-
   $scope.organizationMode ||= 'multiple'
   mode = $scope.organizationMode
 
   multiOrgMode = -> mode == 'multiple'
 
   singleOrgMode = -> mode == 'single'
+
+  resetSelectedOrgs = -> w.selectedOrganizations = _.mapValues(w.selectedOrganizations, -> false)
 
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
@@ -20,8 +21,7 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
       w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
       $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
     else if singleOrgMode()
-      angular.forEach w.selectedOrganizations, (value, key) ->
-        w.selectedOrganizations[key] = false
+      resetSelectedOrgs()
       w.selectedOrganizations[orgUid] = true
 
   # What will be passed to parentWidget
@@ -36,21 +36,18 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
         $scope.dashboardOrganizations = config.currentDashboard.data_sources
 
         if w.metadata? && w.metadata.organization_ids?
-          count = 0
           widgetOrgIds = w.metadata.organization_ids
-          currentOrganization = ImpacMainSvc.config.currentOrganization
+          if singleOrgMode()
+            resetSelectedOrgs()
+            if _.map(widgetOrgIds, -> true).length > 1
+              currentOrganization = ImpacMainSvc.config.currentOrganization
+              w.selectedOrganizations[currentOrganization.uid] = true
+            else
+              w.selectedOrganizations[widgetOrgIds[0]] = true
 
-          for org in $scope.dashboardOrganizations
-            orgSelection = _.contains(widgetOrgIds, org.uid)
-            w.selectedOrganizations[org.uid] = orgSelection
-            if singleOrgMode()
-              if widgetOrgIds.length > 1
-                w.selectedOrganizations[org.uid] = false
-              else if orgSelection
-                w.selectedOrganizations[org.uid] = if count >= 1 then false else true
-                count += 1
-          if singleOrgMode() && widgetOrgIds.length > 1
-            w.selectedOrganizations[currentOrganization.uid] = true
+          if multiOrgMode()
+            for org in $scope.dashboardOrganizations
+              w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
           setting.isInitialized = true
     )
 
