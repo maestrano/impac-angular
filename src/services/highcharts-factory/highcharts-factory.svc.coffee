@@ -57,9 +57,9 @@ angular
       angular.extend(@options, options)
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       if _.isEmpty(@hc)
-        @hc = Highcharts.stockChart(@id, chartConfig, renderer_callback)
+        @hc = Highcharts.stockChart(@id, chartConfig)
       else
-        @hc.update(chartConfig, renderer_callback)
+        @hc.update(chartConfig)
       return @
 
     template: ->
