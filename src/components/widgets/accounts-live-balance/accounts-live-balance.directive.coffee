@@ -2,6 +2,7 @@ module = angular.module('impac.components.widgets.accounts-live-balance', [])
 module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSvc, $filter) ->
 
   w = $scope.widget
+  $scope.isLiveBalance = true
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer()
@@ -18,6 +19,9 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
   $scope.isDataFound=true
   w.initContext = ->
     $scope.isDataFound = w.content?
+
+  $scope.getCurrency = ->
+    w.selectedAccount.currency if w.selectedAccount?
 
   $scope.getOpeningBalance = ->
     _.find(w.content.figure.metrics, (metric) ->
@@ -51,7 +55,6 @@ module.controller('WidgetAccountsLiveBalanceCtrl', ($scope, $q, ChartFormatterSv
       w.format()
 
   w.format = ->
-
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
