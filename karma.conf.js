@@ -2,7 +2,7 @@
 // Generated on Thu Aug 21 2014 10:24:39 GMT+0200 (CEST)
 
 module.exports = function(config) {
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -24,8 +24,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       /* inject:bower */
-      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/jasmine/lib/jasmine-core/jasmine.js',
+      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/jquery-ui/jquery-ui.js',
@@ -52,8 +54,6 @@ module.exports = function(config) {
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-translate-handler-log/angular-translate-handler-log.js',
       'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
-      'bower_components/jasmine/lib/jasmine-core/jasmine.js',
-      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       /* endinject */
       'dist/impac-angular.js',
       'src/**/*.spec.js',
@@ -99,9 +99,26 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
-  });
+  };
+
+  if(process.env.TRAVIS){
+    configuration.browsers = ['Chrome_travis_ci'];
+    // configuration.reporters = configuration.reporters.concat(['coverage', 'coveralls']);
+    // configuration.coverageReporter = {
+    //   type : 'lcovonly',
+    //   dir : 'coverage/'
+    // };
+  }
+
+  config.set(configuration);
 };
