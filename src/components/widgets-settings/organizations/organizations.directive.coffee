@@ -35,20 +35,19 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
       (config) ->
         $scope.dashboardOrganizations = config.currentDashboard.data_sources
 
-        if w.metadata? && w.metadata.organization_ids?
-          widgetOrgIds = w.metadata.organization_ids
-          if singleOrgMode()
-            resetSelectedOrgs()
-            if _.map(widgetOrgIds, -> true).length > 1
-              currentOrganization = ImpacMainSvc.config.currentOrganization
-              w.selectedOrganizations[currentOrganization.uid] = true
-            else
-              w.selectedOrganizations[widgetOrgIds[0]] = true
-
-          if multiOrgMode()
-            for org in $scope.dashboardOrganizations
-              w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
-          setting.isInitialized = true
+        return unless w.metadata? && w.metadata.organization_ids?
+        widgetOrgIds = w.metadata.organization_ids
+        if singleOrgMode()
+          resetSelectedOrgs()
+          if widgetOrgIds.length > 1
+            currentOrganization = ImpacMainSvc.config.currentOrganization
+            w.selectedOrganizations[currentOrganization.uid] = true
+          else
+            w.selectedOrganizations[widgetOrgIds[0]] = true
+        else if multiOrgMode()
+          for org in $scope.dashboardOrganizations
+            w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
+        setting.isInitialized = true
     )
 
   setting.toMetadata = ->
