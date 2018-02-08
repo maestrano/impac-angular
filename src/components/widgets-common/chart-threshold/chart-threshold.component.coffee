@@ -67,9 +67,6 @@ module.component('chartThreshold', {
       , 100)
       return
 
-    validAlertAmmount = (target) ->
-      ImpacKpisSvc.validateKpiTargets(target)
-
     handleInvalidAlertAmount = ->
       toastr.error("Please choose a number one or greater.", 'Error')
       ctrl.cancelCreateKpi()
@@ -82,7 +79,7 @@ module.component('chartThreshold', {
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
 
-      if !validAlertAmmount(params.targets)
+      if !ImpacKpisSvc.validateKpiTargets(target)
         return handleInvalidAlertAmount()
 
       promise = if ctrl.isEditingKpi
