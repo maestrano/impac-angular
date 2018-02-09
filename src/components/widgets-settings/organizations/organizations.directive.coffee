@@ -4,12 +4,11 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
   w = $scope.parentWidget
   w.selectedOrganizations = {}
 
-  $scope.organizationMode ||= 'multiple'
-  mode = $scope.organizationMode
+  $scope.mode ||= 'multiple'
 
-  multiOrgMode = -> mode == 'multiple'
+  $scope.multiOrgMode = -> $scope.mode == 'multiple'
 
-  singleOrgMode = -> mode == 'single'
+  $scope.singleOrgMode = -> $scope.mode == 'single'
 
   resetSelectedOrgs = -> w.selectedOrganizations = _.mapValues(w.selectedOrganizations, -> false)
 
@@ -17,10 +16,10 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
     !!w.selectedOrganizations[orgUid]
 
   $scope.toggleSelectOrganization = (orgUid) ->
-    if multiOrgMode()
+    if $scope.multiOrgMode()
       w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
       $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
-    else if singleOrgMode()
+    else if $scope.singleOrgMode()
       resetSelectedOrgs()
       w.selectedOrganizations[orgUid] = true
 
@@ -37,14 +36,14 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
 
         return unless w.metadata? && w.metadata.organization_ids?
         widgetOrgIds = w.metadata.organization_ids
-        if singleOrgMode()
+        if $scope.singleOrgMode()
           resetSelectedOrgs()
           if widgetOrgIds.length > 1
             currentOrganization = ImpacMainSvc.config.currentOrganization
             w.selectedOrganizations[currentOrganization.uid] = true
           else
             w.selectedOrganizations[widgetOrgIds[0]] = true
-        else if multiOrgMode()
+        else if $scope.multiOrgMode()
           for org in $scope.dashboardOrganizations
             w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
         setting.isInitialized = true
@@ -69,7 +68,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
-      organizationMode: '=?'
+      mode: '@?'
       deferred: '='
       onSelect: '&?'
     },
