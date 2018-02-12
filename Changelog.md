@@ -6,6 +6,7 @@
 - [IMPAC-757] Radio mode for "organizations" setting
 
 #### Fixes
+- [IMPAC-758] Fixes current and debt service ratio widgets by removing chartjs x Axis labels
 - [IMPAC-750] Fix list of widgets in widget panel does not always have the same layout
 - [IMPAC-759] Scroll hides the graph for large number of accounts in Cash balance
 - [IMPAC-758] Fix hidden date in X-axis for current ratio and debt service widget
