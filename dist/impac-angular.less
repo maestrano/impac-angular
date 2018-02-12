@@ -2644,6 +2644,51 @@ dashboard-templates-selector {
   .overlay, .title, .btn, .example { display: none; }
 }
 
+.analytics common-delete-widget {
+  .widget-popup();
+  .message {
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+    p { padding: 0px 10px; }
+    button.btn { margin-top: 20px; }
+  }
+}
+
+#transactions-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+    
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+    .fa.fa-times {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(#8eab71, 20%);
+      }
+      &.bills {
+        background-color: lighten(#c76379, 20%);
+      }
+    }
+  }
+}
+
 #transactions-add {
   .widget-popup();
   .message {
@@ -2696,51 +2741,6 @@ dashboard-templates-selector {
     }
     .bottom {
       margin-top: 20px;
-    }
-  }
-}
-
-.analytics common-delete-widget {
-  .widget-popup();
-  .message {
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-    p { padding: 0px 10px; }
-    button.btn { margin-top: 20px; }
-  }
-}
-
-#transactions-list {
-  .top {
-    height: 40px;
-    a.back-link { font-weight: normal; }
-    .pagination { margin: 0px; }
-  }
-
-  .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
-    overflow: auto;
-    
-    div[uib-datepicker-popup-wrap] {
-      display: inline-block;
-    }
-
-    input.btn.btn-xs { margin-top: -2px; }
-    button.btn.reset-date { margin-top: -2px; }
-    .fa.fa-times {
-      color: @brand-danger;
-      cursor: pointer;
-    }
-
-    tr.total {
-      font-weight: bold;
-      &.invoices {
-        background-color: lighten(#8eab71, 20%);
-      }
-      &.bills {
-        background-color: lighten(#c76379, 20%);
-      }
     }
   }
 }
@@ -2879,6 +2879,12 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.accounts-assets-vs-liabilities {
+  .legend > .title span {
+    margin-left: 3px;
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -2922,12 +2928,6 @@ dashboard-templates-selector {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-assets-vs-liabilities {
-  .legend > .title span {
-    margin-left: 3px;
   }
 }
 
@@ -3158,17 +3158,6 @@ dashboard-templates-selector {
 
 
 
-.analytics .widget-item .content.accounts-expense-weight {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -3178,6 +3167,17 @@ dashboard-templates-selector {
     font-size: 12px;
     margin-left: 0px;
     text-align: center;
+  }
+}
+
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+    }
   }
 }
 
@@ -3443,19 +3443,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .widget-lines-container {
-    max-height: 530px;
-  }
-  .right-panel .widget-lines-container {
-    max-height: 250px;
-  }
-  .currency-conversions {
-    img { margin-top: -2px; }
-  }
-}
-
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3500,6 +3487,19 @@ dashboard-templates-selector {
     }
   }
 }
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -3791,6 +3791,18 @@ dashboard-templates-selector {
     }
   }
 }
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
 chart-threshold {
 
   .attach-panel {
@@ -3834,18 +3846,6 @@ chart-threshold {
         padding: 3px 20px;
       }
     }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
   }
 }
 
