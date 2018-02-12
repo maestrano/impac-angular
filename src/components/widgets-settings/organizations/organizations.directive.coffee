@@ -32,7 +32,8 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
   setting.initialize = ->
     ImpacDashboardsSvc.load().then(
       (config) ->
-        $scope.dashboardOrganizations = config.currentDashboard.data_sources
+        currentDashboard = config.currentDashboard
+        $scope.dashboardOrganizations = _.sortBy(currentDashboard.data_sources, 'label')
 
         return unless w.metadata? && w.metadata.organization_ids?
         widgetOrgIds = w.metadata.organization_ids

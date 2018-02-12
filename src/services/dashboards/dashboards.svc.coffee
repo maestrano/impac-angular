@@ -108,8 +108,9 @@ angular
           ImpacMainSvc.load(force).then(
             (success)->
               orgId = success.currentOrganization.id
+            #Uses the previously sorted organizations to make another request below.
 
-              # Retrieve dashboards with widgets and kpis settings
+              # Retrieve appropriate dashboards with widgets and kpis settings
               dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
                 (response) ->
                   _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
