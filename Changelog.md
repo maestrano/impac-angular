@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-757] Radio mode for "organizations" setting
+- [IMPAC-772] Added logic to include Customer name in query data and display in UI
 
 #### Fixes
 - [IMPAC-751] Fixed Multi-Company Ordering
