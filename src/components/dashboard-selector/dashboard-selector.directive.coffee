@@ -17,8 +17,8 @@ angular
       # ============================================
 
       $scope.organizationsNames = ->
-        _.pluck $scope.currentDhb.data_sources, 'label'
-        .join ", "
+        sortedOrgNames = _.sortBy($scope.currentDhb.data_sources, (org) -> org.label.toLowerCase())
+         _.pluck(sortedOrgNames, 'label').join(", ")
 
       $scope.toggleShowDashboardsDropdown = ->
         return if $scope.showChangeDashboardNameBox
