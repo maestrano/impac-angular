@@ -153,21 +153,20 @@ describe('<> ImpacDashboardsSvc', function () {
         currentDashboard: {}
       };
 
-      spyOn(svc, 'setWidgetsTemplates').and.returnValue(true);
       spyOn(svc, 'initializeActiveTabs').and.returnValue(true);
       spyOn(svc.callbacks.dashboardChanged, 'notify').and.callThrough();
     });
 
     // Helpers ---
-    function sharedBehaviorForSetDependingAttributes() {
-      it('stores the widgets templates list in the service', function() {
-        expect(svc.setWidgetsTemplates).toHaveBeenCalled();
-      });
+    // function sharedBehaviorForSetDependingAttributes() {
+    //   it('stores the widgets templates list in the service', function() {
+    //     expect(svc.setWidgetsTemplates).toHaveBeenCalled();
+    //   });
 
-      it('initializes the tabs status', function() {
-        expect(svc.initializeActiveTabs).toHaveBeenCalled();
-      });
-    };
+    //   it('initializes the tabs status', function() {
+    //     expect(svc.initializeActiveTabs).toHaveBeenCalled();
+    //   });
+    // };
 
     function sharedBehaviorForSetDefaultCurrentDashboard(id) {
       describe('.setDefaultCurrentDashboard', function() {
@@ -180,8 +179,8 @@ describe('<> ImpacDashboardsSvc', function () {
             expect(svc.config.currentDashboard).toEqual({id: 1, name: 'dash1'});
           });
 
-          it('sets the depending attributes', function() {
-            sharedBehaviorForSetDependingAttributes();
+          it('initializes the tabs status', function() {
+            expect(svc.initializeActiveTabs).toHaveBeenCalled();
           });
 
           it('notifies the dashboardChanged callback', function() {
@@ -217,8 +216,8 @@ describe('<> ImpacDashboardsSvc', function () {
         expect(svc.config.currentDashboard).toEqual({id: 2, name: 'dash2'});
       });
 
-      it('sets the depending attributes', function() {
-        sharedBehaviorForSetDependingAttributes();
+      it('initializes the tabs status', function() {
+        expect(svc.initializeActiveTabs).toHaveBeenCalled();
       });
 
       it('notifies the dashboardChanged callback', function() {
@@ -292,7 +291,7 @@ describe('<> ImpacDashboardsSvc', function () {
       svc.setWidgetsTemplates(array);
       expect(svc.config.widgetsTemplates).toEqual([{ endpoint: 'accounts/balance' }]);
     });
-    
+
     describe('when :array is not defined', function() {
       sharedBehaviorForKeepOriginal();
     });
