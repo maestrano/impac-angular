@@ -9,6 +9,7 @@ angular
         chartOnClickCallbacks = _.get(options, 'chartOnClickCallbacks', [])
         click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
 
+        # Get rid of all the _gets and replace with setter methods below.
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -60,10 +61,11 @@ angular
     constructor: (@id, @data = {}, @options = {})->
       @_template = templates[@options.chartType]
       return
-
+    # Remove these arguments from the render method -- this will happen in the constructor.
     render: (data, options)->
       @data = data if _.isObject(data)
       angular.extend(@options, options)
+      # Move this into the constructor -- as we will not be populating this here.
       chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
       #It is faster to create a new stockChart than to update an existing one.
         #when data changes.
