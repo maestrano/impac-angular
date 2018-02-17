@@ -85,7 +85,6 @@ module.component('chartThreshold', {
       promise = if ctrl.isEditingKpi
         ImpacKpisSvc.update(getKpi(), params, false).then(
           (kpi)->
-
             # Remove old threshold from chart
             ctrl.chart.removeThreshold(kpi.id)
             angular.extend(getKpi(), kpi)
@@ -100,7 +99,6 @@ module.component('chartThreshold', {
         )
       promise.then(
         (kpi)->
-
           ctrl.onComplete($event: { kpi: kpi }) if _.isFunction(ctrl.onComplete)
       ).finally(->
         ctrl.cancelCreateKpi()

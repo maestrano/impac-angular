@@ -55,7 +55,6 @@ angular
       series: series
 
     formatters: (currency) ->
-      currency = @settings.currency
       xAxis:
         labels:
           formatter: ->
