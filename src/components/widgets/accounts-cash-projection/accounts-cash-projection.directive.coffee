@@ -33,6 +33,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
 
+  # == Setup Highchart Options ============================================================================
+
+  _highChartOptions = Object.freeze
+    chartType: 'line'
+    chartOnClickCallbacks: []
+    currency: w.metadata.currency
+    showToday: true
+    withZooming:
+      defaults: w.metadata.xAxis
+      callback: onZoom
+
   # == Widget Settings ============================================================================
   $scope.orgDeferred = $q.defer()
   settingsPromises = [$scope.orgDeferred.promise]
@@ -173,6 +184,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       continue if s.userOptions.linkedTo != series.name
       if series.visible then s.hide() else s.show()
 
+  addCustomHighChartOptions = () ->
+    highChartsFactory = new HighchartsFactory($scope.chartId(), w.content.chart.series, _highChartOptions)
+    highChartsFactory.addCustomLegend(legendFormatter)
+    highChartsFactory.addSeriesEvent('click', onClickBar)
+    highChartsFactory.addSeriesEvent('legendItemClick', onClickLegend)
+    highChartsFactory.addXAxisOptions(_highChartOptions.withZooming)
+    highChartsFactory
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -193,37 +212,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
-    # Instantiate and render chart
-    legendOptions =
-      legend:
-        useHTML: true
-        labelFormatter: legendFormatter
-
-    callBackOptions =
-      chartOnClickCallbacks: []
-      plotOptions:
-        series:
-          events:
-            click: onClickBar
-            legendItemClick: onClickLegend
-
-    formattingOptions =
-      chartType: 'line'
-      currency: w.metadata.currency
-      showToday: true
-      showLegend: true
-      withZooming:
-        defaults: w.metadata.xAxis
-        callback: onZoom
-
-    options = angular.merge(legendOptions, callBackOptions, formattingOptions)
-
-    $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-
-    $scope.chart.render(w.content.chart, options)
-
-    $scope.chartDeferred.notify($scope.chart)
+    # Add custom options to the chart before render.
+    $scope.chart = addCustomHighChartOptions()
+    $scope.chart.render()
     # Notifies parent element that the chart is ready to be displayed
+    $scope.chartDeferred.notify($scope.chart)
 
 
   $scope.widgetDeferred.resolve(settingsPromises)

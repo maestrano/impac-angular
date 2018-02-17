@@ -4,10 +4,25 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
   w = $scope.widget
 
   # Define settings
-  # --------------------------------------
+  # -------------------------------------
   $scope.orgDeferred = $q.defer()
 
   settingsPromises = [$scope.orgDeferred.promise]
+
+  # Setup Highcharts Options
+  # -------------------------------------
+  getPeriod = ->
+    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
+
+  _highChartOptions =
+    chartType: 'line'
+    currency: w.metadata.currency
+    period: getPeriod()
+    showToday: true
+    showLegend: false
+    withZooming:
+      defaults: w.metadata.xAxis
+      callback: onZoom
 
   # Widget specific methods
   # --------------------------------------
@@ -46,9 +61,6 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
     return '#000' unless serie
     serie.color
 
-  getPeriod = ->
-    w.metadata? && w.metadata.hist_parameters? && w.metadata.hist_parameters.period || 'MONTHLY'
-
   getSerieByAccount = (series, account)->
     _.find(series, (serie)-> (serie.id || serie.options && serie.options.id) == account.id)
 
@@ -59,6 +71,12 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
       palette = ImpacTheming.color.generateShadesPalette(chartColors[bias], series.length)
       for serie, i in series
         serie.color = palette[i]
+
+  addCustomHighChartOptions = () ->
+    highChartsFactory = new HighchartsFactory($scope.chartId(), w.content.chart.series, _highChartOptions)
+    highChartsFactory.addXAxisOptions(_highChartOptions.withZooming)
+    highChartsFactory.removeLegend()
+    highChartsFactory
 
   $scope.chartId = ->
     "cashBalanceChart-#{w.id}"
@@ -79,19 +97,9 @@ module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filte
 
   # Called after initContext - draws the chart using HighCharts
   w.format = ->
-    options =
-      chartType: 'line'
-      currency: w.metadata.currency
-      period: getPeriod()
-      showToday: true
-      showLegend: false
-      withZooming:
-        defaults: w.metadata.xAxis
-        callback: onZoom
-
     $timeout ->
-      $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-      $scope.chart.render(w.content.chart, options)
+      $scope.chart = addCustomHighChartOptions()
+      $scope.chart.render()
 
   # Widget is ready: can trigger the "wait for settings to be ready"
   # --------------------------------------

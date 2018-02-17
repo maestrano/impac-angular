@@ -130,7 +130,7 @@ module.component('chartThreshold', {
     onChartNotify = (chart)->
       ctrl.chart = chart
       return unless validateHistParameters()
-      ctrl.chart.options.chartOnClickCallbacks.push(onChartClick)
+      ctrl.chart.settings.chartOnClickCallbacks.push(onChartClick)
       _.each buildThresholdsFromKpis(), (threshold)->
         thresholdSerie = ctrl.chart.findThreshold(threshold.kpiId)
         thresholdSerie = ctrl.chart.addThreshold(threshold) unless thresholdSerie?
