@@ -158,16 +158,6 @@ describe('<> ImpacDashboardsSvc', function () {
     });
 
     // Helpers ---
-    // function sharedBehaviorForSetDependingAttributes() {
-    //   it('stores the widgets templates list in the service', function() {
-    //     expect(svc.setWidgetsTemplates).toHaveBeenCalled();
-    //   });
-
-    //   it('initializes the tabs status', function() {
-    //     expect(svc.initializeActiveTabs).toHaveBeenCalled();
-    //   });
-    // };
-
     function sharedBehaviorForSetDefaultCurrentDashboard(id) {
       describe('.setDefaultCurrentDashboard', function() {
         describe('when at least one dashboard is defined in the list', function() {
