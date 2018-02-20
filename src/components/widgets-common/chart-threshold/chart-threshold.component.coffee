@@ -79,7 +79,7 @@ module.component('chartThreshold', {
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
 
-      if !ImpacKpisSvc.validateKpiTargets(params.targets)
+      unless ImpacKpisSvc.validateKpiTargets(params.targets)
         return handleInvalidAlertAmount()
 
       promise = if ctrl.isEditingKpi

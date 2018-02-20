@@ -33,26 +33,19 @@ angular
 
   class Chart
     constructor: (@id, @series = {}, @settings = {})->
-      @_template = templates[@settings.chartType]
-      @populateChartOptions(@series, @settings)
-      return
-
-    populateChartOptions: (series, settings) ->
-      # Every chart will have these options. The rest of the options are created in the setter methods.
-      template = @_template
-      formatters = @formatters(settings.currency)
-      todayMarker = @todayMarker(settings)
-      series = @populateSeries(series)
+      # Setup the basic options for highcharts.
+      template = templates[@settings.chartType]
+      formatters = @formatters(@settings.currency)
+      todayMarker = @todayMarker(@settings)
+      series = { series: @series }
       @options = angular.merge({}, series, template, formatters, todayMarker)
+      return
 
     render: () ->
       # Options are already populated in the constructor, and through the options setter methods.
       # It is faster to create a new stockChart than to update an existing one when data changes.
       @hc = Highcharts.stockChart(@id, @options)
       return @
-
-    populateSeries: (series) ->
-      series: series
 
     formatters: (currency) ->
       xAxis:
@@ -74,11 +67,11 @@ angular
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
-    todayMarker: (settings) ->
-      return {} unless settings.showToday
+    todayMarker: (showToday, markerColor = 'rgba(0, 85, 255, 0.2)') ->
+      return {} unless showToday
       xAxis:
         plotLines: [{
-          color: _.get(settings, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
+          color: markerColor
           value: todayUTC.unix() * 1000
           width: 1
           label:
@@ -124,13 +117,13 @@ angular
           labelFormatter: labelFormatter
           useHTML: useHTML
           enabled: showLegend
-      @options = angular.merge(@options, legend)
+      angular.merge(@options, legend)
 
     removeLegend: () ->
       legend =
         legend:
           enabled: false
-      @options = angular.merge(@options, legend)
+      angular.merge(@options, legend)
 
     addSeriesEvent: (eventName, callback) ->
       eventHash = {}
@@ -139,7 +132,7 @@ angular
         plotOptions:
           series:
             events: eventHash
-      @options = angular.merge(@options, plotOptions)
+      angular.merge(@options, plotOptions)
 
     addOnClickCallbacks: (chartOnClickCallbacks = []) ->
       click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
@@ -147,7 +140,7 @@ angular
         chart:
           events:
             click: click
-      @options = angular.merge(@options, onClickCallBacks)
+      angular.merge(@options, onClickCallBacks)
 
     addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?
@@ -161,5 +154,5 @@ angular
         rangeSelector:
           selected: (if _.get(xAxisOptions, 'min') then null else 0)
 
-      @options = angular.merge(@options, xAxis)
+      angular.merge(@options, xAxis)
 )
