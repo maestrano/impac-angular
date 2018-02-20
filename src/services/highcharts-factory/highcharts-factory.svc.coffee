@@ -4,30 +4,30 @@ angular
 
   templates =
     line: Object.freeze
-        chart:
-          type: 'line'
-          zoomType: 'x'
-          spacingTop: 20
-        legend:
-          enabled: true
-          layout: 'vertical'
-          align: 'left'
-          verticalAlign: 'middle'
+      chart:
+        type: 'line'
+        zoomType: 'x'
+        spacingTop: 20
+      legend:
+        enabled: true
+        layout: 'vertical'
+        align: 'left'
+        verticalAlign: 'middle'
+      title: null
+      credits:
+        enabled: false
+      yAxis:
         title: null
-        credits:
-          enabled: false
-        yAxis:
-          title: null
-          startOnTick: true
-          minPadding: 0
-          buttons: [
-            { type: 'month', count: 4, text: 'def.' },
-            { type: 'month', count: 1, text: '1m' },
-            { type: 'month', count: 3, text: '3m' },
-            { type: 'month', count: 6, text: '6m' },
-            { type: 'year', count: 1, text: '1y' },
-            { type: 'all', text: 'All' }
-          ]
+        startOnTick: true
+        minPadding: 0
+        buttons: [
+          { type: 'month', count: 4, text: 'def.' },
+          { type: 'month', count: 1, text: '1m' },
+          { type: 'month', count: 3, text: '3m' },
+          { type: 'month', count: 6, text: '6m' },
+          { type: 'year', count: 1, text: '1y' },
+          { type: 'all', text: 'All' }
+        ]
 
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
 
@@ -36,15 +36,15 @@ angular
       # Setup the basic options for highcharts.
       template = templates[@settings.chartType]
       formatters = @formatters(@settings.currency)
-      todayMarker = @todayMarker(@settings)
+      todayMarker = @todayMarker(@settings.showToday, @settings.markerColor)
       series = { series: @series }
-      @options = angular.merge({}, series, template, formatters, todayMarker)
+      @highChartOptions = angular.merge({}, series, template, formatters, todayMarker)
       return
 
     render: () ->
       # Options are already populated in the constructor, and through the options setter methods.
       # It is faster to create a new stockChart than to update an existing one when data changes.
-      @hc = Highcharts.stockChart(@id, @options)
+      @hc = Highcharts.stockChart(@id, @highChartOptions)
       return @
 
     formatters: (currency) ->
@@ -117,13 +117,13 @@ angular
           labelFormatter: labelFormatter
           useHTML: useHTML
           enabled: showLegend
-      angular.merge(@options, legend)
+      angular.merge(@highChartOptions, legend)
 
     removeLegend: () ->
       legend =
         legend:
           enabled: false
-      angular.merge(@options, legend)
+      angular.merge(@highChartOptions, legend)
 
     addSeriesEvent: (eventName, callback) ->
       eventHash = {}
@@ -132,7 +132,7 @@ angular
         plotOptions:
           series:
             events: eventHash
-      angular.merge(@options, plotOptions)
+      angular.merge(@highChartOptions, plotOptions)
 
     addOnClickCallbacks: (chartOnClickCallbacks = []) ->
       click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
@@ -140,7 +140,7 @@ angular
         chart:
           events:
             click: click
-      angular.merge(@options, onClickCallBacks)
+      angular.merge(@highChartOptions, onClickCallBacks)
 
     addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?
@@ -154,5 +154,5 @@ angular
         rangeSelector:
           selected: (if _.get(xAxisOptions, 'min') then null else 0)
 
-      angular.merge(@options, xAxis)
+      angular.merge(@highChartOptions, xAxis)
 )
