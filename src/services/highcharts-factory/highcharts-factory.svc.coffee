@@ -38,13 +38,13 @@ angular
       formatters = @formatters(@settings.currency)
       todayMarker = @todayMarker(@settings)
       series = { series: @series }
-      @options = angular.merge({}, series, template, formatters, todayMarker)
+      @highChartOptions = angular.merge({}, series, template, formatters, todayMarker)
       return
 
     render: () ->
       # Options are already populated in the constructor, and through the options setter methods.
       # It is faster to create a new stockChart than to update an existing one when data changes.
-      @hc = Highcharts.stockChart(@id, @options)
+      @hc = Highcharts.stockChart(@id, @highChartOptions)
       return @
 
     formatters: (currency) ->
@@ -117,13 +117,13 @@ angular
           labelFormatter: labelFormatter
           useHTML: useHTML
           enabled: showLegend
-      angular.merge(@options, legend)
+      angular.merge(@highChartOptions, legend)
 
     removeLegend: () ->
       legend =
         legend:
           enabled: false
-      angular.merge(@options, legend)
+      angular.merge(@highChartOptions, legend)
 
     addSeriesEvent: (eventName, callback) ->
       eventHash = {}
@@ -132,7 +132,7 @@ angular
         plotOptions:
           series:
             events: eventHash
-      angular.merge(@options, plotOptions)
+      angular.merge(@highChartOptions, plotOptions)
 
     addOnClickCallbacks: (chartOnClickCallbacks = []) ->
       click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
@@ -140,7 +140,7 @@ angular
         chart:
           events:
             click: click
-      angular.merge(@options, onClickCallBacks)
+      angular.merge(@highChartOptions, onClickCallBacks)
 
     addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?
@@ -154,5 +154,5 @@ angular
         rangeSelector:
           selected: (if _.get(xAxisOptions, 'min') then null else 0)
 
-      angular.merge(@options, xAxis)
+      angular.merge(@highChartOptions, xAxis)
 )
