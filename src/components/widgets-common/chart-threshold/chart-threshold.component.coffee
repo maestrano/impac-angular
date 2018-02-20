@@ -69,7 +69,7 @@ module.component('chartThreshold', {
 
     handleInvalidAlertAmount = ->
       toastr.error("Please choose a number one or greater.", 'Error')
-      ctrl.cancelCreateKpi()
+      ctrl.loading = false
 
     ctrl.saveKpi = ->
       return if ctrl.loading
