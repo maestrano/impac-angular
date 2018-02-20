@@ -1,15 +1,27 @@
 module = angular.module('impac.components.widgets-settings.organizations',[])
-module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc) ->
+module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc) ->
 
   w = $scope.parentWidget
   w.selectedOrganizations = {}
+
+  $scope.mode ||= 'multiple'
+
+  $scope.multiOrgMode = -> $scope.mode == 'multiple'
+
+  $scope.singleOrgMode = -> $scope.mode == 'single'
+
+  resetSelectedOrgs = -> w.selectedOrganizations = _.mapValues(w.selectedOrganizations, -> false)
 
   $scope.isOrganizationSelected = (orgUid) ->
     !!w.selectedOrganizations[orgUid]
 
   $scope.toggleSelectOrganization = (orgUid) ->
-    w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
-    $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
+    if $scope.multiOrgMode()
+      w.selectedOrganizations[orgUid] = !w.selectedOrganizations[orgUid]
+      $scope.onSelect({orgs: w.selectedOrganizations}) if angular.isDefined( $scope.onSelect )
+    else if $scope.singleOrgMode()
+      resetSelectedOrgs()
+      w.selectedOrganizations[orgUid] = true
 
   # What will be passed to parentWidget
   setting = {}
@@ -20,11 +32,21 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc)
   setting.initialize = ->
     ImpacDashboardsSvc.load().then(
       (config) ->
-        $scope.dashboardOrganizations = config.currentDashboard.data_sources
-        if w.metadata? && w.metadata.organization_ids?
+        currentDashboard = config.currentDashboard
+        $scope.dashboardOrganizations = _.sortBy(currentDashboard.data_sources, (org) -> org.label.toLowerCase())
+        return unless w.metadata? && w.metadata.organization_ids?
+        widgetOrgIds = w.metadata.organization_ids
+        if $scope.singleOrgMode()
+          resetSelectedOrgs()
+          if widgetOrgIds.length > 1
+            currentOrganization = ImpacMainSvc.config.currentOrganization
+            w.selectedOrganizations[currentOrganization.uid] = true
+          else
+            w.selectedOrganizations[widgetOrgIds[0]] = true
+        else if $scope.multiOrgMode()
           for org in $scope.dashboardOrganizations
-            w.selectedOrganizations[org.uid] = _.contains(w.metadata.organization_ids, org.uid)
-          setting.isInitialized = true
+            w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
+        setting.isInitialized = true
     )
 
   setting.toMetadata = ->
@@ -46,6 +68,7 @@ module.directive('settingOrganizations', ($templateCache) ->
     restrict: 'A',
     scope: {
       parentWidget: '='
+      mode: '@?'
       deferred: '='
       onSelect: '&?'
     },

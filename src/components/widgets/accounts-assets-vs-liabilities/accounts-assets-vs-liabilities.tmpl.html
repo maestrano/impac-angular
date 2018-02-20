@@ -20,7 +20,7 @@
           <i class="fa fa-circle" ng-style="{ 'color': liabilitiesColor }"><span translate="impac.widget.acc_ass_vs_liab.liability.many"></span></i>
         </div>
         <div class="row">
-          <div ng-repeat="data in companiesList" ng-class="{'col-md-6': (widget.content.companies.length > 1), 'col-md-12': (widget.content.companies.length == 1)}">
+          <div ng-repeat="data in companiesList | orderBy:'company'" ng-class="{'col-md-6': (widget.content.companies.length > 1), 'col-md-12': (widget.content.companies.length == 1)}">
             <span>{{ data.company }}</span><br />
             <span ng-style="{ 'color': assetsColor }"> {{ data.assets | mnoCurrency : data.currency }}</span> <br/>
             <span ng-style="{ 'color': liabilitiesColor }"> {{ data.liabilities | mnoCurrency : data.currency }}</span>

@@ -8,7 +8,7 @@ module.directive('commonDataNotFound', ($templateCache, $location, ImpacTheming)
       scope.content = settings.content
       scope.designerMode = ImpacTheming.get().dhbConfig.designerMode.enabled
       scope.messageVisible = true
-      
+
       scope.hide = ->
         scope.messageVisible = false
 

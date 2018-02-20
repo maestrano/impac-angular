@@ -67,6 +67,10 @@ module.component('chartThreshold', {
       , 100)
       return
 
+    handleInvalidAlertAmount = ->
+      toastr.error("Please choose a number one or greater.", 'Error')
+      ctrl.loading = false
+
     ctrl.saveKpi = ->
       return if ctrl.loading
       ctrl.loading = true
@@ -74,7 +78,10 @@ module.component('chartThreshold', {
       params.targets[ctrl.kpi.watchables[0]] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
-      return unless ImpacKpisSvc.validateKpiTargets(params.targets)
+
+      unless ImpacKpisSvc.validateKpiTargets(params.targets)
+        return handleInvalidAlertAmount()
+
       promise = if ctrl.isEditingKpi
         ImpacKpisSvc.update(getKpi(), params, false).then(
           (kpi)->
@@ -121,7 +128,7 @@ module.component('chartThreshold', {
     onChartNotify = (chart)->
       ctrl.chart = chart
       return unless validateHistParameters()
-      ctrl.chart.options.chartOnClickCallbacks.push(onChartClick)
+      ctrl.chart.settings.chartOnClickCallbacks.push(onChartClick)
       _.each buildThresholdsFromKpis(), (threshold)->
         thresholdSerie = ctrl.chart.findThreshold(threshold.kpiId)
         thresholdSerie = ctrl.chart.addThreshold(threshold) unless thresholdSerie?
