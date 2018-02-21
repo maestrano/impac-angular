@@ -37,8 +37,11 @@ angular
       template = templates[@settings.chartType]
       formatters = @formatters(@settings.currency)
       todayMarker = @todayMarker(@settings.showToday, @settings.markerColor)
+      # We need onClickCallbacks pointing to settings.onClickCallbacks, so that
+        # we can push functions into it after this code is run.
+      onClickCallbacks = @onClickCallbacks(@settings.chartOnClickCallbacks)
       series = { series: @series }
-      @highChartOptions = angular.merge({}, series, template, formatters, todayMarker)
+      @highChartOptions = angular.merge({}, series, template, formatters, todayMarker, onClickCallbacks)
       return
 
     render: () ->
@@ -134,13 +137,11 @@ angular
             events: eventHash
       angular.merge(@highChartOptions, plotOptions)
 
-    addOnClickCallbacks: (chartOnClickCallbacks = []) ->
+    onClickCallbacks: (chartOnClickCallbacks) ->
       click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
-      onClickCallBacks =
-        chart:
-          events:
-            click: click
-      angular.merge(@highChartOptions, onClickCallBacks)
+      chart:
+        events:
+          click: click
 
     addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?
