@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-settings.organizations',[])
-module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc) ->
+module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc, ImpacWidgetsSvc) ->
 
   w = $scope.parentWidget
   w.selectedOrganizations = {}
@@ -41,12 +41,14 @@ module.controller('SettingOrganizationsCtrl', ($scope, $log, ImpacDashboardsSvc,
           if widgetOrgIds.length > 1
             currentOrganization = ImpacMainSvc.config.currentOrganization
             w.selectedOrganizations[currentOrganization.uid] = true
+            forceReload = true
           else
             w.selectedOrganizations[widgetOrgIds[0]] = true
         else if $scope.multiOrgMode()
           for org in $scope.dashboardOrganizations
             w.selectedOrganizations[org.uid] = _.contains(widgetOrgIds, org.uid)
         setting.isInitialized = true
+        ImpacWidgetsSvc.updateWidgetSettings(w, true) if forceReload
     )
 
   setting.toMetadata = ->
