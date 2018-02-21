@@ -4,69 +4,50 @@ angular
 
   templates =
     line: Object.freeze
-      get: (series = [], options = {})->
-        zoomingOptions = _.get(options, 'withZooming')
-        xAxisOptions = if zoomingOptions?
-          {
-            events:
-              setExtremes: zoomingOptions.callback
-            max: _.get(zoomingOptions.defaults, 'max')
-            min: _.get(zoomingOptions.defaults, 'min')
-          }
-
-        chart:
-          type: 'line'
-          zoomType: 'x'
-          spacingTop: 20
-          events:
-            click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
+      chart:
+        type: 'line'
+        zoomType: 'x'
+        spacingTop: 20
+      legend:
+        enabled: true
+        layout: 'vertical'
+        align: 'left'
+        verticalAlign: 'middle'
+      title: null
+      credits:
+        enabled: false
+      yAxis:
         title: null
-        credits:
-          enabled: false
-        legend:
-          enabled: _.get(options, 'showLegend', true)
-          layout: 'vertical'
-          align: 'left'
-          verticalAlign: 'middle'
-        xAxis: xAxisOptions
-        yAxis:
-          title: null
-          startOnTick: true
-          minPadding: 0
-        series: series
-        rangeSelector:
-          buttons: [
-            { type: 'month', count: 4, text: 'def.' },
-            { type: 'month', count: 1, text: '1m' },
-            { type: 'month', count: 3, text: '3m' },
-            { type: 'month', count: 6, text: '6m' },
-            { type: 'year', count: 1, text: '1y' },
-            { type: 'all', text: 'All' }
-          ]
-          selected: (if _.get(xAxisOptions, 'min') then null else 0)
+        startOnTick: true
+        minPadding: 0
+        buttons: [
+          { type: 'month', count: 4, text: 'def.' },
+          { type: 'month', count: 1, text: '1m' },
+          { type: 'month', count: 3, text: '3m' },
+          { type: 'month', count: 6, text: '6m' },
+          { type: 'year', count: 1, text: '1y' },
+          { type: 'all', text: 'All' }
+        ]
 
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
 
   class Chart
-    constructor: (@id, @data = {}, @options = {})->
-      @_template = templates[@options.chartType]
+    constructor: (@id, @series = {}, @settings = {})->
+      # Setup the basic options for highcharts.
+      template = templates[@settings.chartType]
+      formatters = @formatters(@settings.currency)
+      todayMarker = @todayMarker(@settings.showToday, @settings.markerColor)
+      series = { series: @series }
+      @highChartOptions = angular.merge({}, series, template, formatters, todayMarker)
       return
 
-    render: (data, options)->
-      @data = data if _.isObject(data)
-      angular.extend(@options, options)
-      chartConfig = angular.merge({}, @template(), @formatters(), @todayMarker())
-      if _.isEmpty(@hc)
-        @hc = Highcharts.stockChart(@id, chartConfig)
-      else
-        @hc.update(chartConfig)
+    render: () ->
+      # Options are already populated in the constructor, and through the options setter methods.
+      # It is faster to create a new stockChart than to update an existing one when data changes.
+      @hc = Highcharts.stockChart(@id, @highChartOptions)
       return @
 
-    template: ->
-      @_template.get(@data.series, @options)
-
-    formatters: ->
-      currency = @options.currency
+    formatters: (currency) ->
       xAxis:
         labels:
           formatter: ->
@@ -86,11 +67,11 @@ angular
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
           "<strong>#{date}</strong><br>#{name}: #{amount}"
 
-    todayMarker: ->
-      return {} unless @options.showToday
+    todayMarker: (showToday, markerColor = 'rgba(0, 85, 255, 0.2)') ->
+      return {} unless showToday
       xAxis:
         plotLines: [{
-          color: _.get(@options, 'todayMarkerColor', 'rgba(0, 85, 255, 0.2)')
+          color: markerColor
           value: todayUTC.unix() * 1000
           width: 1
           label:
@@ -104,7 +85,7 @@ angular
     addThreshold: (thresholdOptions)->
       return if _.isEmpty(@hc)
       # Initialize data matrix
-      data = angular.copy @data.series[0].data
+      data = angular.copy @series[0].data
       for vector in data
         # When in the past, set y-axis value at null
         if !thresholdOptions.fullLengthThresholds && moment(vector[0]) < todayUTC
@@ -130,22 +111,48 @@ angular
       return unless thresholdSerie? && eventName? && _.isFunction(callback)
       Highcharts.addEvent(thresholdSerie, eventName, (_event)-> callback(thresholdSerie))
 
-    # Extend default chart formatters to add custom legend img icon
-    addCustomLegend: (formatterCallback, useHTML = true) ->
-      @hc.legend.update({
-        useHTML: useHTML
-        labelFormatter: formatterCallback
-      })
+    addCustomLegend: (labelFormatter, useHTML = true, showLegend = true) ->
+      legend =
+        legend:
+          labelFormatter: labelFormatter
+          useHTML: useHTML
+          enabled: showLegend
+      angular.merge(@highChartOptions, legend)
 
-    # Adds events to series objects
+    removeLegend: () ->
+      legend =
+        legend:
+          enabled: false
+      angular.merge(@highChartOptions, legend)
+
     addSeriesEvent: (eventName, callback) ->
-      return if _.isEmpty(@hc)
       eventHash = {}
       eventHash[eventName] = callback
-      @hc.update({
+      plotOptions =
         plotOptions:
           series:
             events: eventHash
-      })
-      @hc
+      angular.merge(@highChartOptions, plotOptions)
+
+    addOnClickCallbacks: (chartOnClickCallbacks = []) ->
+      click = (event) -> _.each(chartOnClickCallbacks, (cb) -> cb(event))
+      onClickCallBacks =
+        chart:
+          events:
+            click: click
+      angular.merge(@highChartOptions, onClickCallBacks)
+
+    addXAxisOptions: (zoomingOptions) ->
+      xAxisOptions = if zoomingOptions?
+        events:
+          setExtremes: zoomingOptions.callback
+        max: _.get(zoomingOptions.defaults, 'max')
+        min: _.get(zoomingOptions.defaults, 'min')
+
+      xAxis =
+        xAxis: xAxisOptions
+        rangeSelector:
+          selected: (if _.get(xAxisOptions, 'min') then null else 0)
+
+      angular.merge(@highChartOptions, xAxis)
 )
