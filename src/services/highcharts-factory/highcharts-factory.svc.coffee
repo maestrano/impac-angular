@@ -38,7 +38,8 @@ angular
       formatters = @formatters(@settings.currency)
       todayMarker = @todayMarker(@settings.showToday, @settings.markerColor)
       # We need onClickCallbacks pointing to settings.onClickCallbacks, so that
-        # we can push functions into it after this code is run.
+        # we can add callbacks to the settings later on.
+      @settings.chartOnClickCallbacks = []
       onClickCallbacks = @onClickCallbacks(@settings.chartOnClickCallbacks)
       series = { series: @series }
       @highChartOptions = angular.merge({}, series, template, formatters, todayMarker, onClickCallbacks)
@@ -142,6 +143,9 @@ angular
       chart:
         events:
           click: click
+
+    addOnClickCallback: (event) ->
+      @settings.chartOnClickCallbacks.push(event)
 
     addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?

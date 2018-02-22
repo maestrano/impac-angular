@@ -195,7 +195,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   w.format = ->
     _highChartOptions =
       chartType: 'line'
-      chartOnClickCallbacks: []
       currency: w.metadata.currency
       showToday: true
 
