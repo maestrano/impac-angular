@@ -1,0 +1,41 @@
+#duplicate-transactions-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-striped {
+    tbody {
+      &:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+    .fa.fa-times {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(#8eab71, 20%);
+      }
+      &.bills {
+        background-color: lighten(#c76379, 20%);
+      }
+    }
+  }
+}

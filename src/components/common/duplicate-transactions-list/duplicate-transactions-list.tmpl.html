@@ -1,0 +1,55 @@
+<div id="duplicate-transactions-list">
+  <div class="row top">
+    <div class="col-xs-6 pull-left">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">
+        <i class="fa fa-chevron-left" />
+        Back to chart
+      </label>
+    </div>
+    <div class="col-xs-6">
+      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})" />
+    </div>
+  </div>
+  <div class="table-container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Transaction date</th>
+          <th>Due date</th>
+          <th>Expected payment date</th>
+          <th class="text-right">Amount</th>
+          <th class="text-right">Duplicated?</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="dupTrx in $ctrl.transactions track by $index">
+        <tr >
+          <td rowspan="2" >{{ $index + 1 }}</td>
+          <td>{{ dupTrx.origin.transaction_number }}</td>
+          <td>{{ dupTrx.origin.title }}</td>
+          <td>{{ dupTrx.origin.status }}</td>
+          <td>{{ dupTrx.origin.trxDateUTC }}</td>
+          <td>{{ dupTrx.origin.dueDateUTC }}</td>
+          <td>{{ dupTrx.origin.expectedPaymentDateUTC }}</td>
+          <td class="text-right">{{ dupTrx.origin.amount | mnoCurrency : dupTrx.origin.currency }}</td>
+          <td rowspan="2" class="text-right">
+            <button >Yes</button>
+            <button >No</button>
+          </td>
+        </tr>
+        <tr>
+          <td>{{ dupTrx.forecast.transaction_number }}</td>
+          <td>{{ dupTrx.forecast.title }}</td>
+          <td>{{ dupTrx.forecast.status }}</td>
+          <td>{{ dupTrx.forecast.trxDateUTC }}</td>
+          <td>{{ dupTrx.forecast.dueDateUTC }}</td>
+          <td>{{ dupTrx.forecast.expectedPaymentDateUTC }}</td>
+          <td class="text-right">{{ dupTrx.forecast.amount | mnoCurrency : dupTrx.forecast.currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

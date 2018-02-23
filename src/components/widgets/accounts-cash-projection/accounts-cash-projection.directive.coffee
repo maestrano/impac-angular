@@ -107,7 +107,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     display: false
     show: -> this.display = true
     hide: -> this.display = false
-  
+
   $scope.addForecastPopup.createTransaction = (trx) ->
     BoltResources.create(
       w.metadata.bolt_path,
@@ -125,6 +125,67 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
     ).then(-> ImpacWidgetsSvc.show(w))
 
+  # == Sub-Components - Duplicate Transactions list =========================================================
+  $scope.dupTrxList = { display: false, updated: false, transactions: [] }
+
+  $scope.dupTrxList.show = ->
+    $scope.dupTrxList.display = true
+
+  $scope.dupTrxList.hide = ->
+    $scope.dupTrxList.display = false
+    if $scope.dupTrxList.updated
+      ImpacWidgetsSvc.show(w).then(-> $scope.dupTrxList.updated = false)
+
+  # Fetches the transactions from the Bolt JSON API endpoint
+  $scope.dupTrxList.fetch = (currentPage = 1) ->
+    params = angular.merge(
+      $scope.dupTrxList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids')
+        page: { number: currentPage }
+      }
+    )
+    BoltResources.index(w.metadata.bolt_path, $scope.dupTrxList.resources, params).then(
+      (response) ->
+        # Clear transactions list and replace by newly fetched ones
+        _.remove($scope.dupTrxList.transactions, -> true)
+        for trx in response.data.data
+          $scope.dupTrxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
+        $scope.dupTrxList.totalRecords = response.data.meta.record_count
+    ).finally(-> $scope.dupTrxList.show())
+
+  # Init dupTrxList object with static values
+  $scope.dupTrxList.updateParams = (resources, filter) ->
+    $scope.dupTrxList.resources = resources
+    $scope.dupTrxList.params = { filter: filter }
+
+  # Fetch and show all invoices or bills
+  $scope.dupTrxList.showAll = (resources = 'duplicate_transactions') ->
+    filter = { }
+    $scope.dupTrxList.updateParams(resources, filter)
+    $scope.dupTrxList.fetch()
+
+  # JS date is in local time zone => format it to send a UTC date at 00:00:00
+  $scope.dupTrxList.updateExpectedDate = (trxId, date) ->
+    BoltResources.update(
+      w.metadata.bolt_path,
+      $scope.dupTrxList.resources,
+      trxId,
+      { expected_payment_date: moment(date).format('YYYY-MM-DD') }
+    ).then(-> $scope.dupTrxList.updated = true)
+
+  $scope.dupTrxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.dupTrxList.resources
+    $scope.dupTrxList.resources = resourcesType
+    $scope.dupTrxList.fetch()
+
+  $scope.dupTrxList.deleteTransaction = (resourcesType, trxId) ->
+    _.remove($scope.dupTrxList.transactions, (trx) -> trx.id == trxId)
+    BoltResources.destroy(
+      w.metadata.bolt_path,
+      resourcesType,
+      trxId
+    ).then(-> $scope.dupTrxList.updated = true)
+
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
@@ -141,6 +202,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
+
+    #TODO: replace it's for duplicate transaction list component
+    $scope.dupTrxList.updateParams(resources, filter)
+    $scope.dupTrxList.fetch()
 
   # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->
