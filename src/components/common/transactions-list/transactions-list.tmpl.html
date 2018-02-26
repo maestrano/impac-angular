@@ -51,6 +51,7 @@
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
         <td colspan="6">TOTAL</td>
+        <!-- If Date Picker is open the colspan width will be 7.  If 'list-only' the width will be 6 -->
         <td ng-hide="$ctrl.listOnly" colspan="1"></td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
