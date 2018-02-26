@@ -54,8 +54,11 @@ module.controller('WidgetSalesAverageVisitCtrl', ($scope, $q, $filter, ImpacWidg
           labels:
             formatter: ->
               $filter('mnoCurrency')(this.value, currency, false)
+        leftYAxis = w.content.chart.yAxis[0]
+        rightYAxis = angular.merge(w.content.chart.yAxis[1], yAxisLabels)
+
         xAxis: angular.merge([w.content.chart.xAxis[0]], [xAxisLabels])
-        yAxis: angular.merge([w.content.chart.yAxis[0]], [yAxisLabels])
+        yAxis: [leftYAxis, rightYAxis]
         rangeSelector:
           selected: 5
 
