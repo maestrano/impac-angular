@@ -16,7 +16,7 @@ angular
 
         chart:
           type: 'line'
-          zoomType: 'x'
+          zoomType: _.get(options, 'zoomType', 'x')
           spacingTop: 20
           spacingRight: 60
           events:
@@ -32,8 +32,13 @@ angular
         xAxis: xAxis
         yAxis: yAxis
         series: series
+        # navigator:
+        #   enabled: _.get(options, 'navigatorEnabled', true)
+        # scrollbar:
+        #   enabled:  _.get(options, 'scrollbarEnabled', true)
         plotOptions: plotOptions
         rangeSelector:
+          # enabled: _.get(options, 'rangeSelectorEnabled', true)
           buttons: [
             { type: 'month', count: 4, text: 'def.' },
             { type: 'month', count: 1, text: '1m' },
