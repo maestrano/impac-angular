@@ -26,6 +26,8 @@ angular
           enabled: false
         legend:
           enabled: _.get(options, 'showLegend', true)
+          itemMarginTop: _.get(options,'itemMarginTop', 5)
+          itemMarginBottom: _.get(options,'itemMarginBottom', 5)
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
