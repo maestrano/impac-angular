@@ -1,5 +1,5 @@
-module = angular.module('impac.components.widgets.invoices-list', [])
-module.controller('WidgetInvoicesListCtrl', ($scope, $q, ImpacRoutes, BoltResources) ->
+module = angular.module('impac.components.widgets.accounts-invoices-list', [])
+module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, BoltResources) ->
 
   # == Context and Helpers ========================================================================
   w = $scope.widget
@@ -58,9 +58,9 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, ImpacRoutes, BoltResour
   # --------------------------------------
   $scope.widgetDeferred.resolve(settingsPromises)
 )
-module.directive('widgetInvoicesList', ->
+module.directive('widgetAccountsInvoicesList', ->
   return {
     restrict: 'A',
-    controller: 'WidgetInvoicesListCtrl'
+    controller: 'WidgetAccountsInvoicesListCtrl'
   }
 )
