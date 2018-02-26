@@ -50,7 +50,8 @@
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
-        <td colspan="7">TOTAL</td>
+        <td colspan="6">TOTAL</td>
+        <td ng-hide="$ctrl.listOnly" colspan="1"></td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
         <td />
