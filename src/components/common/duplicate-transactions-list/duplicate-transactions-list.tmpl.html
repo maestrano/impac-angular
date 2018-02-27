@@ -27,7 +27,7 @@
       </thead>
       <tbody ng-repeat="dupTrx in $ctrl.transactions track by $index">
         <tr >
-          <td rowspan="2" >{{ $index + 1 }}</td>
+          <td rowspan="2" class="origin" >{{ $index + 1 }}</td>
           <td>{{ dupTrx.origin.transaction_number }}</td>
           <td>{{ dupTrx.origin.title }}</td>
           <td>{{ dupTrx.origin.status }}</td>
@@ -36,8 +36,8 @@
           <td>{{ dupTrx.origin.expectedPaymentDateUTC }}</td>
           <td class="text-right">{{ dupTrx.origin.amount | mnoCurrency : dupTrx.origin.currency }}</td>
           <td rowspan="2" class="text-right">
-            <button >Yes</button>
-            <button >No</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'confirm'})">Yes</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'not_confirm'})">No</button>
           </td>
         </tr>
         <tr>

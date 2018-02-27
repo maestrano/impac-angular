@@ -81,11 +81,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       { expected_payment_date: moment(date).format('YYYY-MM-DD') }
     ).then(-> $scope.trxList.updated = true)
 
-  $scope.trxList.changeResourcesType = (resourcesType) ->
-    return if resourcesType == $scope.trxList.resources
-    $scope.trxList.resources = resourcesType
-    $scope.trxList.fetch()
-
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
     _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
     BoltResources.destroy(
@@ -120,9 +115,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
+        reconciliation_status: 'reconciliated',
         currency: w.metadata.currency
       },
-      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+      {
+        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
+        contact: { data: { type: 'contacts', id: $scope.firstContactId } }
+      }
     ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Sub-Components - Duplicate Transactions list =========================================================
@@ -164,27 +163,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.dupTrxList.updateParams(resources, filter)
     $scope.dupTrxList.fetch()
 
-  # JS date is in local time zone => format it to send a UTC date at 00:00:00
-  $scope.dupTrxList.updateExpectedDate = (trxId, date) ->
+  # Execute action on duplicate transaction
+  $scope.dupTrxList.updateDuplicateTransaction = (dupTrxId, action) ->
+    _.remove($scope.dupTrxList.transactions, (dupTrx) -> dupTrx.id == dupTrxId)
     BoltResources.update(
       w.metadata.bolt_path,
       $scope.dupTrxList.resources,
-      trxId,
-      { expected_payment_date: moment(date).format('YYYY-MM-DD') }
+      dupTrxId,
+      {action: action}
     ).then(-> $scope.dupTrxList.updated = true)
 
-  $scope.dupTrxList.changeResourcesType = (resourcesType) ->
-    return if resourcesType == $scope.dupTrxList.resources
-    $scope.dupTrxList.resources = resourcesType
-    $scope.dupTrxList.fetch()
-
-  $scope.dupTrxList.deleteTransaction = (resourcesType, trxId) ->
-    _.remove($scope.dupTrxList.transactions, (trx) -> trx.id == trxId)
-    BoltResources.destroy(
-      w.metadata.bolt_path,
-      resourcesType,
-      trxId
-    ).then(-> $scope.dupTrxList.updated = true)
 
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
@@ -202,10 +190,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
-
-    #TODO: replace it's for duplicate transaction list component
-    $scope.dupTrxList.updateParams(resources, filter)
-    $scope.dupTrxList.fetch()
 
   # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->
@@ -248,7 +232,21 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       w.metadata.bolt_path,
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
-    ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
+    ).then((response) ->
+      if (response.data.data[0])
+        $scope.firstCompanyId = response.data.data[0].id
+    )
+
+    # Fetch contacts from Bolt and save first id
+    # TODO:Remove it, its only workaround to test feature for IMPAC-771
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'contacts',
+      { metadata: _.pick(w.metadata, 'organization_ids') }
+    ).then((response) ->
+      if (response.data.data[0])
+        $scope.firstContactId = response.data.data[0].id
+    )
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->

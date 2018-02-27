@@ -5,12 +5,10 @@ module.component('duplicateTransactionsList', {
   bindings:
     onHide: '&'
     onPageChanged: '&'
-    onUpdateExpectedDate: '&'
+    onConfirmDuplication: '&'
     onChangeResources: '&'
-    onDeleteTransaction: '&'
     transactions: '<'
     currency: '<'
-    totalRecords: '<'
     resourcesType: '<'
   controller: ->
     ctrl = this
