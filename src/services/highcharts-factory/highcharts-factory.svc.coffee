@@ -34,13 +34,12 @@ angular
         xAxis: xAxis
         yAxis: yAxis
         series: series
-        # navigator:
-        #   enabled: _.get(options, 'navigatorEnabled', true)
-        # scrollbar:
-        #   enabled:  _.get(options, 'scrollbarEnabled', true)
+        navigator:
+          series:
+            dashStyle: _.get(options, 'dashStyle','Dash')
+            type: _.get(options, 'navigatorType', 'line')
         plotOptions: plotOptions
         rangeSelector:
-          # enabled: _.get(options, 'rangeSelectorEnabled', true)
           buttons: [
             { type: 'month', count: 4, text: 'def.' },
             { type: 'month', count: 1, text: '1m' },

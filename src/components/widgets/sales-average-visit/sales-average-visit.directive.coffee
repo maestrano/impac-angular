@@ -38,9 +38,6 @@ module.controller('WidgetSalesAverageVisitCtrl', ($scope, $q, $filter, ImpacWidg
       currency: w.metadata.currency
       showToday: true
       showLegend: true
-      # navigatorEnabled: false
-      # scrollbarEnabled: false
-      # rangeSelectorEnabled: false
       zoomType: false
 
     $scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart, options)
@@ -50,7 +47,6 @@ module.controller('WidgetSalesAverageVisitCtrl', ($scope, $q, $filter, ImpacWidg
         xAxisLabels =
           labels:
             formatter: ->
-              # moment.utc(this.value).format('MMM YYYY')
               if (this.chart.rangeSelector.options.selected >= 3)
                 moment.utc(this.value).format('MMM YYYY')
               else
