@@ -7,6 +7,7 @@
 - [IMPAC-772] Added logic to include Customer name in query data and display in UI
 
 #### Fixes
+- [IMPAC-745] Fix indefinite loading appears on updating alert & refactor HighchartsFactory
 - [IMPAC-751] Fixed Multi-Company Ordering
 - [IMPAC-758] Fixes current and debt service ratio widgets by removing chartjs x Axis labels
 - [IMPAC-750] Fix list of widgets in widget panel does not always have the same layout
