@@ -16,7 +16,7 @@ angular
 
         chart:
           type: 'line'
-          zoomType: 'x'
+          zoomType: _.get(options, 'zoomType', 'x')
           spacingTop: 20
           spacingRight: 60
           events:
@@ -26,12 +26,18 @@ angular
           enabled: false
         legend:
           enabled: _.get(options, 'showLegend', true)
+          itemMarginTop: _.get(options,'itemMarginTop', 5)
+          itemMarginBottom: _.get(options,'itemMarginBottom', 5)
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
         xAxis: xAxis
         yAxis: yAxis
         series: series
+        navigator:
+          series:
+            dashStyle: _.get(options, 'dashStyle','Dash')
+            type: _.get(options, 'navigatorType', 'line')
         plotOptions: plotOptions
         rangeSelector:
           buttons: [
