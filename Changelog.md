@@ -14,6 +14,7 @@
 - [IMPAC-759] Scroll hides the graph for large number of accounts in Cash balance
 - [IMPAC-758] Fix hidden date in X-axis for current ratio and debt service widget
 - [IMPAC-763] Fix accounts-class-comparison histParams setting not configured properly
+- [IMPAC-681] Fix tags to allow special chars
 
 -------------------------------------------------------------
 
