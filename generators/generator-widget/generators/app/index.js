@@ -49,7 +49,7 @@ module.exports = yeoman.generators.Base.extend({
     this.buildComponentNames = function () {
       return {
         ctrl: _.upperFirst(_.camelCase(this.props.widgetName)),
-        drct: _.camelCase(this.props.widgetName),
+        drct: _.upperFirst(_.camelCase(this.props.widgetName)),
         mod: _.kebabCase(this.props.widgetName)
       };
     };
