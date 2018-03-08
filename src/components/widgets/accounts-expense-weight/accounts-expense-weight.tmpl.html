@@ -29,13 +29,13 @@
           {{getName()}} to {{getComparator() | titleize}}
           <span ng-if="widget.metadata.organization_ids.length==1"><br /><strong>{{widget.content.summary[0].ratio | mnoCurrency : '%'}}</strong></span>
         </div>
-        <span ng-repeat="sum in widget.content.summary" ng-if="widget.metadata.organization_ids.length>1">
+        <span ng-repeat="sum in widget.content.summary | orderBy:'company'" ng-if="widget.metadata.organization_ids.length>1">
           <span style="font-weight: bold;">{{sum.company}}: {{sum.ratio | mnoCurrency : '%'}}</span>
           <br />
         </span>
       </div>
     </div>
-    
+
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 

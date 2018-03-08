@@ -22,9 +22,9 @@
     </tr>
 
     <div ng-show="widget.demoData" common-data-not-found />
-    
+
     <!-- Content lines -->
-    <tr class="widget-line" ng-repeat="entity in widget.content.entities">
+    <tr class="widget-line" ng-repeat="entity in widget.content.entities | orderBy:'name'">
       <td>{{entity.name}}</td>
       <td><i>{{entity.total_paid | mnoCurrency : entity.currency}}</i></td>
       <td><i>{{entity.total_due | mnoCurrency : entity.currency}}</i></td>

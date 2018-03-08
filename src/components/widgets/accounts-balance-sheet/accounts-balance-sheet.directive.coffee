@@ -71,16 +71,16 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
   w.initContext = ->
     # if w.content? && w.content.period? && _.contains(_.pluck($scope.periodOptions, 'value'), w.content.period)
     #   $scope.period = angular.copy _.find $scope.periodOptions, ((o) -> o.value == w.content.period)
-
     if $scope.isDataFound = angular.isDefined(w.content) && !_.isEmpty(w.content.summary) && !_.isEmpty(w.content.dates)
       $scope.dates = w.content.dates
       $scope.unCollapsed = w.metadata.unCollapsed || []
 
-      $scope.categories = []
-      translateCategories(Object.keys(w.content.summary))
-
+      translateCategories(Object.keys(w.content.summary)).then((categories) ->
+        # Must sort data after categories have been populated.
+        $scope.categories = categories
+        sortData()
+      )
     initDates()
-    sortData()
 
   $scope.toggleCollapsed = (categoryName) ->
     if categoryName?
@@ -100,20 +100,20 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
         return true
 
   translateCategories = (categories) ->
-    _.each(categories, (category) ->
+    translationPromises = _.map(categories, (category) ->
       $translate('impac.widget.account_balance_sheets.' + category.toLowerCase()).then(
         (translation) ->
-          $scope.categories.push({label: translation, key: category})
+          {label: translation, key: category}
 
-        (translationId) ->  # If there is no translation, keep the original
-          $scope.categories.push({label: category.toLowerCase(), key: category})
+        () -> # If there is no translation, keep the original
+          {label: category.toLowerCase(), key: category}
+        )
       )
-      return
-    )
+    $q.all(translationPromises)
 
   sortAccountsBy = (getElem) ->
     angular.forEach($scope.categories, (cat) ->
-      sElem = w.content.summary[cat]
+      sElem = w.content.summary[cat.key]
       if sElem.accounts
         sElem.accounts.sort (a, b) ->
           res = if getElem(a) > getElem(b) then 1
@@ -124,6 +124,7 @@ module.controller('WidgetAccountsBalanceSheetCtrl', ($scope, $q, ImpacWidgetsSvc
     )
 
   sortData = ->
+    return if _.isEmpty($scope.categories)
     if $scope.sortedColumn == 'account'
       sortAccountsBy( (el) -> el.name )
     else if $scope.sortedColumn == 'total1'

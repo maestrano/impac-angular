@@ -1,5 +1,29 @@
 # Impac! Frontend Changelog
 
+### v1.7.3 | 2018 - Week 6
+
+Applies v1.6.9
+
+-------------------------------------------------------------
+
+### v1.6.9 | 2018 - Week 6
+
+#### Adds
+- [IMPAC-757] Radio mode for "organizations" setting
+- [IMPAC-772] Added logic to include Customer name in query data and display in UI
+
+#### Fixes
+- [IMPAC-745] Fix indefinite loading appears on updating alert & refactor HighchartsFactory
+- [IMPAC-751] Fixed Multi-Company Ordering
+- [IMPAC-758] Fixes current and debt service ratio widgets by removing chartjs x Axis labels
+- [IMPAC-750] Fix list of widgets in widget panel does not always have the same layout
+- [IMPAC-759] Scroll hides the graph for large number of accounts in Cash balance
+- [IMPAC-758] Fix hidden date in X-axis for current ratio and debt service widget
+- [IMPAC-763] Fix accounts-class-comparison histParams setting not configured properly
+- [IMPAC-681] Fix tags to allow special chars
+
+-------------------------------------------------------------
+
 ### v1.7.2 | 2018 - Week 3
 
 Applies v1.6.8
@@ -24,6 +48,16 @@ Applies v1.6.7
 
 -------------------------------------------------------------
 
+### v1.6.7 | 2017 - Week 49
+
+#### Adds
+- [EMERALDSUP-69] Add history chart to Custom Calculation widget
+
+#### Fixes
+- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
 ### v1.7.0 | 2017 - Week 49
 
 #### Adds
@@ -43,16 +77,6 @@ dhbSelectorConfig:
   addDhbEnabled: true
   deleteDhbEnabled: true
 ```
-
--------------------------------------------------------------
-
-### v1.6.7 | 2017 - Week 49
-
-#### Adds
-- [EMERALDSUP-69] Add history chart to Custom Calculation widget
-
-#### Fixes
-- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
 
 -------------------------------------------------------------
 
