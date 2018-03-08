@@ -145,10 +145,13 @@ module.exports = yeoman.generators.Base.extend({
     widgetDirective: function () {
       var coffee, data, deps, settingsPromises, path;
 
-      deps = ['$scope', '$q'];
+      deps = ['$scope', ' $q'];
       settingsPromises = _.cloneDeep(this.props.widgetSettings) || [];
 
-      if (this.hasChart) settingsPromises.push('chart'); deps.push('ChartFormatterSvc');
+      if (this.hasChart) {
+        settingsPromises.push('chart');
+        deps.push('ChartFormatterSvc');
+      }
 
       data = {
         componentNames: this.componentNames,
