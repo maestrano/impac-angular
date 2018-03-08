@@ -1,13 +1,15 @@
 <div class="data-not-found" ng-if="!designerMode">
   <div class="overlay" ng-show="messageVisible" />
   <div class="message" ng-show="messageVisible" >
-    <div class="title" translate>{{ content.title }}</div>
-    <p translate>{{ content.mainMessage }}</p>
+    <div class="title" ng-show="widget.isLiveBalance" translate>{{ content.liveBTitle }}</div>
+    <div class="title" ng-show="!widget.isLiveBalance" translate>{{ content.title }}</div>
+    <p ng-show="widget.isLiveBalance" translate>{{ content.liveBMessage }}</p>
+    <p ng-show="!widget.isLiveBalance" translate>{{ content.mainMessage }}</p>
     <button class="btn btn-xs btn-default" ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</button>
     <button class="btn btn-xs btn-warning" ng-click="hide()" translate>{{ content.seeExample }}</button>
   </div>
   <div class="example" ng-hide="messageVisible">
-    {{ content.demoData | translate }} - 
+    {{ content.demoData | translate }} -
     <a ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</a>
   </div>
 </div>

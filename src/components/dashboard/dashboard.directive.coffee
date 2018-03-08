@@ -38,6 +38,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
       $scope.hasMyobEssentialsOnly = ImpacMainSvc.config.currentOrganization.has_myob_essentials_only
 
     dhbLoadError = (error) ->
+      $log.error(error)
       # on dashboard failed first load, user should not be able to access dashboard controls.
       $scope.failedDashboardLoad = true
       $scope.isLoading = false

@@ -49,7 +49,7 @@ module.exports = yeoman.generators.Base.extend({
     this.buildComponentNames = function () {
       return {
         ctrl: _.upperFirst(_.camelCase(this.props.widgetName)),
-        drct: _.camelCase(this.props.widgetName),
+        drct: _.upperFirst(_.camelCase(this.props.widgetName)),
         mod: _.kebabCase(this.props.widgetName)
       };
     };
@@ -145,10 +145,13 @@ module.exports = yeoman.generators.Base.extend({
     widgetDirective: function () {
       var coffee, data, deps, settingsPromises, path;
 
-      deps = ['$scope', '$q'];
+      deps = ['$scope', ' $q'];
       settingsPromises = _.cloneDeep(this.props.widgetSettings) || [];
 
-      if (this.hasChart) settingsPromises.push('chart'); deps.push('ChartFormatterSvc');
+      if (this.hasChart) {
+        settingsPromises.push('chart');
+        deps.push('ChartFormatterSvc');
+      }
 
       data = {
         componentNames: this.componentNames,
