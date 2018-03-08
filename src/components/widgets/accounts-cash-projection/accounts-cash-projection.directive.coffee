@@ -115,6 +115,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     hide: -> this.display = false
 
   $scope.addForecastPopup.createTransaction = (trx) ->
+    console.log('trx: ', trx)
     BoltResources.create(
       w.metadata.bolt_path,
       this.resourcesType,
@@ -126,9 +127,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
-        currency: w.metadata.currency
+        currency: w.metadata.currency,
+        recurring: trx.recurring,
+        recurring_pattern: trx.recurring_pattern,
+        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
       },
-      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+      {
+        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
+        contact: { data: { type: 'contacts', id: $scope.firstContactId } }
+      }
     ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
@@ -190,6 +197,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
     ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
+
+    # Fetch contacts from Bolt and save first id
+    # TODO:Remove it, its only workaround to test feature for IMPAC-771
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'contacts',
+      { metadata: _.pick(w.metadata, 'organization_ids') }
+    ).then((response) ->
+      if (response.data.data[0])
+        $scope.firstContactId = response.data.data[0].id
+    )
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
