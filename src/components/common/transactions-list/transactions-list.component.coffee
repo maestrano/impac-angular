@@ -8,6 +8,9 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
+    onCreateSchedulableTransaction: '&'
+    onModifySchedulableTransaction: '&'
+    onDeleteSchedulableTransaction: '&'
     transactions: '<'
     currency: '<'
     totalRecords: '<'
@@ -52,6 +55,15 @@ module.component('transactionsList', {
       expDate = new Date(m.year(), m.month(), m.date())
       trx.datePicker.date = expDate
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
+
+    ctrl.canCreateSchedulableTransaction = (trx) ->
+      return trx.status != 'FORECAST' && !trx.recurring
+
+    ctrl.canModifySchedulableTransaction = (trx) ->
+      return trx.recurring || (!trx.recurring_parent && trx.status == 'FORECAST')
+
+    ctrl.canDeleteSchedulableTransaction = (trx) ->
+      return (trx.status == 'FORECAST' && (trx.recurring || !trx.recurring_parent)) || (trx.status != 'FORECAST' && trx.recurring)
 
     return ctrl
 })

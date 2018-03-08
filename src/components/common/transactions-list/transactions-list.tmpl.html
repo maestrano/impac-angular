@@ -28,6 +28,8 @@
         <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
+        <th></th>
+        <th class="text-right">Schedule</th>
         <th />
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
@@ -47,6 +49,11 @@
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
         <td>
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
+        </td>
+        <td>
+          <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.onCreateSchedulableTransaction(trx)" />
+          <i class="fa fa-calendar-o"       title="Modify schedulable transactions" ng-if="$ctrl.canModifySchedulableTransaction(trx)" ng-click="$ctrl.onModifySchedulableTransaction(trx)" />
+          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.onDeleteSchedulableTransaction(trx)" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
