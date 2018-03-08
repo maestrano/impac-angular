@@ -36,10 +36,21 @@ module.component('transactionsAdd', {
 
     ctrl.createTransaction = ->
       ctrl.onHide()
+      ctrl.trx = ctrl.includeSchedulable(ctrl.trx)
       ctrl.onCreateTransaction({ trx: ctrl.trx })
 
-    ctrl.createSchedulable = ->
-      console.log('schedulable: ', ctrl.schedulable)
+    ctrl.includeSchedulable = (trx) ->
+      trx.recurring = ctrl.schedulable.recurring
+      if trx.recurring
+        trx.recurring_pattern = {
+          rule_type: ctrl.schedulable.rule.value,
+          interval: ctrl.schedulable.interval,
+          occurrences: ctrl.schedulable.occurrencies
+        }
+        if ctrl.schedulable.endType == 'endDate'
+          trx.recurring_end_date = ctrl.schedulable.datePicker.date
+
+      return trx
 
     ctrl.range = (start, end) ->
       start = parseInt(start)
