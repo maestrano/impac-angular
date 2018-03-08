@@ -100,6 +100,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId
     ).then(-> $scope.trxList.updated = true)
 
+  $scope.trxList.createSchedulableTransactions = (trx) ->
+    console.log('create schedulable transactions')
+    console.log(trx)
+
+  $scope.trxList.modifySchedulableTransactions = (trx) ->
+    console.log('modify schedulable transactions')
+    console.log(trx)
+
+  $scope.trxList.deleteSchedulableTransactions = (trx) ->
+    console.log('delete schedulable transactions')
+    console.log(trx)
+
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
