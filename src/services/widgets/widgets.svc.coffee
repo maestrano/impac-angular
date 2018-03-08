@@ -16,7 +16,6 @@ angular
       _self.refreshAll(true)
     )
 
-
     # ====================================
     # Load and initialize
     # ====================================
@@ -25,7 +24,6 @@ angular
         $q.all([ImpacMainSvc.loadUserData(), ImpacDashboardsSvc.load()])
       else
         $q.resolve()
-
 
     isWidgetInCurrentDashboard = (widgetId) ->
       currentDhb = ImpacDashboardsSvc.getCurrentDashboard()
@@ -114,7 +112,6 @@ angular
               promises.push _self.update(widget, {metadata: newMetadata}, false) unless _.isEqual(widget.metadata, newMetadata)
 
             $q.all(promises).then( (results) -> _self.refreshAll(refreshCache) )
-
       )
 
     @isRefreshing = false
@@ -149,7 +146,6 @@ angular
     # ====================================
     # CRUD methods
     # ====================================
-
     initWidget = (widget) ->
       # Init
       widget.initContext() if angular.isDefined(widget.initContext)
@@ -240,6 +236,8 @@ angular
           request.then(
             (success) ->
               newWidget = success.data
+              # :TODO: ADD LAYOUTS TO PERMITTED PARAMS IN MNOE/MNOHUB in lieu of:
+              newWidget.layouts = params.layouts if params.layouts
               dashboard.widgets.push(newWidget)
               ImpacDashboardsSvc.callbacks.widgetAdded.notify(newWidget)
               $q.resolve(newWidget)

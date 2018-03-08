@@ -149,7 +149,11 @@ angular
     @fetchWidgetCssClass = (widget) ->
       # 'accounts/accounting_values/ebitda' => ['accounts','accounting_values']
       templateNameArray =
-        if widget.metadata && widget.metadata.template
+        if widget.endpoint && widget.metadata && widget.metadata.bolt_path && widget.layouts && !widget.layouts.empty?
+          bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == widget.metadata.bolt_path
+          bolt && [widget.layouts[0]]
+
+        else if widget.metadata && widget.metadata.template
           widget.metadata.template.split('/').slice(0,2)
 
         else if widget.endpoint && widget.metadata && widget.metadata.bolt_path
