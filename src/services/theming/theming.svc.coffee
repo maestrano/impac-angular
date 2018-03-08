@@ -58,7 +58,9 @@ angular
       dataNotFoundConfig:
         content:
           mainMessage: 'impac.data_not_found_config.main_message'
+          liveBMessage: 'impac.data_not_found_config.live_b_message'
           linkMessage: 'impac.data_not_found_config.link_message'
+          liveBTitle: 'impac.data_not_found_config.liveBTitle'
           title: 'impac.data_not_found_config.title'
           seeExample: 'impac.data_not_found_config.see_example'
           demoData: 'impac.data_not_found_config.demo_data'

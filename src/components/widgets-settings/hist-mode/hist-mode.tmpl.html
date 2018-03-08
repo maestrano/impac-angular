@@ -1,12 +1,12 @@
 <div class="settings hist-mode-choser">
   <div common-time-period-info context="forwardParams" />
 
-  <div align="center" class="options">
+  <div align="center" class="options" ng-show="!parentWidget.isLiveBalance">
     <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">{{currentLabel}} </a> |
     <a ng-click="toggleHistMode('history')" ng-class="parentWidget.isHistoryMode ? 'active' : 'inactive'" translate>impac.widget.settings.hist.history</a>
   </div>
 
-  <div class="{{parentWidget.isHistoryMode ? 'arrow-container right' : 'arrow-container left'}}">
+  <div class="{{parentWidget.isHistoryMode ? 'arrow-container right' : 'arrow-container left'}}" ng-show="!parentWidget.isLiveBalance">
     <div class="arrow" />
     <div class="arrow-border" />
   </div>
