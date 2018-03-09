@@ -46,7 +46,6 @@ module.exports = function(config) {
       'bower_components/highcharts/highstock.js',
       'bower_components/color/one-color-all.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/AngularDevise/lib/devise.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
