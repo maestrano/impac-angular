@@ -28,9 +28,6 @@
         <th>Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
-        <th></th>
-        <th class="text-right">Schedule</th>
-        <th />
       </tr>
       <tr ng-repeat="trx in $ctrl.transactions">
         <td>{{ trx.contact_name }}</td>
@@ -60,7 +57,7 @@
         <td colspan="7">TOTAL</td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
-        <td />
+        <td colspan="2">TOTAL</td>
       </tr>
     </table>
   </div>
