@@ -9,6 +9,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Used by onZoom callback
   updateLocked = false
   zoomMetadata = {}
+  # Stack the invoices and bills based on their age
+  w.metadata.ranges = ['-60d', '-30d']
 
   # Timestamps stored in the back-end are in UTC => the filter on the date must be UTC too
   dateFilter = (timestamp) ->
@@ -127,7 +129,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->
     series = this
-    resources = switch(series.name)
+    resources = switch(series.userOptions.stack)
       when 'Payables'
         'bills'
       when 'Receivables'
@@ -158,6 +160,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $timeout ->
         ImpacWidgetsSvc.update(w, { metadata: zoomMetadata }, false).finally(-> updateLocked = false)
       , 1000
+
+  onClickLegend = ->
+    series = this
+    for s in $scope.chart.hc.series
+      continue if s.userOptions.linkedTo != series.name
+      if series.visible then s.hide() else s.show()
 
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
@@ -196,6 +204,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     # Add events callbacks to chart object
     $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
+    $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
 
     # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)
