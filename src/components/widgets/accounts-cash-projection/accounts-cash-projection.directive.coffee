@@ -81,6 +81,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       { expected_payment_date: moment(date).format('YYYY-MM-DD') }
     ).then(-> $scope.trxList.updated = true)
 
+  $scope.trxList.changeResourcesType = (resourcesType) ->
+      return if resourcesType == $scope.trxList.resources
+      $scope.trxList.resources = resourcesType
+      $scope.trxList.fetch()
+
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
     _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
     BoltResources.destroy(
