@@ -1,5 +1,37 @@
 # Impac! Frontend Changelog
 
+### v1.6.8 | 2018 - Week 3
+
+#### Adds
+- [IMPAC-734] Update generator EJS dep to latest
+- [IMPAC-665] Improve sync status messaging
+- Ability to differentiate bolt widgets from legacy widgets when black/whitelisting (required for Finance Bolt >= 1.5.0)
+
+#### Fixes
+- [EMERALDSUP-69] hide x axis labels from custom calc chart
+
+-------------------------------------------------------------
+
+### v1.6.7 | 2017 - Week 49
+
+#### Adds
+- [EMERALDSUP-69] Add history chart to Custom Calculation widget
+
+#### Fixes
+- [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
+### v1.6.6 | 2017 - Week 46
+
+#### Adds
+- [IMPAC-616] Stack invoices and bills on the cash projection widget
+
+#### Dependencies
+- Finance Bolt v1.4.0 - This is a soft dependency: transactions won't be stacked if older versions are used, but the change is backward-compatible
+
+-------------------------------------------------------------
+
 ### v1.6.5 | 2017 - Week 45
 
 #### Adds
