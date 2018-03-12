@@ -1,0 +1,64 @@
+#transactions-add {
+  .widget-popup();
+  .message {
+    top: 30px;
+    left: 35%;
+    width: 30%;
+    .form {
+      padding: 0px 10px;
+      > label, .schedulable-section > label {
+        padding-top: 10px;
+        font-weight: normal;
+        margin-bottom: 3px;
+      }
+      input.form-control {
+        width: 90%;
+        border-radius: 2px;
+        height: 28px;
+        font-size: 13px;
+      }
+      .btn-group {
+        display: block;
+        min-height: 22px;
+        select {
+          border-radius: 2px;
+          height: 28px;
+          margin-top: 0px;
+        }
+      }
+      .disable {
+        color: #888888;
+        font-style: italic;
+      }
+      .never-disable {
+        color: black;
+        font-style: normal;
+      }
+      .schedulable-section {
+        margin-top: 15px;
+        padding: 5px;
+        border: solid 1px silver;
+        background-color: white;
+        .badge {
+          font-weight: normal;
+          background-color: #888888;
+        }
+        .btn-group {
+          margin-left: 10px;
+          input[type="radio"] { margin-top: 5px; }
+          select { height: 22px; }
+          .btn {
+            float: none;
+            border-color: #888888;
+          }
+        }
+        .block {
+          label { vertical-align: super; }
+        }
+      }
+    }
+    .bottom {
+      margin-top: 20px;
+    }
+  }
+}
