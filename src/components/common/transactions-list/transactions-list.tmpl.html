@@ -61,7 +61,7 @@
     </table>
   </div>
   <common-delete-schedule
-    ng-show="$ctrl.deleteSchedule.display"
+    ng-if="$ctrl.deleteSchedule.display"
     on-dismiss="$ctrl.deleteSchedule.cancel()"
     on-delete="$ctrl.deleteSchedule.delete()" />
 

@@ -111,8 +111,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
       }
     ).then(->
-      $scope.trxList.fetch()
       $scope.trxList.updated = true
+      $scope.trxList.fetch()
     )
 
   $scope.trxList.deleteSchedulableTransactions = (resourcesType, trx) ->
