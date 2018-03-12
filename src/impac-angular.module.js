@@ -92,7 +92,8 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-summary',
     'impac.components.widgets.sales-top-opportunities',
     'impac.components.widgets.sales-top-customers',
-    'impac.components.widgets.sales-new-vs-existing-customers'
+    'impac.components.widgets.sales-new-vs-existing-customers',
+    'impac.components.widgets.sales-transaction-by-time-of-day'
   ]
 );
 angular.module('impac.components.widgets-settings',
