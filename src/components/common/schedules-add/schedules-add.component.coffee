@@ -28,7 +28,6 @@ module.component('schedulesAdd', {
       !_.isEmpty(ctrl.trx.title) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0
 
     ctrl.createSchedule = ->
-      ctrl.onCancel()
       ctrl.trx = ctrl.includeSchedulable(ctrl.trx)
       ctrl.onCreate({ resourcesType: ctrl.resourcesType, trx: ctrl.trx })
 
