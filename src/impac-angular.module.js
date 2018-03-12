@@ -35,6 +35,7 @@ angular.module('impac.components',
     'impac.components.widget',
     'impac.components.widgets',
     'impac.components.widgets-settings',
+    'impac.components.widgets-layouts',
     'impac.components.widgets-common',
     'impac.components.common',
     'impac.components.templates'
@@ -116,6 +117,11 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.attach-kpis',
     'impac.components.widgets-settings.tag-filter',
     'impac.components.widgets-settings.offsets'
+  ]
+);
+angular.module('impac.components.widgets-layouts',
+  [
+    'impac.components.widgets-layouts.figure'
   ]
 );
 angular.module('impac.components.dashboard-settings',

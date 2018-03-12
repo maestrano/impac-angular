@@ -1,0 +1,7 @@
+<div class="layouts figure">
+  <div ng-repeat="figure in content">
+    <h3>{{figure.label}}</h3>
+    <div class="value" ng-style="{'color': getColorByIndex($index)}">{{figure.value}}</div>
+    <div ng-show="figure.unit">{{figure.unit}}></div>
+  </div>
+</div>
