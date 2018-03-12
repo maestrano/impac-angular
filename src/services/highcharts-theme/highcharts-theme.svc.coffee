@@ -1,21 +1,9 @@
 angular
 .module('impac.services.highcharts-theme', [])
-.service('HighchartsThemeService', () ->
+.service('HighchartsThemeService', (ImpacTheming) ->
 
   Highcharts.theme =
-  colors: [
-    '#7cb5ec'
-    '#f7a35c'
-    '#90ee7e'
-    '#7798BF'
-    '#aaeeee'
-    '#ff0066'
-    '#eeaaee'
-    '#55BF3B'
-    '#DF5353'
-    '#7798BF'
-    '#aaeeee'
-  ]
+  colors: ImpacTheming.get().chartColors.array
   chart:
     backgroundColor: null
   title: style:
