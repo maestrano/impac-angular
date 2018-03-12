@@ -48,9 +48,8 @@
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
         </td>
         <td>
-          <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.onCreateSchedulableTransaction(trx)" />
-          <i class="fa fa-calendar-o"       title="Modify schedulable transactions" ng-if="$ctrl.canModifySchedulableTransaction(trx)" ng-click="$ctrl.onModifySchedulableTransaction(trx)" />
-          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.onDeleteSchedulableTransaction(trx)" />
+          <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
+          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
@@ -61,4 +60,15 @@
       </tr>
     </table>
   </div>
+  <common-delete-schedule
+    ng-show="$ctrl.deleteSchedule.display"
+    on-dismiss="$ctrl.deleteSchedule.cancel()"
+    on-delete="$ctrl.deleteSchedule.delete()" />
+
+  <schedules-add
+    ng-if="$ctrl.createSchedule.display"
+    trx="$ctrl.createSchedule.trx"
+    resources-type="$ctrl.createSchedule.resourcesType"
+    on-cancel="$ctrl.createSchedule.cancel()"
+    on-create="$ctrl.createSchedule.create(resourcesType, trx)" />
 </div>

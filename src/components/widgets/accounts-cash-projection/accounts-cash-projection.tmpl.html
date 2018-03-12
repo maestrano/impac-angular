@@ -24,9 +24,8 @@
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
-      on-create-schedulable-transaction="trxList.createSchedulableTransactions(trx)"
-      on-modify-schedulable-transaction="trxList.modifySchedulableTransactions(trx)"
-      on-delete-schedulable-transaction="trxList.deleteSchedulableTransactions(trx)">
+      on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
+      on-delete-schedulable-transaction="trxList.deleteSchedulableTransactions(resourcesType, trx)">
     </transactions-list>
 
     <div ng-hide="trxList.display">
@@ -51,5 +50,9 @@
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
-  <transactions-add ng-if="addForecastPopup.display" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+  <transactions-add
+    ng-if="addForecastPopup.display"
+    resources-type="addForecastPopup.resourcesType"
+    on-hide="addForecastPopup.hide()"
+    on-create-transaction="addForecastPopup.createTransaction(trx)"/>
 </div>

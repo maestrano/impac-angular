@@ -8,8 +8,7 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
-    onCreateSchedulableTransaction: '&'
-    onModifySchedulableTransaction: '&'
+    onIncludeSchedulableTransaction: '&'
     onDeleteSchedulableTransaction: '&'
     transactions: '<'
     currency: '<'
@@ -59,11 +58,35 @@ module.component('transactionsList', {
     ctrl.canCreateSchedulableTransaction = (trx) ->
       return trx.status != 'FORECAST' && !trx.recurring
 
-    ctrl.canModifySchedulableTransaction = (trx) ->
-      return trx.recurring || (!trx.recurring_parent && trx.status == 'FORECAST')
-
     ctrl.canDeleteSchedulableTransaction = (trx) ->
-      return (trx.status == 'FORECAST' && (trx.recurring || !trx.recurring_parent)) || (trx.status != 'FORECAST' && trx.recurring)
+      return (trx.status == 'FORECAST' && (trx.recurring || trx.recurring_parent)) || (trx.status != 'FORECAST' && trx.recurring)
+
+    ctrl.deleteSchedule =
+      args: {}
+      display: false
+      show: (args) ->
+        this.args = args
+        this.display = true
+      cancel: ->
+        this.args = {}
+        this.display = false
+      delete: ->
+        ctrl.onDeleteSchedulableTransaction(this.args)
+        this.display = false
+
+    ctrl.createSchedule =
+      trx: null
+      resourcesType: null
+      display: false
+      show: (args) ->
+        this.trx = args.trx
+        this.resourcesType = args.resourcesType
+        this.display = true
+      cancel: ->
+        this.display = false
+      create: (resourcesType, trx) ->
+        ctrl.onIncludeSchedulableTransaction({ resourcesType: resourcesType, trx: trx })
+        this.display = false
 
     return ctrl
 })
