@@ -1,5 +1,5 @@
 <div class="settings hist-mode-choser">
-  <div common-time-period-info context="forwardParams" />
+  <div common-time-period-info context="forwardParams" ng-hide="isCommonTimeHidden()"/>
 
   <div align="center" class="options">
     <a ng-click="toggleHistMode('current')" ng-class="!parentWidget.isHistoryMode ? 'active' : 'inactive'">{{currentLabel}} </a> |
