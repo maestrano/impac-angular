@@ -10,6 +10,9 @@ module.controller('SettingHistModeCtrl', ($scope, $translate, $timeout, ImpacWid
       $scope.accountingBehaviour
   }
 
+  $scope.isCommonTimeHidden = ->
+    $scope.endDate == 'not-displayed'
+
   $scope.toggleHistMode = (mode) ->
     return if (w.isHistoryMode && mode == 'history') || (!w.isHistoryMode && mode =='current')
     w.isHistoryMode = !w.isHistoryMode
