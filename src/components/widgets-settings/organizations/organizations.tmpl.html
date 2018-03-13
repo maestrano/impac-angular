@@ -4,7 +4,9 @@
   <div class="widget-lines-container">
     <div class="widget-line" ng-repeat="org in dashboardOrganizations">
       {{org.label}}
-      <i ng-class="isOrganizationSelected(org.uid) ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toggleSelectOrganization(org.uid)" uib-tooltip="{{isOrganizationSelected(org.uid) ? 'disable' : 'enable'}}" tooltip-append-to-body="true" />
+      <i ng-show="multiOrgMode()" ng-class="isOrganizationSelected(org.uid) ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toggleSelectOrganization(org.uid)" uib-tooltip="{{isOrganizationSelected(org.uid) ? 'disable' : 'enable'}}" tooltip-append-to-body="true" />
+
+      <i ng-show="singleOrgMode()" ng-class="isOrganizationSelected(org.uid) ? 'fa fa-check-circle' : 'fa fa-circle-thin'" ng-click="toggleSelectOrganization(org.uid)" />
     </div>
   </div>
 </div>

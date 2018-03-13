@@ -1,5 +1,35 @@
 # Impac! Frontend Changelog
 
+### v1.6.9 | 2018 - Week 6
+
+#### Adds
+- [IMPAC-757] Radio mode for "organizations" setting
+- [IMPAC-772] Added logic to include Customer name in query data and display in UI
+
+#### Fixes
+- [IMPAC-745] Fix indefinite loading appears on updating alert & refactor HighchartsFactory
+- [IMPAC-751] Fixed Multi-Company Ordering
+- [IMPAC-758] Fixes current and debt service ratio widgets by removing chartjs x Axis labels
+- [IMPAC-750] Fix list of widgets in widget panel does not always have the same layout
+- [IMPAC-759] Scroll hides the graph for large number of accounts in Cash balance
+- [IMPAC-758] Fix hidden date in X-axis for current ratio and debt service widget
+- [IMPAC-763] Fix accounts-class-comparison histParams setting not configured properly
+- [IMPAC-681] Fix tags to allow special chars
+
+-------------------------------------------------------------
+
+### v1.6.8 | 2018 - Week 3
+
+#### Adds
+- [IMPAC-734] Update generator EJS dep to latest
+- [IMPAC-665] Improve sync status messaging
+- Ability to differentiate bolt widgets from legacy widgets when black/whitelisting (required for Finance Bolt >= 1.5.0)
+
+#### Fixes
+- [EMERALDSUP-69] hide x axis labels from custom calc chart
+
+-------------------------------------------------------------
+
 ### v1.6.8 | 2018 - Week 3
 
 #### Adds

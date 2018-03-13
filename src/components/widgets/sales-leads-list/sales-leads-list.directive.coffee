@@ -12,6 +12,7 @@ module.controller('WidgetSalesLeadsListCtrl', ($scope, $q, ChartFormatterSvc, $f
     $scope.orgDeferred.promise
   ]
 
+  $scope.ordering = "last_name"
 
   # Widget specific methods
   # --------------------------------------

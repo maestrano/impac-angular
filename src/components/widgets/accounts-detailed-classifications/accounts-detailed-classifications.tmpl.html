@@ -40,7 +40,7 @@
       </div>
 
       <!-- Groups of statements with their accounts -->
-      <div class="row lines-group" ng-repeat="source in dataSource track by source.label">
+      <div class="row lines-group" ng-repeat="source in dataSource | orderBy:'label' track by source.label">
         <div class="col-xs-12">
 
           <!-- Statements lines -->
