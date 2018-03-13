@@ -40,6 +40,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
 
+  # Initialise Contacts
+  $scope.contacts = []
+
   $scope.trxList.show = ->
     $scope.trxList.display = true
 
@@ -132,7 +135,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       },
       {
         company: { data: { type: 'companies', id: $scope.firstCompanyId } },
-        contact: { data: { type: 'contacts', id: $scope.firstContactId } }
+        contact: { data: { type: 'contacts', id: trx.contact.id } }
       }
     ).then(-> ImpacWidgetsSvc.show(w))
 
@@ -228,6 +231,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       continue if s.userOptions.linkedTo != series.name
       if series.visible then s.hide() else s.show()
 
+  loadContacts = ->
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'contacts',
+      {
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then(
+      (response) ->
+        $scope.contacts = response.data.data
+    )
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -245,19 +260,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
     ).then((response) ->
-      if (response.data.data[0])
-        $scope.firstCompanyId = response.data.data[0].id
-    )
-
-    # Fetch contacts from Bolt and save first id
-    # TODO:Remove it, its only workaround to test feature for IMPAC-771
-    BoltResources.index(
-      w.metadata.bolt_path,
-      'contacts',
-      { metadata: _.pick(w.metadata, 'organization_ids') }
-    ).then((response) ->
-      if (response.data.data[0])
-        $scope.firstContactId = response.data.data[0].id
+      $scope.firstCompanyId = response.data.data[0].id
+      loadContacts()
     )
 
   # Executed after the widget and its settings are initialised and ready
