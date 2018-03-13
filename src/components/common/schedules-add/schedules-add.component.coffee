@@ -1,25 +1,19 @@
-module = angular.module('impac.components.common.transactions-add',[])
+module = angular.module('impac.components.common.schedules-add',[])
 
-module.component('transactionsAdd', {
-  templateUrl: 'common/transactions-add.tmpl.html'
+module.component('schedulesAdd', {
+  templateUrl: 'common/schedules-add.tmpl.html'
   bindings:
-    onHide: '&'
-    onCreateTransaction: '&'
+    onCancel: '&'
+    onCreate: '&'
     resourcesType: '='
-    contacts: '='
+    trx: '='
 
   controller: ->
     ctrl = this
 
     ctrl.$onInit = ->
-      ctrl.trx =
-        datePicker:
-          opened: false
-          date: new Date()
-          toggle: -> this.opened = !this.opened
-
       ctrl.schedulable =
-        recurring: false
+        recurring: true
         interval: 4
         rule: ctrl.schedulableRules[2]
         endType: 'occurrencies'
@@ -30,15 +24,12 @@ module.component('transactionsAdd', {
           date: new Date()
           toggle: -> this.opened = !this.opened
 
-      ctrl.tempDate = moment().add(10, 'weeks').toDate()
-
     ctrl.isValid = ->
-      !_.isEmpty(ctrl.trx.title) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0 && ctrl.trx.contact
+      !_.isEmpty(ctrl.trx.title) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0
 
-    ctrl.createTransaction = ->
-      ctrl.onHide()
+    ctrl.createSchedule = ->
       ctrl.trx = ctrl.includeSchedulable(ctrl.trx)
-      ctrl.onCreateTransaction({ trx: ctrl.trx })
+      ctrl.onCreate({ resourcesType: ctrl.resourcesType, trx: ctrl.trx })
 
     ctrl.includeSchedulable = (trx) ->
       trx.recurring = ctrl.schedulable.recurring
