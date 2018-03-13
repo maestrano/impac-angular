@@ -16,7 +16,10 @@ module.component('duplicateTransactionsList', {
     ctrl.$onInit = ->
       ctrl.currentPage = 1
       ctrl.itemsPerPage = 30
+      ctrl.formatTransactions()
 
+
+    ctrl.formatTransactions = ->
       for dupTrx in ctrl.transactions
         dupTrx.origin = dupTrx.origin.data.attributes
         dupTrx.forecast = dupTrx.forecast.data.attributes
@@ -30,6 +33,11 @@ module.component('duplicateTransactionsList', {
         trx.expectedPaymentDateUTC = moment.utc(trx.expected_payment_date).format('DD MMM YYYY')
         trx.showReset = (trx.due_date != trx.expected_payment_date)
         return trx
+
+    ctrl.changePage = ->
+      ctrl
+        .onPageChanged({page: ctrl.currentPage})
+        .then(-> ctrl.formatTransactions())
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords >= ctrl.itemsPerPage

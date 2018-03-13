@@ -13,7 +13,16 @@
       </div>
     </div>
     <div class="col-xs-4">
-      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})" />
+      <ul uib-pagination
+        ng-show="$ctrl.showPaginationControl()"
+        class="pull-right"
+        total-items="$ctrl.totalRecords"
+        ng-model="$ctrl.currentPage"
+        max-size="5"
+        items-per-page="30"
+        class="pagination-sm"
+        force-ellipses="true"
+        ng-change="$ctrl.changePage()" />
     </div>
   </div>
   <div class="table-container">
