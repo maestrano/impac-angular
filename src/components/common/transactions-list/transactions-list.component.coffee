@@ -12,6 +12,7 @@ module.component('transactionsList', {
     currency: '<'
     totalRecords: '<'
     resourcesType: '<'
+    listOnly: '<'
   controller: ->
     ctrl = this
 
@@ -52,6 +53,7 @@ module.component('transactionsList', {
       expDate = new Date(m.year(), m.month(), m.date())
       trx.datePicker.date = expDate
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
+
 
     return ctrl
 })
