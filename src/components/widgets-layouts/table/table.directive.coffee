@@ -9,10 +9,18 @@ module.controller('WidgetTableCtrl', ($scope, $q, $filter, ImpacWidgetsSvc) ->
   # Define settings
   # --------------------------------------
   $scope.orgDeferred = $q.defer();
+  $scope.timePeriodDeferred = $q.defer()
 
   settingsPromises = [
     $scope.orgDeferred.promise,
+    $scope.timePeriodDeferred.promise
   ]
+
+  # Configure the commonTimePeriodInfo directive
+  $scope.timePeriodInfoParams = {
+    accountingBehaviour: 'pnl'
+    histParams: {}
+  }
 
   # Widget specific methods
   # --------------------------------------
@@ -20,6 +28,7 @@ module.controller('WidgetTableCtrl', ($scope, $q, $filter, ImpacWidgetsSvc) ->
     $scope.table = _.get(w, 'content.table', {})
     return if _.isEmpty($scope.table.rows)
     $scope.currency = _.get(w, 'metadata.currency')
+    $scope.timePeriodInfoParams.histParams = _.get(w, 'metadata.hist_parameters', {})
     $scope.unCollapsed = _.get(w, 'metadata.unCollapsed') || []
     $scope.ascending = true
     $scope.sortedColumn = $scope.table.headers.cells[0]
