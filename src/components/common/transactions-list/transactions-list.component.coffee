@@ -12,6 +12,7 @@ module.component('transactionsList', {
     currency: '<'
     totalRecords: '<'
     resourcesType: '<'
+    listOnly: '<'
   controller: ->
     ctrl = this
 
