@@ -130,7 +130,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
-        reconciliation_status: 'reconciliated',
+        reconciliation_status: 'RECONCILED',
         currency: w.metadata.currency
       },
       {
@@ -173,8 +173,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.dupTrxList.params = { filter: filter }
 
   # Fetch and show all invoices or bills
-  $scope.dupTrxList.showAll = (resources = 'duplicate_transactions') ->
-    filter = { }
+  $scope.dupTrxList.showAll = (resources = 'invoices') ->
+    filter = {
+      status: ['FORECAST']
+      reconciliation_status: 'RECONCILING'
+    }
     $scope.dupTrxList.updateParams(resources, filter)
     $scope.dupTrxList.fetch()
 
@@ -185,8 +188,13 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       w.metadata.bolt_path,
       $scope.dupTrxList.resources,
       dupTrxId,
-      {action: action}
+      {reconciliation_action: action}
     ).then(-> $scope.dupTrxList.updated = true)
+
+  $scope.dupTrxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.dupTrxList.resources
+    $scope.dupTrxList.resources = resourcesType
+    $scope.dupTrxList.fetch()
 
 
   # == Chart Events Callbacks =====================================================================

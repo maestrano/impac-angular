@@ -21,18 +21,22 @@ module.component('duplicateTransactionsList', {
 
     ctrl.formatTransactions = ->
       for dupTrx in ctrl.transactions
-        dupTrx.origin = dupTrx.origin.data.attributes
-        dupTrx.forecast = dupTrx.forecast.data.attributes
-        dupTrx.origin = ctrl.formatDates(dupTrx.origin)
-        dupTrx.forecast = ctrl.formatDates(dupTrx.forecast)
+        dupTrx = ctrl.formatDates(dupTrx)
+        dupTrx.reconciliation_target = dupTrx.reconciliation_target.data.attributes
+        dupTrx.reconciliation_target = ctrl.formatDates(dupTrx.reconciliation_target )
 
     ctrl.formatDates = (trx) ->
-        # dates are sent in UTC by the API
-        trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
-        trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
-        trx.expectedPaymentDateUTC = moment.utc(trx.expected_payment_date).format('DD MMM YYYY')
-        trx.showReset = (trx.due_date != trx.expected_payment_date)
-        return trx
+      # dates are sent in UTC by the API
+      trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
+      trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
+      trx.expectedPaymentDateUTC = moment.utc(trx.expected_payment_date).format('DD MMM YYYY')
+      trx.showReset = (trx.due_date != trx.expected_payment_date)
+      return trx
+
+    ctrl.changeResourcesType = ->
+      ctrl
+        .onChangeResources({ resourcesType: ctrl.resourcesType })
+        .then(-> ctrl.$onInit())
 
     ctrl.changePage = ->
       ctrl

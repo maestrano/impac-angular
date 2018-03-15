@@ -34,6 +34,7 @@
       resources-type="dupTrxList.resources"
       on-hide="dupTrxList.hide()"
       on-page-changed="dupTrxList.fetch(page)"
+      on-change-resources="dupTrxList.changeResourcesType(resourcesType)"
       on-confirm-duplication="dupTrxList.updateDuplicateTransaction(dupTrxId, action)" >
     </duplicate-transactions-list>
 
