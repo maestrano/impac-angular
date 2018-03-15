@@ -1,0 +1,70 @@
+<div id="duplicate-transactions-list">
+  <div class="row top">
+    <div class="col-xs-4 pull-left">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">
+        <i class="fa fa-chevron-left" />
+        Back to chart
+      </label>
+    </div>
+    <div class="col-xs-4 text-center">
+      <div class="btn-group">
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <ul uib-pagination
+        ng-show="$ctrl.showPaginationControl()"
+        class="pull-right"
+        total-items="$ctrl.totalRecords"
+        ng-model="$ctrl.currentPage"
+        max-size="5"
+        items-per-page="$ctrl.itemsPerPage"
+        class="pagination-sm"
+        force-ellipses="true"
+        ng-change="$ctrl.changePage()" />
+    </div>
+  </div>
+  <div class="table-container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Transaction date</th>
+          <th>Due date</th>
+          <th>Expected payment date</th>
+          <th class="text-right">Amount</th>
+          <th class="text-right">Duplicated?</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="dupTrx in $ctrl.transactions track by $index">
+        <tr >
+          <td rowspan="2" class="origin" >{{ $index + 1 }}</td>
+          <td>{{ dupTrx.transaction_number }}</td>
+          <td>{{ dupTrx.title }}</td>
+          <td>{{ dupTrx.status }}</td>
+          <td>{{ dupTrx.trxDateUTC }}</td>
+          <td>{{ dupTrx.dueDateUTC }}</td>
+          <td>{{ dupTrx.expectedPaymentDateUTC }}</td>
+          <td class="text-right">{{ dupTrx.amount | mnoCurrency : dupTrx.currency }}</td>
+          <td rowspan="2" class="text-right">
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'confirm'})">Yes</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'not_confirm'})">No</button>
+          </td>
+        </tr>
+        <tr>
+          <td>{{ dupTrx.reconciliation_target.transaction_number }}</td>
+          <td>{{ dupTrx.reconciliation_target.title }}</td>
+          <td>{{ dupTrx.reconciliation_target.status }}</td>
+          <td>{{ dupTrx.reconciliation_target.trxDateUTC }}</td>
+          <td>{{ dupTrx.reconciliation_target.dueDateUTC }}</td>
+          <td>{{ dupTrx.reconciliation_target.expectedPaymentDateUTC }}</td>
+          <td class="text-right">{{ dupTrx.reconciliation_target.amount | mnoCurrency : dupTrx.reconciliation_target.currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
