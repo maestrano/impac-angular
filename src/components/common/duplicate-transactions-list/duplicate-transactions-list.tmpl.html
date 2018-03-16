@@ -52,7 +52,7 @@
           <td class="text-right">{{ dupTrx.amount | mnoCurrency : dupTrx.currency }}</td>
           <td rowspan="2" class="text-right">
             <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'confirm'})">Yes</button>
-            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'not_confirm'})">No</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'reject'})">No</button>
           </td>
         </tr>
         <tr>
