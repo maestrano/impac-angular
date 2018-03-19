@@ -1,7 +1,7 @@
 <div id="transactions-list">
   <div class="row top">
     <div class="col-xs-4 pull-left">
-      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()" ng-hide="$ctrl.listOnly">
         <i class="fa fa-chevron-left" />
         Back to chart
       </label>
@@ -25,7 +25,7 @@
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
-        <th>Expected payment date</th>
+        <th ng-hide="$ctrl.listOnly">Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
       </tr>
@@ -36,7 +36,7 @@
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
-        <td>
+        <td ng-hide="$ctrl.listOnly">
           <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeExpectedDate(trx)" />
           <button class="btn btn-xs btn-danger reset-date" ng-if="trx.showReset" title="Reset expected payment date to due date" ng-click="$ctrl.resetExpectedDate(trx)">
             <i class="fa fa-clock-o" />
@@ -53,7 +53,9 @@
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.resourcesType">
-        <td colspan="7">TOTAL</td>
+        <td colspan="6">TOTAL</td>
+        <!-- If Date Picker is open the colspan width will be 7.  If 'list-only' the width will be 6 -->
+        <td ng-hide="$ctrl.listOnly" colspan="1"></td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
         <td colspan="2">TOTAL</td>
