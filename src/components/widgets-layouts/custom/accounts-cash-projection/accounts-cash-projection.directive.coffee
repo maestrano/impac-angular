@@ -1,4 +1,4 @@
-module = angular.module('impac.components.widgets.accounts-cash-projection', [])
+module = angular.module('impac.components.widgets-layouts.accounts-cash-projection', [])
 module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout  , ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
 
   # == Context and Helpers ========================================================================

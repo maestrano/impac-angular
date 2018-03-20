@@ -1,4 +1,4 @@
-module = angular.module('impac.components.widgets.accounts-cash-balance', [])
+module = angular.module('impac.components.widgets-layouts.accounts-cash-balance', [])
 module.controller('WidgetAccountsCashBalanceCtrl', ($scope, $q, $timeout, $filter, ImpacTheming, ImpacAssets, ImpacWidgetsSvc, HighchartsFactory) ->
 
   w = $scope.widget

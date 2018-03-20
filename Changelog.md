@@ -3,6 +3,7 @@
 ### v1.8.0 | 2018 - Week 10
 
 #### Adds
+- [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
 
 #### Fixes
 

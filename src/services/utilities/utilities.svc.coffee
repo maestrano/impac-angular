@@ -145,31 +145,6 @@ angular
 
       return messages
 
-    # Retrieves the widget content css class name based on metadata or endpoint
-    @fetchWidgetCssClass = (widget) ->
-      # 'accounts/accounting_values/ebitda' => ['accounts','accounting_values']
-      templateNameArray =
-        if widget.metadata && widget.metadata.template
-          widget.metadata.template.split('/').slice(0,2)
-
-        else if widget.endpoint && widget.metadata && widget.metadata.bolt_path
-          bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == widget.metadata.bolt_path
-          bolt && [bolt.category, widget.endpoint]
-
-        else if widget.endpoint
-          widget.endpoint.split('/').slice(0,2)
-
-      return false unless templateNameArray?
-
-      # ['accounts','accounting_values'] => 'accounts-accounting-values'
-      return templateNameArray.join('-').replace(/_/g, '-')
-
-    # Retrieves the HTML template path based on metadata or endpoint (only if the template exists)
-    @fetchWidgetTemplatePath = (widget) ->
-      return false unless cssClass = _self.fetchWidgetCssClass(widget)
-      templatePath = "widgets/#{cssClass}.tmpl.html"
-      return ($templateCache.get(templatePath) && templatePath)
-
     # Returns a random number between min (inclusive) and max (exclusive)
     @getRandomInteger = (min, max)->
       Math.random() * (max - min) + min

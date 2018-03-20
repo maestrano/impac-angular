@@ -1,6 +1,6 @@
 angular
   .module('impac.services.dashboards', [])
-  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacUtilities) ->
+  .service 'ImpacDashboardsSvc', ($q, $http, $log, $timeout, ImpacMainSvc, ImpacRoutes, ImpacTheming, ImpacDeveloper, ImpacWidgetsTemplates) ->
     #====================================
     # Initialization and getters
     #====================================
@@ -241,15 +241,17 @@ angular
 
     # Remove blacklisted templates, authorize whitelisted ones
     isTemplateAllowed = (template) ->
-      # Directly returns false if the template is not defined in the library
-      return false unless ImpacUtilities.fetchWidgetTemplatePath(template)
-
       settings = ImpacTheming.get().widgetSelectorConfig
-      templateUid = ImpacUtilities.fetchWidgetCssClass(template)
+      templateUid = ImpacWidgetsTemplates.filename(template)
 
-      if b_path = template.metadata && template.metadata.bolt_path
+      if b_path = _.get(template, 'metadata.bolt_path')
         bolt = _.find ImpacRoutes.bolts(), (bolt) -> bolt.path == b_path
         templateUid = "#{bolt.provider}/#{bolt.name}/#{template.endpoint}"
+      else
+        # For legacy widgets..
+        # Directly returns false if the template is not defined in the library
+        return false unless ImpacWidgetsTemplates.templatePath(template)
+
 
       if !_.isEmpty(settings.whitelist)
         _.includes(settings.whitelist, templateUid)
