@@ -78,7 +78,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
+    filter = {
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED'
+    }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
@@ -130,7 +133,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
-        reconciliation_status: 'RECONCILED',
+        reconciliation_status: 'UNRECONCILED',
         currency: w.metadata.currency
       },
       {
@@ -210,7 +213,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
     filter =
       expected_payment_date: dateFilter(event.point.x)
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED',
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 

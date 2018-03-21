@@ -37,7 +37,7 @@
           <th>Due date</th>
           <th>Expected payment date</th>
           <th class="text-right">Amount</th>
-          <th class="text-right">Duplicated?</th>
+          <th class="text-right">Shall we reconcile?</th>
         </tr>
       </thead>
       <tbody ng-repeat="dupTrx in $ctrl.transactions track by $index">
@@ -51,8 +51,8 @@
           <td>{{ dupTrx.expectedPaymentDateUTC }}</td>
           <td class="text-right">{{ dupTrx.amount | mnoCurrency : dupTrx.currency }}</td>
           <td rowspan="2" class="text-right">
-            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'reject'})">Yes</button>
-            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'confirm'})">No</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'confirm'})">Yes</button>
+            <button ng-click="$ctrl.onConfirmDuplication({dupTrxId: dupTrx.id, action: 'reject'})">No</button>
           </td>
         </tr>
         <tr>
