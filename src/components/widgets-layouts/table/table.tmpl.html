@@ -32,7 +32,7 @@
         <thead>
           <tr>
             <th width="{{colWidth}}" ng-repeat="cell in table.headers.cells" ng-click="sort(cell, $index)">
-              <span ng-bind="cell"></span>
+              <span ng-bind="cellValue(cell)"></span>
               <i ng-show="sortedColumn == cell" class="fa" ng-class="ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
             </th>
           </tr>
@@ -56,9 +56,9 @@
   <table>
     <thead>
       <tr>
-        <th width="{{colWidth}}" ng-repeat="headerCell in groupedTable.headers.cells" ng-click="toggleCollapsed(groupedTable, $event)" indent-table-row>
+        <th width="{{colWidth}}" ng-repeat="cell in groupedTable.headers.cells" ng-click="toggleCollapsed(groupedTable, $event)" indent-table-row>
           <i class="fa" ng-if="$first" ng-class="isCollapsed(groupedTable) ? 'fa-plus-square-o' : 'fa-minus-square-o'" />
-          <strong ng-bind="headerCell"></strong>
+          <strong ng-bind="cellValue(cell)"></strong>
         </th>
       </tr>
     </thead>

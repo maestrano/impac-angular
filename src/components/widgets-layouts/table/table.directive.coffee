@@ -37,7 +37,8 @@ module.controller('WidgetTableCtrl', ($scope, $q, $filter, ImpacWidgetsSvc) ->
     return
 
   $scope.cellValue = (v)->
-    if _.isNumber(v) then $filter('mnoCurrency')(v, $scope.currency) else v
+    num = parseFloat(v)
+    if _.isNumber(num) && !_.isNaN(num) then $filter('mnoCurrency')(v, $scope.currency) else v
 
   $scope.toggleCollapsed = (table, $event) ->
     $event.stopPropagation()
