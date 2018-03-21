@@ -137,6 +137,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       }
     ).then(-> ImpacWidgetsSvc.show(w))
 
+  # == Sub-Components - Add Trend ========================================================
+  $scope.addTrendPopup =
+    display: false
+    show: -> this.display = true
+    hide: -> this.display = false
+
+  $scope.addTrendPopup.createTrend = (trend) ->
+    # TODO: Send trend to bolt
+    null
+
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
   onClickBar = (event) ->

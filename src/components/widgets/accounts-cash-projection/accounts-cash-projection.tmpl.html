@@ -31,6 +31,10 @@
           <i class="fa fa-pencil" />
           Add manual transaction
         </button>
+        <button class="btn btn-sm btn-default" ng-click="addTrendPopup.show()" title="Create a new trend">
+          <i class="fa fa-pencil" />
+          Add trend
+        </button>
       </div>
     </div>
 
@@ -38,4 +42,6 @@
   </div>
 
   <transactions-add ng-if="addForecastPopup.display" contacts="contacts" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+  <trends-add ng-if="addTrendPopup.display" on-hide="addTrendPopup.hide()" on-create-trend="addTrendPopup.createTrend(trend)"/>
+
 </div>
