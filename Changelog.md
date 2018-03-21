@@ -4,6 +4,7 @@
 
 #### Adds
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-791] Add generic table layout template
 
 #### Fixes
 
