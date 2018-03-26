@@ -102,6 +102,7 @@
   "impac.widget.settings.dates_picker.tooltip.apply_changes": "Apply changes",
   "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
   "impac.widget.settings.organizations.select_companies": "Select Companies",
+  "impac.widget.settings.forecast_payroll.title": "Forecast Payroll",
   "impac.widget.settings.chart_filters.title": "Chart filters",
   "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
