@@ -4,7 +4,7 @@ angular
 
   templates =
     line: Object.freeze
-      get: (series = [], options = {})->
+      get: (series = [], options = {}, xAxis = [], yAxis = [], plotOptions = {})->
         zoomingOptions = _.get(options, 'withZooming')
         xAxisOptions = if zoomingOptions?
           {
@@ -16,8 +16,9 @@ angular
 
         chart:
           type: 'line'
-          zoomType: 'x'
+          zoomType: _.get(options, 'zoomType', 'x')
           spacingTop: 20
+          spacingRight: 60
           events:
             click: (event)-> _.each(_.get(options, 'chartOnClickCallbacks', []), (cb)-> cb(event))
         title: null
@@ -25,15 +26,19 @@ angular
           enabled: false
         legend:
           enabled: _.get(options, 'showLegend', true)
+          itemMarginTop: _.get(options,'itemMarginTop', 5)
+          itemMarginBottom: _.get(options,'itemMarginBottom', 5)
           layout: 'vertical'
           align: 'left'
           verticalAlign: 'middle'
-        xAxis: xAxisOptions
-        yAxis:
-          title: null
-          startOnTick: true
-          minPadding: 0
+        xAxis: xAxis
+        yAxis: yAxis
         series: series
+        navigator:
+          series:
+            dashStyle: _.get(options, 'dashStyle','Dash')
+            type: _.get(options, 'navigatorType', 'line')
+        plotOptions: plotOptions
         rangeSelector:
           buttons: [
             { type: 'month', count: 4, text: 'def.' },
@@ -44,6 +49,7 @@ angular
             { type: 'all', text: 'All' }
           ]
           selected: (if _.get(xAxisOptions, 'min') then null else 0)
+
 
   todayUTC = moment().startOf('day').add(moment().utcOffset(), 'minutes')
 
@@ -63,7 +69,7 @@ angular
       return @
 
     template: ->
-      @_template.get(@data.series, @options)
+      @_template.get(@data.series, @options, @data.xAxis, @data.yAxis, @data.plotOptions)
 
     formatters: ->
       currency = @options.currency

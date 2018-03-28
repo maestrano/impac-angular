@@ -2,7 +2,7 @@
 // Generated on Thu Aug 21 2014 10:24:39 GMT+0200 (CEST)
 
 module.exports = function(config) {
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -46,7 +46,6 @@ module.exports = function(config) {
       'bower_components/highcharts/highstock.js',
       'bower_components/color/one-color-all.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/AngularDevise/lib/devise.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
@@ -99,9 +98,21 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
+    customLaunchers: {
+        Chrome_travis_ci: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        }
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = ['Chrome_travis_ci'];
+  }
+
+  config.set(configuration);
 };

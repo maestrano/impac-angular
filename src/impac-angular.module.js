@@ -92,7 +92,10 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-summary',
     'impac.components.widgets.sales-top-opportunities',
     'impac.components.widgets.sales-top-customers',
-    'impac.components.widgets.sales-new-vs-existing-customers'
+    'impac.components.widgets.sales-new-vs-existing-customers',
+    'impac.components.widgets.sales-average-purchase-size',
+    'impac.components.widgets.sales-average-visit',
+    'impac.components.widgets.sales-customers-engagement'
   ]
 );
 angular.module('impac.components.widgets-settings',
@@ -155,6 +158,7 @@ angular.module('impac.services',
     'impac.services.assets',
     'impac.services.chart-formatter',
     'impac.services.highcharts-factory',
+    'impac.services.highcharts-theme',
     'impac.services.message-bus',
     'impac.services.utilities',
     'impac.services.main',
