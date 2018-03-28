@@ -1,6 +1,6 @@
 angular
 .module('impac.services.highcharts-factory', [])
-.factory('HighchartsFactory', ($filter, HighchartsThemeService)->
+.factory('HighchartsFactory', ($filter)->
 
   templates =
     line: Object.freeze

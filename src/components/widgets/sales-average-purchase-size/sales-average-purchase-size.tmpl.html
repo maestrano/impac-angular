@@ -54,6 +54,6 @@
     </div>
 
     <!-- No data found -->
-    <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+    <div ng-show="widget.demoData" common-data-not-found />
   </div>
 </div>
