@@ -24,7 +24,7 @@ module.component('trendsAdd', {
     ctrl.period = ->
       switch ctrl.trend.period
         when "Once"
-          ctrl.trend.untilDate = nil
+          ctrl.trend.untilDate = null
           ""
         when "Daily" then ("Day" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Weekly" then ("Week" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
@@ -41,6 +41,7 @@ module.component('trendsAdd', {
 
     ctrl.createTrend = ->
       ctrl.onHide()
+      ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
     $scope.$watch '$ctrl.datePicker.opened', (newVal, oldVal) ->
