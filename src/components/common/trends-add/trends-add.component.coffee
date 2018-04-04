@@ -44,9 +44,8 @@ module.component('trendsAdd', {
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
-    $scope.$watch '$ctrl.datePicker.opened', (newVal, oldVal) ->
-      if newVal != oldVal and !newVal
-        ctrl.trend.untilDate = ctrl.datePicker.date
+    ctrl.updateDate = ->
+      ctrl.trend.untilDate = ctrl.datePicker.date
 
     return ctrl
 })

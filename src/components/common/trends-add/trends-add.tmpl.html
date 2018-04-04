@@ -17,9 +17,9 @@
       </select>
 
       <fieldset class="btn-group" ng-disbaled="$ctrl.isPeriodDisabled()">
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value=-1> Forever<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value=$ctrl.selectedPeriod> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.trend.untilDate = $ctrl.selectedPeriod"> {{$ctrl.period()}}<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.datePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.datePicker.date" ng-click="$ctrl.datePicker.toggle()" is-open="$ctrl.datePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%"/>
+        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value="-1"> Forever<br>
+        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.selectedPeriod"> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.trend.untilDate = $ctrl.selectedPeriod"> {{$ctrl.period()}}<br>
+        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.datePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.datePicker.date" ng-click="$ctrl.datePicker.toggle()" is-open="$ctrl.datePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateDate()"/>
       </fieldset>
 
       <label>Name: </label><br>
