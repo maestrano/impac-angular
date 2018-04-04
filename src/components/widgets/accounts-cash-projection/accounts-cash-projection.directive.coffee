@@ -127,13 +127,29 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         # Clear trend list and replace by newly fetched ones
         _.remove($scope.trendList.trends, -> true)
         for trend in response.data.data
-          $scope.trendList.trends.push(angular.merge(trend.attributes))
+          $scope.trendList.trends.push(angular.merge(trend.attributes, { id: trend.id }))
         $scope.trendList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trendList.show())
 
   # Fetch and show all trends
   $scope.trendList.showAll = ->
     $scope.trendList.fetch()
+
+  $scope.trendList.updateTrend = (trend) ->
+    BoltResources.update(
+      w.metadata.bolt_path,
+      'trends',
+      trend.id,
+      _.omit(trend, 'id')
+    ).then(-> $scope.trendList.updated = true)
+
+  $scope.trendList.deleteTrend = (trendId) ->
+    _.remove($scope.trendList.trends, (trend) -> trend.id == trendId)
+    BoltResources.destroy(
+      w.metadata.bolt_path,
+      'trends',
+      trendId
+    ).then(-> $scope.trendList.updated = true)
 
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
@@ -276,7 +292,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     ).then(
       (response) ->
         $scope.userId = response.data.data.id
-    )
+    ) if $scope.firstCompanyId
 
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
