@@ -8,6 +8,10 @@
 
 #### Fixes
 
+#### Dependencies
+- MnoHub v2.0.1
+- MnoE [commit#15125777a9ce4332e2fd8d618291027b2e44d78d](https://github.com/maestrano/mno-enterprise/commit/15125777a9ce4332e2fd8d618291027b2e44d78d) (no version available at time of release)
+
 -------------------------------------------------------------
 
 ### v1.7.3 | 2018 - Week 6
