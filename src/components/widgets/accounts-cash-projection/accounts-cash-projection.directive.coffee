@@ -107,6 +107,37 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId
     ).then(-> $scope.trxList.updated = true)
 
+  $scope.trxList.includeSchedulableTransactions = (resourcesType, trx) ->
+    BoltResources.update(
+      w.metadata.bolt_path,
+      resourcesType,
+      trx.id,
+      {
+        recurring: trx.recurring,
+        recurring_pattern: trx.recurring_pattern,
+        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
+      }
+    ).then(->
+      $scope.trxList.updated = true
+      $scope.trxList.fetch()
+    )
+
+  $scope.trxList.deleteSchedulableTransactions = (resourcesType, trx) ->
+    trxId = trx.recurring_parent || trx.id
+    trx = _.find($scope.trxList.transactions, (trx) -> trx.id == trxId)
+    _.remove($scope.trxList.transactions, (trx) -> trx.recurring_parent == trxId)
+    if trx.status == 'FORECAST'
+      _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
+      $scope.trxList.deleteTransaction(resourcesType, trxId)
+    else
+      trx.recurring = false
+      BoltResources.update(
+        w.metadata.bolt_path,
+        resourcesType,
+        trxId,
+        { recurring : false }
+      )
+
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
@@ -118,15 +149,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   $scope.addForecastPopup =
     resourcesType: 'invoices'
     display: false
-    show: -> this.display = true
     hide: -> this.display = false
+    show: -> this.display = true
 
   $scope.addForecastPopup.createTransaction = (trx) ->
     BoltResources.create(
       w.metadata.bolt_path,
       this.resourcesType,
       {
-        title: trx.name,
+        title: trx.title,
         transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
         amount:trx.amount,
         balance: trx.amount,
@@ -134,7 +165,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
         reconciliation_status: 'UNRECONCILED',
-        currency: w.metadata.currency
+        currency: w.metadata.currency,
+        recurring: trx.recurring,
+        recurring_pattern: trx.recurring_pattern,
+        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
       },
       {
         company: { data: { type: 'companies', id: $scope.firstCompanyId } },

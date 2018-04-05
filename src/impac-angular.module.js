@@ -143,6 +143,8 @@ angular.module('impac.components.common',
   [
     'impac.components.common.data-not-found',
     'impac.components.common.delete-widget',
+    'impac.components.common.delete-schedule',
+    'impac.components.common.schedules-add',
     'impac.components.common.transactions-add',
     'impac.components.common.transactions-list',
     'impac.components.common.duplicate-transactions-list'

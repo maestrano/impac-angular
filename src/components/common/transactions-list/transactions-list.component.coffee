@@ -8,6 +8,8 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
+    onIncludeSchedulableTransaction: '&'
+    onDeleteSchedulableTransaction: '&'
     transactions: '<'
     currency: '<'
     totalRecords: '<'
@@ -66,6 +68,39 @@ module.component('transactionsList', {
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords >= ctrl.itemsPerPage
+
+    ctrl.canCreateSchedulableTransaction = (trx) ->
+      return trx.status != 'FORECAST' && !trx.recurring
+
+    ctrl.canDeleteSchedulableTransaction = (trx) ->
+      return (trx.status == 'FORECAST' && (trx.recurring || trx.recurring_parent)) || (trx.status != 'FORECAST' && trx.recurring)
+
+    ctrl.deleteSchedule =
+      args: {}
+      display: false
+      show: (args) ->
+        this.args = args
+        this.display = true
+      cancel: ->
+        this.args = {}
+        this.display = false
+      delete: ->
+        ctrl.onDeleteSchedulableTransaction(this.args)
+        this.display = false
+
+    ctrl.createSchedule =
+      trx: null
+      resourcesType: null
+      display: false
+      show: (args) ->
+        this.trx = args.trx
+        this.resourcesType = args.resourcesType
+        this.display = true
+      cancel: ->
+        this.display = false
+      create: (resourcesType, trx) ->
+        ctrl.onIncludeSchedulableTransaction({ resourcesType: resourcesType, trx: trx })
+        this.display = false
 
     return ctrl
 })

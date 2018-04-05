@@ -23,7 +23,9 @@
       on-page-changed="trxList.fetch(page)"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
-      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)">
+      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
+      on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
+      on-delete-schedulable-transaction="trxList.deleteSchedulableTransactions(resourcesType, trx)">
     </transactions-list>
 
     <duplicate-transactions-list
@@ -64,5 +66,10 @@
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
-  <transactions-add ng-if="addForecastPopup.display" contacts="contacts" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+<transactions-add
+  ng-if="addForecastPopup.display"
+  contacts="contacts"
+  resources-type="addForecastPopup.resourcesType"
+  on-hide="addForecastPopup.hide()"
+  on-create-transaction="addForecastPopup.createTransaction(trx)"/>
 </div>
