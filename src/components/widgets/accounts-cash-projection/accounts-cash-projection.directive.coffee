@@ -40,6 +40,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
 
+  # Initialise Contacts
+  $scope.contacts = []
+
   $scope.trxList.show = ->
     $scope.trxList.display = true
 
@@ -54,6 +57,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.params, {
         metadata: _.pick(w.metadata, 'organization_ids')
         page: { number: currentPage }
+        sort: '-expected_payment_date'
       }
     )
     BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(
@@ -74,7 +78,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
+    filter = {
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED'
+    }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
@@ -88,9 +95,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     ).then(-> $scope.trxList.updated = true)
 
   $scope.trxList.changeResourcesType = (resourcesType) ->
-    return if resourcesType == $scope.trxList.resources
-    $scope.trxList.resources = resourcesType
-    $scope.trxList.fetch()
+      return if resourcesType == $scope.trxList.resources
+      $scope.trxList.resources = resourcesType
+      $scope.trxList.fetch()
 
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
     _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
@@ -99,6 +106,37 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       resourcesType,
       trxId
     ).then(-> $scope.trxList.updated = true)
+
+  $scope.trxList.includeSchedulableTransactions = (resourcesType, trx) ->
+    BoltResources.update(
+      w.metadata.bolt_path,
+      resourcesType,
+      trx.id,
+      {
+        recurring: trx.recurring,
+        recurring_pattern: trx.recurring_pattern,
+        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
+      }
+    ).then(->
+      $scope.trxList.updated = true
+      $scope.trxList.fetch()
+    )
+
+  $scope.trxList.deleteSchedulableTransactions = (resourcesType, trx) ->
+    trxId = trx.recurring_parent || trx.id
+    trx = _.find($scope.trxList.transactions, (trx) -> trx.id == trxId)
+    _.remove($scope.trxList.transactions, (trx) -> trx.recurring_parent == trxId)
+    if trx.status == 'FORECAST'
+      _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
+      $scope.trxList.deleteTransaction(resourcesType, trxId)
+    else
+      trx.recurring = false
+      BoltResources.update(
+        w.metadata.bolt_path,
+        resourcesType,
+        trxId,
+        { recurring : false }
+      )
 
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
@@ -111,25 +149,90 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   $scope.addForecastPopup =
     resourcesType: 'invoices'
     display: false
-    show: -> this.display = true
     hide: -> this.display = false
+    show: -> this.display = true
 
   $scope.addForecastPopup.createTransaction = (trx) ->
     BoltResources.create(
       w.metadata.bolt_path,
       this.resourcesType,
       {
-        title: trx.name,
+        title: trx.title,
         transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
         amount:trx.amount,
         balance: trx.amount,
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
-        currency: w.metadata.currency
+        reconciliation_status: 'UNRECONCILED',
+        currency: w.metadata.currency,
+        recurring: trx.recurring,
+        recurring_pattern: trx.recurring_pattern,
+        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
       },
-      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+      {
+        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
+        contact: { data: { type: 'contacts', id: trx.contact.id } }
+      }
     ).then(-> ImpacWidgetsSvc.show(w))
+
+  # == Sub-Components - Duplicate Transactions list =========================================================
+  $scope.dupTrxList = { display: false, updated: false, transactions: [] }
+
+  $scope.dupTrxList.show = ->
+    $scope.dupTrxList.display = true
+
+  $scope.dupTrxList.hide = ->
+    $scope.dupTrxList.display = false
+    if $scope.dupTrxList.updated
+      ImpacWidgetsSvc.show(w).then(-> $scope.dupTrxList.updated = false)
+
+  # Fetches the transactions from the Bolt JSON API endpoint
+  $scope.dupTrxList.fetch = (currentPage = 1) ->
+    params = angular.merge(
+      $scope.dupTrxList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids')
+        page: { number: currentPage }
+      }
+    )
+    BoltResources.index(w.metadata.bolt_path, $scope.dupTrxList.resources, params).then(
+      (response) ->
+        # Clear transactions list and replace by newly fetched ones
+        _.remove($scope.dupTrxList.transactions, -> true)
+        for trx in response.data.data
+          $scope.dupTrxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
+        $scope.dupTrxList.totalRecords = response.data.meta.record_count
+    ).finally(-> $scope.dupTrxList.show())
+
+  # Init dupTrxList object with static values
+  $scope.dupTrxList.updateParams = (resources, filter) ->
+    $scope.dupTrxList.resources = resources
+    $scope.dupTrxList.params = { filter: filter }
+
+  # Fetch and show all invoices or bills
+  $scope.dupTrxList.showAll = (resources = 'invoices') ->
+    filter = {
+      status: ['FORECAST']
+      reconciliation_status: 'RECONCILING'
+    }
+    $scope.dupTrxList.updateParams(resources, filter)
+    $scope.dupTrxList.fetch()
+
+  # Execute action on duplicate transaction
+  $scope.dupTrxList.updateDuplicateTransaction = (dupTrxId, action) ->
+    _.remove($scope.dupTrxList.transactions, (dupTrx) -> dupTrx.id == dupTrxId)
+    BoltResources.update(
+      w.metadata.bolt_path,
+      $scope.dupTrxList.resources,
+      dupTrxId,
+      {reconciliation_action: action}
+    ).then(-> $scope.dupTrxList.updated = true)
+
+  $scope.dupTrxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.dupTrxList.resources
+    $scope.dupTrxList.resources = resourcesType
+    $scope.dupTrxList.fetch()
+
 
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
@@ -144,7 +247,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
     filter =
       expected_payment_date: dateFilter(event.point.x)
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED',
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
@@ -173,6 +277,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       continue if s.userOptions.linkedTo != series.name
       if series.visible then s.hide() else s.show()
 
+  loadContacts = ->
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'contacts',
+      {
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then(
+      (response) ->
+        $scope.contacts = response.data.data
+    )
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -189,7 +305,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       w.metadata.bolt_path,
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
-    ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
+    ).then((response) ->
+      $scope.firstCompanyId = response.data.data[0].id
+      loadContacts()
+    )
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
