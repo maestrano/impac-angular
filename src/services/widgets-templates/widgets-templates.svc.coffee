@@ -38,7 +38,7 @@ angular
       templatePath = "widgets/#{filename}.tmpl.html"
       return ($templateCache.get(templatePath) && templatePath)
 
-    # Custom templates live in widgets-layouts/custom dir, though gulp omits nested
+    # Custom templates live in widgets-layouts/custom-templates dir, though gulp omits nested
     # structures from the templateCachekey for brevity.
     boltTemplatePath = (widget)->
       for layout in widget.layouts

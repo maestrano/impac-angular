@@ -1,5 +1,4 @@
-.analytics .widget-item .content .table-layout {
-
+table-layout {
   table {
     width: 100%;
     max-width: 100%;
@@ -15,8 +14,12 @@
       }
     }
 
-    th[ng-click] {
+    th[ng-click],
+    td[ng-click] {
       cursor: pointer;
+      &.unclickable {
+        cursor: default;
+      }
     }
   }
 
@@ -29,7 +32,10 @@
     }
 
     .nested-table {
-      i.fa { padding-right: 5px; }
+      i.fa {
+        cursor: pointer;
+        padding: 2px 7px 2px 0;
+      }
     }
   }
 }
