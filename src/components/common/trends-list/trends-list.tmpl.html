@@ -1,0 +1,64 @@
+<div id="trends-list">
+  <div class="row top">
+    <div class="col-xs-6 pull-left">
+      <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()" ng-hide="$ctrl.listOnly">
+        <i class="fa fa-chevron-left" />
+        Back to chart
+      </label>
+    </div>
+    <div class="col-xs-6">
+      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.onPageChanged({page: $ctrl.currentPage})" />
+    </div>
+  </div>
+  <div class="table-container">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Rate</th>
+        <th>Periodicity</th>
+        <th>Last apply date</th>
+        <th/>
+        <th/>
+      </tr>
+      <tr ng-repeat="trend in $ctrl.trends">
+        <td ng-if="!$ctrl.editMode">{{trend.name}}</td>
+        <td ng-if="$ctrl.editMode">
+          <input type="text" class="form-control" ng-model="trend.name"/>
+        </td>
+        <td ng-if="!$ctrl.editMode">{{trend.rate}}%</td>
+        <td ng-if="$ctrl.editMode">
+          <input style="width: 45px;" type="number" value="0" min="0" step="1" ng-model="trend.rate"/>%
+        </td>
+        <td ng-if="!$ctrl.editMode">{{trend.periodicity}}</td>
+        <td ng-if="$ctrl.editMode">
+          <select ng-model="trend.periodicity">
+            <option>once</option>
+            <option>daily</option>
+            <option>weekly</option>
+            <option>monthly</option>
+            <option>annually</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.datePicker.date" ng-click="trend.datePicker.toggle()" is-open="trend.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeDate(trend)" />
+        </td>
+        <td>
+          <a ng-if="$ctrl.editMode">
+            <i class="fa fa-check" title="Validate" ng-click="$ctrl.updateTrend(trend)"/>
+          </a>
+          <a ng-if="!$ctrl.editMode">
+            <i class="fa fa-pencil" title="Edit trend" ng-click="$ctrl.editMode = true" />
+          </a>
+        </td>
+        <td>
+          <a ng-if="$ctrl.editMode">
+            <i class="fa fa-eraser" title="Cancel" ng-click="$ctrl.cancelEdit(trend.id)"/>
+          </a>
+          <a ng-if="!$ctrl.editMode">
+            <i class="fa fa-times" title="Delete trend" ng-click="$ctrl.onDeleteTrend({ trendId: trend.id })"/>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
