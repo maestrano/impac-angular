@@ -4,7 +4,9 @@ module.component('tableLayout', {
   bindings:
     table: '<'
     currency: '<'
-    unCollapsed: '<'
+    collapsed: '<'
+    selectedElements: '<'
+    rowLinkedSerie: '&?'
     onToggleCollapsed: '&?'
     onRowClick: '&?'
   controller: ($filter) ->
@@ -23,20 +25,25 @@ module.component('tableLayout', {
     ctrl.toggleCollapseOnClick = (row, $event) ->
       $event.stopPropagation()
       return unless (id = row.id)?
-      if _.find(ctrl.unCollapsed, ((name) -> id == name))
-        ctrl.unCollapsed = _.reject(ctrl.unCollapsed, (name) -> name == id)
+      if _.find(ctrl.collapsed, ((name) -> id == name))
+        ctrl.collapsed = _.reject(ctrl.collapsed, (name) -> name == id)
       else
-        ctrl.unCollapsed.push(id)
-      ctrl.onToggleCollapsed($event: { unCollapsed: ctrl.unCollapsed }) if _.isFunction(ctrl.onToggleCollapsed)
+        ctrl.collapsed.push(id)
+      ctrl.onToggleCollapsed($event: { collapsed: ctrl.collapsed }) if _.isFunction(ctrl.onToggleCollapsed)
 
     ctrl.rowOnClick = (row, $event) ->
       $event.stopPropagation()
-      return unless (id = row.id)?
-      ctrl.onRowClick($event: { id: id }) if _.isFunction(ctrl.onRowClick)
+      return unless _.isFunction(ctrl.onRowClick) && (id = row.id)?
+      ctrl.onRowClick($event: { id: id })
+
+    ctrl.selectedTabStyles = (row, $first) ->
+      serie = ctrl.rowLinkedSerie($event: { row: row })
+      return {} unless $first && serie && isRowSelected(row)
+      { 'border-left': "3px solid #{serie.color}" }
 
     ctrl.isCollapsed = (row) ->
       return unless (id = row.id)?
-      if _.find(ctrl.unCollapsed, ((name) -> id == name))
+      if _.find(ctrl.collapsed, ((name) -> id == name))
         return false
       else
         return true
@@ -59,6 +66,10 @@ module.component('tableLayout', {
     sortSingleRows = (rows, colIndex) ->
       _.sortByOrder(rows, ((r)-> r.cells[colIndex]), [ctrl.ascending])
 
+    isRowSelected = (row) ->
+      return unless (id = row.id)?
+      !!_.find(ctrl.selectedElements, (elemId)-> elemId == id)
+
     ctrl
 })
 module.directive('indentTableRow', ->
@@ -73,7 +84,7 @@ module.directive('indentTableRow', ->
         # Indent <td> equal to the length of ancestors plus 1
         nestLevel++ if $element.is('td')
 
-        $element.css({ 'padding-left': "#{nestLevel * 20}px" })
+        $element.css({ 'padding-left': "#{nestLevel * 23}px" })
 
       return
   }

@@ -1,28 +1,4 @@
 table-layout {
-  table {
-    width: 100%;
-    max-width: 100%;
-
-    th,
-    td:not(.nested-table) {
-      color: @mediumblue;
-      border-bottom: solid 1px @lightgray;
-      padding: 5px 0;
-
-      &:not(:first-child) {
-        text-align: right;
-      }
-    }
-
-    th[ng-click],
-    td[ng-click] {
-      cursor: pointer;
-      &.unclickable {
-        cursor: default;
-      }
-    }
-  }
-
   #table-layout {
     & > thead tr:first-child {
       .font(12px,500,@impac-widget-text-color-medium);
@@ -34,7 +10,41 @@ table-layout {
     .nested-table {
       i.fa {
         cursor: pointer;
-        padding: 2px 7px 2px 0;
+        padding: 2px 5px;
+      }
+    }
+  }
+
+  .nested-table table {
+    // Offset the nested tables slightly to align rows perfectly with parent table rows.
+    margin-left: -1px;
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+
+    th,
+    td:not(.nested-table) {
+      color: @mediumblue;
+      border-bottom: solid 1px @lightgray;
+      padding: 5px 0 5px 5px;
+
+      &:first-child {
+        // Base border to simply fix alignment against selected / unselected rows.
+        border-left: 3px solid transparent;
+      }
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+
+    th[ng-click],
+    td[ng-click] {
+      cursor: pointer;
+      &.unclickable {
+        cursor: default;
       }
     }
   }

@@ -1,7 +1,7 @@
 <table id="table-layout">
   <thead>
     <tr>
-      <th width="{{colWidth}}" ng-repeat="cell in $ctrl.table.headers.cells" ng-click="$ctrl.sort(cell, $index)">
+      <th width="{{$ctrl.colWidth}}" ng-repeat="cell in $ctrl.table.headers.cells" ng-click="$ctrl.sort(cell, $index)">
         <span ng-bind="$ctrl.cellValue(cell)"></span>
         <i ng-show="$ctrl.sortedColumn == cell" class="fa" ng-class="$ctrl.ascending ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'" />
       </th>
@@ -12,7 +12,7 @@
       <td class="nested-table" colspan="{{$ctrl.colSize}}" ng-include="'grouped-table.tmpl.html'"></td>
     </tr>
     <tr ng-repeat="row in $ctrl.table.rows.single">
-      <td ng-repeat="cell in row.cells" ng-class="{'unclickable': !$ctrl.onRowClick}" ng-click="$ctrl.rowOnClick(row, $event)" ng-bind="$ctrl.cellValue(cell)"></td>
+      <td ng-repeat="cell in row.cells" ng-class="{ 'unclickable': !$ctrl.onRowClick }" ng-style="$ctrl.selectedTabStyles(row, $first)" ng-click="$ctrl.rowOnClick(row, $event)" ng-bind="$ctrl.cellValue(cell)"></td>
     </tr>
   </tbody>
 </table>
@@ -21,7 +21,7 @@
   <table>
     <thead>
       <tr>
-        <th width="{{$ctrl.colWidth}}" ng-repeat="cell in groupedTable.headers.cells" ng-class="{'unclickable': !$ctrl.onRowClick}" ng-click="$ctrl.rowOnClick(groupedTable.headers, $event)" indent-table-row>
+        <th width="{{$ctrl.colWidth}}" ng-repeat="cell in groupedTable.headers.cells" ng-class="{ 'unclickable': !$ctrl.onRowClick }" ng-style="$ctrl.selectedTabStyles(groupedTable.headers, $first)" ng-click="$ctrl.rowOnClick(groupedTable.headers, $event)" indent-table-row>
           <i class="fa" ng-if="$first" ng-class="$ctrl.isCollapsed(groupedTable.headers) ? 'fa-plus-square-o' : 'fa-minus-square-o'" ng-click="$ctrl.toggleCollapseOnClick(groupedTable.headers, $event)" />
           <strong ng-bind="$ctrl.cellValue(cell)"></strong>
         </th>
@@ -32,7 +32,7 @@
         <td class="nested-table" colspan="{{$ctrl.colSize}}" ng-include="'grouped-table.tmpl.html'"></td>
       </tr>
       <tr ng-repeat="row in groupedTable.rows.single">
-        <td ng-repeat="cell in row.cells" ng-class="{'unclickable': !$ctrl.onRowClick}" ng-click="$ctrl.rowOnClick(row, $event)" indent-table-row ng-bind="$ctrl.cellValue(cell)"></td>
+        <td ng-repeat="cell in row.cells" ng-class="{ 'unclickable': !$ctrl.onRowClick }" ng-style="$ctrl.selectedTabStyles(row, $first)" ng-click="$ctrl.rowOnClick(row, $event)" indent-table-row ng-bind="$ctrl.cellValue(cell)"></td>
       </tr>
     </tbody>
   </table>
