@@ -31,6 +31,11 @@ angular
       else
         boltTemplatePath(widget)
 
+    # Adapter for Bolt widgets to build a css path based on generic layout used.
+    @cssFilename = (widget)->
+      # split by '/' and '.', then select the filename from path.
+      _self.templatePath(widget).split(/[\/.]/)[1]
+
     # Private
 
     legacyTemplatePath = (widget) ->

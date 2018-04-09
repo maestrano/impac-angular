@@ -87,7 +87,7 @@ module.directive('impacWidget', ($log, $templateCache, ImpacUtilities, ImpacWidg
         scope.widget.hasDeleteAbility = true
         # <--
 
-        scope.cssClass = ImpacWidgetsTemplates.filename(scope.widget)
+        scope.cssClass = ImpacWidgetsTemplates.cssFilename(scope.widget)
         scope.templatePath = ImpacWidgetsTemplates.templatePath(scope.widget)
         _handleNoTemplateFound() unless scope.templatePath
 
