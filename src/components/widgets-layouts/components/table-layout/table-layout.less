@@ -40,11 +40,11 @@ table-layout {
       }
     }
 
-    th[ng-click],
-    td[ng-click] {
+    tr[ng-click].selectable {
       cursor: pointer;
-      &.unclickable {
-        cursor: default;
+
+      &:hover {
+        background-color: lighten(@impac-widget-selectable-color, 22%);
       }
     }
   }
