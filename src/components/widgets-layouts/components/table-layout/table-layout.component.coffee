@@ -18,9 +18,11 @@ module.component('tableLayout', {
       ctrl.colSize = ctrl.table.headers.cells.length
       ctrl.colWidth = "#{100 / ctrl.colSize}%"
 
-    ctrl.cellValue = (v)->
-      num = parseFloat(v)
-      if _.isNumber(num) && !_.isNaN(num) then $filter('mnoCurrency')(v, ctrl.currency) else v
+    ctrl.cellValue = (val)->
+      # TODO: should the Table Layout return cell field types?
+      return $filter('mnoCurrency')(val, ctrl.currency) if _.isNumber(val)
+      return $filter('date')(val, 'dd/mm/yyyy') if _.isString(val) && !val.match(/^\d+\.\d+/) && !_.isNaN(Date.parse(val))
+      val
 
     ctrl.toggleCollapseOnClick = (row, $event) ->
       $event.stopPropagation()
