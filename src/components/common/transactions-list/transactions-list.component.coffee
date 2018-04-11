@@ -18,30 +18,17 @@ module.component('transactionsList', {
 
     ctrl.$onInit = ->
       ctrl.currentPage = 1
-      ctrl.totalAmount = 0.0
-      ctrl.totalBalance = 0.0
-
-      for trx in ctrl.transactions
-        ctrl.totalAmount += trx.amount
-        ctrl.totalBalance += trx.balance
-
-        # dates are sent in UTC by the API
-        trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
-        trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
-        trx.showReset = (trx.due_date != trx.expected_payment_date)
-
-        m = moment.utc(trx.expected_payment_date)
-        trx.datePicker =
-          opened: false
-          # JS Date object is required by uib-datepicker-tooltip
-          date: new Date(m.year(), m.month(), m.date())
-          toggle: ->
-            this.opened = !this.opened
+      ctrl.calculateTotals()
 
     ctrl.changeResourcesType = ->
       ctrl
         .onChangeResources({ resourcesType: ctrl.resourcesType })
         .then(-> ctrl.$onInit())
+
+    ctrl.changePage = ->
+      ctrl
+        .onPageChanged({page: ctrl.currentPage})
+        .then(-> ctrl.calculateTotals())
 
     ctrl.changeExpectedDate = (trx) ->
       trx.showReset = true
@@ -54,6 +41,30 @@ module.component('transactionsList', {
       trx.datePicker.date = expDate
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
 
+    ctrl.calculateTotals = () ->
+      # Moved logic from initialize to support recalculation on page change.
+      ctrl.totalAmount = 0.0
+      ctrl.totalBalance = 0.0
+
+      for trx in ctrl.transactions
+        ctrl.totalAmount += trx.amount
+        ctrl.totalBalance += trx.balance
+        ctrl.formatDate(trx)
+
+    ctrl.formatDate = (trx) ->
+      # dates are sent in UTC by the API
+      trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
+      trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
+
+      unless ctrl.listOnly
+        trx.showReset = (trx.due_date != trx.expected_payment_date)
+        m = moment.utc(trx.expected_payment_date)
+        trx.datePicker =
+          opened: false
+          # JS Date object is required by uib-datepicker-tooltip
+          date: new Date(m.year(), m.month(), m.date())
+          toggle: ->
+            this.opened = !this.opened
 
     return ctrl
 })
