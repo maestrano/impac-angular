@@ -407,6 +407,11 @@ angular
         widgetSelectorConfig:
           # path to a custom html template.
           path: null
+          # Whitelist / Blacklist widget templates
+          # - whitelist takes precedence over blacklist
+          # - when both are empty, all templates are displayed
+          whitelist: []
+          blacklist: []
         widgetSettings:
           histModeChoser:
             currentLabels:

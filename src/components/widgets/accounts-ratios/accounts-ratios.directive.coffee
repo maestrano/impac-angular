@@ -96,7 +96,10 @@ module.controller('WidgetAccountsRatiosCtrl', ($scope, $q, $filter, $translate, 
 
       # inputData = {title: data.type, labels: dates, values: data.values}
       inputData = {labels: dates, datasets: [{title: data.layout.ratio, values: data.calculation.ratio.totals}]}
-      options = { currency: 'hide' }
+      options = {
+        currency: 'hide',
+        showXLabels: false
+      }
 
       chartData = ChartFormatterSvc.combinedBarChart(inputData, options, false)
 

@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <div class="row" ng-repeat="entity in widget.content.companies track by $index">
+          <div class="row" ng-repeat="entity in widget.content.companies | orderBy:'toString()' track by $index">
             <div class="col-xs-6 text-left">
               <i class="fa fa-circle" ng-style="{ 'margin': '0px 8px', 'color': getAccountColor(entity) }" />
               {{entity}}

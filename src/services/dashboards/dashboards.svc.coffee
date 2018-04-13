@@ -108,8 +108,9 @@ angular
           ImpacMainSvc.load(force).then(
             (success)->
               orgId = success.currentOrganization.id
+            #Uses the previously sorted organizations to make another request below.
 
-              # Retrieve dashboards with widgets and kpis settings
+              # Retrieve appropriate dashboards with widgets and kpis settings
               dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
                 (response) ->
                   _self.setDashboards(response.data).then(-> _self.setCurrentDashboard() )
@@ -150,31 +151,33 @@ angular
 
     # Retrieve widgets templates from legacy Impac! API and from all Bolts configured in ImpacRoutes service
     fetchWidgetsTemplates = ->
-      widgetsTemplates = []
-      widgetsTemplatesPromises = []
+      templatesPromises = {}
+      bolts = ImpacRoutes.bolts()
 
       # Fetch templates from legacy v1 api
-      widgetsTemplatesPromises.push $http.get(widgetsTemplatesUrl()).then(
-        (response) ->
-          for widgetTemplate in response.data.widgets
-            widgetsTemplates.push(widgetTemplate)
-        (error) ->
+      templatesPromises.legacy = $http.get(widgetsTemplatesUrl()).then(
+        (response)->
+          _.sortBy(response.data.widgets, 'name')
+        ->
           $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates", widgetsTemplatesUrl())
       )
 
       # Fetch templates for each configured bolt
-      for bolt in ImpacRoutes.bolts()
-        widgetsTemplatesPromises.push $http.get("#{bolt.path}/widgets").then(
-          (response) ->
-            for widgetTemplate in response.data.widgets
-              widgetTemplate.metadata ||= {}
-              widgetTemplate.metadata.bolt_path = bolt.path
-              widgetsTemplates.push(widgetTemplate)
-          (error) ->
-            $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates from bolt", "#{boltPath}/widgets")
+      boltPromiseKeys = _.map(bolts, (bolt)->
+        promiseKey = "#{bolt.provider}_#{bolt.name}"
+        templatesPromises[promiseKey] = $http.get("#{bolt.path}/widgets").then(
+          (response)->
+            _.map(response.data.widgets, (w)-> _.extend(w, metadata: bolt_path: bolt.path))
+          ->
+            $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates from bolt", "#{bolt.path}/widgets")
         )
+        promiseKey
+      )
 
-      $q.all(widgetsTemplatesPromises).then(-> _self.setWidgetsTemplates(widgetsTemplates))
+      $q.all(templatesPromises).then((response)->
+        boltTemplates = _.map(boltPromiseKeys, (key)-> response[key])
+        _self.setWidgetsTemplates(_.flattenDeep([response.legacy, boltTemplates]))
+      )
 
     widgetsTemplatesUrl = ->
       if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear

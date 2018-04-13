@@ -25,6 +25,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   imgTemplate = (src, name) ->
     "<img src='#{src}'><br>#{name}"
 
+  extractContactName = (id, contacts) ->
+    contact = _.find contacts, (c) -> c.id == id
+    contact.attributes.name
+
   # Unique identifier for the chart object in the DOM
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
@@ -57,14 +61,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         # Clear transactions list and replace by newly fetched ones
         _.remove($scope.trxList.transactions, -> true)
         for trx in response.data.data
-          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
+          if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
+            contact_name = extractContactName(trx.relationships.contact.data.id, response.data.included)
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id, contact_name: contact_name || null }))
         $scope.trxList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trxList.show())
 
   # Init trxList object with static values
   $scope.trxList.updateParams = (resources, filter) ->
     $scope.trxList.resources = resources
-    $scope.trxList.params = { filter: filter }
+    $scope.trxList.params = { include: 'contact', fields: { contacts: 'name' }, filter: filter }
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
@@ -187,27 +193,25 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->
-    # Instantiate and render chart
-    options =
+    _highChartOptions =
       chartType: 'line'
-      chartOnClickCallbacks: []
       currency: w.metadata.currency
       showToday: true
-      showLegend: true
-      withZooming:
-        defaults: w.metadata.xAxis
-        callback: onZoom
 
-    $scope.chart ||= new HighchartsFactory($scope.chartId(), w.content.chart, options)
-    $scope.chart.render(w.content.chart, options)
-
-    # Add events callbacks to chart object
+    # Add custom options to the chart before render.
+    $scope.chart = new HighchartsFactory($scope.chartId(), w.content.chart.series, _highChartOptions)
     $scope.chart.addCustomLegend(legendFormatter)
     $scope.chart.addSeriesEvent('click', onClickBar)
     $scope.chart.addSeriesEvent('legendItemClick', onClickLegend)
+    $scope.chart.addXAxisOptions(({
+      defaults: w.metadata.xAxis
+      callback: onZoom
+      }))
 
+    $scope.chart.render()
     # Notifies parent element that the chart is ready to be displayed
     $scope.chartDeferred.notify($scope.chart)
+
 
   $scope.widgetDeferred.resolve(settingsPromises)
 )

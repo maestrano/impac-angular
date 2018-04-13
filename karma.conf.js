@@ -24,10 +24,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       /* inject:bower */
-      'bower_components/angular/angular.js',
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/jasmine/lib/jasmine-core/jasmine.js',
-      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+      'bower_components/angular/angular.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/jquery-ui/jquery-ui.js',
@@ -48,12 +46,13 @@ module.exports = function(config) {
       'bower_components/highcharts/highstock.js',
       'bower_components/color/one-color-all.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/AngularDevise/lib/devise.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-translate-handler-log/angular-translate-handler-log.js',
       'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/jasmine/lib/jasmine-core/jasmine.js',
+      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       /* endinject */
       'dist/impac-angular.js',
       'src/**/*.spec.js',
@@ -100,10 +99,10 @@ module.exports = function(config) {
     browsers: ['Chrome'],
 
     customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
+        Chrome_travis_ci: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        }
     },
 
     // Continuous Integration mode
@@ -111,13 +110,8 @@ module.exports = function(config) {
     singleRun: false
   };
 
-  if(process.env.TRAVIS){
+  if (process.env.TRAVIS) {
     configuration.browsers = ['Chrome_travis_ci'];
-    // configuration.reporters = configuration.reporters.concat(['coverage', 'coveralls']);
-    // configuration.coverageReporter = {
-    //   type : 'lcovonly',
-    //   dir : 'coverage/'
-    // };
   }
 
   config.set(configuration);
