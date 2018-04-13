@@ -14,12 +14,18 @@
   <!-- Content Panel -->
   <div ng-hide="widget.isEditMode">
     <!-- Data found -->
-    <div ng-show="(isDataFound==true)" class="trx-container">
+    <div class="trx-container">
     <!-- Display Transactions list.  Hide date picker and 'back to chart' button'. -->
       <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-change-resources="trxList.changeResourcesType(resourcesType)" list-only="true"></transactions-list>
     </div>
 
     <!-- No data found -->
     <div ng-if="(isDataFound==false)" common-data-not-found on-display-alerts="onDisplayAlerts()" endpoint="::widget.category" width="::widget.width" />
+  </div>
+</div>
+<div ng-show="!trxList.display" class="loader" align="center">
+  <div>
+    <i class="fa fa-spinner fa-pulse fa-3x"></i>
+    <p translate="impac.widget.loader"></p>
   </div>
 </div>
