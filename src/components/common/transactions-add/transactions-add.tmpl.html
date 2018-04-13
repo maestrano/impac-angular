@@ -13,6 +13,13 @@
       <label>Expected payment date:</label>
       <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.trx.datePicker.date" ng-click="$ctrl.trx.datePicker.toggle()" is-open="$ctrl.trx.datePicker.opened" close-text="Close" on-open-focus="false" />
 
+      <label>Customer</label>
+      <div class='btn-group'>
+        <select ng-model="$ctrl.trx.contact" ng-options="contact.attributes.name for contact in $ctrl.contacts | orderBy: 'attributes.name' track by contact.id" class='form-control'>
+          <option value=''> Choose Customer</option>
+        </select>
+      </div>
+
       <label>Type:</label>
       <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
