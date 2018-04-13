@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.6.10 | 2018 - Week 15
+
+#### Fixes
+- [KAPP-85] Minor fixes on live balance widget
+
+-------------------------------------------------------------
+
 ### v1.6.9 | 2018 - Week 6
 
 #### Adds
