@@ -8,6 +8,7 @@
 
 #### Fixes
 [KAPP-85] Minor fixes on live balance widget
+[IMPAC-834] Fixes on invoices list widget (recalculate totals on page change)
 
 -------------------------------------------------------------
 
