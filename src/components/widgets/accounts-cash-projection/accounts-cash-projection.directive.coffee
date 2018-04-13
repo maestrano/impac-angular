@@ -40,6 +40,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
 
+  # Initialise Contacts
+  $scope.contacts = []
+
   $scope.trxList.show = ->
     $scope.trxList.display = true
 
@@ -128,7 +131,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         status: 'FORECAST',
         currency: w.metadata.currency
       },
-      { company: { data: { type: 'companies', id: $scope.firstCompanyId } } }
+      {
+        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
+        contact: { data: { type: 'contacts', id: trx.contact.id } }
+      }
     ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
@@ -173,6 +179,18 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       continue if s.userOptions.linkedTo != series.name
       if series.visible then s.hide() else s.show()
 
+  loadContacts = ->
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'contacts',
+      {
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then(
+      (response) ->
+        $scope.contacts = response.data.data
+    )
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -189,7 +207,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       w.metadata.bolt_path,
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
-    ).then((response) -> $scope.firstCompanyId = response.data.data[0].id)
+    ).then((response) ->
+      $scope.firstCompanyId = response.data.data[0].id
+      loadContacts()
+    )
 
   # Executed after the widget and its settings are initialised and ready
   w.format = ->

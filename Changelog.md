@@ -1,5 +1,16 @@
 # Impac! Frontend Changelog
 
+### v1.6.10 | 2018 - Week 15
+
+#### Adds
+[IMPAC-764] Custom template for invoices list widget
+[IMPAC-780] Contact name in transactions list (cash projection widget)
+
+#### Fixes
+[KAPP-85] Minor fixes on live balance widget
+
+-------------------------------------------------------------
+
 ### v1.6.9 | 2018 - Week 6
 
 #### Adds
