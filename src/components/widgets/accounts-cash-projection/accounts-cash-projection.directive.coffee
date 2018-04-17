@@ -35,7 +35,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # == Widget Settings ============================================================================
   $scope.orgDeferred = $q.defer()
-  settingsPromises = [$scope.orgDeferred.promise]
+  $scope.sourceDeferred = $q.defer()
+  settingsPromises = [
+    $scope.orgDeferred.promise,
+    $scope.sourceDeferred.promise
+  ]
 
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
@@ -74,7 +78,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
+    appUid = $scope.widget.metadata.app_instance_id.pop() if $scope.widget.metadata.app_instance_id
+    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'], app_instance_id: appUid }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
