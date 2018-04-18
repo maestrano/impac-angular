@@ -1,7 +1,7 @@
 module = angular.module('impac.components.common.transactions-add',[])
                 .constant('SCHEDULABLE_RULES', Object.freeze([
-                   {name: 'Daily', value: 'DailyRule'}, {name: 'Weekly', value: 'WeeklyRule'},
-                   {name: 'Monthly', value: 'Monthly'}, {name: 'Yearly', value: 'YearlyRule'}]))
+                   {name: 'Day', value: 'DailyRule'}, {name: 'Week', value: 'WeeklyRule'},
+                   {name: 'Month', value: 'MonthlyRule'}, {name: 'Year', value: 'YearlyRule'}]))
 
 module.component('transactionsAdd', {
   templateUrl: 'common/transactions-add.tmpl.html'
@@ -31,6 +31,9 @@ module.component('transactionsAdd', {
       ctrl.schedulable =
         recurring: false
         interval: 4
+        validateInterval: ->
+          if (angular.isUndefined(this.interval) || this.interval == null || this.interval < 1)
+            this.interval = 1
         rule: ctrl.schedulableRules[2]
         endType: 'occurrencies'
         occurrencies: 12
@@ -38,6 +41,8 @@ module.component('transactionsAdd', {
         datePicker:
           opened: false
           date: new Date()
+          options: {minDate: new Date()}
+          minDate: -1
           toggle: -> this.opened = !this.opened
 
       if(!ctrl.editable )
@@ -72,7 +77,6 @@ module.component('transactionsAdd', {
       start = parseInt(start)
       end = parseInt(end)
       return [start..end]
-
 
     return ctrl
 })

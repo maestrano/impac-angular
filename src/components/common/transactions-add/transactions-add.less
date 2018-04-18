@@ -6,12 +6,12 @@
     width: 30%;
     .form {
       padding: 0px 10px;
-      > label, .schedulable-section > label {
+      > label, .schedulable-section > label, div > label {
         padding-top: 10px;
         font-weight: normal;
         margin-bottom: 3px;
       }
-      input.form-control {
+      input.form-control, select.form-control {
         width: 90%;
         border-radius: 2px;
         height: 28px;
@@ -34,18 +34,32 @@
         color: black;
         font-style: normal;
       }
+      .repeat-btn {
+        margin-top: 30px;
+        input[type="checkbox"] {
+          vertical-align: text-bottom;
+          margin: 0px;
+        }
+        select { height: 22px; }
+        .btn {
+          float: none;
+          border-color: #888888;
+        }
+      }
       .schedulable-section {
-        margin-top: 15px;
         padding: 5px;
         border: solid 1px silver;
+        margin-top: 0px;
         background-color: white;
         .badge {
           font-weight: normal;
           background-color: #888888;
         }
+        .interval-field {
+          width: 40px;
+        }
         .btn-group {
           margin-left: 10px;
-          input[type="radio"] { margin-top: 5px; }
           select { height: 22px; }
           .btn {
             float: none;
