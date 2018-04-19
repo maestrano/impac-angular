@@ -84,8 +84,8 @@ module.controller('WidgetInvoicesListCtrl', ($scope, $q, $sce, $filter, ImpacUti
           contactFxTotals.push({
             currency: currency,
             amount: total.invoiced,
-            rate: total.rate  
-          })  
+            rate: total.rate
+          })
       unless _.isEmpty(contactFxTotals)
         contact.formattedFxTotals = contactFxTotals
 
