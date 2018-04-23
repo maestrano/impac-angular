@@ -36,6 +36,12 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
         { app_instance_id: appInstanceId }
 
       resetSelectedApps = -> scope.selectedApps = _.mapValues(scope.selectedApps, -> false)
+      updateAppInstances = (appInstances, primary, manual) ->
+        valuesPresent = _.find(appInstances, (hash) ->
+          # We push bot at the same time so we can check for one
+          hash.value == 'prm-records-only'
+        )
+        if valuesPresent then appInstances else appInstances.push(primary, manual)
 
       retrieveAppInstances = ->
         return if false # needed?
@@ -45,7 +51,6 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
         ).options
 
         # Used as a 'reset' switch to filter on primary records only
-        # Default on Initialization (in the Bolt)
         primary =
           'value': 'prm-records-only'
           'label': 'Primary Only'
@@ -59,9 +64,9 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
           'value': manUid
           'label': 'Manual'
 
-        if appInstances then appInstances.push(primary, manual) else (appInstances = [primary, manual])
+        if appInstances then updateAppInstances(appInstances, primary, manual) else (appInstances = [primary, manual])
 
-        scope.organizationApps ?= appInstances
+        scope.organizationApps = appInstances
 
       scope.isApplicationSelected = (app_uid) ->
         !!scope.selectedApps[app_uid]
