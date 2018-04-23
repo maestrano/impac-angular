@@ -1,14 +1,33 @@
 #transactions-list {
   .top {
     height: 40px;
-    a.back-link { font-weight: normal; }
+    position: relative;
+
+    .back { position: absolute; }
+    .resource-type {
+      position: absolute;
+      left: ~"calc(50% - 98px)";
+      @media (max-width: @screen-xs-max) {
+        left: unset;
+        right: 0;
+      }
+    }
+    .btn-group { display: flex; }
+  }
+
+  .bottom {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .pagination { margin: 0px; }
   }
 
   .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    max-height: ~"calc(@{impac-big-widget-size} - 100px)";
     overflow: auto;
-    
+    width: 100%;
+
     div[uib-datepicker-popup-wrap] {
       display: inline-block;
     }

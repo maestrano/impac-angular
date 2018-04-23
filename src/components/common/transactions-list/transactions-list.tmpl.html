@@ -1,19 +1,16 @@
 <div id="transactions-list">
-  <div class="row top">
-    <div class="col-xs-4 pull-left">
+  <div class="top">
+    <div class="back">
       <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()" ng-hide="$ctrl.listOnly">
         <i class="fa fa-chevron-left" />
         Back to chart
       </label>
     </div>
-    <div class="col-xs-4 text-center">
+    <div class="resource-type">
       <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
-    </div>
-    <div class="col-xs-4">
-      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
     </div>
   </div>
   <div class="table-container">
@@ -60,5 +57,10 @@
         <td />
       </tr>
     </table>
+  </div>
+  <div class="bottom">
+    <div>
+      <ul uib-pagination total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
+    </div>
   </div>
 </div>
