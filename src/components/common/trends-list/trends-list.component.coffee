@@ -15,12 +15,18 @@ module.component('trendsList', {
     ctrl.$onInit = ->
       ctrl.currentPage = 1
       for trend in ctrl.trends
-        ctrl.setDatePicker(trend)
+        ctrl.setDatePickers(trend)
       ctrl.originalTrends = _.map(ctrl.trends, _.clone)
 
-    ctrl.setDatePicker = (trend) ->
+    ctrl.setDatePickers = (trend) ->
       m = moment.utc(trend.last_apply_date)
-      trend.datePicker =
+      trend.untilDatePicker =
+        opened: false
+        date: new Date(m.year(), m.month(), m.date())
+        toggle: ->
+          this.opened = !this.opened if ctrl.editMode
+      m = moment.utc(trend.start_date)
+      trend.startDatePicker =
         opened: false
         date: new Date(m.year(), m.month(), m.date())
         toggle: ->
@@ -30,14 +36,15 @@ module.component('trendsList', {
       ctrl.editMode = true
 
     ctrl.updateTrend = (trend) ->
-      trend.last_apply_date = trend.datePicker.date
-      ctrl.onUpdateTrend({ trend: _.omit(trend, 'datePicker') })
+      trend.last_apply_date = trend.untilDatePicker.date
+      trend.start_date = trend.startDatePicker.date
+      ctrl.onUpdateTrend({ trend: _.omit(trend, 'startDatePicker', 'untilDatePicker') })
       ctrl.originalTrends = _.map(ctrl.trends, _.clone)
       ctrl.editMode = false
 
     ctrl.cancelEdit = (trendId) ->
       trend = _.find(ctrl.originalTrends, 'id', trendId)
-      ctrl.setDatePicker(trend)
+      ctrl.setDatePickers(trend)
       ctrl.trends.splice(_.findIndex(ctrl.trends, {id: trendId}), 1, trend)
       ctrl.originalTrends = _.map(ctrl.trends, _.clone)
       ctrl.editMode = false

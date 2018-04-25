@@ -16,6 +16,7 @@
         <th>Name</th>
         <th>Rate</th>
         <th>Periodicity</th>
+        <th>Start Date</th>
         <th>Last apply date</th>
         <th/>
         <th/>
@@ -40,7 +41,10 @@
           </select>
         </td>
         <td>
-          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.datePicker.date" ng-click="trend.datePicker.toggle()" is-open="trend.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeDate(trend)" />
+          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.startDatePicker.date" ng-click="trend.startDatePicker.toggle()" is-open="trend.startDatePicker.opened" close-text="Close" on-open-focus="false" />
+        </td>
+        <td>
+          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" />
         </td>
         <td>
           <a ng-if="$ctrl.editMode">

@@ -10,7 +10,12 @@ module.component('trendsAdd', {
     ctrl = this
 
     ctrl.$onInit = ->
-      ctrl.datePicker =
+      ctrl.untilDatePicker =
+        opened: false
+        date: new Date()
+        toggle: ->
+          this.opened = true
+      ctrl.startDatePicker =
         opened: false
         date: new Date()
         toggle: ->
@@ -37,15 +42,19 @@ module.component('trendsAdd', {
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
       ctrl.trend.rate > 0 &&
-      ctrl.trend.untilDate? || ctrl.trend.period == "Once"
+      (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
+      ctrl.trend.startDate < ctrl.trend.untilDate
 
     ctrl.createTrend = ->
       ctrl.onHide()
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
-    ctrl.updateDate = ->
-      ctrl.trend.untilDate = ctrl.datePicker.date
+    ctrl.updateStartDate = ->
+      ctrl.trend.startDate = ctrl.startDatePicker.date
+
+    ctrl.updateUntilDate = ->
+      ctrl.trend.untilDate = ctrl.untilDatePicker.date
 
     return ctrl
 })

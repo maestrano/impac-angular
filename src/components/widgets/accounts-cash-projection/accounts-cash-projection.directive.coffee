@@ -215,6 +215,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         name: trend.name,
         rate: trend.rate
         periodicity: trend.period,
+        start_date: trend.startDate,
         last_apply_date: last_apply_date
       },
       {
