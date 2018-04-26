@@ -4,7 +4,13 @@
   <div class="widget-lines-container">
     <div class="widget-line">
       Aggregate
-      <i ng-class="isToggleForecastPayroll() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'" ng-click="toggleForecastPayroll()" />
+      <i ng-class="isToggleForecastPayroll() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="toggleForecastPayroll()" />
+    </div>
+    <div class="widget-line" ng-disabled="!isToggleForecastPayroll()" >
+      <i ng-class="isToggleTimeSheetModifier() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="toggleTimeSheetModifier()" />
+        TimeSheet Modifier
     </div>
   </div>
 </div>

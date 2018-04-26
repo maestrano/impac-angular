@@ -2,16 +2,26 @@ module = angular.module('impac.components.widgets-settings.forecast-payroll',[])
 module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc, ImpacWidgetsSvc) ->
 
   w = $scope.parentWidget
-  w.selectedForecastPayroll = false
 
   $scope.toggleForecastPayroll = ->
-    w.selectedForecastPayroll = !w.selectedForecastPayroll
+    w.selectedForecastPayroll.enable = !w.selectedForecastPayroll.enable
+    if(w.selectedForecastPayroll? && !w.selectedForecastPayroll.enable)
+      w.selectedForecastPayroll.time_sheet = false
+
+  $scope.toggleTimeSheetModifier= ->
+    if(w.selectedForecastPayroll? && w.selectedForecastPayroll.enable)
+      w.selectedForecastPayroll.time_sheet = !w.selectedForecastPayroll.time_sheet
 
   $scope.isToggleForecastPayroll = ->
-    return w.selectedForecastPayroll
+    if(w.selectedForecastPayroll?)
+      return w.selectedForecastPayroll.enable
+
+  $scope.isToggleTimeSheetModifier= ->
+    if(w.selectedForecastPayroll?)
+      return w.selectedForecastPayroll.time_sheet
 
   # What will be passed to parentWidget
-  setting = {}
+  setting = {enable: false, time_sheet: false}
   setting.key = "forecast_payroll"
   setting.isInitialized = false
 
@@ -20,7 +30,8 @@ module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSv
     ImpacDashboardsSvc.load().then(
       (config) ->
         currentDashboard = config.currentDashboard
-        return unless w.metadata? && w.metadata.forecast_payroll?
+        return if w.metadata? && w.metadata.forecast_payroll?
+        w.metadata.forecast_payroll = {enable: false, time_sheet: false}
         w.selectedForecastPayroll = w.metadata.forecast_payroll
         setting.isInitialized = true
     )
