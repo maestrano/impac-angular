@@ -299,6 +299,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
+
     # Hide Cash Flow series returned by the API
     cashFlowSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Cash flow"
@@ -313,7 +314,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
     ).then((response) ->
-      $scope.firstCompanyId = response.data.data[0].id
+      if _.isEmpty(response.data.data)
+        w.demoData = true
+      else
+        w.demoData = false
+        $scope.firstCompanyId = response.data.data[0].id
       loadContacts()
     )
 
