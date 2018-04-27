@@ -8,6 +8,7 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
+    onCurrencyChange: '&'
     transactions: '<'
     currency: '<'
     totalRecords: '<'
@@ -15,15 +16,24 @@ module.component('transactionsList', {
     listOnly: '<'
   controller: ->
     ctrl = this
-
+    ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: []}
     ctrl.$onInit = ->
       ctrl.currentPage = 1
       ctrl.calculateTotals()
+
+    ctrl.$onChanges = (changes) ->
+      if changes.currency && (changes.currency.currentValue != ctrl.currentAttributes.currency)
+        ctrl.onCurrencyChange().then(-> ctrl.$onInit())
 
     ctrl.changeResourcesType = ->
       ctrl
         .onChangeResources({ resourcesType: ctrl.resourcesType })
         .then(-> ctrl.$onInit())
+
+    # update current attributes after data is fetched and processed to prevent premature rendering.
+    ctrl.updateCurrentAttributes = (newAttrs) ->
+      _.remove(ctrl.currentAttributes.transactions, -> true) if newAttrs.transactions
+      _.merge(ctrl.currentAttributes, newAttrs)
 
     ctrl.changePage = ->
       ctrl
@@ -45,11 +55,12 @@ module.component('transactionsList', {
       # Moved logic from initialize to support recalculation on page change.
       ctrl.totalAmount = 0.0
       ctrl.totalBalance = 0.0
-
       for trx in ctrl.transactions
         ctrl.totalAmount += trx.amount
         ctrl.totalBalance += trx.balance
         ctrl.formatDate(trx)
+      # Update attributes so rendering happens after calculation.
+      ctrl.updateCurrentAttributes({ currency: ctrl.currency, resourcesType: ctrl.resourcesType, transactions: ctrl.transactions })
 
     ctrl.formatDate = (trx) ->
       # dates are sent in UTC by the API
