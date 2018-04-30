@@ -16,7 +16,7 @@ module.component('transactionsList', {
     listOnly: '<'
   controller: ->
     ctrl = this
-    ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: []}
+    ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: [] }
     ctrl.$onInit = ->
       ctrl.currentPage = 1
       ctrl.calculateTotals()
