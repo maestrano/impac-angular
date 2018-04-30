@@ -3,6 +3,9 @@ module = angular.module('impac.components.common.data-not-found',[])
 module.directive('commonDataNotFound', ($templateCache, $location, ImpacTheming) ->
   return {
     restrict: 'A',
+    scope: {
+      needsCustomMessage: '<'
+    },
     link: (scope, element) ->
       settings = ImpacTheming.get().dataNotFoundConfig
       scope.content = settings.content
