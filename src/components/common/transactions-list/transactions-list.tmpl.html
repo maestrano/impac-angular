@@ -67,10 +67,11 @@
     on-dismiss="$ctrl.deleteSchedule.cancel()"
     on-delete="$ctrl.deleteSchedule.delete()" />
 
-  <schedules-add
+  <transactions-add
     ng-if="$ctrl.createSchedule.display"
+    contacts="$ctrl.contacts"
     trx="$ctrl.createSchedule.trx"
-    resources-type="$ctrl.createSchedule.resourcesType"
-    on-cancel="$ctrl.createSchedule.cancel()"
-    on-create="$ctrl.createSchedule.create(resourcesType, trx)" />
+    resources-type="$ctrl.resourcesType"
+    on-hide="$ctrl.createSchedule.hide()"
+    on-create-transaction="$ctrl.createSchedule.create($ctrl.resourcesType)" />
 </div>

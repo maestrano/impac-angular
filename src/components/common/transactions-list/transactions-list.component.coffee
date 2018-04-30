@@ -12,6 +12,7 @@ module.component('transactionsList', {
     onDeleteSchedulableTransaction: '&'
     transactions: '<'
     currency: '<'
+    contacts: '<'
     totalRecords: '<'
     resourcesType: '<'
     listOnly: '<'
@@ -77,17 +78,15 @@ module.component('transactionsList', {
 
     ctrl.createSchedule =
       trx: null
-      resourcesType: null
       display: false
       show: (args) ->
         this.trx = args.trx
-        this.resourcesType = args.resourcesType
         this.display = true
-      cancel: ->
+      hide: ->
         this.display = false
-      create: (resourcesType, trx) ->
-        ctrl.onIncludeSchedulableTransaction({ resourcesType: resourcesType, trx: trx })
-        this.display = false
+      create: (resourcesType) ->
+        ctrl.onIncludeSchedulableTransaction({ trx: this.trx, resourcesType: resourcesType })
+        this.display= false
 
     return ctrl
 })

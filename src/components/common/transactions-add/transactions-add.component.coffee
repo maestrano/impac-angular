@@ -1,22 +1,32 @@
 module = angular.module('impac.components.common.transactions-add',[])
+                .constant('SCHEDULABLE_RULES', Object.freeze([
+                   {name: 'Daily', value: 'DailyRule'}, {name: 'Weekly', value: 'WeeklyRule'},
+                   {name: 'Monthly', value: 'Monthly'}, {name: 'Yearly', value: 'YearlyRule'}]))
 
 module.component('transactionsAdd', {
   templateUrl: 'common/transactions-add.tmpl.html'
   bindings:
     onHide: '&'
     onCreateTransaction: '&'
-    resourcesType: '='
-    contacts: '='
+    resourcesType: '<'
+    contacts: '<'
+    trx: '=?'
 
-  controller: ->
+  controller: (SCHEDULABLE_RULES)  ->
     ctrl = this
+    ctrl.schedulableRules = SCHEDULABLE_RULES
 
     ctrl.$onInit = ->
-      ctrl.trx =
-        datePicker:
-          opened: false
-          date: new Date()
-          toggle: -> this.opened = !this.opened
+      ctrl.editable = false
+
+      if(!ctrl.trx?)
+        ctrl.trx = {}
+        ctrl.editable = true
+
+      ctrl.trx.datePicker =
+        opened: false
+        date: new Date()
+        toggle: -> this.opened = !this.opened
 
       ctrl.schedulable =
         recurring: false
@@ -30,7 +40,12 @@ module.component('transactionsAdd', {
           date: new Date()
           toggle: -> this.opened = !this.opened
 
+      if(!ctrl.editable )
+        ctrl.trx.contact = (ctrl.contacts.filter( (contact) -> contact.attributes.name == ctrl.trx.contact_name))[0]
+        ctrl.schedulable.recurring = true
+
       ctrl.tempDate = moment().add(10, 'weeks').toDate()
+
 
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trx.title) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0 && ctrl.trx.contact
@@ -58,9 +73,6 @@ module.component('transactionsAdd', {
       end = parseInt(end)
       return [start..end]
 
-    ctrl.schedulableRules =  [{name: 'Hourly', value: 'HourlyRule'},{name: 'Daily', value: 'DailyRule'},
-                               {name: 'Weekly', value: 'WeeklyRule'},{name: 'Monthly', value: 'Monthly'},
-                               {name: 'Yearly', value: 'YearlyRule'}]
 
     return ctrl
 })

@@ -8,8 +8,5 @@ module.component('commonDeleteSchedule', {
   controller: ->
     ctrl = this
 
-    ctrl.delete = ->
-      ctrl.onDelete()
-
     return ctrl
 })
