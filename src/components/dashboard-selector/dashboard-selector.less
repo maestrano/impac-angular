@@ -61,13 +61,14 @@
           &:hover {
             background-color: @impac-widget-background-color;
           }
-          &.create {
-            background-color: @impac-dashboard-title-color;
-            color: @impac-dashboard-title-label-create-color;
-            height: 30px;
-            padding: 5px 10px 5px 10px;
-            &:hover {
-              background-color: darken(@impac-dashboard-title-color,10%);
+          &.dashboard-create {
+            height: 33px;
+            .btn {
+              float: none;
+              width: 100%;
+              text-align: left;
+              margin: 0px;
+              border-radius: 0px;
             }
           }
           i.fa.fa-pencil {

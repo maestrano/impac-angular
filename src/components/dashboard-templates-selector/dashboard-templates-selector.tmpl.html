@@ -6,9 +6,9 @@
 
 <div ng-if="$ctrl.hasTemplates()">
   <div class="templates-header">
-    <label class="control-label" translate>Create from Template:</label>
+    <label class="control-label" translate>impac.dashboard.create.templates.create_from</label>
     <div class="templates-toggle">
-      <i ng-class="{'fa-toggle-off': !$ctrl.isTemplatesMode, 'fa-toggle-on': $ctrl.isTemplatesMode}" class="fa" ng-click="$ctrl.toggleTemplatesMode()"></i>
+      <i ng-class="{'fa-toggle-off': !$ctrl.isTemplatesMode, 'fa-toggle-on': $ctrl.isTemplatesMode}" class="fa control-label" ng-click="$ctrl.toggleTemplatesMode()"></i>
     </div>
   </div>
   <div class="templates" ng-if="$ctrl.isTemplatesMode">
