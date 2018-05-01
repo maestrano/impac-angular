@@ -217,7 +217,7 @@ angular
                   $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
                   $q.resolve(widget)
                 else
-                  _self.show(widget, { refreshCache: refreshCache, demo: true })
+                  _self.show(widget, { refreshCache: params.refreshCache, demo: true })
 
               else
                 # Push new content to widget, and initialize it

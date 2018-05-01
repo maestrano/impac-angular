@@ -18,8 +18,8 @@ module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidget
     w && w.content? && w.content.info? && w.content.info.length > 0
 
   $scope.isCsvExportable = ->
-    templates = _.filter(ImpacDashboardsSvc.getWidgetsTemplates(), {name: w.name})
-    templates.length > 0 && templates[0].isBolt
+    template = _.find(ImpacDashboardsSvc.getWidgetsTemplates(), {endpoint: w.endpoint})
+    _.get(template, 'metadata.bolt_path')
 
   $scope.exportCSV = ->
     ImpacWidgetsSvc.showAsCSV(w).then(
