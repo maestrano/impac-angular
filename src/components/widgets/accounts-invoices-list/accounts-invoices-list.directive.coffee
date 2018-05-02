@@ -6,7 +6,7 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
 
   setInitialParams = ->
     params = { include: 'contact', fields: { contacts: 'name' }, sort: w.sortParamater, currency: w.metadata.currency, filter: {} }
-    params.filter = { 'status.not': 'PAID' } if $scope.hideForecast
+    params.filter = { 'status.not': 'FORECAST' } if $scope.hideForecast
     return params
 
   w = $scope.widget
