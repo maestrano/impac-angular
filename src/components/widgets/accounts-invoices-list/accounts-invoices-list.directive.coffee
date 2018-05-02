@@ -55,7 +55,6 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
 
   # --------------------------------------
   w.initContext = ->
-    $scope.trxList.hide()
     $scope.trxList.fetch()
 
   # Widget is ready: can trigger the "wait for settings to be ready"

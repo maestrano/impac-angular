@@ -146,7 +146,9 @@ angular.module('impac.components.common',
     'impac.components.common.delete-widget',
     'impac.components.common.transactions-add',
     'impac.components.common.transactions-list',
-    'impac.components.common.duplicate-transactions-list'
+    'impac.components.common.duplicate-transactions-list',
+    'impac.components.common.trends-add',
+    'impac.components.common.trends-list',
   ]
 );
 /*

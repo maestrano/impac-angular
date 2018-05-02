@@ -16,7 +16,7 @@
     <!-- Data found -->
     <div class="trx-container">
     <!-- Display Transactions list.  Hide date picker and 'back to chart' button'. -->
-      <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-change-resources="trxList.changeResourcesType(resourcesType)" list-only="true"></transactions-list>
+      <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-change-resources="trxList.changeResourcesType(resourcesType)" on-currency-change="trxList.fetch()" list-only="true"></transactions-list>
     </div>
 
     <!-- No data found -->

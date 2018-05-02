@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets.accounts-cash-projection', [])
-module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout  , ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources) ->
+module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout, ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources, ImpacMainSvc) ->
 
   # == Context and Helpers ========================================================================
   w = $scope.widget
@@ -108,6 +108,56 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId
     ).then(-> $scope.trxList.updated = true)
 
+  # == Sub-Components - Trends list =========================================================
+  $scope.trendList = { display: false, updated: false, trends: [], params: { } }
+
+  $scope.trendList.show = ->
+    $scope.trendList.display = true
+
+  $scope.trendList.hide = ->
+    $scope.trendList.display = false
+    if $scope.trendList.updated
+      ImpacWidgetsSvc.show(w).then(-> $scope.trendList.updated = false)
+
+  # Fetches the trends from the Bolt JSON API endpoint
+  $scope.trendList.fetch = (currentPage = 1) ->
+    params = angular.merge(
+      $scope.trendList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids')
+        page: { number: currentPage }
+      }
+    )
+    BoltResources.index(w.metadata.bolt_path, 'trends', params).then(
+      (response) ->
+        # Clear trend list and replace by newly fetched ones
+        _.remove($scope.trendList.trends, -> true)
+        for trend in response.data.data
+          trend.period = 'once' unless trend.period
+          $scope.trendList.trends.push(angular.merge(trend.attributes, { id: trend.id }))
+        $scope.trendList.totalRecords = response.data.meta.record_count
+    ).finally(-> $scope.trendList.show())
+
+  # Fetch and show all trends
+  $scope.trendList.showAll = ->
+    $scope.trendList.fetch()
+
+  $scope.trendList.updateTrend = (trend) ->
+    trend.period = null if trend.period == 'once'
+    BoltResources.update(
+      w.metadata.bolt_path,
+      'trends',
+      trend.id,
+      _.omit(trend, 'id')
+    ).then(-> $scope.trendList.updated = true)
+
+  $scope.trendList.deleteTrend = (trendId) ->
+    _.remove($scope.trendList.trends, (trend) -> trend.id == trendId)
+    BoltResources.destroy(
+      w.metadata.bolt_path,
+      'trends',
+      trendId
+    ).then(-> $scope.trendList.updated = true)
+
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
@@ -200,6 +250,44 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.dupTrxList.resources = resourcesType
     $scope.dupTrxList.fetch()
 
+  # == Sub-Components - Add Trend ========================================================
+  $scope.addTrendPopup =
+    display: false
+    show: -> this.display = true
+    hide: -> this.display = false
+
+  $scope.addTrendPopup.lastDate = (offset, periodicity) ->
+    period = null
+    if offset == -1 then return
+    switch periodicity
+      when 'once' then return null
+      when 'daily' then period = 'days'
+      when 'weekly' then period = 'weeks'
+      when 'monthly' then period = 'months'
+      when 'yearly' then period = 'years'
+    moment().add(offset, period).format('YYYY-MM-DD')
+
+
+  $scope.addTrendPopup.createTrend = (trend) ->
+    if Number.isInteger(trend.untilDate)
+      last_apply_date = $scope.addTrendPopup.lastDate(trend.untilDate, trend.period)
+    else
+      last_apply_date = trend.untilDate
+    BoltResources.create(
+      w.metadata.bolt_path,
+      'trends',
+      {
+        name: trend.name,
+        rate: trend.rate
+        period: if trend.period == 'once' then null else trend.period,
+        start_date: trend.startDate,
+        last_apply_date: last_apply_date
+      },
+      {
+        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
+        user: { data: { type: 'users', id: $scope.userId } }
+      }
+    ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
   # Sets the transactions list resources type and displays it
@@ -256,9 +344,27 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         $scope.contacts = response.data.data
     )
 
+  createUser = ->
+    BoltResources.create(
+      w.metadata.bolt_path,
+      'users',
+      {
+        first_name: ImpacMainSvc.config.userData.name,
+        last_name: ImpacMainSvc.config.userData.surname
+        email: ImpacMainSvc.config.userData.email
+      },
+      {
+        companies: { data: [{ type: 'companies', id: $scope.firstCompanyId }] },
+      }
+    ).then(
+      (response) ->
+        $scope.userId = response.data.data.id
+    ) if $scope.firstCompanyId
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
+
     # Hide Cash Flow series returned by the API
     cashFlowSerie = _.find w.content.chart.series, (serie) ->
       serie.name == "Cash flow"
@@ -273,8 +379,27 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       'companies',
       { metadata: _.pick(w.metadata, 'organization_ids') }
     ).then((response) ->
-      $scope.firstCompanyId = response.data.data[0].id
+      if _.isEmpty(response.data.data)
+        w.demoData = true
+      else
+        w.demoData = false
+        $scope.firstCompanyId = response.data.data[0].id
       loadContacts()
+    )
+
+    # Fetch or create user from Bolt
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'users',
+      {
+        filter: { email: ImpacMainSvc.config.userData.email },
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then((response) ->
+      if response.data.meta.record_count > 0
+        $scope.userId = response.data.data[0].id
+      else
+        createUser()
     )
 
   # Executed after the widget and its settings are initialised and ready

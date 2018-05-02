@@ -38,7 +38,9 @@
       on-confirm-duplication="dupTrxList.updateDuplicateTransaction(dupTrxId, action)" >
     </duplicate-transactions-list>
 
-    <div ng-hide="trxList.display || dupTrxList.display">
+    <trends-list ng-if="trendList.display" trends="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete-trend="trendList.deleteTrend(trendId)"></trends-list>
+
+    <div ng-hide="trxList.display || trendList.display || dupTrxList.display">
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
 
       <!-- Chart -->
@@ -57,6 +59,13 @@
         <button class="btn btn-sm btn-default" ng-click="dupTrxList.showAll()" title="See all due invoices and bills, and forecast">
           <i class="fa fa-list" />
           See reconciliation
+        <button class="btn btn-sm btn-default" ng-click="trendList.showAll()" title="See all trends">
+          <i class="fa fa-list" />
+          See all trends
+        </button>
+        <button class="btn btn-sm btn-default" ng-click="addTrendPopup.show()" title="Create a new trend">
+          <i class="fa fa-pencil" />
+          Add trend
         </button>
       </div>
     </div>
@@ -65,4 +74,6 @@
   </div>
 
   <transactions-add ng-if="addForecastPopup.display" contacts="contacts" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+  <trends-add ng-if="addTrendPopup.display" on-hide="addTrendPopup.hide()" on-create-trend="addTrendPopup.createTrend(trend)"/>
+
 </div>
