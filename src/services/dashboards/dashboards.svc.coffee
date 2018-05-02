@@ -10,15 +10,19 @@ angular
 
     @config.dashboards = []
     @getDashboards = ->
-      return _self.config.dashboards
+      _self.config.dashboards
 
     @config.currentDashboard = {}
     @getCurrentDashboard = ->
-      return _self.config.currentDashboard
+      _self.config.currentDashboard
 
     @config.widgetsTemplates = []
     @getWidgetsTemplates = ->
-      return _self.config.widgetsTemplates
+      _self.config.widgetsTemplates
+
+    @config.userAccesses = {}
+    @userAccesses = ->
+      _self.config.userAccesses
 
     #====================================
     # Callbacks
@@ -28,18 +32,18 @@ angular
 
     @callbacks.dashboardChanged = $q.defer()
     @dashboardChanged = ->
-      return _self.callbacks.dashboardChanged.promise
+      _self.callbacks.dashboardChanged.promise
 
     @callbacks.widgetAdded = $q.defer()
     @widgetAdded = ->
-      return _self.callbacks.widgetAdded.promise
+      _self.callbacks.widgetAdded.promise
 
     @callbacks.pdfModeEnabled = $q.defer()
     @pdfModeEnabled = ->
-      return _self.callbacks.pdfModeEnabled.promise
+      _self.callbacks.pdfModeEnabled.promise
     @callbacks.pdfModeCanceled = $q.defer()
     @pdfModeCanceled = ->
-      return _self.callbacks.pdfModeCanceled.promise
+      _self.callbacks.pdfModeCanceled.promise
 
     @togglePdfMode = (enabled) ->
       if enabled
@@ -49,13 +53,13 @@ angular
 
     @callbacks.ticked = $q.defer()
     @ticked = ->
-      return _self.callbacks.ticked.promise
+      _self.callbacks.ticked.promise
     @tick = ->
       _self.callbacks.ticked.notify()
 
     @callbacks.dhbLoader = $q.defer()
     @dhbLoader = ->
-      return _self.callbacks.dhbLoader.promise
+      _self.callbacks.dhbLoader.promise
     @triggerDhbLoader = (bool=false)->
       _self.callbacks.dhbLoader.notify(bool)
 
@@ -64,7 +68,7 @@ angular
     #====================================
 
     needConfigurationLoad = ->
-      return  _.isEmpty(_self.config.dashboards) || _.isEmpty(_self.config.currentDashboard)
+       _.isEmpty(_self.config.dashboards) || _.isEmpty(_self.config.currentDashboard)
 
     @isThereADashboard = ->
       !_.isEmpty _self.config.currentDashboard
@@ -94,7 +98,7 @@ angular
       ).finally(->
         _self.triggerDhbLoader(false)
       )
-      return deferred.promise
+      deferred.promise
 
     @loadLocked=false
     @load = (force=false) ->
@@ -108,7 +112,7 @@ angular
           ImpacMainSvc.load(force).then(
             (success)->
               orgId = success.currentOrganization.id
-            #Uses the previously sorted organizations to make another request below.
+              angular.merge(_self.config.userAccesses, success.currentOrganization.acl.related)
 
               # Retrieve appropriate dashboards with widgets and kpis settings
               dashboardsPromise = $http.get(ImpacRoutes.dashboards.index(orgId)).then(
@@ -147,7 +151,7 @@ angular
           )
         , 1000)
 
-      return deferred.promise
+      deferred.promise
 
     # Retrieve widgets templates from legacy Impac! API and from all Bolts configured in ImpacRoutes service
     fetchWidgetsTemplates = ->
@@ -182,9 +186,9 @@ angular
     widgetsTemplatesUrl = ->
       if ImpacTheming.get().dhbWidgetsConfig.templates.defaultToFinancialYear
         fy_end_month = ImpacMainSvc.getFinancialYearEndMonth()
-        return "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
+        "#{ImpacRoutes.widgets.templates()}?financial_year_end_month=#{fy_end_month}"
       else
-        return ImpacRoutes.widgets.templates()
+        ImpacRoutes.widgets.templates()
 
     setDefaultCurrentDashboard = ->
       if _self.config.dashboards? && _self.config.dashboards.length > 0
@@ -192,12 +196,12 @@ angular
         ImpacMainSvc.override _self.config.currentDashboard, _self.config.dashboards[0]
         _self.initializeActiveTabs()
         _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
-        return true
+        true
       else
         $log.warn("Impac! - DashboardsSvc: cannot set default current dashboard")
         ImpacMainSvc.override _self.config.currentDashboard, {}
         _self.callbacks.dashboardChanged.notify(false)
-        return false
+        false
 
     @setCurrentDashboard = (id=null) ->
       if id?
@@ -207,19 +211,19 @@ angular
           ImpacMainSvc.override _self.config.currentDashboard, fetchedDhb
           _self.initializeActiveTabs()
           _self.callbacks.dashboardChanged.notify(_self.config.currentDashboard)
-          return true
+          true
         else
           $log.error("Impac! - DashboardsSvc: Dashboard #{id} not found in dashboards list")
-          return setDefaultCurrentDashboard()
+          setDefaultCurrentDashboard()
 
       else
-        return setDefaultCurrentDashboard()
+        setDefaultCurrentDashboard()
 
 
     # TODO: refactor backend controller: dashboards(orgId) should return only the dashboards linked to the organization
     # and not all the dashboards belonging to the user...
     belongsToCurrentOrganization = (dashboard, org) ->
-      return _.includes(_.pluck(dashboard.data_sources, 'id'), org.id)
+      _.includes(_.pluck(dashboard.data_sources, 'id'), org.id)
 
 
     @setDashboards = (dashboardsArray=[]) ->
@@ -248,11 +252,11 @@ angular
         templateUid = "#{bolt.provider}/#{bolt.name}/#{template.endpoint}"
 
       if !_.isEmpty(settings.whitelist)
-        return _.includes(settings.whitelist, templateUid)
+        _.includes(settings.whitelist, templateUid)
       else if !_.isEmpty(settings.blacklist)
-        return !_.includes(settings.blacklist, templateUid)
+        !_.includes(settings.blacklist, templateUid)
       else
-        return true
+        true
 
     @setWidgetsTemplates = (srcTemplates) ->
       return false if _.isEmpty(srcTemplates)
@@ -265,7 +269,7 @@ angular
       for template in srcTemplates
         dstTemplates.push(template) if isTemplateAllowed(template)
 
-      return dstTemplates
+      dstTemplates
 
     @initializeActiveTabs = ->
       for dhb in _self.config.dashboards
@@ -295,7 +299,7 @@ angular
           $log.error("Impac! - DashboardsSvc: Cannot create dashboard with parameters: #{angular.toJson(dashboard)}", error)
           deferred.reject(error)
 
-        return deferred.promise
+        deferred.promise
 
     @copy = (dashboard) ->
       $q.reject('The dashboard you are trying to copy does not have an id') unless dashboard.id
@@ -329,7 +333,7 @@ angular
         $log.error("Impac! - DashboardsSvc: Cannot delete dashboard: #{id}")
         deferred.reject(error)
 
-      return deferred.promise
+      deferred.promise
 
 
     @update = (id, opts) ->
@@ -349,7 +353,7 @@ angular
         $log.error("Impac! - DashboardsSvc: Cannot update dashboard: #{id} with parameters: #{angular.toJson(opts)}")
         deferred.reject(error)
 
-      return deferred.promise
+      deferred.promise
 
 
     return _self

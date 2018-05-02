@@ -58,6 +58,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         metadata: _.pick(w.metadata, 'organization_ids')
         page: { number: currentPage }
         sort: '-expected_payment_date'
+        currency: w.metadata.currency
       }
     )
     BoltResources.index(w.metadata.bolt_path, $scope.trxList.resources, params).then(

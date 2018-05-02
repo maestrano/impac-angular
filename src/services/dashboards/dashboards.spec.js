@@ -64,7 +64,12 @@ describe('<> ImpacDashboardsSvc', function () {
       // Stub for ImpacMainSvc.load()
       spyOn(ImpacMainSvc, "load").and.callFake(function() {
         var orgsDeferred = $q.defer();
-        orgsDeferred.resolve({currentOrganization: {id: 1}});
+        orgsDeferred.resolve({
+          currentOrganization: {
+            id: 1,
+            acl: { related: {} }
+          }
+        });
         return orgsDeferred.promise;
       });
 
