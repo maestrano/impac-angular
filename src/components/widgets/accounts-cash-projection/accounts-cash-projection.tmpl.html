@@ -13,7 +13,7 @@
 
   <!-- Widget content -->
   <div ng-hide="widget.isEditMode">
-    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-update-expected-date="trxList.updateExpectedDate(trxId, date)" on-change-resources="trxList.changeResourcesType(resourcesType)" on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"></transactions-list>
+    <transactions-list ng-if="trxList.display" transactions="trxList.transactions" currency="widget.metadata.currency" total-records="trxList.totalRecords" resources-type="trxList.resources" on-hide="trxList.hide()" on-page-changed="trxList.fetch(page)" on-currency-change="trxList.fetch()" on-update-expected-date="trxList.updateExpectedDate(trxId, date)" on-change-resources="trxList.changeResourcesType(resourcesType)" on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"></transactions-list>
 
     <trends-list ng-if="trendList.display" trends="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete-trend="trendList.deleteTrend(trendId)"></trends-list>
 

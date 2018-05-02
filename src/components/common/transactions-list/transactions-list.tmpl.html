@@ -16,9 +16,9 @@
   <div class="table-container">
     <table class="table table-striped">
       <tr>
-        <th>{{ $ctrl.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
+        <th>{{ $ctrl.currentAttributes.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
-        <th>Title</th>
+        <th ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">Title</th>
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
@@ -27,10 +27,10 @@
         <th class="text-right">Balance</th>
         <th />
       </tr>
-      <tr ng-repeat="trx in $ctrl.transactions">
+      <tr ng-repeat="trx in $ctrl.currentAttributes.transactions">
         <td>{{ trx.contact_name }}</td>
         <td>{{ trx.transaction_number }}</td>
-        <td>{{ trx.title }}</td>
+        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
@@ -48,12 +48,14 @@
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
         </td>
       </tr>
-      <tr class="total" ng-class="$ctrl.resourcesType">
-        <td colspan="6">TOTAL</td>
-        <!-- If Date Picker is open the colspan width will be 7.  If 'list-only' the width will be 6 -->
+      <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
+        <td colspan="5">TOTAL</td>
+        <!-- If Date Picker is open the colspan width will be 6.  If 'list-only' the width will be 5 -->
         <td ng-hide="$ctrl.listOnly" colspan="1"></td>
-        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
-        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
+        <!-- There are no titles for Bills. -->
+        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'"></td>
+        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currentAttributes.currency }}</td>
+        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currentAttributes.currency }}</td>
         <td />
       </tr>
     </table>
