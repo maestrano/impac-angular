@@ -157,6 +157,7 @@
   "impac.widget.common.top_buttons.delete.delete": "@:impac.common.action.delete",
   "impac.widget.common.top_buttons.info_popup.delete": "Delete widget",
   "impac.widget.common.top_buttons.info_popup.edit": "Edit widget",
+  "impac.widget.common.top_buttons.info_popup.export_csv": "Export as csv",
   "impac.widget.common.top_buttons.info_popup.refresh": "Refresh widget",
   "impac.widget.common.top_buttons.info_popup.info": "Widget info",
   "impac.widget.common.time_period_info.to":      "As at {dateTo}",
