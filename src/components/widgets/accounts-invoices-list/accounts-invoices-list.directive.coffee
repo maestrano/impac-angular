@@ -2,6 +2,13 @@ module = angular.module('impac.components.widgets.accounts-invoices-list', [])
 module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, BoltResources) ->
 
   # == Context and Helpers ========================================================================
+  $scope.hideForecast = true;
+
+  setInitialParams = ->
+    params = { include: 'contact', fields: { contacts: 'name' }, sort: w.sortParamater, currency: w.metadata.currency, filter: {} }
+    params.filter = { 'status.not': 'PAID' } if $scope.hideForecast
+    return params
+
   w = $scope.widget
   bolts = ImpacRoutes.bolts()
   bolt_path = _.find(bolts, {name: 'finance', provider: 'maestrano'}).path
@@ -9,8 +16,9 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.trxList = {
     display: false,
     resources: 'invoices',
+    overdue: 'all',
     transactions: [],
-    params: { include: 'contact', fields: { contacts: 'name' }, sort: w.sortParamater, currency: w.metadata.currency }
+    params: setInitialParams()
   }
 
   extractContactName = (id, contacts) ->
@@ -51,6 +59,17 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.trxList.changeResourcesType = (resourcesType) ->
     return if resourcesType == $scope.trxList.resources
     $scope.trxList.resources = resourcesType
+    $scope.trxList.fetch()
+
+  $scope.trxList.changeOverdueFilter = (overdueFilter) ->
+    return if overdueFilter == $scope.trxList.overdue
+    $scope.trxList.overdue = overdueFilter
+    $scope.trxList.params.filter.due_date = new Date() if overdueFilter == 'overdue'
+    $scope.trxList.params.filter.due_date = [] if overdueFilter == 'all'
+    $scope.trxList.fetch()
+
+  $scope.trxList.changeQuery = (query) ->
+    $scope.trxList.params.filter.query_data = query
     $scope.trxList.fetch()
 
   # --------------------------------------

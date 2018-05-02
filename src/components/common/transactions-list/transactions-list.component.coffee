@@ -7,23 +7,44 @@ module.component('transactionsList', {
     onPageChanged: '&'
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
+    onChangeOverdueFilter: '&'
     onDeleteTransaction: '&'
+    onChangeQuery: '&'
     transactions: '<'
+    showOverdueFilter: '<'
     currency: '<'
     totalRecords: '<'
     resourcesType: '<'
+    overdueFilter: '<'
     listOnly: '<'
+    hideForecast: '<'
+    query: '<'
+    delayTimer: '<'
   controller: ->
     ctrl = this
 
     ctrl.$onInit = ->
       ctrl.currentPage = 1
+      ctrl.showOverdueFilter = true if not ctrl.showOverdueFilter?
       ctrl.calculateTotals()
 
     ctrl.changeResourcesType = ->
       ctrl
         .onChangeResources({ resourcesType: ctrl.resourcesType })
         .then(-> ctrl.$onInit())
+
+    ctrl.changeOverdueFilter = ->
+      ctrl
+        .onChangeOverdueFilter({ overdueFilter: ctrl.overdueFilter })
+        .then(-> ctrl.$onInit())
+
+    ctrl.changeQuery = ->
+      clearTimeout(ctrl.delayTimer);
+      ctrl.delayTimer = setTimeout ->
+        ctrl
+          .onChangeQuery({ query: ctrl.query })
+          .then(-> ctrl.$onInit())
+      , 1000
 
     ctrl.changePage = ->
       ctrl

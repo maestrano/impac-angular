@@ -82,6 +82,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
+  $scope.trxList.changeQuery = (query) ->
+    $scope.trxList.params.filter.query_data = query
+    $scope.trxList.fetch()
+
   # JS date is in local time zone => format it to send a UTC date at 00:00:00
   $scope.trxList.updateExpectedDate = (trxId, date) ->
     BoltResources.update(
