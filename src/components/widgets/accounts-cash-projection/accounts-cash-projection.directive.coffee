@@ -128,6 +128,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         # Clear trend list and replace by newly fetched ones
         _.remove($scope.trendList.trends, -> true)
         for trend in response.data.data
+          trend.period = 'once' unless trend.period
           $scope.trendList.trends.push(angular.merge(trend.attributes, { id: trend.id }))
         $scope.trendList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trendList.show())
@@ -137,6 +138,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.trendList.fetch()
 
   $scope.trendList.updateTrend = (trend) ->
+    trend.period = null if trend.period == 'once'
     BoltResources.update(
       w.metadata.bolt_path,
       'trends',
@@ -200,7 +202,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       when 'daily' then period = 'days'
       when 'weekly' then period = 'weeks'
       when 'monthly' then period = 'months'
-      when 'annually' then period = 'years'
+      when 'yearly' then period = 'years'
     moment().add(offset, period).format('YYYY-MM-DD')
 
 
@@ -215,7 +217,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       {
         name: trend.name,
         rate: trend.rate
-        periodicity: trend.period,
+        period: if trend.period == 'once' then null else trend.period,
         start_date: trend.startDate,
         last_apply_date: last_apply_date
       },
