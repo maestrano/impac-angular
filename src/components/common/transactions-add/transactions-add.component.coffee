@@ -34,7 +34,7 @@ module.component('transactionsAdd', {
         validateInterval: ->
           if (angular.isUndefined(this.interval) || this.interval == null || this.interval < 1)
             this.interval = 1
-        rule: ctrl.schedulableRules[2]
+        rule: ctrl.schedulableRules.find (rule) -> rule.value == 'WeeklyRule'
         endType: 'occurrencies'
         occurrencies: 12
         rules:  ctrl.schedulableRules
@@ -62,15 +62,13 @@ module.component('transactionsAdd', {
 
     ctrl.includeSchedulable = (trx) ->
       trx.recurring = ctrl.schedulable.recurring
-      if trx.recurring
-        trx.recurring_pattern = {
-          rule_type: ctrl.schedulable.rule.value,
-          interval: ctrl.schedulable.interval,
-          occurrences: ctrl.schedulable.occurrencies
-        }
-        if ctrl.schedulable.endType == 'endDate'
-          trx.recurring_end_date = ctrl.schedulable.datePicker.date
-
+      return trx unless trx.recurring
+      trx.recurring_pattern = {
+        rule_type: ctrl.schedulable.rule.value,
+        interval: ctrl.schedulable.interval,
+        occurrences: ctrl.schedulable.occurrencies
+      }
+      trx.recurring_end_date = ctrl.schedulable.datePicker.date if ctrl.schedulable.endType == 'endDate'
       return trx
 
     ctrl.range = (start, end) ->
