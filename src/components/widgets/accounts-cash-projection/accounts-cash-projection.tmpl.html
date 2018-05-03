@@ -23,6 +23,7 @@
       on-page-changed="trxList.fetch(page)"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
+      on-currency-change="trxList.fetch()"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)">
     </transactions-list>
 

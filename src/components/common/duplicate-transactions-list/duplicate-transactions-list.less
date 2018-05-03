@@ -6,7 +6,7 @@
   }
 
   .table-striped {
-    tr.origin:nth-of-type(2n+1) {
+    tr.origin:nth-of-type(odd) {
       background-color: #f9f9f9;
     }
   }
@@ -29,10 +29,10 @@
     tr.total {
       font-weight: bold;
       &.invoices {
-        background-color: lighten(#8eab71, 20%);
+        background-color: lighten(@impac-positive, 20%);
       }
       &.bills {
-        background-color: lighten(#c76379, 20%);
+        background-color: lighten(@impac-negative, 20%);
       }
     }
   }

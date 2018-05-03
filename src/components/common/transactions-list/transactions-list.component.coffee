@@ -39,7 +39,7 @@ module.component('transactionsList', {
         trx.datePicker =
           opened: false
           # JS Date object is required by uib-datepicker-tooltip
-          date: new Date(m.year(), m.month(), m.date())
+          date: moment().toDate()
           toggle: ->
             this.opened = !this.opened
 
