@@ -19,7 +19,7 @@ module.component('transactionsAdd', {
     ctrl.$onInit = ->
       ctrl.editable = false
 
-      if(!ctrl.trx?)
+      unless(ctrl.trx?)
         ctrl.trx = {}
         ctrl.editable = true
 
@@ -45,7 +45,7 @@ module.component('transactionsAdd', {
           minDate: -1
           toggle: -> this.opened = !this.opened
 
-      if(!ctrl.editable )
+      unless(ctrl.editable )
         ctrl.trx.contact = (ctrl.contacts.filter( (contact) -> contact.attributes.name == ctrl.trx.contact_name))[0]
         ctrl.schedulable.recurring = true
 
