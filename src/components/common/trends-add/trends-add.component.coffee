@@ -34,7 +34,7 @@ module.component('trendsAdd', {
         when "Daily" then ("Day" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Weekly" then ("Week" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Monthly" then ("Month" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
-        when "Annually" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
+        when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
     ctrl.isPeriodDisabled = ->
       ctrl.trend.period == "Once"
@@ -42,8 +42,7 @@ module.component('trendsAdd', {
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
       ctrl.trend.rate > 0 &&
-      (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
-      ctrl.trend.startDate < ctrl.trend.untilDate
+      (ctrl.trend.untilDate? || ctrl.trend.period == "Once")
 
     ctrl.createTrend = ->
       ctrl.onHide()
