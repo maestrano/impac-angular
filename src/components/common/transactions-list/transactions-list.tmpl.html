@@ -12,6 +12,18 @@
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
     </div>
+    <div class="col-xs-4">
+      <ul uib-pagination
+        ng-show="$ctrl.showPaginationControl()"
+        class="pull-right"
+        total-items="$ctrl.totalRecords"
+        ng-model="$ctrl.currentPage"
+        max-size="5"
+        items-per-page="30"
+        class="pagination-sm"
+        force-ellipses="true"
+        ng-change="$ctrl.changePage()" />
+    </div>
   </div>
   <div class="table-container">
     <table class="table table-striped">

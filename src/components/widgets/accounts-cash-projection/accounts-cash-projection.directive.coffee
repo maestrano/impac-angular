@@ -57,6 +57,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.params, {
         metadata: _.pick(w.metadata, 'organization_ids')
         page: { number: currentPage }
+        sort: '-expected_payment_date'
         currency: w.metadata.currency
       }
     )
@@ -78,7 +79,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'] }
+    filter = {
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED'
+    }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
@@ -92,9 +96,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     ).then(-> $scope.trxList.updated = true)
 
   $scope.trxList.changeResourcesType = (resourcesType) ->
-    return if resourcesType == $scope.trxList.resources
-    $scope.trxList.resources = resourcesType
-    $scope.trxList.fetch()
+      return if resourcesType == $scope.trxList.resources
+      $scope.trxList.resources = resourcesType
+      $scope.trxList.fetch()
 
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
     _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
@@ -180,6 +184,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         transaction_date: moment().format('YYYY-MM-DD'),
         due_date: moment(trx.datePicker.date).format('YYYY-MM-DD'),
         status: 'FORECAST',
+        reconciliation_status: 'UNRECONCILED',
         currency: w.metadata.currency
       },
       {
@@ -187,6 +192,63 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         contact: { data: { type: 'contacts', id: trx.contact.id } }
       }
     ).then(-> ImpacWidgetsSvc.show(w))
+
+  # == Sub-Components - Duplicate Transactions list =========================================================
+  $scope.dupTrxList = { display: false, updated: false, transactions: [] }
+
+  $scope.dupTrxList.show = ->
+    $scope.dupTrxList.display = true
+
+  $scope.dupTrxList.hide = ->
+    $scope.dupTrxList.display = false
+    if $scope.dupTrxList.updated
+      ImpacWidgetsSvc.show(w).then(-> $scope.dupTrxList.updated = false)
+
+  # Fetches the transactions from the Bolt JSON API endpoint
+  $scope.dupTrxList.fetch = (currentPage = 1) ->
+    params = angular.merge(
+      $scope.dupTrxList.params, {
+        metadata: _.pick(w.metadata, 'organization_ids')
+        page: { number: currentPage }
+      }
+    )
+    BoltResources.index(w.metadata.bolt_path, $scope.dupTrxList.resources, params).then(
+      (response) ->
+        # Clear transactions list and replace by newly fetched ones
+        _.remove($scope.dupTrxList.transactions, -> true)
+        for trx in response.data.data
+          $scope.dupTrxList.transactions.push(angular.merge(trx.attributes, { id: trx.id }))
+        $scope.dupTrxList.totalRecords = response.data.meta.record_count
+    ).finally(-> $scope.dupTrxList.show())
+
+  # Init dupTrxList object with static values
+  $scope.dupTrxList.updateParams = (resources, filter) ->
+    $scope.dupTrxList.resources = resources
+    $scope.dupTrxList.params = { filter: filter }
+
+  # Fetch and show all invoices or bills
+  $scope.dupTrxList.showAll = (resources = 'invoices') ->
+    filter = {
+      status: ['FORECAST']
+      reconciliation_status: 'RECONCILING'
+    }
+    $scope.dupTrxList.updateParams(resources, filter)
+    $scope.dupTrxList.fetch()
+
+  # Execute action on duplicate transaction
+  $scope.dupTrxList.updateDuplicateTransaction = (dupTrxId, action) ->
+    _.remove($scope.dupTrxList.transactions, (dupTrx) -> dupTrx.id == dupTrxId)
+    BoltResources.update(
+      w.metadata.bolt_path,
+      $scope.dupTrxList.resources,
+      dupTrxId,
+      {reconciliation_action: action}
+    ).then(-> $scope.dupTrxList.updated = true)
+
+  $scope.dupTrxList.changeResourcesType = (resourcesType) ->
+    return if resourcesType == $scope.dupTrxList.resources
+    $scope.dupTrxList.resources = resourcesType
+    $scope.dupTrxList.fetch()
 
   # == Sub-Components - Add Trend ========================================================
   $scope.addTrendPopup =
@@ -240,7 +302,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
     filter =
       expected_payment_date: dateFilter(event.point.x)
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      reconciliation_status: 'UNRECONCILED',
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 

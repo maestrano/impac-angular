@@ -13,7 +13,7 @@ module.component('transactionsAdd', {
 
     ctrl.$onInit = ->
       ctrl.trx =
-        datePicker: 
+        datePicker:
           opened: false
           date: new Date()
           toggle: -> this.opened = !this.opened
@@ -21,7 +21,7 @@ module.component('transactionsAdd', {
       ctrl.tempDate = moment().add(10, 'weeks').toDate()
 
     ctrl.isValid = ->
-      !_.isEmpty(ctrl.trx.name) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0 && ctrl.trx.contact
+      !_.isNaN(ctrl.trx) && !_.isEmpty(ctrl.trx.name) && !isNaN(Number(ctrl.trx.amount)) && Number(ctrl.trx.amount) != 0 && ctrl.trx.contact
 
     ctrl.createTransaction = ->
       ctrl.onHide()
