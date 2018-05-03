@@ -22,6 +22,7 @@
       resources-type="trxList.resources"
       on-hide="trxList.hide()"
       on-page-changed="trxList.fetch(page)"
+      on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
