@@ -4,6 +4,12 @@
 
 Applies v1.6.10
 
+#### Adds
+[IMPAC-668] Chart threshold timeperiod selection
+
+#### Fixes
+
+
 -------------------------------------------------------------
 
 ### v1.6.10 | 2018 - Week 15
