@@ -7,7 +7,6 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
       parentWidget: '='
       deferred: '='
     },
-    # TODO: What is it?
     template: $templateCache.get('widgets-settings/source-selector.tmpl.html'),
 
     link: (scope) ->
@@ -38,14 +37,12 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
       resetSelectedApps = -> scope.selectedApps = _.mapValues(scope.selectedApps, -> false)
       updateAppInstances = (appInstances, primary, manual) ->
         valuesPresent = _.find(appInstances, (hash) ->
-          # We push bot at the same time so we can check for one
+          # We push at the same time so we can check for one
           hash.value == 'prm-records-only'
         )
         if valuesPresent then appInstances else appInstances.push(primary, manual)
 
       retrieveAppInstances = ->
-        return if false # needed?
-
         appInstances = _.find(w.configOptions.selectors, (selector) ->
 	        return selector.name == 'app_instances'
         ).options
@@ -56,7 +53,6 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
           'label': 'Primary Only'
 
         # Used to select all records added manually
-        # TODO: test with manual transactions (they have to be sent to the rec-eng)
         # TODO: Use _.replace when updating to Lodash 4.17.5
         orgUid = w.metadata.organization_ids[0]
         manUid = orgUid.replace('org', 'man')
