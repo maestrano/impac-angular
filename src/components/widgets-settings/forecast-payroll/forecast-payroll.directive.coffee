@@ -30,9 +30,11 @@ module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSv
     ImpacDashboardsSvc.load().then(
       (config) ->
         currentDashboard = config.currentDashboard
-        return if w.metadata? && w.metadata.forecast_payroll?
-        w.metadata.forecast_payroll = {enable: false, time_sheet: false}
-        w.selectedForecastPayroll = w.metadata.forecast_payroll
+        if w.metadata? && w.metadata.forecast_payroll?
+          w.selectedForecastPayroll = w.metadata.forecast_payroll
+        else
+          w.metadata.forecast_payroll = {enable: false, time_sheet: false}
+
         setting.isInitialized = true
     )
 
