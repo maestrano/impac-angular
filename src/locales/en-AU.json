@@ -240,6 +240,8 @@
   "impac.widget.account_balance.save":            "@:impac.common.action.save",
   "impac.widget.account_balance.cancel":          "@:impac.common.action.cancel",
 
+  "impac.widget.account_cash_projection.forecast_payroll.aggregate":          "Include average payroll costs into cash projection",
+
   "impac.widget.account_balance_sheets.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.account_balance_sheets.save":            "@:impac.common.action.save",
   "impac.widget.account_balance_sheets.cancel":          "@:impac.common.action.cancel",
