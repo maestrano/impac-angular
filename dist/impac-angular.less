@@ -2040,169 +2040,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics kpis-bar > .kpis {
-  position: relative;
-  .actions {
-    margin-bottom: 12px;
-    @media screen and (max-width: 675px) {
-      position: relative;
-    }
-
-    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
-
-    a { color: white; }
-
-    button.im-fab.add-kpis,
-    button.im-fab.edit-kpis,
-    button.im-fab.toggle-show-content {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      transition: all 0.28s ease-in;
-      &.im-primary {
-        background: #4c4749;
-        &.disabled {
-          background: #b2b5c1;
-          cursor: not-allowed;
-          a { cursor: not-allowed; }
-        }
-        &:hover:not(.disabled) {
-          background: black;
-        }
-      }
-    }
-
-    button.im-fab.toggle-show-content {
-      top: -15px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: -14px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.add-kpis {
-      top: 30px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 33px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.edit-kpis {
-      top: 75px;
-      right: -15px;
-      z-index: 10;
-      &.editing {
-        background: @kpi-settings-focus-color;
-        &:hover:not(.disabled) {
-          background: lighten(@kpi-settings-focus-color, 15%);
-        }
-      }
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 79px;
-        bottom: 0;
-      }
-    }
-  }
-
-  .content-buttons {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .content {
-    padding: 15px;
-    background-color: @kpis-bar-background-color;
-    box-shadow: @kpis-bar-box-shadow;
-
-    @media screen and (min-width: 725px) {
-      padding: 0 60px;
-    }
-
-    @media screen and (max-width: 675px) {
-      margin-top: 25px;
-    }
-
-    .impac-kpi {
-      .column-gutter(5px);
-
-      @media screen and (min-width: 1200px) {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .kpi.add {
-        .kpi-show .caption {
-          white-space: inherit;
-        }
-      }
-    }
-
-
-    .title {
-      .text-center {
-        line-height: 3;
-        font-variant: small-caps;
-        font-size: larger;
-      }
-      .badge {
-        position: absolute;
-        top: 8px;
-        left: -10px;
-        background-color: #d1e55c;
-        color: #4f5959;
-        box-shadow: 0px 1px 3px -1px;
-      }
-      .no-kpi-templates {
-        color: #afadb5;
-        font-weight: 500;
-      }
-    }
-
-    .add-bar {
-      border-bottom: dashed 1px;
-    }
-
-    .kpi-loader {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: @kpi-max-height + 20px;
-    }
-
-    .dates-picker-container {
-      width: 40%;
-      margin: 0 auto;
-
-      .sdp-from-label,
-      .sdp-to-label {
-        text-transform: uppercase;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-.analytics kpis-bar {
-  display: block;
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  padding: 5px 0px;
-}
-
-.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
-
 .analytics .impac-kpi .kpi {
   position: relative;
   max-width: 220px;
@@ -2440,6 +2277,169 @@ dashboard-templates-selector {
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
 }
+
+.analytics kpis-bar > .kpis {
+  position: relative;
+  .actions {
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis,
+    button.im-fab.toggle-show-content {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.toggle-show-content {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: -14px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 33px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.edit-kpis {
+      top: 75px;
+      right: -15px;
+      z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 79px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .content-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .content {
+    padding: 15px;
+    background-color: @kpis-bar-background-color;
+    box-shadow: @kpis-bar-box-shadow;
+
+    @media screen and (min-width: 725px) {
+      padding: 0 60px;
+    }
+
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
+
+    .impac-kpi {
+      .column-gutter(5px);
+
+      @media screen and (min-width: 1200px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .kpi.add {
+        .kpi-show .caption {
+          white-space: inherit;
+        }
+      }
+    }
+
+
+    .title {
+      .text-center {
+        line-height: 3;
+        font-variant: small-caps;
+        font-size: larger;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        background-color: #d1e55c;
+        color: #4f5959;
+        box-shadow: 0px 1px 3px -1px;
+      }
+      .no-kpi-templates {
+        color: #afadb5;
+        font-weight: 500;
+      }
+    }
+
+    .add-bar {
+      border-bottom: dashed 1px;
+    }
+
+    .kpi-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: @kpi-max-height + 20px;
+    }
+
+    .dates-picker-container {
+      width: 40%;
+      margin: 0 auto;
+
+      .sdp-from-label,
+      .sdp-to-label {
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.analytics kpis-bar {
+  display: block;
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  padding: 5px 0px;
+}
+
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
 
 .widget-item {
   transition: width 0.3s;
@@ -3135,17 +3135,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.accounts-expense-weight {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-detailed-classifications {
   .tall-widget();
   .widget-lines-container {
@@ -3169,6 +3158,17 @@ dashboard-templates-selector {
 
 
 
+.analytics .widget-item .content.accounts-expense-weight {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-expenses-revenue {
   .legend {
     font-weight: bold;
@@ -3181,20 +3181,17 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
+.analytics .widget-item .content.accounts-invoices-list {
+  // component specific styles
+  // -------------------------
+  .tall-widget();
+
+  transactions-list {
+    font-size: 12px;
   }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
+
 }
+
 .analytics .widget-item .content.accounts-live-balance {
   h3 {
     .center-bold(0px);
@@ -3233,6 +3230,20 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3625,6 +3636,30 @@ dashboard-templates-selector {
   }
 }
 
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -3652,28 +3687,8 @@ dashboard-templates-selector {
     }
   }
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-performance {
@@ -3712,10 +3727,6 @@ dashboard-templates-selector {
 
     .fa.fa-info-circle { float: left; }
   }
-}
-
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-summary {
