@@ -52,7 +52,9 @@ angular
       xAxis:
         labels:
           formatter: ->
-            moment.utc(this.value).format('Do MMM YYYY')
+            e = this.axis.getExtremes()
+            f = if moment.utc(e.min).isSame(e.max, 'month') then 'ddd Do' else 'Do MMM'
+            moment.utc(this.value).format(f)
       yAxis:
         labels:
           formatter: ->
