@@ -8,8 +8,8 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
-    onIncludeSchedulableTransaction: '&'
-    onDeleteSchedulableTransaction: '&'
+    onIncludeSchedulableTransaction: '&?'
+    onDeleteParentTransaction: '&?'
     onCurrencyChange: '&'
     transactions: '<'
     currency: '<'
@@ -80,10 +80,10 @@ module.component('transactionsList', {
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
 
     ctrl.canCreateSchedulableTransaction = (trx) ->
-      return trx.status != 'FORECAST' && !trx.recurring
+      return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onIncludeSchedulableTransaction)
 
     ctrl.canDeleteSchedulableTransaction = (trx) ->
-      return (trx.status == 'FORECAST' && (trx.recurring || trx.recurring_parent)) || (trx.status != 'FORECAST' && trx.recurring)
+      return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteParentTransaction)
 
     ctrl.deleteSchedule =
       args: {}
