@@ -95,7 +95,7 @@ module.component('transactionsList', {
         this.args = {}
         this.display = false
       delete: ->
-        ctrl.onDeleteSchedulableTransaction(this.args)
+        ctrl.deleteTransactionsGroup(this.args.trx)
         this.display = false
 
     ctrl.createSchedule =
@@ -148,6 +148,15 @@ module.component('transactionsList', {
       else
         # TODO: rework logic
         ctrl.deleteTransactionsGroup({ recurring_parent: trx.id })
+
+    ctrl.deleteTransactionsGroup = (trx) ->
+      # TODO: should be accessible by recurring transactions only
+      return unless trx.recurring_parent
+      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
+      # Remove all children transactions and parent transaction if it is a forecast
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
+        (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
+      )
 
     return ctrl
 })
