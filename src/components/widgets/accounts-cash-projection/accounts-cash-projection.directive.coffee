@@ -101,7 +101,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.fetch()
 
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
-    _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
     BoltResources.destroy(
       w.metadata.bolt_path,
       resourcesType,
@@ -123,22 +122,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.fetch()
     )
 
-  # Remove all FORECAST trx from schedule
-  $scope.trxList.deleteSchedulableTransactions = (resourcesType, trx) ->
-    trxId = trx.recurring_parent || trx.id
+  # If the recurring parent trx is FORECAST, it has to be removed from the current list too
+  # and it has to be delete from transaction list
+  # Otherwise it's real transaction and it hasn't to be deleted or removed from the trxs list only the children
+  $scope.trxList.deleteParentTransaction = (resourcesType, trxId) ->
     trx = _.find($scope.trxList.transactions, (trx) -> trx.id == trxId)
 
-    #remove from current trxs list all FORECAST trxs that has recurring_parent equal trxId
-    _.remove($scope.trxList.transactions, (trx) -> trx.recurring_parent == trxId)
-
-    #The the recurring parent trx is FORECAST, it has to be removed from the current list too
-    # and it has to be delete from transaction list
-    # Otherwise it's real transaction and it hasn't to be deleted or removed from the trxs list only the children
     if trx.status == 'FORECAST'
-      _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
       $scope.trxList.deleteTransaction(resourcesType, trxId)
     else
-      trx.recurring = false
       BoltResources.update(
         w.metadata.bolt_path,
         resourcesType,
@@ -146,7 +138,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         { recurring : false }
       ).then(->
         $scope.trxList.updated = true
-        $scope.trxList.fetch()
       )
 
   # == Sub-Components - Trends list =========================================================

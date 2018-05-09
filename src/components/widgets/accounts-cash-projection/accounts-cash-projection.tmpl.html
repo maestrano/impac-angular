@@ -27,7 +27,7 @@
       on-change-resources="trxList.changeResourcesType(resourcesType)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
       on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
-      on-delete-schedulable-transaction="trxList.deleteSchedulableTransactions(resourcesType, trx)">
+      on-delete-parent-transaction="trxList.deleteParentTransaction(resourcesType, trxId)">
     </transactions-list>
 
     <duplicate-transactions-list
