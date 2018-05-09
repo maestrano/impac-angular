@@ -108,7 +108,7 @@ module.component('transactionsList', {
         this.display = false
       create: (resourcesType) ->
         ctrl.onIncludeSchedulableTransaction({ trx: this.trx, resourcesType: resourcesType })
-        this.display= false
+        this.display = false
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords >= ctrl.itemsPerPage
@@ -138,6 +138,16 @@ module.component('transactionsList', {
           date: new Date(m.year(), m.month(), m.date())
           toggle: ->
             this.opened = !this.opened
+
+    # If the transaction is a "child" forecast, we remove it from the list and trigger the callback
+    # If it is a "parent" forecast, we remove the all group
+    ctrl.deleteTransaction = (trx) ->
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trx.id)
+      if trx.recurring_parent
+        ctrl.onDeleteTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.id })
+      else
+        # TODO: rework logic
+        ctrl.deleteTransactionsGroup({ recurring_parent: trx.id })
 
     return ctrl
 })

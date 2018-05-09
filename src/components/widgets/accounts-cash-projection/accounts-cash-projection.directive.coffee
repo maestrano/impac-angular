@@ -101,7 +101,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.fetch()
 
   $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
-    _.remove($scope.trxList.transactions, (trx) -> trx.id == trxId)
     BoltResources.destroy(
       w.metadata.bolt_path,
       resourcesType,
