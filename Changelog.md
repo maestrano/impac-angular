@@ -13,6 +13,10 @@ Applies v1.6.10
 [IMPAC-834] [IMPAC-848] Fix Transactions list component display bugs
 [IMPAC-851] CF: Improve "Add transaction" panel
 
+#### Dependencies
+- Impac! v1.7.0 (CSV export)
+- Finance Bolt v1.7.0 (Cashflow capabilities, CSV export)
+
 -------------------------------------------------------------
 
 ### v1.6.10 | 2018 - Week 15
