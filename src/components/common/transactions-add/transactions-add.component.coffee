@@ -1,7 +1,7 @@
 module = angular.module('impac.components.common.transactions-add',[])
                 .constant('SCHEDULABLE_RULES', Object.freeze([
-                   {name: 'Daily', value: 'DailyRule'}, {name: 'Weekly', value: 'WeeklyRule'},
-                   {name: 'Monthly', value: 'Monthly'}, {name: 'Yearly', value: 'YearlyRule'}]))
+                   {name: 'Day', value: 'DailyRule'}, {name: 'Week', value: 'WeeklyRule'},
+                   {name: 'Month', value: 'MonthlyRule'}, {name: 'Year', value: 'YearlyRule'}]))
 
 module.component('transactionsAdd', {
   templateUrl: 'common/transactions-add.tmpl.html'
@@ -19,7 +19,7 @@ module.component('transactionsAdd', {
     ctrl.$onInit = ->
       ctrl.editable = false
 
-      if(!ctrl.trx?)
+      unless(ctrl.trx?)
         ctrl.trx = {}
         ctrl.editable = true
 
@@ -31,6 +31,8 @@ module.component('transactionsAdd', {
       ctrl.schedulable =
         recurring: false
         interval: 4
+        validateInterval: ->
+          this.interval = 1 unless this.interval? || this.interval > 0
         rule: ctrl.schedulableRules.find (rule) -> rule.value == 'WeeklyRule'
         endType: 'occurrencies'
         occurrencies: 12
@@ -38,9 +40,11 @@ module.component('transactionsAdd', {
         datePicker:
           opened: false
           date: new Date()
+          options: {minDate: new Date()}
+          minDate: -1
           toggle: -> this.opened = !this.opened
 
-      if(!ctrl.editable )
+      unless(ctrl.editable )
         ctrl.trx.contact = (ctrl.contacts.filter( (contact) -> contact.attributes.name == ctrl.trx.contact_name))[0]
         ctrl.schedulable.recurring = true
 
@@ -70,7 +74,6 @@ module.component('transactionsAdd', {
       start = parseInt(start)
       end = parseInt(end)
       return [start..end]
-
 
     return ctrl
 })
