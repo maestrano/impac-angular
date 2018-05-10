@@ -176,13 +176,11 @@ module.component('transactionsList', {
     deleteTransactionsGroup = (trx) ->
       # TODO: should be accessible by recurring transactions only
       return $q.when(null) unless trx.recurring_parent
-      args = { resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent }
-      ctrl.onDeleteParentTransaction(args).finally(->
-        # Remove all children transactions and parent transaction if it is a forecast
-        _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
-          (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
-        )
+      # Remove all children transactions and parent transaction if it is a forecast
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
+        (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
       )
+      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
 
     return ctrl
 })
