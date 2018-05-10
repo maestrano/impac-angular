@@ -10,7 +10,14 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
     display: false,
     resources: 'invoices',
     transactions: [],
-    params: { include: 'contact', fields: { contacts: 'name' }, sort: w.sortParamater, currency: w.metadata.currency }
+    params:
+      include: 'contact'
+      fields:
+        contacts: 'name'
+      sort: w.sortParamater
+      currency: w.metadata.currency
+      filter:
+        status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'DRAFT', 'VOIDED', 'PAID', 'INACTIVE']
   }
 
   extractContactName = (id, contacts) ->
