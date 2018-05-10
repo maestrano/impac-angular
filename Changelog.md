@@ -11,6 +11,7 @@ Applies v1.6.10
 [IMPAC-811] CF: Add Trends
 [IMPAC-815] [IMPAC-855] CF: Add Average Payroll costs
 [IMPAC-834] [IMPAC-848] Fix Transactions list component display bugs
+[IMPAC-850] CF: Add confirmation modal before deleting transactions
 [IMPAC-851] CF: Improve "Add transaction" panel
 
 #### Dependencies
