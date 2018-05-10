@@ -270,11 +270,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Execute action on duplicate transaction
   $scope.dupTrxList.updateDuplicateTransaction = (dupTrxId, action) ->
     _.remove($scope.dupTrxList.transactions, (dupTrx) -> dupTrx.id == dupTrxId)
-    BoltResources.update(
+    BoltResources.patch(
       w.metadata.bolt_path,
       $scope.dupTrxList.resources,
       dupTrxId,
-      {reconciliation_action: action}
+      action
     ).then(-> $scope.dupTrxList.updated = true)
 
   $scope.dupTrxList.changeResourcesType = (resourcesType) ->
