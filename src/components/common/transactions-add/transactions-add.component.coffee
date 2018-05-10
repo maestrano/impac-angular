@@ -32,8 +32,7 @@ module.component('transactionsAdd', {
         recurring: false
         interval: 4
         validateInterval: ->
-          if (angular.isUndefined(this.interval) || this.interval == null || this.interval < 1)
-            this.interval = 1
+          this.interval = 1 unless this.interval? || this.interval > 0
         rule: ctrl.schedulableRules.find (rule) -> rule.value == 'WeeklyRule'
         endType: 'occurrencies'
         occurrencies: 12
