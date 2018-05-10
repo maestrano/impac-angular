@@ -5,6 +5,8 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
+    <div setting-forecast-payroll parent-widget="widget" class="part" deferred="::orgDeferred" />
+
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
       <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
@@ -27,7 +29,7 @@
       on-change-resources="trxList.changeResourcesType(resourcesType)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
       on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
-      on-delete-schedulable-transaction="trxList.deleteSchedulableTransactions(resourcesType, trx)">
+      on-delete-parent-transaction="trxList.deleteParentTransaction(resourcesType, trxId)">
     </transactions-list>
 
     <duplicate-transactions-list
