@@ -12,18 +12,6 @@
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
     </div>
-    <div class="col-xs-4">
-      <ul uib-pagination
-        ng-show="$ctrl.showPaginationControl()"
-        class="pull-right"
-        total-items="$ctrl.totalRecords"
-        ng-model="$ctrl.currentPage"
-        max-size="5"
-        items-per-page="30"
-        class="pagination-sm"
-        force-ellipses="true"
-        ng-change="$ctrl.changePage()" />
-    </div>
   </div>
   <div class="table-container">
     <table class="table table-striped">
@@ -57,24 +45,47 @@
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
         <td>
-          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
+          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTransaction(trx)" />
+          <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
+          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
-        <td colspan="5">TOTAL</td>
+        <td colspan="6">TOTAL</td>
         <!-- If Date Picker is open the colspan width will be 6.  If 'list-only' the width will be 5 -->
-        <td ng-hide="$ctrl.listOnly" colspan="1"></td>
-        <!-- There are no titles for Bills. -->
         <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'"></td>
-        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currentAttributes.currency }}</td>
-        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currentAttributes.currency }}</td>
-        <td />
+        <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
+        <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
+        <td ng-hide="$ctrl.listOnly" colspan="2"></td>
       </tr>
     </table>
   </div>
+
+  <common-delete-schedule
+    ng-if="$ctrl.deleteSchedule.display"
+    on-dismiss="$ctrl.deleteSchedule.cancel()"
+    on-delete="$ctrl.deleteSchedule.delete()" />
+
+  <transactions-add
+    ng-if="$ctrl.createSchedule.display"
+    contacts="$ctrl.contacts"
+    trx="$ctrl.createSchedule.trx"
+    resources-type="$ctrl.resourcesType"
+    on-hide="$ctrl.createSchedule.hide()"
+    on-create-transaction="$ctrl.createSchedule.create($ctrl.resourcesType)" />
+
   <div class="bottom">
     <div>
-      <ul uib-pagination total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
+      <ul uib-pagination
+        ng-show="$ctrl.showPaginationControl()"
+        class="pagination-sm"
+        total-items="$ctrl.totalRecords"
+        ng-model="$ctrl.currentPage"
+        max-size="5"
+        items-per-page="30"
+        force-ellipses="true"
+        ng-change="$ctrl.changePage()"
+      />
     </div>
   </div>
 </div>

@@ -1,49 +1,69 @@
 <div id="transactions-add">
   <div class="overlay" />
   <div class="message" >
-    <div class="title">Create a manual transaction</div>
-    
+    <div ng-show="!$ctrl.editable" class="title">Create schedule for transaction</div>
+    <div ng-show="$ctrl.editable"  class="title">Create a manual transaction</div>
+
     <div class="form text-left">
       <label>Description:</label>
-      <input type="text" class="form-control" ng-model="$ctrl.trx.name" placeholder="Transaction description" />
+      <input type="text" class="form-control" ng-model="$ctrl.trx.title" ng-disabled="!$ctrl.editable" placeholder="Transaction description" />
 
       <label>Amount:</label>
-      <input type="text" class="form-control" ng-model="$ctrl.trx.amount" placeholder="1500.00" />
+      <input type="text" class="form-control" ng-model="$ctrl.trx.amount" ng-disabled="!$ctrl.editable" placeholder="1500.00" />
 
       <label>Expected payment date:</label>
-      <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.trx.datePicker.date" ng-click="$ctrl.trx.datePicker.toggle()" is-open="$ctrl.trx.datePicker.opened" close-text="Close" on-open-focus="false" />
+      <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.trx.datePicker.date" ng-click="$ctrl.trx.datePicker.toggle()" is-open="$ctrl.trx.datePicker.opened" close-text="Close" on-open-focus="false"  ng-disabled="!$ctrl.editable"/>
 
-      <label>Customer</label>
-      <div class='btn-group'>
-        <select ng-model="$ctrl.trx.contact" ng-options="contact.attributes.name for contact in $ctrl.contacts | orderBy: 'attributes.name' track by contact.id" class='form-control'>
-          <option value=''> Choose Customer</option>
-        </select>
-      </div>
-
-      <label>Type:</label>
-      <div class="btn-group">
-        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
-        <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'bills'">Money out</label>
-      </div>
-
-      <div class="coming-soon">
-        <div class="badge pull-right">Coming soon!</div>
-        
-        <label style="padding-top: 0px;">Repeat every:</label>
-        <div class="btn-group">
-          <select disabled="true">
-            <option>3</option>
-          </select>
-          <select disabled="true">
-            <option>Weeks</option>
+      <div ng-if="$ctrl.editable">
+        <label>Customer</label>
+        <div class='btn-group'>
+          <select ng-model="$ctrl.trx.contact" ng-options="contact.attributes.name for contact in $ctrl.contacts | orderBy: 'attributes.name' track by contact.id" class='form-control'>
+            <option value=''> Choose Customer</option>
           </select>
         </div>
+      </div>
 
-        <label>Ends:</label>
+      <div ng-if="$ctrl.editable">
+        <label>Customer</label>
+        <label>Type:</label>
         <div class="btn-group">
-          <input type="radio" disabled="true" checked="true" style="margin-top: 0px;"> Never<br />
-          <input type="radio" disabled="true"> After <select disabled="true"><option>10</option></select> occurences<br />
-          <input type="radio" disabled="true"> On <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.tempDate" disabled="true" />
+          <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
+          <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'bills'">Money out</label>
+        </div>
+      </div>
+
+      <div class="repeat-btn">
+        <label style="color: black; font-style: normal; ">
+          <input type="checkbox" ng-model="$ctrl.schedulable.recurring" ng-disabled="!$ctrl.editable" >
+          Repeat every:
+        </label>
+      </div>
+      <div ng-show="$ctrl.schedulable.recurring"  class="schedulable-section" ng-class="{disable: !$ctrl.schedulable.recurring}">
+        <div class="options">
+          <div class="btn-group">
+            <input ng-disabled="!$ctrl.schedulable.recurring" ng-model="$ctrl.schedulable.interval" class="interval-field" type="number" min="1"  ng-blur="$ctrl.schedulable.validateInterval()" />
+            <select ng-disabled="!$ctrl.schedulable.recurring" ng-model="$ctrl.schedulable.rule" ng-options="rule.name for rule in $ctrl.schedulableRules"></select>
+          </div>
+        </div>
+
+        <label style="padding-top: 10px;">Ends:</label>
+        <div class="btn-group">
+          <div class="block">
+            <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="occurrencies" ng-disabled=!"$ctrl.schedulable.recurring" checked="true" >
+            <label>
+              After <select ng-model="$ctrl.schedulable.occurrencies" ng-disabled="!$ctrl.schedulable.recurring" ng-options="num for num in $ctrl.range(1,12)"></select> occurences<br />
+            </label>
+          </div>
+          <div class="block">
+            <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="endDate" ng-disabled="!$ctrl.schedulable.recurring">
+            <label>
+              On <input type="text" class="btn btn-xs btn-default" datepicker-options="$ctrl.schedulable.datePicker.options" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.schedulable.datePicker.date" ng-click="$ctrl.schedulable.datePicker.toggle()" is-open="$ctrl.schedulable.datePicker.opened" close-text="Close" on-open-focus="false" ng-disabled="!$ctrl.schedulable.recurring" />
+            </label>
+          </div>
+          <div class="block">
+            <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="infinity" ng-disabled="true" style="margin-top: 0px;">
+            <label class="disable">Never (coming soon!)</label>
+          </div>
         </div>
       </div>
     </div>

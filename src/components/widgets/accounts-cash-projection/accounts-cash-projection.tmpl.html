@@ -5,6 +5,8 @@
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
 
+    <div setting-forecast-payroll parent-widget="widget" class="part" deferred="::orgDeferred" />
+
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
       <button class="btn btn-warning" ng-click="updateSettings()">Save</button>
@@ -17,14 +19,17 @@
       ng-if="trxList.display"
       transactions="trxList.transactions"
       currency="widget.metadata.currency"
+      contacts="contacts"
       total-records="trxList.totalRecords"
       resources-type="trxList.resources"
       on-hide="trxList.hide()"
       on-page-changed="trxList.fetch(page)"
+      on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
-      on-currency-change="trxList.fetch()"
-      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)">
+      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
+      on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
+      on-delete-parent-transaction="trxList.deleteParentTransaction(resourcesType, trxId)">
     </transactions-list>
 
     <duplicate-transactions-list
@@ -74,7 +79,12 @@
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
-  <transactions-add ng-if="addForecastPopup.display" contacts="contacts" resources-type="addForecastPopup.resourcesType" on-hide="addForecastPopup.hide()" on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+<transactions-add
+  ng-if="addForecastPopup.display"
+  contacts="contacts"
+  resources-type="addForecastPopup.resourcesType"
+  on-hide="addForecastPopup.hide()"
+  on-create-transaction="addForecastPopup.createTransaction(trx)"/>
   <trends-add ng-if="addTrendPopup.display" on-hide="addTrendPopup.hide()" on-create-trend="addTrendPopup.createTrend(trend)"/>
 
 </div>

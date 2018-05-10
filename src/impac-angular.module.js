@@ -119,7 +119,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
     'impac.components.widgets-settings.tag-filter',
-    'impac.components.widgets-settings.offsets'
+    'impac.components.widgets-settings.offsets',
+    'impac.components.widgets-settings.forecast-payroll'
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -144,6 +145,7 @@ angular.module('impac.components.common',
   [
     'impac.components.common.data-not-found',
     'impac.components.common.delete-widget',
+    'impac.components.common.delete-schedule',
     'impac.components.common.transactions-add',
     'impac.components.common.transactions-list',
     'impac.components.common.duplicate-transactions-list',

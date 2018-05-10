@@ -102,6 +102,7 @@
   "impac.widget.settings.dates_picker.tooltip.apply_changes": "Apply changes",
   "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
   "impac.widget.settings.organizations.select_companies": "Select Companies",
+  "impac.widget.settings.forecast_payroll.title": "Forecast Payroll",
   "impac.widget.settings.chart_filters.title": "Chart filters",
   "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
@@ -150,6 +151,10 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "Delete {name}",
 
+  "impac.widget.common.top_buttons.delete_schedule.title": "Delete Schedule",
+  "impac.widget.common.top_buttons.delete_schedule.message": "Are you sure you want to delete this schedule?",
+  "impac.widget.common.top_buttons.delete_schedule.explanation": "(All forecast transaction from this schedule will be deleted)",
+
   "impac.widget.common.top_buttons.delete.title": "Delete widget",
   "impac.widget.common.top_buttons.delete.message": "Are you sure you want to delete this widget?",
   "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
@@ -170,6 +175,14 @@
   "impac.widget.common.error_config.failed.first": "Ooops! Something went wrong, can you please refresh your dashboard?",
   "impac.widget.common.error_config.failed.second": "Unable to load your dashboard, please contact support or try again later.",
   "impac.widget.common.sub_menu_config.check_this_app": ">> Check this app on our marketplace",
+  "impac.widget.common.chart-threshold.attach-panel.timeperiod.text": "Be alerted for the next ",
+  "impac.widget.common.chart-threshold.attach-panel.timeperiod.invalid": "Duration value must be at least 1",
+  "impac.widget.common.chart-threshold.attach-panel.target.text": "when the target threshold goes below: ",
+  "impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.days": "days",
+  "impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.weeks": "weeks",
+  "impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.months": "months",
+  "impac.widget.common.chart-threshold.attach-panel.actions.update": "Update",
+  "impac.widget.common.chart-threshold.attach-panel.actions.save": "Save",
   "impac.widget.theming.hist.default":            "Current",
   "impac.widget.theming.hist.default.prefix":     "",
   "impac.widget.theming.hist.bls":                "Balance",
@@ -239,6 +252,8 @@
   "impac.widget.account_balance.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.account_balance.save":            "@:impac.common.action.save",
   "impac.widget.account_balance.cancel":          "@:impac.common.action.cancel",
+
+  "impac.widget.account_cash_projection.forecast_payroll.aggregate":          "Include average payroll costs into cash projection",
 
   "impac.widget.account_balance_sheets.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.account_balance_sheets.save":            "@:impac.common.action.save",
