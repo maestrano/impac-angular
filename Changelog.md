@@ -14,8 +14,8 @@ Applies v1.6.10
 [IMPAC-851] CF: Improve "Add transaction" panel
 
 #### Dependencies
-- Impac! v1.7.0 (CSV export)
-- Finance Bolt v1.7.0 (Cashflow capabilities, CSV export)
+- Impac! v1.7.2 (CSV export, Bolt custom actions)
+- Finance Bolt v1.7.1 (Cashflow capabilities, CSV export, reconcile/unreconcile custom actions)
 
 -------------------------------------------------------------
 
