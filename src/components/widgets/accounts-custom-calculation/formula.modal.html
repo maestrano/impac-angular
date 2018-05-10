@@ -39,12 +39,12 @@
             </div>
             <div class='col-md-6'>
               {{account.current_balance | mnoCurrency : account.currency}}
-              <button class="close" ng-click="removeAccountFromFormula(account)" ng-show="widget.hasEditAbility"><span class='fa fa-times-circle'></span></button>
+              <button class="close" ng-click="removeAccountFromFormula(account)"><span class='fa fa-times-circle'></span></button>
             </div>
           </div>
         </div>
 
-        <div class='input-group' ng-show="widget.hasEditAbility">
+        <div class='input-group'>
           <select ng-model="movedAccount" ng-options="account.name + ' (' + widget.formatAmount(account) + ')' group by account.classification for account in widget.remainingAccounts" class='form-control' ng-change='addAccountToFormula(movedAccount)'><select>
         </div>
       </div>

@@ -299,10 +299,16 @@ angular
           }
 
           # Retrieve datesRange from dashboard or default.
-          _self.getKpisDateRange().then( (dates) ->
-            params.metadata = {} unless params.metadata?
-            params.metadata.hist_parameters = dates
-          ).finally( ->
+          promise = if _.isEmpty(opts.metadata) || _.isEmpty(opts.metadata.hist_parameters)
+            # TODO: getKpisDateRange is specific to dashboard KPIs, this should be moved to
+            # the kpi.directive and applied before the create action is called.
+            _self.getKpisDateRange().then( (dates) ->
+              params.metadata ||= {}
+              params.metadata.hist_parameters = dates
+            )
+          else
+            $q.resolve()
+          promise.finally( ->
             angular.merge params, opts
 
             url = ImpacRoutes.kpis.create(_self.getCurrentDashboard().id)

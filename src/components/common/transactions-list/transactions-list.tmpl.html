@@ -1,27 +1,24 @@
 <div id="transactions-list">
-  <div class="row top">
-    <div class="col-xs-4 pull-left">
+  <div class="top">
+    <div class="back">
       <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()" ng-hide="$ctrl.listOnly">
         <i class="fa fa-chevron-left" />
         Back to chart
       </label>
     </div>
-    <div class="col-xs-4 text-center">
+    <div class="resource-type">
       <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
     </div>
-    <div class="col-xs-4">
-      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
-    </div>
   </div>
   <div class="table-container">
     <table class="table table-striped">
       <tr>
-        <th>{{ $ctrl.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
+        <th>{{ $ctrl.currentAttributes.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
-        <th>Title</th>
+        <th ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">Title</th>
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
@@ -30,33 +27,65 @@
         <th class="text-right">Balance</th>
         <th />
       </tr>
-      <tr ng-repeat="trx in $ctrl.transactions">
+      <tr ng-repeat="trx in $ctrl.currentAttributes.transactions">
         <td>{{ trx.contact_name }}</td>
         <td>{{ trx.transaction_number }}</td>
-        <td>{{ trx.title }}</td>
+        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
         <td ng-hide="$ctrl.listOnly">
-          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeExpectedDate(trx)"/>
-          <button class="btn btn-xs btn-danger reset-date" ng-if="trx.showReset" title="Reset expected payment date to due date" ng-click="$ctrl.resetExpectedDate(trx)">
-            <i class="fa fa-clock-o" />
-          </button>
+          <div class="expected-payment-date">
+            <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trx.datePicker.date" ng-click="trx.datePicker.toggle()" is-open="trx.datePicker.opened" close-text="Close" on-open-focus="false" ng-change="$ctrl.changeExpectedDate(trx)"/>
+            <button class="btn btn-xs btn-danger reset-date" ng-if="trx.showReset" title="Reset expected payment date to due date" ng-click="$ctrl.resetExpectedDate(trx)">
+              <i class="fa fa-clock-o" />
+            </button>
+          </div>
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
         <td>
-          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.onDeleteTransaction({ resourcesType: $ctrl.resourcesType, trxId: trx.id })" />
+          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTransaction(trx)" />
+          <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
+          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
-      <tr class="total" ng-class="$ctrl.resourcesType">
+      <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
         <td colspan="6">TOTAL</td>
-        <!-- If Date Picker is open the colspan width will be 7.  If 'list-only' the width will be 6 -->
-        <td ng-hide="$ctrl.listOnly" colspan="1"></td>
+        <!-- If Date Picker is open the colspan width will be 6.  If 'list-only' the width will be 5 -->
+        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'"></td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
-        <td />
+        <td ng-hide="$ctrl.listOnly" colspan="2"></td>
       </tr>
     </table>
+  </div>
+
+  <common-delete-schedule
+    ng-if="$ctrl.deleteSchedule.display"
+    on-dismiss="$ctrl.deleteSchedule.cancel()"
+    on-delete="$ctrl.deleteSchedule.delete()" />
+
+  <transactions-add
+    ng-if="$ctrl.createSchedule.display"
+    contacts="$ctrl.contacts"
+    trx="$ctrl.createSchedule.trx"
+    resources-type="$ctrl.resourcesType"
+    on-hide="$ctrl.createSchedule.hide()"
+    on-create-transaction="$ctrl.createSchedule.create($ctrl.resourcesType)" />
+
+  <div class="bottom">
+    <div>
+      <ul uib-pagination
+        ng-show="$ctrl.showPaginationControl()"
+        class="pagination-sm"
+        total-items="$ctrl.totalRecords"
+        ng-model="$ctrl.currentPage"
+        max-size="5"
+        items-per-page="30"
+        force-ellipses="true"
+        ng-change="$ctrl.changePage()"
+      />
+    </div>
   </div>
 </div>

@@ -13,10 +13,9 @@ module.component('chartThreshold', {
     chartShrinkSize: '<?'
     disabled: '<?'
     kpiTargetMode: '<?'
-    kpiCreateLabel: '<?'
     thresholdColor: '@'
     onComplete: '&?'
-  controller: ($timeout, $log, ImpacKpisSvc, ImpacUtilities, toastr)->
+  controller: ($timeout, $log, $translate, ImpacKpisSvc, ImpacUtilities, toastr)->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -30,7 +29,12 @@ module.component('chartThreshold', {
       ctrl.chartShrinkSize ||= 38
       ctrl.disabled ||= false
       ctrl.kpiTargetMode ||= 'min'
-      ctrl.kpiCreateLabel ||= 'Get alerted when the target threshold goes below'
+      ctrl.timePeriod = amount: 3, duration: 'M'
+      ctrl.timePeriodDurations = [
+        { label: $translate.instant('impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.days'), value: 'd' }
+        { label: $translate.instant('impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.weeks'), value: 'w' }
+        { label: $translate.instant('impac.widget.common.chart-threshold.attach-panel.timeperiod.durations.months'), value: 'M' }
+      ]
       ctrl.thresholdColor ||= 'rgba(0, 0, 0, 0.7)'
       # Get attachable kpi templates
       ImpacKpisSvc.getAttachableKpis(ctrl.widget.endpoint).then(
@@ -67,10 +71,6 @@ module.component('chartThreshold', {
       , 100)
       return
 
-    handleInvalidAlertAmount = ->
-      toastr.error("Please choose a number one or greater.", 'Error')
-      ctrl.loading = false
-
     ctrl.saveKpi = ->
       return if ctrl.loading
       ctrl.loading = true
@@ -78,10 +78,11 @@ module.component('chartThreshold', {
       params.targets[ctrl.kpi.watchables[0]] = [{
         "#{ctrl.kpiTargetMode}": parseFloat(ctrl.draftTarget.value)
       }]
-
-      unless ImpacKpisSvc.validateKpiTargets(params.targets)
-        return handleInvalidAlertAmount()
-
+      return ctrl.cancelCreateKpi() unless ImpacKpisSvc.validateKpiTargets(params.targets)
+      params.metadata.hist_parameters = {
+        from: moment().format('YYYY-MM-DD')
+        to: moment().add(ctrl.timePeriod.amount, ctrl.timePeriod.duration).format('YYYY-MM-DD')
+      }
       promise = if ctrl.isEditingKpi
         ImpacKpisSvc.update(getKpi(), params, false).then(
           (kpi)->
@@ -90,7 +91,6 @@ module.component('chartThreshold', {
             angular.extend(getKpi(), kpi)
         )
       else
-        params.metadata.hist_parameters = ctrl.widget.metadata.hist_parameters
         params.widget_id = ctrl.widget.id
         ImpacKpisSvc.create('impac', ctrl.kpi.endpoint, ctrl.kpi.watchables[0], params).then(
           (kpi)->
@@ -119,6 +119,9 @@ module.component('chartThreshold', {
       ).finally(->
         ctrl.cancelCreateKpi()
       )
+
+    ctrl.getSaveKpiBtnLabel = ->
+      if ctrl.isEditingKpi then $translate.instant('impac.widget.common.chart-threshold.attach-panel.actions.update') else $translate.instant('impac.widget.common.chart-threshold.attach-panel.actions.save')
 
     # Private
 
@@ -175,9 +178,24 @@ module.component('chartThreshold', {
 
     # Validate and build threshold data from widget kpi templates
     buildThresholdsFromKpis = ->
-      targets = ctrl.widget.kpis? && ctrl.widget.kpis[0] && ctrl.widget.kpis[0].targets
-      return [] unless ImpacKpisSvc.validateKpiTargets(targets)
-      [{ kpiId: ctrl.widget.kpis[0].id, value: targets.threshold[0].min, name: 'Alert Threshold', color: ctrl.thresholdColor }]
+      thresholds = []
+      targets = ctrl.widget.kpis? && (kpi = ctrl.widget.kpis[0])? && kpi.targets
+      return thresholds unless ImpacKpisSvc.validateKpiTargets(targets)
+      threshold =
+        kpiId: kpi.id
+        value: targets.threshold[0].min
+        name: 'Alert Threshold'
+        color: ctrl.thresholdColor
+      threshold.tooltipHtml = timePeriodDurationTooltip(kpi)
+      thresholds.push(threshold)
+      thresholds
+
+    timePeriodDurationTooltip = (kpi)->
+      to = _.get(kpi, 'settings.hist_parameters.to')
+      from = _.get(kpi, 'settings.hist_parameters.from')
+      return unless to && from
+      duration = _.round(moment.duration(moment(to).diff(moment(from))).asDays())
+      "<br>For the next: #{duration} days"
 
     return ctrl
 })

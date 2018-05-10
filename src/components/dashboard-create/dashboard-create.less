@@ -1,0 +1,20 @@
+.analytics .dashboard-create {
+  .btn-create {
+    background-color: @impac-dashboard-create-button-color;
+  }
+}
+
+.modal.impac-dashboard-create {
+  h1 { font-size: 24px; }
+  .fa.fa-times {
+    float: right;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .control-label { text-align: left; }
+  .modal-footer {
+    .loader {
+      .loader-style(@impac-dashboard-loading-spinner)
+    }
+  }
+}
