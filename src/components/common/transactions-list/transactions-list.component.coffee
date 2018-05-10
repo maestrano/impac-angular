@@ -17,7 +17,7 @@ module.component('transactionsList', {
     totalRecords: '<'
     resourcesType: '<'
     listOnly: '<'
-  controller: ($translate)->
+  controller: ($translate, $q)->
     ctrl = this
     ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: [] }
     ctrl.$onInit = ->
@@ -175,11 +175,13 @@ module.component('transactionsList', {
 
     deleteTransactionsGroup = (trx) ->
       # TODO: should be accessible by recurring transactions only
-      return unless trx.recurring_parent
-      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
-      # Remove all children transactions and parent transaction if it is a forecast
-      _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
-        (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
+      return $q.when(null) unless trx.recurring_parent
+      args = { resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent }
+      ctrl.onDeleteParentTransaction(args).finally(->
+        # Remove all children transactions and parent transaction if it is a forecast
+        _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
+          (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
+        )
       )
 
     return ctrl
