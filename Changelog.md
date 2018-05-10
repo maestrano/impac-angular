@@ -1,14 +1,17 @@
 # Impac! Frontend Changelog
 
-### v1.7.4 | 2018 - Week 15
+### v1.7.4 | 2018 - Week 19
 
 Applies v1.6.10
-
-#### Adds
-[IMPAC-668] Chart threshold timeperiod selection
-
-#### Fixes
-
+[MARLIN-8] Add button for CSV export (bolt widgets)
+[IMPAC-668] CF: Improve chart threshold time period selection
+[IMPAC-768] CF: Add Recurring transactions scheduling
+[IMPAC-771] CF: Add Transactions reconciliation
+[IMPAC-809] CF: Fix "data not found" mode
+[IMPAC-811] CF: Add Trends
+[IMPAC-815] [IMPAC-855] CF: Add Average Payroll costs
+[IMPAC-834] [IMPAC-848] Fix Transactions list component display bugs
+[IMPAC-851] CF: Improve "Add transaction" panel
 
 -------------------------------------------------------------
 
