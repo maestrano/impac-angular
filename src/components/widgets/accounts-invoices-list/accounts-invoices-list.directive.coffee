@@ -5,7 +5,14 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.hideForecast = true;
 
   setInitialParams = ->
-    params = { include: 'contact', fields: { contacts: 'name' }, sort: w.sortParamater, currency: w.metadata.currency, filter: {} }
+    params:
+      include: 'contact'
+      fields:
+        contacts: 'name'
+      sort: w.sortParamater
+      currency: w.metadata.currency
+      filter:
+        status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'DRAFT', 'VOIDED', 'PAID', 'INACTIVE']
     params.filter = { 'status.not': 'FORECAST' } if $scope.hideForecast
     return params
 
@@ -74,7 +81,6 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
 
   # --------------------------------------
   w.initContext = ->
-    $scope.trxList.hide()
     $scope.trxList.fetch()
 
   # Widget is ready: can trigger the "wait for settings to be ready"
