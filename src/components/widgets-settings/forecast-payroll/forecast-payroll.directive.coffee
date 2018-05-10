@@ -1,14 +1,14 @@
 module = angular.module('impac.components.widgets-settings.forecast-payroll',[])
-module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc, ImpacWidgetsSvc) ->
+module.controller('SettingForecastPayrollCtrl', ($scope, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
-  w.selectedForecastPayroll = false
+  $scope.selectedForecastPayroll = false
 
   $scope.toggleForecastPayroll = ->
-    w.selectedForecastPayroll = !w.selectedForecastPayroll
+    $scope.selectedForecastPayroll = !$scope.selectedForecastPayroll
 
   $scope.isToggleForecastPayroll = ->
-    return w.selectedForecastPayroll
+    return $scope.selectedForecastPayroll
 
   # What will be passed to parentWidget
   setting = {}
@@ -21,12 +21,12 @@ module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSv
       (config) ->
         currentDashboard = config.currentDashboard
         return unless w.metadata? && w.metadata.forecast_payroll?
-        w.selectedForecastPayroll = w.metadata.forecast_payroll
+        $scope.selectedForecastPayroll = w.metadata.forecast_payroll
         setting.isInitialized = true
     )
 
   setting.toMetadata = ->
-    return { forecast_payroll: w.selectedForecastPayroll }
+    return { forecast_payroll: $scope.selectedForecastPayroll }
 
   w.settings.push(setting)
 
