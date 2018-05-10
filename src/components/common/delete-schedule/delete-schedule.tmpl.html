@@ -1,0 +1,17 @@
+<div class="delete-schedule">
+  <div class="overlay" />
+  <div class="message">
+    <div class="title" translate>impac.widget.common.top_buttons.delete_schedule.title</div>
+    <p translate>impac.widget.common.top_buttons.delete_schedule.message</p>
+    <p translate>impac.widget.common.top_buttons.delete_schedule.explanation</p>
+    <div ng-hide="$ctrl.loading">
+      <button ng-click="$ctrl.onDismiss()" class="btn btn-xs btn-default" translate>impac.widget.common.top_buttons.delete.cancel</button>
+      <button ng-click="$ctrl.onDelete()" class="btn btn-xs btn-danger" translate>impac.widget.common.top_buttons.delete.delete</button>
+    </div>
+    <div ng-show="$ctrl.loading" class="loader" align="center">
+      <div>
+        <i class="fa fa-spinner fa-pulse fa-4x"></i>
+      </div>
+    </div>
+  </div>
+</div>

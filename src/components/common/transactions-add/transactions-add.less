@@ -6,7 +6,8 @@
     width: 30%;
     .form {
       padding: 0px 10px;
-      > label, .coming-soon > label {
+      > label,
+      .schedulable-section > label {
         padding-top: 10px;
         font-weight: normal;
         margin-bottom: 3px;
@@ -26,13 +27,19 @@
           margin-top: 0px;
         }
       }
-      .coming-soon {
+      .disable {
+        color: #888888;
+        font-style: italic;
+      }
+      .never-disable {
+        color: black;
+        font-style: normal;
+      }
+      .schedulable-section {
         margin-top: 15px;
         padding: 5px;
         border: solid 1px silver;
         background-color: white;
-        color: #888888;
-        font-style: italic;
         .badge {
           font-weight: normal;
           background-color: #888888;
@@ -45,6 +52,9 @@
             float: none;
             border-color: #888888;
           }
+        }
+        .block {
+          label { vertical-align: super; }
         }
       }
     }

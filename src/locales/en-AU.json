@@ -151,6 +151,10 @@
   "impac.dashboard_selector.dropdown.add_widget": "@:impac.dashboard_selector.bootstrap_tabs.add_widget",
   "impac.dashboard_selector.dropdown.tooltip.delete": "Delete {name}",
 
+  "impac.widget.common.top_buttons.delete_schedule.title": "Delete Schedule",
+  "impac.widget.common.top_buttons.delete_schedule.message": "Are you sure you want to delete this schedule?",
+  "impac.widget.common.top_buttons.delete_schedule.explanation": "(All forecast transaction from this schedule will be deleted)",
+
   "impac.widget.common.top_buttons.delete.title": "Delete widget",
   "impac.widget.common.top_buttons.delete.message": "Are you sure you want to delete this widget?",
   "impac.widget.common.top_buttons.delete.explanation": "(it will not erase your data)",
