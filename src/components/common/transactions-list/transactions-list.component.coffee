@@ -7,9 +7,7 @@ module.component('transactionsList', {
     onPageChanged: '&'
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
-    onDeleteTransaction: '&'
     onUpateScheduleTransaction: '&?'
-    onDeleteParentTransaction: '&?'
     onCurrencyChange: '&'
     metadata: '<'
     transactions: '<'
@@ -87,22 +85,6 @@ module.component('transactionsList', {
     ctrl.canCreateSchedulableTransaction = (trx) ->
       return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onUpateScheduleTransaction)
 
-    ctrl.canDeleteSchedulableTransaction = (trx) ->
-      return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteParentTransaction)
-
-    ctrl.deleteScheduleModal =
-      args: {}
-      display: false
-      show: (args) ->
-        this.args = args
-        this.display = true
-      cancel: ->
-        this.args = {}
-        this.display = false
-      delete: ->
-        deleteTransactionsGroup(this.args.trx)
-        this.cancel()
-
     ctrl.createSchedule =
       trx: null
       display: false
@@ -111,7 +93,6 @@ module.component('transactionsList', {
         this.resourcesType = args.resourcesType
         this.display = true
       hide: ->
-        this.trx = null
         this.display = false
       create: () ->
         this.hide()
@@ -132,11 +113,14 @@ module.component('transactionsList', {
     ctrl.deleteTrxModal =
       trx: null
       display: false
+      deletionType: "onlyThis"
       show: (trx) ->
         this.trx = trx
         this.display = true
+        this.deletionType = "allOccurrences" unless(this.canDeleteOnlyThis())
       hide: ->
         this.trx = null
+        this.deletionType = "onlyThis"
         this.display = false
       message: ->
         msgPreposition = if ctrl.resourcesType == 'invoices'
@@ -149,8 +133,15 @@ module.component('transactionsList', {
           preposition: msgPreposition
         })
       delete: ->
-        deleteTransaction(this.trx)
+        if(this.deletionType == 'onlyThis')
+          ctrl.deleteTransaction(this.trx)
+        else
+          ctrl.deleteTransactionsGroup(this.trx)
         this.hide()
+      canDeleteOnlyThis: ->
+        !this.trx.recurring
+      canDeleteAllOccurrences: ->
+        this.trx.recurring_parent? || this.trx.recurring
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords > ctrl.itemsPerPage
@@ -181,24 +172,37 @@ module.component('transactionsList', {
           toggle: ->
             this.opened = !this.opened
 
-    # If the transaction is a "child" forecast, we remove it from the list and trigger the callback
-    # If it is a "parent" forecast, we remove the all group
-    deleteTransaction = (trx) ->
+    ctrl.deleteTransaction = (trx) ->
       _.remove(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trx.id)
-      if trx.recurring_parent
-        ctrl.onDeleteTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.id })
-      else
-        # TODO: rework logic
-        deleteTransactionsGroup({ recurring_parent: trx.id })
+      BoltResources.destroy(
+        ctrl.metadata.bolt_path,
+        ctrl.resourcesType,
+        trx.id
+      ).then(-> ctrl.onUpateScheduleTransaction())
 
-    deleteTransactionsGroup = (trx) ->
-      # TODO: should be accessible by recurring transactions only
-      return $q.when(null) unless trx.recurring_parent
-      # Remove all children transactions and parent transaction if it is a forecast
-      _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
-        (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
-      )
-      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
+    ctrl.deleteTransactionsGroup = (trx) ->
+      trxGroupId = if trx.recurring
+        trx.id
+      else
+        trx.recurring_parent
+
+      # Remove all children transactions
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) -> (trxInList.recurring_parent == trxGroupId))
+      ctrl.deleteParentTransaction(trxGroupId)
+
+    # If the parent trx is FORECAST, it has to be deleted
+    # Otherwise it's real transaction and it hasn't to be deleted or removed from the trxs list only the children
+    ctrl.deleteParentTransaction = (trxId) ->
+      trx = _.find(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trxId)
+      if trx.status == 'FORECAST'
+        ctrl.deleteTransaction(trx)
+      else
+        BoltResources.update(
+          ctrl.metadata.bolt_path,
+          ctrl.resourcesType,
+          trxId,
+          { recurring : false }
+        ).then(-> ctrl.onUpateScheduleTransaction())
 
     return ctrl
 })

@@ -28,9 +28,7 @@
       on-page-changed="trxList.fetch(page)"
       on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
-      on-change-resources="trxList.changeResourcesType(resourcesType)"
-      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
-      on-delete-parent-transaction="trxList.deleteParentTransaction(resourcesType, trxId)">
+      on-change-resources="trxList.changeResourcesType(resourcesType)">
     </transactions-list>
 
     <duplicate-transactions-list

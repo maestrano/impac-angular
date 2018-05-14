@@ -100,32 +100,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       $scope.trxList.resources = resourcesType
       $scope.trxList.fetch()
 
-  $scope.trxList.deleteTransaction = (resourcesType, trxId) ->
-    BoltResources.destroy(
-      w.metadata.bolt_path,
-      resourcesType,
-      trxId
-    ).then(-> $scope.trxList.updated = true)
-
   $scope.trxList.updateWidget = -> $scope.trxList.updated = true
-
-  # If the recurring parent trx is FORECAST, it has to be removed from the current list too
-  # and it has to be delete from transaction list
-  # Otherwise it's real transaction and it hasn't to be deleted or removed from the trxs list only the children
-  $scope.trxList.deleteParentTransaction = (resourcesType, trxId) ->
-    trx = _.find($scope.trxList.transactions, (trx) -> trx.id == trxId)
-
-    if trx.status == 'FORECAST'
-      $scope.trxList.deleteTransaction(resourcesType, trxId)
-    else
-      BoltResources.update(
-        w.metadata.bolt_path,
-        resourcesType,
-        trxId,
-        { recurring : false }
-      ).then(->
-        $scope.trxList.updated = true
-      )
 
   # == Sub-Components - Trends list =========================================================
   $scope.trendList = { display: false, updated: false, trends: [], params: { } }
