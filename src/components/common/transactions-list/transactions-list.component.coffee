@@ -8,16 +8,17 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
-    onIncludeSchedulableTransaction: '&?'
+    onUpateScheduleTransaction: '&?'
     onDeleteParentTransaction: '&?'
     onCurrencyChange: '&'
+    metadata: '<'
     transactions: '<'
     currency: '<'
     contacts: '<'
     totalRecords: '<'
     resourcesType: '<'
     listOnly: '<'
-  controller: ->
+  controller: ($translate, $q, BoltResources)->
     ctrl = this
     ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: [] }
     ctrl.$onInit = ->
@@ -32,6 +33,10 @@ module.component('transactionsList', {
       for trx in ctrl.transactions
         ctrl.totalAmount += trx.amount
         ctrl.totalBalance += trx.balance
+
+        # formatt values
+        trx.amount = Number(Math.round(trx.amount + 'e2') + 'e-2')
+        trx.balance = Number(Math.round(trx.balance + 'e2') + 'e-2')
 
         # dates are sent in UTC by the API
         trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
@@ -80,7 +85,7 @@ module.component('transactionsList', {
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
 
     ctrl.canCreateSchedulableTransaction = (trx) ->
-      return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onIncludeSchedulableTransaction)
+      return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onUpateScheduleTransaction)
 
     ctrl.canDeleteSchedulableTransaction = (trx) ->
       return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteParentTransaction)
@@ -103,11 +108,34 @@ module.component('transactionsList', {
       display: false
       show: (args) ->
         this.trx = args.trx
+        this.resourcesType = args.resourcesType
         this.display = true
       hide: ->
         this.display = false
-      create: (resourcesType) ->
-        ctrl.onIncludeSchedulableTransaction({ trx: this.trx, resourcesType: resourcesType })
+      create: () ->
+        this.hide()
+        BoltResources.update(
+          ctrl.metadata.bolt_path,
+          this.resourcesType,
+          this.trx.id,
+          {
+            recurring: this.trx.recurring,
+            recurring_pattern: this.trx.recurring_pattern,
+            recurring_end_date: if this.trx.recurring_end_date then moment(this.trx.recurring_end_date).format('YYYY-MM-DD') else null
+          }
+        ).then(->
+          ctrl.onUpateScheduleTransaction()
+          ctrl.changePage()
+        )
+
+    ctrl.deleteTrxModal =
+      trx: null
+      display: false
+      show: (trx) ->
+        this.trx = trx
+        this.display = true
+      hide: ->
+        this.trx = null
         this.display = false
 
     ctrl.showPaginationControl = ->

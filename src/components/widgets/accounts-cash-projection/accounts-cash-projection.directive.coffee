@@ -107,20 +107,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId
     ).then(-> $scope.trxList.updated = true)
 
-  $scope.trxList.includeSchedulableTransactions = (resourcesType, trx) ->
-    BoltResources.update(
-      w.metadata.bolt_path,
-      resourcesType,
-      trx.id,
-      {
-        recurring: trx.recurring,
-        recurring_pattern: trx.recurring_pattern,
-        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
-      }
-    ).then(->
-      $scope.trxList.updated = true
-      $scope.trxList.fetch()
-    )
+  $scope.trxList.updateWidget = -> $scope.trxList.updated = true
 
   # If the recurring parent trx is FORECAST, it has to be removed from the current list too
   # and it has to be delete from transaction list
