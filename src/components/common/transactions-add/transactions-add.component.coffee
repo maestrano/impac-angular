@@ -60,7 +60,7 @@ module.component('transactionsAdd', {
     ctrl.createTransaction = ->
       ctrl.onHide()
       ctrl.trx = ctrl.includeSchedulable(ctrl.trx)
-      ctrl.onCreateTransaction({ trx: ctrl.trx })
+      ctrl.onCreateTransaction({ trx: ctrl.trx, resourcesType: ctrl.resourcesType })
 
     ctrl.includeSchedulable = (trx) ->
       trx.recurring = ctrl.schedulable.recurring
