@@ -153,7 +153,7 @@ module.component('transactionsList', {
         this.hide()
 
     ctrl.showPaginationControl = ->
-      return ctrl.totalRecords >= ctrl.itemsPerPage
+      return ctrl.totalRecords > ctrl.itemsPerPage
 
     ctrl.calculateTotals = () ->
       # Moved logic from initialize to support recalculation on page change.
