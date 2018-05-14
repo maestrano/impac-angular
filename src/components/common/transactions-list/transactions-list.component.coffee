@@ -90,7 +90,7 @@ module.component('transactionsList', {
     ctrl.canDeleteSchedulableTransaction = (trx) ->
       return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteParentTransaction)
 
-    ctrl.deleteSchedule =
+    ctrl.deleteScheduleModal =
       args: {}
       display: false
       show: (args) ->
@@ -100,8 +100,8 @@ module.component('transactionsList', {
         this.args = {}
         this.display = false
       delete: ->
-        ctrl.deleteTransactionsGroup(this.args.trx)
-        this.display = false
+        deleteTransactionsGroup(this.args.trx)
+        this.cancel()
 
     ctrl.createSchedule =
       trx: null
@@ -111,6 +111,7 @@ module.component('transactionsList', {
         this.resourcesType = args.resourcesType
         this.display = true
       hide: ->
+        this.trx = null
         this.display = false
       create: () ->
         this.hide()
@@ -137,6 +138,19 @@ module.component('transactionsList', {
       hide: ->
         this.trx = null
         this.display = false
+      message: ->
+        msgPreposition = if ctrl.resourcesType == 'invoices'
+          $translate.instant('impac.common.speech.prepositions.to')
+        else
+          $translate.instant('impac.common.speech.prepositions.from')
+        $translate.instant('impac.widget.common.confirm-modal.delete_trx.message', {
+          title: this.trx.title,
+          customer: this.trx.contact_name,
+          preposition: msgPreposition
+        })
+      delete: ->
+        deleteTransaction(this.trx)
+        this.hide()
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords >= ctrl.itemsPerPage
@@ -169,22 +183,22 @@ module.component('transactionsList', {
 
     # If the transaction is a "child" forecast, we remove it from the list and trigger the callback
     # If it is a "parent" forecast, we remove the all group
-    ctrl.deleteTransaction = (trx) ->
+    deleteTransaction = (trx) ->
       _.remove(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trx.id)
       if trx.recurring_parent
         ctrl.onDeleteTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.id })
       else
         # TODO: rework logic
-        ctrl.deleteTransactionsGroup({ recurring_parent: trx.id })
+        deleteTransactionsGroup({ recurring_parent: trx.id })
 
-    ctrl.deleteTransactionsGroup = (trx) ->
+    deleteTransactionsGroup = (trx) ->
       # TODO: should be accessible by recurring transactions only
-      return unless trx.recurring_parent
-      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
+      return $q.when(null) unless trx.recurring_parent
       # Remove all children transactions and parent transaction if it is a forecast
       _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
         (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
       )
+      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
 
     return ctrl
 })
