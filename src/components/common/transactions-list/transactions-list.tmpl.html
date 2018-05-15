@@ -47,7 +47,6 @@
         <td class="actions">
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTrxModal.show(trx)" />
           <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
-          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteScheduleModal.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
@@ -61,17 +60,6 @@
     </table>
   </div>
 
-  <!-- Confirm Delete Schedule -->
-  <widgets-common-confirm-modal opened="$ctrl.deleteScheduleModal.display" on-dismiss="$ctrl.deleteScheduleModal.cancel()" on-action="$ctrl.deleteScheduleModal.delete()">
-    <title-section>
-      <span translate>impac.widget.common.confirm-modal.delete_schedule.title</span>
-    </title-section>
-    <body-section>
-      <p translate>impac.widget.common.confirm-modal.delete_schedule.message</p>
-      <p translate>impac.widget.common.confirm-modal.delete_schedule.explanation</p>
-    </body-section>
-  </widgets-common-confirm-modal>
-
   <!-- Confirm Delete Trx -->
   <widgets-common-confirm-modal opened="$ctrl.deleteTrxModal.display" on-dismiss="$ctrl.deleteTrxModal.hide()" on-action="$ctrl.deleteTrxModal.delete()">
     <title-section>
@@ -79,6 +67,17 @@
     </title-section>
     <body-section>
       <p ng-bind="$ctrl.deleteTrxModal.message()"></p>
+
+      <div>
+        <label for="r1" ng-show="$ctrl.deleteTrxModal.canDeleteOnlyThis()">
+          <input type="radio" ng-model="$ctrl.deleteTrxModal.deletionType" name="deletionType" id="r1" value="onlyThis" />
+          <span translate >impac.widget.common.confirm-modal.delete_trx.only_this</span>
+        </label><br>
+        <label for="r2" ng-show="$ctrl.deleteTrxModal.canDeleteAllOccurrences()">
+          <input type="radio" ng-model="$ctrl.deleteTrxModal.deletionType" name="deletionType" id="r2" value="allOccurrences" />
+          <span translate >impac.widget.common.confirm-modal.delete_trx.all_occurrences</span>
+        </label>
+      </div>
     </body-section>
   </widgets-common-confirm-modal>
 
@@ -88,7 +87,7 @@
     trx="$ctrl.createSchedule.trx"
     resources-type="$ctrl.resourcesType"
     on-hide="$ctrl.createSchedule.hide()"
-    on-create-transaction="$ctrl.createSchedule.create($ctrl.resourcesType)" />
+    on-create-transaction="$ctrl.createSchedule.create()" />
 
   <div class="bottom">
     <div>

@@ -20,12 +20,15 @@ module.component('transactionsAdd', {
       ctrl.editable = false
 
       unless(ctrl.trx?)
-        ctrl.trx = {}
+        ctrl.trx = { expected_payment_date: moment().utc().format() }
         ctrl.editable = true
 
+      ctrl.trx.title = ctrl.trx.transaction_number if (ctrl.trx? && !(typeof ctrl.trx.title == "string" && ctrl.trx.title.length > 0))
+
+      m = moment.utc(ctrl.trx.expected_payment_date)
       ctrl.trx.datePicker =
         opened: false
-        date: new Date()
+        date: new Date(m.year(), m.month(), m.date())
         toggle: -> this.opened = !this.opened
 
       ctrl.schedulable =
@@ -57,7 +60,7 @@ module.component('transactionsAdd', {
     ctrl.createTransaction = ->
       ctrl.onHide()
       ctrl.trx = ctrl.includeSchedulable(ctrl.trx)
-      ctrl.onCreateTransaction({ trx: ctrl.trx })
+      ctrl.onCreateTransaction({ trx: ctrl.trx, resourcesType: ctrl.resourcesType })
 
     ctrl.includeSchedulable = (trx) ->
       trx.recurring = ctrl.schedulable.recurring

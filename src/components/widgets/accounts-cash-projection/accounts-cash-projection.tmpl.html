@@ -22,14 +22,13 @@
       contacts="contacts"
       total-records="trxList.totalRecords"
       resources-type="trxList.resources"
+      metadata="widget.metadata"
+      on-upate-schedule-transaction="trxList.updateWidget()"
       on-hide="trxList.hide()"
       on-page-changed="trxList.fetch(page)"
       on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
-      on-change-resources="trxList.changeResourcesType(resourcesType)"
-      on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
-      on-include-schedulable-transaction="trxList.includeSchedulableTransactions(resourcesType, trx)"
-      on-delete-parent-transaction="trxList.deleteParentTransaction(resourcesType, trxId)">
+      on-change-resources="trxList.changeResourcesType(resourcesType)">
     </transactions-list>
 
     <duplicate-transactions-list
@@ -84,7 +83,7 @@
   contacts="contacts"
   resources-type="addForecastPopup.resourcesType"
   on-hide="addForecastPopup.hide()"
-  on-create-transaction="addForecastPopup.createTransaction(trx)"/>
+  on-create-transaction="addForecastPopup.createTransaction(trx, resourcesType)"/>
   <trends-add ng-if="addTrendPopup.display" on-hide="addTrendPopup.hide()" on-create-trend="addTrendPopup.createTrend(trend)"/>
 
 </div>
