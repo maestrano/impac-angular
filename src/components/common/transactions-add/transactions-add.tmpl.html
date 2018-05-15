@@ -55,10 +55,11 @@
             </label>
           </div>
           <div class="block">
-            <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="endDate" ng-disabled="!$ctrl.schedulable.recurring">
             <label>
-              On <input type="text" class="btn btn-xs btn-default" datepicker-options="$ctrl.schedulable.datePicker.options" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.schedulable.datePicker.date" ng-click="$ctrl.schedulable.datePicker.toggle()" is-open="$ctrl.schedulable.datePicker.opened" close-text="Close" on-open-focus="false" ng-disabled="!$ctrl.schedulable.recurring" />
+              <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="endDate" ng-disabled="!$ctrl.schedulable.recurring">
+              On
             </label>
+            <input type="text" class="btn btn-xs btn-default" datepicker-options="$ctrl.schedulable.datePicker.options" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.schedulable.datePicker.date" ng-click="$ctrl.schedulable.datePicker.toggle()" is-open="$ctrl.schedulable.datePicker.opened" close-text="Close" on-open-focus="false" ng-disabled="!$ctrl.schedulable.recurring" />
           </div>
           <div class="block">
             <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="infinity" ng-disabled="true" style="margin-top: 0px;">

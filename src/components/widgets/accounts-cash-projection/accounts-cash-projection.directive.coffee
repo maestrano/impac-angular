@@ -201,10 +201,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     hide: -> this.display = false
     show: -> this.display = true
 
-  $scope.addForecastPopup.createTransaction = (trx) ->
+  $scope.addForecastPopup.createTransaction = (trx, resourcesType) ->
     BoltResources.create(
       w.metadata.bolt_path,
-      this.resourcesType,
+      resourcesType,
       {
         title: trx.title,
         transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
