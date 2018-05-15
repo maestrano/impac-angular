@@ -25,10 +25,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   imgTemplate = (src, name) ->
     "<img src='#{src}'><br>#{name}"
 
-  extractContactName = (id, contacts) ->
-    contact = _.find contacts, (c) -> c.id == id
-    contact.attributes.name
-
   # Unique identifier for the chart object in the DOM
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
@@ -66,9 +62,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         # Clear transactions list and replace by newly fetched ones
         _.remove($scope.trxList.transactions, -> true)
         for trx in response.data.data
+          contactName = ''
           if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
-            contact_name = extractContactName(trx.relationships.contact.data.id, response.data.included)
-          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id, contact_name: contact_name || null }))
+            contactName = _.find(response.data.included, (includedContact) ->
+              includedContact.id == trx.relationships.contact.data.id
+            ).attributes.name
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, {
+            id: trx.id
+            contact_name: contactName
+          }))
         $scope.trxList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trxList.show())
 

@@ -20,10 +20,6 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
         status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'DRAFT', 'VOIDED', 'PAID', 'INACTIVE']
   }
 
-  extractContactName = (id, contacts) ->
-    contact = _.find contacts, (c) -> c.id == id
-    contact.attributes.name
-
   # Widget Settings --------------------------------------
   $scope.orgDeferred = $q.defer()
   settingsPromises = [$scope.orgDeferred.promise]
@@ -42,16 +38,24 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
         metadata: _.pick(w.metadata, 'organization_ids')
         page: { number: currentPage }
         currency: w.metadata.currency
+        include: 'contact'
+        fields: { contacts: 'name' }
       }
     )
     BoltResources.index(bolt_path, $scope.trxList.resources, params).then(
       (response) ->
         # Clear transactions list and replace by newly fetched ones
         _.remove($scope.trxList.transactions, -> true)
-        for transaction in response.data.data
-          if transaction.relationships && transaction.relationships.contact && transaction.relationships.contact.data
-            contact_name = extractContactName(transaction.relationships.contact.data.id, response.data.included)
-          $scope.trxList.transactions.push(angular.merge(transaction.attributes, { id: $scope.trxList.id, contact_name: contact_name || null }))
+        for trx in response.data.data
+          contactName = ''
+          if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
+            contactName = _.find(response.data.included, (includedContact) ->
+              includedContact.id == trx.relationships.contact.data.id
+            ).attributes.name
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, {
+            id: $scope.trxList.id
+            contact_name: contactName
+          }))
         $scope.trxList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trxList.show())
 
