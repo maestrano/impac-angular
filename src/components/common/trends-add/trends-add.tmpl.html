@@ -3,34 +3,46 @@
   <div class="message" >
     <div class="title">Add data from historical trend</div>
 
-    <div class="form text-left">
-      <label>Adjustment rate:</label><br>
-      <input style="width: 45px;" type="number" value="0" min="0" step="1" ng-model="$ctrl.trend.rate"/>%<br>
+    <div class="wrapper">
+      <div class="form text-left">
+        <label>Adjustment rate:</label><br>
+        <input style="width: 45px;" type="number" value="0" min="0" step="1" ng-model="$ctrl.trend.rate" ng-change="$ctrl.redrawCurrentTrend()"/>%<br>
 
-      <label>Start date:</label><br>
-      <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.startDatePicker.date" ng-click="$ctrl.startDatePicker.toggle()" is-open="$ctrl.startDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateStartDate()"/>
+        <label>Account:</label>
+        <div class='btn-group'>
+          <select ng-model="$ctrl.trend.account_id" ng-options="account.attributes.name for account in $ctrl.accounts | orderBy: 'attributes.name' track by account.id" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
+            <option value=''> Choose an Account</option>
+          </select>
+        </div>
 
-      <label>Trend applied:</label><br>
-      <select ng-model="$ctrl.trend.period">
-        <option>Once</option>
-        <option>Daily</option>
-        <option>Weekly</option>
-        <option>Monthly</option>
-        <option>Yearly</option>
-      </select>
+        <label>Start date:</label><br>
+        <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.startDatePicker.date" ng-click="$ctrl.startDatePicker.toggle()" is-open="$ctrl.startDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateStartDate()"/>
 
-      <fieldset class="btn-group" ng-disbaled="$ctrl.isPeriodDisabled()">
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value="-1"> Forever<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.selectedPeriod"> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.trend.untilDate = $ctrl.selectedPeriod"> {{$ctrl.period()}}<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.untilDatePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.untilDatePicker.date" ng-click="$ctrl.untilDatePicker.toggle()" is-open="$ctrl.untilDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateUntilDate()"/>
-      </fieldset>
+        <label>Trend applied:</label><br>
+        <select ng-model="$ctrl.trend.period" ng-change="$ctrl.redrawCurrentTrend()">
+          <option>Once</option>
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+          <option>Annually</option>
+        </select>
 
-      <label>Name: </label><br>
-      <input type="text" class="form-control" ng-model="$ctrl.trend.name" placeholder="Trend name" />
+        <fieldset class="btn-group" ng-disbaled="$ctrl.isPeriodDisabled()">
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value="-1" ng-change="$ctrl.redrawCurrentTrend()"> Forever<br>
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.selectedPeriod"> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.updatePeriod()"> {{$ctrl.period()}}<br>
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.untilDatePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.untilDatePicker.date" ng-click="$ctrl.untilDatePicker.toggle()" is-open="$ctrl.untilDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateUntilDate()"/>
+        </fieldset>
+
+        <label>Name: </label><br>
+        <input type="text" class="form-control" ng-model="$ctrl.trend.name" placeholder="Trend name" />
+      </div>
+
+      <!-- Chart -->
+      <div id="trends-add-chart" class="cash-projection-chart"></div>
     </div>
 
     <div class="bottom text-center">
-      <button class="btn btn-sm btn-default" ng-click="$ctrl.onHide()">Cancel</button>
+      <button class="btn btn-sm btn-default" ng-click="$ctrl.cancel()">Cancel</button>
       <button class="btn btn-sm btn-success" ng-click="$ctrl.createTrend()" ng-disabled="!$ctrl.isValid()">Save</button>
     </div>
   </div>

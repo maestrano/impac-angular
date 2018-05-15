@@ -22,13 +22,13 @@ module.component('trendsList', {
       m = moment.utc(trend.last_apply_date)
       trend.untilDatePicker =
         opened: false
-        date: new Date(m.year(), m.month(), m.date())
+        date: m.toDate()
         toggle: ->
           this.opened = !this.opened if ctrl.editMode
       m = moment.utc(trend.start_date)
       trend.startDatePicker =
         opened: false
-        date: new Date(m.year(), m.month(), m.date())
+        date: m.toDate()
         toggle: ->
           this.opened = !this.opened if ctrl.editMode
 
