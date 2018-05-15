@@ -33,6 +33,10 @@ module.component('transactionsList', {
         ctrl.totalAmount += trx.amount
         ctrl.totalBalance += trx.balance
 
+        # formatt values
+        trx.amount = Number(Math.round(trx.amount + 'e2') + 'e-2')
+        trx.balance = Number(Math.round(trx.balance + 'e2') + 'e-2')
+
         # dates are sent in UTC by the API
         trx.trxDateUTC = moment.utc(trx.transaction_date).format('DD MMM YYYY')
         trx.dueDateUTC = moment.utc(trx.due_date).format('DD MMM YYYY')
@@ -105,10 +109,10 @@ module.component('transactionsList', {
         this.trx = args.trx
         this.display = true
       hide: ->
-        this.trx = null
         this.display = false
       create: (resourcesType) ->
         ctrl.onIncludeSchedulableTransaction({ trx: this.trx, resourcesType: resourcesType })
+        ctrl.changePage()
         this.hide()
 
     ctrl.deleteTrxModal =
