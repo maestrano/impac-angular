@@ -1,0 +1,20 @@
+<div ng-if="$ctrl.opened">
+  <div class="overlay" />
+  <div class="message">
+    <div class="title" ng-transclude="titleSlot">
+      <span translate>impac.widget.common.confirm-modal.default.title</span>
+    </div>
+    <div ng-transclude="bodySlot">
+      <p translate>impac.widget.common.confirm-modal.default.message</p>
+      <p translate>impac.widget.common.confirm-modal.default.explanation</p>
+    </div>
+    <div ng-hide="$ctrl.loading" ng-transclude="actionsSlot">
+      <button ng-click="$ctrl.onDismiss()" class="btn btn-xs btn-default" translate>impac.widget.common.confirm-modal.default.dismiss</button>
+      <button ng-click="$ctrl.actionOnClick()" class="btn btn-xs btn-danger" translate>impac.widget.common.confirm-modal.default.action</button>
+    </div>
+
+    <div ng-show="$ctrl.loading" class="loader" align="center">
+      <div><i class="fa fa-spinner fa-pulse fa-4x"></i></div>
+    </div>
+  </div>
+</div>
