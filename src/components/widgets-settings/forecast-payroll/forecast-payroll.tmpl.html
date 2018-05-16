@@ -3,14 +3,14 @@
 
   <div class="widget-lines-container">
     <div class="widget-line">
-      Aggregate
+      {{'impac.widget.account_cash_projection.forecast_payroll.aggregate' | translate}}
       <i ng-class="isToggleForecastPayroll() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
         ng-click="toggleForecastPayroll()" />
     </div>
     <div class="widget-line" ng-disabled="!isToggleForecastPayroll()" >
       <i ng-class="isToggleTimeSheetModifier() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
         ng-click="toggleTimeSheetModifier()" />
-        TimeSheet Modifier
+      {{'impac.widget.account_cash_projection.forecast_payroll.time_sheet_modifier' | translate}}
     </div>
   </div>
 </div>

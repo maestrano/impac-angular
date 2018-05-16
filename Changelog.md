@@ -1,5 +1,25 @@
 # Impac! Frontend Changelog
 
+### v1.7.4 | 2018 - Week 19
+
+Applies v1.6.10
+[MARLIN-8] Add button for CSV export (bolt widgets)
+[IMPAC-668] CF: Improve chart threshold time period selection
+[IMPAC-768] CF: Add Recurring transactions scheduling
+[IMPAC-771] CF: Add Transactions reconciliation
+[IMPAC-809] CF: Fix "data not found" mode
+[IMPAC-811] CF: Add Trends
+[IMPAC-815] [IMPAC-855] CF: Add Average Payroll costs
+[IMPAC-834] [IMPAC-848] Fix Transactions list component display bugs
+[IMPAC-850] CF: Add confirmation modal before deleting transactions
+[IMPAC-851] CF: Improve "Add transaction" panel
+
+#### Dependencies
+- Impac! v1.7.2 (CSV export, Bolt custom actions)
+- Finance Bolt v1.7.1 (Cashflow capabilities, CSV export, reconcile/unreconcile custom actions)
+
+-------------------------------------------------------------
+
 ### v1.6.10 | 2018 - Week 15
 
 #### Adds
@@ -9,6 +29,12 @@
 #### Fixes
 [KAPP-85] Minor fixes on live balance widget
 [IMPAC-834] Fixes on invoices list widget (recalculate totals on page change)
+
+-------------------------------------------------------------
+
+### v1.7.3 | 2018 - Week 6
+
+Applies v1.6.9
 
 -------------------------------------------------------------
 
@@ -30,15 +56,9 @@
 
 -------------------------------------------------------------
 
-### v1.6.8 | 2018 - Week 3
+### v1.7.2 | 2018 - Week 3
 
-#### Adds
-- [IMPAC-734] Update generator EJS dep to latest
-- [IMPAC-665] Improve sync status messaging
-- Ability to differentiate bolt widgets from legacy widgets when black/whitelisting (required for Finance Bolt >= 1.5.0)
-
-#### Fixes
-- [EMERALDSUP-69] hide x axis labels from custom calc chart
+Applies v1.6.8
 
 -------------------------------------------------------------
 
@@ -51,6 +71,12 @@
 
 #### Fixes
 - [EMERALDSUP-69] hide x axis labels from custom calc chart
+
+-------------------------------------------------------------
+
+### v1.7.1 | 2017 - Week 49
+
+Applies v1.6.7
 
 -------------------------------------------------------------
 
@@ -61,6 +87,28 @@
 
 #### Fixes
 - [IMPAC-727] [IMPAC-728] Fixes incompatibilities with IE11
+
+-------------------------------------------------------------
+
+### v1.7.0 | 2017 - Week 49
+
+#### Adds
+- Refactor dashboard creation capability to a separate component
+- Base controls on ACL for user / organization
+
+#### Dependencies
+- MnoHub v2.0.0-rc8
+- Mno Enterprise v3.4
+- Mno Enterprise Angular v1.2
+
+#### Config changes
+- Removed deprecated config params:
+```coffeescript
+dhbSelectorConfig:
+  addWidgetEnabled: true
+  addDhbEnabled: true
+  deleteDhbEnabled: true
+```
 
 -------------------------------------------------------------
 

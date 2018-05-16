@@ -1,27 +1,27 @@
 module = angular.module('impac.components.widgets-settings.forecast-payroll',[])
-module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSvc, ImpacMainSvc, ImpacWidgetsSvc) ->
+module.controller('SettingForecastPayrollCtrl', ($scope, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
 
   $scope.toggleForecastPayroll = ->
-    w.selectedForecastPayroll.enable = !w.selectedForecastPayroll.enable
-    if(w.selectedForecastPayroll? && !w.selectedForecastPayroll.enable)
-      w.selectedForecastPayroll.time_sheet = false
+      $scope.selectedForecastPayroll.enable = !$scope.selectedForecastPayroll.enable
+      unless($scope.selectedForecastPayroll.enable)
+        $scope.selectedForecastPayroll.time_sheet = false
 
   $scope.toggleTimeSheetModifier= ->
-    if(w.selectedForecastPayroll? && w.selectedForecastPayroll.enable)
-      w.selectedForecastPayroll.time_sheet = !w.selectedForecastPayroll.time_sheet
+    if($scope.selectedForecastPayroll.enable)
+      $scope.selectedForecastPayroll.time_sheet = !$scope.selectedForecastPayroll.time_sheet
 
   $scope.isToggleForecastPayroll = ->
-    if(w.selectedForecastPayroll?)
-      return w.selectedForecastPayroll.enable
+    if($scope.selectedForecastPayroll?)
+      return $scope.selectedForecastPayroll.enable
 
   $scope.isToggleTimeSheetModifier= ->
-    if(w.selectedForecastPayroll?)
-      return w.selectedForecastPayroll.time_sheet
+    if($scope.selectedForecastPayroll?)
+      return $scope.selectedForecastPayroll.time_sheet
 
   # What will be passed to parentWidget
-  setting = {enable: false, time_sheet: false}
+  setting = {}
   setting.key = "forecast_payroll"
   setting.isInitialized = false
 
@@ -30,16 +30,15 @@ module.controller('SettingForecastPayrollCtrl', ($scope, $log, ImpacDashboardsSv
     ImpacDashboardsSvc.load().then(
       (config) ->
         currentDashboard = config.currentDashboard
-        if w.metadata? && w.metadata.forecast_payroll?
-          w.selectedForecastPayroll = w.metadata.forecast_payroll
-        else
-          w.metadata.forecast_payroll = {enable: false, time_sheet: false}
+        $scope.selectedForecastPayroll = {enable: false, time_sheet: false}
+        if w.metadata? && w.metadata.forecast_payroll? && w.metadata.forecast_payroll
+          $scope.selectedForecastPayroll = w.metadata.forecast_payroll
 
         setting.isInitialized = true
     )
 
   setting.toMetadata = ->
-    return { forecast_payroll: w.selectedForecastPayroll }
+    return { forecast_payroll: $scope.selectedForecastPayroll }
 
   w.settings.push(setting)
 

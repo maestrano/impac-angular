@@ -25,6 +25,7 @@ angular.module('maestrano.impac',
 angular.module('impac.components',
   [
     'impac.components.dashboard',
+    'impac.components.dashboard-create',
     'impac.components.dashboard-selector',
     'impac.components.dashboard-templates-selector',
     'impac.components.dashboard-settings',
@@ -133,6 +134,7 @@ angular.module('impac.components.widgets-common',
   [
     'impac.components.widgets-common.editable-title',
     'impac.components.widgets-common.info-panel',
+    'impac.components.widgets-common.confirm-modal',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
     'impac.components.widgets-common.autofocus',
@@ -143,9 +145,11 @@ angular.module('impac.components.widgets-common',
 angular.module('impac.components.common',
   [
     'impac.components.common.data-not-found',
-    'impac.components.common.delete-widget',
     'impac.components.common.transactions-add',
-    'impac.components.common.transactions-list'
+    'impac.components.common.transactions-list',
+    'impac.components.common.duplicate-transactions-list',
+    'impac.components.common.trends-add',
+    'impac.components.common.trends-list',
   ]
 );
 /*

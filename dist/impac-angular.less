@@ -74,6 +74,9 @@
 @impac-dashboard-source-color:                  @impac-dashboard-title-label-color;
 @impac-dashboard-buttons-border-radius:         4px;
 
+// Create
+@impac-dashboard-create-button-color:           @impac-dashboard-title-color;
+
 //Info-text
 @impac-dashboard-info-text-color:               white;
 @impac-dashboard-info-text-background-color:    rgba(23,38,45, 0.7);
@@ -1216,6 +1219,10 @@ body {
   }
 }
 
+div[ng-messages] {
+  color: @red;
+}
+
 // ---------------------------------------------------------------------------
 // --- Bootstrap overrides
 // ---------------------------------------------------------------------------
@@ -1739,7 +1746,6 @@ body {
         background-color: @impac-dashboard-info-text-background-color;
       }
     }
-
   }
 
   // parent div section for widgets to be housed.
@@ -1780,14 +1786,6 @@ body {
   font-size: 14px;
 }
 
-.dhb-create-modal .dashboard-form {
-
-  // Better aligns form labels with templates section label
-  .col-sm-2.control-label {
-    text-align: left;
-  }
-}
-
 .impac-widget-suggestion .modal-body {
   input,textarea {
     width: 100%;
@@ -1807,6 +1805,27 @@ body {
   .loader-style(@impac-dashboard-loading-spinner)
 }
 
+
+.analytics .dashboard-create {
+  .btn-create {
+    background-color: @impac-dashboard-create-button-color;
+  }
+}
+
+.modal.impac-dashboard-create {
+  h1 { font-size: 24px; }
+  .fa.fa-times {
+    float: right;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .control-label { text-align: left; }
+  .modal-footer {
+    .loader {
+      .loader-style(@impac-dashboard-loading-spinner)
+    }
+  }
+}
 
 #module__dashboard-selector {
   a {
@@ -1871,13 +1890,14 @@ body {
           &:hover {
             background-color: @impac-widget-background-color;
           }
-          &.create {
-            background-color: @impac-dashboard-title-color;
-            color: @impac-dashboard-title-label-create-color;
-            height: 30px;
-            padding: 5px 10px 5px 10px;
-            &:hover {
-              background-color: darken(@impac-dashboard-title-color,10%);
+          &.dashboard-create {
+            height: 33px;
+            .btn {
+              float: none;
+              width: 100%;
+              text-align: left;
+              margin: 0px;
+              border-radius: 0px;
             }
           }
           i.fa.fa-pencil {
@@ -2644,84 +2664,23 @@ dashboard-templates-selector {
   .overlay, .title, .btn, .example { display: none; }
 }
 
-.analytics common-delete-widget {
-  .widget-popup();
-  .message {
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-    p { padding: 0px 10px; }
-    button.btn { margin-top: 20px; }
-  }
-}
-
-#transactions-add {
-  .widget-popup();
-  .message {
-    top: 30px;
-    left: 35%;
-    width: 30%;
-    .form {
-      padding: 0px 10px;
-      > label, .coming-soon > label {
-        padding-top: 10px;
-        font-weight: normal;
-        margin-bottom: 3px;
-      }
-      input.form-control {
-        width: 90%;
-        border-radius: 2px;
-        height: 28px;
-        font-size: 13px;
-      }
-      .btn-group {
-        display: block;
-        min-height: 22px;
-        select {
-          border-radius: 2px;
-          height: 28px;
-          margin-top: 0px;
-        }
-      }
-      .coming-soon {
-        margin-top: 15px;
-        padding: 5px;
-        border: solid 1px silver;
-        background-color: white;
-        color: #888888;
-        font-style: italic;
-        .badge {
-          font-weight: normal;
-          background-color: #888888;
-        }
-        .btn-group {
-          margin-left: 10px;
-          input[type="radio"] { margin-top: 5px; }
-          select { height: 22px; }
-          .btn {
-            float: none;
-            border-color: #888888;
-          }
-        }
-      }
-    }
-    .bottom {
-      margin-top: 20px;
-    }
-  }
-}
-
-#transactions-list {
+#duplicate-transactions-list {
   .top {
     height: 40px;
     a.back-link { font-weight: normal; }
     .pagination { margin: 0px; }
   }
 
+  .table-striped {
+    tr.origin:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+  }
+
   .table-container {
     max-height: ~"calc(@{impac-big-widget-size} - 60px)";
     overflow: auto;
-    
+
     div[uib-datepicker-popup-wrap] {
       display: inline-block;
     }
@@ -2736,12 +2695,207 @@ dashboard-templates-selector {
     tr.total {
       font-weight: bold;
       &.invoices {
+        background-color: lighten(@impac-positive, 20%);
+      }
+      &.bills {
+        background-color: lighten(@impac-negative, 20%);
+      }
+    }
+  }
+}
+
+#transactions-add {
+  .widget-popup();
+  .message {
+    top: 30px;
+    left: 35%;
+    width: 30%;
+    .form {
+      padding: 0px 10px;
+      > label,
+      .schedulable-section > label {
+        padding-top: 10px;
+        font-weight: normal;
+        margin-bottom: 3px;
+      }
+      input.form-control, select.form-control {
+        width: 90%;
+        border-radius: 2px;
+        height: 28px;
+        font-size: 13px;
+      }
+      .btn-group {
+        display: block;
+        min-height: 22px;
+        select {
+          border-radius: 2px;
+          height: 28px;
+          margin-top: 0px;
+        }
+      }
+      .disable {
+        color: #888888;
+        font-style: italic;
+      }
+      .never-disable {
+        color: black;
+        font-style: normal;
+      }
+      .repeat-btn {
+        margin-top: 30px;
+        input[type="checkbox"] {
+          vertical-align: text-bottom;
+          margin: 0px;
+        }
+        select { height: 22px; }
+        .btn {
+          float: none;
+          border-color: #888888;
+        }
+      }
+      .schedulable-section {
+        padding: 5px;
+        border: solid 1px silver;
+        margin-top: 0px;
+        background-color: white;
+        .badge {
+          font-weight: normal;
+          background-color: #888888;
+        }
+        .interval-field {
+          width: 40px;
+        }
+        .btn-group {
+          margin-left: 10px;
+          select { height: 22px; }
+          .btn {
+            float: none;
+            border-color: #888888;
+          }
+        }
+        .block {
+          label { vertical-align: super; }
+        }
+      }
+    }
+    .bottom {
+      margin-top: 20px;
+    }
+  }
+}
+
+#transactions-list {
+  .top {
+    height: 40px;
+    position: relative;
+
+    .back { position: absolute; }
+    .resource-type {
+      position: absolute;
+      left: ~"calc(50% - 98px)";
+      @media (max-width: @screen-xs-max) {
+        left: unset;
+        right: 0;
+      }
+    }
+    .btn-group { display: flex; }
+  }
+
+  .bottom {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 100px)";
+    overflow: auto;
+    width: 100%;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+
+    .actions {
+      cursor: pointer;
+      .fa.fa-times { color: @brand-danger; }
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
         background-color: lighten(#8eab71, 20%);
       }
       &.bills {
         background-color: lighten(#c76379, 20%);
       }
     }
+
+    td > .expected-payment-date {
+      display: flex;
+      .reset-date { margin-left: 3px; }
+    }
+  }
+}
+
+#trends-add {
+  .widget-popup();
+  .message {
+    top: 30px;
+    left: 35%;
+    width: 30%;
+    .form {
+      padding: 0px 10px;
+      > label {
+        padding-top: 10px;
+        font-weight: normal;
+        margin-bottom: 3px;
+      }
+      input.form-control {
+        width: 90%;
+        border-radius: 2px;
+        height: 28px;
+        font-size: 13px;
+      }
+      .btn-group {
+        display: block;
+        min-height: 22px;
+        margin-top: 10px;
+        > .btn {
+          float: none;
+        }
+        input[type="radio"] {
+          margin: 4px 0 10px;
+        }
+      }
+    }
+    .bottom {
+      margin-top: 20px;
+    }
+  }
+}
+#trends-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
   }
 }
 
@@ -2859,6 +3013,251 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+chart-threshold {
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    & > div {
+      padding-right: 5px;
+
+      &.target { text-align: center; }
+    }
+
+    @media (max-width: @screen-md-max) {
+      flex-direction: column;
+      align-items: center;
+      > div {
+        padding: 5px;
+      }
+    }
+
+    .text {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+
+    input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+
+      &[name=amount] {
+        max-width: 70px;
+      }
+    }
+
+    .currency {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .actions {
+      display: inline-block;
+      padding: 0 2px;
+      button {
+        padding: 3px 6px;
+        display: inline-block;
+        &.loading {
+          padding: 3px 20px;
+        }
+      }
+    }
+  }
+}
+
+.analytics widgets-common-confirm-modal {
+  .widget-popup();
+  .message {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    p { padding: 0px 10px; }
+
+    button.btn { margin-top: 20px; }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-export {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -3802,217 +4201,6 @@ dashboard-templates-selector {
     }
   }
 }
-chart-threshold {
-
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    > .attach-panel-text {
-      display: inline-block;
-      & > * {
-        display: inline-block;
-      }
-    }
-
-    .panel-text-label {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-    .panel-text-input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-    }
-    .panel-text-currency {
-      font-weight: bold;
-      color: #000;
-    }
-  }
-
-  .action-buttons {
-    display: inline-block;
-    padding: 0 10px;
-    button {
-      padding: 3px 6px;
-      display: inline-block;
-      &.loading {
-        padding: 3px 20px;
-      }
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -4162,6 +4350,26 @@ chart-threshold {
   .tooltip-inner { text-transform: none; }
 
   .dropdown-menu > li > div > table { outline: none; }
+}
+
+.analytics .settings.forecast-payroll {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {

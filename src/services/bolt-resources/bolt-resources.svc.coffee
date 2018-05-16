@@ -37,5 +37,14 @@ angular
     url = [boltPath, resourcesName, resourceId].join('/')
     $http.delete(url, { headers: authHeaders() })
 
+  @patch = (boltPath, resourcesName, resourceId, custom_action, attributes) ->
+    url = [boltPath, resourcesName, resourceId, custom_action].join('/')
+    body =
+      data:
+        id: resourceId
+        type: resourcesName
+        attributes: attributes
+    $http.patch(url, body, { headers: authHeaders() })
+
   return
 )
