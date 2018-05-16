@@ -1,5 +1,38 @@
 # Impac! Frontend Changelog
 
+### v1.7.4 | 2018 - Week 20
+
+- Applies v1.6.10
+- [MARLIN-8] Add button for CSV export (bolt widgets)
+- [IMPAC-668] CF: Improve chart threshold time period selection
+- [IMPAC-768] CF: Add Recurring transactions scheduling
+- [IMPAC-771] CF: Add Transactions reconciliation
+- [IMPAC-809] CF: Fix "data not found" mode
+- [IMPAC-811] CF: Add Trends
+- [IMPAC-815] [IMPAC-855] CF: Add Average Payroll costs
+- [IMPAC-834] [IMPAC-848] Fix Transactions list component display bugs
+- [IMPAC-850] CF: Add confirmation modal before deleting transactions
+- [IMPAC-851] CF: Improve "Add transaction" panel
+- [IMPAC-875] CF: Update threshold wording
+
+#### Dependencies
+- Impac! v1.7.2 (CSV export, Bolt custom actions)
+- Finance Bolt v1.7.1 (Cashflow capabilities, CSV export, reconcile/unreconcile custom actions)
+
+-------------------------------------------------------------
+
+### v1.6.10 | 2018 - Week 15
+
+#### Adds
+- [IMPAC-764] Custom template for invoices list widget
+- [IMPAC-780] Contact name in transactions list (cash projection widget)
+
+#### Fixes
+- [KAPP-85] Minor fixes on live balance widget
+- [IMPAC-834] Fixes on invoices list widget (recalculate totals on page change)
+
+-------------------------------------------------------------
+
 ### v1.7.3 | 2018 - Week 6
 
 Applies v1.6.9
@@ -176,10 +209,10 @@ dhbSelectorConfig:
 ```coffeescript
 cashFlowLegendIcon: ':default/cash-flow.png'
 payablesLegendIcon: ':default/payables.png'
-projectedCashLegendIcon: ':default/projected-cash.png' 
-receivablesLegendIcon: ':default/receivables.png' 
-plotLineLegendIcon: ':default/plot-line-icon.svg' 
-areaLegendIcon: ':default/area-icon.svg' 
+projectedCashLegendIcon: ':default/projected-cash.png'
+receivablesLegendIcon: ':default/receivables.png'
+plotLineLegendIcon: ':default/plot-line-icon.svg'
+areaLegendIcon: ':default/area-icon.svg'
 ```
 
 #### Dependencies
