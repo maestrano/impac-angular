@@ -40,6 +40,26 @@ module.component('trendsList', {
     ctrl.updateStartDate = (trend) ->
       ctrl.lastDateOptions.minDate = trend.startDatePicker.date
 
+    ctrl.deleteTrendModal =
+      trend: null
+      display: false
+      show: (trend) ->
+        this.trend = trend
+        this.display = true
+      cancel: ->
+        this.trend = null
+        this.display = false
+      delete: ->
+        ctrl.onDeleteTrend({ trendId: this.trend.id })
+        trendGroup = _.find(ctrl.groups, _.flow(
+          _.property('trends'),
+          _.partialRight(_.some, { id: this.trend.id })
+        ))
+        trend = _.find(trendGroup.trends, 'id', this.trend.id)
+        trendGroup.trends.splice(_.findIndex(trendGroup.trends, {id: trendGroup.id}), 1)
+        ctrl.originalGroups = _.map(ctrl.groups, _.cloneDeep)
+        this.cancel()
+
     ctrl.updateTrend = (trend) ->
       trend.last_apply_date = trend.untilDatePicker.date unless trend.period == 'once'
       trend.start_date = trend.startDatePicker.date
