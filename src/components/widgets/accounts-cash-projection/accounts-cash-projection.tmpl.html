@@ -45,7 +45,7 @@
       on-confirm-duplication="dupTrxList.updateDuplicateTransaction(dupTrxId, action)" >
     </duplicate-transactions-list>
 
-    <trends-list ng-if="trendList.display" trends="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete-trend="trendList.deleteTrend(trendId)"></trends-list>
+    <trends-list ng-if="trendList.display" groups="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete-trend="trendList.deleteTrend(trendId)"></trends-list>
 
     <div ng-hide="trxList.display || trendList.display || dupTrxList.display">
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
@@ -92,5 +92,8 @@
     on-create-trend="addTrendPopup.createTrend(trend)"
     accounts="accounts"
     chart="chart"
-    accounts-last-values="widget.content.chart.metadata.accounts_last_values"/>
+    accounts-last-values="widget.content.chart.metadata.accounts_last_values"
+    groups="trendsGroups"
+    bolt-path="widget.metadata.bolt_path"
+    company-id="firstCompanyId"/>
 </div>

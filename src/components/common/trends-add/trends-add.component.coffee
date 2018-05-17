@@ -8,8 +8,12 @@ module.component('trendsAdd', {
     accounts: '='
     chart: '='
     accountsLastValues: '='
+    groups: '='
+    boltPath: '='
+    companyId: '='
+  # TODO: See if we can reduce the number of bindings
 
-  controller: ($scope, HighchartsFactory) ->
+  controller: ($scope, HighchartsFactory, BoltResources) ->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -45,12 +49,14 @@ module.component('trendsAdd', {
       ctrl.trend.period == "Once"
 
     ctrl.dataIsValid = ->
-      ctrl.trend.rate > 0 &&
+      ctrl.trend.rate != 0 &&
       (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
-      !_.isEmpty(ctrl.trend.account_id)
+      !_.isEmpty(ctrl.trend.account)
 
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
+      ((ctrl.trend.trends_group && !ctrl.isAddingGroup) ||
+        (ctrl.trend.groupName && ctrl.isAddingGroup)) &&
       ctrl.dataIsValid()
 
     ctrl.untilDate = ->
@@ -66,11 +72,26 @@ module.component('trendsAdd', {
       moment.utc(ctrl.trend.startDate).add(ctrl.trend.untilDate, period).format('YYYY-MM-DD')
 
     ctrl.createTrend = ->
+      return ctrl.createGroup() if ctrl.isAddingGroup
       ctrl.onHide()
-      ctrl.trend.period = ctrl.trend.period.toLowerCase()
-      ctrl.trend.account_id = ctrl.trend.account_id.id
       ctrl.trend.untilDate = ctrl.untilDate()
+      ctrl.trend.period = ctrl.trend.period.toLowerCase()
+      ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
+      ctrl.trend.account_id = ctrl.trend.account.id
       ctrl.onCreateTrend({ trend: ctrl.trend })
+
+    ctrl.createGroup = ->
+      BoltResources.create(
+        ctrl.boltPath,
+        'trends_groups',
+        { name: ctrl.trend.groupName },
+        { company: { data: { type: 'companies', id: ctrl.companyId } } }
+      ).then(
+        (response) ->
+          ctrl.trend.trends_group = response.data.data
+          ctrl.isAddingGroup = false
+          ctrl.createTrend()
+      )
 
     ctrl.updateStartDate = ->
       ctrl.trend.startDate = ctrl.startDatePicker.date
@@ -94,12 +115,15 @@ module.component('trendsAdd', {
     ctrl.redrawCurrentTrend = ->
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
-      newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', 'Projected cash'))
+      if ctrl.trend.trends_group && !ctrl.isAddingGroup
+        newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name))
+      else
+        newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', 'Projected cash'))
       newData = ctrl.applyTrend(newSerie.data)
       delete newSerie['type']
       newSerie.name = "Current trend"
       newSerie.zones = [{dashStyle: "ShortDot"}]
-      newSerie.color = "rgb(124, 77, 255)"
+      newSerie.color = "#ff1844"
       newSerie.data = newData
       ctrl.chart.series.push(newSerie)
       ctrl.renderChart()
@@ -116,13 +140,14 @@ module.component('trendsAdd', {
         lastIndex = timestamps.length if lastIndex == -1
       else
         lastIndex = timestamps.length
-      currentValue = ctrl.accountsLastValues[ctrl.trend.account_id.id]
+      currentValue = ctrl.accountsLastValues[ctrl.trend.account.id]
       increment = 0
-      for i in [startIndex...timestamps.length]
-        if ctrl.shouldApplyTrend(startDate, timestamps[i]) && i <= lastIndex
+      for i in [startIndex...lastIndex]
+        if ctrl.shouldApplyTrend(startDate, timestamps[i])
           increment = currentValue * ctrl.trend.rate / 100.0
           currentValue += increment
-        values[i] += increment
+          for j in [i...timestamps.length]
+            values[j] += increment
       res = []
       for i in [0...timestamps.length]
         res.push([timestamps[i], values[i]])
@@ -141,6 +166,10 @@ module.component('trendsAdd', {
           date.getDate() == 1
         when 'Yearly'
           date.getDate() == 1 && date.getMonth() == 0
+
+    ctrl.switchAddingGroup = (value) ->
+      ctrl.isAddingGroup = value
+      ctrl.redrawCurrentTrend()
 
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})
