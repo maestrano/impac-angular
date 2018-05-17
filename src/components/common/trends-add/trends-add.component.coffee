@@ -8,8 +8,12 @@ module.component('trendsAdd', {
     accounts: '<'
     chart: '<'
     accountsLastValues: '<'
+    accountsLastValues: '<'
+    groups: '<'
+    boltPath: '<'
+    companyId: '<'
 
-  controller: ($scope, HighchartsFactory) ->
+  controller: ($scope, HighchartsFactory, BoltResources) ->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -45,20 +49,36 @@ module.component('trendsAdd', {
       ctrl.trend.period == "Once"
 
     ctrl.dataIsValid = ->
-      ctrl.trend.rate > 0 &&
+      ctrl.trend.rate != 0 &&
       (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
-      !_.isEmpty(ctrl.trend.account_id)
+      !_.isEmpty(ctrl.trend.account)
 
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
+      ((ctrl.trend.trends_group && !ctrl.isAddingGroup) ||
+        (ctrl.trend.groupName && ctrl.isAddingGroup)) &&
       ctrl.dataIsValid()
 
     ctrl.createTrend = ->
+      return ctrl.createGroup() if ctrl.isAddingGroup
       ctrl.onHide()
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
-      ctrl.trend.account_id = ctrl.trend.account_id.id
-      ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
+      ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
+      ctrl.trend.account_id = ctrl.trend.account.id
       ctrl.onCreateTrend({ trend: ctrl.trend })
+
+    ctrl.createGroup = ->
+      BoltResources.create(
+        ctrl.boltPath,
+        'trends_groups',
+        { name: ctrl.trend.groupName },
+        { company: { data: { type: 'companies', id: ctrl.companyId } } }
+      ).then(
+        (response) ->
+          ctrl.trend.trends_group = response.data.data
+          ctrl.isAddingGroup = false
+          ctrl.createTrend()
+      )
 
     ctrl.updateStartDate = ->
       ctrl.trend.startDate = ctrl.startDatePicker.date
@@ -152,6 +172,10 @@ module.component('trendsAdd', {
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})
       ctrl.onHide()
+
+    ctrl.switchAddingGroup = (value) ->
+      ctrl.isAddingGroup = value
+      ctrl.redrawCurrentTrend()
 
     return ctrl
 })
