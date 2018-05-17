@@ -17,6 +17,8 @@ module.component('trendsAdd', {
     ctrl = this
 
     ctrl.$onInit = ->
+      ctrl.startDateOptions = { minDate: new Date() }
+      ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.untilDatePicker =
         opened: false
         date: new Date()
@@ -95,6 +97,7 @@ module.component('trendsAdd', {
 
     ctrl.updateStartDate = ->
       ctrl.trend.startDate = ctrl.startDatePicker.date
+      ctrl.lastDateOptions.minDate = ctrl.trend.startDate
       ctrl.redrawCurrentTrend()
 
     ctrl.updateUntilDate = ->
