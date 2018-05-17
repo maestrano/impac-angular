@@ -62,11 +62,11 @@
                   </td>
                   <td ng-if="!trend.editMode">{{$ctrl.formatDate(trend.start_date, trend)}}</td>
                   <td ng-if="trend.editMode">
-                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.startDatePicker.date" ng-click="trend.startDatePicker.toggle()" is-open="trend.startDatePicker.opened" close-text="Close" on-open-focus="false" />
+                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.startDatePicker.date" ng-click="trend.startDatePicker.toggle()" is-open="trend.startDatePicker.opened" close-text="Close" on-open-focus="false" datepicker-options="$ctrl.startDateOptions" ng-change="$ctrl.updateStartDate(trend)"/>
                   </td>
                   <td ng-if="!trend.editMode">{{$ctrl.formatDate(trend.last_apply_date, trend)}}</td>
                   <td ng-if="trend.editMode">
-                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" />
+                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" datepicker-options="$ctrl.lastDateOptions"/>
                   </td>
                   <td>
                     <a ng-if="trend.editMode">

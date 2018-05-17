@@ -13,6 +13,8 @@ module.component('trendsList', {
     ctrl = this
 
     ctrl.$onInit = ->
+      ctrl.startDateOptions = { minDate: new Date() }
+      ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.currentPage = 1
       for group in ctrl.groups
         group.expanded = false
@@ -35,6 +37,9 @@ module.component('trendsList', {
         toggle: ->
           this.opened = !this.opened if trend.editMode
 
+    ctrl.updateStartDate = (trend) ->
+      ctrl.lastDateOptions.minDate = trend.startDatePicker.date
+
     ctrl.updateTrend = (trend) ->
       trend.last_apply_date = trend.untilDatePicker.date unless trend.period == 'once'
       trend.start_date = trend.startDatePicker.date
@@ -49,10 +54,10 @@ module.component('trendsList', {
       ))
       trendGroup.expanded = true
       trend = _.find(trendGroup.trends, 'id', trendId)
+      trend.editMode = false
       ctrl.setDatePickers(trend)
       ctrl.groups.splice(_.findIndex(ctrl.groups, {id: trendGroup.id}), 1, trendGroup)
       ctrl.originalGroups = _.map(ctrl.groups, _.cloneDeep)
-      trend.editMode = false
 
     ctrl.formatDate = (date, trend) ->
       if !date
