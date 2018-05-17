@@ -119,9 +119,9 @@ module.component('trendsAdd', {
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
       if ctrl.trend.trends_group && !ctrl.isAddingGroup
-        newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name))
-      else
-        newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', 'Projected cash'))
+        originalSerie = _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name)
+      originalSerie ?= _.find(ctrl.chart.series, 'name', 'Projected cash')
+      newSerie = Object.assign({}, originalSerie)
       newData = ctrl.applyTrend(newSerie.data)
       delete newSerie['type']
       newSerie.name = "Current trend"
@@ -140,12 +140,12 @@ module.component('trendsAdd', {
       untilDate = new Date(untilDate) if untilDate
       if untilDate
         lastIndex = timestamps.findIndex (timestamp) -> timestamp > untilDate.getTime()
-        lastIndex = timestamps.length if lastIndex == -1
+        lastIndex = timestamps.length - 1 if lastIndex == -1
       else
-        lastIndex = timestamps.length
+        lastIndex = timestamps.length - 1
       currentValue = ctrl.accountsLastValues[ctrl.trend.account.id]
       increment = 0
-      for i in [startIndex...lastIndex]
+      for i in [startIndex..lastIndex]
         if ctrl.shouldApplyTrend(startDate, timestamps[i])
           increment = currentValue * ctrl.trend.rate / 100.0
           currentValue += increment

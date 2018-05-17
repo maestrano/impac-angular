@@ -81,7 +81,7 @@
                       <i class="fa fa-eraser" title="Cancel" ng-click="$ctrl.cancelEdit(trend.id)"/>
                     </a>
                     <a ng-if="!trend.editMode">
-                      <i class="fa fa-times" title="Delete trend" ng-click="$ctrl.onDeleteTrend({ trendId: trend.id })"/>
+                      <i class="fa fa-times" title="Delete trend" ng-click="$ctrl.deleteTrendModal.show(trend)"/>
                     </a>
                   </td>
                 </tr>
@@ -91,5 +91,14 @@
         </tr>
       </tbody>
     </table>
+
+    <widgets-common-confirm-modal opened="$ctrl.deleteTrendModal.display" on-dismiss="$ctrl.deleteTrendModal.cancel()" on-action="$ctrl.deleteTrendModal.delete()">
+      <title-section>
+        <span translate>Delete trend</span>
+      </title-section>
+      <body-section>
+        <p translate>Are you sure you want to delete this trend?</p>
+      </body-section>
+    </widgets-common-confirm-modal>
   </div>
 </div>
