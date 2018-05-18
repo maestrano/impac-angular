@@ -8,16 +8,17 @@ module.component('transactionsList', {
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
     onDeleteTransaction: '&'
-    onIncludeSchedulableTransaction: '&?'
-    onDeleteParentTransaction: '&?'
+    onUpdateSchedulableTransaction: '&?'
+    onDeleteChildrenTransactions: '&?'
     onCurrencyChange: '&'
+    metadata: '<'
     transactions: '<'
     currency: '<'
     contacts: '<'
     totalRecords: '<'
     resourcesType: '<'
     listOnly: '<'
-  controller: ($translate, $q)->
+  controller: ($translate, BoltResources)->
     ctrl = this
     ctrl.currentAttributes = { currency: '', resourcesType: '', transactions: [] }
     ctrl.$onInit = ->
@@ -84,10 +85,10 @@ module.component('transactionsList', {
       ctrl.onUpdateExpectedDate({ trxId: trx.id, date: trx.datePicker.date })
 
     ctrl.canCreateSchedulableTransaction = (trx) ->
-      return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onIncludeSchedulableTransaction)
+      return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onUpdateSchedulableTransaction)
 
     ctrl.canDeleteSchedulableTransaction = (trx) ->
-      return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteParentTransaction)
+      return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteChildrenTransactions)
 
     ctrl.deleteScheduleModal =
       args: {}
@@ -111,9 +112,20 @@ module.component('transactionsList', {
       hide: ->
         this.display = false
       create: (resourcesType) ->
-        ctrl.onIncludeSchedulableTransaction({ trx: this.trx, resourcesType: resourcesType })
-        ctrl.changePage()
         this.hide()
+        BoltResources.update(
+          ctrl.metadata.bolt_path,
+          resourcesType,
+          this.trx.id,
+          {
+            recurring: this.trx.recurring,
+            recurring_pattern: this.trx.recurring_pattern,
+            recurring_end_date: if this.trx.recurring_end_date then moment(this.trx.recurring_end_date).format('YYYY-MM-DD') else null
+          }
+        ).then(->
+          ctrl.onUpdateSchedulableTransaction()
+          ctrl.changePage()
+        )
 
     ctrl.deleteTrxModal =
       trx: null
@@ -168,23 +180,20 @@ module.component('transactionsList', {
             this.opened = !this.opened
 
     # If the transaction is a "child" forecast, we remove it from the list and trigger the callback
-    # If it is a "parent" forecast, we remove the all group
+    # If it is a "parent", first we remove the all group
     deleteTransaction = (trx) ->
-      _.remove(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trx.id)
-      if trx.recurring_parent
-        ctrl.onDeleteTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.id })
-      else
-        # TODO: rework logic
-        deleteTransactionsGroup({ recurring_parent: trx.id })
+      deleteTransactionsGroup(trx) if trx.recurring
 
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) -> trxInList.id == trx.id)
+      ctrl.onDeleteTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.id })
+
+    # Remove all children and update parent
     deleteTransactionsGroup = (trx) ->
-      # TODO: should be accessible by recurring transactions only
-      return $q.when(null) unless trx.recurring_parent
-      # Remove all children transactions and parent transaction if it is a forecast
-      _.remove(ctrl.currentAttributes.transactions, (trxInList) ->
-        (trxInList.recurring_parent == trx.recurring_parent) || (trxInList.id == trx.recurring_parent && trxInList.status == 'FORECAST')
-      )
-      ctrl.onDeleteParentTransaction({ resourcesType: ctrl.resourcesType, trxId: trx.recurring_parent })
+      trxGroupId = if trx.recurring then trx.id else trx.recurring_parent
+
+      #delete children from memori
+      _.remove(ctrl.currentAttributes.transactions, (trxInList) -> (trxInList.recurring_parent == trxGroupId))
+      ctrl.onDeleteChildrenTransactions({ resourcesType: ctrl.resourcesType, trxId: trxGroupId })
 
     return ctrl
 })

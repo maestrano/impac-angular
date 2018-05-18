@@ -44,7 +44,6 @@ module.component('transactionsAdd', {
           opened: false
           date: new Date()
           options: {minDate: new Date()}
-          minDate: -1
           toggle: -> this.opened = !this.opened
 
       unless(ctrl.editable)
