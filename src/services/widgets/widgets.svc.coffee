@@ -161,16 +161,14 @@ angular
       widget.format() if angular.isDefined(widget.format)
 
     paramsForWidget = (widget, opts = {}) ->
-      refreshCache = !!opts.refreshCache
-      demo = !!opts.demo
       metadata = angular.copy(widget.metadata)
       metadata.utc_offset ||= moment().utcOffset()
 
-      demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
       params =
         metadata: metadata
-        demo_data: demoData
-      params.refresh_cache = true if refreshCache
+        demo_data: ImpacTheming.get().dhbConfig.designerMode.enabled || !!opts.demo
+        
+      params.refresh_cache = true if !!opts.refreshCache
       params
 
     getConfig = ->
@@ -217,12 +215,12 @@ angular
                   $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
                   $q.resolve(widget)
                 else
-                  _self.show(widget, { refreshCache: params.refreshCache, demo: true })
+                  _self.show(widget, { refreshCache: params.refresh_cache, demo: true })
 
               else
                 # Push new content to widget, and initialize it
                 name = success.data.name
-                angular.extend widget, { content: content, originalName: name, demoData: params.demoData }
+                angular.extend widget, { content: content, originalName: name, demoData: params.demo_data }
                 initWidget(widget)
                 $q.resolve(widget)
 

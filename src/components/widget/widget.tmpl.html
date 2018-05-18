@@ -22,8 +22,8 @@
   </div>
 
   <div ng-hide="widget.isLoading" class="content-template-wrapper" ng-include="::templatePath" />
-  
-  <common-delete-widget ng-if="showDeleteWidget" on-dismiss="toggleDeleteWidget()" on-delete="deleteWidget()" />
+
+  <widgets-common-confirm-modal opened="showDeleteWidget" on-dismiss="toggleDeleteWidget()" on-action="deleteWidget()" />
 </div>
 
 <div common-info-panel parent-widget="widget" on-close="toggleInfoPanel()" ng-show="isInfoPanelDisplayed()" />

@@ -55,10 +55,10 @@
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
-        <td>
-          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTransaction(trx)" />
+        <td class="actions">
+          <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTrxModal.show(trx)" />
           <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
-          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
+          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteScheduleModal.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
@@ -72,10 +72,26 @@
     </table>
   </div>
 
-  <common-delete-schedule
-    ng-if="$ctrl.deleteSchedule.display"
-    on-dismiss="$ctrl.deleteSchedule.cancel()"
-    on-delete="$ctrl.deleteSchedule.delete()" />
+  <!-- Confirm Delete Schedule -->
+  <widgets-common-confirm-modal opened="$ctrl.deleteScheduleModal.display" on-dismiss="$ctrl.deleteScheduleModal.cancel()" on-action="$ctrl.deleteScheduleModal.delete()">
+    <title-section>
+      <span translate>impac.widget.common.confirm-modal.delete_schedule.title</span>
+    </title-section>
+    <body-section>
+      <p translate>impac.widget.common.confirm-modal.delete_schedule.message</p>
+      <p translate>impac.widget.common.confirm-modal.delete_schedule.explanation</p>
+    </body-section>
+  </widgets-common-confirm-modal>
+
+  <!-- Confirm Delete Trx -->
+  <widgets-common-confirm-modal opened="$ctrl.deleteTrxModal.display" on-dismiss="$ctrl.deleteTrxModal.hide()" on-action="$ctrl.deleteTrxModal.delete()">
+    <title-section>
+      <span translate>impac.widget.common.confirm-modal.delete_trx.title</span>
+    </title-section>
+    <body-section>
+      <p ng-bind="$ctrl.deleteTrxModal.message()"></p>
+    </body-section>
+  </widgets-common-confirm-modal>
 
   <transactions-add
     ng-if="$ctrl.createSchedule.display"

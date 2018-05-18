@@ -51,7 +51,7 @@ module.component('chartThreshold', {
       return if ctrl.disabled
       # Only 1 kpi per widget is supported & prevent panel showing if target is currently drafting
       return unless target && _.isEmpty(ctrl.widget.kpis) && _.isEmpty(ctrl.draftTarget.value)
-      ctrl.draftTarget.value = target
+      ctrl.draftTarget.value = parseInt(target)
       toggleKpiPanel()
       return
 

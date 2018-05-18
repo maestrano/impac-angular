@@ -11,20 +11,20 @@
       <label>Amount:</label>
       <input type="text" class="form-control" ng-model="$ctrl.trx.amount" ng-disabled="!$ctrl.editable" placeholder="1500.00" />
 
-      <label>Expected payment date:</label>
+      <label>Expected transaction date:</label>
       <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.trx.datePicker.date" ng-click="$ctrl.trx.datePicker.toggle()" is-open="$ctrl.trx.datePicker.opened" close-text="Close" on-open-focus="false"  ng-disabled="!$ctrl.editable"/>
 
       <div ng-if="$ctrl.editable">
-        <label>Customer</label>
+        <label>Contacts</label>
         <div class='btn-group'>
           <select ng-model="$ctrl.trx.contact" ng-options="contact.attributes.name for contact in $ctrl.contacts | orderBy: 'attributes.name' track by contact.id" class='form-control'>
-            <option value=''> Choose Customer</option>
+            <option value=''> Choose Contact</option>
           </select>
         </div>
       </div>
 
       <div ng-if="$ctrl.editable">
-        <label>Customer</label>
+        <label>Contact</label>
         <label>Type:</label>
         <div class="btn-group">
           <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" uib-btn-radio="'invoices'">Money in</label>
@@ -55,10 +55,11 @@
             </label>
           </div>
           <div class="block">
-            <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="endDate" ng-disabled="!$ctrl.schedulable.recurring">
             <label>
-              On <input type="text" class="btn btn-xs btn-default" datepicker-options="$ctrl.schedulable.datePicker.options" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.schedulable.datePicker.date" ng-click="$ctrl.schedulable.datePicker.toggle()" is-open="$ctrl.schedulable.datePicker.opened" close-text="Close" on-open-focus="false" ng-disabled="!$ctrl.schedulable.recurring" />
+              <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="endDate" ng-disabled="!$ctrl.schedulable.recurring">
+              On
             </label>
+            <input type="text" class="btn btn-xs btn-default" datepicker-options="$ctrl.schedulable.datePicker.options" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.schedulable.datePicker.date" ng-click="$ctrl.schedulable.datePicker.toggle()" is-open="$ctrl.schedulable.datePicker.opened" close-text="Close" on-open-focus="false" ng-disabled="!$ctrl.schedulable.recurring" />
           </div>
           <div class="block">
             <input type="radio" name="end_type" ng-model="$ctrl.schedulable.endType" value="infinity" ng-disabled="true" style="margin-top: 0px;">

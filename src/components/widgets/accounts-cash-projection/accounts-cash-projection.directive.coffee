@@ -25,10 +25,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   imgTemplate = (src, name) ->
     "<img src='#{src}'><br>#{name}"
 
-  extractContactName = (id, contacts) ->
-    contact = _.find contacts, (c) -> c.id == id
-    contact.attributes.name
-
   # Unique identifier for the chart object in the DOM
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
@@ -66,9 +62,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         # Clear transactions list and replace by newly fetched ones
         _.remove($scope.trxList.transactions, -> true)
         for trx in response.data.data
+          contactName = ''
           if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
-            contact_name = extractContactName(trx.relationships.contact.data.id, response.data.included)
-          $scope.trxList.transactions.push(angular.merge(trx.attributes, { id: trx.id, contact_name: contact_name || null }))
+            contactName = _.find(response.data.included, (includedContact) ->
+              includedContact.id == trx.relationships.contact.data.id
+            ).attributes.name
+          $scope.trxList.transactions.push(angular.merge(trx.attributes, {
+            id: trx.id
+            contact_name: contactName
+          }))
         $scope.trxList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trxList.show())
 
@@ -111,38 +113,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       trxId
     ).then(-> $scope.trxList.updated = true)
 
-  $scope.trxList.includeSchedulableTransactions = (resourcesType, trx) ->
+  $scope.trxList.updateSchedulableTransactions = (resourcesType, trx) ->
+    $scope.trxList.updated = true
+
+  $scope.trxList.deleteChildrenTransactions = (resourcesType, trxId) ->
     BoltResources.update(
       w.metadata.bolt_path,
       resourcesType,
-      trx.id,
-      {
-        recurring: trx.recurring,
-        recurring_pattern: trx.recurring_pattern,
-        recurring_end_date: if trx.recurring_end_date then moment(trx.recurring_end_date).format('YYYY-MM-DD') else null
-      }
-    ).then(->
-      $scope.trxList.updated = true
-      $scope.trxList.fetch()
-    )
-
-  # If the recurring parent trx is FORECAST, it has to be removed from the current list too
-  # and it has to be delete from transaction list
-  # Otherwise it's real transaction and it hasn't to be deleted or removed from the trxs list only the children
-  $scope.trxList.deleteParentTransaction = (resourcesType, trxId) ->
-    trx = _.find($scope.trxList.transactions, (trx) -> trx.id == trxId)
-
-    if trx.status == 'FORECAST'
-      $scope.trxList.deleteTransaction(resourcesType, trxId)
-    else
-      BoltResources.update(
-        w.metadata.bolt_path,
-        resourcesType,
-        trxId,
-        { recurring : false }
-      ).then(->
-        $scope.trxList.updated = true
-      )
+      trxId,
+      { recurring : false }
+    ).then(-> $scope.trxList.updated = true)
 
   # == Sub-Components - Trends list =========================================================
   $scope.trendList = { display: false, updated: false, trends: [], params: { } }
@@ -205,10 +185,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     hide: -> this.display = false
     show: -> this.display = true
 
-  $scope.addForecastPopup.createTransaction = (trx) ->
+  $scope.addForecastPopup.createTransaction = (trx, resourcesType) ->
     BoltResources.create(
       w.metadata.bolt_path,
-      this.resourcesType,
+      resourcesType,
       {
         title: trx.title,
         transaction_number: "FOR-#{Math.ceil(Math.random() * 10000)}"
@@ -274,11 +254,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Execute action on duplicate transaction
   $scope.dupTrxList.updateDuplicateTransaction = (dupTrxId, action) ->
     _.remove($scope.dupTrxList.transactions, (dupTrx) -> dupTrx.id == dupTrxId)
-    BoltResources.update(
+    BoltResources.patch(
       w.metadata.bolt_path,
       $scope.dupTrxList.resources,
       dupTrxId,
-      {reconciliation_action: action}
+      action
     ).then(-> $scope.dupTrxList.updated = true)
 
   $scope.dupTrxList.changeResourcesType = (resourcesType) ->
