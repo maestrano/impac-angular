@@ -5,7 +5,7 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.hideForecast = true;
 
   setInitialParams = ->
-    params:
+    params =
       include: 'contact'
       fields:
         contacts: 'name'
@@ -71,8 +71,8 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.trxList.changeOverdueFilter = (overdueFilter) ->
     return if overdueFilter == $scope.trxList.overdue
     $scope.trxList.overdue = overdueFilter
-    $scope.trxList.params.filter.due_date = new Date() if overdueFilter == 'overdue'
-    $scope.trxList.params.filter.due_date = [] if overdueFilter == 'all'
+    $scope.trxList.params.filter.balance = true if overdueFilter == 'overdue'
+    $scope.trxList.params.filter.balance = [] if overdueFilter == 'all'
     $scope.trxList.fetch()
 
   $scope.trxList.changeQuery = (query) ->

@@ -11,17 +11,17 @@
       <div ng-hide="$ctrl.listOnly" class="col-xs-6">
         <input type="text" class="form-control" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
       </div>
-      <div class="btn-group">
+      <div class="col-xs-6 btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
-      <div class="btn-group" ng-if="$ctrl.showOverdueFilter">
+      <div class="col-xs-6 btn-group" ng-if="$ctrl.showOverdueFilter">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'overdue'">Show overdue</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'all'">Show all</label>
       </div>
     </div>
     <div class="col-xs-3">
-      <ul uib-pagination class="pull-right" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
+      <ul uib-pagination class="pull-right no-margin-top" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
     </div>
   </div>
   <div class="table-container">
