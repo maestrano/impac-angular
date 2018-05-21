@@ -152,7 +152,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     filter =
       expected_payment_date: dateFilter(event.point.x)
       status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
-      app_instance_id: w.metadata.app_instance_id[0] if w.metadata.app_instance_id
+      'app_instance.id': w.metadata.app_instance_id[0] if w.metadata.app_instance_id
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
