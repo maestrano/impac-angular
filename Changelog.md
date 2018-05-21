@@ -1,5 +1,11 @@
 # Impac! Frontend Changelog
 
+### v1.7.5 | 2018 - Week 20
+
+- [IMPAC-855] CF: Fix Payroll costs series legend image
+
+-------------------------------------------------------------
+
 ### v1.7.4 | 2018 - Week 20
 
 - Applies v1.6.10
