@@ -5,7 +5,7 @@ module.component('trendsList', {
   bindings:
     onHide: '&'
     onPageChanged: '&'
-    onDeleteTrend: '&'
+    onDelete: '&'
     onUpdateTrend: '&'
     groups: '<'
     totalRecords: '<'
@@ -40,23 +40,28 @@ module.component('trendsList', {
     ctrl.updateStartDate = (trend) ->
       ctrl.lastDateOptions.minDate = trend.startDatePicker.date
 
-    ctrl.deleteTrendModal =
-      trend: null
+    ctrl.deleteModal =
+      entity: null
       display: false
-      show: (trend) ->
-        this.trend = trend
+      show: (hash) ->
+        ctrl.deletingGroup = hash.hasOwnProperty("group")
+        this.entity = if ctrl.deletingGroup then hash["group"] else hash["trend"]
         this.display = true
       cancel: ->
-        this.trend = null
+        this.entity = null
         this.display = false
       delete: ->
-        ctrl.onDeleteTrend({ trendId: this.trend.id })
-        trendGroup = _.find(ctrl.groups, _.flow(
-          _.property('trends'),
-          _.partialRight(_.some, { id: this.trend.id })
-        ))
-        trend = _.find(trendGroup.trends, 'id', this.trend.id)
-        trendGroup.trends.splice(_.findIndex(trendGroup.trends, {id: trendGroup.id}), 1)
+        if ctrl.deletingGroup
+          ctrl.onDelete({ entityId: this.entity.id, resource: "trends_groups" })
+          ctrl.groups.splice(_.findIndex(ctrl.groups, {id: this.entity.id}), 1)
+        else
+          ctrl.onDelete({ entityId: this.entity.id, resource: "trends" })
+          trendGroup = _.find(ctrl.groups, _.flow(
+            _.property('trends'),
+            _.partialRight(_.some, { id: this.entity.id })
+          ))
+          trend = _.find(trendGroup.trends, 'id', this.entity.id)
+          trendGroup.trends.splice(_.findIndex(trendGroup.trends, {id: trendGroup.id}), 1)
         ctrl.originalGroups = _.map(ctrl.groups, _.cloneDeep)
         this.cancel()
 
