@@ -177,12 +177,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       _.omit(trend, 'id', 'account_name')
     ).then(-> $scope.trendList.updated = true)
 
-  $scope.trendList.deleteTrend = (trendId) ->
-    _.remove($scope.trendList.trends, (trend) -> trend.id == trendId)
+  $scope.trendList.delete = (entityId, resource) ->
     BoltResources.destroy(
       w.metadata.bolt_path,
-      'trends',
-      trendId
+      resource,
+      entityId
     ).then(-> $scope.trendList.updated = true)
 
   # == Sub-Components - Threshold KPI =============================================================
