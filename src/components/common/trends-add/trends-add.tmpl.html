@@ -3,47 +3,52 @@
   <div class="message" >
     <div class="title">Add data from historical trend</div>
 
-    <div class="form text-left">
-      <label>Adjustment rate:</label><br>
-      <input style="width: 45px;" type="number" value="0" step="1" ng-model="$ctrl.trend.rate" ng-change="$ctrl.redrawCurrentTrend()"/>%<br>
+    <div class="wrapper">
+      <div class="form text-left">
+        <label>Adjustment rate:</label><br>
+        <input style="width: 45px;" type="number" value="0" step="1" ng-model="$ctrl.trend.rate" ng-change="$ctrl.redrawCurrentTrend()"/>%<br>
 
-      <label>Account:</label>
-      <select ng-model="$ctrl.trend.account" ng-options="account.attributes.name for account in $ctrl.accounts | orderBy: 'attributes.name' track by account.id" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
-        <option value=''> Choose an Account</option>
-      </select>
-
-      <label>Start date:</label><br>
-      <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.startDatePicker.date" ng-click="$ctrl.startDatePicker.toggle()" is-open="$ctrl.startDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateStartDate()" datepicker-options="$ctrl.startDateOptions"/>
-
-      <label>Trend applied:</label><br>
-      <select ng-model="$ctrl.trend.period" ng-change="$ctrl.redrawCurrentTrend()">
-        <option>Once</option>
-        <option>Daily</option>
-        <option>Weekly</option>
-        <option>Monthly</option>
-        <option>Annually</option>
-      </select>
-
-      <fieldset class="btn-group" ng-disbaled="$ctrl.isPeriodDisabled()">
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value="-1"> Forever<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.selectedPeriod"> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.updatePeriod()"> {{$ctrl.period()}}<br>
-        <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.untilDatePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.untilDatePicker.date" ng-click="$ctrl.untilDatePicker.toggle()" is-open="$ctrl.untilDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateUntilDate()" datepicker-options="$ctrl.lastDateOptions"/>
-      </fieldset>
-
-      <label>Name: </label><br>
-      <input type="text" class="form-control" ng-model="$ctrl.trend.name" placeholder="Trend name" />
-
-      <label>Group: </label>
-      <div ng-if="!$ctrl.isAddingGroup">
-        <select ng-model="$ctrl.trend.trends_group" ng-options="group.attributes.name for group in $ctrl.groups | orderBy: 'attributes.name' track by group.id" class='form-control'>
-          <option value=''> Choose a group</option>
+        <label>Account:</label>
+        <select ng-model="$ctrl.trend.account" ng-options="account.attributes.name for account in $ctrl.accounts | orderBy: 'attributes.name' track by account.id" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
+          <option value=''> Choose an Account</option>
         </select>
-        <i class="fa fa-plus-square" title="Create a new group" ng-click="$ctrl.switchAddingGroup(true)"/>
+
+        <label>Start date:</label><br>
+        <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.startDatePicker.date" ng-click="$ctrl.startDatePicker.toggle()" is-open="$ctrl.startDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateStartDate()" datepicker-options="$ctrl.startDateOptions"/>
+
+        <label>Trend applied:</label><br>
+        <select ng-model="$ctrl.trend.period" ng-change="$ctrl.redrawCurrentTrend()">
+          <option>Once</option>
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+          <option>Yearly</option>
+        </select>
+
+        <fieldset class="btn-group" ng-disbaled="$ctrl.isPeriodDisabled()">
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" checked="true" ng-value="-1" ng-change="$ctrl.redrawCurrentTrend()"> Forever<br>
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.selectedPeriod"> For <input style="width: 45px;" type="number" value="0" min="1" step="1" ng-model=$ctrl.selectedPeriod ng-change="$ctrl.updatePeriod()"> {{$ctrl.period()}}<br>
+          <input type="radio" ng-model="$ctrl.trend.untilDate" name="until" ng-value="$ctrl.untilDatePicker.date"> Until <input type="text" class="btn btn-default form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="$ctrl.untilDatePicker.date" ng-click="$ctrl.untilDatePicker.toggle()" is-open="$ctrl.untilDatePicker.opened" close-text="Close" on-open-focus="false" style="width: 70%" ng-change="$ctrl.updateUntilDate()" datepicker-options="$ctrl.lastDateOptions"/>
+        </fieldset>
+
+        <label>Name: </label><br>
+        <input type="text" class="form-control" ng-model="$ctrl.trend.name" placeholder="Trend name" />
+
+        <label>Group: </label>
+        <div ng-if="!$ctrl.isAddingGroup">
+          <select ng-model="$ctrl.trend.trends_group" ng-options="group.attributes.name for group in $ctrl.groups | orderBy: 'attributes.name' track by group.id" class='form-control'>
+            <option value=''> Choose a group</option>
+          </select>
+          <i class="fa fa-plus-square" title="Create a new group" ng-click="$ctrl.switchAddingGroup(true)"/>
+        </div>
+        <div ng-if="$ctrl.isAddingGroup">
+          <input type="text" class="form-control" ng-model="$ctrl.trend.groupName" placeholder="Group name" />
+          <i class="fa fa-minus-square" title="Select existing group" ng-click="$ctrl.switchAddingGroup(false)"/>
+        </div>
       </div>
-      <div ng-if="$ctrl.isAddingGroup">
-        <input type="text" class="form-control" ng-model="$ctrl.trend.groupName" placeholder="Group name" />
-        <i class="fa fa-minus-square" title="Select existing group" ng-click="$ctrl.switchAddingGroup(false)"/>
-      </div>
+
+      <!-- Chart -->
+      <div id="trends-add-chart" class="cash-projection-chart"></div>
     </div>
 
     <div class="bottom text-center">

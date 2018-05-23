@@ -8,7 +8,6 @@ module.component('trendsAdd', {
     accounts: '<'
     chart: '<'
     accountsLastValues: '<'
-    accountsLastValues: '<'
     groups: '<'
     boltPath: '<'
     companyId: '<'
@@ -55,15 +54,19 @@ module.component('trendsAdd', {
       (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
       !_.isEmpty(ctrl.trend.account)
 
+    ctrl.trendHasGroup = ->
+      (ctrl.isAddingGroup && ctrl.trend.groupName) ||
+        (!ctrl.isAddingGroup && ctrl.trend.trends_group)
+
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
-      ((ctrl.trend.trends_group && !ctrl.isAddingGroup) ||
-        (ctrl.trend.groupName && ctrl.isAddingGroup)) &&
+      ctrl.trendHasGroup() &&
       ctrl.dataIsValid()
 
     ctrl.createTrend = ->
       return ctrl.createGroup() if ctrl.isAddingGroup
       ctrl.onHide()
+      ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
       ctrl.trend.account_id = ctrl.trend.account.id
@@ -106,7 +109,7 @@ module.component('trendsAdd', {
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
       newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
-      newData = applyTrend(ctrl.trend, newSerie.data, ctrl.accountsLastValues[ctrl.trend.account_id.id])
+      newData = applyTrend(ctrl.trend, newSerie.data, ctrl.accountsLastValues[ctrl.trend.account.id])
       delete newSerie['type']
       _.merge(newSerie, { name: "Current trend", zones: [{dashStyle: "ShortDot"}], color: "rgb(124, 77, 255)", data: newData })
       ctrl.chart.series.push(newSerie)
