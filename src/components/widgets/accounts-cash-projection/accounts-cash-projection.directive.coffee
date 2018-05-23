@@ -314,8 +314,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->
     name = this.name
-    return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
-    imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
+    img = imgSrc(name)
+    return name unless img
+    return imgTemplate(img, name) unless name == 'Projected cash'
+    imgTemplate(img, name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
   # Persists the zooming options on user selection (call to MnoHub to update the metadata)
   onZoom = (event) ->

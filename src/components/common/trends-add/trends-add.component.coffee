@@ -5,9 +5,9 @@ module.component('trendsAdd', {
   bindings:
     onHide: '&'
     onCreateTrend: '&'
-    accounts: '='
-    chart: '='
-    accountsLastValues: '='
+    accounts: '<'
+    chart: '<'
+    accountsLastValues: '<'
 
   controller: ($scope, HighchartsFactory) ->
     ctrl = this
@@ -53,23 +53,11 @@ module.component('trendsAdd', {
       !_.isEmpty(ctrl.trend.name) &&
       ctrl.dataIsValid()
 
-    ctrl.untilDate = ->
-      return ctrl.trend.untilDate if ctrl.trend.untilDate instanceof Date
-      period = null
-      if ctrl.trend.untilDate == -1 then return
-      switch ctrl.trend.period
-        when 'Once' then return null
-        when 'Daily' then period = 'days'
-        when 'Weekly' then period = 'weeks'
-        when 'Monthly' then period = 'months'
-        when 'Yearly' then period = 'years'
-      moment.utc(ctrl.trend.startDate).add(ctrl.trend.untilDate, period).format('YYYY-MM-DD')
-
     ctrl.createTrend = ->
       ctrl.onHide()
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.trend.account_id = ctrl.trend.account_id.id
-      ctrl.trend.untilDate = ctrl.untilDate()
+      ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
     ctrl.updateStartDate = ->
@@ -94,43 +82,39 @@ module.component('trendsAdd', {
     ctrl.redrawCurrentTrend = ->
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
-      newSerie = Object.assign({}, _.find(ctrl.chart.series, 'name', 'Projected cash'))
-      newData = ctrl.applyTrend(newSerie.data)
+      newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
+      newData = applyTrend(ctrl.trend, newSerie.data, ctrl.accountsLastValues[ctrl.trend.account_id.id])
       delete newSerie['type']
-      newSerie.name = "Current trend"
-      newSerie.zones = [{dashStyle: "ShortDot"}]
-      newSerie.color = "rgb(124, 77, 255)"
-      newSerie.data = newData
+      _.merge(newSerie, { name: "Current trend", zones: [{dashStyle: "ShortDot"}], color: "rgb(124, 77, 255)", data: newData })
       ctrl.chart.series.push(newSerie)
       ctrl.renderChart()
 
-    ctrl.applyTrend = (data) ->
-      timestamps = data.map (x) -> x[0]
-      values = data.map (x) -> x[1]
-      startIndex = timestamps.findIndex (timestamp) -> timestamp > ctrl.trend.startDate.getTime()
-      startDate = timestamps[startIndex]
-      untilDate = ctrl.untilDate()
-      untilDate = new Date(untilDate) if untilDate
-      if untilDate
-        lastIndex = timestamps.findIndex (timestamp) -> timestamp > untilDate.getTime()
-        lastIndex = timestamps.length if lastIndex == -1
-      else
-        lastIndex = timestamps.length
-      currentValue = ctrl.accountsLastValues[ctrl.trend.account_id.id]
-      increment = 0
-      for i in [startIndex...timestamps.length]
-        if ctrl.shouldApplyTrend(startDate, timestamps[i]) && i <= lastIndex
-          increment = currentValue * ctrl.trend.rate / 100.0
-          currentValue += increment
-        values[i] += increment
-      res = []
-      for i in [0...timestamps.length]
-        res.push([timestamps[i], values[i]])
-      res
+    # Apply the trend on the cash values in data, based on the account last value
+    # data = [[timestamps, values]*]
+    applyTrend = (trend, data, lastValue) ->
+      unified = _.zip.apply(this, data)
+      timestamps = unified[0]
+      values = unified[1]
 
-    ctrl.shouldApplyTrend = (startDate, currentDate) ->
+      # Find index for trend's start and last date in timestamps
+      startIndex = timestamps.findIndex((t) -> t > trend.startDate.getTime()) - 1
+      lastIndex = lastApplicationIndex(trend, timestamps)
+
+      # Between startIndex and lastIndex, apply trend when period allows it
+      increment = 0
+      startDate = timestamps[startIndex]
+      for i in [startIndex..lastIndex]
+        continue unless shouldApplyTrend(trend, startDate, timestamps[i])
+        increment = lastValue * trend.rate / 100.0
+        lastValue += increment
+        incrementRemainingValues(values, i, increment)
+
+      # Return data with timestamps
+      _.map([0...timestamps.length], (i) -> [timestamps[i], values[i]])
+
+    shouldApplyTrend = (trend, startDate, currentDate) ->
       date = new Date(currentDate)
-      switch ctrl.trend.period
+      switch trend.period
         when 'Once'
           startDate == currentDate
         when 'Daily'
@@ -141,6 +125,29 @@ module.component('trendsAdd', {
           date.getDate() == 1
         when 'Yearly'
           date.getDate() == 1 && date.getMonth() == 0
+
+    lastApplicationDate = (trend) ->
+      return trend.untilDate if trend.untilDate instanceof Date
+      period = null
+      if trend.untilDate == -1 then return
+      switch trend.period
+        when 'Once' then return null
+        when 'Daily' then period = 'days'
+        when 'Weekly' then period = 'weeks'
+        when 'Monthly' then period = 'months'
+        when 'Yearly' then period = 'years'
+      moment.utc(trend.startDate).add(trend.untilDate, period).format('YYYY-MM-DD')
+
+    lastApplicationIndex = (trend, timestamps) ->
+      untilDate = lastApplicationDate(trend)
+      return timestamps.length - 1 unless untilDate
+      untilDate = new Date(untilDate)
+      lastIndex = timestamps.findIndex (timestamp) -> timestamp > untilDate.getTime()
+      if lastIndex == -1 then timestamps.length - 1 else lastIndex
+
+    incrementRemainingValues = (values, start, increment) ->
+      for i in [start...values.length]
+        values[i] += increment
 
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})
