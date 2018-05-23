@@ -12,7 +12,7 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
     link: (scope) ->
       w = scope.parentWidget
 
-      # Will there be a multi-org use case?
+      # TODO: Will there be a multi-org use case?
       scope.mode ||= 'single'
       scope.singleOrgMode = -> scope.mode == 'single'
       scope.multiOrgMode = -> scope.mode == 'multiple'

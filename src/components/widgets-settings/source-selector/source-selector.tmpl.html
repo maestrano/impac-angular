@@ -3,7 +3,7 @@
 
   <div class="widget-lines-container">
     <div class="widget-line" ng-repeat="app in organizationApps">
-      {{app.label}}
+      <span>{{app.label}}</span>
       <i ng-show="singleOrgMode()" ng-class="isApplicationSelected(app.value) ? 'fa fa-check-circle' : 'fa fa-circle-thin'" ng-click="toggleSelectApplication(app.value)" />
     </div>
   </div>
