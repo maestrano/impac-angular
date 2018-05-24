@@ -3,8 +3,9 @@
 ### v1.8.0
 
 - Applies v1.7.5
-- [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
 - [IMPAC-791] Add generic table layout template
+- [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-856] Improve formatting of chart xaxis dates
 
 #### Dependencies
 - MnoHub v2.0.1
