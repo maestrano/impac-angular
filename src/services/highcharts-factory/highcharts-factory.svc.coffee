@@ -130,6 +130,19 @@ angular
           enabled: false
       angular.merge(@highChartOptions, legend)
 
+    removeNavigator: () ->
+      navigator =
+        navigator:
+          enabled: false
+      angular.merge(@highChartOptions, navigator)
+
+    removeRangeSelector: (defaultSelected = 0) ->
+      rangeSelector =
+        rangeSelector:
+          selected: defaultSelected
+          enabled: true
+      angular.merge(@highChartOptions, rangeSelector)
+
     addSeriesEvent: (eventName, callback) ->
       eventHash = {}
       eventHash[eventName] = callback

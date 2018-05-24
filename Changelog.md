@@ -5,6 +5,7 @@
 - Applies v1.7.5
 - [IMPAC-791] Add generic table layout template
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-837] Real-time trend visualizer
 - [IMPAC-856] Improve formatting of chart xaxis dates
 
 #### Dependencies
