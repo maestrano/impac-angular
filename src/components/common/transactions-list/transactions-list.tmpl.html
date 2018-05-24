@@ -5,11 +5,16 @@
         <i class="fa fa-chevron-left" />
         Back to chart
       </label>
+      <input type="text" class="form-control search-bar" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
     </div>
     <div class="resource-type">
       <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
+      </div>
+      <div class="btn-group" ng-if="!$ctrl.hideOverdueFilter">
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'all'">Show all</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'overdue'">Show overdue</label>
       </div>
     </div>
   </div>
@@ -18,19 +23,19 @@
       <tr>
         <th>{{ $ctrl.currentAttributes.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
-        <th ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">Title</th>
+        <th>Description</th>
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
         <th ng-hide="$ctrl.listOnly">Expected payment date</th>
         <th class="text-right">Amount</th>
         <th class="text-right">Balance</th>
-        <th />
+        <th ng-hide="$ctrl.listOnly" />
       </tr>
       <tr ng-repeat="trx in $ctrl.currentAttributes.transactions">
         <td>{{ trx.contact_name }}</td>
         <td>{{ trx.transaction_number }}</td>
-        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">{{ trx.title }}</td>
+        <td>{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
@@ -44,19 +49,17 @@
         </td>
         <td class="text-right">{{ trx.amount | mnoCurrency : trx.currency }}</td>
         <td class="text-right">{{ trx.balance | mnoCurrency : trx.currency }}</td>
-        <td class="actions">
+        <td class="actions" ng-hide="$ctrl.listOnly">
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTrxModal.show(trx)" />
           <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
           <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteScheduleModal.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
-        <td colspan="6">TOTAL</td>
-        <!-- If Date Picker is open the colspan width will be 6.  If 'list-only' the width will be 5 -->
-        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'"></td>
+        <td colspan="{{$ctrl.listOnly ? '6' : '7'}}">TOTAL</td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
-        <td ng-hide="$ctrl.listOnly" colspan="2"></td>
+        <td ng-hide="$ctrl.listOnly"></td>
       </tr>
     </table>
   </div>

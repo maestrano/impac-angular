@@ -7,6 +7,7 @@
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
 - [IMPAC-837] Real-time trend visualizer
 - [IMPAC-856] Improve formatting of chart xaxis dates
+- [IMPAC-868] Improvements on invoices-list widget
 
 #### Dependencies
 - MnoHub v2.0.1

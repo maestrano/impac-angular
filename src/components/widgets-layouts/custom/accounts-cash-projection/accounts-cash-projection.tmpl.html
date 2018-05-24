@@ -17,6 +17,7 @@
   <div ng-hide="widget.isEditMode">
     <transactions-list
       ng-if="trxList.display"
+      hide-overdue-filter=true
       transactions="trxList.transactions"
       currency="widget.metadata.currency"
       contacts="contacts"
@@ -28,6 +29,7 @@
       on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
+      on-change-query="trxList.changeQuery(query)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
       on-update-schedulable-transaction="trxList.updateSchedulableTransactions()"
       on-delete-children-transactions="trxList.deleteChildrenTransactions(resourcesType, trxId)">
