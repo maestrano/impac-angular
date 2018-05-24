@@ -4,21 +4,21 @@ module.controller('SettingForecastPayrollCtrl', ($scope, ImpacDashboardsSvc) ->
   w = $scope.parentWidget
 
   $scope.toggleForecastPayroll = ->
-      $scope.selectedForecastPayroll.enable = !$scope.selectedForecastPayroll.enable
-      unless($scope.selectedForecastPayroll.enable)
-        $scope.selectedForecastPayroll.time_sheet = false
+      $scope.selectedForecastPayroll.enabled = !$scope.selectedForecastPayroll.enabled
+      unless $scope.selectedForecastPayroll.enabled
+        $scope.selectedForecastPayroll.time_logged = false
 
   $scope.toggleTimeSheetModifier= ->
-    if($scope.selectedForecastPayroll.enable)
-      $scope.selectedForecastPayroll.time_sheet = !$scope.selectedForecastPayroll.time_sheet
+    if $scope.selectedForecastPayroll.enabled
+      $scope.selectedForecastPayroll.time_logged = !$scope.selectedForecastPayroll.time_logged
 
   $scope.isToggleForecastPayroll = ->
-    if($scope.selectedForecastPayroll?)
-      return $scope.selectedForecastPayroll.enable
+    if $scope.selectedForecastPayroll?
+      return $scope.selectedForecastPayroll.enabled
 
   $scope.isToggleTimeSheetModifier= ->
-    if($scope.selectedForecastPayroll?)
-      return $scope.selectedForecastPayroll.time_sheet
+    if $scope.selectedForecastPayroll?
+      return $scope.selectedForecastPayroll.time_logged
 
   # What will be passed to parentWidget
   setting = {}
@@ -30,9 +30,9 @@ module.controller('SettingForecastPayrollCtrl', ($scope, ImpacDashboardsSvc) ->
     ImpacDashboardsSvc.load().then(
       (config) ->
         currentDashboard = config.currentDashboard
-        $scope.selectedForecastPayroll = {enable: false, time_sheet: false}
-        if w.metadata? && w.metadata.forecast_payroll? && typeof(w.metadata.forecast_payroll) == 'object'
-          $scope.selectedForecastPayroll = w.metadata.forecast_payroll
+        $scope.selectedForecastPayroll = { enabled: false, time_logged: false }
+        forecastPayroll = _.get(w, 'metadata.forecast_payroll')
+        $scope.selectedForecastPayroll = w.metadata.forecast_payroll if _.isPlainObject(forecastPayroll)
 
         setting.isInitialized = true
     )
