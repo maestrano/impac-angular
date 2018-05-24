@@ -6,6 +6,11 @@
       <span class="text-hide" translate>impac.widget.common.top_buttons.info_popup.info</span>
     </button>
 
+    <button class="btn top-button btn-export" ng-show="isCsvExportable()" ng-click="exportCSV()">
+      <i class="fa fa-file-text-o"></i>
+      <span class="text-hide" translate>impac.widget.common.top_buttons.info_popup.export_csv</span>
+    </button>
+
     <button class="btn top-button btn-refresh" ng-click="onRefresh({refreshCache: true})">
       <i class="fa fa-refresh"></i>
       <span class="text-hide" translate>impac.widget.common.top_buttons.info_popup.refresh</span>

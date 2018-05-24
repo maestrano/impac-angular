@@ -171,7 +171,7 @@ angular
         promiseKey = "#{bolt.provider}_#{bolt.name}"
         templatesPromises[promiseKey] = $http.get("#{bolt.path}/widgets").then(
           (response)->
-            _.map(response.data.widgets, (w)-> _.extend(w, metadata: bolt_path: bolt.path))
+            _.map(response.data.widgets, (w)-> _.extend(w, metadata: bolt_path: bolt.path, isBolt: true))
           ->
             $log.error("Impac! - DashboardsSvc: cannot retrieve widgets templates from bolt", "#{bolt.path}/widgets")
         )
