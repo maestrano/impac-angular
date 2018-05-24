@@ -8,9 +8,6 @@
       <input type="text" class="form-control search-bar" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
     </div>
     <div class="resource-type">
-      <!-- <div ng-hide="$ctrl.listOnly" class="col-xs-6">
-        <input type="text" class="form-control" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
-      </div> -->
       <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
@@ -26,7 +23,7 @@
       <tr>
         <th>{{ $ctrl.currentAttributes.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
-        <th ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">Description</th>
+        <th>Description</th>
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
@@ -38,7 +35,7 @@
       <tr ng-repeat="trx in $ctrl.currentAttributes.transactions">
         <td>{{ trx.contact_name }}</td>
         <td>{{ trx.transaction_number }}</td>
-        <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">{{ trx.title }}</td>
+        <td>{{ trx.title }}</td>
         <td>{{ trx.status }}</td>
         <td>{{ trx.trxDateUTC }}</td>
         <td>{{ trx.dueDateUTC }}</td>
