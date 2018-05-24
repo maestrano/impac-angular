@@ -160,25 +160,39 @@ angular
       # Draw chart
       widget.format() if angular.isDefined(widget.format)
 
+    paramsForWidget = (widget, opts = {}) ->
+      metadata = angular.copy(widget.metadata)
+      metadata.utc_offset ||= moment().utcOffset()
+
+      params =
+        metadata: metadata
+        demo_data: ImpacTheming.get().dhbConfig.designerMode.enabled || !!opts.demo
+        
+      params.refresh_cache = true if !!opts.refreshCache
+      params
+
+    getConfig = ->
+      authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
+      { headers: {'Authorization': authHeader } }
+
+    @showAsCSV = (widget) ->
+      route = "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}.csv"
+      params = paramsForWidget(widget)
+      url = [route, decodeURIComponent( $.param(params) )].join('?')
+      $http.get(url, getConfig()).then(
+        (success) ->
+          $q.resolve(success.data)
+        (error) ->
+          $q.reject(error)
+      )
+
     # Calls Legacy Impac! or bolt API to render a widget
     # If no content is returned, the endpoint will be called again with `demo` = `true` to retrieve stub data
     # default opts: { refreshCache: false, demo: false }
     @show = (widget, opts = {}) ->
-      refreshCache = !!opts.refreshCache
-      demo = !!opts.demo
-
       widget.isLoading = true
       _self.load().then(
         (loaded) ->
-          metadata = angular.copy(widget.metadata)
-          metadata.utc_offset ||= moment().utcOffset()
-
-          demoData = ImpacTheming.get().dhbConfig.designerMode.enabled || demo
-          params =
-            metadata: metadata
-            demo_data: demoData
-          params.refresh_cache = true if refreshCache
-
           route = if widget.metadata['bolt_path']
             # If bolt_path is defined, widget is to be fetched from a bolt
             "#{widget.metadata['bolt_path']}/widgets/#{widget.endpoint}"
@@ -187,28 +201,26 @@ angular
             dashboard = ImpacDashboardsSvc.getCurrentDashboard()
             ImpacRoutes.widgets.show(widget.endpoint, dashboard.id, widget.id)
 
+          params = paramsForWidget(widget, opts)
           url = [route, decodeURIComponent( $.param(params) )].join('?')
 
-          authHeader = 'Basic ' + btoa(_self.getSsoSessionId())
-          config = { headers: {'Authorization': authHeader } }
-
-          $http.get(url, config).then(
+          $http.get(url, getConfig()).then(
             (success) ->
               content = success.data.content || success.data[widget.endpoint] || {}
               if _.isEmpty(content)
                 # Reload the widget with param `demo` set at `true` (to retrieve stub data)
-                if demoData
+                if params.demo_data
                   # If we were already trying to load the widget in demo mode, we resolve the widget without content
                   # TODO: display an error box?
                   $log.error('Impac! - WidgetsSvc: Cannot retrieve demo data for widget:', widget)
                   $q.resolve(widget)
                 else
-                  _self.show(widget, { refreshCache: refreshCache, demo: true })
+                  _self.show(widget, { refreshCache: params.refresh_cache, demo: true })
 
               else
                 # Push new content to widget, and initialize it
                 name = success.data.name
-                angular.extend widget, { content: content, originalName: name, demoData: demoData }
+                angular.extend widget, { content: content, originalName: name, demoData: params.demo_data }
                 initWidget(widget)
                 $q.resolve(widget)
 
