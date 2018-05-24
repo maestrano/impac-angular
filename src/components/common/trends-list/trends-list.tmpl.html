@@ -15,6 +15,7 @@
       <tr>
         <th>Name</th>
         <th>Rate</th>
+        <th>Account</th>
         <th>Periodicity</th>
         <th>Start Date</th>
         <th>Last apply date</th>
@@ -30,6 +31,7 @@
         <td ng-if="$ctrl.editMode">
           <input style="width: 45px;" type="number" value="0" min="0" step="1" ng-model="trend.rate"/>%
         </td>
+        <td>{{trend.account_name}}</td>
         <td ng-if="!$ctrl.editMode">{{trend.period}}</td>
         <td ng-if="$ctrl.editMode">
           <select ng-model="trend.period">

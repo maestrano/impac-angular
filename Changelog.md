@@ -1,5 +1,25 @@
 # Impac! Frontend Changelog
 
+### v1.8.0
+
+- Applies v1.7.5
+- [IMPAC-791] Add generic table layout template
+- [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-837] Real-time trend visualizer
+- [IMPAC-856] Improve formatting of chart xaxis dates
+
+#### Dependencies
+- MnoHub v2.0.1
+- MnoE [commit#15125777a9ce4332e2fd8d618291027b2e44d78d](https://github.com/maestrano/mno-enterprise/commit/15125777a9ce4332e2fd8d618291027b2e44d78d) (no version available at time of release)
+
+-------------------------------------------------------------
+
+### v1.7.5 | 2018 - Week 20
+
+- [IMPAC-855] CF: Fix Payroll costs series legend image
+
+-------------------------------------------------------------
+
 ### v1.7.4 | 2018 - Week 20
 
 - Applies v1.6.10
