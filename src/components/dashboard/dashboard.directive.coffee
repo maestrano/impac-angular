@@ -238,7 +238,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
         return []
 
     $scope.addWidget = (widgetTemplate) ->
-      params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata'])
+      params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata', 'layouts'])
 
       angular.element('#widget-selector').css('cursor', 'progress')
       angular.element('#widget-selector .section-lines .line-item').css('cursor', 'progress')

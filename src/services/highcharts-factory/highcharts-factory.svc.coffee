@@ -68,7 +68,9 @@ angular
           # If point is in the past, "My Projected Stuff" => "My Stuff"
           if moment(this.x) < todayUTC
             name = _.startCase _.trim name.toLowerCase().replace(/\s*projected\s*/, ' ')
-          "<strong>#{date}</strong><br>#{name}: #{amount}"
+          tooltip = "<strong>#{date}</strong><br>#{name}: #{amount}"
+          return tooltip += "#{t}" if (t = this.series.options.tooltipHtml)
+          tooltip
 
     todayMarker: (showToday, markerColor = 'rgba(0, 85, 255, 0.2)') ->
       return {} unless showToday

@@ -35,6 +35,7 @@ angular.module('impac.components',
     'impac.components.alerts-config',
     'impac.components.widget',
     'impac.components.widgets',
+    'impac.components.widgets-layouts',
     'impac.components.widgets-settings',
     'impac.components.widgets-common',
     'impac.components.common',
@@ -48,7 +49,6 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-assets-liability-summary',
     'impac.components.widgets.accounts-balance-sheet',
     'impac.components.widgets.accounts-balance',
-    'impac.components.widgets.accounts-cash-projection',
     'impac.components.widgets.accounts-cash-summary',
     'impac.components.widgets.accounts-comparison',
     'impac.components.widgets.accounts-custom-calculation',
@@ -60,8 +60,8 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.accounts-assets-vs-liabilities',
     'impac.components.widgets.accounts-detailed-classifications',
     'impac.components.widgets.accounts-ratios',
-    'impac.components.widgets.accounts-cash-balance',
     'impac.components.widgets.accounts-live-balance',
+    'impac.components.widgets.accounts-invoices-list',
     'impac.components.widgets.hr-employee-details',
     'impac.components.widgets.hr-employees-list',
     'impac.components.widgets.hr-leaves-balance',
@@ -97,6 +97,13 @@ angular.module('impac.components.widgets',
     'impac.components.widgets.sales-new-vs-existing-customers'
   ]
 );
+angular.module('impac.components.widgets-layouts',
+  [
+    'impac.components.widgets-layouts.table',
+    'impac.components.widgets-layouts.accounts-cash-balance',
+    'impac.components.widgets-layouts.accounts-cash-projection'
+  ]
+);
 angular.module('impac.components.widgets-settings',
   [
     'impac.components.widgets-settings.account',
@@ -118,7 +125,8 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.width',
     'impac.components.widgets-settings.attach-kpis',
     'impac.components.widgets-settings.tag-filter',
-    'impac.components.widgets-settings.offsets'
+    'impac.components.widgets-settings.offsets',
+    'impac.components.widgets-settings.forecast-payroll'
   ]
 );
 angular.module('impac.components.dashboard-settings',
@@ -132,6 +140,7 @@ angular.module('impac.components.widgets-common',
   [
     'impac.components.widgets-common.editable-title',
     'impac.components.widgets-common.info-panel',
+    'impac.components.widgets-common.confirm-modal',
     'impac.components.widgets-common.time-period-info',
     'impac.components.widgets-common.top-buttons',
     'impac.components.widgets-common.autofocus',
@@ -142,9 +151,11 @@ angular.module('impac.components.widgets-common',
 angular.module('impac.components.common',
   [
     'impac.components.common.data-not-found',
-    'impac.components.common.delete-widget',
     'impac.components.common.transactions-add',
-    'impac.components.common.transactions-list'
+    'impac.components.common.transactions-list',
+    'impac.components.common.duplicate-transactions-list',
+    'impac.components.common.trends-add',
+    'impac.components.common.trends-list',
   ]
 );
 /*
@@ -165,6 +176,7 @@ angular.module('impac.services',
     'impac.services.dashboards',
     'impac.services.dashboard-templates',
     'impac.services.widgets',
+    'impac.services.widgets-templates',
     'impac.services.developer',
     'impac.services.pusher',
     'impac.services.alerts',

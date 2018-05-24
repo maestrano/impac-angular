@@ -1,14 +1,25 @@
-<div class="attach-panel" ng-if="$ctrl.showPanel">
-  <div class="attach-panel-text">
-    <span class="panel-text-label">{{$ctrl.kpiCreateLabel}}: </span>
-    <input type="text" class="panel-text-input" ng-model="$ctrl.draftTarget.value">
-    <span class="panel-text-currency" ng-bind="$ctrl.widget.metadata.currency"></span>
+<div class="attach-panel" ng-if="$ctrl.showPanel" >
+  <div><span class="text" translate>impac.widget.common.chart-threshold.attach-panel.timeperiod.text</span></div>
+  <div>
+    <form name="timePeriodForm">
+      <input name="amount" type="number" ng-model="$ctrl.timePeriod.amount" min="1">
+      <select ng-model="$ctrl.timePeriod.duration" ng-options="duration.value as duration.label for duration in $ctrl.timePeriodDurations">
+      </select>
+      <div ng-messages="timePeriodForm.amount.$error">
+        <div ng-message="min" translate>impac.widget.common.chart-threshold.attach-panel.timeperiod.invalid</div>
+      </div>
+    </form>
   </div>
-  <div class="action-buttons">
+  <div class="target">
+    <span class="text" translate>impac.widget.common.chart-threshold.attach-panel.target.text</span>
+    <input type="text" ng-model="$ctrl.draftTarget.value">
+    <span class="currency" ng-bind="$ctrl.widget.metadata.currency"></span>
+  </div>
+  <div class="actions">
     <button class="btn btn-default" ng-click="$ctrl.cancelCreateKpi()" ng-disabled="$ctrl.loading">Cancel</button>
     <button class="btn btn-primary" ng-class="{'loading': $ctrl.loading}" ng-click="$ctrl.saveKpi()">
       <i ng-show="$ctrl.loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
-      <span ng-hide="$ctrl.loading">{{$ctrl.isEditingKpi ? 'Update' : 'Save'}}</span>
+      <span ng-hide="$ctrl.loading" ng-bind="$ctrl.getSaveKpiBtnLabel()"></span>
     </button>
     <button ng-if="$ctrl.isEditingKpi" class="btn btn-danger" ng-class="{'loading': $ctrl.loading}" ng-click="$ctrl.deleteKpi()">
       <i ng-show="$ctrl.loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
