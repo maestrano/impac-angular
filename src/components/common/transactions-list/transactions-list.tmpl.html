@@ -12,7 +12,7 @@
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
-      <div class="btn-group" ng-if="$ctrl.showOverdueFilter">
+      <div class="btn-group" ng-if="!$ctrl.hideOverdueFilter">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'all'">Show all</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'overdue'">Show overdue</label>
       </div>

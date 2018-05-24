@@ -17,7 +17,7 @@
   <div ng-hide="widget.isEditMode">
     <transactions-list
       ng-if="trxList.display"
-      show-overdue-filter=false
+      hide-overdue-filter=true
       transactions="trxList.transactions"
       currency="widget.metadata.currency"
       contacts="contacts"

@@ -2,17 +2,6 @@ module = angular.module('impac.components.widgets.accounts-invoices-list', [])
 module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, BoltResources) ->
 
   # == Context and Helpers ========================================================================
-  setInitialParams = ->
-    params =
-      include: 'contact'
-      fields:
-        contacts: 'name'
-      sort: w.sortParamater
-      currency: w.metadata.currency
-      filter:
-        'status.not': 'FORECAST'
-    return params
-
   w = $scope.widget
   bolts = ImpacRoutes.bolts()
   bolt_path = _.find(bolts, { name: 'finance', provider: 'maestrano' }).path
@@ -22,7 +11,14 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
     resources: 'invoices',
     overdue: 'all',
     transactions: [],
-    params: setInitialParams()
+    params:
+      include: 'contact'
+      fields:
+        contacts: 'name'
+      sort: w.sortParamater
+      currency: w.metadata.currency
+      filter:
+        'status.not': 'FORECAST'
   }
 
   # Widget Settings --------------------------------------
