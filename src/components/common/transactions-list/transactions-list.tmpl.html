@@ -1,27 +1,24 @@
 <div id="transactions-list">
-  <div class="row top">
-    <div class="col-xs-3 pull-left">
+  <div class="top">
+    <div class="back">
       <label class="btn btn-sm btn-default" ng-click="$ctrl.onHide()" ng-hide="$ctrl.listOnly">
         <i class="fa fa-chevron-left" />
         Back to chart
       </label>
-      <input type="text" class="form-control" ng-show="$ctrl.listOnly" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
+      <input type="text" class="form-control search-bar" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
     </div>
-    <div class="col-xs-6 text-center">
-      <div ng-hide="$ctrl.listOnly" class="col-xs-6">
+    <div class="resource-type">
+      <!-- <div ng-hide="$ctrl.listOnly" class="col-xs-6">
         <input type="text" class="form-control" placeholder="Search..." ng-model="$ctrl.query" ng-change="$ctrl.changeQuery()">
-      </div>
-      <div class="col-xs-6 btn-group">
+      </div> -->
+      <div class="btn-group">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'invoices'">See money in</label>
         <label class="btn btn-sm btn-default" ng-model="$ctrl.resourcesType" ng-click="$ctrl.changeResourcesType()" uib-btn-radio="'bills'">See money out</label>
       </div>
-      <div class="col-xs-6 btn-group" ng-if="$ctrl.showOverdueFilter">
-        <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'overdue'">Show overdue</label>
+      <div class="btn-group" ng-if="$ctrl.showOverdueFilter">
         <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'all'">Show all</label>
+        <label class="btn btn-sm btn-default" ng-model="$ctrl.overdueFilter" ng-click="$ctrl.changeOverdueFilter()" uib-btn-radio="'overdue'">Show overdue</label>
       </div>
-    </div>
-    <div class="col-xs-3">
-      <ul uib-pagination class="pull-right no-margin-top" total-items="$ctrl.totalRecords" ng-model="$ctrl.currentPage" max-size="5" items-per-page="30" class="pagination-sm" force-ellipses="true" ng-change="$ctrl.changePage()"/>
     </div>
   </div>
   <div class="table-container">
@@ -29,7 +26,7 @@
       <tr>
         <th>{{ $ctrl.currentAttributes.resourcesType == 'invoices' ? 'Customer' : 'Supplier' }}</th>
         <th>Code</th>
-        <th>Description</th>
+        <th ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'">Description</th>
         <th>Status</th>
         <th>Transaction date</th>
         <th>Due date</th>
@@ -67,7 +64,7 @@
         <td ng-hide="$ctrl.currentAttributes.resourcesType == 'bills'"></td>
         <td class="text-right">{{ $ctrl.totalAmount | mnoCurrency : $ctrl.currency }}</td>
         <td class="text-right">{{ $ctrl.totalBalance | mnoCurrency : $ctrl.currency }}</td>
-        <td ng-hide="$ctrl.listOnly" colspan="2"></td>
+        <td ng-hide="$ctrl.listOnly"></td>
       </tr>
     </table>
   </div>

@@ -3,16 +3,29 @@
     height: 40px;
     position: relative;
 
-    .back { position: absolute; }
-    .resource-type {
+    .back {
       position: absolute;
-      left: ~"calc(50% - 98px)";
-      @media (max-width: @screen-xs-max) {
-        left: unset;
-        right: 0;
+      .btn.btn-sm { margin-top: -4px; }
+      .search-bar {
+        width: 180px;
+        display: inline;
+        height: 30px;
       }
     }
-    .btn-group { display: flex; }
+    .resource-type {
+      margin: auto;
+      display: flex;
+      width: 370px;
+      justify-content: center;
+      align-items: center;
+      @media (max-width: @screen-xs-max) {
+        margin: 0;
+        float: right;
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+    }
+    .btn-group { margin-left: 3px; }
     .no-margin-top { margin-top: 0px }
   }
 
