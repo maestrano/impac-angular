@@ -120,7 +120,7 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.attach-kpis',
     'impac.components.widgets-settings.tag-filter',
     'impac.components.widgets-settings.offsets',
-    'impac.components.widgets-settings.forecast-payroll'
+    'impac.components.widgets-settings.payroll'
   ]
 );
 angular.module('impac.components.dashboard-settings',
