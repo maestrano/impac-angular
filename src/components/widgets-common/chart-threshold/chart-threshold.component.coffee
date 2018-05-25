@@ -15,7 +15,7 @@ module.component('chartThreshold', {
     kpiTargetMode: '<?'
     thresholdColor: '@'
     onComplete: '&?'
-  controller: ($timeout, $log, $translate, ImpacKpisSvc, ImpacUtilities, toastr)->
+  controller: ($timeout, $log, $translate, ImpacKpisSvc, toastr)->
     ctrl = this
 
     ctrl.$onInit = ->

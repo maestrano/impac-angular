@@ -12,57 +12,98 @@
   </div>
   <div class="table-container">
     <table class="table table-striped">
-      <tr>
-        <th>Name</th>
-        <th>Rate</th>
-        <th>Periodicity</th>
-        <th>Start Date</th>
-        <th>Last apply date</th>
-        <th/>
-        <th/>
-      </tr>
-      <tr ng-repeat="trend in $ctrl.trends">
-        <td ng-if="!$ctrl.editMode">{{trend.name}}</td>
-        <td ng-if="$ctrl.editMode">
-          <input type="text" class="form-control" ng-model="trend.name"/>
-        </td>
-        <td ng-if="!$ctrl.editMode">{{trend.rate}}%</td>
-        <td ng-if="$ctrl.editMode">
-          <input style="width: 45px;" type="number" value="0" min="0" step="1" ng-model="trend.rate"/>%
-        </td>
-        <td ng-if="!$ctrl.editMode">{{trend.period}}</td>
-        <td ng-if="$ctrl.editMode">
-          <select ng-model="trend.period">
-            <option>once</option>
-            <option>daily</option>
-            <option>weekly</option>
-            <option>monthly</option>
-            <option>yearly</option>
-          </select>
-        </td>
-        <td>
-          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.startDatePicker.date" ng-click="trend.startDatePicker.toggle()" is-open="trend.startDatePicker.opened" close-text="Close" on-open-focus="false" />
-        </td>
-        <td>
-          <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" />
-        </td>
-        <td>
-          <a ng-if="$ctrl.editMode">
-            <i class="fa fa-check" title="Validate" ng-click="$ctrl.updateTrend(trend)"/>
-          </a>
-          <a ng-if="!$ctrl.editMode">
-            <i class="fa fa-pencil" title="Edit trend" ng-click="$ctrl.editMode = true" />
-          </a>
-        </td>
-        <td>
-          <a ng-if="$ctrl.editMode">
-            <i class="fa fa-eraser" title="Cancel" ng-click="$ctrl.cancelEdit(trend.id)"/>
-          </a>
-          <a ng-if="!$ctrl.editMode">
-            <i class="fa fa-times" title="Delete trend" ng-click="$ctrl.onDeleteTrend({ trendId: trend.id })"/>
-          </a>
-        </td>
-      </tr>
+      <tbody ng-repeat="group in $ctrl.groups">
+        <tr>
+          <td>
+            <div class='listing' ng-click="group.expanded = !group.expanded">
+              <span>
+                <i class="fa fa-2x" ng-class="{ 'fa-caret-right': !group.expanded, 'fa-caret-down': group.expanded }"></i>
+              </span>
+            </div>
+          </td>
+          <td >{{group.name}}</td>
+          <td >{{group.color}}</td>
+          <td>
+            <i class="fa fa-times" title="Delete group" ng-click="$ctrl.deleteModal.show({group: group})"/>
+          </td>
+        </tr>
+        <tr ng-if="group.expanded">
+          <td colspan="9">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Rate</th>
+                  <th>Account</th>
+                  <th>Periodicity</th>
+                  <th>Start Date</th>
+                  <th>Last application date</th>
+                  <th/>
+                  <th/>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="trend in group.trends">
+                  <td ng-if="!trend.editMode">{{trend.name}}</td>
+                  <td ng-if="trend.editMode">
+                    <input type="text" class="form-control" ng-model="trend.name"/>
+                  </td>
+                  <td ng-if="!trend.editMode">{{trend.rate}}%</td>
+                  <td ng-if="trend.editMode">
+                    <input style="width: 45px;" type="number" value="0" step="1" ng-model="trend.rate"/>%
+                  </td>
+                  <td>{{trend.account_name}}</td>
+                  <td ng-if="!trend.editMode">{{trend.period}}</td>
+                  <td ng-if="trend.editMode">
+                    <select ng-model="trend.period">
+                      <option>daily</option>
+                      <option>weekly</option>
+                      <option>monthly</option>
+                      <option>yearly</option>
+                    </select>
+                  </td>
+                  <td ng-if="!trend.editMode">{{$ctrl.formatDate(trend.start_date, trend)}}</td>
+                  <td ng-if="trend.editMode">
+                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.startDatePicker.date" ng-click="trend.startDatePicker.toggle()" is-open="trend.startDatePicker.opened" close-text="Close" on-open-focus="false" datepicker-options="$ctrl.startDateOptions" ng-change="$ctrl.updateStartDate(trend)"/>
+                  </td>
+                  <td ng-if="!trend.editMode">{{$ctrl.formatDate(trend.last_apply_date, trend)}}</td>
+                  <td ng-if="trend.editMode">
+                    <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" datepicker-options="$ctrl.lastDateOptions"/>
+                  </td>
+                  <td>
+                    <a ng-if="trend.editMode">
+                      <i class="fa fa-check" title="Validate" ng-click="$ctrl.updateTrend(trend)"/>
+                    </a>
+                    <a ng-if="!trend.editMode">
+                      <i class="fa fa-pencil" title="Edit trend" ng-click="trend.editMode = true" />
+                    </a>
+                  </td>
+                  <td>
+                    <a ng-if="trend.editMode">
+                      <i class="fa fa-eraser" title="Cancel" ng-click="$ctrl.cancelEdit(trend.id)"/>
+                    </a>
+                    <a ng-if="!trend.editMode">
+                      <i class="fa fa-times" title="Delete trend" ng-click="$ctrl.deleteModal.show({trend: trend})"/>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+    <widgets-common-confirm-modal opened="$ctrl.deleteModal.display" on-dismiss="$ctrl.deleteModal.cancel()" on-action="$ctrl.deleteModal.delete()">
+      <title-section>
+        <span ng-hide="$ctrl.deletingGroup">Delete trend</span>
+        <span ng-show="$ctrl.deletingGroup">Delete group</span>
+      </title-section>
+      <body-section>
+        <p ng-hide="$ctrl.deletingGroup">Are you sure you want to delete this trend?</p>
+        <p ng-show=$ctrl.deletingGroup>Are you sure you wante to delete this group?</p>
+        <p ng-show=$ctrl.deletingGroup>(All associated trends will be deleted)</p>
+      </body-section>
+    </widgets-common-confirm-modal>
   </div>
 </div>

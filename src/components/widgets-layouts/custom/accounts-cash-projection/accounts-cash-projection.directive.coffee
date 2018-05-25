@@ -1,4 +1,4 @@
-module = angular.module('impac.components.widgets.accounts-cash-projection', [])
+module = angular.module('impac.components.widgets-layouts.accounts-cash-projection', [])
 module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $timeout, ImpacKpisSvc, ImpacWidgetsSvc, ImpacAssets, HighchartsFactory, BoltResources, ImpacMainSvc) ->
 
   # == Context and Helpers ========================================================================
@@ -25,19 +25,35 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   imgTemplate = (src, name) ->
     "<img src='#{src}'><br>#{name}"
 
+
+  extractEntityName = (id, entities, type) ->
+    entity = _.find entities, (c) -> c.id == id && c.type = type
+    entity.attributes.name
+
+  extractTrend = (id, entities) ->
+    trend = _.find entities, (c) -> c.id == id && c.type == 'trends'
+    if trend.relationships && trend.relationships.account && trend.relationships.account.data
+      account_name = extractEntityName(trend.relationships.account.data.id, entities, 'accounts')
+    angular.merge(trend.attributes, { id: id, account_name: account_name || null })
+
   # Unique identifier for the chart object in the DOM
   $scope.chartId = ->
     "cashProjectionChart-#{w.id}"
 
   # == Widget Settings ============================================================================
   $scope.orgDeferred = $q.defer()
-  settingsPromises = [$scope.orgDeferred.promise]
+  $scope.sourceDeferred = $q.defer()
+  settingsPromises = [
+    $scope.orgDeferred.promise,
+    $scope.sourceDeferred.promise
+  ]
 
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
 
-  # Initialise Contacts
+  # Initialise Contacts and Accounts
   $scope.contacts = []
+  $scope.accounts = []
 
   $scope.trxList.show = ->
     $scope.trxList.display = true
@@ -81,11 +97,17 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
+    appUid = $scope.widget.metadata.app_instance_id[0] if $scope.widget.metadata.app_instance_id
     filter = {
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
       reconciliation_status: 'UNRECONCILED'
+      'app_instance.id': appUid
     }
     $scope.trxList.updateParams(resources, filter)
+    $scope.trxList.fetch()
+
+  $scope.trxList.changeQuery = (query) ->
+    $scope.trxList.params.filter.query_data = query
     $scope.trxList.fetch()
 
   # JS date is in local time zone => format it to send a UTC date at 00:00:00
@@ -121,7 +143,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     ).then(-> $scope.trxList.updated = true)
 
   # == Sub-Components - Trends list =========================================================
-  $scope.trendList = { display: false, updated: false, trends: [], params: { } }
+  $scope.trendList = { display: false, updated: false, trends: [], params: { include: 'trends,trends.account' } }
 
   $scope.trendList.show = ->
     $scope.trendList.display = true
@@ -139,13 +161,16 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         page: { number: currentPage }
       }
     )
-    BoltResources.index(w.metadata.bolt_path, 'trends', params).then(
+    BoltResources.index(w.metadata.bolt_path, 'trends_groups', params).then(
       (response) ->
         # Clear trend list and replace by newly fetched ones
         _.remove($scope.trendList.trends, -> true)
-        for trend in response.data.data
-          trend.period = 'once' unless trend.period
-          $scope.trendList.trends.push(angular.merge(trend.attributes, { id: trend.id }))
+        for group in response.data.data
+          trends = []
+          if group.relationships && group.relationships.trends && group.relationships.trends.data
+            for trend in group.relationships.trends.data
+              trends.push(extractTrend(trend.id, response.data.included))
+          $scope.trendList.trends.push(angular.merge(group.attributes, { id: group.id, trends: trends }))
         $scope.trendList.totalRecords = response.data.meta.record_count
     ).finally(-> $scope.trendList.show())
 
@@ -154,21 +179,25 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.trendList.fetch()
 
   $scope.trendList.updateTrend = (trend) ->
-    trend.period = null if trend.period == 'once'
     BoltResources.update(
       w.metadata.bolt_path,
       'trends',
       trend.id,
-      _.omit(trend, 'id')
+      _.omit(trend, 'id', 'account_name')
     ).then(-> $scope.trendList.updated = true)
 
-  $scope.trendList.deleteTrend = (trendId) ->
-    _.remove($scope.trendList.trends, (trend) -> trend.id == trendId)
+  $scope.trendList.delete = (entityId, resource) ->
     BoltResources.destroy(
       w.metadata.bolt_path,
-      'trends',
-      trendId
+      resource,
+      entityId
     ).then(-> $scope.trendList.updated = true)
+
+  $scope.accountsAverageBalances = (widget) ->
+    _.find(widget.configOptions.selectors, (selector) ->
+      return selector.name == 'accounts_average_balance'
+    ).options
+
 
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
@@ -244,6 +273,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       status: ['FORECAST']
       reconciliation_status: 'RECONCILING'
     }
+    filter['app_instance.id'] = w.metadata.app_instance_id[0] if w.metadata.app_instance_id
     $scope.dupTrxList.updateParams(resources, filter)
     $scope.dupTrxList.fetch()
 
@@ -268,36 +298,21 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     show: -> this.display = true
     hide: -> this.display = false
 
-  $scope.addTrendPopup.lastDate = (offset, periodicity) ->
-    period = null
-    if offset == -1 then return
-    switch periodicity
-      when 'once' then return null
-      when 'daily' then period = 'days'
-      when 'weekly' then period = 'weeks'
-      when 'monthly' then period = 'months'
-      when 'yearly' then period = 'years'
-    moment().add(offset, period).format('YYYY-MM-DD')
-
-
   $scope.addTrendPopup.createTrend = (trend) ->
-    if Number.isInteger(trend.untilDate)
-      last_apply_date = $scope.addTrendPopup.lastDate(trend.untilDate, trend.period)
-    else
-      last_apply_date = trend.untilDate
     BoltResources.create(
       w.metadata.bolt_path,
       'trends',
       {
         name: trend.name,
         rate: trend.rate
-        period: if trend.period == 'once' then null else trend.period,
+        period: trend.period,
         start_date: trend.startDate,
-        last_apply_date: last_apply_date
+        last_apply_date: trend.untilDate
       },
       {
-        company: { data: { type: 'companies', id: $scope.firstCompanyId } },
-        user: { data: { type: 'users', id: $scope.userId } }
+        user: { data: { type: 'users', id: $scope.userId } },
+        account: { data: { type: 'accounts', id: trend.account_id } }
+        trends_group: { data: { type: 'trends_groups', id: trend.trends_group_id } }
       }
     ).then(-> ImpacWidgetsSvc.show(w))
 
@@ -322,8 +337,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Add custom images to legend entries (images are fetched from the Assets service)
   legendFormatter = ->
     name = this.name
-    return imgTemplate(imgSrc(name), name) unless name == 'Projected cash'
-    imgTemplate(imgSrc(name), name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
+    img = imgSrc(name)
+    return name unless img
+    return imgTemplate(img, name) unless name == 'Projected cash'
+    imgTemplate(img, name) + '<br>' + imgTemplate(imgSrc('cashFlow'), 'Cash flow')
 
   # Persists the zooming options on user selection (call to MnoHub to update the metadata)
   onZoom = (event) ->
@@ -354,6 +371,32 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     ).then(
       (response) ->
         $scope.contacts = response.data.data
+    )
+
+  loadAccounts = ->
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'accounts',
+      {
+        metadata: _.pick(w.metadata, 'organization_ids'),
+        filter: { a_class: 'EXPENSE,REVENUE' }
+      }
+    ).then(
+      (response) ->
+        $scope.accounts = response.data.data
+    )
+
+  loadTrendsGroups = ->
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'trends_groups',
+      {
+        metadata: _.pick(w.metadata, 'organization_ids'),
+        fields: { trends_groups: 'name'}
+      }
+    ).then(
+      (response) ->
+        $scope.trendsGroups = response.data.data
     )
 
   createUser = ->
@@ -397,6 +440,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         w.demoData = false
         $scope.firstCompanyId = response.data.data[0].id
       loadContacts()
+      loadAccounts()
+      loadTrendsGroups()
     )
 
     # Fetch or create user from Bolt
