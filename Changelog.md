@@ -3,6 +3,7 @@
 ### v1.8.0
 
 - Applies v1.7.5
+- [MARLIN-123] CF: Add scoping per app instance
 - [IMPAC-791] Add generic table layout template
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
 - [IMPAC-837] CF: Real-time trend visualizer
