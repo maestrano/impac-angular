@@ -81,7 +81,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
     appUid = $scope.widget.metadata.app_instance_id[0] if $scope.widget.metadata.app_instance_id
-    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'], app_instance_id: appUid }
+    filter = { status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'], 'app_instance.id': appUid }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
 
