@@ -1,0 +1,23 @@
+#trends-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+
+    .listing {
+      outline-style: none;
+    }
+  }
+}

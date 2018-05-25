@@ -1,23 +1,57 @@
 #transactions-list {
   .top {
     height: 40px;
-    a.back-link { font-weight: normal; }
+    position: relative;
+
+    .back {
+      position: absolute;
+      .btn.btn-sm { margin-top: -4px; }
+      .search-bar {
+        width: 180px;
+        display: inline;
+        height: 30px;
+      }
+    }
+    .resource-type {
+      margin: auto;
+      display: flex;
+      width: 370px;
+      justify-content: center;
+      align-items: center;
+      @media (max-width: @screen-xs-max) {
+        margin: 0;
+        float: right;
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+    }
+    .btn-group { margin-left: 3px; }
+    .no-margin-top { margin-top: 0px }
+  }
+
+  .bottom {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .pagination { margin: 0px; }
   }
 
   .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    max-height: ~"calc(@{impac-big-widget-size} - 100px)";
     overflow: auto;
-    
+    width: 100%;
+
     div[uib-datepicker-popup-wrap] {
       display: inline-block;
     }
 
     input.btn.btn-xs { margin-top: -2px; }
     button.btn.reset-date { margin-top: -2px; }
-    .fa.fa-times {
-      color: @brand-danger;
+
+    .actions {
       cursor: pointer;
+      .fa.fa-times { color: @brand-danger; }
     }
 
     tr.total {
@@ -28,6 +62,11 @@
       &.bills {
         background-color: lighten(#c76379, 20%);
       }
+    }
+
+    td > .expected-payment-date {
+      display: flex;
+      .reset-date { margin-left: 3px; }
     }
   }
 }
