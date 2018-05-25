@@ -109,7 +109,10 @@ module.component('trendsAdd', {
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
       newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
-      newData = applyTrend(ctrl.trend, newSerie.data, ctrl.accountsLastValues[ctrl.trend.account.id])
+      accountBalance = _.find(ctrl.accountsLastValues, (hash) ->
+        return hash.label == ctrl.trend.account.id
+      )['value'][ctrl.trend.period.toLowerCase()]
+      newData = applyTrend(ctrl.trend, newSerie.data, accountBalance)
       delete newSerie['type']
       _.merge(newSerie, { name: "Current trend", zones: [{dashStyle: "ShortDot"}], color: "rgb(124, 77, 255)", data: newData })
       ctrl.chart.series.push(newSerie)

@@ -188,6 +188,12 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       entityId
     ).then(-> $scope.trendList.updated = true)
 
+  $scope.accountsAverageBalances = (widget) ->
+    _.find(widget.configOptions.selectors, (selector) ->
+      return selector.name == 'accounts_average_balance'
+    ).options
+
+
   # == Sub-Components - Threshold KPI =============================================================
   $scope.chartDeferred = $q.defer()
   $scope.chartPromise = $scope.chartDeferred.promise
@@ -367,7 +373,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       'accounts',
       {
         metadata: _.pick(w.metadata, 'organization_ids'),
-        filter: { id: Object.keys(w.content.chart.metadata.accounts_last_values).join(',') }
+        filter: { a_class: 'EXPENSE,REVENUE' }
       }
     ).then(
       (response) ->
