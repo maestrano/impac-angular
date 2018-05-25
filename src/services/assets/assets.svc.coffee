@@ -15,7 +15,7 @@ angular
       impacDashboardBackground: ':default/impac-dashboard-background.png'
       currencyConversionsIcon: ':default/currency-conversions.png'
       cashFlowLegendIcon: ':default/cash-flow.png'
-      forecastPayrollLegendIcon: ':default/forecast-payroll.png'
+      payrollCostsLegendIcon: ':default/payroll.png'
       payablesLegendIcon: ':default/payables.png'
       projectedCashLegendIcon: ':default/projected-cash.png'
       receivablesLegendIcon: ':default/receivables.png'
