@@ -6,6 +6,7 @@
 - [MARLIN-123] CF: Add scoping per app instance
 - [IMPAC-791] Add generic table layout template
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-805] CF: Ability to enable/disable time logged modifier
 - [IMPAC-837] CF: Real-time trend visualizer
 - [IMPAC-838] CF: Ability to group trends
 - [IMPAC-856] CF: Improve formatting of chart xaxis dates

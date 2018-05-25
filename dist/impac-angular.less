@@ -3285,21 +3285,45 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
+.analytics .widget-item .content .table-layout {
 
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
+  table {
+    width: 100%;
+    max-width: 100%;
+
+    th,
+    td:not(.nested-table) {
+      color: @mediumblue;
+      border-bottom: solid 1px @lightgray;
+      padding: 5px 0;
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+
+    th[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  #table-layout {
+    & > thead tr:first-child {
+      .font(12px,500,@impac-widget-text-color-medium);
+      text-transform: uppercase;
+      border-bottom: 2px solid @lightgray;
+      padding: 5px 0;
+    }
+
+    .nested-table {
+      i.fa { padding-right: 5px; }
     }
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -3315,14 +3339,15 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-balance {
-  h3 {
-    .left-thin(30px);
-    text-align: center;
-  }
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
 
-  .price {
-    .center-bold(0px);
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
   }
 }
 
@@ -3332,25 +3357,14 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
+.analytics .widget-item .content.accounts-balance {
+  h3 {
+    .left-thin(30px);
     text-align: center;
   }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
+
+  .price {
+    .center-bold(0px);
   }
 }
 
@@ -3377,25 +3391,25 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-custom-calculation {
-  h3 {
-    margin-top: 85px;
-    text-align: center;
-    font-weight: bold;
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
   }
-  .legend { max-height: 125px; }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
+  }
 }
 
-.analytics.modal-custom-calculation {
-  margin: 0px;
-  padding: 0px;
-}
-
-.analytics.modal-custom-calculation .modal-body {
-  .edit {
-    .edit-panel-style();
-    padding: 5px;
-    overflow: visible;
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -3461,6 +3475,28 @@ chart-threshold {
   .comparable-error h5 {
     margin-left: 13px;
     color: @impac-negative;
+  }
+}
+
+.analytics .widget-item .content.accounts-custom-calculation {
+  h3 {
+    margin-top: 85px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .legend { max-height: 125px; }
+}
+
+.analytics.modal-custom-calculation {
+  margin: 0px;
+  padding: 0px;
+}
+
+.analytics.modal-custom-calculation .modal-body {
+  .edit {
+    .edit-panel-style();
+    padding: 5px;
+    overflow: visible;
   }
 }
 
@@ -4120,42 +4156,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content .table-layout {
-
-  table {
-    width: 100%;
-    max-width: 100%;
-
-    th,
-    td:not(.nested-table) {
-      color: @mediumblue;
-      border-bottom: solid 1px @lightgray;
-      padding: 5px 0;
-
-      &:not(:first-child) {
-        text-align: right;
-      }
-    }
-
-    th[ng-click] {
-      cursor: pointer;
-    }
-  }
-
-  #table-layout {
-    & > thead tr:first-child {
-      .font(12px,500,@impac-widget-text-color-medium);
-      text-transform: uppercase;
-      border-bottom: 2px solid @lightgray;
-      padding: 5px 0;
-    }
-
-    .nested-table {
-      i.fa { padding-right: 5px; }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -4305,26 +4305,6 @@ chart-threshold {
   .tooltip-inner { text-transform: none; }
 
   .dropdown-menu > li > div > table { outline: none; }
-}
-
-.analytics .settings.forecast-payroll {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -4549,6 +4529,26 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.payroll {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+
 .analytics .settings.source-selector {
   .widget-lines-container {
     .widget-line {
@@ -4699,6 +4699,17 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-invoices-list {
+  // component specific styles
+  // -------------------------
+  .tall-widget();
+
+  transactions-list {
+    font-size: 12px;
+  }
+
+}
+
 .analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
 
@@ -4731,15 +4742,4 @@ chart-threshold {
   transactions-list {
     font-size: 12px;
   }
-}
-
-.analytics .widget-item .content.accounts-invoices-list {
-  // component specific styles
-  // -------------------------
-  .tall-widget();
-
-  transactions-list {
-    font-size: 12px;
-  }
-
 }
