@@ -167,7 +167,7 @@ angular
       params =
         metadata: metadata
         demo_data: ImpacTheming.get().dhbConfig.designerMode.enabled || !!opts.demo
-        
+
       params.refresh_cache = true if !!opts.refreshCache
       params
 

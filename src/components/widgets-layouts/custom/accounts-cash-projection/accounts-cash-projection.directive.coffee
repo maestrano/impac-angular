@@ -42,7 +42,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # == Widget Settings ============================================================================
   $scope.orgDeferred = $q.defer()
-  settingsPromises = [$scope.orgDeferred.promise]
+  $scope.sourceDeferred = $q.defer()
+  settingsPromises = [
+    $scope.orgDeferred.promise,
+    $scope.sourceDeferred.promise
+  ]
 
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
@@ -93,9 +97,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
 
   # Fetch and show all invoices or bills
   $scope.trxList.showAll = (resources = 'invoices') ->
+    appUid = $scope.widget.metadata.app_instance_id[0] if $scope.widget.metadata.app_instance_id
     filter = {
-      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST'],
+      status: ['AUTHORISED', 'APPROVED', 'SUBMITTED', 'FORECAST']
       reconciliation_status: 'UNRECONCILED'
+      'app_instance.id': appUid
     }
     $scope.trxList.updateParams(resources, filter)
     $scope.trxList.fetch()
@@ -267,6 +273,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       status: ['FORECAST']
       reconciliation_status: 'RECONCILING'
     }
+    filter['app_instance.id'] = w.metadata.app_instance_id[0] if w.metadata.app_instance_id
     $scope.dupTrxList.updateParams(resources, filter)
     $scope.dupTrxList.fetch()
 
