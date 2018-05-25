@@ -66,7 +66,7 @@ module.component('trendsList', {
         this.cancel()
 
     ctrl.updateTrend = (trend) ->
-      trend.last_apply_date = trend.untilDatePicker.date unless trend.period == 'once'
+      trend.last_apply_date = trend.untilDatePicker.date
       trend.start_date = trend.startDatePicker.date
       ctrl.onUpdateTrend({ trend: _.omit(trend, 'startDatePicker', 'untilDatePicker', 'editMode') })
       ctrl.originalGroups = _.map(ctrl.groups, _.cloneDeep)

@@ -38,20 +38,14 @@ module.component('trendsAdd', {
 
     ctrl.period = ->
       switch ctrl.trend.period
-        when "Once"
-          ctrl.trend.untilDate = null
-          ""
         when "Daily" then ("Day" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Weekly" then ("Week" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Monthly" then ("Month" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
-    ctrl.isPeriodDisabled = ->
-      ctrl.trend.period == "Once"
-
     ctrl.dataIsValid = ->
       ctrl.trend.rate != 0 &&
-      (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
+      ctrl.trend.untilDate? &&
       !_.isEmpty(ctrl.trend.account)
 
     ctrl.trendHasGroup = ->
@@ -144,8 +138,6 @@ module.component('trendsAdd', {
     shouldApplyTrend = (trend, startDate, currentDate) ->
       date = new Date(currentDate)
       switch trend.period
-        when 'Once'
-          startDate == currentDate
         when 'Daily'
           true
         when 'Weekly'
@@ -160,7 +152,6 @@ module.component('trendsAdd', {
       period = null
       if trend.untilDate == -1 then return
       switch trend.period
-        when 'Once' then return null
         when 'Daily' then period = 'days'
         when 'Weekly' then period = 'weeks'
         when 'Monthly' then period = 'months'

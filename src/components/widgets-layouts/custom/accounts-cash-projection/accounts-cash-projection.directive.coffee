@@ -173,7 +173,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     $scope.trendList.fetch()
 
   $scope.trendList.updateTrend = (trend) ->
-    trend.period = null if trend.period == 'once'
     BoltResources.update(
       w.metadata.bolt_path,
       'trends',
@@ -299,7 +298,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       {
         name: trend.name,
         rate: trend.rate
-        period: if trend.period == 'once' then null else trend.period,
+        period: trend.period,
         start_date: trend.startDate,
         last_apply_date: trend.untilDate
       },
