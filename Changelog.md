@@ -5,13 +5,15 @@
 - Applies v1.7.5
 - [IMPAC-791] Add generic table layout template
 - [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
-- [IMPAC-837] Real-time trend visualizer
-- [IMPAC-856] Improve formatting of chart xaxis dates
+- [IMPAC-837] CF: Real-time trend visualizer
+- [IMPAC-838] CF: Ability to group trends
+- [IMPAC-856] CF: Improve formatting of chart xaxis dates
 - [IMPAC-868] Improvements on invoices-list widget
 
 #### Dependencies
 - MnoHub v2.0.1
 - MnoE [commit#15125777a9ce4332e2fd8d618291027b2e44d78d](https://github.com/maestrano/mno-enterprise/commit/15125777a9ce4332e2fd8d618291027b2e44d78d) (no version available at time of release)
+- Finance Bolt v1.8.0 (Trends grouping and visualizer)
 
 -------------------------------------------------------------
 

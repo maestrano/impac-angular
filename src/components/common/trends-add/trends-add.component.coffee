@@ -8,11 +8,16 @@ module.component('trendsAdd', {
     accounts: '<'
     chart: '<'
     accountsLastValues: '<'
+    groups: '<'
+    boltPath: '<'
+    companyId: '<'
 
-  controller: ($scope, HighchartsFactory) ->
+  controller: ($scope, HighchartsFactory, BoltResources) ->
     ctrl = this
 
     ctrl.$onInit = ->
+      ctrl.startDateOptions = { minDate: new Date() }
+      ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.untilDatePicker =
         opened: false
         date: new Date()
@@ -33,36 +38,51 @@ module.component('trendsAdd', {
 
     ctrl.period = ->
       switch ctrl.trend.period
-        when "Once"
-          ctrl.trend.untilDate = null
-          ""
         when "Daily" then ("Day" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Weekly" then ("Week" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Monthly" then ("Month" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
         when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
-    ctrl.isPeriodDisabled = ->
-      ctrl.trend.period == "Once"
-
     ctrl.dataIsValid = ->
-      ctrl.trend.rate > 0 &&
-      (ctrl.trend.untilDate? || ctrl.trend.period == "Once") &&
-      !_.isEmpty(ctrl.trend.account_id)
+      ctrl.trend.rate != 0 &&
+      ctrl.trend.untilDate? &&
+      !_.isEmpty(ctrl.trend.account)
+
+    ctrl.trendHasGroup = ->
+      (ctrl.isAddingGroup && ctrl.trend.groupName) ||
+        (!ctrl.isAddingGroup && ctrl.trend.trends_group)
 
     ctrl.isValid = ->
       !_.isEmpty(ctrl.trend.name) &&
+      ctrl.trendHasGroup() &&
       ctrl.dataIsValid()
 
     ctrl.createTrend = ->
+      return ctrl.createGroup() if ctrl.isAddingGroup
       ctrl.onHide()
-      ctrl.trend.period = ctrl.trend.period.toLowerCase()
-      ctrl.trend.account_id = ctrl.trend.account_id.id
       ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
+      ctrl.trend.period = ctrl.trend.period.toLowerCase()
+      ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
+      ctrl.trend.account_id = ctrl.trend.account.id
       ctrl.onCreateTrend({ trend: ctrl.trend })
+
+    ctrl.createGroup = ->
+      BoltResources.create(
+        ctrl.boltPath,
+        'trends_groups',
+        { name: ctrl.trend.groupName },
+        { company: { data: { type: 'companies', id: ctrl.companyId } } }
+      ).then(
+        (response) ->
+          ctrl.trend.trends_group = response.data.data
+          ctrl.isAddingGroup = false
+          ctrl.createTrend()
+      )
 
     ctrl.updateStartDate = ->
       ctrl.trend.startDate = ctrl.startDatePicker.date
       ctrl.redrawCurrentTrend()
+      ctrl.lastDateOptions.minDate = ctrl.trend.startDate
 
     ctrl.updateUntilDate = ->
       ctrl.trend.untilDate = ctrl.untilDatePicker.date
@@ -83,7 +103,10 @@ module.component('trendsAdd', {
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
       newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
-      newData = applyTrend(ctrl.trend, newSerie.data, ctrl.accountsLastValues[ctrl.trend.account_id.id])
+      accountBalance = _.find(ctrl.accountsLastValues, (hash) ->
+        return hash.label == ctrl.trend.account.id
+      )['value'][ctrl.trend.period.toLowerCase()]
+      newData = applyTrend(ctrl.trend, newSerie.data, accountBalance)
       delete newSerie['type']
       _.merge(newSerie, { name: "Current trend", zones: [{dashStyle: "ShortDot"}], color: "rgb(124, 77, 255)", data: newData })
       ctrl.chart.series.push(newSerie)
@@ -115,8 +138,6 @@ module.component('trendsAdd', {
     shouldApplyTrend = (trend, startDate, currentDate) ->
       date = new Date(currentDate)
       switch trend.period
-        when 'Once'
-          startDate == currentDate
         when 'Daily'
           true
         when 'Weekly'
@@ -131,7 +152,6 @@ module.component('trendsAdd', {
       period = null
       if trend.untilDate == -1 then return
       switch trend.period
-        when 'Once' then return null
         when 'Daily' then period = 'days'
         when 'Weekly' then period = 'weeks'
         when 'Monthly' then period = 'months'
@@ -152,6 +172,10 @@ module.component('trendsAdd', {
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})
       ctrl.onHide()
+
+    ctrl.switchAddingGroup = (value) ->
+      ctrl.isAddingGroup = value
+      ctrl.redrawCurrentTrend()
 
     return ctrl
 })

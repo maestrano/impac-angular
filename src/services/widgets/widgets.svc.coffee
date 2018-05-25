@@ -220,7 +220,13 @@ angular
               else
                 # Push new content to widget, and initialize it
                 name = success.data.name
-                angular.extend widget, { content: content, originalName: name, demoData: params.demo_data }
+                settingOptions = success.data.settings
+                angular.extend widget, {
+                  content: content,
+                  configOptions: settingOptions,
+                  originalName: name,
+                  demoData: params.demoData
+                }
                 initWidget(widget)
                 $q.resolve(widget)
 
