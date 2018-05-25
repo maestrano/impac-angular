@@ -52,7 +52,9 @@ angular
       xAxis:
         labels:
           formatter: ->
-            moment.utc(this.value).format('Do MMM YYYY')
+            e = this.axis.getExtremes()
+            f = if moment.utc(e.min).isSame(e.max, 'month') then 'ddd Do' else 'Do MMM'
+            moment.utc(this.value).format(f)
       yAxis:
         labels:
           formatter: ->
@@ -127,6 +129,19 @@ angular
         legend:
           enabled: false
       angular.merge(@highChartOptions, legend)
+
+    removeNavigator: () ->
+      navigator =
+        navigator:
+          enabled: false
+      angular.merge(@highChartOptions, navigator)
+
+    removeRangeSelector: (defaultSelected = 0) ->
+      rangeSelector =
+        rangeSelector:
+          selected: defaultSelected
+          enabled: true
+      angular.merge(@highChartOptions, rangeSelector)
 
     addSeriesEvent: (eventName, callback) ->
       eventHash = {}
