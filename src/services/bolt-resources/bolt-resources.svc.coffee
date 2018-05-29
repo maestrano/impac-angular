@@ -8,8 +8,7 @@ angular
 
   buildUrl = (pathArray, paramsHash) ->
     url = pathArray.join('/')
-    params = decodeURIComponent( $.param(paramsHash) )
-    [url, params].join('?')
+    [url, $.param(paramsHash)].join('?')
 
   @index = (boltPath, resourcesName, params) ->
     url = buildUrl([boltPath, resourcesName], params)

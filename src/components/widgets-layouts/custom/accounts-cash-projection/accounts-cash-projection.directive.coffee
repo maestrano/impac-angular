@@ -416,6 +416,23 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         $scope.userId = response.data.data.id
     ) if $scope.firstCompanyId
 
+  fetchUser = ->
+    # Fetch or create user from Bolt
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'users',
+      {
+        filter: { email: ImpacMainSvc.config.userData.email },
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then((response) ->
+      if response.data.meta.record_count > 0
+        $scope.userId = response.data.data[0].id
+      else
+        createUser()
+    )
+
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -439,24 +456,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       else
         w.demoData = false
         $scope.firstCompanyId = response.data.data[0].id
+        fetchUser()
       loadContacts()
       loadAccounts()
       loadTrendsGroups()
-    )
-
-    # Fetch or create user from Bolt
-    BoltResources.index(
-      w.metadata.bolt_path,
-      'users',
-      {
-        filter: { email: ImpacMainSvc.config.userData.email },
-        metadata: _.pick(w.metadata, 'organization_ids')
-      }
-    ).then((response) ->
-      if response.data.meta.record_count > 0
-        $scope.userId = response.data.data[0].id
-      else
-        createUser()
     )
 
   # Executed after the widget and its settings are initialised and ready
