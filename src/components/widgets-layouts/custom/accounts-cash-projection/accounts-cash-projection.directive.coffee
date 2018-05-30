@@ -80,11 +80,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         for trx in response.data.data
           contactName = ''
           if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
-            contactName = _.find(response.data.included, (includedContact) ->
+            contact = _.find(response.data.included, (includedContact) ->
               includedContact.id == trx.relationships.contact.data.id
-            ).attributes.name
+            )
+            if contact?
+              contact.name = contactName = contact.attributes.name
+
           $scope.trxList.transactions.push(angular.merge(trx.attributes, {
             id: trx.id
+            contact: contact
             contact_name: contactName
           }))
         $scope.trxList.totalRecords = response.data.meta.record_count
