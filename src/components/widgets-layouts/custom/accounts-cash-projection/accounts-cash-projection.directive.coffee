@@ -307,7 +307,8 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         rate: trend.rate
         period: trend.period,
         start_date: trend.startDate,
-        last_apply_date: trend.untilDate
+        last_apply_date: trend.untilDate,
+        description: trend.description
       },
       {
         user: { data: { type: 'users', id: $scope.userId } },
