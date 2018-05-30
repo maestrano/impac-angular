@@ -299,6 +299,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     hide: -> this.display = false
 
   $scope.addTrendPopup.createTrend = (trend) ->
+    relations = {
+      user: { data: { type: 'users', id: $scope.userId } },
+      trends_group: { data: { type: 'trends_groups', id: trend.trends_group_id } }
+    }
+    relations['account'] = { data: { type: 'accounts', id: trend.account_id } } if trend.account_id
     BoltResources.create(
       w.metadata.bolt_path,
       'trends',
@@ -309,12 +314,9 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         start_date: trend.startDate,
         last_apply_date: trend.untilDate,
         description: trend.description
+        account_class: trend.account_class
       },
-      {
-        user: { data: { type: 'users', id: $scope.userId } },
-        account: { data: { type: 'accounts', id: trend.account_id } }
-        trends_group: { data: { type: 'trends_groups', id: trend.trends_group_id } }
-      }
+      relations
     ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
