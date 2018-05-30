@@ -16,6 +16,8 @@ module.component('trendsAdd', {
     ctrl = this
 
     ctrl.$onInit = ->
+      ctrl.accounts.push({ id: 'EXPENSE', attributes: { name: 'All expenses' } }) unless _.find(ctrl.accounts, 'id', 'EXPENSE')
+      ctrl.accounts.push({ id: 'REVENUE', attributes: { name: 'All revenues' } }) unless _.find(ctrl.accounts, 'id', 'REVENUE')
       ctrl.startDateOptions = { minDate: new Date() }
       ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.untilDatePicker =
@@ -62,7 +64,10 @@ module.component('trendsAdd', {
       ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
-      ctrl.trend.account_id = ctrl.trend.account.id
+      if ctrl.trend.account.id == 'EXPENSE' || ctrl.trend.account.id == 'REVENUE'
+        ctrl.trend.account_class = ctrl.trend.account.id
+      else
+        ctrl.trend.account_id = ctrl.trend.account.id
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
     ctrl.createGroup = ->

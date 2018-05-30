@@ -53,7 +53,7 @@
                   <td ng-if="trend.editMode">
                     <input style="width: 45px;" type="number" value="0" step="1" ng-model="trend.rate"/>%
                   </td>
-                  <td>{{trend.account_name}}</td>
+                  <td>{{trend.account_name || trend.account_class}}</td>
                   <td ng-if="!trend.editMode">{{trend.period}}</td>
                   <td ng-if="trend.editMode">
                     <select ng-model="trend.period">
