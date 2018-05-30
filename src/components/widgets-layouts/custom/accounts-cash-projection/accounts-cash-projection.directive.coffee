@@ -80,11 +80,15 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         for trx in response.data.data
           contactName = ''
           if trx.relationships && trx.relationships.contact && trx.relationships.contact.data
-            contactName = _.find(response.data.included, (includedContact) ->
+            contact = _.find(response.data.included, (includedContact) ->
               includedContact.id == trx.relationships.contact.data.id
-            ).attributes.name
+            )
+            if contact?
+              contact.name = contactName = contact.attributes.name
+
           $scope.trxList.transactions.push(angular.merge(trx.attributes, {
             id: trx.id
+            contact: contact
             contact_name: contactName
           }))
         $scope.trxList.totalRecords = response.data.meta.record_count
@@ -299,6 +303,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
     hide: -> this.display = false
 
   $scope.addTrendPopup.createTrend = (trend) ->
+    relations = {
+      user: { data: { type: 'users', id: $scope.userId } },
+      trends_group: { data: { type: 'trends_groups', id: trend.trends_group_id } }
+    }
+    relations['account'] = { data: { type: 'accounts', id: trend.account_id } } if trend.account_id
     BoltResources.create(
       w.metadata.bolt_path,
       'trends',
@@ -307,13 +316,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         rate: trend.rate
         period: trend.period,
         start_date: trend.startDate,
-        last_apply_date: trend.untilDate
+        last_apply_date: trend.untilDate,
+        description: trend.description
+        account_class: trend.account_class
       },
-      {
-        user: { data: { type: 'users', id: $scope.userId } },
-        account: { data: { type: 'accounts', id: trend.account_id } }
-        trends_group: { data: { type: 'trends_groups', id: trend.trends_group_id } }
-      }
+      relations
     ).then(-> ImpacWidgetsSvc.show(w))
 
   # == Chart Events Callbacks =====================================================================
@@ -416,6 +423,23 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         $scope.userId = response.data.data.id
     ) if $scope.firstCompanyId
 
+  fetchUser = ->
+    # Fetch or create user from Bolt
+    BoltResources.index(
+      w.metadata.bolt_path,
+      'users',
+      {
+        filter: { email: ImpacMainSvc.config.userData.email },
+        metadata: _.pick(w.metadata, 'organization_ids')
+      }
+    ).then((response) ->
+      if response.data.meta.record_count > 0
+        $scope.userId = response.data.data[0].id
+      else
+        createUser()
+    )
+
+
   # == Widget =====================================================================================
   # Executed after the widget content is retrieved from the API
   w.initContext = ->
@@ -439,24 +463,10 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
       else
         w.demoData = false
         $scope.firstCompanyId = response.data.data[0].id
+        fetchUser()
       loadContacts()
       loadAccounts()
       loadTrendsGroups()
-    )
-
-    # Fetch or create user from Bolt
-    BoltResources.index(
-      w.metadata.bolt_path,
-      'users',
-      {
-        filter: { email: ImpacMainSvc.config.userData.email },
-        metadata: _.pick(w.metadata, 'organization_ids')
-      }
-    ).then((response) ->
-      if response.data.meta.record_count > 0
-        $scope.userId = response.data.data[0].id
-      else
-        createUser()
     )
 
   # Executed after the widget and its settings are initialised and ready

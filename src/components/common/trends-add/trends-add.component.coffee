@@ -16,6 +16,8 @@ module.component('trendsAdd', {
     ctrl = this
 
     ctrl.$onInit = ->
+      ctrl.accounts.push({ id: 'EXPENSE', attributes: { name: 'All expenses' } }) unless _.find(ctrl.accounts, 'id', 'EXPENSE')
+      ctrl.accounts.push({ id: 'REVENUE', attributes: { name: 'All revenues' } }) unless _.find(ctrl.accounts, 'id', 'REVENUE')
       ctrl.startDateOptions = { minDate: new Date() }
       ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.untilDatePicker =
@@ -44,7 +46,6 @@ module.component('trendsAdd', {
         when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
     ctrl.dataIsValid = ->
-      ctrl.trend.rate != 0 &&
       ctrl.trend.untilDate? &&
       !_.isEmpty(ctrl.trend.account)
 
@@ -63,7 +64,10 @@ module.component('trendsAdd', {
       ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
-      ctrl.trend.account_id = ctrl.trend.account.id
+      if ctrl.trend.account.id == 'EXPENSE' || ctrl.trend.account.id == 'REVENUE'
+        ctrl.trend.account_class = ctrl.trend.account.id
+      else
+        ctrl.trend.account_id = ctrl.trend.account.id
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
     ctrl.createGroup = ->
@@ -102,7 +106,10 @@ module.component('trendsAdd', {
     ctrl.redrawCurrentTrend = ->
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
-      newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
+      if ctrl.trend.trends_group && !ctrl.isAddingGroup
+        originalSerie = _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name)
+      originalSerie ?= _.find(ctrl.chart.series, 'name', 'Projected cash')
+      newSerie = angular.copy(originalSerie)
       accountBalance = _.find(ctrl.accountsLastValues, (hash) ->
         return hash.label == ctrl.trend.account.id
       )['value'][ctrl.trend.period.toLowerCase()]

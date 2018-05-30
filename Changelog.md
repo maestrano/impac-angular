@@ -1,5 +1,18 @@
 # Impac! Frontend Changelog
 
+### v1.8.1
+
+- Add ability to specify a description for Trends
+- Fix: Remove "manual" from app instances list in widgets settings
+- Add ability to apply trends to all expense / revenue accounts
+- [IMPAC-887] Fix disabled button when creating recurring transaction from real one
+- Fix trends users fetching and bolt request with special charts in parameters
+
+#### Dependencies
+- Finance Bolt v1.8.1 (Trends application on classification)
+
+-------------------------------------------------------------
+
 ### v1.8.0
 
 - Applies v1.7.5

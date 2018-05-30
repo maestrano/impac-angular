@@ -33,9 +33,12 @@
         <label>Name: </label><br>
         <input type="text" class="form-control" ng-model="$ctrl.trend.name" placeholder="Trend name" />
 
+        <label>Description: </label><br>
+        <input type="text" class="form-control" ng-model="$ctrl.trend.description" placeholder="Add a description" />
+
         <label>Group: </label>
         <div ng-if="!$ctrl.isAddingGroup">
-          <select ng-model="$ctrl.trend.trends_group" ng-options="group.attributes.name for group in $ctrl.groups | orderBy: 'attributes.name' track by group.id" class='form-control'>
+          <select ng-model="$ctrl.trend.trends_group" ng-options="group.attributes.name for group in $ctrl.groups | orderBy: 'attributes.name' track by group.id" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
             <option value=''> Choose a group</option>
           </select>
           <i class="fa fa-plus-square" title="Create a new group" ng-click="$ctrl.switchAddingGroup(true)"/>
