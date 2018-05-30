@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.8.1
+
+- Add ability to specify a description for Trends
+- Fix: Remove "manual" from app instances list in widgets settings
+
+-------------------------------------------------------------
+
 ### v1.8.0
 
 - Applies v1.7.5

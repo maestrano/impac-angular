@@ -47,7 +47,6 @@ module.component('transactionsAdd', {
           toggle: -> this.opened = !this.opened
 
       unless(ctrl.editable)
-        ctrl.trx.contact = (ctrl.contacts.filter( (contact) -> contact.attributes.name == ctrl.trx.contact_name))[0]
         ctrl.schedulable.recurring = true
 
       ctrl.tempDate = moment().add(10, 'weeks').toDate()
