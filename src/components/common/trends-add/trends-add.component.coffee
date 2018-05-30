@@ -44,7 +44,6 @@ module.component('trendsAdd', {
         when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
     ctrl.dataIsValid = ->
-      ctrl.trend.rate != 0 &&
       ctrl.trend.untilDate? &&
       !_.isEmpty(ctrl.trend.account)
 
