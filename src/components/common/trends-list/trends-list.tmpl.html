@@ -38,6 +38,7 @@
                   <th>Periodicity</th>
                   <th>Start Date</th>
                   <th>Last application date</th>
+                  <th>Description</th>
                   <th/>
                   <th/>
                 </tr>
@@ -69,6 +70,10 @@
                   <td ng-if="!trend.editMode">{{$ctrl.formatDate(trend.last_apply_date, trend)}}</td>
                   <td ng-if="trend.editMode">
                     <input type="text" class="btn btn-xs btn-default" uib-datepicker-popup="dd MMM yyyy" ng-model="trend.untilDatePicker.date" ng-click="trend.untilDatePicker.toggle()" is-open="trend.untilDatePicker.opened" close-text="Close" on-open-focus="false" datepicker-options="$ctrl.lastDateOptions"/>
+                  </td>
+                  <td ng-if="!trend.editMode">{{trend.description}}</td>
+                  <td ng-if="trend.editMode">
+                    <input type="text" class="form-control" ng-model="trend.description"/>
                   </td>
                   <td>
                     <a ng-if="trend.editMode">
