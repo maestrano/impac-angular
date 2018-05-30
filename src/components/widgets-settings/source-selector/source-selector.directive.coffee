@@ -35,12 +35,12 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
         { app_instance_id: appInstanceId }
 
       resetSelectedApps = -> scope.selectedApps = _.mapValues(scope.selectedApps, -> false)
-      updateAppInstances = (appInstances, primary, manual) ->
+      updateAppInstances = (appInstances, primary) ->
         valuesPresent = _.find(appInstances, (hash) ->
           # We push at the same time so we can check for one
           hash.value == 'prm-records-only'
         )
-        if valuesPresent then appInstances else appInstances.push(primary, manual)
+        if valuesPresent then appInstances else appInstances.push(primary)
 
       retrieveAppInstances = ->
         appInstances = _.find(w.configOptions.selectors, (selector) ->
@@ -52,15 +52,8 @@ module.directive('settingSourceSelector', ($templateCache, $timeout, ImpacMainSv
           'value': 'prm-records-only'
           'label': 'Primary Only'
 
-        # Used to select all records added manually
-        # TODO: Use _.replace when updating to Lodash 4.17.5
-        orgUid = w.metadata.organization_ids[0]
-        manUid = orgUid.replace('org', 'man')
-        manual =
-          'value': manUid
-          'label': 'Manual'
-
-        if appInstances then updateAppInstances(appInstances, primary, manual) else (appInstances = [primary, manual])
+        # TODO: re-include manual selector?
+        if appInstances then updateAppInstances(appInstances, primary) else (appInstances = [primary])
 
         scope.organizationApps = appInstances
 
