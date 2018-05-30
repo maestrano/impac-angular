@@ -44,7 +44,6 @@ module.component('trendsAdd', {
         when "Yearly" then ("Year" + (if ctrl.selectedPeriod <= 1 then "" else "s"))
 
     ctrl.dataIsValid = ->
-      ctrl.trend.rate != 0 &&
       ctrl.trend.untilDate? &&
       !_.isEmpty(ctrl.trend.account)
 
@@ -102,7 +101,10 @@ module.component('trendsAdd', {
     ctrl.redrawCurrentTrend = ->
       return unless ctrl.dataIsValid()
       _.remove(ctrl.chart.series, {name: "Current trend"})
-      newSerie = angular.copy(_.find(ctrl.chart.series, 'name', 'Projected cash'))
+      if ctrl.trend.trends_group && !ctrl.isAddingGroup
+        originalSerie = _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name)
+      originalSerie ?= _.find(ctrl.chart.series, 'name', 'Projected cash')
+      newSerie = angular.copy(originalSerie)
       accountBalance = _.find(ctrl.accountsLastValues, (hash) ->
         return hash.label == ctrl.trend.account.id
       )['value'][ctrl.trend.period.toLowerCase()]
