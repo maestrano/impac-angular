@@ -1,6 +1,6 @@
 module = angular.module('impac.components.widgets-common.info-panel',[])
 
-module.directive('commonInfoPanel', ($templateCache, ImpacUtilities) ->
+module.directive('commonInfoPanel', ($templateCache, ImpacWidgetsTemplates) ->
   return {
     restrict: 'A'
     scope: {
@@ -8,7 +8,7 @@ module.directive('commonInfoPanel', ($templateCache, ImpacUtilities) ->
       onClose: '&'
     }
     template: $templateCache.get('widgets-common/info-panel.tmpl.html')
-    
+
     link: (scope) ->
 
       w = scope.parentWidget
@@ -19,7 +19,7 @@ module.directive('commonInfoPanel', ($templateCache, ImpacUtilities) ->
         scope.onClose()
 
       scope.getWidgetTemplateName = ->
-        cssClass = ImpacUtilities.fetchWidgetCssClass(w)
+        cssClass = ImpacWidgetsTemplates.filename(w)
         return "" unless cssClass
 
         cssClassArray = cssClass.split('-')

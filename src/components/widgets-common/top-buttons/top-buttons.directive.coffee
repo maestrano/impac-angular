@@ -1,5 +1,5 @@
 module = angular.module('impac.components.widgets-common.top-buttons', [])
-module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacUtilities, ImpacDashboardsSvc) ->
+module.controller('CommonTopButtonsCtrl', ($scope, $rootScope, $log, ImpacWidgetsSvc, ImpacAssets, ImpacDashboardsSvc) ->
 
   w = $scope.parentWidget
   w.isEditMode = false

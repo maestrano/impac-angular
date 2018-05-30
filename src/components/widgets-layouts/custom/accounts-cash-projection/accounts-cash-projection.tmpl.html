@@ -4,8 +4,9 @@
     <h4>Widget settings</h4>
 
     <div setting-organizations parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-source-selector parent-widget="widget" class="part" deferred="::sourceDeferred" />
 
-    <div setting-forecast-payroll parent-widget="widget" class="part" deferred="::orgDeferred" />
+    <div setting-payroll parent-widget="widget" class="part" deferred="::orgDeferred" />
 
     <div class="bottom-buttons" align="right">
       <button class="btn btn-default" ng-click="initSettings()">Cancel</button>
@@ -17,6 +18,7 @@
   <div ng-hide="widget.isEditMode">
     <transactions-list
       ng-if="trxList.display"
+      hide-overdue-filter=true
       transactions="trxList.transactions"
       currency="widget.metadata.currency"
       contacts="contacts"
@@ -28,6 +30,7 @@
       on-currency-change="trxList.fetch()"
       on-update-expected-date="trxList.updateExpectedDate(trxId, date)"
       on-change-resources="trxList.changeResourcesType(resourcesType)"
+      on-change-query="trxList.changeQuery(query)"
       on-delete-transaction="trxList.deleteTransaction(resourcesType, trxId)"
       on-update-schedulable-transaction="trxList.updateSchedulableTransactions()"
       on-delete-children-transactions="trxList.deleteChildrenTransactions(resourcesType, trxId)">
@@ -45,7 +48,7 @@
       on-confirm-duplication="dupTrxList.updateDuplicateTransaction(dupTrxId, action)" >
     </duplicate-transactions-list>
 
-    <trends-list ng-if="trendList.display" trends="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete-trend="trendList.deleteTrend(trendId)"></trends-list>
+    <trends-list ng-if="trendList.display" groups="trendList.trends" total-records="trendList.totalRecords" on-hide="trendList.hide()" on-page-changed="trendList.fetch(page)" on-update-trend="trendList.updateTrend(trend)" on-delete="trendList.delete(entityId, resource)"></trends-list>
 
     <div ng-hide="trxList.display || trendList.display || dupTrxList.display">
       <chart-threshold widget="widget" chart-promise="chartPromise" kpi-create-label="chartThresholdOptions.label" on-complete="widget.format()"></chart-threshold>
@@ -68,7 +71,7 @@
           See reconciliation
         <button class="btn btn-sm btn-default" ng-click="trendList.showAll()" title="See all trends">
           <i class="fa fa-list" />
-          See all trends
+          Select trends
         </button>
         <button class="btn btn-sm btn-default" ng-click="addTrendPopup.show()" title="Create a new trend">
           <i class="fa fa-pencil" />
@@ -80,12 +83,20 @@
     <div ng-show="widget.demoData" common-data-not-found />
   </div>
 
-<transactions-add
-  ng-if="addForecastPopup.display"
-  contacts="contacts"
-  resources-type="addForecastPopup.resourcesType"
-  on-hide="addForecastPopup.hide()"
-  on-create-transaction="addForecastPopup.createTransaction(trx, resourcesType)"/>
-  <trends-add ng-if="addTrendPopup.display" on-hide="addTrendPopup.hide()" on-create-trend="addTrendPopup.createTrend(trend)"/>
-
+  <transactions-add
+    ng-if="addForecastPopup.display"
+    contacts="contacts"
+    resources-type="addForecastPopup.resourcesType"
+    on-hide="addForecastPopup.hide()"
+    on-create-transaction="addForecastPopup.createTransaction(trx, resourcesType)"/>
+  <trends-add
+    ng-if="addTrendPopup.display"
+    on-hide="addTrendPopup.hide()"
+    on-create-trend="addTrendPopup.createTrend(trend)"
+    accounts="accounts"
+    chart="chart"
+    accounts-last-values="accountsAverageBalances(widget)"
+    groups="trendsGroups"
+    bolt-path="widget.metadata.bolt_path"
+    company-id="firstCompanyId"/>
 </div>

@@ -1,0 +1,22 @@
+<div class="settings payroll">
+  <h5 translate>impac.widget.settings.payroll.title</h5>
+
+  <div class="widget-lines-container">
+    <div class="widget-line">
+      <span translate >
+        impac.widget.account_cash_projection.payroll.aggregate
+      </span>
+      <i ng-class="isTogglePayroll() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="togglePayroll()">
+
+      </i>
+    </div>
+    <div class="widget-line" ng-disabled="!isTogglePayroll()" >
+      <span translate >
+        impac.widget.account_cash_projection.payroll.time_sheet_modifier
+      </span>
+      <i ng-class="isToggleTimeSheetModifier() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="toggleTimeSheetModifier()" />
+    </div>
+  </div>
+</div>

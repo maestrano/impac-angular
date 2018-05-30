@@ -106,7 +106,8 @@
   "impac.widget.settings.dates_picker.tooltip.apply_changes": "Apply changes",
   "impac.widget.settings.time_slider.show_last": "Show {formatPeriod}",
   "impac.widget.settings.organizations.select_companies": "Select Companies",
-  "impac.widget.settings.forecast_payroll.title": "Forecast Payroll",
+  "impac.widget.settings.payroll.title": "Payroll Cost",
+  "impac.widget.settings.source-selector.select_source": "Select Source",
   "impac.widget.settings.chart_filters.title": "Chart filters",
   "impac.widget.settings.chart_filters.filter_number": "Top {number} {entityType}",
   "impac.widget.settings.chart_filters.filter_percentage": "Top {percentage}% {entityType}",
@@ -261,7 +262,8 @@
   "impac.widget.account_balance.save":            "@:impac.common.action.save",
   "impac.widget.account_balance.cancel":          "@:impac.common.action.cancel",
 
-  "impac.widget.account_cash_projection.forecast_payroll.aggregate":          "Include average payroll costs into cash projection",
+  "impac.widget.account_cash_projection.payroll.aggregate":            "Include average payroll costs into cash projection",
+  "impac.widget.account_cash_projection.payroll.time_sheet_modifier":   "Include the time sheet modifier",
 
   "impac.widget.account_balance_sheets.settings.title":  "@:impac.common.title.widget.settings.title",
   "impac.widget.account_balance_sheets.save":            "@:impac.common.action.save",

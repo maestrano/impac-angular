@@ -1,5 +1,37 @@
 # Impac! Frontend Changelog
 
+### v1.8.1
+
+- Add ability to specify a description for Trends
+- Fix: Remove "manual" from app instances list in widgets settings
+- Add ability to apply trends to all expense / revenue accounts
+- [IMPAC-887] Fix disabled button when creating recurring transaction from real one
+- Fix trends users fetching and bolt request with special charts in parameters
+
+#### Dependencies
+- Finance Bolt v1.8.1 (Trends application on classification)
+
+-------------------------------------------------------------
+
+### v1.8.0
+
+- Applies v1.7.5
+- [MARLIN-123] CF: Add scoping per app instance
+- [IMPAC-791] Add generic table layout template
+- [IMPAC-793] Load dynamic generic layout templates for Bolt widgets
+- [IMPAC-805] CF: Ability to enable/disable time logged modifier
+- [IMPAC-837] CF: Real-time trend visualizer
+- [IMPAC-838] CF: Ability to group trends
+- [IMPAC-856] CF: Improve formatting of chart xaxis dates
+- [IMPAC-868] Improvements on invoices-list widget
+
+#### Dependencies
+- MnoHub v2.0.1
+- MnoE [commit#15125777a9ce4332e2fd8d618291027b2e44d78d](https://github.com/maestrano/mno-enterprise/commit/15125777a9ce4332e2fd8d618291027b2e44d78d) (no version available at time of release)
+- Finance Bolt v1.8.0 (Trends grouping and visualizer)
+
+-------------------------------------------------------------
+
 ### v1.7.5 | 2018 - Week 20
 
 - [IMPAC-855] CF: Fix Payroll costs series legend image

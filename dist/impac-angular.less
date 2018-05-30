@@ -2786,16 +2786,30 @@ dashboard-templates-selector {
     height: 40px;
     position: relative;
 
-    .back { position: absolute; }
-    .resource-type {
+    .back {
       position: absolute;
-      left: ~"calc(50% - 98px)";
-      @media (max-width: @screen-xs-max) {
-        left: unset;
-        right: 0;
+      .btn.btn-sm { margin-top: -4px; }
+      .search-bar {
+        width: 180px;
+        display: inline;
+        height: 30px;
       }
     }
-    .btn-group { display: flex; }
+    .resource-type {
+      margin: auto;
+      display: flex;
+      width: 370px;
+      justify-content: center;
+      align-items: center;
+      @media (max-width: @screen-xs-max) {
+        margin: 0;
+        float: right;
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+    }
+    .btn-group { margin-left: 3px; }
+    .no-margin-top { margin-top: 0px }
   }
 
   .bottom {
@@ -2844,9 +2858,15 @@ dashboard-templates-selector {
   .widget-popup();
   .message {
     top: 30px;
-    left: 35%;
-    width: 30%;
+    left: 15%;
+    width: 70%;
+    .wrapper {
+      align-items: center;
+      display: flex;
+    }
     .form {
+      width: 25%;
+      display: inline-block;
       padding: 0px 10px;
       > label {
         padding-top: 10px;
@@ -2874,6 +2894,10 @@ dashboard-templates-selector {
     .bottom {
       margin-top: 20px;
     }
+    .cash-projection-chart {
+      width: 74%;
+      display: inline-block;
+    }
   }
 }
 #trends-list {
@@ -2893,7 +2917,14 @@ dashboard-templates-selector {
 
     input.btn.btn-xs { margin-top: -2px; }
     button.btn.reset-date { margin-top: -2px; }
+
+    .listing {
+      outline-style: none;
+    }
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.currency {
@@ -2901,9 +2932,6 @@ dashboard-templates-selector {
   select {
     margin-top: 4px;
   }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -3012,16 +3040,294 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
+.analytics widgets-common-confirm-modal {
+  .widget-popup();
+  .message {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    p { padding: 0px 10px; }
+
+    button.btn { margin-top: 20px; }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
+    }
+  }
+}
+
+chart-threshold {
+  .attach-panel {
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    background-color: rgba(20, 132, 228, 0.16);
+
+    & > div {
+      padding-right: 5px;
+
+      &.target { text-align: center; }
+    }
+
+    @media (max-width: @screen-md-max) {
+      flex-direction: column;
+      align-items: center;
+      > div {
+        padding: 5px;
+      }
+    }
+
+    .text {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @impac-widget-text-color;
+      font-size: 13px;
+    }
+
+    input {
+      border-radius: 3px;
+      border: 1px white;
+      padding: 3px;
+
+      &[name=amount] {
+        max-width: 70px;
+      }
+    }
+
+    .currency {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .actions {
+      display: inline-block;
+      padding: 0 2px;
+      button {
+        padding: 3px 6px;
+        display: inline-block;
+        &.loading {
+          padding: 3px 20px;
+        }
+      }
+    }
+  }
+}
+
+.currency-conversions {
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  &.popover .popover-title {
+    background-color: black;
+    color: white;
+  }
+}
+
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .info-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: ~"calc(100% - 30px)";
+  max-height: ~"calc(100% - 30px)";
+  height: 100%;
+  z-index: 100;
+
+  background-color: white;
+  border: dotted 1px #B7CDCE;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato Semibold", "Lato";
+
+  z-index: 4;
+
+  &:hover { opacity: 1; }
+
+  .i-header {
+    .fa { font-size: 18px; }
+    .fa-info-circle { float: left; }
+    .fa-times-circle { cursor: pointer; float: right; }
+
+    background-color: #FFC928;
+    color: @impac-widget-reverse-color;
+    padding: 8px;
+    text-transform: uppercase;
+    font-family: "Lato Medium", "Lato";
+    font-size: 12px;
+  }
+
+  .i-content {
+    .scrollable();
+    padding: 5px;
+    text-align: justify;
+    flex: 1;
+
+    .row {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: solid 1px @impac-dashboard-borders-color;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .key {
+        @media (max-width: @screen-sm-max) { text-align: center; }
+        text-align: right;
+        font-variant: small-caps;
+      }
+
+      .value { text-align: justify; }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
+.analytics .widget-item .top-line .top-buttons {
+  text-align: right;
+  margin-top: -1px;
+  white-space: nowrap;
+  padding-left: 10px;
+
+  .top-buttons-wrapper {
+    .top-button {
+      background: transparent;
+      border: none;
+      color: @impac-widget-top-buttons-color;
+      padding: 0;
+      outline: none;
+      width: 17px;
+
+      &:active, &:focus { box-shadow: none; }
+
+      &.btn-info {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: #FFC928; }
+      }
+      &.btn-export {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-refresh {
+        font-size: 17px;
+        margin-top: 1px;
+        &:hover { color: @mblue; }
+      }
+      &.btn-edit {
+        font-size: 13px;
+        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
+      }
+      &.btn-close {
+        font-size: 13px;
+        &:hover { color: @pink; }
+      }
+    }
+  }
+}
+
+.analytics .widget-item .content .table-layout {
+
+  table {
+    width: 100%;
+    max-width: 100%;
+
+    th,
+    td:not(.nested-table) {
+      color: @mediumblue;
+      border-bottom: solid 1px @lightgray;
+      padding: 5px 0;
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+
+    th[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  #table-layout {
+    & > thead tr:first-child {
+      .font(12px,500,@impac-widget-text-color-medium);
+      text-transform: uppercase;
+      border-bottom: 2px solid @lightgray;
+      padding: 5px 0;
+    }
+
+    .nested-table {
+      i.fa { padding-right: 5px; }
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
-.analytics .widget-item .content.accounts-assets-liability-summary {
-  .param-selector {
-    text-align: center;
-  }
+.analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
-    max-height: 90px;
+    max-height: 115px;
 
     .title {
       text-align: center;
@@ -3030,10 +3336,13 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.accounts-assets-summary {
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+    text-align: center;
+  }
   .legend {
     text-align: left;
-    max-height: 115px;
+    max-height: 90px;
 
     .title {
       text-align: center;
@@ -3079,101 +3388,6 @@ dashboard-templates-selector {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-balance {
-  .tall-widget();
-
-  .data-container {
-    height: ~"calc(@{impac-big-widget-size} - 50px)";
-    width: 100%;
-  }
-
-  .left-panel {
-    width: 180px;
-    display: inline-block;
-    overflow: auto;
-    max-height: 100%;
-  }
-
-  #cash-balance-legend {
-    .header {
-      .group-item {
-        display: flex;
-        align-items: center;
-        min-height: 45px;
-        margin: 3px;
-        font-size: 13px;
-        padding: 3px;
-        cursor: pointer;
-        user-select: none;
-        &:hover {
-          background-color: @impac-widget-menus-hover-background-color;
-        }
-        i {
-          font-size: 19px;
-          padding: 4px;
-          margin-top: 1px
-        }
-        span { color: @impac-widget-text-color; }
-      }
-    }
-  }
-
-  .legend-item-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .right-panel {
-    width: ~"calc(100% - 180px)";
-    float: right;
-
-    // Highchart container
-    .cash-balance-chart {
-      height: ~"calc(@{impac-big-widget-size} - 50px)";
-    }
-  }
-
-  .dates-picker {
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-projection {
-  .tall-widget();
-
-  .cash-projection-chart {
-    height: ~"calc(@{impac-big-widget-size} - 50px)";
-  }
-
-  .highcharts-legend-item {
-    rect.highcharts-point {
-      display: none;
-    }
-
-    span {
-      width: 110px;
-      text-align: center;
-      img {
-        text-align: center;
-        width: 55px;
-        height: 25px;
-      }
-    }
-  }
-
-  .dates-picker {
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-  }
-
-  transactions-list {
-    font-size: 12px;
   }
 }
 
@@ -3330,17 +3544,6 @@ dashboard-templates-selector {
     margin-left: 0px;
     text-align: center;
   }
-}
-
-.analytics .widget-item .content.accounts-invoices-list {
-  // component specific styles
-  // -------------------------
-  .tall-widget();
-
-  transactions-list {
-    font-size: 12px;
-  }
-
 }
 
 .analytics .widget-item .content.accounts-live-balance {
@@ -3787,30 +3990,6 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -3838,6 +4017,30 @@ dashboard-templates-selector {
     }
   }
 }
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
@@ -3953,251 +4156,6 @@ dashboard-templates-selector {
     }
   }
 }
-chart-threshold {
-  .attach-panel {
-    padding: 5px 0;
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    background-color: rgba(20, 132, 228, 0.16);
-
-    & > div {
-      padding-right: 5px;
-
-      &.target { text-align: center; }
-    }
-
-    @media (max-width: @screen-md-max) {
-      flex-direction: column;
-      align-items: center;
-      > div {
-        padding: 5px;
-      }
-    }
-
-    .text {
-      text-transform: uppercase;
-      font-weight: bold;
-      color: @impac-widget-text-color;
-      font-size: 13px;
-    }
-
-    input {
-      border-radius: 3px;
-      border: 1px white;
-      padding: 3px;
-
-      &[name=amount] {
-        max-width: 70px;
-      }
-    }
-
-    .currency {
-      font-weight: bold;
-      color: #000;
-    }
-
-    .actions {
-      display: inline-block;
-      padding: 0 2px;
-      button {
-        padding: 3px 6px;
-        display: inline-block;
-        &.loading {
-          padding: 3px 20px;
-        }
-      }
-    }
-  }
-}
-
-.analytics widgets-common-confirm-modal {
-  .widget-popup();
-  .message {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    p { padding: 0px 10px; }
-
-    button.btn { margin-top: 20px; }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-}
-
-.currency-conversions {
-  img {
-    width: 15px;
-    cursor: pointer;
-  }
-
-  &.popover .popover-title {
-    background-color: black;
-    color: white;
-  }
-}
-
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.analytics .widget-item .info-panel {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  width: ~"calc(100% - 30px)";
-  max-height: ~"calc(100% - 30px)";
-  height: 100%;
-  z-index: 100;
-
-  background-color: white;
-  border: dotted 1px #B7CDCE;
-
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato Semibold", "Lato";
-
-  z-index: 4;
-
-  &:hover { opacity: 1; }
-
-  .i-header {
-    .fa { font-size: 18px; }
-    .fa-info-circle { float: left; }
-    .fa-times-circle { cursor: pointer; float: right; }
-
-    background-color: #FFC928;
-    color: @impac-widget-reverse-color;
-    padding: 8px;
-    text-transform: uppercase;
-    font-family: "Lato Medium", "Lato";
-    font-size: 12px;
-  }
-
-  .i-content {
-    .scrollable();
-    padding: 5px;
-    text-align: justify;
-    flex: 1;
-
-    .row {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: solid 1px @impac-dashboard-borders-color;
-
-      &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-
-      .key {
-        @media (max-width: @screen-sm-max) { text-align: center; }
-        text-align: right;
-        font-variant: small-caps;
-      }
-
-      .value { text-align: justify; }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
-.analytics .widget-item .top-line .top-buttons {
-  text-align: right;
-  margin-top: -1px;
-  white-space: nowrap;
-  padding-left: 10px;
-
-  .top-buttons-wrapper {
-    .top-button {
-      background: transparent;
-      border: none;
-      color: @impac-widget-top-buttons-color;
-      padding: 0;
-      outline: none;
-      width: 17px;
-
-      &:active, &:focus { box-shadow: none; }
-
-      &.btn-info {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: #FFC928; }
-      }
-      &.btn-export {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-refresh {
-        font-size: 17px;
-        margin-top: 1px;
-        &:hover { color: @mblue; }
-      }
-      &.btn-edit {
-        font-size: 13px;
-        &:hover, &.edit-mode { color: darken(@mgreen,10%); }
-      }
-      &.btn-close {
-        font-size: 13px;
-        &:hover { color: @pink; }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -4347,26 +4305,6 @@ chart-threshold {
   .tooltip-inner { text-transform: none; }
 
   .dropdown-menu > li > div > table { outline: none; }
-}
-
-.analytics .settings.forecast-payroll {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -4591,6 +4529,46 @@ chart-threshold {
     }
   }
 }
+.analytics .settings.payroll {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+
+.analytics .settings.source-selector {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on, &.fa-check-circle {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off, &.fa-circle-thin {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+
 .analytics .settings.tag-filter {
   padding: 0px 5px;
 
@@ -4658,5 +4636,110 @@ chart-threshold {
     &.expand {
       margin-right: -3px;
     }
+  }
+}
+.analytics .widget-item .content.accounts-cash-balance {
+  .tall-widget();
+
+  .data-container {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+    width: 100%;
+  }
+
+  .left-panel {
+    width: 180px;
+    display: inline-block;
+    overflow: auto;
+    max-height: 100%;
+  }
+
+  #cash-balance-legend {
+    .header {
+      .group-item {
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+        margin: 3px;
+        font-size: 13px;
+        padding: 3px;
+        cursor: pointer;
+        user-select: none;
+        &:hover {
+          background-color: @impac-widget-menus-hover-background-color;
+        }
+        i {
+          font-size: 19px;
+          padding: 4px;
+          margin-top: 1px
+        }
+        span { color: @impac-widget-text-color; }
+      }
+    }
+  }
+
+  .legend-item-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .right-panel {
+    width: ~"calc(100% - 180px)";
+    float: right;
+
+    // Highchart container
+    .cash-balance-chart {
+      height: ~"calc(@{impac-big-widget-size} - 50px)";
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
+}
+
+.analytics .widget-item .content.accounts-invoices-list {
+  // component specific styles
+  // -------------------------
+  .tall-widget();
+
+  transactions-list {
+    font-size: 12px;
+  }
+
+}
+
+.analytics .widget-item .content.accounts-cash-projection {
+  .tall-widget();
+
+  .cash-projection-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .highcharts-legend-item {
+    rect.highcharts-point {
+      display: none;
+    }
+
+    span {
+      width: 110px;
+      text-align: center;
+      img {
+        text-align: center;
+        width: 55px;
+        height: 25px;
+      }
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
+
+  transactions-list {
+    font-size: 12px;
   }
 }

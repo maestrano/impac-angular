@@ -7,16 +7,20 @@ module.component('transactionsList', {
     onPageChanged: '&'
     onUpdateExpectedDate: '&'
     onChangeResources: '&'
+    onChangeOverdueFilter: '&'
     onDeleteTransaction: '&'
+    onChangeQuery: '&'
     onUpdateSchedulableTransaction: '&?'
     onDeleteChildrenTransactions: '&?'
     onCurrencyChange: '&'
     metadata: '<'
     transactions: '<'
+    hideOverdueFilter: '<?'
     currency: '<'
     contacts: '<'
     totalRecords: '<'
     resourcesType: '<'
+    overdueFilter: '<'
     listOnly: '<'
   controller: ($translate, BoltResources)->
     ctrl = this
@@ -59,6 +63,19 @@ module.component('transactionsList', {
       ctrl
         .onChangeResources({ resourcesType: ctrl.resourcesType })
         .then(-> ctrl.$onInit())
+
+    ctrl.changeOverdueFilter = ->
+      ctrl
+        .onChangeOverdueFilter({ overdueFilter: ctrl.overdueFilter })
+        .then(-> ctrl.$onInit())
+
+    ctrl.changeQuery = ->
+      clearTimeout(ctrl.delayTimer);
+      ctrl.delayTimer = setTimeout ->
+        ctrl
+          .onChangeQuery({ query: ctrl.query })
+          .then(-> ctrl.$onInit())
+      , 1000
 
     # update current attributes after data is fetched and processed to prevent premature rendering.
     ctrl.updateCurrentAttributes = (newAttrs) ->
