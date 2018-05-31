@@ -131,7 +131,7 @@ module.component('trendsAdd', {
       # Between startIndex and lastIndex, apply trend when period allows it
       increment = 0
       startDate = timestamps[startIndex]
-      for i in [startIndex..lastIndex]
+      for i in [startIndex...lastIndex]
         continue unless shouldApplyTrend(trend, startDate, timestamps[i])
         increment = lastValue * trend.rate / 100.0
         lastValue += increment
@@ -161,14 +161,14 @@ module.component('trendsAdd', {
         when 'Weekly' then period = 'weeks'
         when 'Monthly' then period = 'months'
         when 'Yearly' then period = 'years'
-      moment.utc(trend.startDate).add(trend.untilDate, period).format('YYYY-MM-DD')
+      moment.utc(trend.startDate).add(trend.untilDate - 1, period).format('YYYY-MM-DD')
 
     lastApplicationIndex = (trend, timestamps) ->
       untilDate = lastApplicationDate(trend)
-      return timestamps.length - 1 unless untilDate
+      return timestamps.length unless untilDate
       untilDate = new Date(untilDate)
       lastIndex = timestamps.findIndex (timestamp) -> timestamp > untilDate.getTime()
-      if lastIndex == -1 then timestamps.length - 1 else lastIndex
+      if lastIndex == -1 then timestamps.length else lastIndex
 
     incrementRemainingValues = (values, start, increment) ->
       for i in [start...values.length]
