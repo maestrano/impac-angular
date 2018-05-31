@@ -12,7 +12,7 @@ module.component('trendsAdd', {
     boltPath: '<'
     companyId: '<'
 
-  controller: ($scope, HighchartsFactory, BoltResources) ->
+  controller: ($scope, HighchartsFactory, BoltResources, toastr) ->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -59,7 +59,10 @@ module.component('trendsAdd', {
       ctrl.dataIsValid()
 
     ctrl.createTrend = ->
-      return ctrl.createGroup() if ctrl.isAddingGroup
+      if ctrl.isAddingGroup
+        if _.find(ctrl.groups, (g) -> g.attributes.name == ctrl.trend.groupName)
+          return toastr.warning('A group with this name already exists')
+        return ctrl.createGroup()
       ctrl.onHide()
       ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
