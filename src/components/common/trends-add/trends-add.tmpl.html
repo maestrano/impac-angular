@@ -9,7 +9,7 @@
         <input style="width: 45px;" type="number" value="0" step="1" ng-model="$ctrl.trend.rate" ng-change="$ctrl.redrawCurrentTrend()"/>%<br>
 
         <label>Account:</label>
-        <select ng-model="$ctrl.trend.account" ng-options="account.attributes.name for account in $ctrl.accounts | orderBy: 'attributes.name' track by account.id" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
+        <select ng-model="$ctrl.trend.account" ng-options="account.label for account in $ctrl.accountsLastValues | orderBy: 'label' track by account.value" ng-change="$ctrl.redrawCurrentTrend()" class='form-control'>
           <option value=''> Choose an Account</option>
         </select>
 

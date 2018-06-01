@@ -5,19 +5,16 @@ module.component('trendsAdd', {
   bindings:
     onHide: '&'
     onCreateTrend: '&'
-    accounts: '<'
     chart: '<'
     accountsLastValues: '<'
     groups: '<'
     boltPath: '<'
     companyId: '<'
 
-  controller: ($scope, HighchartsFactory, BoltResources) ->
+  controller: ($scope, HighchartsFactory, BoltResources, toastr) ->
     ctrl = this
 
     ctrl.$onInit = ->
-      ctrl.accounts.push({ id: 'EXPENSE', attributes: { name: 'All expenses' } }) unless _.find(ctrl.accounts, 'id', 'EXPENSE')
-      ctrl.accounts.push({ id: 'REVENUE', attributes: { name: 'All revenues' } }) unless _.find(ctrl.accounts, 'id', 'REVENUE')
       ctrl.startDateOptions = { minDate: new Date() }
       ctrl.lastDateOptions = { minDate: new Date() }
       ctrl.untilDatePicker =
@@ -59,15 +56,18 @@ module.component('trendsAdd', {
       ctrl.dataIsValid()
 
     ctrl.createTrend = ->
-      return ctrl.createGroup() if ctrl.isAddingGroup
+      if ctrl.isAddingGroup
+        if _.find(ctrl.groups, (g) -> g.attributes.name == ctrl.trend.groupName)
+          return toastr.warning('A group with this name already exists')
+        return ctrl.createGroup()
       ctrl.onHide()
       ctrl.trend.untilDate = lastApplicationDate(ctrl.trend)
       ctrl.trend.period = ctrl.trend.period.toLowerCase()
       ctrl.trend.trends_group_id = ctrl.trend.trends_group.id
-      if ctrl.trend.account.id == 'EXPENSE' || ctrl.trend.account.id == 'REVENUE'
-        ctrl.trend.account_class = ctrl.trend.account.id
+      if ctrl.trend.account.value == 'EXPENSE' || ctrl.trend.account.value == 'REVENUE'
+        ctrl.trend.account_class = ctrl.trend.account.value
       else
-        ctrl.trend.account_id = ctrl.trend.account.id
+        ctrl.trend.account_id = ctrl.trend.account.value
       ctrl.onCreateTrend({ trend: ctrl.trend })
 
     ctrl.createGroup = ->
@@ -110,9 +110,7 @@ module.component('trendsAdd', {
         originalSerie = _.find(ctrl.chart.series, 'name', ctrl.trend.trends_group.attributes.name)
       originalSerie ?= _.find(ctrl.chart.series, 'name', 'Projected cash')
       newSerie = angular.copy(originalSerie)
-      accountBalance = _.find(ctrl.accountsLastValues, (hash) ->
-        return hash.label == ctrl.trend.account.id
-      )['value'][ctrl.trend.period.toLowerCase()]
+      accountBalance = ctrl.trend.account.metadata.average_balances[ctrl.trend.period.toLowerCase()]
       newData = applyTrend(ctrl.trend, newSerie.data, accountBalance)
       delete newSerie['type']
       _.merge(newSerie, { name: "Current trend", zones: [{dashStyle: "ShortDot"}], color: "rgb(124, 77, 255)", data: newData })
@@ -126,17 +124,19 @@ module.component('trendsAdd', {
       timestamps = unified[0]
       values = unified[1]
 
+      return if trend.startDate.getTime() > timestamps[timestamps.length - 1] || lastApplicationDate(trend) < timestamps[0]
+
       # Find index for trend's start and last date in timestamps
-      startIndex = timestamps.findIndex((t) -> t > trend.startDate.getTime()) - 1
+      startIndex = timestamps.findIndex((t) -> t > trend.startDate.getTime())
       lastIndex = lastApplicationIndex(trend, timestamps)
 
       # Between startIndex and lastIndex, apply trend when period allows it
       increment = 0
       startDate = timestamps[startIndex]
-      for i in [startIndex..lastIndex]
+      for i in [startIndex...lastIndex]
         continue unless shouldApplyTrend(trend, startDate, timestamps[i])
-        increment = lastValue * trend.rate / 100.0
-        lastValue += increment
+        appliedRate = if trend.rate >= 0 then (trend.rate + 100.0) else (trend.rate - 100)
+        increment = lastValue * appliedRate / 100.0
         incrementRemainingValues(values, i, increment)
 
       # Return data with timestamps
@@ -163,18 +163,18 @@ module.component('trendsAdd', {
         when 'Weekly' then period = 'weeks'
         when 'Monthly' then period = 'months'
         when 'Yearly' then period = 'years'
-      moment.utc(trend.startDate).add(trend.untilDate, period).format('YYYY-MM-DD')
+      moment.utc(trend.startDate).add(trend.untilDate - 1, period).format('YYYY-MM-DD')
 
     lastApplicationIndex = (trend, timestamps) ->
       untilDate = lastApplicationDate(trend)
-      return timestamps.length - 1 unless untilDate
+      return timestamps.length unless untilDate
       untilDate = new Date(untilDate)
       lastIndex = timestamps.findIndex (timestamp) -> timestamp > untilDate.getTime()
-      if lastIndex == -1 then timestamps.length - 1 else lastIndex
+      if lastIndex == -1 then timestamps.length else lastIndex
 
     incrementRemainingValues = (values, start, increment) ->
       for i in [start...values.length]
-        values[i] += increment
+        values[i] -= increment
 
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})

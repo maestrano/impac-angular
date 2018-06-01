@@ -60,8 +60,7 @@ module.component('trendsList', {
             _.property('trends'),
             _.partialRight(_.some, { id: this.entity.id })
           ))
-          trend = _.find(trendGroup.trends, 'id', this.entity.id)
-          trendGroup.trends.splice(_.findIndex(trendGroup.trends, {id: trendGroup.id}), 1)
+          trendGroup.trends.splice(_.findIndex(trendGroup.trends, {id: this.entity.id}), 1)
         ctrl.originalGroups = _.map(ctrl.groups, _.cloneDeep)
         this.cancel()
 
