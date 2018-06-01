@@ -5,6 +5,9 @@
 - [IMPAC-890] Avoid Trend groups with duplicate name
 - [IMPAC-900] Update trends calculation
 
+#### Dependencies
+- Finance Bolt v1.8.2 (accounts selector in Trends)
+
 -------------------------------------------------------------
 
 ### v1.8.1
