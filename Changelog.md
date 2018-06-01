@@ -1,5 +1,12 @@
 # Impac! Frontend Changelog
 
+### v1.8.2
+- Remove app instance setting from cash projection widget
+- [IMPAC-890] Avoid Trend groups with duplicate name
+- [IMPAC-900] Update trends calculation
+
+-------------------------------------------------------------
+
 ### v1.8.1
 
 - Add ability to specify a description for Trends
