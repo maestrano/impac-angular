@@ -133,8 +133,7 @@ module.component('trendsAdd', {
       startDate = timestamps[startIndex]
       for i in [startIndex...lastIndex]
         continue unless shouldApplyTrend(trend, startDate, timestamps[i])
-        increment = lastValue * trend.rate / 100.0
-        lastValue += increment
+        increment = lastValue * (trend.rate + 100.0) / 100.0
         incrementRemainingValues(values, i, increment)
 
       # Return data with timestamps
@@ -172,7 +171,7 @@ module.component('trendsAdd', {
 
     incrementRemainingValues = (values, start, increment) ->
       for i in [start...values.length]
-        values[i] += increment
+        values[i] -= increment
 
     ctrl.cancel = ->
       _.remove(ctrl.chart.series, {name: "Current trend"})
