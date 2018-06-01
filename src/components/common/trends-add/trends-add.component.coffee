@@ -135,7 +135,7 @@ module.component('trendsAdd', {
       startDate = timestamps[startIndex]
       for i in [startIndex...lastIndex]
         continue unless shouldApplyTrend(trend, startDate, timestamps[i])
-        appliedRate = if trend.rate > 0 then (trend.rate + 100.0) else (trend.rate - 100)
+        appliedRate = if trend.rate >= 0 then (trend.rate + 100.0) else (trend.rate - 100)
         increment = lastValue * appliedRate / 100.0
         incrementRemainingValues(values, i, increment)
 
