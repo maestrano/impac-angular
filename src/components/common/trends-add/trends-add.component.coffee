@@ -124,8 +124,10 @@ module.component('trendsAdd', {
       timestamps = unified[0]
       values = unified[1]
 
+      return if trend.startDate.getTime() > timestamps[timestamps.length - 1] || lastApplicationDate(trend) < timestamps[0]
+
       # Find index for trend's start and last date in timestamps
-      startIndex = timestamps.findIndex((t) -> t > trend.startDate.getTime()) - 1
+      startIndex = timestamps.findIndex((t) -> t > trend.startDate.getTime())
       lastIndex = lastApplicationIndex(trend, timestamps)
 
       # Between startIndex and lastIndex, apply trend when period allows it
@@ -133,7 +135,8 @@ module.component('trendsAdd', {
       startDate = timestamps[startIndex]
       for i in [startIndex...lastIndex]
         continue unless shouldApplyTrend(trend, startDate, timestamps[i])
-        increment = lastValue * (trend.rate + 100.0) / 100.0
+        appliedRate = if trend.rate > 0 then (trend.rate + 100.0) else (trend.rate - 100)
+        increment = lastValue * appliedRate / 100.0
         incrementRemainingValues(values, i, increment)
 
       # Return data with timestamps
