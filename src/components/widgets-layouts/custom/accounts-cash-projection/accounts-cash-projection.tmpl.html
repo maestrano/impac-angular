@@ -71,7 +71,7 @@
           See reconciliation
         <button class="btn btn-sm btn-default" ng-click="trendList.showAll()" title="See all trends">
           <i class="fa fa-list" />
-          Select trends
+          See trends
         </button>
         <button class="btn btn-sm btn-default" ng-click="addTrendPopup.show()" title="Create a new trend">
           <i class="fa fa-pencil" />
@@ -93,7 +93,6 @@
     ng-if="addTrendPopup.display"
     on-hide="addTrendPopup.hide()"
     on-create-trend="addTrendPopup.createTrend(trend)"
-    accounts="accounts"
     chart="chart"
     accounts-last-values="accountsAverageBalances(widget)"
     groups="trendsGroups"
