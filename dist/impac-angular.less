@@ -3040,23 +3040,6 @@ dashboard-templates-selector {
   .fa.success { color: @flurogreen; }
 }
 
-.analytics widgets-common-confirm-modal {
-  .widget-popup();
-  .message {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    p { padding: 0px 10px; }
-
-    button.btn { margin-top: 20px; }
-
-    .loader i.fa.fa-spinner {
-      font-size: 26px;
-    }
-  }
-}
-
 chart-threshold {
   .attach-panel {
     padding: 5px 0;
@@ -3111,6 +3094,23 @@ chart-threshold {
           padding: 3px 20px;
         }
       }
+    }
+  }
+}
+
+.analytics widgets-common-confirm-modal {
+  .widget-popup();
+  .message {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    p { padding: 0px 10px; }
+
+    button.btn { margin-top: 20px; }
+
+    .loader i.fa.fa-spinner {
+      font-size: 26px;
     }
   }
 }
@@ -3324,10 +3324,13 @@ chart-threshold {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
-.analytics .widget-item .content.accounts-assets-summary {
+.analytics .widget-item .content.accounts-assets-liability-summary {
+  .param-selector {
+    text-align: center;
+  }
   .legend {
     text-align: left;
-    max-height: 115px;
+    max-height: 90px;
 
     .title {
       text-align: center;
@@ -3336,13 +3339,10 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-assets-liability-summary {
-  .param-selector {
-    text-align: center;
-  }
+.analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
-    max-height: 90px;
+    max-height: 115px;
 
     .title {
       text-align: center;
@@ -3990,6 +3990,30 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-number-of-leads {
   .stats {
     margin-top: 35px;
@@ -4017,30 +4041,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
-}
-
 .analytics .widget-item .content.sales-opportunities-funnel {
   .funnel-widget();
 }
