@@ -44,12 +44,14 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   $scope.orgDeferred = $q.defer()
   $scope.sourceDeferred = $q.defer()
   settingsPromises = [
-    $scope.orgDeferred.promise,
+    $scope.orgDeferred.promise
     $scope.sourceDeferred.promise
   ]
 
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
+  # == Sub-Components - Source selector =========================================================
+  $scope.sourceSelector = { display: false }
 
   # Initialise Contacts and Accounts
   $scope.contacts = []
