@@ -1,5 +1,13 @@
 # Impac! Frontend Changelog
 
+### v1.8.3
+- Adapt Trends calculations to latest frontend
+
+#### Dependencies
+- Finance Bolt v1.8.4 (trends visualiser to apply the right rate)
+
+-------------------------------------------------------------
+
 ### v1.8.2
 - Remove app instance setting from cash projection widget
 - [IMPAC-890] Avoid Trend groups with duplicate name
