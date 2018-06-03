@@ -2924,14 +2924,14 @@ dashboard-templates-selector {
   }
 }
 
-.analytics .dashboard-settings.pdf-mode {
-}
-
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -4638,6 +4638,40 @@ chart-threshold {
     }
   }
 }
+.analytics .widget-item .content.accounts-cash-projection {
+  .tall-widget();
+
+  .cash-projection-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .highcharts-legend-item {
+    rect.highcharts-point {
+      display: none;
+    }
+
+    span {
+      width: 110px;
+      text-align: center;
+      img {
+        text-align: center;
+        width: 55px;
+        height: 25px;
+      }
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
+
+  transactions-list {
+    font-size: 12px;
+  }
+}
+
 .analytics .widget-item .content.accounts-cash-balance {
   .tall-widget();
 
@@ -4708,38 +4742,4 @@ chart-threshold {
     font-size: 12px;
   }
 
-}
-
-.analytics .widget-item .content.accounts-cash-projection {
-  .tall-widget();
-
-  .cash-projection-chart {
-    height: ~"calc(@{impac-big-widget-size} - 50px)";
-  }
-
-  .highcharts-legend-item {
-    rect.highcharts-point {
-      display: none;
-    }
-
-    span {
-      width: 110px;
-      text-align: center;
-      img {
-        text-align: center;
-        width: 55px;
-        height: 25px;
-      }
-    }
-  }
-
-  .dates-picker {
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-  }
-
-  transactions-list {
-    font-size: 12px;
-  }
 }
