@@ -1,25 +1,25 @@
-<div class="settings average-profit">
-  <h5 translate>impac.widget.settings.average_profit.title</h5>
+<div class="settings averages">
+  <h5 translate>impac.widget.settings.averages.title</h5>
 
   <div class="widget-lines-container">
     <div class="widget-line">
       <span translate >
-        impac.widget.settings.average_profit.include_option
+        impac.widget.settings.averages.include_option
       </span>
-      <i ng-class="isToggleAverageProfit() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
-        ng-click="toggleAverageProfit()" />
+      <i ng-class="isToggleAverages() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="toggleAverages()" />
     </div>
-    <div class="widget-line period-line" ng-show="isToggleAverageProfit()" >
+    <div class="widget-line period-line" ng-show="isToggleAverages()" >
       <span translate >
-        impac.widget.settings.average_profit.granularity
+        impac.widget.settings.averages.granularity
       </span>
-      <select ng-model="selectedAverageProfit.period">
+      <select ng-model="seletedAverages.period">
         <option ng-repeat="option in granularityOptions" ng-value="option.value">{{option.name}}</option>
       </select>
     </div>
-    <div class="widget-line calculation-line"  ng-show="isToggleAverageProfit()" >
+    <div class="widget-line calculation-line"  ng-show="isToggleAverages()" >
       <span translate >
-        impac.widget.settings.average_profit.period_for_calculation
+        impac.widget.settings.averages.period_for_calculation
       </span>
       <div class="dp-group">
         <div>
@@ -30,7 +30,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="calculation.from.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="selectedAverageProfit.calculation.from"
+          ng-model="seletedAverages.calculation.from"
           ng-click="calculation.from.datePicker.toggle()"
           is-open="calculation.from.datePicker.opened"
           close-text="Close"
@@ -44,7 +44,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="calculation.to.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="calculation.to.datePicker.date"
+          ng-model="seletedAverages.calculation.to"
           ng-click="calculation.to.datePicker.toggle()"
           is-open="calculation.to.datePicker.opened"
           close-text="Close"
@@ -52,9 +52,9 @@
         </div>
       </div>
     </div>
-    <div class="widget-line" ng-show="isToggleAverageProfit()" >
+    <div class="widget-line" ng-show="isToggleAverages()" >
       <span translate >
-        impac.widget.settings.average_profit.period_for_application
+        impac.widget.settings.averages.period_for_application
       </span>
       <div class="dp-group">
         <div>
@@ -65,7 +65,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="application.from.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="selectedAverageProfit.application.from"
+          ng-model="seletedAverages.application.from"
           ng-click="application.from.datePicker.toggle()"
           is-open="application.from.datePicker.opened"
           close-text="Close"
@@ -79,7 +79,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="application.to.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="application.to.datePicker.date"
+          ng-model="seletedAverages.application.to"
           ng-click="application.to.datePicker.toggle()"
           is-open="application.to.datePicker.opened"
           close-text="Close"

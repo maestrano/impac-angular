@@ -127,7 +127,7 @@ angular.module('impac.components.widgets-settings',
     'impac.components.widgets-settings.tag-filter',
     'impac.components.widgets-settings.offsets',
     'impac.components.widgets-settings.payroll',
-    'impac.components.widgets-settings.average-profit',
+    'impac.components.widgets-settings.averages',
     'impac.components.widgets-settings.source-selector'
   ]
 );
