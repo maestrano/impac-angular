@@ -16,6 +16,8 @@ angular
       currencyConversionsIcon: ':default/currency-conversions.png'
       cashFlowLegendIcon: ':default/cash-flow.png'
       payrollCostsLegendIcon: ':default/payroll-costs.png'
+      revenueAverageLegendIcon: ':default/revenue-average.png'
+      expenseAverageLegendIcon: ':default/expense-average.png'
       payablesLegendIcon: ':default/payables.png'
       projectedCashLegendIcon: ':default/projected-cash.png'
       receivablesLegendIcon: ':default/receivables.png'
