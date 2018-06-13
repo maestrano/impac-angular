@@ -104,22 +104,6 @@ module.component('transactionsList', {
     ctrl.canCreateSchedulableTransaction = (trx) ->
       return trx.status != 'FORECAST' && !trx.recurring && angular.isDefined(ctrl.onUpdateSchedulableTransaction)
 
-    ctrl.canDeleteSchedulableTransaction = (trx) ->
-      return (trx.status == 'FORECAST' && trx.recurring_parent) && angular.isDefined(ctrl.onDeleteChildrenTransactions)
-
-    ctrl.deleteScheduleModal =
-      args: {}
-      display: false
-      show: (args) ->
-        this.args = args
-        this.display = true
-      cancel: ->
-        this.args = {}
-        this.display = false
-      delete: ->
-        deleteTransactionsGroup(this.args.trx)
-        this.cancel()
-
     ctrl.createSchedule =
       trx: null
       display: false
@@ -147,11 +131,14 @@ module.component('transactionsList', {
     ctrl.deleteTrxModal =
       trx: null
       display: false
+      deletionType: "onlyThis"
       show: (trx) ->
         this.trx = trx
         this.display = true
+        this.deletionType = "allOccurrences" unless(this.canDeleteOnlyThis())
       hide: ->
         this.trx = null
+        this.deletionType = "onlyThis"
         this.display = false
       message: ->
         msgPreposition = if ctrl.resourcesType == 'invoices'
@@ -164,8 +151,21 @@ module.component('transactionsList', {
           preposition: msgPreposition
         })
       delete: ->
-        deleteTransaction(this.trx)
+        switch this.deletionType
+          when "onlyThis"
+            deleteTransaction(this.trx)
+          when "onlyOccurrences"
+            deleteTransactionsGroup(this.trx)
+          when "allOccurrences" 
+            deleteTransaction(this.trx)
+            deleteTransactionsGroup(this.trx)
         this.hide()
+      canDeleteOnlyThis: ->
+        !this.trx.recurring
+      canDeleteAllOccurrences: ->
+        this.trx.recurring
+      canDeleteOnlyOccurrences: ->
+        this.trx.recurring_parent? || this.trx.recurring
 
     ctrl.showPaginationControl = ->
       return ctrl.totalRecords >= ctrl.itemsPerPage
@@ -206,7 +206,14 @@ module.component('transactionsList', {
 
     # Remove all children and update parent
     deleteTransactionsGroup = (trx) ->
-      trxGroupId = if trx.recurring then trx.id else trx.recurring_parent
+      if trx.recurring
+        trxGroupId = trx.id
+        trx.recurring = false
+      else
+        return unless trx.recurring_parent
+        trxGroupId = trx.recurring_parent
+        parentTrx = _.find(ctrl.currentAttributes.transactions, (trxInList) -> (trxInList.id == trxGroupId) )
+        parentTrx.recurring = false if parentTrx
 
       #delete children from memori
       _.remove(ctrl.currentAttributes.transactions, (trxInList) -> (trxInList.recurring_parent == trxGroupId))
