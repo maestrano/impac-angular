@@ -1,5 +1,8 @@
 # Impac! Frontend Changelog
 
+### v1.9.0
+- [Improve Transaction-list component](https://github.com/maestrano/impac-angular/pull/559)
+
 ### v1.8.3
 - Adapt Trends calculations to latest frontend
 
