@@ -210,6 +210,8 @@ module.component('transactionsList', {
         trxGroupId = trx.id
         trx.recurring = false
       else
+        # trx.recurring_parent is recurring_parent's id
+        # TODO: rename recurring_parent to recurring_parent_id when the resource in Bolt change id
         return unless trx.recurring_parent
         trxGroupId = trx.recurring_parent
         parentTrx = _.find(ctrl.currentAttributes.transactions, (trxInList) -> (trxInList.id == trxGroupId) )
