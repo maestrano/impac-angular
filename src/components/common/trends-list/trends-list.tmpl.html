@@ -47,16 +47,16 @@
                 <tr ng-repeat="trend in group.trends">
                   <td ng-if="!trend.editMode">{{trend.name}}</td>
                   <td ng-if="trend.editMode">
-                    <input type="text" class="form-control" ng-model="trend.name"/>
+                    <input type="text" class="form-control edit-field-mode" ng-model="trend.name"/>
                   </td>
                   <td ng-if="!trend.editMode">{{trend.rate}}%</td>
                   <td ng-if="trend.editMode">
-                    <input style="width: 45px;" type="number" value="0" step="1" ng-model="trend.rate"/>%
+                    <input class="edit-field-mode" style="width: 45px;" type="number" value="0" step="1" ng-model="trend.rate"/>%
                   </td>
                   <td>{{trend.account_name || trend.account_class}}</td>
                   <td ng-if="!trend.editMode">{{trend.period}}</td>
                   <td ng-if="trend.editMode">
-                    <select ng-model="trend.period">
+                    <select ng-model="trend.period" class="edit-field-mode">
                       <option>daily</option>
                       <option>weekly</option>
                       <option>monthly</option>
@@ -73,7 +73,7 @@
                   </td>
                   <td ng-if="!trend.editMode">{{trend.description}}</td>
                   <td ng-if="trend.editMode">
-                    <input type="text" class="form-control" ng-model="trend.description"/>
+                    <input type="text" class="form-control edit-field-mode" ng-model="trend.description"/>
                   </td>
                   <td>
                     <a ng-if="trend.editMode">

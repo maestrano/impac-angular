@@ -382,19 +382,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         $scope.contacts = response.data.data
     )
 
-  loadAccounts = ->
-    BoltResources.index(
-      w.metadata.bolt_path,
-      'accounts',
-      {
-        metadata: _.pick(w.metadata, 'organization_ids'),
-        filter: { a_class: 'EXPENSE,REVENUE' }
-      }
-    ).then(
-      (response) ->
-        $scope.accounts = response.data.data
-    )
-
   loadTrendsGroups = ->
     BoltResources.index(
       w.metadata.bolt_path,
@@ -467,7 +454,6 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
         $scope.firstCompanyId = response.data.data[0].id
         fetchUser()
       loadContacts()
-      loadAccounts()
       loadTrendsGroups()
     )
 

@@ -1,5 +1,26 @@
 # Impac! Frontend Changelog
 
+### v1.9.0
+- [Improve Transaction-list component](https://github.com/maestrano/impac-angular/pull/559)
+
+### v1.8.3
+- Adapt Trends calculations to latest frontend
+
+#### Dependencies
+- Finance Bolt v1.8.4 (trends visualiser to apply the right rate)
+
+-------------------------------------------------------------
+
+### v1.8.2
+- Remove app instance setting from cash projection widget
+- [IMPAC-890] Avoid Trend groups with duplicate name
+- [IMPAC-900] Update trends calculation
+
+#### Dependencies
+- Finance Bolt v1.8.2 (accounts selector in Trends)
+
+-------------------------------------------------------------
+
 ### v1.8.1
 
 - Add ability to specify a description for Trends
