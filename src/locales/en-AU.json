@@ -174,6 +174,9 @@
 
   "impac.widget.common.confirm-modal.delete_trx.title": "Delete forecast transaction",
   "impac.widget.common.confirm-modal.delete_trx.message": "Are you sure you want to delete transaction {title} {preposition} {customer}?",
+  "impac.widget.common.confirm-modal.delete_trx.only_this": "Delete only this transaction",
+  "impac.widget.common.confirm-modal.delete_trx.all_occurrences": "Delete this one and all occurrencies",
+  "impac.widget.common.confirm-modal.delete_trx.only_occurrences": "Delete all occurrencies",
 
   "impac.widget.common.top_buttons.info_popup.delete": "Delete widget",
   "impac.widget.common.top_buttons.info_popup.edit": "Edit widget",

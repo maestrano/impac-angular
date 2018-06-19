@@ -31,6 +31,11 @@ angular
       else
         boltTemplatePath(widget)
 
+    # Adapter for Bolt widgets to build a css path based on generic layout used.
+    @cssFilename = (widget)->
+      # split by '/' and '.', then select the filename from path.
+      _self.templatePath(widget).split(/[\/.]/)[1]
+
     # Private
 
     legacyTemplatePath = (widget) ->
@@ -38,13 +43,12 @@ angular
       templatePath = "widgets/#{filename}.tmpl.html"
       return ($templateCache.get(templatePath) && templatePath)
 
-    # Custom templates live in widgets-layouts/custom dir, though gulp omits nested
-    # structures from the templateCachekey for brevity.
+    # Load the bolt widget templates by priority order: custom, selected, first available layout.
+    # Note: Nested file structures are omitted by gulp from the templateCache key for brevity.
     boltTemplatePath = (widget)->
-      for layout in widget.layouts
-        customPath = "widgets-layouts/#{_self.filename(widget)}.tmpl.html"
-        return customPath if $templateCache.get(customPath)
-        path = "widgets-layouts/#{_.kebabCase(layout)}.tmpl.html"
+      paths = _.flatten([_self.filename(widget), _.get(widget, 'metadata.selected_layout'), widget.layouts])
+      for path in paths
+        path = "widgets-layouts/#{_.kebabCase(path)}.tmpl.html"
         return path if $templateCache.get(path)
       false
 

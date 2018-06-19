@@ -99,7 +99,9 @@ angular.module('impac.components.widgets',
 );
 angular.module('impac.components.widgets-layouts',
   [
+    'impac.components.widgets-layouts.table-layout',
     'impac.components.widgets-layouts.table',
+    'impac.components.widgets-layouts.table-highstocks',
     'impac.components.widgets-layouts.accounts-cash-balance',
     'impac.components.widgets-layouts.accounts-cash-projection'
   ]
