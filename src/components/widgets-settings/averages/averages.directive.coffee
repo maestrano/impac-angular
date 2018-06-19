@@ -38,7 +38,7 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
       datePicker:
         opened: false
         date: $scope.seletedAverages.calculation.to
-        options: {minDate: new Date()}
+        options: {maxDate: new Date()}
         toggle: -> this.opened = !this.opened
 
   $scope.application =
@@ -46,7 +46,7 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
       datePicker:
         opened: false
         date: $scope.seletedAverages.application.from
-        options: {maxDate: new Date()}
+        options: {minDate: new Date()}
         toggle: -> this.opened = !this.opened
     to:
       datePicker:
@@ -69,9 +69,15 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
 
         if _.isPlainObject(averages)
           $scope.seletedAverages = w.metadata.averages
+          applicationFrom = moment($scope.seletedAverages.application.from).toDate()
+          applicationFrom = if moment().isBefore(applicationFrom)
+            applicationFrom 
+          else
+            moment().toDate()
+
           $scope.seletedAverages.calculation.from = moment($scope.seletedAverages.calculation.from).toDate()
           $scope.seletedAverages.calculation.to = moment($scope.seletedAverages.calculation.to).toDate()
-          $scope.seletedAverages.application.from = moment($scope.seletedAverages.application.from).toDate()
+          $scope.seletedAverages.application.from = applicationFrom 
           $scope.seletedAverages.application.to = moment($scope.seletedAverages.application.to).toDate()
 
         setting.isInitialized = true
