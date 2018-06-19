@@ -51,7 +51,7 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Sub-Components - Transactions list =========================================================
   $scope.trxList = { display: false, updated: false, transactions: [] }
   # == Sub-Components - Source selector =========================================================
-  $scope.sourceSelector = { display: false }
+  $scope.sourceSelector = { display: true }
 
   # Initialise Contacts and Accounts
   $scope.contacts = []
