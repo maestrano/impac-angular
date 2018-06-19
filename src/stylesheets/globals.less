@@ -157,6 +157,10 @@ body {
 
   .right-panel {
     border-left: solid 1px #e6e6e6;
+    @media (max-width: @screen-md-min) {
+      border-left: 0;
+      border-top: solid 1px #e6e6e6;
+    }
   }
 
   .selector {

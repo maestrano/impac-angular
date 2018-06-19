@@ -35,7 +35,7 @@ angular
     constructor: (@id, @series = {}, @settings = {})->
       # Setup the basic options for highcharts.
       template = templates[@settings.chartType]
-      formatters = @formatters(@settings.currency)
+      formatters = Chart.formatters(@settings.currency)
       todayMarker = @todayMarker(@settings.showToday, @settings.markerColor)
       onClickCallbacks = @onClickCallbacks(@settings.chartOnClickCallbacks)
       series = { series: @series }
@@ -48,7 +48,7 @@ angular
       @hc = Highcharts.stockChart(@id, @highChartOptions)
       return @
 
-    formatters: (currency) ->
+    @formatters: (currency) ->
       xAxis:
         labels:
           formatter: ->
@@ -163,17 +163,17 @@ angular
     addOnClickCallback: (event) ->
       @settings.chartOnClickCallbacks.push(event)
 
-    addXAxisOptions: (zoomingOptions) ->
+    @addXAxisOptions: (zoomingOptions) ->
       xAxisOptions = if zoomingOptions?
         events:
           setExtremes: zoomingOptions.callback
         max: _.get(zoomingOptions.defaults, 'max')
         min: _.get(zoomingOptions.defaults, 'min')
 
-      xAxis =
-        xAxis: xAxisOptions
-        rangeSelector:
-          selected: (if _.get(xAxisOptions, 'min') then null else 0)
+      xAxis: xAxisOptions
+      rangeSelector:
+        selected: (if _.get(xAxisOptions, 'min') then null else 0)
 
-      angular.merge(@highChartOptions, xAxis)
+    addXAxisOptions: (zoomingOptions) ->
+      angular.merge(@highChartOptions, Chart.addXAxisOptions(zoomingOptions))
 )

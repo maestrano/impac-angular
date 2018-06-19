@@ -58,7 +58,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
     # -------------------------------------
     $scope.starWizardModal = { value:false }
     MsgBus.publish('starWizardModal', $scope.starWizardModal)
-    
+
     $scope.openStarWizard = ->
       $scope.starWizardModal.value = true
 
@@ -68,7 +68,7 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
 
     $scope.displaySubMenu = ->
       $scope.showSubMenu = true
-    
+
     $scope.hideSubMenu = ->
       $scope.showSubMenu = false
 
@@ -239,6 +239,10 @@ module.controller('ImpacDashboardCtrl', ($scope, $http, $q, $filter, $uibModal, 
 
     $scope.addWidget = (widgetTemplate) ->
       params = _.pick(widgetTemplate, ['endpoint', 'name', 'width', 'metadata', 'layouts'])
+
+      # Apply preferred_layout as the selected_layout for v2 bolt widgets
+      # TODO: Remove when user template selection feature is implemented
+      _.merge(params, metadata: selected_layout: widgetTemplate.preferred_layout) if widgetTemplate.preferred_layout
 
       angular.element('#widget-selector').css('cursor', 'progress')
       angular.element('#widget-selector .section-lines .line-item').css('cursor', 'progress')
