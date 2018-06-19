@@ -52,7 +52,6 @@
         <td class="actions" ng-hide="$ctrl.listOnly">
           <i class="fa fa-times" title="Delete forecast transaction" ng-if="trx.status == 'FORECAST'" ng-click="$ctrl.deleteTrxModal.show(trx)" />
           <i class="fa fa-calendar-plus-o"  title="Create schedulable transactions" ng-if="$ctrl.canCreateSchedulableTransaction(trx)" ng-click="$ctrl.createSchedule.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
-          <i class="fa fa-calendar-minus-o" title="Delete schedulable transactions" ng-if="$ctrl.canDeleteSchedulableTransaction(trx)" ng-click="$ctrl.deleteScheduleModal.show({ resourcesType: $ctrl.resourcesType, trx: trx })" />
         </td>
       </tr>
       <tr class="total" ng-class="$ctrl.currentAttributes.resourcesType">
@@ -82,6 +81,20 @@
     </title-section>
     <body-section>
       <p ng-bind="$ctrl.deleteTrxModal.message()"></p>
+      <div>
+        <label for="r1" ng-show="$ctrl.deleteTrxModal.canDeleteOnlyThis()">
+          <input type="radio" ng-model="$ctrl.deleteTrxModal.deletionType" name="deletionType" id="r1" value="onlyThis" />
+          <span translate >impac.widget.common.confirm-modal.delete_trx.only_this</span>
+        </label></br>
+        <label for="r2" ng-show="$ctrl.deleteTrxModal.canDeleteAllOccurrences()">
+          <input type="radio" ng-model="$ctrl.deleteTrxModal.deletionType" name="deletionType" id="r2" value="allOccurrences" />
+          <span translate >impac.widget.common.confirm-modal.delete_trx.all_occurrences</span>
+        </label></br>
+        <label for="r3" ng-show="$ctrl.deleteTrxModal.canDeleteOnlyOccurrences()">
+          <input type="radio" ng-model="$ctrl.deleteTrxModal.deletionType" name="deletionType" id="r3" value="onlyOccurrences" />
+          <span translate >impac.widget.common.confirm-modal.delete_trx.only_occurrences</span>
+        </label>
+      </div>
     </body-section>
   </widgets-common-confirm-modal>
 
