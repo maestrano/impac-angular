@@ -27,33 +27,22 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
     if $scope.seletedAverages?
       return $scope.seletedAverages.enabled
 
-  $scope.calculation =
+  optionsFor = (type, opts) ->
     from:
       datePicker:
         opened: false
-        date: $scope.seletedAverages.calculation.from
-        options: {maxDate: new Date()}
+        date: type.from
+        options: opts 
         toggle: -> this.opened = !this.opened
     to:
       datePicker:
         opened: false
-        date: $scope.seletedAverages.calculation.to
-        options: {maxDate: new Date()}
+        date: type.to
+        options: opts
         toggle: -> this.opened = !this.opened
 
-  $scope.application =
-    from:
-      datePicker:
-        opened: false
-        date: $scope.seletedAverages.application.from
-        options: {minDate: new Date()}
-        toggle: -> this.opened = !this.opened
-    to:
-      datePicker:
-        opened: false
-        date: $scope.seletedAverages.application.to
-        options: {minDate: new Date()}
-        toggle: -> this.opened = !this.opened
+  $scope.calculation = optionsFor($scope.seletedAverages.calculation, {maxDate: new Date()})
+  $scope.application = optionsFor($scope.seletedAverages.application, {minDate: new Date()})
 
   # What will be passed to parentWidget
   setting = {}
