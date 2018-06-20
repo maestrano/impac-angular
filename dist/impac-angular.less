@@ -1108,6 +1108,10 @@ body {
 
   .right-panel {
     border-left: solid 1px #e6e6e6;
+    @media (max-width: @screen-md-min) {
+      border-left: 0;
+      border-top: solid 1px #e6e6e6;
+    }
   }
 
   .selector {
@@ -2921,6 +2925,13 @@ dashboard-templates-selector {
     .listing {
       outline-style: none;
     }
+    .edit-field-mode {
+      margin: 0;
+      padding: 1px 5px;
+      font-size: 12px;
+      border-radius: 3px;
+      height: 22px;
+    }
   }
 }
 
@@ -3285,45 +3296,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content .table-layout {
-
-  table {
-    width: 100%;
-    max-width: 100%;
-
-    th,
-    td:not(.nested-table) {
-      color: @mediumblue;
-      border-bottom: solid 1px @lightgray;
-      padding: 5px 0;
-
-      &:not(:first-child) {
-        text-align: right;
-      }
-    }
-
-    th[ng-click] {
-      cursor: pointer;
-    }
-  }
-
-  #table-layout {
-    & > thead tr:first-child {
-      .font(12px,500,@impac-widget-text-color-medium);
-      text-transform: uppercase;
-      border-bottom: 2px solid @lightgray;
-      padding: 5px 0;
-    }
-
-    .nested-table {
-      i.fa { padding-right: 5px; }
-    }
-  }
-}
-
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -3339,6 +3311,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -3400,16 +3375,6 @@ chart-threshold {
   .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
-  }
-}
-
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
   }
 }
 
@@ -3475,6 +3440,16 @@ chart-threshold {
   .comparable-error h5 {
     margin-left: 13px;
     color: @impac-negative;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -4055,6 +4030,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -4083,12 +4064,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
-  }
-}
 .analytics .widget-item .content.sales-top-customers {
   .selector {
     border-bottom: dashed 1px #E6E6E6;
@@ -4167,6 +4142,47 @@ chart-threshold {
     &.focus, &.active { background-color: @impac-widget-link-color; }
   }
 
+}
+
+.analytics .settings.averages {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+    .period-line {
+      height: 28px;
+    }
+    .calculation-line {
+      height: 55px;
+    }
+  }
+  .dp-group {
+    float: right
+  }
+  .dp-label {
+    width: 30px;
+    text-align: right;
+  }
+  .dp-input {
+    width: 90px
+  }
+  select {
+    margin: 0;
+    float: right;
+    height: 20px;
+  }
 }
 
 .analytics .settings.attach-kpis {
@@ -4638,6 +4654,69 @@ chart-threshold {
     }
   }
 }
+table-layout {
+  #table-layout {
+    & > thead tr:first-child {
+      .font(12px,500,@impac-widget-text-color-medium);
+      text-transform: uppercase;
+      border-bottom: 2px solid @lightgray;
+      padding: 5px 0;
+    }
+
+    .nested-table {
+      i.fa {
+        cursor: pointer;
+        padding: 2px 5px;
+      }
+    }
+  }
+
+  .nested-table table {
+    // Offset the nested tables slightly to align rows perfectly with parent table rows.
+    margin-left: -1px;
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+
+    th,
+    td:not(.nested-table) {
+      color: @mediumblue;
+      border-bottom: solid 1px @lightgray;
+      padding: 5px 0 5px 5px;
+
+      &:first-child {
+        // Base border to simply fix alignment against selected / unselected rows.
+        border-left: 3px solid transparent;
+      }
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+
+    tr[ng-click].selectable {
+      cursor: pointer;
+
+      &:hover {
+        background-color: lighten(@impac-widget-selectable-color, 22%);
+      }
+    }
+  }
+}
+
+.analytics .widget-item .content.accounts-invoices-list {
+  // component specific styles
+  // -------------------------
+  .tall-widget();
+
+  transactions-list {
+    font-size: 12px;
+  }
+
+}
+
 .analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
 
@@ -4733,13 +4812,15 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-invoices-list {
-  // component specific styles
-  // -------------------------
-  .tall-widget();
+.analytics .widget-item .content.table-highstocks {
+  .drill-down-widget();
 
-  transactions-list {
-    font-size: 12px;
+  .table-highstocks-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
   }
 
+  .time-period-info {
+    text-align: right;
+    padding: 5px 25px;
+  }
 }
