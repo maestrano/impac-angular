@@ -43,9 +43,11 @@ module.controller('WidgetAccountsCashProjectionCtrl', ($scope, $q, $filter, $tim
   # == Widget Settings ============================================================================
   $scope.orgDeferred = $q.defer()
   $scope.sourceDeferred = $q.defer()
+  $scope.averageDeferred = $q.defer()
   settingsPromises = [
     $scope.orgDeferred.promise
     $scope.sourceDeferred.promise
+    $scope.averageDeferred.promise
   ]
 
   # == Sub-Components - Transactions list =========================================================

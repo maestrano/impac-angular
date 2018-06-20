@@ -2,6 +2,7 @@
 
 ### v1.9.0
 - [Improve Transaction-list component](https://github.com/maestrano/impac-angular/pull/559)
+- [IMPAC-865]: Include Average Profit configurations for Cash Projection
 
 ### v1.8.3
 - Adapt Trends calculations to latest frontend

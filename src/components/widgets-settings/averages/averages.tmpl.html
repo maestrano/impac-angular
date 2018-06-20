@@ -1,0 +1,91 @@
+<div class="settings averages">
+  <h5 translate>impac.widget.settings.averages.title</h5>
+
+  <div class="widget-lines-container">
+    <div class="widget-line">
+      <span translate >
+        impac.widget.settings.averages.include_option
+      </span>
+      <i ng-class="isToggleAverages() ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"
+        ng-click="toggleAverages()" />
+    </div>
+    <div class="widget-line period-line" ng-show="isToggleAverages()" >
+      <span translate >
+        impac.widget.settings.averages.granularity
+      </span>
+      <select ng-model="selectedAverages.period">
+        <option ng-repeat="option in granularityOptions" ng-value="option.value">{{option.name}}</option>
+      </select>
+    </div>
+    <div class="widget-line calculation-line"  ng-show="isToggleAverages()" >
+      <span translate >
+        impac.widget.settings.averages.period_for_calculation
+      </span>
+      <div class="dp-group">
+        <div>
+          <label class="dp-label">
+          from:
+          </label>
+          <input type="text"
+          class="btn btn-xs btn-default dp-input"
+          datepicker-options="calculation.from.datePicker.options"
+          uib-datepicker-popup="dd MMM yyyy"
+          ng-model="selectedAverages.calculation.from"
+          ng-click="calculation.from.datePicker.toggle()"
+          is-open="calculation.from.datePicker.opened"
+          close-text="Close"
+          on-open-focus="false"/>
+        </div>
+        <div>
+          <label class="dp-label">
+            to:
+          </label>
+          <input type="text"
+          class="btn btn-xs btn-default dp-input"
+          datepicker-options="calculation.to.datePicker.options"
+          uib-datepicker-popup="dd MMM yyyy"
+          ng-model="selectedAverages.calculation.to"
+          ng-click="calculation.to.datePicker.toggle()"
+          is-open="calculation.to.datePicker.opened"
+          close-text="Close"
+          on-open-focus="false" />
+        </div>
+      </div>
+    </div>
+    <div class="widget-line" ng-show="isToggleAverages()" >
+      <span translate >
+        impac.widget.settings.averages.period_for_application
+      </span>
+      <div class="dp-group">
+        <div>
+          <label class="dp-label">
+          from:
+          </label>
+          <input type="text"
+          class="btn btn-xs btn-default dp-input"
+          datepicker-options="application.from.datePicker.options"
+          uib-datepicker-popup="dd MMM yyyy"
+          ng-model="selectedAverages.application.from"
+          ng-click="application.from.datePicker.toggle()"
+          is-open="application.from.datePicker.opened"
+          close-text="Close"
+          on-open-focus="false"/>
+        </div>
+        <div>
+          <label class="dp-label">
+            to:
+          </label>
+          <input type="text"
+          class="btn btn-xs btn-default dp-input"
+          datepicker-options="application.to.datePicker.options"
+          uib-datepicker-popup="dd MMM yyyy"
+          ng-model="selectedAverages.application.to"
+          ng-click="application.to.datePicker.toggle()"
+          is-open="application.to.datePicker.opened"
+          close-text="Close"
+          on-open-focus="false" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
