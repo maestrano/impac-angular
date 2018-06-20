@@ -68,8 +68,12 @@ module.controller('WidgetAccountsInvoicesListCtrl', ($scope, $q, ImpacRoutes, Bo
   $scope.trxList.changeOverdueFilter = (overdueFilter) ->
     return if overdueFilter == $scope.trxList.overdue
     $scope.trxList.overdue = overdueFilter
+    todays_date = new Date()
+    formated_date = [todays_date.getFullYear(), (todays_date.getMonth() + 1), todays_date.getDate()].join('-')
     $scope.trxList.params.filter.balance = 'gt 0' if overdueFilter == 'overdue'
+    $scope.trxList.params.filter.due_date = ['lte', formated_date].join(' ') if overdueFilter == 'overdue'
     delete $scope.trxList.params.filter.balance if overdueFilter == 'all'
+    delete $scope.trxList.params.filter.due_date if overdueFilter == 'all'
     $scope.trxList.fetch()
 
   $scope.trxList.changeQuery = (query) ->
