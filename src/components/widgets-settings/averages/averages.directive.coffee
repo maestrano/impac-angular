@@ -10,7 +10,7 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
 
   w = $scope.parentWidget
   $scope.granularityOptions = GRANULARITY_OPTIONS
-  $scope.seletedAverages =
+  $scope.selectedAverages =
     enabled: false
     period: 'DAILY'
     calculation:
@@ -21,11 +21,11 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
       to: moment().add(3, 'months').toDate()
 
   $scope.toggleAverages = ->
-    $scope.seletedAverages.enabled = !$scope.seletedAverages.enabled
+    $scope.selectedAverages.enabled = !$scope.selectedAverages.enabled
 
   $scope.isToggleAverages = ->
-    if $scope.seletedAverages?
-      return $scope.seletedAverages.enabled
+    if $scope.selectedAverages?
+      return $scope.selectedAverages.enabled
 
   optionsFor = (type, opts) ->
     from:
@@ -41,8 +41,8 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
         options: opts
         toggle: -> this.opened = !this.opened
 
-  $scope.calculation = optionsFor($scope.seletedAverages.calculation, {maxDate: new Date()})
-  $scope.application = optionsFor($scope.seletedAverages.application, {minDate: new Date()})
+  $scope.calculation = optionsFor($scope.selectedAverages.calculation, {maxDate: new Date()})
+  $scope.application = optionsFor($scope.selectedAverages.application, {minDate: new Date()})
 
   # What will be passed to parentWidget
   setting = {}
@@ -57,31 +57,31 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
         averages = _.get(w, 'metadata.averages')
 
         if _.isPlainObject(averages)
-          $scope.seletedAverages = w.metadata.averages
-          applicationFrom = moment($scope.seletedAverages.application.from).toDate()
+          $scope.selectedAverages = w.metadata.averages
+          applicationFrom = moment($scope.selectedAverages.application.from).toDate()
           applicationFrom = if moment().isBefore(applicationFrom)
             applicationFrom 
           else
             moment().toDate()
 
-          $scope.seletedAverages.calculation.from = moment($scope.seletedAverages.calculation.from).toDate()
-          $scope.seletedAverages.calculation.to = moment($scope.seletedAverages.calculation.to).toDate()
-          $scope.seletedAverages.application.from = applicationFrom 
-          $scope.seletedAverages.application.to = moment($scope.seletedAverages.application.to).toDate()
+          $scope.selectedAverages.calculation.from = moment($scope.selectedAverages.calculation.from).toDate()
+          $scope.selectedAverages.calculation.to = moment($scope.selectedAverages.calculation.to).toDate()
+          $scope.selectedAverages.application.from = applicationFrom 
+          $scope.selectedAverages.application.to = moment($scope.selectedAverages.application.to).toDate()
 
         setting.isInitialized = true
     )
 
   setting.toMetadata = ->
     seletedAverages =
-      enabled: $scope.seletedAverages.enabled
-      period: $scope.seletedAverages.period
+      enabled: $scope.selectedAverages.enabled
+      period: $scope.selectedAverages.period
       calculation:
-        from: moment($scope.seletedAverages.calculation.from).format('YYYY-MM-DD')
-        to: moment($scope.seletedAverages.calculation.to).format('YYYY-MM-DD')
+        from: moment($scope.selectedAverages.calculation.from).format('YYYY-MM-DD')
+        to: moment($scope.selectedAverages.calculation.to).format('YYYY-MM-DD')
       application:
-        from: moment($scope.seletedAverages.application.from).format('YYYY-MM-DD')
-        to: moment($scope.seletedAverages.application.to).format('YYYY-MM-DD')
+        from: moment($scope.selectedAverages.application.from).format('YYYY-MM-DD')
+        to: moment($scope.selectedAverages.application.to).format('YYYY-MM-DD')
 
     return { averages: seletedAverages }
 

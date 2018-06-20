@@ -13,7 +13,7 @@
       <span translate >
         impac.widget.settings.averages.granularity
       </span>
-      <select ng-model="seletedAverages.period">
+      <select ng-model="selectedAverages.period">
         <option ng-repeat="option in granularityOptions" ng-value="option.value">{{option.name}}</option>
       </select>
     </div>
@@ -30,7 +30,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="calculation.from.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="seletedAverages.calculation.from"
+          ng-model="selectedAverages.calculation.from"
           ng-click="calculation.from.datePicker.toggle()"
           is-open="calculation.from.datePicker.opened"
           close-text="Close"
@@ -44,7 +44,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="calculation.to.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="seletedAverages.calculation.to"
+          ng-model="selectedAverages.calculation.to"
           ng-click="calculation.to.datePicker.toggle()"
           is-open="calculation.to.datePicker.opened"
           close-text="Close"
@@ -65,7 +65,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="application.from.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="seletedAverages.application.from"
+          ng-model="selectedAverages.application.from"
           ng-click="application.from.datePicker.toggle()"
           is-open="application.from.datePicker.opened"
           close-text="Close"
@@ -79,7 +79,7 @@
           class="btn btn-xs btn-default dp-input"
           datepicker-options="application.to.datePicker.options"
           uib-datepicker-popup="dd MMM yyyy"
-          ng-model="seletedAverages.application.to"
+          ng-model="selectedAverages.application.to"
           ng-click="application.to.datePicker.toggle()"
           is-open="application.to.datePicker.opened"
           close-text="Close"
