@@ -56,8 +56,9 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
         currentDashboard = config.currentDashboard
         averages = _.get(w, 'metadata.averages')
 
+        console.log('init')
         if _.isPlainObject(averages)
-          $scope.selectedAverages = w.metadata.averages
+          $scope.selectedAverages = _.clone(w.metadata.averages, true)
           applicationFrom = moment($scope.selectedAverages.application.from).toDate()
           applicationFrom = if moment().isBefore(applicationFrom)
             applicationFrom 
@@ -73,7 +74,7 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
     )
 
   setting.toMetadata = ->
-    seletedAverages =
+    selectedAverages =
       enabled: $scope.selectedAverages.enabled
       period: $scope.selectedAverages.period
       calculation:
@@ -83,7 +84,7 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
         from: moment($scope.selectedAverages.application.from).format('YYYY-MM-DD')
         to: moment($scope.selectedAverages.application.to).format('YYYY-MM-DD')
 
-    return { averages: seletedAverages }
+    return { averages: selectedAverages }
 
   w.settings.push(setting)
 
