@@ -1,9 +1,13 @@
 # Impac! Frontend Changelog
 
-### v1.9.0
+### v1.9.1
 - [IMPAC-865] Include Average Profit configurations for Cash Projection
-- [IMPAC-907] Resolved the demo mode display broken issue 
 - [IMPAC-903] Correct CSS for Trend list in edit mode 
+
+-------------------------------------------------------------
+
+### v1.9.0
+- [IMPAC-907] Resolved the demo mode display broken issue 
 - [IMPAC-792] Generic template for table + highstocks layouts
 - [Improve Transaction-list component](https://github.com/maestrano/impac-angular/pull/559)
 - [Enable source selector - add company name to source](https://github.com/maestrano/impac-angular/pull/557)
