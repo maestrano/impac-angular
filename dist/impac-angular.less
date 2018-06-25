@@ -2905,6 +2905,14 @@ dashboard-templates-selector {
   }
 }
 #trends-list {
+  table {
+    th, td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   .top {
     height: 40px;
     a.back-link { font-weight: normal; }
@@ -2940,9 +2948,6 @@ dashboard-templates-selector {
   select {
     margin-top: 4px;
   }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -3049,6 +3054,9 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 chart-threshold {
@@ -3296,6 +3304,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-accounting-values {
+  // Nothing particular yet for this template...
+}
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -3311,9 +3322,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-accounting-values {
-  // Nothing particular yet for this template...
-}
 .analytics .widget-item .content.accounts-assets-summary {
   .legend {
     text-align: left;
@@ -3375,6 +3383,16 @@ chart-threshold {
   .row.lines-group.cash {
     border-top: solid 1px;
     border-bottom: double;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -3443,16 +3461,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-custom-calculation {
   h3 {
     margin-top: 85px;
@@ -3509,18 +3517,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-expenses-revenue {
-  .legend {
-    font-weight: bold;
-  }
-
-  .settings.params-checkboxes {
-    font-size: 12px;
-    margin-left: 0px;
-    text-align: center;
-  }
-}
-
 .analytics .widget-item .content.accounts-live-balance {
   h3 {
     .center-bold(0px);
@@ -3559,6 +3555,18 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-expenses-revenue {
+  .legend {
+    font-weight: bold;
+  }
+
+  .settings.params-checkboxes {
+    font-size: 12px;
+    margin-left: 0px;
+    text-align: center;
+  }
+}
+
 .analytics .widget-item .content.accounts-payable-receivable {
   h3 {
     text-align: center;
@@ -3586,6 +3594,29 @@ chart-threshold {
   }
 
   .row.widget-line.header > [class*='col-'] { position: static; }
+}
+
+.analytics .widget-item .content.hr-employee-details {
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    max-height: none;
+    @media (min-width: @screen-md-min) { max-height: 200px; }
+    .scrollable();
+  }
+  .right-panel {
+    .details-container {
+      @media (min-width: @screen-md-min) { max-height: 220px; }
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
 }
 
 .analytics .widget-item .content.accounts-ratios {
@@ -3616,29 +3647,6 @@ chart-threshold {
       .price { text-align: right; }
     }
     .separator { width: 100%; }
-  }
-}
-
-.analytics .widget-item .content.hr-employee-details {
-  font-size: 12px;
-  .details-container {
-    padding: 0px;
-    max-height: none;
-    @media (min-width: @screen-md-min) { max-height: 200px; }
-    .scrollable();
-  }
-  .right-panel {
-    .details-container {
-      @media (min-width: @screen-md-min) { max-height: 220px; }
-    }
-    .legend {
-      margin-bottom: 5px;
-    }
-  }
-  .title {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 14px;
   }
 }
 
@@ -3923,9 +3931,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-margin {
-  // Nothing special yet for this template
-}
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -3965,6 +3970,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-margin {
+  // Nothing special yet for this template
+}
 .analytics .widget-item .content.sales-new-vs-existing-customers {
 
   .selector .selector-wrap {
@@ -4030,12 +4038,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
-  }
-}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -4064,6 +4066,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-top-customers {
   .selector {
     border-bottom: dashed 1px #E6E6E6;
@@ -4142,47 +4150,6 @@ chart-threshold {
     &.focus, &.active { background-color: @impac-widget-link-color; }
   }
 
-}
-
-.analytics .settings.averages {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-    .period-line {
-      height: 28px;
-    }
-    .calculation-line {
-      height: 55px;
-    }
-  }
-  .dp-group {
-    float: right
-  }
-  .dp-label {
-    width: 30px;
-    text-align: right;
-  }
-  .dp-input {
-    width: 90px
-  }
-  select {
-    margin: 0;
-    float: right;
-    height: 20px;
-  }
 }
 
 .analytics .settings.attach-kpis {
@@ -4284,9 +4251,65 @@ chart-threshold {
   }
 }
 
+.analytics .settings.averages {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+    .period-line {
+      height: 28px;
+    }
+    .calculation-line {
+      height: 55px;
+    }
+  }
+  .dp-group {
+    float: right
+  }
+  .dp-label {
+    width: 30px;
+    text-align: right;
+  }
+  .dp-input {
+    width: 90px
+  }
+  select {
+    margin: 0;
+    float: right;
+    height: 20px;
+  }
+}
+
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
+.analytics .settings.dates-picker {
+  h5 { display: none; }
+
+  button.btn.btn-sm {
+    line-height: 1;
+    &.date-button { margin: 0px 5px; }
+    &.btn-danger { display: none; }
+    &.btn-info { border-radius: 3px; }
+  }
+
+  .tooltip-inner { text-transform: none; }
+
+  .dropdown-menu > li > div > table { outline: none; }
+}
+
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -4306,21 +4329,6 @@ chart-threshold {
     height: auto;
     width: 100%;
   }
-}
-
-.analytics .settings.dates-picker {
-  h5 { display: none; }
-
-  button.btn.btn-sm {
-    line-height: 1;
-    &.date-button { margin: 0px 5px; }
-    &.btn-danger { display: none; }
-    &.btn-info { border-radius: 3px; }
-  }
-
-  .tooltip-inner { text-transform: none; }
-
-  .dropdown-menu > li > div > table { outline: none; }
 }
 
 .analytics .widget-item .content .settings.hist-mode-choser {
@@ -4585,6 +4593,25 @@ chart-threshold {
   }
 }
 
+.analytics .settings.time-period {
+  padding: 0px 5px;
+
+  select {
+    height: 22px;
+    width: 100%;
+  }
+  
+  & > .row {
+    margin: 0px -5px 7px -5px;
+    & > div {
+      padding: 0px 5px;
+      position: static;
+    }
+
+    .sub-setting { padding: 5px; }
+  }
+}
+
 .analytics .settings.tag-filter {
   padding: 0px 5px;
 
@@ -4618,25 +4645,6 @@ chart-threshold {
 
       .host { position: static; }
     }
-  }
-}
-
-.analytics .settings.time-period {
-  padding: 0px 5px;
-
-  select {
-    height: 22px;
-    width: 100%;
-  }
-  
-  & > .row {
-    margin: 0px -5px 7px -5px;
-    & > div {
-      padding: 0px 5px;
-      position: static;
-    }
-
-    .sub-setting { padding: 5px; }
   }
 }
 
