@@ -3,6 +3,7 @@
 ### v1.9.1
 - [IMPAC-865] Include Average Profit configurations for Cash Projection
 - [IMPAC-903] Correct CSS for Trend list in edit mode 
+- [IMPAC-905] Resolved bug with filtering past due invoices in invoices
 
 -------------------------------------------------------------
 
