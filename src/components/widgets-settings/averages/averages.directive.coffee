@@ -56,7 +56,6 @@ module.controller('SettingAveragesCtrl', ($scope, ImpacDashboardsSvc, GRANULARIT
         currentDashboard = config.currentDashboard
         averages = _.get(w, 'metadata.averages')
 
-        console.log('init')
         if _.isPlainObject(averages)
           $scope.selectedAverages = _.clone(w.metadata.averages, true)
           applicationFrom = moment($scope.selectedAverages.application.from).toDate()
