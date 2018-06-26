@@ -51,7 +51,7 @@ module.controller('WidgetTableHighstocksCtrl', ($scope, $q, $filter, $timeout, I
     _.include($scope.selectedElements, id)
 
   $scope.hasElements = ->
-    !_.isEmpty($scope.selectedElements)
+    !_.isEmpty($scope.selectedElements) && (w.width = 12)
 
   # Unique identifier for the chart object in the DOM
   $scope.chartId = ->
