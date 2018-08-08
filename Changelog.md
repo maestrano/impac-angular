@@ -1,5 +1,11 @@
 # Impac! Frontend Changelog
 
+### v1.6.11 | 2018
+
+[KAPPASUP-61] Improve messaging on live balance widget
+
+-------------------------------------------------------------
+
 ### v1.6.10 | 2018 - Week 15
 
 #### Adds
