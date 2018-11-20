@@ -20,13 +20,13 @@
       <div class="currency currency-centered">{{getCurrency()}}</div>
       <hr>
       <div class="headers legend">
-        <div class="price positive2">
-          {{getStatementBalance().column_7 ? (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) : 'Statement Not Available' }}
+        <div ng-class="(getStatementBalance().column_7 === 'not_ready') ? 'come-back-later' : 'price positive2'">
+          {{getStatementBalance().column_7 === 'not_ready' ? "We're preparing your data...please come back later" : (getStatementBalance().column_7 | mnoCurrency : getCurrency() : false) }}
         </div>
         <div class="statement-title"> Statement Balance </div>
         <div class="spacer"></div>
         <div class="price negative2">
-          {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : 'N/A' }}
+          {{getTotal().column_5 ? (getTotal().column_5 | mnoCurrency : getCurrency() : false) : '0.00' }}
         </div>
         <div class="balance-title"> Balance in Xero </div>
       </div>

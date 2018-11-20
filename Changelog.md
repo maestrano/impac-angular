@@ -1,5 +1,10 @@
 # Impac! Frontend Changelog
 
+### v1.9.2
+- Applies v1.8.4
+
+-------------------------------------------------------------
+
 ### v1.9.1
 - [IMPAC-865] Include Average Profit configurations for Cash Projection
 - [IMPAC-903] Correct CSS for Trend list in edit mode 
@@ -12,6 +17,11 @@
 - [IMPAC-792] Generic template for table + highstocks layouts
 - [Improve Transaction-list component](https://github.com/maestrano/impac-angular/pull/559)
 - [Enable source selector - add company name to source](https://github.com/maestrano/impac-angular/pull/557)
+
+-------------------------------------------------------------
+
+### v1.8.4
+- Applies v1.7.6
 
 -------------------------------------------------------------
 
@@ -65,6 +75,12 @@
 
 -------------------------------------------------------------
 
+### v1.7.6
+
+- Applies v1.6.11
+
+-------------------------------------------------------------
+
 ### v1.7.5 | 2018 - Week 20
 
 - [IMPAC-855] CF: Fix Payroll costs series legend image
@@ -89,6 +105,12 @@
 #### Dependencies
 - Impac! v1.7.2 (CSV export, Bolt custom actions)
 - Finance Bolt v1.7.1 (Cashflow capabilities, CSV export, reconcile/unreconcile custom actions)
+
+-------------------------------------------------------------
+
+### v1.6.11 | 2018
+
+- [KAPPASUP-61] Improve messaging on live balance widget
 
 -------------------------------------------------------------
 
