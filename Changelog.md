@@ -1,5 +1,11 @@
 # Impac! Frontend Changelog
 
+### v1.7.6
+
+- Applies v1.6.11
+
+-------------------------------------------------------------
+
 ### v1.7.5 | 2018 - Week 20
 
 - [IMPAC-855] CF: Fix Payroll costs series legend image
@@ -24,6 +30,12 @@
 #### Dependencies
 - Impac! v1.7.2 (CSV export, Bolt custom actions)
 - Finance Bolt v1.7.1 (Cashflow capabilities, CSV export, reconcile/unreconcile custom actions)
+
+-------------------------------------------------------------
+
+### v1.6.11 | 2018
+
+- [KAPPASUP-61] Improve messaging on live balance widget
 
 -------------------------------------------------------------
 
