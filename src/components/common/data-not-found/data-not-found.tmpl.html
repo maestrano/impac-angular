@@ -3,11 +3,13 @@
   <div class="message" ng-show="messageVisible" >
     <div class="title" translate>{{ needsCustomMessage ? content.liveBTitle : content.title }}</div>
     <p translate>{{ needsCustomMessage ? content.liveBMessage : content.title }}</p>
-    <button class="btn btn-xs btn-default" ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</button>
+    <button class="btn btn-xs btn-default" ng-click="goToMarketplace()" ng-if="content.linkMessage" translate>{{ content.linkMessage }}</button>
     <button class="btn btn-xs btn-warning" ng-click="hide()" translate>{{ content.seeExample }}</button>
   </div>
   <div class="example" ng-hide="messageVisible">
-    {{ content.demoData | translate }} -
-    <a ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</a>
+    {{ content.demoData | translate }}
+    <span ng-if="content.linkMessage"> -
+      <a ng-click="goToMarketplace()" translate>{{ content.linkMessage }}</a>
+    </span>
   </div>
 </div>
