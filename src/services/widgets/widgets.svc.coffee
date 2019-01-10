@@ -225,7 +225,7 @@ angular
                   content: content,
                   configOptions: settingOptions,
                   originalName: name,
-                  demoData: params.demoData
+                  demoData: params.demo_data
                 }
                 initWidget(widget)
                 $q.resolve(widget)
