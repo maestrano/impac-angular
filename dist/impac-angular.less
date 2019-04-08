@@ -2595,6 +2595,46 @@ dashboard-templates-selector {
   overflow-wrap: break-word;
 }
 
+#duplicate-transactions-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-striped {
+    tr.origin:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+    .fa.fa-times {
+      color: @brand-danger;
+      cursor: pointer;
+    }
+
+    tr.total {
+      font-weight: bold;
+      &.invoices {
+        background-color: lighten(@impac-positive, 20%);
+      }
+      &.bills {
+        background-color: lighten(@impac-negative, 20%);
+      }
+    }
+  }
+}
+
 .analytics .widget-item .content .data-not-found,
 .analytics .kpi .data-not-found {
   text-align: center;
@@ -2668,22 +2708,49 @@ dashboard-templates-selector {
   .overlay, .title, .btn, .example { display: none; }
 }
 
-#duplicate-transactions-list {
+#transactions-list {
   .top {
     height: 40px;
-    a.back-link { font-weight: normal; }
+    position: relative;
+
+    .back {
+      position: absolute;
+      .btn.btn-sm { margin-top: -4px; }
+      .search-bar {
+        width: 180px;
+        display: inline;
+        height: 30px;
+      }
+    }
+    .resource-type {
+      margin: auto;
+      display: flex;
+      width: 370px;
+      justify-content: center;
+      align-items: center;
+      @media (max-width: @screen-xs-max) {
+        margin: 0;
+        float: right;
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+    }
+    .btn-group { margin-left: 3px; }
+    .no-margin-top { margin-top: 0px }
+  }
+
+  .bottom {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .pagination { margin: 0px; }
   }
 
-  .table-striped {
-    tr.origin:nth-of-type(odd) {
-      background-color: #f9f9f9;
-    }
-  }
-
   .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    max-height: ~"calc(@{impac-big-widget-size} - 100px)";
     overflow: auto;
+    width: 100%;
 
     div[uib-datepicker-popup-wrap] {
       display: inline-block;
@@ -2691,19 +2758,25 @@ dashboard-templates-selector {
 
     input.btn.btn-xs { margin-top: -2px; }
     button.btn.reset-date { margin-top: -2px; }
-    .fa.fa-times {
-      color: @brand-danger;
+
+    .actions {
       cursor: pointer;
+      .fa.fa-times { color: @brand-danger; }
     }
 
     tr.total {
       font-weight: bold;
       &.invoices {
-        background-color: lighten(@impac-positive, 20%);
+        background-color: lighten(#8eab71, 20%);
       }
       &.bills {
-        background-color: lighten(@impac-negative, 20%);
+        background-color: lighten(#c76379, 20%);
       }
+    }
+
+    td > .expected-payment-date {
+      display: flex;
+      .reset-date { margin-left: 3px; }
     }
   }
 }
@@ -2831,79 +2904,6 @@ dashboard-templates-selector {
     }
   }
 }
-#transactions-list {
-  .top {
-    height: 40px;
-    position: relative;
-
-    .back {
-      position: absolute;
-      .btn.btn-sm { margin-top: -4px; }
-      .search-bar {
-        width: 180px;
-        display: inline;
-        height: 30px;
-      }
-    }
-    .resource-type {
-      margin: auto;
-      display: flex;
-      width: 370px;
-      justify-content: center;
-      align-items: center;
-      @media (max-width: @screen-xs-max) {
-        margin: 0;
-        float: right;
-        justify-content: flex-end;
-        align-items: flex-end;
-      }
-    }
-    .btn-group { margin-left: 3px; }
-    .no-margin-top { margin-top: 0px }
-  }
-
-  .bottom {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .pagination { margin: 0px; }
-  }
-
-  .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 100px)";
-    overflow: auto;
-    width: 100%;
-
-    div[uib-datepicker-popup-wrap] {
-      display: inline-block;
-    }
-
-    input.btn.btn-xs { margin-top: -2px; }
-    button.btn.reset-date { margin-top: -2px; }
-
-    .actions {
-      cursor: pointer;
-      .fa.fa-times { color: @brand-danger; }
-    }
-
-    tr.total {
-      font-weight: bold;
-      &.invoices {
-        background-color: lighten(#8eab71, 20%);
-      }
-      &.bills {
-        background-color: lighten(#c76379, 20%);
-      }
-    }
-
-    td > .expected-payment-date {
-      display: flex;
-      .reset-date { margin-left: 3px; }
-    }
-  }
-}
-
 #trends-list {
   table {
     th, td {
@@ -3146,59 +3146,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 15px;
@@ -3260,6 +3207,59 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -3307,6 +3307,18 @@ chart-threshold {
 .analytics .widget-item .content.accounts-accounting-values {
   // Nothing particular yet for this template...
 }
+.analytics .widget-item .content.accounts-assets-summary {
+  .legend {
+    text-align: left;
+    max-height: 115px;
+
+    .title {
+      text-align: center;
+      border-bottom: dashed 1px @impac-widget-borders-color;
+    }
+  }
+}
+
 .analytics .widget-item .content.accounts-assets-liability-summary {
   .param-selector {
     text-align: center;
@@ -3322,21 +3334,21 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-assets-summary {
-  .legend {
-    text-align: left;
-    max-height: 115px;
-
-    .title {
-      text-align: center;
-      border-bottom: dashed 1px @impac-widget-borders-color;
-    }
-  }
-}
-
 .analytics .widget-item .content.accounts-assets-vs-liabilities {
   .legend > .title span {
     margin-left: 3px;
+  }
+}
+
+.analytics .widget-item .content.accounts-cash-summary {
+  .drill-down-widget();
+  .right-panel .widget-lines-container {
+    max-height: 215px;
+  }
+
+  .row.lines-group.cash {
+    border-top: solid 1px;
+    border-bottom: double;
   }
 }
 
@@ -3348,6 +3360,16 @@ chart-threshold {
 
   .price {
     .center-bold(0px);
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -3371,28 +3393,6 @@ chart-threshold {
   .no-data-block {
     .center-thin();
     margin: 15px 0px;
-  }
-}
-
-.analytics .widget-item .content.accounts-cash-summary {
-  .drill-down-widget();
-  .right-panel .widget-lines-container {
-    max-height: 215px;
-  }
-
-  .row.lines-group.cash {
-    border-top: solid 1px;
-    border-bottom: double;
-  }
-}
-
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
   }
 }
 
@@ -3573,20 +3573,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3602,6 +3588,20 @@ chart-threshold {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3672,18 +3672,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content.hr-leaves-balance{
-  .employee-name {
-    text-align: center;
-  }
-  .balance {
-    .center-bold(0px);
-  }
-  h3 {
-    margin-top: 33px;
-    text-align: center;
-  }
-}
 .analytics .widget-item .content.hr-leaves-schedule{
   .fc-button {
     height: 22px;
@@ -3704,6 +3692,18 @@ chart-threshold {
     color: @impac-widget-text-color;
   }
 }
+.analytics .widget-item .content.hr-leaves-balance{
+  .employee-name {
+    text-align: center;
+  }
+  .balance {
+    .center-bold(0px);
+  }
+  h3 {
+    margin-top: 33px;
+    text-align: center;
+  }
+}
 .analytics .widget-item .content.hr-payroll-summary {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -3714,12 +3714,6 @@ chart-threshold {
 .analytics .widget-item .content.hr-payroll-taxes {
   // Nothing special yet for this template
 }
-.analytics .widget-item {
-  .content.hr-salaries-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.hr-superannuation-accruals {
   h3 {
     margin-top: 63px;
@@ -3735,6 +3729,18 @@ chart-threshold {
     .center-bold(0px);
   }
 }
+.analytics .widget-item {
+  .content.hr-salaries-summary {
+    .expandable-filterable-widget();
+  }
+}
+
+.analytics .widget-item  {
+  .content.hr-workforce-summary {
+    .expandable-filterable-widget();
+  }
+}
+
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3743,12 +3749,6 @@ chart-threshold {
     max-height: 210px;
   }
 }
-.analytics .widget-item  {
-  .content.hr-workforce-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
@@ -3797,6 +3797,19 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-comparison {
+  .drill-down-widget();
+  .widget-lines-container {
+    max-height: 530px;
+  }
+  .right-panel .widget-lines-container {
+    max-height: 250px;
+  }
+  .currency-conversions {
+    img { margin-top: -2px; }
+  }
+}
+
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3841,19 +3854,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content.sales-comparison {
-  .drill-down-widget();
-  .widget-lines-container {
-    max-height: 530px;
-  }
-  .right-panel .widget-lines-container {
-    max-height: 250px;
-  }
-  .currency-conversions {
-    img { margin-top: -2px; }
-  }
-}
-
 .analytics .widget-item .content.sales-customer-details {
   .loader {
     font-size: 14px;
@@ -3898,6 +3898,10 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-leads-funnel {
+  .funnel-widget();
+}
+
 .analytics .widget-item .content.sales-growth {
   .price {
     .center-bold(0px);
@@ -3908,10 +3912,6 @@ chart-threshold {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-
-.analytics .widget-item .content.sales-leads-funnel {
-  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-leads-list {
@@ -3940,6 +3940,30 @@ chart-threshold {
 .analytics .widget-item .content.sales-margin {
   // Nothing special yet for this template
 }
+.analytics .widget-item .content.sales-new-vs-existing-customers {
+
+  .selector .selector-wrap {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .chart-container {
+    margin-top: 15px;
+  }
+
+  .legend {
+    margin-top: 5px;
+    font-weight: bold;
+    max-height: 77px !important;
+
+    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
+
+    .total {
+      color: #5B6667;
+      font-size: 14px;
+    }
+  }
+}
+
 .analytics .widget-item .content.sales-net-sales {
   .value-container, .operator {
     // float: left;
@@ -3979,28 +4003,8 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-new-vs-existing-customers {
-
-  .selector .selector-wrap {
-    display: inline-block;
-    margin: 0 5px;
-  }
-  .chart-container {
-    margin-top: 15px;
-  }
-
-  .legend {
-    margin-top: 5px;
-    font-weight: bold;
-    max-height: 77px !important;
-
-    .row { margin: 0px -5px; &>div { padding: 0px 5px; }}
-
-    .total {
-      color: #5B6667;
-      font-size: 14px;
-    }
-  }
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-number-of-leads {
@@ -4030,10 +4034,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -4044,6 +4044,12 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-summary {
+  .simple-summary-widget();
+  .selector {
+    margin-bottom: 5px;
+  }
+}
 .analytics .widget-item .content.sales-segmented-turnover {
   h3.right {
     margin-top: 55px;
@@ -4072,12 +4078,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-summary {
-  .simple-summary-widget();
-  .selector {
-    margin-bottom: 5px;
-  }
-}
 .analytics .widget-item .content.sales-top-customers {
   .selector {
     border-bottom: dashed 1px #E6E6E6;
@@ -4298,9 +4298,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content .settings.select-account {
-  padding: 0px 5px;
-}
 .analytics .widget-item .content .settings.chart-filters {
   .row {
     margin: 0px;
@@ -4322,6 +4319,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content .settings.select-account {
+  padding: 0px 5px;
+}
 .analytics .settings.dates-picker {
   h5 { display: none; }
 
@@ -4720,15 +4720,38 @@ table-layout {
   }
 }
 
-.analytics .widget-item .content.accounts-invoices-list {
-  // component specific styles
-  // -------------------------
+.analytics .widget-item .content.accounts-cash-projection {
   .tall-widget();
+
+  .cash-projection-chart {
+    height: ~"calc(@{impac-big-widget-size} - 50px)";
+  }
+
+  .highcharts-legend-item {
+    rect.highcharts-point {
+      display: none;
+    }
+
+    span {
+      width: 110px;
+      text-align: center;
+      img {
+        text-align: center;
+        width: 55px;
+        height: 25px;
+      }
+    }
+  }
+
+  .dates-picker {
+    display: inline-block;
+    float: right;
+    font-size: 12px;
+  }
 
   transactions-list {
     font-size: 12px;
   }
-
 }
 
 .analytics .widget-item .content.accounts-cash-balance {
@@ -4792,38 +4815,15 @@ table-layout {
   }
 }
 
-.analytics .widget-item .content.accounts-cash-projection {
+.analytics .widget-item .content.accounts-invoices-list {
+  // component specific styles
+  // -------------------------
   .tall-widget();
-
-  .cash-projection-chart {
-    height: ~"calc(@{impac-big-widget-size} - 50px)";
-  }
-
-  .highcharts-legend-item {
-    rect.highcharts-point {
-      display: none;
-    }
-
-    span {
-      width: 110px;
-      text-align: center;
-      img {
-        text-align: center;
-        width: 55px;
-        height: 25px;
-      }
-    }
-  }
-
-  .dates-picker {
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-  }
 
   transactions-list {
     font-size: 12px;
   }
+
 }
 
 .analytics .widget-item .content.table-highstocks {
