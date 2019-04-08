@@ -85,6 +85,9 @@ angular
       #=======================================
       # Public methods available as service
       #=======================================
+      service.configureRoutes = (configOptions) ->
+        angular.extend(defaults, configOptions)
+
       service.dashboards =
         index: (orgId=null) ->
           if defaults.dashboards.index

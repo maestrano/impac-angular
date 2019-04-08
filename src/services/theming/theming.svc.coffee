@@ -147,6 +147,9 @@ angular
       service.get = ->
         return options
 
+      service.configure = (configOptions) ->
+        angular.merge(options, configOptions)
+
       service.getDhbLabelName = ->
         designerModeOpts = options.dhbConfig.designerMode
         if designerModeOpts.enabled then designerModeOpts.dhbLabelName else 'Dashboard'
