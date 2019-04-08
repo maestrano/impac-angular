@@ -2854,6 +2854,30 @@ dashboard-templates-selector {
   }
 }
 
+#trends-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+
+    .listing {
+      outline-style: none;
+    }
+  }
+}
+
 #trends-add {
   .widget-popup();
   .message {
@@ -2900,30 +2924,6 @@ dashboard-templates-selector {
     }
   }
 }
-#trends-list {
-  .top {
-    height: 40px;
-    a.back-link { font-weight: normal; }
-    .pagination { margin: 0px; }
-  }
-
-  .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
-    overflow: auto;
-
-    div[uib-datepicker-popup-wrap] {
-      display: inline-block;
-    }
-
-    input.btn.btn-xs { margin-top: -2px; }
-    button.btn.reset-date { margin-top: -2px; }
-
-    .listing {
-      outline-style: none;
-    }
-  }
-}
-
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
@@ -3038,6 +3038,42 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+.analytics .widget-item .content .table-layout {
+
+  table {
+    width: 100%;
+    max-width: 100%;
+
+    th,
+    td:not(.nested-table) {
+      color: @mediumblue;
+      border-bottom: solid 1px @lightgray;
+      padding: 5px 0;
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+
+    th[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  #table-layout {
+    & > thead tr:first-child {
+      .font(12px,500,@impac-widget-text-color-medium);
+      text-transform: uppercase;
+      border-bottom: 2px solid @lightgray;
+      padding: 5px 0;
+    }
+
+    .nested-table {
+      i.fa { padding-right: 5px; }
+    }
+  }
 }
 
 chart-threshold {
@@ -3235,12 +3271,6 @@ chart-threshold {
   }
 }
 
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
-}
-
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -3283,6 +3313,12 @@ chart-threshold {
       }
     }
   }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -3554,20 +3590,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3583,6 +3605,20 @@ chart-threshold {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3716,6 +3752,12 @@ chart-threshold {
     .center-bold(0px);
   }
 }
+.analytics .widget-item  {
+  .content.hr-workforce-summary {
+    .expandable-filterable-widget();
+  }
+}
+
 .analytics .widget-item .content.hr-timesheets {
   .currency {
     font-size: 14px;
@@ -3724,12 +3766,6 @@ chart-threshold {
     max-height: 210px;
   }
 }
-.analytics .widget-item  {
-  .content.hr-workforce-summary {
-    .expandable-filterable-widget();
-  }
-}
-
 .analytics .widget-item .content.invoices-aged-payables-receivables {
   .drill-down-widget();
 
@@ -3770,14 +3806,6 @@ chart-threshold {
 .analytics .widget-item .content.invoices-summary {
   .simple-summary-widget();
 }
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
-
-  .widget-lines-container {
-    max-height: 238px;
-  }
-}
-
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3832,6 +3860,14 @@ chart-threshold {
   }
   .currency-conversions {
     img { margin-top: -2px; }
+  }
+}
+
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
   }
 }
 
@@ -4126,42 +4162,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content .table-layout {
-
-  table {
-    width: 100%;
-    max-width: 100%;
-
-    th,
-    td:not(.nested-table) {
-      color: @mediumblue;
-      border-bottom: solid 1px @lightgray;
-      padding: 5px 0;
-
-      &:not(:first-child) {
-        text-align: right;
-      }
-    }
-
-    th[ng-click] {
-      cursor: pointer;
-    }
-  }
-
-  #table-layout {
-    & > thead tr:first-child {
-      .font(12px,500,@impac-widget-text-color-medium);
-      text-transform: uppercase;
-      border-bottom: 2px solid @lightgray;
-      padding: 5px 0;
-    }
-
-    .nested-table {
-      i.fa { padding-right: 5px; }
-    }
-  }
-}
-
 .analytics .widget-item .content .settings.select-account {
   padding: 0px 5px;
 }
@@ -4535,26 +4535,6 @@ chart-threshold {
     }
   }
 }
-.analytics .settings.payroll {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
-
 .analytics .settings.source-selector {
   .widget-lines-container {
     .widget-line {
@@ -4568,6 +4548,26 @@ chart-threshold {
           color: @impac-widget-link-color;
         }
         &.fa-toggle-off, &.fa-circle-thin {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+
+.analytics .settings.payroll {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off {
           color: @impac-widget-text-color-medium;
         }
       }
