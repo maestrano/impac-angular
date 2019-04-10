@@ -282,8 +282,7 @@ angular
 
         org = ImpacMainSvc.config.currentOrganization
 
-        unless dashboard.currency?
-          dashboard.currency = org.currency || 'USD'
+        dashboard.currency = ImpacMainSvc.config.userData.settings.default_widget_currency || org.currency || 'USD'
 
         data = { dashboard: dashboard }
 
