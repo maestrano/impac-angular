@@ -58,7 +58,9 @@ module.component('impacDashboardCreate', {
         _.isEmpty(ctrl.modalScope.dashboard.name) || !_.some(_.pluck(ctrl.modalScope.organizations, 'selected'))
 
     ctrl.openModal = ->
-      ctrl.modalScope.dashboard.name = null
+      # Re-init the modal scope when opening the modal
+      # Otherwise previous dashboard options are kept when creating multiple dashboard in a row
+      ctrl.modalScope.dashboard = {}
       ctrl.modalScope.source.mode = 'single'
       modalConfig =
         backdrop: 'static'
