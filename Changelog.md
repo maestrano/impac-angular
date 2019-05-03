@@ -1,5 +1,10 @@
 # Impac! Frontend Changelog
 
+### v1.8.6
+- Fix dashboard creation
+
+-------------------------------------------------------------
+
 ### v1.8.5
 - [KAPP-175] Allow runtime services reconfiguration
 - Fix Demo Data
