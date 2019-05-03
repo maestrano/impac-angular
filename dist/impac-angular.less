@@ -2060,6 +2060,169 @@ dashboard-templates-selector {
   }
 }
 
+.analytics kpis-bar > .kpis {
+  position: relative;
+  .actions {
+    margin-bottom: 12px;
+    @media screen and (max-width: 675px) {
+      position: relative;
+    }
+
+    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
+
+    a { color: white; }
+
+    button.im-fab.add-kpis,
+    button.im-fab.edit-kpis,
+    button.im-fab.toggle-show-content {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      transition: all 0.28s ease-in;
+      &.im-primary {
+        background: #4c4749;
+        &.disabled {
+          background: #b2b5c1;
+          cursor: not-allowed;
+          a { cursor: not-allowed; }
+        }
+        &:hover:not(.disabled) {
+          background: black;
+        }
+      }
+    }
+
+    button.im-fab.toggle-show-content {
+      top: -15px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: -14px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.add-kpis {
+      top: 30px;
+      right: -15px;
+      z-index: 10;
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 33px;
+        bottom: 0;
+      }
+    }
+
+    button.im-fab.edit-kpis {
+      top: 75px;
+      right: -15px;
+      z-index: 10;
+      &.editing {
+        background: @kpi-settings-focus-color;
+        &:hover:not(.disabled) {
+          background: lighten(@kpi-settings-focus-color, 15%);
+        }
+      }
+      @media screen and (max-width: 675px) {
+        top: -30px;
+        right: 79px;
+        bottom: 0;
+      }
+    }
+  }
+
+  .content-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .content {
+    padding: 15px;
+    background-color: @kpis-bar-background-color;
+    box-shadow: @kpis-bar-box-shadow;
+
+    @media screen and (min-width: 725px) {
+      padding: 0 60px;
+    }
+
+    @media screen and (max-width: 675px) {
+      margin-top: 25px;
+    }
+
+    .impac-kpi {
+      .column-gutter(5px);
+
+      @media screen and (min-width: 1200px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .kpi.add {
+        .kpi-show .caption {
+          white-space: inherit;
+        }
+      }
+    }
+
+
+    .title {
+      .text-center {
+        line-height: 3;
+        font-variant: small-caps;
+        font-size: larger;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        background-color: #d1e55c;
+        color: #4f5959;
+        box-shadow: 0px 1px 3px -1px;
+      }
+      .no-kpi-templates {
+        color: #afadb5;
+        font-weight: 500;
+      }
+    }
+
+    .add-bar {
+      border-bottom: dashed 1px;
+    }
+
+    .kpi-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: @kpi-max-height + 20px;
+    }
+
+    .dates-picker-container {
+      width: 40%;
+      margin: 0 auto;
+
+      .sdp-from-label,
+      .sdp-to-label {
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.analytics kpis-bar {
+  display: block;
+}
+
+.analytics kpis-bar > .key-stats {
+  background-color: white;
+  padding: 5px 0px;
+}
+
+.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
+
 .analytics .impac-kpi .kpi {
   position: relative;
   max-width: 220px;
@@ -2297,169 +2460,6 @@ dashboard-templates-selector {
 .analytics kpis-bar > .key-stats .kpi {
   min-height: 80px;
 }
-
-.analytics kpis-bar > .kpis {
-  position: relative;
-  .actions {
-    margin-bottom: 12px;
-    @media screen and (max-width: 675px) {
-      position: relative;
-    }
-
-    .impac-material(@kpi-settings-focus-color, @kpi-settings-error-color);
-
-    a { color: white; }
-
-    button.im-fab.add-kpis,
-    button.im-fab.edit-kpis,
-    button.im-fab.toggle-show-content {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      transition: all 0.28s ease-in;
-      &.im-primary {
-        background: #4c4749;
-        &.disabled {
-          background: #b2b5c1;
-          cursor: not-allowed;
-          a { cursor: not-allowed; }
-        }
-        &:hover:not(.disabled) {
-          background: black;
-        }
-      }
-    }
-
-    button.im-fab.toggle-show-content {
-      top: -15px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: -14px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.add-kpis {
-      top: 30px;
-      right: -15px;
-      z-index: 10;
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 33px;
-        bottom: 0;
-      }
-    }
-
-    button.im-fab.edit-kpis {
-      top: 75px;
-      right: -15px;
-      z-index: 10;
-      &.editing {
-        background: @kpi-settings-focus-color;
-        &:hover:not(.disabled) {
-          background: lighten(@kpi-settings-focus-color, 15%);
-        }
-      }
-      @media screen and (max-width: 675px) {
-        top: -30px;
-        right: 79px;
-        bottom: 0;
-      }
-    }
-  }
-
-  .content-buttons {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .content {
-    padding: 15px;
-    background-color: @kpis-bar-background-color;
-    box-shadow: @kpis-bar-box-shadow;
-
-    @media screen and (min-width: 725px) {
-      padding: 0 60px;
-    }
-
-    @media screen and (max-width: 675px) {
-      margin-top: 25px;
-    }
-
-    .impac-kpi {
-      .column-gutter(5px);
-
-      @media screen and (min-width: 1200px) {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .kpi.add {
-        .kpi-show .caption {
-          white-space: inherit;
-        }
-      }
-    }
-
-
-    .title {
-      .text-center {
-        line-height: 3;
-        font-variant: small-caps;
-        font-size: larger;
-      }
-      .badge {
-        position: absolute;
-        top: 8px;
-        left: -10px;
-        background-color: #d1e55c;
-        color: #4f5959;
-        box-shadow: 0px 1px 3px -1px;
-      }
-      .no-kpi-templates {
-        color: #afadb5;
-        font-weight: 500;
-      }
-    }
-
-    .add-bar {
-      border-bottom: dashed 1px;
-    }
-
-    .kpi-loader {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: @kpi-max-height + 20px;
-    }
-
-    .dates-picker-container {
-      width: 40%;
-      margin: 0 auto;
-
-      .sdp-from-label,
-      .sdp-to-label {
-        text-transform: uppercase;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-.analytics kpis-bar {
-  display: block;
-}
-
-.analytics kpis-bar > .key-stats {
-  background-color: white;
-  padding: 5px 0px;
-}
-
-.analytics.pdf-mode kpis-bar > .kpis .actions { display: none; }
 
 .widget-item {
   transition: width 0.3s;
@@ -2854,30 +2854,6 @@ dashboard-templates-selector {
   }
 }
 
-#trends-list {
-  .top {
-    height: 40px;
-    a.back-link { font-weight: normal; }
-    .pagination { margin: 0px; }
-  }
-
-  .table-container {
-    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
-    overflow: auto;
-
-    div[uib-datepicker-popup-wrap] {
-      display: inline-block;
-    }
-
-    input.btn.btn-xs { margin-top: -2px; }
-    button.btn.reset-date { margin-top: -2px; }
-
-    .listing {
-      outline-style: none;
-    }
-  }
-}
-
 #trends-add {
   .widget-popup();
   .message {
@@ -2924,14 +2900,35 @@ dashboard-templates-selector {
     }
   }
 }
+#trends-list {
+  .top {
+    height: 40px;
+    a.back-link { font-weight: normal; }
+    .pagination { margin: 0px; }
+  }
+
+  .table-container {
+    max-height: ~"calc(@{impac-big-widget-size} - 60px)";
+    overflow: auto;
+
+    div[uib-datepicker-popup-wrap] {
+      display: inline-block;
+    }
+
+    input.btn.btn-xs { margin-top: -2px; }
+    button.btn.reset-date { margin-top: -2px; }
+
+    .listing {
+      outline-style: none;
+    }
+  }
+}
+
 .analytics .dashboard-settings.currency {
   text-align: right;
   select {
     margin-top: 4px;
   }
-}
-
-.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .dashboard-settings.sync-apps {
@@ -3038,6 +3035,9 @@ dashboard-templates-selector {
   .fa.error { color: @red; }
   .fa.warn { color: @fluroorange; }
   .fa.success { color: @flurogreen; }
+}
+
+.analytics .dashboard-settings.pdf-mode {
 }
 
 .analytics .widget-item .content .table-layout {
@@ -3163,53 +3163,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .editable-title {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-  height: 22px;
-
-  .title {
-    text-transform: @impac-widget-title-text-transform;
-    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
-    cursor: text;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.9;
-  }
-
-  .editable-wrap {
-    position: relative;
-    height: 20px;
-    min-width: 100%;
-    // otherwise, white-space is overriden in mno-enterprise
-    white-space: nowrap;
-
-    .editable-controls {
-      min-width: 100%;
-
-      .editable-input {
-        height: 20px;
-        font-size: 12px;
-        text-transform: @impac-widget-title-text-transform;
-        // 65px is .editable-buttons width
-        width: ~"calc(100% - 65px)";
-        padding: 0px 3px;
-      }
-
-      .editable-buttons {
-        background-color: @impac-widget-title-bg;
-        button {
-          margin: 0px 0px 0px 5px;
-          height: 20px;
-          padding: 0px 5px;
-        }
-      }
-    }
-  }
-}
-
 .analytics .widget-item .info-panel {
   position: absolute;
   top: 15px;
@@ -3271,6 +3224,59 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .editable-title {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+
+  .title {
+    text-transform: @impac-widget-title-text-transform;
+    .font(@impac-widget-title-text-size,600,@impac-widget-title-text-color);
+    cursor: text;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.9;
+  }
+
+  .editable-wrap {
+    position: relative;
+    height: 20px;
+    min-width: 100%;
+    // otherwise, white-space is overriden in mno-enterprise
+    white-space: nowrap;
+
+    .editable-controls {
+      min-width: 100%;
+
+      .editable-input {
+        height: 20px;
+        font-size: 12px;
+        text-transform: @impac-widget-title-text-transform;
+        // 65px is .editable-buttons width
+        width: ~"calc(100% - 65px)";
+        padding: 0px 3px;
+      }
+
+      .editable-buttons {
+        background-color: @impac-widget-title-bg;
+        button {
+          margin: 0px 0px 0px 5px;
+          height: 20px;
+          padding: 0px 5px;
+        }
+      }
+    }
+  }
+}
+
+.analytics .time-period-info {
+  font-size: 11px;
+  color: #ABC4C6;
+  text-transform: uppercase;
+}
+
 .analytics .widget-item .top-line .top-buttons {
   text-align: right;
   margin-top: -1px;
@@ -3313,12 +3319,6 @@ chart-threshold {
       }
     }
   }
-}
-
-.analytics .time-period-info {
-  font-size: 11px;
-  color: #ABC4C6;
-  text-transform: uppercase;
 }
 
 .analytics .widget-item .content.accounts-accounting-values {
@@ -3403,16 +3403,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.accounts-class-comparison {
-  .param-selector {
-    text-align: center;
-  }
-  .widget-lines-container {
-    max-height: 94px;
-    color: #626d6d;
-  }
-}
-
 .analytics .widget-item .content.accounts-comparison {
   .tall-widget();
 
@@ -3475,6 +3465,16 @@ chart-threshold {
   .comparable-error h5 {
     margin-left: 13px;
     color: @impac-negative;
+  }
+}
+
+.analytics .widget-item .content.accounts-class-comparison {
+  .param-selector {
+    text-align: center;
+  }
+  .widget-lines-container {
+    max-height: 94px;
+    color: #626d6d;
   }
 }
 
@@ -3590,6 +3590,20 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.accounts-payable-receivable {
+  h3 {
+    text-align: center;
+  }
+  .legend {
+    font-weight: bold;
+  }
+  .payable {
+    margin-top: 15px;
+  }
+  .price {
+    .center-bold(0px);
+  }
+}
 .analytics .widget-item .content.accounts-profit-and-loss {
   .drill-down-widget();
 
@@ -3605,20 +3619,6 @@ chart-threshold {
   .row.widget-line.header > [class*='col-'] { position: static; }
 }
 
-.analytics .widget-item .content.accounts-payable-receivable {
-  h3 {
-    text-align: center;
-  }
-  .legend {
-    font-weight: bold;
-  }
-  .payable {
-    margin-top: 15px;
-  }
-  .price {
-    .center-bold(0px);
-  }
-}
 .analytics .widget-item .content.accounts-ratios {
   
   .left-panel {
@@ -3783,6 +3783,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.invoices-summary {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.invoices-list {
   .simple-list-widget();
 
@@ -3803,9 +3806,45 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.invoices-summary {
-  .simple-summary-widget();
+.analytics .widget-item .content.sales-aged {
+  .tall-widget();
+
+  .widget-lines-container {
+    max-height: 238px;
+  }
 }
+
+.analytics .widget-item .content.sales-customer-details {
+  .loader {
+    font-size: 14px;
+  }
+  font-size: 12px;
+  .details-container {
+    padding: 0px;
+    @media (min-width: @screen-md-min) { max-height: 194px; }
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .right-panel {
+    .details-container {
+      @media (min-width: @screen-md-min) { max-height: 230px; }
+    }
+    .legend {
+      margin-bottom: 5px;
+    }
+  }
+  .row.title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .currency-conversions {
+    float: left;
+    margin-right: 3px;
+  }
+}
+
 .analytics .widget-item .content.sales-break-even {
   .price {
     .center-bold(0px);
@@ -3863,48 +3902,6 @@ chart-threshold {
   }
 }
 
-.analytics .widget-item .content.sales-aged {
-  .tall-widget();
-
-  .widget-lines-container {
-    max-height: 238px;
-  }
-}
-
-.analytics .widget-item .content.sales-customer-details {
-  .loader {
-    font-size: 14px;
-  }
-  font-size: 12px;
-  .details-container {
-    padding: 0px;
-    @media (min-width: @screen-md-min) { max-height: 194px; }
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  .right-panel {
-    .details-container {
-      @media (min-width: @screen-md-min) { max-height: 230px; }
-    }
-    .legend {
-      margin-bottom: 5px;
-    }
-  }
-  .row.title {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-
-  .currency-conversions {
-    float: left;
-    margin-right: 3px;
-  }
-}
-
-.analytics .widget-item .content.sales-cycle {
-  .simple-summary-widget();
-}
 .analytics .widget-item .content.sales-forecast {
   .tall-widget();
   .widget-lines-container {
@@ -3927,6 +3924,9 @@ chart-threshold {
   }
 }
 
+.analytics .widget-item .content.sales-cycle {
+  .simple-summary-widget();
+}
 .analytics .widget-item .content.sales-leads-funnel {
   .funnel-widget();
 }
@@ -4047,10 +4047,6 @@ chart-threshold {
     }
   }
 }
-.analytics .widget-item .content.sales-opportunities-funnel {
-  .funnel-widget();
-}
-
 .analytics .widget-item .content.sales-performance {
   .drill-down-widget();
   .right-panel .widget-lines-container {
@@ -4059,6 +4055,10 @@ chart-threshold {
       .selectable();
     }
   }
+}
+
+.analytics .widget-item .content.sales-opportunities-funnel {
+  .funnel-widget();
 }
 
 .analytics .widget-item .content.sales-segmented-turnover {
@@ -4535,26 +4535,6 @@ chart-threshold {
     }
   }
 }
-.analytics .settings.source-selector {
-  .widget-lines-container {
-    .widget-line {
-      padding: 5px 10px 5px 18px;
-      .alternate-bg(#f3f4f4);
-      .fa {
-        float: right;
-        font-size: 20px;
-        cursor: pointer;
-        &.fa-toggle-on, &.fa-check-circle {
-          color: @impac-widget-link-color;
-        }
-        &.fa-toggle-off, &.fa-circle-thin {
-          color: @impac-widget-text-color-medium;
-        }
-      }
-    }
-  }
-}
-
 .analytics .settings.payroll {
   .widget-lines-container {
     .widget-line {
@@ -4568,6 +4548,26 @@ chart-threshold {
           color: @impac-widget-link-color;
         }
         &.fa-toggle-off {
+          color: @impac-widget-text-color-medium;
+        }
+      }
+    }
+  }
+}
+
+.analytics .settings.source-selector {
+  .widget-lines-container {
+    .widget-line {
+      padding: 5px 10px 5px 18px;
+      .alternate-bg(#f3f4f4);
+      .fa {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        &.fa-toggle-on, &.fa-check-circle {
+          color: @impac-widget-link-color;
+        }
+        &.fa-toggle-off, &.fa-circle-thin {
           color: @impac-widget-text-color-medium;
         }
       }
